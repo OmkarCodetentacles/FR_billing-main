@@ -23,6 +23,11 @@ using System.Net.Mail;
 using Razorpay.Api;
 using Microsoft.Reporting.WebForms;
 using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml.EMMA;
+using static System.Net.WebRequestMethods;
+using static DtDc_Billing.Models.sendEmail;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using System.Windows;
 
 namespace DtDc_Billing.Controllers
 {
@@ -41,212 +46,276 @@ namespace DtDc_Billing.Controllers
         }
 
        
-        public ActionResult IndexView()
+        public ActionResult Index()
         {
             return View();
         }
 
-       
+        public ActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
+        public ActionResult TermsCondition()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ContactUs(ContactUsModel contact)
+        {
+            if (ModelState.IsValid)
+            {
+                string subject = "Contact Us";
+
+                //Base class for sending email  
+                MailMessage _mailmsg = new MailMessage();
+
+                //Make TRUE because our body text is html  
+                _mailmsg.IsBodyHtml = true;
+
+                //Set From Email ID  
+                _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
+
+                //Set To Email ID  
+                _mailmsg.To.Add(contact.email);
+
+                //Set Subject  
+                _mailmsg.Subject = subject;
+
+                //Set Body Text of Email   
+                _mailmsg.Body = contact.website;
+
+
+                //Now set your SMTP   
+                SmtpClient _smtp = new SmtpClient();
+
+                //Set HOST server SMTP detail  
+                _smtp.Host = "smtp.gmail.com";
+
+                //Set PORT number of SMTP  
+                _smtp.Port = 587;
+
+                //Set SSL --> True / False  
+                _smtp.EnableSsl = true;
+                _smtp.UseDefaultCredentials = false;
+                //Set Sender UserEmailID, Password  
+                NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
+                _smtp.Credentials = _network;
+
+                //Send Method will send your MailMessage create above.  
+                _smtp.Send(_mailmsg);
+                TempData["success"] = "Mail has been send successfully!!";
+            }
+            
+            return PartialView("ContactUsPartialView", contact);
+        }
+
+        public ActionResult newsletters(newsletters newsletters)
+        {
+            if (ModelState.IsValid)
+            {
+                string subject = "Contact Us";
+
+                //Base class for sending email  
+                MailMessage _mailmsg = new MailMessage();
+
+                //Make TRUE because our body text is html  
+                _mailmsg.IsBodyHtml = true;
+
+                //Set From Email ID  
+                _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
+
+                //Set To Email ID  
+                _mailmsg.To.Add(newsletters.email);
+
+                //Set Subject  
+                _mailmsg.Subject = subject;
+
+                //Set Body Text of Email   
+                _mailmsg.Body = "mail id from newsletters "+ newsletters.email;
+
+
+                //Now set your SMTP   
+                SmtpClient _smtp = new SmtpClient();
+
+                //Set HOST server SMTP detail  
+                _smtp.Host = "smtp.gmail.com";
+
+                //Set PORT number of SMTP  
+                _smtp.Port = 587;
+
+                //Set SSL --> True / False  
+                _smtp.EnableSsl = true;
+                _smtp.UseDefaultCredentials = false;
+                //Set Sender UserEmailID, Password  
+                NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
+                _smtp.Credentials = _network;
+
+                //Send Method will send your MailMessage create above.  
+                _smtp.Send(_mailmsg);
+                TempData["success"] = "Mail sended!!";
+            }
+            return PartialView("newslettersPartialView", newsletters);
+        }
+
         [HttpPost]
         public ActionResult AdminLogin(AdminLogin login, string ReturnUrl)
         {
 
-          
-            var obj = db.getLogin(login.UserName, login.Password,login.PFCode).Select(x => new registration { registrationId = x.registrationId, userName = x.username , Pfcode=x.Pfcode }).FirstOrDefault();
-
-            if(obj!=null)
-            { 
-            var ObjData = (from d in db.registrations
-                        where d.Pfcode == obj.Pfcode
-                        select d).FirstOrDefault();
-
-         
-
-            DateTime After1Year;
-
-            var renewalstatuscheck = (from d in db.paymentLogs
-                                 where d.Pfcode == obj.Pfcode.ToString()
-                                 select new { d.RenewalStatus }).FirstOrDefault();
-
-            if (renewalstatuscheck.RenewalStatus == "1")
+            if (ModelState.IsValid)
             {
-                var Date = (from d in db.paymentLogs
-                            where d.Pfcode == obj.Pfcode
-                            select new
-                            {
-                                d.RenewalDate
-                            }).FirstOrDefault();
-
-                string strdate = Convert.ToString(Date.RenewalDate);
-                string[] strarr = strdate.Split(' ');
-                string date = strarr[0];
-                DateTime date1 = Convert.ToDateTime(date);
-                 After1Year = date1.AddYears(1);
-            }
-            else
-            {
-                var Date = (from d in db.registrations
-                            where d.Pfcode == obj.Pfcode
-                            select new
-                            {
-                                d.dateTime
-                            }).FirstOrDefault();
-
-                string strdate = Convert.ToString(Date.dateTime);
-                string[] strarr = strdate.Split(' ');
-                string date = strarr[0];
-                DateTime date1 = Convert.ToDateTime(date);
-                 After1Year = date1.AddYears(1);
-
-            }
-            var firmlist = db.FirmDetails.ToList();
-
-            Session["After1Year"] = After1Year;
+                var obj = db.getLogin(login.UserName, login.Password, login.PFCode).Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode }).FirstOrDefault();
 
                 if (obj != null)
                 {
-                    Session["Admin"] = obj.registrationId.ToString();
-                    Session["UserName"] = obj.userName.ToString();
-                    Session["PFCode"] = obj.Pfcode.ToString();
-                    Session["firmlist"] = firmlist;
-                    string decodedUrl = "";
-
-                    HttpCookie cookie = new HttpCookie("Cookies");
-                    cookie["AdminValue"] = obj.Pfcode.ToString();
-
-                    cookie["UserValue"] = obj.userName.ToString();
-                    cookie.Expires = DateTime.Now.AddDays(1);
-                    Response.Cookies.Add(cookie);
+                    var ObjData = (from d in db.registrations
+                                   where d.Pfcode == obj.Pfcode
+                                   select d).FirstOrDefault();
 
 
-                    var objaccessPAge = (from d in db.AdminAccessPages
-                                         where d.Pfcode == obj.Pfcode.ToString()
-                                         select new { d.Accesspage }).FirstOrDefault();
 
-                    var renewalstatus = (from d in db.paymentLogs
-                                         where d.Pfcode == obj.Pfcode.ToString()
-                                         select new { d.RenewalStatus }).FirstOrDefault();
+                    DateTime After1Year;
 
-                    if (objaccessPAge != null)
+                    var renewalstatuscheck = (from d in db.paymentLogs
+                                              where d.Pfcode == obj.Pfcode.ToString()
+                                              select new { d.RenewalStatus }).FirstOrDefault();
+
+                    if (renewalstatuscheck.RenewalStatus == "1")
                     {
-                        Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
+                        var Date = (from d in db.paymentLogs
+                                    where d.Pfcode == obj.Pfcode
+                                    select new
+                                    {
+                                        d.RenewalDate
+                                    }).FirstOrDefault();
+
+                        string strdate = Convert.ToString(Date.RenewalDate);
+                        string[] strarr = strdate.Split(' ');
+                        string date = strarr[0];
+                        DateTime date1 = Convert.ToDateTime(date);
+                        After1Year = date1.AddYears(1);
                     }
                     else
                     {
-                        Session["AccessPage"] = "0";
+                        var Date = (from d in db.registrations
+                                    where d.Pfcode == obj.Pfcode
+                                    select new
+                                    {
+                                        d.dateTime
+                                    }).FirstOrDefault();
+
+                        string strdate = Convert.ToString(Date.dateTime);
+                        string[] strarr = strdate.Split(' ');
+                        string date = strarr[0];
+                        DateTime date1 = Convert.ToDateTime(date);
+                        After1Year = date1.AddYears(1);
 
                     }
-                    if (!string.IsNullOrEmpty(ReturnUrl))
-                        decodedUrl = Server.UrlDecode(ReturnUrl);
+                    var firmlist = db.FirmDetails.ToList();
 
-                    //Login logic...
+                    Session["After1Year"] = After1Year;
 
-                    if (Url.IsLocalUrl(decodedUrl))
+                    if (obj != null)
                     {
-                        return Redirect(decodedUrl);
-                    }
-                    else
-                    {
-                        if (After1Year.Date <= DateTime.Now.Date)
-                        {
-                            ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
-                        }
-                        else if (renewalstatus.RenewalStatus == "1")
-                        {
+                        Session["Admin"] = obj.registrationId.ToString();
+                        Session["UserName"] = obj.userName.ToString();
+                        Session["PFCode"] = obj.Pfcode.ToString();
+                        Session["firmlist"] = firmlist;
+                        string decodedUrl = "";
+
+                        HttpCookie cookie = new HttpCookie("Cookies");
+                        cookie["AdminValue"] = obj.Pfcode.ToString();
+
+                        cookie["UserValue"] = obj.userName.ToString();
+                        cookie.Expires = DateTime.Now.AddDays(1);
+                        Response.Cookies.Add(cookie);
 
 
-                            return RedirectToAction("Index", "Home");
+                        var objaccessPAge = (from d in db.AdminAccessPages
+                                             where d.Pfcode == obj.Pfcode.ToString()
+                                             select new { d.Accesspage }).FirstOrDefault();
+
+                        var renewalstatus = (from d in db.paymentLogs
+                                             where d.Pfcode == obj.Pfcode.ToString()
+                                             select new { d.RenewalStatus }).FirstOrDefault();
+
+                        if (objaccessPAge != null)
+                        {
+                            Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
                         }
                         else
                         {
-                            if ((After1Year - DateTime.Now).TotalDays < 30)
-                            {
-                                if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
-                                {
-                                    ObjData.IsRenewalEmail = "0";
-                                    db.Entry(ObjData).State = EntityState.Modified;
-                                    db.SaveChanges();
-                                }
-
-                                if (ObjData.IsRenewalEmail != "1" || (ObjData.IsRenewalEmailDate == null && ObjData.IsRenewalEmailDate != DateTime.Now.Date))
-                                {
-
-                                    ObjData.IsRenewalEmailDate = DateTime.Now.Date;
-                                    ObjData.IsRenewalEmail = "1";
-                                    db.Entry(ObjData).State = EntityState.Modified;
-                                    db.SaveChanges();
-
-                                    //Fetching Email Body Text from EmailTemplate File.  
-                                    string FilePath = Server.MapPath("~/images/SignUp.html");// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
-
-                                    //string FilePath = "http://codetentacles-005-site1.htempurl.com/images/SignUp.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
-                                    StreamReader str = new StreamReader(FilePath);
-                                    string MailText = str.ReadToEnd();
-                                    str.Close();
-
-                                    //Repalce [newusername] = signup user name   
-                                    MailText = MailText.Replace("[newusername]", ObjData.franchiseName);
-                                    MailText = MailText.Replace("[RenewalDate]", After1Year.ToString("MM/dd/yyyy"));
-
-
-                                    string subject = "Welcome To FrBilling Subscription";
-
-                                    //Base class for sending email  
-                                    MailMessage _mailmsg = new MailMessage();
-
-                                    //Make TRUE because our body text is html  
-                                    _mailmsg.IsBodyHtml = true;
-
-                                    //Set From Email ID  
-                                    _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
-
-                                    //Set To Email ID  
-                                    _mailmsg.To.Add(ObjData.emailId);
-
-                                    //Set Subject  
-                                    _mailmsg.Subject = subject;
-
-                                    //Set Body Text of Email   
-                                    _mailmsg.Body = MailText;
-
-
-                                    //Now set your SMTP   
-                                    SmtpClient _smtp = new SmtpClient();
-
-                                    //Set HOST server SMTP detail  
-                                    _smtp.Host = "smtp.gmail.com";
-
-                                    //Set PORT number of SMTP  
-                                    _smtp.Port = 587;
-
-                                    //Set SSL --> True / False  
-                                    _smtp.EnableSsl = true;
-                                    _smtp.UseDefaultCredentials = false;
-                                    //Set Sender UserEmailID, Password  
-                                    NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
-                                    _smtp.Credentials = _network;
-
-                                    //Send Method will send your MailMessage create above.  
-                                    _smtp.Send(_mailmsg);
-
-
-                                }
-                            }
-                            return RedirectToAction("Index", "Home");
+                            Session["AccessPage"] = "0";
 
                         }
+                        if (!string.IsNullOrEmpty(ReturnUrl))
+                            decodedUrl = Server.UrlDecode(ReturnUrl);
+
+                        //Login logic...
+
+                        if (Url.IsLocalUrl(decodedUrl))
+                        {
+                            return Redirect(decodedUrl);
+                        }
+                        else
+                        {
+                            if (After1Year.Date <= DateTime.Now.Date)
+                            {
+                                ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
+                            }
+                            else if (renewalstatus.RenewalStatus == "1")
+                            {
+
+
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else
+                            {
+                                if ((After1Year - DateTime.Now).TotalDays < 30)
+                                {
+                                    if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
+                                    {
+                                        ObjData.IsRenewalEmail = "0";
+                                        db.Entry(ObjData).State = EntityState.Modified;
+                                        db.SaveChanges();
+                                    }
+
+                                    if (ObjData.IsRenewalEmail != "1" || (ObjData.IsRenewalEmailDate == null && ObjData.IsRenewalEmailDate != DateTime.Now.Date))
+                                    {
+
+                                        ObjData.IsRenewalEmailDate = DateTime.Now.Date;
+                                        ObjData.IsRenewalEmail = "1";
+                                        db.Entry(ObjData).State = EntityState.Modified;
+                                        db.SaveChanges();
+
+                                        ////////send mail//////////
+                                        mail mail = new mail();
+                                        mail.franchiseName = ObjData.franchiseName;
+                                        mail.emailId = ObjData.emailId;
+                                        mail.After1Year = After1Year;
+                                        sendEmail.send(mail);
+
+                                        ///////send mail//////////
+
+
+                                    }
+                                }
+                                return RedirectToAction("Index", "Home");
+
+                            }
+                        }
                     }
+
                 }
 
-            }
-        
-            else
-            {
-                //ModelState.AddModelError("LoginAuth", "Username or Password Is Incorrect");
-                ModelState.AddModelError("LoginAuth", "Username or Password Is Incorrect or Please Do The Registration First");
+                else
+                {
+                    //ModelState.AddModelError("LoginAuth", "Username or Password Is Incorrect");
+                    ModelState.AddModelError("LoginAuth", "Username or Password Is Incorrect or Please Do The Registration First");
 
+                }
             }
-
            
             return View();
         }
@@ -984,7 +1053,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.Categories = new MultiSelectList(categories, "PF_Code");
 
 
-            ViewBag.PF_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            ViewBag.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
           
             List<SelectListItem> items1 = new List<SelectListItem>();
@@ -1910,7 +1979,7 @@ namespace DtDc_Billing.Controllers
                             //string pfcodef = "";
                             if (franchisee.Pfcode == null)
                             {
-                                franchisee.Pfcode = Session["PFCode"].ToString();
+                                franchisee.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                             }
                             List<Sector> secct = (from u in db.Sectors
@@ -1961,7 +2030,7 @@ namespace DtDc_Billing.Controllers
                     }
 
 
-                string pfcode = Session["PFCode"].ToString();
+                string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 List<Sector> secct1 = (from u in db.Sectors
                                    where u.Pf_code == pfcode//franchisee.Pfcode
 
@@ -2219,7 +2288,7 @@ namespace DtDc_Billing.Controllers
 
                 Franchisee Fr = new Franchisee();
 
-                Fr.PF_Code = Session["PFCode"].ToString();
+                Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 Fr.F_Address = franchisee.F_Address;
                 Fr.OwnerName = franchisee.OwnerName;
                 Fr.BranchName = franchisee.BranchName;
@@ -2246,7 +2315,7 @@ namespace DtDc_Billing.Controllers
                            where d.Pfcode == franchisee.PF_Code
                            select d).FirstOrDefault();
 
-                Reg.Pfcode = Session["PFCode"].ToString();
+                Reg.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 Reg.address = franchisee.F_Address;
                 Reg.ownerName = franchisee.OwnerName;
                 Reg.Branch = franchisee.BranchName;
@@ -2275,8 +2344,56 @@ namespace DtDc_Billing.Controllers
             return View(franchisee);
         }
 
+        public ActionResult AddLogo()
+        {
+            return PartialView();
+        }
 
-        public ActionResult ImportCsv()
+        [HttpPost]
+        public ActionResult AddLogo(AddlogoModel logo)
+        {
+            var r = new Regex(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$");
+            if (!r.IsMatch(logo.file.FileName))
+            {
+               // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+               TempData["Success1"] = "Only Image files allowed!";
+            }
+           else
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                string _FileName = "";
+                string _path = "";
+
+                if (logo.file.ContentLength > 0)
+                {
+                    _FileName = Path.GetFileName(logo.file.FileName);
+                    _path = Server.MapPath("~/UploadedLogo/" + _FileName);
+                    
+                    logo.file.SaveAs(_path);
+                }
+              
+                var lo = (from d in db.Franchisees
+                           where d.PF_Code == strpf
+                          select d).FirstOrDefault();
+
+               
+                lo.LogoFilePath = _FileName;
+
+                db.Entry(lo).State = EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["Success1"] = "Logo Added Successfully!";
+                return RedirectToAction("Franchiseelist");
+            }
+
+            //return View("AddLogo", logo);
+            return RedirectToAction("Franchiseelist");
+            //return PartialView(logo);
+
+        }
+
+
+            public ActionResult ImportCsv()
         {
             return View();
         }
@@ -2284,7 +2401,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult FranchiseeList()
         {
             //long stradmin = Convert.ToInt64(Session["Admin"]);
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
             if (strpf == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -2316,7 +2433,7 @@ namespace DtDc_Billing.Controllers
             Fr.Branch = data.Branch;
             Fr.Accounttype = data.Accounttype;
             Fr.InvoiceStart = data.InvoiceStart;
-
+            
 
             if (Fr == null)
             {
@@ -2334,13 +2451,18 @@ namespace DtDc_Billing.Controllers
             ViewBag.DataSector = st;
             ViewBag.Sectors = st;
 
+            if (data.LogoFilePath != null)
+            {
+                ViewBag.logoimg = data.LogoFilePath;
+            }
+
             return View();
         }
 
        
         public ActionResult UserList()
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var datauser = (from d in db.Users
                             where d.PF_Code == strpf
@@ -2518,7 +2640,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ExpensesList(string ToDatetime, string Fromdatetime)
         {
-            ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
 
             var Cat = new List<SelectListItem>
@@ -2569,7 +2691,7 @@ namespace DtDc_Billing.Controllers
         {
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
-            Pf_Code = Session["pfCode"].ToString();
+            Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.Pf_Code = Pf_Code; //new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
 
@@ -2639,7 +2761,44 @@ namespace DtDc_Billing.Controllers
         public ActionResult EditExpenses(long? id)
         {
 
-            ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+
+       
+            List<SelectListItem> expe = new List<SelectListItem>(); 
+
+
+            expe.Add(new SelectListItem { Text = "Select", Value = "" });
+            expe.Add(new SelectListItem { Text = "Load Connecting exp 1st and 2nd", Value = "Load Connecting exp 1st and 2nd" });
+            expe.Add(new SelectListItem { Text = "Load connecting exp - Night load", Value = "Load connecting exp - Night load" });
+            expe.Add(new SelectListItem { Text = "Pick up expenses", Value = "Pick up expenses" });
+            expe.Add(new SelectListItem { Text = "Patpedhi Deposit", Value = "Patpedhi Deposit" });
+            expe.Add(new SelectListItem { Text = "Salary Advance", Value = "Salary Advance" });
+            expe.Add(new SelectListItem { Text = "Office Expenses", Value = "Office Expenses" });
+            expe.Add(new SelectListItem { Text = "Fuel Exp", Value = "Fuel Exp" });
+            expe.Add(new SelectListItem { Text = "Tea and refreshments exp", Value = "Tea and refreshments exp" });
+            expe.Add(new SelectListItem { Text = "Packing Expenses", Value = "Packing Expenses" });
+            expe.Add(new SelectListItem { Text = "Others", Value = "Others" });
+
+            var data = (from d in db.Expenses
+                        where d.Exp_ID == id
+                        select new { d.Category }).First();
+
+
+            foreach (var item in expe)
+            {
+
+                if (data.Category == item.Value)
+                {
+                    item.Selected = true;
+                }
+                else
+                {
+                    item.Selected = false;
+                }
+
+            }
+
+            ViewData["Category"] = expe;
 
             if (id == null)
             {

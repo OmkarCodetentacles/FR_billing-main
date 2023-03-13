@@ -48,7 +48,7 @@ namespace DtDc_Billing.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Dest_Id,Pincode,Name,State_")] Destination destination)
+        public ActionResult Create(Destination destination)
         {
             if (ModelState.IsValid)
             {

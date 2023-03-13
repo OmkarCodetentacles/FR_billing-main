@@ -42,7 +42,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult EditCompanyCash()
         {
             
-            var PfCode = Session["pfCode"].ToString(); //Take It From Session
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString(); //Take It From Session
 
             var Company = db.Companies.Where(m => m.Company_Id == "Cash_" + PfCode).FirstOrDefault();
 

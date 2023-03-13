@@ -58,12 +58,10 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-      
-
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Add Saving</h3>
@@ -72,25 +70,33 @@
                         <!-- form start -->
                         <form class="form-horizontal">
                             <div class="box-body">
-                                <div class="form-group lblamt">
-                                    <label for="inputEmail3" class="col-sm-2">Amount</label>
-                                    <div class="col-sm-10">
-                                        @Html.EditorFor(model => model.Saving_amount, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount" } })
-                                        @Html.ValidationMessageFor(model => model.Saving_amount, "", new { @class = "text-danger" })
+                                <div class="form-group lblamt" style="margin-top:20px">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                            <div class="">
+                                                @Html.EditorFor(model => model.Saving_amount, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount" } })
+                                                @Html.ValidationMessageFor(model => model.Saving_amount, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
+                                            <div class="">
+                                                @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address", rows = "5" } })
+                                                @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="box-footer">
+                                                <input type="submit" class="btn btn-primary pull-right" value="Add" />
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2">Reason</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address", rows = "5" } })
-                                        @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+
                             </div>
                             <!-- /.box-body -->
-                            <div class="box-footer">
-                                <input type="submit" class="btn btn-primary pull-right" value="Add" />
-                            </div>
                             <!-- /.box-footer -->
                         </form>
                     </div>
@@ -118,9 +124,11 @@
 
 }
 
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('body').addClass("sidebar-mini sidebar-collapse");
-    });
-</script>
+
+
+<style>
+
+    .Reqired {
+        color: red;
+    }
+</style>

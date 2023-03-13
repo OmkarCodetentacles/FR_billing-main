@@ -16,7 +16,7 @@ namespace DtDc_Billing
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Admin", action = "AdminLogin", id = UrlParameter.Optional }
+                defaults: new { controller = "Admin", action = "Index", id = UrlParameter.Optional }
                 //defaults: new { controller = "Admin", action = "IndexView", id = UrlParameter.Optional }
 
                 );

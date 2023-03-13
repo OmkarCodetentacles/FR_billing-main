@@ -11,11 +11,18 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Destination
     {
         public long Dest_Id { get; set; }
+        [Required]
+        [MaxLength(12)]
+        [MinLength(1)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Pincode must be numeric")]
         public string Pincode { get; set; }
+        
+        [Required]
         public string Name { get; set; }
         public string State_ { get; set; }
     }

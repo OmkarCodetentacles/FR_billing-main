@@ -33,20 +33,20 @@
                                         </div>
                                     </div>*@
 
-                                <div class="col-md-2">
+                                <!--<div class="col-md-2">
                                     <div class="form-group">
                                         <label>Employee Id</label>
-                                        <div class="emp-id">
-                                            @*@Html.DropDownList("Employees", "-Please select-")*@
-                                            <input type="text" name="Employees" id="Employees" value="@ViewBag.Employees" class="form-control">
+                                        <div class="emp-id">-->
+                                @*@Html.DropDownList("Employees", "-Please select-")*@
+                                <!--<input type="text" name="Employees" id="Employees" value="@ViewBag.Employees" class="form-control">
 
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>From Date:</label>
+                                        <label>From Date:<span class="Reqired">*</span></label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
@@ -66,7 +66,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>To Date:</label>
+                                        <label>To Date:<span class="Reqired">*</span></label>
                                         <div class="input-group date">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
@@ -89,12 +89,12 @@
                                 <div class="col-md-2 pull-right">
                                     <div class="form-group">
                                         <label> </label>
-                                        <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                        <button type="submit" class="btn btn-block btn-primary sbmt">Search</button>
                                     </div>
                                 </div>
                                 <div class="col-md-2 pull-right">
                                     <div class="form-group">
-                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success" />
+                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" />
                                     </div>
                                 </div>
 
@@ -252,7 +252,7 @@
     </section>
 
 </div>
-    <script>
+<script>
 
 /////Sender Autocomplete
 $(function () {
@@ -300,79 +300,103 @@ select: function(event, ui) {
         }
     });
 });
-    </script>
+</script>
 
 
-    @*if (selectedemp != null) {
-                $("#Employees").val(selectedemp);
-            }
-        var selectedemp = @ViewBag.selectedemp;*@
-    <script>
-
-
-
-        $('#datepicker').datepicker({
-            autoclose: true,
-            format: 'dd-mm-yyyy'
-        })
-
-        $('#datepicker1').datepicker({
-            autoclose: true,
-            format: 'dd-mm-yyyy'
-        })
-
-
-    </script>
+@*if (selectedemp != null) {
+            $("#Employees").val(selectedemp);
+        }
+    var selectedemp = @ViewBag.selectedemp;*@
+<script>
 
 
 
-    <script type="text/javascript">
-        $(function () {
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
 
-            $('#example1').dataTable({
-                "bPaginate": true,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": false,
-                "bInfo": true,
-                "bAutoWidth": false
-            });
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": false,
+            "bInfo": true,
+            "bAutoWidth": false
         });
-    </script>
+    });
+</script>
 
 
 
-    <style>
-        .pf-code select, .emp-id select {
-            display: block;
-            width: 100%;
-            height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-        }
+<style>
+    .pf-code select, .emp-id select {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
 
-        #example1 {
-            display: block;
-        }
 
-        .table-scroll {
-            height: 400px;
-        }
-    </style>
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('body').addClass("sidebar-mini sidebar-collapse");
-        });
-    </script>
+
+    .table-scroll {
+        height: 400px;
+    }
+    .Reqired {
+        color: red;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+    $('.sbmt').click(function () {
+        var frmdate = $('#datepicker').val();
+
+  
+    if (frmdate == "") {
+    alert("Please Enter Start Date");
+    return false;
+    }
+    else if (todate == "") {
+    alert("Please Enter End Date");
+    return false;
+    }
+
+    else {
+    return true;
+    }
+
+    });
+
+
+
+
+
+    });
+
+</script>

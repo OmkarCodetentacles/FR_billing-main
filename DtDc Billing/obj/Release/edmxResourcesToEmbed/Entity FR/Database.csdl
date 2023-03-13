@@ -214,12 +214,12 @@
     <Property Name="Firm_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Invoices" Relationship="db_a71c08_elitetokenModel.FK__Invoice__Firm_Id__5B78929E" FromRole="FirmDetail" ToRole="Invoice" />
     <NavigationProperty Name="Invoices1" Relationship="db_a71c08_elitetokenModel.FK__Invoice__Firm_Id__5C6CB6D7" FromRole="FirmDetail" ToRole="Invoice" />
-    <NavigationProperty Name="Franchisees" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="FirmDetail" ToRole="Franchisee" />
-    <NavigationProperty Name="Franchisees1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="FirmDetail" ToRole="Franchisee" />
     <NavigationProperty Name="Cashes" Relationship="db_a71c08_elitetokenModel.FK__Cash__Firm_Id__4865BE2A" FromRole="FirmDetail" ToRole="Cash" />
     <NavigationProperty Name="CreditNotes" Relationship="db_a71c08_elitetokenModel.FK__CreditNot__Firm___4B422AD5" FromRole="FirmDetail" ToRole="CreditNote" />
     <NavigationProperty Name="NEFTs" Relationship="db_a71c08_elitetokenModel.FK__NEFT__Firm_Id__5D60DB10" FromRole="FirmDetail" ToRole="NEFT" />
     <NavigationProperty Name="Cheques" Relationship="db_a71c08_elitetokenModel.FK__Cheque__Firm_Id__4959E263" FromRole="FirmDetail" ToRole="Cheque" />
+    <NavigationProperty Name="Franchisees" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="FirmDetail" ToRole="Franchisee" />
+    <NavigationProperty Name="Franchisees1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="FirmDetail" ToRole="Franchisee" />
   </EntityType>
   <EntityType Name="Holiday">
     <Key>
@@ -1196,55 +1196,6 @@
       <Parameter Name="PaymentType" Mode="In" Type="String" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
-    <EntitySet Name="Franchisees" EntityType="db_a71c08_elitetokenModel.Franchisee" />
-    <AssociationSet Name="fk_company" Association="db_a71c08_elitetokenModel.fk_company">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Company" EntitySet="Companies" />
-    </AssociationSet>
-    <AssociationSet Name="Emp_Fk" Association="db_a71c08_elitetokenModel.Emp_Fk">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Employee" EntitySet="Employees" />
-    </AssociationSet>
-    <AssociationSet Name="fk_exp" Association="db_a71c08_elitetokenModel.fk_exp">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Expense" EntitySet="Expenses" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Franchise__Firm___57A801BA" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA">
-      <End Role="FirmDetail" EntitySet="FirmDetails" />
-      <End Role="Franchisee" EntitySet="Franchisees" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Franchise__Firm___589C25F3" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3">
-      <End Role="FirmDetail" EntitySet="FirmDetails" />
-      <End Role="Franchisee" EntitySet="Franchisees" />
-    </AssociationSet>
-    <AssociationSet Name="fk_emprecept" Association="db_a71c08_elitetokenModel.fk_emprecept">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Receipt_details" EntitySet="Receipt_details" />
-    </AssociationSet>
-    <AssociationSet Name="fk_Pay" Association="db_a71c08_elitetokenModel.fk_Pay">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Payment" EntitySet="Payments" />
-    </AssociationSet>
-    <AssociationSet Name="fk_Sav" Association="db_a71c08_elitetokenModel.fk_Sav">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Saving" EntitySet="Savings" />
-    </AssociationSet>
-    <AssociationSet Name="fk_sect" Association="db_a71c08_elitetokenModel.fk_sect">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Sector" EntitySet="Sectors" />
-    </AssociationSet>
-    <AssociationSet Name="fk_Tansaction1" Association="db_a71c08_elitetokenModel.fk_Tansaction1">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Transaction" EntitySet="Transactions" />
-    </AssociationSet>
-    <AssociationSet Name="sendwall_Fk" Association="db_a71c08_elitetokenModel.sendwall_Fk">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="wallet_History" EntitySet="wallet_History" />
-    </AssociationSet>
-    <AssociationSet Name="User_Fk" Association="db_a71c08_elitetokenModel.User_Fk">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="User" EntitySet="Users" />
-    </AssociationSet>
     <FunctionImport Name="Sp_GetSingleConsignment" ReturnType="Collection(db_a71c08_elitetokenModel.Sp_GetSingleConsignment_Result)">
       <Parameter Name="Con_no" Mode="In" Type="String" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
@@ -1272,9 +1223,6 @@
       <End Role="FirmDetail" EntitySet="FirmDetails" />
       <End Role="Cheque" EntitySet="Cheques" />
     </AssociationSet>
-    <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a71c08_elitetokenModel.getReceiptDetails_Result)">
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="getPaymentTrackCash" ReturnType="Collection(db_a71c08_elitetokenModel.getPaymentTrackCash_Result)">
       <Parameter Name="fromDate" Mode="In" Type="DateTime" />
       <Parameter Name="toDate" Mode="In" Type="DateTime" />
@@ -1333,10 +1281,6 @@
       <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
     <EntitySet Name="Sendmessages" EntityType="db_a71c08_elitetokenModel.Sendmessage" />
-    <AssociationSet Name="sendmasg_Fk" Association="db_a71c08_elitetokenModel.sendmasg_Fk">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Sendmessage" EntitySet="Sendmessages" />
-    </AssociationSet>
     <EntitySet Name="AdminAccessPages" EntityType="db_a71c08_elitetokenModel.AdminAccessPage" />
     <EntitySet Name="paymentLogs" EntityType="db_a71c08_elitetokenModel.paymentLog" />
     <FunctionImport Name="RenewalpaymentLogSave">
@@ -1391,6 +1335,62 @@
     <FunctionImport Name="dashboardData" ReturnType="Collection(db_a71c08_elitetokenModel.dashboardData_Result)">
       <Parameter Name="currentDate" Mode="In" Type="DateTime" />
       <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="Franchisees" EntityType="db_a71c08_elitetokenModel.Franchisee" />
+    <AssociationSet Name="fk_company" Association="db_a71c08_elitetokenModel.fk_company">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Company" EntitySet="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="Emp_Fk" Association="db_a71c08_elitetokenModel.Emp_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="fk_exp" Association="db_a71c08_elitetokenModel.fk_exp">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Expense" EntitySet="Expenses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___57A801BA" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA">
+      <End Role="FirmDetail" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___589C25F3" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3">
+      <End Role="FirmDetail" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emprecept" Association="db_a71c08_elitetokenModel.fk_emprecept">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Receipt_details" EntitySet="Receipt_details" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Pay" Association="db_a71c08_elitetokenModel.fk_Pay">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Payment" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Sav" Association="db_a71c08_elitetokenModel.fk_Sav">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Saving" EntitySet="Savings" />
+    </AssociationSet>
+    <AssociationSet Name="fk_sect" Association="db_a71c08_elitetokenModel.fk_sect">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Sector" EntitySet="Sectors" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Tansaction1" Association="db_a71c08_elitetokenModel.fk_Tansaction1">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="sendmasg_Fk" Association="db_a71c08_elitetokenModel.sendmasg_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Sendmessage" EntitySet="Sendmessages" />
+    </AssociationSet>
+    <AssociationSet Name="sendwall_Fk" Association="db_a71c08_elitetokenModel.sendwall_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="wallet_History" EntitySet="wallet_History" />
+    </AssociationSet>
+    <AssociationSet Name="User_Fk" Association="db_a71c08_elitetokenModel.User_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a71c08_elitetokenModel.getReceiptDetails_Result)">
+      <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="getNotification_Result">
@@ -1622,189 +1622,6 @@
     <Property Type="String" Name="Invoice_Lable" Nullable="true" />
     <Property Type="Int64" Name="Firm_Id" Nullable="true" />
   </ComplexType>
-  <EntityType Name="Franchisee">
-    <Key>
-      <PropertyRef Name="PF_Code" />
-    </Key>
-    <Property Name="F_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PF_Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="F_Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-    <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="BranchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="GstNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Franchisee_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="ContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Branch_Area" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Datetime_Fr" Type="DateTime" Precision="3" />
-    <Property Name="Pan_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Firm_Id" Type="Int64" />
-    <Property Name="Sendermail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Bankname" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Accountno" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="IFSCcode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Accounttype" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Companies" Relationship="db_a71c08_elitetokenModel.fk_company" FromRole="Franchisee" ToRole="Company" />
-    <NavigationProperty Name="Employees" Relationship="db_a71c08_elitetokenModel.Emp_Fk" FromRole="Franchisee" ToRole="Employee" />
-    <NavigationProperty Name="Expenses" Relationship="db_a71c08_elitetokenModel.fk_exp" FromRole="Franchisee" ToRole="Expense" />
-    <NavigationProperty Name="FirmDetail" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="Franchisee" ToRole="FirmDetail" />
-    <NavigationProperty Name="FirmDetail1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="Franchisee" ToRole="FirmDetail" />
-    <NavigationProperty Name="Receipt_details" Relationship="db_a71c08_elitetokenModel.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
-    <NavigationProperty Name="Payments" Relationship="db_a71c08_elitetokenModel.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
-    <NavigationProperty Name="Savings" Relationship="db_a71c08_elitetokenModel.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
-    <NavigationProperty Name="Sectors" Relationship="db_a71c08_elitetokenModel.fk_sect" FromRole="Franchisee" ToRole="Sector" />
-    <NavigationProperty Name="Transactions" Relationship="db_a71c08_elitetokenModel.fk_Tansaction1" FromRole="Franchisee" ToRole="Transaction" />
-    <NavigationProperty Name="wallet_History" Relationship="db_a71c08_elitetokenModel.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
-    <NavigationProperty Name="Users" Relationship="db_a71c08_elitetokenModel.User_Fk" FromRole="Franchisee" ToRole="User" />
-    <NavigationProperty Name="Sendmessages" Relationship="db_a71c08_elitetokenModel.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
-  </EntityType>
-  <Association Name="fk_company">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Company" Role="Company" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Company">
-        <PropertyRef Name="Pf_code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="Emp_Fk">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Employee" Role="Employee" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Employee">
-        <PropertyRef Name="PF_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_exp">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Expense" Role="Expense" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Expense">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Franchise__Firm___57A801BA">
-    <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="FirmDetail">
-        <PropertyRef Name="Firm_Id" />
-      </Principal>
-      <Dependent Role="Franchisee">
-        <PropertyRef Name="Firm_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Franchise__Firm___589C25F3">
-    <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="FirmDetail">
-        <PropertyRef Name="Firm_Id" />
-      </Principal>
-      <Dependent Role="Franchisee">
-        <PropertyRef Name="Firm_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_emprecept">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Receipt_details" Role="Receipt_details" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Receipt_details">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_Pay">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Payment" Role="Payment" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Payment">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_Sav">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Saving" Role="Saving" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Saving">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_sect">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Sector" Role="Sector" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Sector">
-        <PropertyRef Name="Pf_code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_Tansaction1">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Transaction" Role="Transaction" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Transaction">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="sendwall_Fk">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.wallet_History" Role="wallet_History" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="wallet_History">
-        <PropertyRef Name="PF_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="User_Fk">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.User" Role="User" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="User">
-        <PropertyRef Name="PF_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <ComplexType Name="Sp_GetSingleConsignment_Result">
     <Property Type="Int64" Name="T_id" Nullable="false" />
     <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
@@ -1966,19 +1783,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <ComplexType Name="getReceiptDetails_Result">
-    <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="Destination" Nullable="true" />
-    <Property Type="String" Name="sender_phone" Nullable="true" />
-    <Property Type="String" Name="SenderCity" Nullable="true" />
-    <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="Reciepents_phone" Nullable="true" />
-    <Property Type="String" Name="Reciepents" Nullable="true" />
-    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
-    <Property Type="Single" Name="Charges_Total" Nullable="true" />
-    <Property Type="DateTime" Name="Datetime_Cons" Nullable="true" Precision="23" />
-  </ComplexType>
   <ComplexType Name="getPaymentTrackCash_Result">
     <Property Type="Double" Name="Amount" Nullable="true" />
     <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
@@ -2139,18 +1943,6 @@
     <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Franchisee" Relationship="db_a71c08_elitetokenModel.sendmasg_Fk" FromRole="Sendmessage" ToRole="Franchisee" />
   </EntityType>
-  <Association Name="sendmasg_Fk">
-    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
-    <End Type="db_a71c08_elitetokenModel.Sendmessage" Role="Sendmessage" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Sendmessage">
-        <PropertyRef Name="PF_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="AdminAccessPage">
     <Key>
       <PropertyRef Name="Id" />
@@ -2221,5 +2013,215 @@
     <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
     <Property Type="Double" Name="todayExp" Nullable="true" />
     <Property Type="Double" Name="monthexp" Nullable="true" />
+  </ComplexType>
+  <EntityType Name="Franchisee">
+    <Key>
+      <PropertyRef Name="PF_Code" />
+    </Key>
+    <Property Name="F_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PF_Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="F_Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BranchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GstNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Franchisee_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Branch_Area" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Fr" Type="DateTime" Precision="3" />
+    <Property Name="Pan_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Sendermail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Bankname" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Accountno" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="IFSCcode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Accounttype" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="LogoFilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Companies" Relationship="db_a71c08_elitetokenModel.fk_company" FromRole="Franchisee" ToRole="Company" />
+    <NavigationProperty Name="Employees" Relationship="db_a71c08_elitetokenModel.Emp_Fk" FromRole="Franchisee" ToRole="Employee" />
+    <NavigationProperty Name="Expenses" Relationship="db_a71c08_elitetokenModel.fk_exp" FromRole="Franchisee" ToRole="Expense" />
+    <NavigationProperty Name="FirmDetail" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="Franchisee" ToRole="FirmDetail" />
+    <NavigationProperty Name="FirmDetail1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="Franchisee" ToRole="FirmDetail" />
+    <NavigationProperty Name="Receipt_details" Relationship="db_a71c08_elitetokenModel.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
+    <NavigationProperty Name="Payments" Relationship="db_a71c08_elitetokenModel.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
+    <NavigationProperty Name="Savings" Relationship="db_a71c08_elitetokenModel.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
+    <NavigationProperty Name="Sectors" Relationship="db_a71c08_elitetokenModel.fk_sect" FromRole="Franchisee" ToRole="Sector" />
+    <NavigationProperty Name="Transactions" Relationship="db_a71c08_elitetokenModel.fk_Tansaction1" FromRole="Franchisee" ToRole="Transaction" />
+    <NavigationProperty Name="Sendmessages" Relationship="db_a71c08_elitetokenModel.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
+    <NavigationProperty Name="wallet_History" Relationship="db_a71c08_elitetokenModel.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
+    <NavigationProperty Name="Users" Relationship="db_a71c08_elitetokenModel.User_Fk" FromRole="Franchisee" ToRole="User" />
+  </EntityType>
+  <Association Name="fk_company">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Company" Role="Company" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Company">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Emp_Fk">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_exp">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Expense" Role="Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___57A801BA">
+    <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetail">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___589C25F3">
+    <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetail">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emprecept">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Receipt_details" Role="Receipt_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Receipt_details">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Pay">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Payment" Role="Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Sav">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Saving" Role="Saving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Saving">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_sect">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Sector" Role="Sector" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Sector">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Tansaction1">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="sendmasg_Fk">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.Sendmessage" Role="Sendmessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Sendmessage">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="sendwall_Fk">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.wallet_History" Role="wallet_History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="wallet_History">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="User_Fk">
+    <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a71c08_elitetokenModel.User" Role="User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="getReceiptDetails_Result">
+    <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Destination" Nullable="true" />
+    <Property Type="String" Name="sender_phone" Nullable="true" />
+    <Property Type="String" Name="SenderCity" Nullable="true" />
+    <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Reciepents_phone" Nullable="true" />
+    <Property Type="String" Name="Reciepents" Nullable="true" />
+    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
+    <Property Type="Single" Name="Charges_Total" Nullable="true" />
+    <Property Type="DateTime" Name="Datetime_Cons" Nullable="true" Precision="23" />
+    <Property Type="Single" Name="Paid_Amount" Nullable="true" />
   </ComplexType>
 </Schema>

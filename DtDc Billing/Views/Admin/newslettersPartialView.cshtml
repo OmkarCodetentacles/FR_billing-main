@@ -1,0 +1,37 @@
+﻿@model DtDc_Billing.CustomModel.newsletters
+<div class="subscribe-newsletters footer-item">
+    <h4>Subscribe Newsletters</h4>
+    <p>Get our latest news and ideas to your inbox</p>
+    <div class="newsletters">
+        @using (Ajax.BeginForm("newsletters", "Admin", null, new AjaxOptions
+        {
+            OnSuccess = "onSuccess1",
+            UpdateTargetId = "newslettersPage",
+            OnBegin = "validateForm1"
+        }, null))
+        {
+            @*<input type="text" name="email" id="email1" placeholder="Your Email">*@
+            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Your Email" } })
+            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+            <button type="submit" id="form-submit" class="main-button subns"><i class="fa fa-paper-plane-o"></i></button>
+        }
+        @if (TempData["success"] != null)
+        {
+            <span class="text-success"> @TempData["success"]</span>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    function validateForm1() {
+        $('.subns').html(" <i class='fa fa-circle-o-notch fa-spin' style='font-size: 24px'></i>");
+
+    }
+
+    function onSuccess1() {
+        $("#email").val('');
+
+    }
+</script>

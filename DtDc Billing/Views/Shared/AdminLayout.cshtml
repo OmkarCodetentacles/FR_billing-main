@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>DTDC</title>
+    <title>DTDC Admin</title>
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -13,23 +14,21 @@
 
     <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
     <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/ratemaster.css" rel="stylesheet" />
-    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
-    <link href="~/admin-lte/css/customstyle.css" rel="stylesheet" />
+
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/admin-lte/js")
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @*@Scripts.Render("~/admin-lte/js")
 
-    @RenderSection("scripts", required: false)
+        @RenderSection("scripts", required: false)
 
-    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+        @Scripts.Render("~/Scripts/jquery.validate.min.js")*@
 
     @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -43,12 +42,16 @@
     <script src="~/admin-lte/js/adminlte.min.js"></script>
     <script src="~/admin-lte/js/icheck.min.js"></script>
     <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/ratemaster.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
 
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/customstyle.css" rel="stylesheet" />
+    @*@Styles.Render("~/Content/css")*@
+    @*@Scripts.Render("~/bundles/modernizr")*@
 
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    @* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
 
     <script>
@@ -74,7 +77,7 @@
     text-align: center;
 ">
 
-                    <img src="~/Content/img/logo1.png" style="width: 100%;height: 71px;margin-top: -2px;">
+                    <img src="~/assets/images/goeasy.png" style=" width: 126px; height: auto;">
 
 
                 </div>
@@ -179,7 +182,7 @@
                         <!-- User Account Menu -->
 
                         <li class="logincss">
-                            <a <span>PFCode :</span> <i aria-hidden="true"></i><span>@Session["PFCode"].ToString() </span> </a>
+                            <a <span>PFCode :</span> <i aria-hidden="true"></i><span class="text-primary"><strong>@Request.Cookies["Cookies"]["AdminValue"].ToString()</strong> </span> </a>
                         </li>
 
                         <li class="dropdown user user-menu">
@@ -406,7 +409,7 @@
 
                     <li class="treeview">
                         <a href="javascript:;">
-                            <span style="color: red;font-size: 16px;">CashCounter Menu</span>
+                            <span style="color:#9e9e9e; font-size: 16px;">CashCounter Menu</span>
 
                         </a>
 
@@ -444,7 +447,7 @@
 
                         </ul>
                     </li>
-                    @if (@Session["AccessPage"].ToString() == "1")
+                    @if (@Session["AccessPage"]!= null && @Session["AccessPage"].ToString() == "1")
                     {
                         <li class="treeview">
                             <a href="javascript:;">
@@ -584,7 +587,7 @@
         <!-- Main Footer -->
         <footer class="main-footer">
             <!-- Default to the left -->
-            <strong>Copyright  &copy;<span id="currentYear"></span>  <a href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies</a>.</strong> All rights reserved.
+            <strong>Copyright  &copy;@DateTime.Now.Year  <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">CodeTentacles Technologies</span></a>.</strong> All rights reserved.
         </footer>
         <!-- Control Sidebar -->
         @*<aside class="control-sidebar control-sidebar-dark">

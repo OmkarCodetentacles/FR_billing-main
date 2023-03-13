@@ -33,7 +33,7 @@ namespace DtDc_Billing.Controllers
         {
 
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             //if (Firm_Id == 1)
             //{
             var dataInvStart = (from d in db.Franchisees
@@ -189,7 +189,7 @@ namespace DtDc_Billing.Controllers
         [HttpGet]
         public ActionResult ViewInvoice()
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             List<InvoiceModel> list = new List<InvoiceModel>();
             //ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code== strpf), "PF_Code", "PF_Code");
@@ -200,7 +200,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
              string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -296,7 +296,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ViewDPInvoice()
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
            return View(db.Invoices.Where(m => (((m.Total_Lable != null || m.Total_Lable.Length > 0) && m.Pfcode == strpf))).ToList());
         }
@@ -304,7 +304,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ViewSingleInvoice()
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var temp = db.singleinvoiceconsignments.Select(m=>m.Invoice_no).ToList();
 
@@ -324,7 +324,7 @@ namespace DtDc_Billing.Controllers
 
         public JsonResult InvoiceTable(string CustomerId, string Tempdatefrom, string TempdateTo)
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
 
 
@@ -372,7 +372,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult CustomerIdAutocompleteForViewInvocie()
         {
 
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var entity = db.Companies.Where(m => m.Pf_code == strpf).
 Select(e => new
@@ -389,7 +389,7 @@ Select(e => new
         [HttpPost]
         public ActionResult SaveInvoice(InvoiceModel invoice, string submit)
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -1339,7 +1339,7 @@ Select(e => new
         public ActionResult MultipleInvoice()
         {
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.Complist = db.Companies.Where(m => !(m.Company_Id.StartsWith("Cash_")) && !(m.Company_Id.StartsWith("BASIC_TS")) && m.Pf_code== strpfcode).Select(m => m.Company_Id).ToList();
 
@@ -1349,7 +1349,7 @@ Select(e => new
         [HttpPost]
         public async Task<ActionResult> MultipleInvoice(string[] Companies, Invoice invoice, string submit)
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.Complist = db.Companies.Where(m => !(m.Company_Id.StartsWith("Cash_")) && !(m.Company_Id.StartsWith("BASIC_TS")) && m.Pf_code == strpfcode).Select(m => m.Company_Id).ToList();
 
@@ -1381,7 +1381,7 @@ Select(e => new
             DateTime todate = Convert.ToDateTime(bdateto);
             DateTime invdate = Convert.ToDateTime(invoicedate);
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             foreach (var i in Companies)
             {
@@ -1570,7 +1570,7 @@ Select(e => new
 
         public void SendMailInvoiceMultiple(Invoice invoice, string submit)
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             LocalReport lr = new LocalReport();
 
@@ -1730,7 +1730,7 @@ Select(e => new
         public string SavepdInvoice(string myParameter)
         {
             {
-                string Pf_Code = Session["pfCode"].ToString();
+                string Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString(); ;
 
                 LocalReport lr = new LocalReport();
 
@@ -2010,7 +2010,7 @@ Select(e => new
         public ActionResult InvoiceZip()
         {
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -2044,7 +2044,7 @@ Select(e => new
 
                 for (int i = frominv; i <= toinv; i++)
                 {
-                    string strpfcode = Session["PFCode"].ToString();
+                    string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                   
                     var dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
@@ -2083,7 +2083,7 @@ Select(e => new
         {
 
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -2193,7 +2193,7 @@ Select(e => new
                 ViewBag.disc = invoice.discount;
             }
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
            
             if (ModelState.IsValid)
             {
@@ -2273,7 +2273,7 @@ Select(e => new
 
                     string invdate = DateTime.ParseExact(invoice.tempInvoicedate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
-                    double netAmt = Convert.ToDouble(inv.netamount);
+                    double netAmt = Convert.ToDouble(invoice.netamount);
 
                     invoice.periodfrom = Convert.ToDateTime(bdatefrom);
                     invoice.periodto = Convert.ToDateTime(bdateto);
@@ -2543,7 +2543,7 @@ Select(e => new
 
             List<Transaction> Companies = new List<Transaction>();
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
            
             db.Configuration.ProxyCreationEnabled = false;
             if (array != null)
@@ -2706,7 +2706,7 @@ Select(e => new
         public string SavesinglepdInvoice(string myParameter)
         {
             {
-                string Pf_Code = Session["pfCode"].ToString();
+                string Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 LocalReport lr = new LocalReport();
 
@@ -2916,13 +2916,13 @@ Select(e => new
 
         public ActionResult Download(long id)
         {
-            string PfCode = Session["pfCode"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var invoice = db.Invoices.Where(m => m.IN_Id == id && m.Pfcode==PfCode).FirstOrDefault();
 
             string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
 
-            string savePath = "http://codetentacles-005-site1.htempurl.com/PDF/" + invoice.invoiceno.Replace("/", "-")+ ".pdf";
+            string savePath = "http://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-")+ ".pdf";
 
             return Redirect(savePath);
 

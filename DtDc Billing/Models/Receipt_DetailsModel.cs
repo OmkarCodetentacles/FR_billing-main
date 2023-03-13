@@ -18,6 +18,8 @@ namespace DtDc_Billing.Models
         public string Destination { get; set; }
         [Display(Name = "Sender Phone")]
         [Required]
+        [MaxLength(10)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone no must be numeric")]
         public string sender_phone { get; set; }
         public string Sender_Email { get; set; }
         [Display(Name = "Sender Name")]
@@ -38,6 +40,8 @@ namespace DtDc_Billing.Models
         public string SenderPincode { get; set; }
         [Display(Name = "Receipents Phone")]
         [Required]
+        [MaxLength(10)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone no must be numeric")]
         public string Reciepents_phone { get; set; }
         public string Reciepents_Email { get; set; }
         [Display(Name = "Receipents Name")]

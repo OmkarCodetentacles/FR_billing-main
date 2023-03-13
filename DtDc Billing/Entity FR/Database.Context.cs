@@ -69,7 +69,6 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<NewNotification> NewNotifications { get; set; }
         public virtual DbSet<UserModuleList> UserModuleLists { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
-        public virtual DbSet<Franchisee> Franchisees { get; set; }
         public virtual DbSet<Cash> Cashes { get; set; }
         public virtual DbSet<CreditNote> CreditNotes { get; set; }
         public virtual DbSet<NEFT> NEFTs { get; set; }
@@ -78,6 +77,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<AdminAccessPage> AdminAccessPages { get; set; }
         public virtual DbSet<paymentLog> paymentLogs { get; set; }
         public virtual DbSet<registration> registrations { get; set; }
+        public virtual DbSet<Franchisee> Franchisees { get; set; }
     
         public virtual ObjectResult<getNotification_Result> getNotification()
         {
@@ -191,15 +191,6 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("Pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<destinationCount_Result>("destinationCount", pfcodeParameter);
-        }
-    
-        public virtual ObjectResult<getReceiptDetails_Result> getReceiptDetails(string pfcode)
-        {
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getReceiptDetails_Result>("getReceiptDetails", pfcodeParameter);
         }
     
         public virtual ObjectResult<getPaymentTrackCash_Result> getPaymentTrackCash(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string companyName, string pfcode)
@@ -588,6 +579,15 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("Pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dashboardData_Result>("dashboardData", currentDateParameter, pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<getReceiptDetails_Result> getReceiptDetails(string pfcode)
+        {
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getReceiptDetails_Result>("getReceiptDetails", pfcodeParameter);
         }
     }
 }

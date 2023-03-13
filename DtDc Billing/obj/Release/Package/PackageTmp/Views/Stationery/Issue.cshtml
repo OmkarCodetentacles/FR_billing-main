@@ -16,87 +16,117 @@
             </div><!-- /.box-header -->
             <div class="row">
                 <!-- Horizontal Form -->
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <!-- form start -->
                     @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
                         <div class="form-horizontal">
                             <div class="box-body">
-                                <div class="form-group">
-                                    <label for="issue-date" class="col-sm-3 control-label">Issued Date</label>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="issue-date" class=" control-label">Issued Date</label>
 
-                                    <div class="col-sm-9">
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
+                                            <div class="">
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    @Html.EditorFor(model => model.Inssuedate, new { htmlAttributes = new { @class = "form-control pull-right" } })
+                                                    @Html.ValidationMessageFor(model => model.Inssuedate, "", new { @class = "text-danger" })
+                                                </div>
                                             </div>
-                                            @Html.EditorFor(model => model.Inssuedate, new { htmlAttributes = new { @class = "form-control pull-right" } })
-                                            @Html.ValidationMessageFor(model => model.Inssuedate, "", new { @class = "text-danger" })
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="start-no" class="col-sm-3 control-label">Start No</label>
-
-                                    <div class="col-sm-9">
-
-
-                                        @Html.EditorFor(model => model.startno, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.startno, "", new { @class = "text-danger" })
-
-
 
                                     </div>
-                                </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="start-no" class=" control-label">Start No</label>
 
-                                <div class="form-group">
-                                    <label for="end-no" class="col-sm-3 control-label">End No</label>
+                                            <div class="">
 
-                                    <div class="col-sm-9">
 
-                                        @Html.EditorFor(model => model.endno, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.endno, "", new { @class = "text-danger" })
-                                        <span id="lblError1" style="color:red"></span>
+                                                @Html.EditorFor(model => model.startno, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.startno, "", new { @class = "text-danger" })
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="end-no" class=" control-label">End No</label>
+
+                                            <div class="">
+
+                                                @Html.EditorFor(model => model.endno, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.endno, "", new { @class = "text-danger" })
+                                                <span id="lblError1" style="color:red"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="company-id" class=" control-label">Company Id</label>
+
+                                            <div class="">
+
+                                                @Html.EditorFor(model => model.Comapny_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Comapny_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="emp-name" class=" control-label">Employee Name</label>
+
+                                            <div class="">
+
+                                                @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div id="two-block-inline" class="form-group">
+                                            <label for="leaf-no" class=" control-label">No of Leafs</label>
+
+                                            <div class="">
+
+                                                @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-success pull-right">Save</button>
+                                        </div>
+
                                     </div>
                                 </div>
+                                
+                                
+
+                                
 
 
 
-                                <div class="form-group">
-                                    <label for="company-id" class="col-sm-3 control-label">Company Id</label>
-
-                                    <div class="col-sm-9">
-
-                                        @Html.EditorFor(model => model.Comapny_Id, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.Comapny_Id, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="emp-name" class="col-sm-3 control-label">Employee Name</label>
-
-                                    <div class="col-sm-9">
-
-                                        @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div id="two-block-inline" class="form-group">
-                                    <label for="leaf-no" class="col-sm-3 control-label">No of Leafs</label>
-
-                                    <div class="col-sm-4">
-
-                                        @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>
+                                
+                               
+                                
 
                             </div>
                             <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-success pull-right">Save</button>
-                            </div>
+                            
                             <!-- /.box-footer -->
                         </div>
                     }
@@ -197,8 +227,7 @@
 
 
        
-            $('[data-toggle="tooltip"]').tooltip();
-            $('body').addClass("sidebar-mini sidebar-collapse");
+           
       
 
         });

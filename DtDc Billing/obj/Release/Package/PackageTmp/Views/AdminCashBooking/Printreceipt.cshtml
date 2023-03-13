@@ -9,7 +9,7 @@
 
 
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "receiptform" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "receiptform", LoadingElementId = "overlayBlock", }))
 {
     @Html.AntiForgeryToken()
 
@@ -27,10 +27,14 @@
                             {
 
                                 @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Consignment No", @Value = ViewBag.nextconsignment, id = "txt" } })
+                                @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
+
                             }
                             else
                             {
                                 @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Consignment No" } })
+                                @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
+
                             }
                             @Html.ValidationMessage("Consignment")
                         </div>
@@ -41,6 +45,7 @@
                         <label class="col-sm-3">Destination</label>
                         <div class="col-sm-6">
                             @Html.EditorFor(model => model.Destination, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Destination" } })
+                            @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
 
                         </div>
                     </div>
@@ -66,6 +71,8 @@
                                     <div class="col-sm-4">
                                         @*@Html.EditorFor(model => model.sender_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number" } })*@
                                         <input list="texto_pronto" name="sender_phone" id="sender_phone" class="form-control input-sm">
+                                        @Html.ValidationMessageFor(model => model.sender_phone, "", new { @class = "text-danger" })
+
                                         <datalist id="texto_pronto">
                                             <option value="texto A">
 
@@ -95,6 +102,7 @@
                                     <label for="" class="col-sm-2">Address</label>
                                     <div class="col-sm-10">
                                         @Html.TextAreaFor(model => model.SenderAddress, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Address" } })
+                                        @Html.ValidationMessageFor(model => model.SenderAddress, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -102,6 +110,8 @@
                                     <label class="col-sm-1 padding-right-0">City</label>
                                     <div class="col-sm-3">
                                         @Html.EditorFor(model => model.SenderCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
+                                        @Html.ValidationMessageFor(model => model.SenderCity, "", new { @class = "text-danger" })
+
                                     </div>
                                     <label class="col-sm-1 nopadding">State</label>
                                     <div class="col-sm-3 nopadding">
@@ -111,7 +121,7 @@
                                     <div class="col-sm-2 padding-left-0">
 
                                         @Html.EditorFor(model => model.SenderPincode, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Pincode", @id = "Pincode" } })
-
+                                        @Html.ValidationMessageFor(model => model.SenderPincode, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
@@ -138,6 +148,8 @@
                                             <option value="texto A">
 
                                         </datalist>
+                                        @Html.ValidationMessageFor(model => model.Reciepents_phone, "", new { @class = "text-danger" })
+
                                     </div>
                                     <label for="" class="col-sm-2">Email</label>
                                     <div class="col-sm-4">
@@ -767,6 +779,7 @@
                                     {
                                         <span id="Walletmoney">@ViewBag.WalletPopints</span>
                                     }
+                                   
                                 </div>
                                 <div id="redeem-btn" class="col-md-3">
                                     <div class="container">
@@ -832,6 +845,9 @@
 </div><!-- /.example-modal -->
 
 
+<div class="overlay" id="overlayBlock">
+    <div class="loader"></div>
+</div>
 
 
 <style>
@@ -881,6 +897,33 @@
             margin: 30px auto;
         }
     }
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
 </style>
 
 
@@ -2247,11 +2290,7 @@ $(document).ready(function () {
     //    }
     //});
 
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('body').addClass("sidebar-mini sidebar-collapse");
-    });
-
+    
     $(function () { //shorthand document.ready function
         $('#receiptform').on('submit', function (e) { //use on if jQuery 1.7+
 
@@ -2389,3 +2428,33 @@ $(document).ready(function () {
     }
 </style>
 
+@if (ViewBag.Consignmetno != null)
+{
+    <script>
+        $("#overlayBlock").show();
+    /**/
+    var print = '@ViewBag.pdf';
+    /**/
+
+    if (print == "True") {
+        /**/
+        var myParamether = '@ViewBag.Consignmetno';
+
+
+    /**/
+
+    //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
+        $.get("/AdminCashBooking/Printcashcounter", { myParameter: myParamether}, function (data) {
+            $('#savecon').attr('href', "http://frbilling.com/CashcounterPDF/" + data);
+
+            document.getElementById('savecon').click();
+            $("#overlayBlock").hide();
+
+
+        });
+}
+    </script>
+}
+
+<a id="savecon" style="" href="" download>
+</a>

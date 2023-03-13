@@ -16,41 +16,50 @@
         <!-- Main content -->
         <section class="content">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Add Expenses</h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <div class="form-horizontal">
+                        <div class="form-horizontal" style="margin-top:10px" >
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2">Amount</label>
-                                    <div class="col-sm-10">
-                                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Amount" } })
-                                        @*@Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })*@
+                                    <div class="row" >
+                                        <div class="col-md-3">
+                                            <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                            <div class="">
+                                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Amount" } })
+                                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
+                                            <div class="">
+                                                @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Address", rows = "5" } })
+                                                @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="inputPassword3" class="">Category</label>
+                                            <div class="">
+                                                @Html.DropDownList("Category", ViewData["list"] as List<SelectListItem>, new { @class = "form-control" })
+                                                @*@Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="box-footer">
+                                                <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" />
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2">Reason</label>
-                                    <div class="col-sm-10">
-                                        @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Address", rows = "5" } })
-                                        @*@Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })*@
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-2">Category</label>
-                                    <div class="col-sm-10">
-                                        @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Category" } })
-                                        @*@Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })*@
-                                    </div>
-                                </div>
+                                
                             </div>
                             <!-- /.box-body -->
-                            <div class="box-footer">
-                                <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" />
-                            </div>
+                            
                             <!-- /.box-footer -->
                         </div>
                     </div>
@@ -70,6 +79,9 @@
     textarea {
         width: 100%;
     }
+    .Reqired {
+        color: red;
+    }
 </style>
 
 
@@ -87,9 +99,4 @@
 
 }
 
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('body').addClass("sidebar-mini sidebar-collapse");
-    });
-</script>
+

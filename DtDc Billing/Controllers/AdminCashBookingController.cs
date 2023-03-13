@@ -74,7 +74,7 @@ namespace DtDc_Billing.Controllers
             {
                 Receipt_details Recp_De = new Receipt_details();
 
-                Recp_De.Pf_Code = Session["PFCode"].ToString();
+                Recp_De.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 Recp_De.Consignment_No = reciept_Details.Consignment_No;
                 Recp_De.Destination = reciept_Details.Destination;
                 Recp_De.sender_phone = reciept_Details.sender_phone;
@@ -385,7 +385,8 @@ namespace DtDc_Billing.Controllers
             var Recieptdetails = db.Receipt_details.Where(m => m.Consignment_No == id);//.ToList();
 
             //string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
-            string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+            //string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+            string savePath = "http://frbilling.com/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
 
             //string savePath = "http://admin.infantjesussolutions.in/PDF/" + invoice.Firm_Id + "-" + invoice.invoiceno.Replace("/", "-") + ".pdf";
 
@@ -398,7 +399,7 @@ namespace DtDc_Billing.Controllers
 
         {
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var entity = db.SenderPhoneFromReceiptdetails(enterValue, strpfcode).
                             Select(e => new SenderPhoneFromReceiptdetailsModel
@@ -428,7 +429,7 @@ namespace DtDc_Billing.Controllers
             //{
             //    e.Reciepents_phone
             //}).Distinct().ToList();
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var entity = db.ReceipentsPhoneFromReceiptdetails(enterValue, strpfcode).
                                          Select(e => new ReceipentsPhoneFromReceiptdetailsModel
@@ -559,7 +560,7 @@ Select(e => new
         {
             double? DoxNonDoxAmt = 10;
 
-            string pfcode = Session["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             List<JsonArrayCalc> jsonarray = new List<JsonArrayCalc>();
 
@@ -1440,7 +1441,8 @@ Select(e => new
         public string Printcashcounter(string myParameter)
         {
             {
-                //string consignmnetno1 = "P53637433";
+                string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
              LocalReport lr = new LocalReport();
 
                 string ProductType = "";
@@ -1464,7 +1466,8 @@ Select(e => new
 
                 string barcode = GenerateBarCode(myParameter);
 
-               
+                var logo = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
+
                 string path = Path.Combine(Server.MapPath("~/RdlcReport"), "P_N_Series_cashcounter.rdlc");
 
                 var CompanyData = db.Franchisees.Where(m => m.PF_Code == Recieptdetails1.Pf_Code).ToList();
@@ -1488,8 +1491,13 @@ Select(e => new
                 //string pathimg = (Server.MapPath("~/BarcodeImages/P34638564.png"));
 
                 ReportParameter rp = new ReportParameter("rpt_img", "file:///" + barcode);
-                   
+
+                ReportParameter rp1 = new ReportParameter("rpt_logoimg", "file:///" + logo.LogoFilePath);
+
                 lr.SetParameters(rp);
+
+                lr.SetParameters(rp1); 
+                
                 lr.Refresh();
 
                 lr.DataSources.Add(rd);
@@ -1588,7 +1596,7 @@ Select(e => new
             }
             else if (ModelState.IsValid)
             {
-                reciept_Details.Pf_Code = Session["pfCode"].ToString();
+                reciept_Details.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
 
                 if (texens == "true")
@@ -1670,7 +1678,7 @@ Select(e => new
 
         public ActionResult callapi(string phno, string consinmentno, float? amount, string Destination)
         {
-            string pfcode = Session["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -1710,7 +1718,7 @@ Select(e => new
 
         public ActionResult MemberShip(string phno)
         {
-            string pfcode = Session["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -1911,7 +1919,7 @@ Select(e => new
             if (ModelState.IsValid)
             {
 
-                reciept_Details.Pf_Code = Session["pfCode"].ToString();
+                reciept_Details.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
 
 

@@ -24,5 +24,6 @@ namespace DtDc_Billing.Entity_FR
         public string ReciepentsPincode { get; set; }
         public Nullable<float> Charges_Total { get; set; }
         public Nullable<System.DateTime> Datetime_Cons { get; set; }
+        public Nullable<float> Paid_Amount { get; set; }
     }
 }

@@ -8,7 +8,7 @@
 
 <!-- Main content -->
 <div class="content-wrapper">
-    <section class="content">
+    <section class="content"  >
         <div class="box">
             <!-- column -->
             <div class="box-header with-border">
@@ -17,33 +17,41 @@
             <div class="row">
 
                 <!-- Horizontal Form -->
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <!-- form start -->
                     <div class="form-horizontal">
 
-                        <div class="box-body">
+                        <div class="box-body" style="margin-top:20px">
 
 
                             @using (Html.BeginForm())
                             {
 
                                 @*<div class="form-group">
-                                        <div class="col-sm-9">
-                                            <label>MFID</label>
-                                            <label class="Reqired">*</label>
-                                            @Html.DropDownList("PfCode")
-                                        </div>
-                                    </div>*@
-                                <div class="form-group">
-                                    <div class="col-sm-9">
+                <div class="col-sm-9">
+                    <label>MFID</label>
+                    <label class="Reqired">*</label>
+                    @Html.DropDownList("PfCode")
+                </div>
+            </div>*@
+
+
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+
                                         <label>Select Type</label>
                                         <label class="Reqired">*</label>
                                         @Html.DropDownList("RemainingType")
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4"  >
                                     <input type="submit" class="btn btn-primary pull-right sbmt" name="Show" value="Show" />
                                 </div>
+                            </div>
+                            
+                                
 
 
                                 <input type="hidden" id="PfCode" value="@ViewBag.PfCode">
@@ -61,7 +69,7 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-sm-8 col-xs-12">
+            <div class="col-12 col-sm-12 col-xs-12 col-md-8 col-lg-8 col-xl-8">
                 <div class="box">
                     <div class="box-body">
                         <table id="table_display_block" class="table table-bordered table-striped table-responsive">
@@ -317,9 +325,9 @@
                 <!-- /.box -->
             </div>
             <!-- /.col -->
-            <div class="col-sm-4 col-xs-12">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4  ">
                 <div class="box">
-                    <div class="box-body">
+                    <div class="box-body" style="margin-top:55px">
                         <table id="example2" style="display:block" class="table table-bordered table-striped table-responsive height-450">
                             <thead>
                                 <tr>
@@ -338,22 +346,28 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-sm-8 col-xs-12">
+            <div class="col-12 col-xs-12   col-sm-8 col-xs-12">
                 <div class="box">
                     <div class="box-body">
                         <table class="table table-bordered table-striped table-responsive">
 
                             <tr>
                                 <th>Days left</th>
-                                <th>10 Days left</th>
-                                <th>25 Days left</th>
+                                <th>No of consignment</th>
+                               
 
                             </tr>
 
                             <tr>
-                                <th>No of consignment</th>
-                                <th class="text-danger">@sum10</th>
-                                <th class="text-danger">@sum25</th>
+
+                                <td class="text-danger">@sum10</td>
+                                <td class="text-danger">@sum25</td>
+
+                            </tr>
+                            <tr>
+
+                                <td>10 Days left</td>
+                                <td>25 Days left</td>
 
                             </tr>
 
@@ -428,8 +442,8 @@
             });
 
             
-                $('[data-toggle="tooltip"]').tooltip();
-                $('body').addClass("sidebar-mini sidebar-collapse");
+
+
            
         });
 

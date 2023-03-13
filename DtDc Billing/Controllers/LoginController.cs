@@ -23,13 +23,13 @@ namespace DtDc_Billing.Controllers
         {
 
             var obj = db.Employees.Where(a => a.email.Equals(login.Username) && a.E_Password.Equals(login.Password)).FirstOrDefault();
-            var firmlist = db.FirmDetails.ToList();
+            //var firmlist = db.FirmDetails.ToList();
             if (ModelState.IsValid)
             {
                 if (obj != null)
                 {
                     Session["PfID"] = obj.PF_Code.ToString();
-                    Session["firmlist"] = firmlist;
+                   // Session["firmlist"] = firmlist;
                     //Session["EmpId"]=
                     return RedirectToAction("Index", "Home");
                 }

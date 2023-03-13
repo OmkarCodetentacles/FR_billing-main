@@ -268,6 +268,7 @@
     <Property Name="Branch" Type="varchar" MaxLength="200" />
     <Property Name="Accounttype" Type="varchar" MaxLength="200" />
     <Property Name="InvoiceStart" Type="varchar" MaxLength="5" />
+    <Property Name="LogoFilePath" Type="varchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="Holiday">
     <Key>
@@ -791,19 +792,7 @@
     <Property Name="Datetime_Wa" Type="datetime" />
   </EntityType>
   <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a71c08_elitetoken.dbo.invalidCon' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="invalidCon">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a71c08_elitetoken.dbo.openConCount' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="openConCount">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a71c08_elitetoken.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="TransactionView">
     <Key>
       <PropertyRef Name="T_id" />
@@ -857,12 +846,6 @@ warning 6002: The table/view 'db_a71c08_elitetoken.dbo.TransactionView' does not
     <Property Name="remarks" Type="varchar" MaxLength="100" />
     <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="unSignPincode">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
   <Association Name="Emp_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
     <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -875,7 +858,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Cash__Firm_Id__4865BE2A">
+  <Association Name="FK__Cash__Firm_Id__2180FB33">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
     <ReferentialConstraint>
@@ -887,7 +870,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Cheque__Firm_Id__4959E263">
+  <Association Name="FK__Cash__Firm_Id__2334397B">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cash">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cheque__Firm_Id__22751F6C">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Cheque" Type="Self.Cheque" Multiplicity="*" />
     <ReferentialConstraint>
@@ -899,7 +894,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__CreditNot__Firm___4B422AD5">
+  <Association Name="FK__Cheque__Firm_Id__24285DB4">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Cheque" Type="Self.Cheque" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cheque">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CreditNot__Firm___245D67DE">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="CreditNote" Type="Self.CreditNote" Multiplicity="*" />
     <ReferentialConstraint>
@@ -911,7 +918,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Dtdc_Ptp__Sector__4C364F0E">
+  <Association Name="FK__CreditNot__Firm___251C81ED">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="CreditNote" Type="Self.CreditNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="CreditNote">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__25518C17">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
     <ReferentialConstraint>
@@ -923,7 +942,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Dtdc_Ptp__Sector__4D2A7347">
+  <Association Name="FK__Dtdc_Ptp__Sector__2610A626">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
     <ReferentialConstraint>
@@ -935,7 +954,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__dtdcPlus__Sector__4F12BBB9">
+  <Association Name="FK__Dtdc_Ptp__Sector__2645B050">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__2704CA5F">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__27F8EE98">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
     <ReferentialConstraint>
@@ -947,7 +990,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__dtdcPlus__Sector__5006DFF2">
+  <Association Name="FK__dtdcPlus__Sector__282DF8C2">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
     <ReferentialConstraint>
@@ -959,7 +1002,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__express_c__Secto__54CB950F">
+  <Association Name="FK__dtdcPlus__Sector__28ED12D1">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__29221CFB">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__29E1370A">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
     <ReferentialConstraint>
@@ -971,7 +1038,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__express_c__Secto__55BFB948">
+  <Association Name="FK__express_c__Secto__2AD55B43">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
     <ReferentialConstraint>
@@ -983,7 +1050,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Franchise__Firm___57A801BA">
+  <Association Name="FK__express_c__Secto__2DE6D218">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__2EDAF651">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___2BC97F7C">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
     <ReferentialConstraint>
@@ -995,7 +1086,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Franchise__Firm___589C25F3">
+  <Association Name="FK__Franchise__Firm___2CBDA3B5">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1007,7 +1098,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Holidays__User_I__59904A2C">
+  <Association Name="FK__Franchise__Firm___30C33EC3">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___31B762FC">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__2DB1C7EE">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="Holidays" Type="Self.Holidays" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1019,7 +1134,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Holidays__User_I__5A846E65">
+  <Association Name="FK__Holidays__User_I__2EA5EC27">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="Holidays" Type="Self.Holidays" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1031,7 +1146,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Invoice__Firm_Id__5B78929E">
+  <Association Name="FK__Holidays__User_I__32AB8735">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holidays" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__339FAB6E">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holidays" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__2F9A1060">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1043,7 +1182,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Invoice__Firm_Id__5C6CB6D7">
+  <Association Name="FK__Invoice__Firm_Id__308E3499">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1055,7 +1194,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__NEFT__Firm_Id__5D60DB10">
+  <Association Name="FK__Invoice__Firm_Id__3493CFA7">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__3587F3E0">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__NEFT__Firm_Id__318258D2">
     <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
     <End Role="NEFT" Type="Self.NEFT" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1067,7 +1230,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Nondox__Company___5E54FF49">
+  <Association Name="FK__NEFT__Firm_Id__367C1819">
+    <End Role="FirmDetails" Type="Self.FirmDetails" Multiplicity="0..1" />
+    <End Role="NEFT" Type="Self.NEFT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="NEFT">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___32767D0B">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1079,7 +1254,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Nondox__Company___5F492382">
+  <Association Name="FK__Nondox__Company___336AA144">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1091,7 +1266,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Priority__Compan__6319B466">
+  <Association Name="FK__Nondox__Company___37703C52">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___3864608B">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Compan__345EC57D">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1103,7 +1302,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Priority__Sector__640DD89F">
+  <Association Name="FK__Priority__Compan__3C34F16F">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Sector__3552E9B6">
     <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
     <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1115,7 +1326,19 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Ratem__Company_i__6501FCD8">
+  <Association Name="FK__Priority__Sector__3D2915A8">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__36470DEF">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1127,7 +1350,7 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Ratem__Company_i__65F62111">
+  <Association Name="FK__Ratem__Company_i__373B3228">
     <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
     <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1139,7 +1362,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__ReplyAdmi__Compl__69C6B1F5">
+  <Association Name="FK__Ratem__Company_i__3E1D39E1">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__3F115E1A">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__382F5661">
     <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
     <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1151,7 +1398,31 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__ReplyAdmi__Compl__6ABAD62E">
+  <Association Name="FK__ReplyAdmi__Compl__39237A9A">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__42E1EEFE">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__43D61337">
     <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
     <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1667,99 +1938,195 @@ warning 6013: The table/view 'db_a71c08_elitetoken.dbo.unSignPincode' does not h
       <End Role="Franchisee" EntitySet="Franchisee" />
       <End Role="Employee" EntitySet="Employee" />
     </AssociationSet>
-    <AssociationSet Name="FK__Cash__Firm_Id__4865BE2A" Association="Self.FK__Cash__Firm_Id__4865BE2A">
+    <AssociationSet Name="FK__Cash__Firm_Id__2180FB33" Association="Self.FK__Cash__Firm_Id__2180FB33">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Cash" EntitySet="Cash" />
     </AssociationSet>
-    <AssociationSet Name="FK__Cheque__Firm_Id__4959E263" Association="Self.FK__Cheque__Firm_Id__4959E263">
+    <AssociationSet Name="FK__Cash__Firm_Id__2334397B" Association="Self.FK__Cash__Firm_Id__2334397B">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cash" EntitySet="Cash" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cheque__Firm_Id__22751F6C" Association="Self.FK__Cheque__Firm_Id__22751F6C">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Cheque" EntitySet="Cheque" />
     </AssociationSet>
-    <AssociationSet Name="FK__CreditNot__Firm___4B422AD5" Association="Self.FK__CreditNot__Firm___4B422AD5">
+    <AssociationSet Name="FK__Cheque__Firm_Id__24285DB4" Association="Self.FK__Cheque__Firm_Id__24285DB4">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cheque" EntitySet="Cheque" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CreditNot__Firm___245D67DE" Association="Self.FK__CreditNot__Firm___245D67DE">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="CreditNote" EntitySet="CreditNote" />
     </AssociationSet>
-    <AssociationSet Name="FK__Dtdc_Ptp__Sector__4C364F0E" Association="Self.FK__Dtdc_Ptp__Sector__4C364F0E">
+    <AssociationSet Name="FK__CreditNot__Firm___251C81ED" Association="Self.FK__CreditNot__Firm___251C81ED">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="CreditNote" EntitySet="CreditNote" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__25518C17" Association="Self.FK__Dtdc_Ptp__Sector__25518C17">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
     </AssociationSet>
-    <AssociationSet Name="FK__Dtdc_Ptp__Sector__4D2A7347" Association="Self.FK__Dtdc_Ptp__Sector__4D2A7347">
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2610A626" Association="Self.FK__Dtdc_Ptp__Sector__2610A626">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
     </AssociationSet>
-    <AssociationSet Name="FK__dtdcPlus__Sector__4F12BBB9" Association="Self.FK__dtdcPlus__Sector__4F12BBB9">
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2645B050" Association="Self.FK__Dtdc_Ptp__Sector__2645B050">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2704CA5F" Association="Self.FK__Dtdc_Ptp__Sector__2704CA5F">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__27F8EE98" Association="Self.FK__dtdcPlus__Sector__27F8EE98">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="dtdcPlus" EntitySet="dtdcPlus" />
     </AssociationSet>
-    <AssociationSet Name="FK__dtdcPlus__Sector__5006DFF2" Association="Self.FK__dtdcPlus__Sector__5006DFF2">
+    <AssociationSet Name="FK__dtdcPlus__Sector__282DF8C2" Association="Self.FK__dtdcPlus__Sector__282DF8C2">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="dtdcPlus" EntitySet="dtdcPlus" />
     </AssociationSet>
-    <AssociationSet Name="FK__express_c__Secto__54CB950F" Association="Self.FK__express_c__Secto__54CB950F">
+    <AssociationSet Name="FK__dtdcPlus__Sector__28ED12D1" Association="Self.FK__dtdcPlus__Sector__28ED12D1">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__29221CFB" Association="Self.FK__dtdcPlus__Sector__29221CFB">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__29E1370A" Association="Self.FK__express_c__Secto__29E1370A">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="express_cargo" EntitySet="express_cargo" />
     </AssociationSet>
-    <AssociationSet Name="FK__express_c__Secto__55BFB948" Association="Self.FK__express_c__Secto__55BFB948">
+    <AssociationSet Name="FK__express_c__Secto__2AD55B43" Association="Self.FK__express_c__Secto__2AD55B43">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="express_cargo" EntitySet="express_cargo" />
     </AssociationSet>
-    <AssociationSet Name="FK__Franchise__Firm___57A801BA" Association="Self.FK__Franchise__Firm___57A801BA">
+    <AssociationSet Name="FK__express_c__Secto__2DE6D218" Association="Self.FK__express_c__Secto__2DE6D218">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__2EDAF651" Association="Self.FK__express_c__Secto__2EDAF651">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___2BC97F7C" Association="Self.FK__Franchise__Firm___2BC97F7C">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Franchisee" EntitySet="Franchisee" />
     </AssociationSet>
-    <AssociationSet Name="FK__Franchise__Firm___589C25F3" Association="Self.FK__Franchise__Firm___589C25F3">
+    <AssociationSet Name="FK__Franchise__Firm___2CBDA3B5" Association="Self.FK__Franchise__Firm___2CBDA3B5">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Franchisee" EntitySet="Franchisee" />
     </AssociationSet>
-    <AssociationSet Name="FK__Holidays__User_I__59904A2C" Association="Self.FK__Holidays__User_I__59904A2C">
+    <AssociationSet Name="FK__Franchise__Firm___30C33EC3" Association="Self.FK__Franchise__Firm___30C33EC3">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisee" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___31B762FC" Association="Self.FK__Franchise__Firm___31B762FC">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisee" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__2DB1C7EE" Association="Self.FK__Holidays__User_I__2DB1C7EE">
       <End Role="Users" EntitySet="Users" />
       <End Role="Holidays" EntitySet="Holidays" />
     </AssociationSet>
-    <AssociationSet Name="FK__Holidays__User_I__5A846E65" Association="Self.FK__Holidays__User_I__5A846E65">
+    <AssociationSet Name="FK__Holidays__User_I__2EA5EC27" Association="Self.FK__Holidays__User_I__2EA5EC27">
       <End Role="Users" EntitySet="Users" />
       <End Role="Holidays" EntitySet="Holidays" />
     </AssociationSet>
-    <AssociationSet Name="FK__Invoice__Firm_Id__5B78929E" Association="Self.FK__Invoice__Firm_Id__5B78929E">
+    <AssociationSet Name="FK__Holidays__User_I__32AB8735" Association="Self.FK__Holidays__User_I__32AB8735">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__339FAB6E" Association="Self.FK__Holidays__User_I__339FAB6E">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__2F9A1060" Association="Self.FK__Invoice__Firm_Id__2F9A1060">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Invoice" EntitySet="Invoice" />
     </AssociationSet>
-    <AssociationSet Name="FK__Invoice__Firm_Id__5C6CB6D7" Association="Self.FK__Invoice__Firm_Id__5C6CB6D7">
+    <AssociationSet Name="FK__Invoice__Firm_Id__308E3499" Association="Self.FK__Invoice__Firm_Id__308E3499">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Invoice" EntitySet="Invoice" />
     </AssociationSet>
-    <AssociationSet Name="FK__NEFT__Firm_Id__5D60DB10" Association="Self.FK__NEFT__Firm_Id__5D60DB10">
+    <AssociationSet Name="FK__Invoice__Firm_Id__3493CFA7" Association="Self.FK__Invoice__Firm_Id__3493CFA7">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__3587F3E0" Association="Self.FK__Invoice__Firm_Id__3587F3E0">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoice" />
+    </AssociationSet>
+    <AssociationSet Name="FK__NEFT__Firm_Id__318258D2" Association="Self.FK__NEFT__Firm_Id__318258D2">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="NEFT" EntitySet="NEFT" />
     </AssociationSet>
-    <AssociationSet Name="FK__Nondox__Company___5E54FF49" Association="Self.FK__Nondox__Company___5E54FF49">
+    <AssociationSet Name="FK__NEFT__Firm_Id__367C1819" Association="Self.FK__NEFT__Firm_Id__367C1819">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="NEFT" EntitySet="NEFT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___32767D0B" Association="Self.FK__Nondox__Company___32767D0B">
       <End Role="Company" EntitySet="Company" />
       <End Role="Nondox" EntitySet="Nondox" />
     </AssociationSet>
-    <AssociationSet Name="FK__Nondox__Company___5F492382" Association="Self.FK__Nondox__Company___5F492382">
+    <AssociationSet Name="FK__Nondox__Company___336AA144" Association="Self.FK__Nondox__Company___336AA144">
       <End Role="Company" EntitySet="Company" />
       <End Role="Nondox" EntitySet="Nondox" />
     </AssociationSet>
-    <AssociationSet Name="FK__Priority__Compan__6319B466" Association="Self.FK__Priority__Compan__6319B466">
+    <AssociationSet Name="FK__Nondox__Company___37703C52" Association="Self.FK__Nondox__Company___37703C52">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Nondox" EntitySet="Nondox" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___3864608B" Association="Self.FK__Nondox__Company___3864608B">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Nondox" EntitySet="Nondox" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Compan__345EC57D" Association="Self.FK__Priority__Compan__345EC57D">
       <End Role="Company" EntitySet="Company" />
       <End Role="Priority" EntitySet="Priority" />
     </AssociationSet>
-    <AssociationSet Name="FK__Priority__Sector__640DD89F" Association="Self.FK__Priority__Sector__640DD89F">
+    <AssociationSet Name="FK__Priority__Compan__3C34F16F" Association="Self.FK__Priority__Compan__3C34F16F">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Priority" EntitySet="Priority" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Sector__3552E9B6" Association="Self.FK__Priority__Sector__3552E9B6">
       <End Role="Sectors" EntitySet="Sectors" />
       <End Role="Priority" EntitySet="Priority" />
     </AssociationSet>
-    <AssociationSet Name="FK__Ratem__Company_i__6501FCD8" Association="Self.FK__Ratem__Company_i__6501FCD8">
+    <AssociationSet Name="FK__Priority__Sector__3D2915A8" Association="Self.FK__Priority__Sector__3D2915A8">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Priority" EntitySet="Priority" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__36470DEF" Association="Self.FK__Ratem__Company_i__36470DEF">
       <End Role="Company" EntitySet="Company" />
       <End Role="Ratem" EntitySet="Ratem" />
     </AssociationSet>
-    <AssociationSet Name="FK__Ratem__Company_i__65F62111" Association="Self.FK__Ratem__Company_i__65F62111">
+    <AssociationSet Name="FK__Ratem__Company_i__373B3228" Association="Self.FK__Ratem__Company_i__373B3228">
       <End Role="Company" EntitySet="Company" />
       <End Role="Ratem" EntitySet="Ratem" />
     </AssociationSet>
-    <AssociationSet Name="FK__ReplyAdmi__Compl__69C6B1F5" Association="Self.FK__ReplyAdmi__Compl__69C6B1F5">
+    <AssociationSet Name="FK__Ratem__Company_i__3E1D39E1" Association="Self.FK__Ratem__Company_i__3E1D39E1">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Ratem" EntitySet="Ratem" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__3F115E1A" Association="Self.FK__Ratem__Company_i__3F115E1A">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Ratem" EntitySet="Ratem" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__382F5661" Association="Self.FK__ReplyAdmi__Compl__382F5661">
       <End Role="Complaint" EntitySet="Complaint" />
       <End Role="ReplyAdmin" EntitySet="ReplyAdmin" />
     </AssociationSet>
-    <AssociationSet Name="FK__ReplyAdmi__Compl__6ABAD62E" Association="Self.FK__ReplyAdmi__Compl__6ABAD62E">
+    <AssociationSet Name="FK__ReplyAdmi__Compl__39237A9A" Association="Self.FK__ReplyAdmi__Compl__39237A9A">
+      <End Role="Complaint" EntitySet="Complaint" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmin" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__42E1EEFE" Association="Self.FK__ReplyAdmi__Compl__42E1EEFE">
+      <End Role="Complaint" EntitySet="Complaint" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmin" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__43D61337" Association="Self.FK__ReplyAdmi__Compl__43D61337">
       <End Role="Complaint" EntitySet="Complaint" />
       <End Role="ReplyAdmin" EntitySet="ReplyAdmin" />
     </AssociationSet>

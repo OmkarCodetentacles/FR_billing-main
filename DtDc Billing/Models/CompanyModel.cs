@@ -29,9 +29,13 @@ namespace DtDc_Billing.Models
         public int c_id { get; set; }
 
         [Required(ErrorMessage = "Please Enter Phone No")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public Nullable<long> Phone { get; set; }
 
         [Required(ErrorMessage = "Please Enter Email Id")]
+        [MaxLength(50)]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Please enter correct email")]
         public string Email { get; set; }
 
         public Nullable<double> Insurance { get; set; }
@@ -65,11 +69,11 @@ namespace DtDc_Billing.Models
         public Nullable<double> I_Docket { get; set; }
         public Nullable<double> N_Docket { get; set; }
 
-        [Required(ErrorMessage = "Please Enter Password")]
-        public string Password { get; set; }
+        //[Required(ErrorMessage = "Please Enter Password")]
+        //public string Password { get; set; }
 
-        [Required(ErrorMessage = "Please Enter Username")]
-        public string Username { get; set; }
+        //[Required(ErrorMessage = "Please Enter Username")]
+        //public string Username { get; set; }
 
         public Nullable<double> G_Docket { get; set; }
 

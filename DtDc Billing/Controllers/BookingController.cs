@@ -31,7 +31,7 @@ namespace DtDc_Billing.Controllers
 
         public JsonResult Consignmentdetails(string Cosignmentno)
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             db.Configuration.ProxyCreationEnabled = false;
 
@@ -244,7 +244,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult CustomerIdAutocomplete()
         {
 
-            string strpfcode= Session["PFCode"].ToString();
+            string strpfcode= Request.Cookies["Cookies"]["AdminValue"].ToString();
             var entity = db.Companies.Select(e => new
 {
     e.Company_Id,
@@ -447,7 +447,7 @@ Select(e => new
         [HttpPost]
         public ActionResult Trtableseacrh(string Fromdatetime, string ToDatetime, string Custid)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             DateTime? fromdate = null;
             DateTime? todate = null;
@@ -616,7 +616,7 @@ Select(e => new
         public ActionResult Checkbookinglist()
         {
             //List<TransactionView> list = new List<TransactionView>();
-            string strpf = Session["PFCode"].ToString(); 
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString(); 
             
             var obj = db.getCheckBookingListAll(strpf).Select(x => new TransactionView
             {
@@ -647,7 +647,7 @@ Select(e => new
         [HttpPost]
         public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid,string Submit)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -770,19 +770,19 @@ Select(e => new
         public ActionResult Nobookinglist()
         {
             List<Transaction> list = new List<Transaction>();
-            ViewBag.PfCode = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            ViewBag.PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
             return View(list);
         }
 
         [HttpPost]
         public ActionResult Nobookinglist(string Fromdatetime, string ToDatetime, string PfCode,string Submit)
         {
-            PfCode=Session["PFCode"].ToString();
+            PfCode=Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
-            ViewBag.PfCode = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            ViewBag.PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
 
             DateTime? fromdate;
             DateTime? todate;
@@ -1063,7 +1063,7 @@ Select(e => new
         [HttpPost]
         public ActionResult UpdateRate(string Fromdatetime, string ToDatetime, string Custid, string submit)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -1139,7 +1139,7 @@ Select(e => new
 
                             CalculateAmount ca = new CalculateAmount();
                             double? amt = 0;
-                            if (transaction.Pincode != null && transaction.Pincode != "NULL ")
+                            if (transaction.Pincode != null && transaction.Pincode != "NULL")
                                 amt = ca.CalulateAmt(transaction.Consignment_no, transaction.Customer_Id, transaction.Pincode, transaction.Mode, Convert.ToDouble(transaction.chargable_weight), transaction.Type_t);
 
                             transaction.Amount = amt;
@@ -1199,7 +1199,7 @@ Select(e => new
                             CalculateAmount ca = new CalculateAmount();
                             double? amt = 0;
                             if (transaction.Pincode != null && transaction.Pincode != "NULL ")
-                                amt = ca.CalulateAmt(transaction.Consignment_no, i.Customer_Id, transaction.Pincode, transaction.Mode, Convert.ToDouble(transaction.chargable_weight), transaction.Type_t);
+                                amt = ca.CalulateAmt(transaction.Consignment_no, transaction.Customer_Id, transaction.Pincode, transaction.Mode, Convert.ToDouble(transaction.chargable_weight), transaction.Type_t);
 
                             transaction.Amount = amt;
                             transaction.AdminEmp = 000;
@@ -1377,13 +1377,13 @@ Select(e => new
 
             //if (Session["UserType"] != null)
             //{
-                pfcode = Session["pfCode"].ToString();
+                pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             //}
             //else
             //{
             //     pfcode = Session["PfID"].ToString();
             //}
-           
+
 
             return View(db.Companies.Where(m => m.Pf_code == pfcode).ToList());
         }

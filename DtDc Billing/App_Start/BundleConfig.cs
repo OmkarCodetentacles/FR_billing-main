@@ -22,12 +22,12 @@ namespace DtDc_Billing
             //      "~/Scripts/bootstrap.js",
             //      "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                           "~/Content/site.css",
-                           "~/admin-lte/css/AdminLTE.css",
-                           "~/admin-lte/css/skins/_all-skins.min.css",
-                           "~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css"
-                           ));
+            //bundles.Add(new StyleBundle("~/Content/css").Include(
+            //               "~/Content/site.css",
+            //               "~/admin-lte/css/AdminLTE.css",
+            //               "~/admin-lte/css/skins/_all-skins.min.css",
+            //               "~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css"
+            //               ));
 
 
             bundles.Add(new ScriptBundle("~/admin-lte/js").Include(

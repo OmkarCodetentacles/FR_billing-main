@@ -19,12 +19,12 @@ namespace DtDc_Billing.Entity_FR
         {
             this.Invoices = new HashSet<Invoice>();
             this.Invoices1 = new HashSet<Invoice>();
-            this.Franchisees = new HashSet<Franchisee>();
-            this.Franchisees1 = new HashSet<Franchisee>();
             this.Cashes = new HashSet<Cash>();
             this.CreditNotes = new HashSet<CreditNote>();
             this.NEFTs = new HashSet<NEFT>();
             this.Cheques = new HashSet<Cheque>();
+            this.Franchisees = new HashSet<Franchisee>();
+            this.Franchisees1 = new HashSet<Franchisee>();
         }
     
         public long Firm_Id { get; set; }
@@ -35,10 +35,6 @@ namespace DtDc_Billing.Entity_FR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Invoice> Invoices1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Franchisee> Franchisees { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Franchisee> Franchisees1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cash> Cashes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CreditNote> CreditNotes { get; set; }
@@ -46,5 +42,9 @@ namespace DtDc_Billing.Entity_FR
         public virtual ICollection<NEFT> NEFTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cheque> Cheques { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Franchisee> Franchisees { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Franchisee> Franchisees1 { get; set; }
     }
 }

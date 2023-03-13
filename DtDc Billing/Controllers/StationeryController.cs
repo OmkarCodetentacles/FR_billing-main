@@ -34,7 +34,7 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
 
-                string strpf = Session["PFCode"].ToString();
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 var dataFid = (from d in db.Franchisees
                               where d.PF_Code == strpf
@@ -42,7 +42,7 @@ namespace DtDc_Billing.Controllers
 
                 Stationary St = new Stationary();
 
-                St.Pf_code = Session["PFCode"].ToString();
+                St.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 St.startno = stationary.startno;
                 St.endno = stationary.endno;
                 St.noofbooks = stationary.noofbooks;
@@ -79,7 +79,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult Issue(StationaryIssueModel issueModel)
         {
-            string pfcode = Session["PFCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             if (ModelState.IsValid)
             {
@@ -122,7 +122,7 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.RemainingType = items;
 
-            string pfcode = Session["PFCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code == pfcode), "PF_Code", "PF_Code");
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
             //return View(st);
@@ -139,7 +139,7 @@ namespace DtDc_Billing.Controllers
 
             List<string> str = new List<string>();
 
-            PfCode= Session["PFCode"].ToString();
+            PfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.PfCode = new SelectList(db.Franchisees.Where(d => d.PF_Code == PfCode), "PF_Code", "PF_Code");
 
@@ -342,12 +342,12 @@ Select(e => new
 
 
                 var dataFid = (from d in db.Franchisees
-                               where d.PF_Code == Session["PFCode"].ToString()
+                               where d.PF_Code == Request.Cookies["Cookies"]["AdminValue"].ToString()
                                select d.Firm_Id).FirstOrDefault();
 
                 Stationary St = new Stationary();
 
-                St.Pf_code = Session["PFCode"].ToString();
+                St.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 St.startno = stationary.startno;
                 St.endno = stationary.endno;
                 St.noofbooks = stationary.noofbooks;
@@ -365,14 +365,14 @@ Select(e => new
 
                 // db.Entry(stationary).State = System.Data.Entity.EntityState.Modified;
 
-                ViewBag.Pf_code = Session["PFCode"].ToString(); //new SelectList(db.Franchisees, "PF_Code", "PF_Code", stationary.Pf_code);
+                ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString(); //new SelectList(db.Franchisees, "PF_Code", "PF_Code", stationary.Pf_code);
                 ViewBag.Message = "Stationary Updated SuccessFully";
                 ModelState.Clear();
                 return View();
 
             }
 
-            ViewBag.Pf_code = Session["PFCode"].ToString(); // new SelectList(db.Franchisees, "PF_Code", "PF_Code", stationary.Pf_code);
+            ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString(); // new SelectList(db.Franchisees, "PF_Code", "PF_Code", stationary.Pf_code);
             return View(stationary);
 
 

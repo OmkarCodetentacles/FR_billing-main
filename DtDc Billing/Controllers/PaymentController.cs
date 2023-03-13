@@ -39,7 +39,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult InvoicePaymentList(string status)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.status = status;
 
@@ -82,7 +82,7 @@ namespace DtDc_Billing.Controllers
         {
             if (ModelState.IsValid)
             {
-                string strpf = Session["PFCode"].ToString();
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
@@ -113,7 +113,7 @@ namespace DtDc_Billing.Controllers
         {
             if (ModelState.IsValid)
             {
-                string strpf = Session["PFCode"].ToString();
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
@@ -146,7 +146,7 @@ namespace DtDc_Billing.Controllers
         {
             if (ModelState.IsValid)
             {
-                string strpf = Session["PFCode"].ToString();
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == nEFT.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
@@ -182,7 +182,7 @@ namespace DtDc_Billing.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreditNote(CreditNote creditNote)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var cashb = db.Invoices.Where(m => m.invoiceno == creditNote.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
@@ -469,7 +469,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult CustomerIdAutocomplete()
         {
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             var entity = db.Companies.
 Select(e => new
 {
@@ -484,7 +484,7 @@ Select(e => new
 
         public ActionResult PaymentTrack()
         {
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             List<PaymentTrack> track = new List<PaymentTrack>();
 
             var cash = (from inv in db.Invoices
@@ -576,7 +576,7 @@ Select(e => new
         {
             List<PaymentTrack> track = new List<PaymentTrack>();
 
-            string strpfcode = Session["PFCode"].ToString();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.fromdate = Fromdatetime.ToString("MM/dd/yyyy");
             ViewBag.todate = ToDatetime.ToString("MM/dd/yyyy");
@@ -682,7 +682,7 @@ Select(e => new
         [HttpPost]
         public ActionResult CashEdit(Cash cash, double amountval)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
            
             var invoicedetails = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
@@ -734,7 +734,7 @@ Select(e => new
         [HttpPost]
         public ActionResult ChequeEdit(Cheque cheque, double amountval)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var invoicedetails = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
             if (ModelState.IsValid)
@@ -785,7 +785,7 @@ Select(e => new
         [HttpPost]
         public ActionResult NEFTEdit(NEFT nEFT, double amountval)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var invoicedetails = db.Invoices.Where(m => m.invoiceno == nEFT.Invoiceno && m.Pfcode== strpf).FirstOrDefault();
             if (ModelState.IsValid)
@@ -836,7 +836,7 @@ Select(e => new
         [HttpPost]
         public ActionResult CreditEdit(CreditNote credit, double amountval)
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var invoicedetails = db.Invoices.Where(m => m.invoiceno == credit.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
             if (ModelState.IsValid)

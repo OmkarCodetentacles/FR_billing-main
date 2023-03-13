@@ -24,7 +24,7 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-5">
                                             <div>
                                                 <label for="email">Customer Id:</label>
 
@@ -33,7 +33,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-5">
                                             <div>
                                                 <label for="pwd">Address:</label>
                                                 <br />
@@ -41,7 +41,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-5">
                                             <div>
                                                 <label for="email">Invoice No:</label>
                                                 @if (Model != null && Model.invoiceno.Length > 10)
@@ -84,7 +84,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-5">
                                             <div class="form-group">
                                                 <label for="email">Invoice Date:</label>
                                                 @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
@@ -95,7 +95,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-12">  <input type="button" class="btn btn-primary pull-right" id="show" value="Show" /></div>
+                                        <div class="col-sm-10">  <input type="button" class="btn btn-primary pull-right" id="show" value="Show" /></div>
                                     </div>
                                 </div>
 
@@ -135,25 +135,25 @@
                                                     <!-- select -->
                                                     <div class="">
                                                         <div class="row">
-                                                            <div class="col-sm-6 col-xs-12 mb-15">
+                                                            <div class="col-sm-12 col-xs-12 mb-15">
                                                                 <!-- radio -->
                                                                 <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="amount" class="col-sm-4 control-label">Invoice Discount</label>
-                                                                        <div class="col-sm-4">
+                                                                    <div class="" style="display:flex">
+                                                                        <label for="amount" class=" control-label">Invoice Discount : </label>
+                                                                        <div class="">
 
                                                                             @if (ViewBag.disc == "yes")
                                                                             {
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "yes", new { @checked = true })
-                                                                                        Yes
+                                                                                        <span style=" margin: 5px;">Yes</span>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "no")
-                                                                                        No
+                                                                                        <span style=" margin: 5px;">No</span>
                                                                                     </label>
                                                                                 </div>
                                                                             }
@@ -162,13 +162,13 @@
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "yes", new { @checked = true })
-                                                                                        Yes
+                                                                                        <span style=" margin: 5px;"> Yes</span>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "no")
-                                                                                        No
+                                                                                        <span style=" margin: 5px;"> No</span>
                                                                                     </label>
                                                                                 </div>
                                                                             }
@@ -177,13 +177,13 @@
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "yes")
-                                                                                        Yes
+                                                                                        <span style=" margin: 5px;">Yes</span>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "no", new { @checked = true })
-                                                                                        No
+                                                                                        <span style=" margin: 5px;">No</span>
                                                                                     </label>
                                                                                 </div>
                                                                             }
@@ -205,22 +205,24 @@
                                                                 </div>
                                                                 <!-- radio -->
                                                                 <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="amount" class="col-sm-4 control-label">Reverse Charge</label>
-                                                                        <div class="col-sm-8">
+                                                                    <div class="" style="display:flex" >
+                                                                        <label for="amount" class=" control-label">Reverse Charge : </label>
+                                                                        <div >
 
                                                                             <div class="radio">
                                                                                 <label>
-                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked>
-                                                                                    Yes
+                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked style="margin: -10px;" >
+                                                                                    <span style=" margin: 5px;" > Yes</span>
                                                                                 </label>
                                                                             </div>
 
 
                                                                             <div class="radio">
                                                                                 <label>
-                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no">
-                                                                                    No
+                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no" style="margin: -10px;">
+                                                                                    <span style=" margin: 5px;">
+                                                                                        No
+                                                                                    </span>
                                                                                 </label>
                                                                             </div>
 
@@ -228,107 +230,75 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6 col-xs-12 mb-15">
+                                                            <div class="col-sm-12 col-xs-12 mb-15">
                                                                 <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="total-amt" class="col-sm-4 control-label">Total</label>
+                                                                    <div class="col-md-5">
+                                                                        <label for="total-amt" class=" control-label">Total</label>
 
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
                                                                             @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
 
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div id="two-block-inline" class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="fuelsurcharge" class="col-sm-4 col-xs-12 control-label">FuelSurcharge Tax</label>
-                                                                        <div class="col-sm-2 col-xs-4">
+                                                                    <div class="col-md-5">
+                                                                        <label for="fuelsurcharge" class=" control-label">FuelSurcharge Tax</label>
+                                                                        <div class="" style="display:flex">
                                                                             @Html.EditorFor(model => model.fullsurchargetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
-
-                                                                        </div>
-                                                                        <div class="col-sm-6 col-xs-8">
-
-
                                                                             @Html.EditorFor(model => model.fullsurchargetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
-
                                                                         </div>
+                                                                       
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="subtotal" class="col-sm-4 control-label">SubTotal</label>
+                                                                    <div class="col-md-5">
+                                                                        <label for="subtotal" class=" control-label">SubTotal</label>
 
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
                                                                             <input type="text" class="form-control" id="subtotal" readonly="readonly" placeholder="0">
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="service-charge" class="col-sm-4 control-label">Royalty Charge</label>
+                                                                    <div class="col-md-5">
+                                                                        <label for="service-charge" class=" control-label">Royalty Charge</label>
 
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
 
                                                                             @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
 
                                                                         </div>
                                                                     </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="service-charge" class="col-sm-4 control-label">Docket Charge</label>
+                                                                    <div class="col-md-5">
+                                                                        <label for="service-charge" class=" control-label">Docket Charge</label>
 
 
-
-
-
-
-
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
                                                                             @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
                                                                         </div>
                                                                     </div>
-                                                                </div>
-
-
-
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="gst-total" class="col-sm-4 col-xs-12 control-label">GST</label>
-                                                                        <div class="col-sm-2 col-xs-4">
+                                                                    <div class="col-md-5">
+                                                                        <label for="gst-total" class=" control-label">GST</label>
+                                                                        <div class="" style="display:flex" >
                                                                             @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
-                                                                        </div>
-                                                                        <div class="col-sm-6 col-xs-8">
                                                                             @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
                                                                         </div>
+                                                                        
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-12">
-                                                                        <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
+                                                                    <div class="col-md-5">
+                                                                        <label for="other-charge" class=" control-label">Other Charge</label>
 
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
                                                                             @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
 
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
+                                                                    <div class="col-md-5">
+                                                                        <label for="net-amount" class=" control-label">Net Amount</label>
 
-                                                                    <div class="col-sm-12">
-
-                                                                        <label for="net-amount" class="col-sm-4 control-label">Net Amount</label>
-
-                                                                        <div class="col-sm-8">
+                                                                        <div class="">
 
                                                                             @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
 
                                                                         </div>
-
                                                                     </div>
-
                                                                 </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
@@ -413,10 +383,7 @@
             }
 
 
-            #generate-invoice {
-                display: block;
-                height: 400px;
-            }
+           
 
             .radio {
                 display: inline-block;
@@ -988,7 +955,7 @@ $("#Customer_Id").autocomplete({
 
     //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
         $.get("/Invoice/SavepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', "http://codetentacles-005-site1.htempurl.com/PDF/" + data);
+            $('#saveinv').attr('href', "http://frbilling.com/PDF/" + data);
 
             document.getElementById('saveinv').click();
             $("#overlayBlock").hide();

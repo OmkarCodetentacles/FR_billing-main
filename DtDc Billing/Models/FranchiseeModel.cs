@@ -45,8 +45,5 @@ namespace DtDc_Billing.Models
         [Required(ErrorMessage = "Please Enter Invoice Start Prefix")]
         public string InvoiceStart { get; set; }
 
-        [Required(ErrorMessage = "Please Select File")]
-        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
-        public HttpPostedFileBase file { get; set; }
     }
 }

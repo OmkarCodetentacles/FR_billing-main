@@ -69,14 +69,14 @@ namespace DtDc_Billing.Controllers
 
                 Session["CountUserType"] = Count;
             }
-            var firmlist = db.FirmDetails.ToList();
+           // var firmlist = db.FirmDetails.ToList();
             // var FirmDetail = new List<FirmDetail>();
             if (obj != null)
             {
                 Session["Admin"] = obj.registrationId.ToString();
                 Session["UserName"] = obj.userName.ToString();
                 Session["PFCode"] = obj.Pfcode.ToString();
-                Session["firmlist"] = firmlist;
+                //Session["firmlist"] = firmlist;
                 string decodedUrl = "";
                 if (!string.IsNullOrEmpty(ReturnUrl))
                     decodedUrl = Server.UrlDecode(ReturnUrl);
@@ -935,7 +935,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.Categories = new MultiSelectList(categories, "PF_Code");
 
 
-            ViewBag.PF_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            ViewBag.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
           
             List<SelectListItem> items1 = new List<SelectListItem>();
@@ -2112,7 +2112,7 @@ namespace DtDc_Billing.Controllers
             {
                
                 db.Entry(reg).State = EntityState.Modified;
-                franchisee.PF_Code = Session["PFCode"].ToString();
+                franchisee.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 db.Entry(franchisee).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("FranchiseeList");
@@ -2129,7 +2129,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult FranchiseeList()
         {
             long stradmin = Convert.ToInt64(Session["Admin"]);
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var data = (from d in db.registrations
                        where d.Pfcode == strpf
@@ -2142,7 +2142,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult UserList()
         {
-            string strpf = Session["PFCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var datauser = (from d in db.Users
                             where d.PF_Code == strpf

@@ -10,10 +10,13 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <div class="box-body">
+                    <div class="box-body" style="margin-top:10px" >
                         <ul id="Tab" class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home">Edit Franchisee</a></li>
                             <li><a data-toggle="tab" href="#menu1">Edit Sectors</a></li>
+                            <li><a data-toggle="tab" href="#menu2">Add Logo</a></li>
+                           
+
                         </ul>
 
                         <div class="tab-content">
@@ -29,6 +32,12 @@
 
                                 </div>
                             </div>
+                            <div id="menu2" class="tab-pane fade">
+                                <div id="frmEmp2">
+                                    @{ Html.RenderPartial("AddLogo", (DtDc_Billing.Models.AddlogoModel)ViewBag.logo);}
+
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -37,10 +46,3 @@
         </div>
     </section>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('body').addClass("sidebar-mini sidebar-collapse");
-    });
-</script>

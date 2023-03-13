@@ -11,7 +11,12 @@ namespace DtDc_Billing.Models
     {
 
         public long Exp_ID { get; set; }
+        
+        [Required(ErrorMessage ="Please Enter Amount")]  //@"^[0-9]+(\.[0-9])$"
+        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid Amount")]
         public Nullable<float> Amount { get; set; }
+
+        [Required(ErrorMessage = "Please Enter Reason")]
         public string Rason { get; set; }
         public string Category { get; set; }
         public string Pf_Code { get; set; }

@@ -17,7 +17,25 @@ namespace DtDc_Billing.Controllers
        
         public ActionResult Add_Expenses()
         {
-            ViewBag.Pf_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");
+
+            var Cat = new List<SelectListItem>
+    {
+        new SelectListItem{ Text="Select", Value = "" },
+        new SelectListItem{ Text="Load Connecting exp 1st and 2nd", Value = "Load Connecting exp 1st and 2nd" },
+        new SelectListItem{ Text="Load connecting exp - Night load", Value = "Load connecting exp - Night load" },
+        new SelectListItem{ Text="Pick up expenses", Value = "Pick up expenses"},
+        new SelectListItem{ Text="Patpedhi Deposit", Value = "Patpedhi Deposit"},
+        new SelectListItem{ Text="Salary Advance", Value = "Salary Advance"},
+        new SelectListItem{ Text="Office Expenses", Value = "Office Expenses"},
+        new SelectListItem{ Text="Fuel Exp", Value = "Fuel Exp"},
+        new SelectListItem{ Text="Tea and refreshments exp", Value = "Tea and refreshments exp"},
+        new SelectListItem{ Text="Packing Expenses", Value = "Packing Expenses"},
+        new SelectListItem{ Text="Others", Value = "Others"},
+    };
+
+            ViewData["Category"] = Cat;
+
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");
             return View();
             
         }
@@ -27,8 +45,27 @@ namespace DtDc_Billing.Controllers
         public ActionResult Add_Expenses(ExpenseModel expense)
         {
 
+            var Cat = new List<SelectListItem>
+    {
+        new SelectListItem{ Text="Select", Value = "" },
+        new SelectListItem{ Text="Load Connecting exp 1st and 2nd", Value = "Load Connecting exp 1st and 2nd" },
+        new SelectListItem{ Text="Load connecting exp - Night load", Value = "Load connecting exp - Night load" },
+        new SelectListItem{ Text="Pick up expenses", Value = "Pick up expenses"},
+        new SelectListItem{ Text="Patpedhi Deposit", Value = "Patpedhi Deposit"},
+        new SelectListItem{ Text="Salary Advance", Value = "Salary Advance"},
+        new SelectListItem{ Text="Office Expenses", Value = "Office Expenses"},
+        new SelectListItem{ Text="Fuel Exp", Value = "Fuel Exp"},
+        new SelectListItem{ Text="Tea and refreshments exp", Value = "Tea and refreshments exp"},
+        new SelectListItem{ Text="Packing Expenses", Value = "Packing Expenses"},
+        new SelectListItem{ Text="Others", Value = "Others"},
+    };
+
+            ViewData["Category"] = Cat;
+
+
             if (ModelState.IsValid)
             {
+
 
                 DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
                 DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
@@ -43,7 +80,7 @@ namespace DtDc_Billing.Controllers
                 ex.Category = expense.Category;
                 ex.Pf_Code = expense.Pf_Code;           
                 ex.User_Id = expense.User_Id;
-                ex.Pf_Code = Session["PFCode"].ToString();
+                ex.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 ex.Datetime_Exp = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
                 //expense.User_Id= Convert.ToInt64(Session["EmpId"]);
@@ -57,7 +94,7 @@ namespace DtDc_Billing.Controllers
                 return View();
             }
 
-            ViewBag.Pf_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address", expense.Pf_Code);
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address", expense.Pf_Code);
             return View(expense);
             
         }
@@ -65,7 +102,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult Add_Payment()
         {
-            ViewBag.Pf_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");
             return View();
         }
         [HttpPost]
@@ -85,7 +122,7 @@ namespace DtDc_Billing.Controllers
                 pay.amount = payment.amount;
                 pay.Description_ = payment.Description_;
                 pay.User_Id = payment.User_Id;
-                pay.Pf_Code = Session["PFCode"].ToString();
+                pay.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 pay.Datetime_Pay = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
                 //payment.User_Id = Convert.ToInt64(Session["EmpId"]);
@@ -106,7 +143,7 @@ namespace DtDc_Billing.Controllers
                 
             }
 
-            ViewBag.Pf_Code = Session["PFCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address", payment.Pf_Code);
+            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address", payment.Pf_Code);
             return View(payment);
         }
 
@@ -135,7 +172,7 @@ namespace DtDc_Billing.Controllers
                 Sav.Rason = saving.Rason;
                 Sav.User_Id = saving.User_Id;
                 Sav.Datetime_Sav = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
-                Sav.Pf_Code = Session["PFCode"].ToString();
+                Sav.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                 db.Savings.Add(Sav);
                 db.SaveChanges();
@@ -159,7 +196,7 @@ namespace DtDc_Billing.Controllers
         public JsonResult GetAllCreditReport()
         {
 
-            string pfcode = Session["PFCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var entity = db.Receipt_details.Where(m => m.Pf_Code == pfcode && m.Paid_Amount < m.Charges_Total).OrderByDescending(m => m.Datetime_Cons).
     Select(e => new

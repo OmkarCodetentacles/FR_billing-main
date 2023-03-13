@@ -7,38 +7,60 @@
 
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
+    <style>
+        # edit-consignment {
+            
+            max-height: 300px;
+        }
+    </style>
+
 <div id="sg1">
-    <label style="width: 125px;">
-        Consi no
-        @if (ViewBag.nextconsignment != null)
-        {
-            @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
+    <div class="row">
+        <div class="col-md-5">
+            <label>
+                Consi no
+                @if (ViewBag.nextconsignment != null)
+                {
+                    @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
 
-            <script>
-                $('#Consignment_no').keyup();
-            </script>
-        }
-        else
-        {
-            @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
-        }
-    </label>
-    <label style="width: 125px;">
-        Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
-    </label>
-    <label style="width: 105px;">
-        Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
+                    <script>
+                        $('#Consignment_no').keyup();
+                    </script>
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
+                }
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+        </div>
+        <div class="col-md-5">
 
-    </label>
-    <label style="width: 105px;">
-        Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
 
-    </label>
-    <label>
-        Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
-    </label>
-    <label>
-        Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
+            <label>
+                Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
+
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
+
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+
+        </div>
+        <div class="col-md-5">
+            <label>
+                Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
 new SelectListItem() {Text = "AR", Value="AR"},
 new SelectListItem() {Text = "AC", Value="AC"},
 new SelectListItem() {Text = "SF", Value="SF"},
@@ -82,36 +104,66 @@ new SelectListItem() {Text = "PEC", Value="PEC"},
 new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-control" })
 
 
-    </label>
-    <label style="width: 70px;">
-        Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-    </label>
-    <label style="width: 70px;">
-        char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+        </div>
+        <div class="col-md-5">
 
-    </label>
-    <label style="width: 65px;">
-        Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+            <label>
+                char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
-    </label>
-    <label style="width: 60px;">
-        Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
+            </label>
+
+        </div>
+        <div class="col-md-5">
+            <label>
+                Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
 new SelectListItem() {Text = "D", Value="D"},
 new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-control" })
-    </label>
-    <label>
-        Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
 
-    </label>
-    <label style="width: 100px;">
-        Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
 
-    </label>
-    <label style="width: 100px;">
-        Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            </label>
+        </div>
+        <div class="col-md-5">
+            <label>
+                Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-    </label>
+            </label>
+        </div>
+
+    </div>
+   
+ 
+    
+    
+   
+    
+   
+    
+ 
+    
+   
 
 
 

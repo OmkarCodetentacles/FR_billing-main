@@ -20,7 +20,7 @@
             </div><!-- /.box-header -->
             <div class="row">
                 <!-- Horizontal Form -->
-                <div class="col-md-8">
+                <div class="col-md-12">
 
                     @using (Html.BeginForm())
                     {
@@ -31,57 +31,90 @@
                                         <form class="form-horizontal">
 
                                             <div class="box-body">
-                                                <div class="form-group">
-                                                    <label for="receipt-date" class="col-sm-3 control-label">Receipt Date</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group date">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="receipt-date" class=" control-label">Receipt Date</label>
+                                                            <div class="">
+                                                                <div class="input-group date">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+                                                                    @*<input type="text" class="form-control pull-right" id="datepicker">*@
+                                                                    @Html.EditorFor(model => model.temprecdate, new { htmlAttributes = new { @class = "form-control pull-right" } })
+                                                                    @Html.ValidationMessageFor(model => model.temprecdate, "", new { @class = "text-danger" })
+                                                                </div>
                                                             </div>
-                                                            @*<input type="text" class="form-control pull-right" id="datepicker">*@
-                                                            @Html.EditorFor(model => model.temprecdate, new { htmlAttributes = new { @class = "form-control pull-right" } })
-                                                            @Html.ValidationMessageFor(model => model.temprecdate, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="start-no" class="col-sm-3 control-label">Start No</label>
-                                                    <div class="col-sm-9">
-                                                        @*<input type="text" class="form-control" id="start-no" placeholder="Start No">*@
-                                                        @Html.EditorFor(model => model.startno, new { htmlAttributes = new { @class = "form-control" } })
-                                                        @Html.ValidationMessageFor(model => model.startno, "", new { @class = "text-danger" })
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="start-no" class=" control-label">Start No</label>
+                                                            <div class="">
+                                                                @*<input type="text" class="form-control" id="start-no" placeholder="Start No">*@
+                                                                @Html.EditorFor(model => model.startno, new { htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.ValidationMessageFor(model => model.startno, "", new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="end-no" class="col-sm-3 control-label">End No</label>
-                                                    <div class="col-sm-9">
-                                                        @*<input type="text" class="form-control" id="end-no" placeholder="End No">*@
-                                                        @Html.EditorFor(model => model.endno, new { htmlAttributes = new { @class = "form-control" } })
-                                                        @Html.ValidationMessageFor(model => model.endno, "", new { @class = "text-danger" })
-                                                        <span id="lblError1" style="color:red"></span>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="end-no" class=" control-label">End No</label>
+                                                            <div class="">
+                                                                @*<input type="text" class="form-control" id="end-no" placeholder="End No">*@
+                                                                @Html.EditorFor(model => model.endno, new { htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.ValidationMessageFor(model => model.endno, "", new { @class = "text-danger" })
+                                                                <span id="lblError1" style="color:red"></span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="leafs-no" class="col-sm-3 control-label">No of Leafs</label>
-                                                    <div class="col-sm-9">
-                                                        @*<input type="text" class="form-control" id="leafs-no" placeholder="No of Leafs">*@
-                                                        @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                                        @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="leafs-no" class=" control-label">No of Leafs</label>
+                                                            <div class="">
+                                                                @*<input type="text" class="form-control" id="leafs-no" placeholder="No of Leafs">*@
+                                                                @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                                @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="book-no" class="col-sm-3 control-label">No of Books</label>
-                                                    <div class="col-sm-9">
-                                                        @Html.EditorFor(model => model.noofbooks, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                                        @Html.ValidationMessageFor(model => model.noofbooks, "", new { @class = "text-danger" })
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="leafs-no" class=" control-label">No of Leafs</label>
+                                                            <div class="">
+                                                                @*<input type="text" class="form-control" id="leafs-no" placeholder="No of Leafs">*@
+                                                                @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                                @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="book-no" class=" control-label">No of Books</label>
+                                                            <div class="">
+                                                                @Html.EditorFor(model => model.noofbooks, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                                @Html.ValidationMessageFor(model => model.noofbooks, "", new { @class = "text-danger" })
 
-                                                        @*<input type="text" class="form-control" id="book-no" placeholder="No of Books">*@
+                                                                @*<input type="text" class="form-control" id="book-no" placeholder="No of Books">*@
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <div class="col-md-10">
+                                                        <div class="box-footer">
+                                                            <button type="submit" class="btn btn-success pull-right">Save</button>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
+                                                
+                                                
+                                                
+                                                
+                                                
                                                 <!-- select -->
                                                 @*<div class="form-group">
-                                                        <label class="col-sm-3 control-label">MF Code</label>
-                                                        <div class="col-sm-3">
+                                                        <label class=" control-label">MF Code</label>
+                                                        <div class="">
                                                             @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly"})
                                                             @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
                                                             @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
@@ -89,9 +122,7 @@
                                                     </div>*@
                                             </div>
                                             <!-- /.box-body -->
-                                            <div class="box-footer">
-                                                <button type="submit" class="btn btn-success pull-right">Save</button>
-                                            </div>
+                                            
                                             <!-- /.box-footer -->
                                         </form>
                                  
@@ -197,8 +228,5 @@
                     var currentDate = new Date();
                     $("#temprecdate").datepicker("setDate", currentDate);
 
-                    $(document).ready(function () {
-                        $('[data-toggle="tooltip"]').tooltip();
-                        $('body').addClass("sidebar-mini sidebar-collapse");
-                    });
+                   
                 </script>

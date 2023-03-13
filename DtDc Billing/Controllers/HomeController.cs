@@ -33,7 +33,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult Index()
         {
             DateTime? dateTime;
-            string PfCode = Session["pfCode"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             //dashboardDataModel data = new dashboardDataModel();
             ViewBag.PfCode = PfCode;
             dateTime = DateTime.Now;
@@ -232,7 +232,7 @@ namespace DtDc_Billing.Controllers
 
             dashboardDataModel obj = new dashboardDataModel();
 
-            obj.DestinationList = db.destinationCount(Session["pfCode"].ToString()).Select(x => new DestinationModel
+            obj.DestinationList = db.destinationCount(Request.Cookies["Cookies"]["AdminValue"].ToString()).Select(x => new DestinationModel
             {
                 City = x.Destination,
                 Count = x.DestCount ?? 0
@@ -243,7 +243,7 @@ namespace DtDc_Billing.Controllers
 
 
 
-            string PfCode = Session["pfCode"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             //List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
 
@@ -489,7 +489,7 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult RenewalPanel()
         {
-            string PfCode = Session["pfCode"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             userDetailsModel user = new userDetailsModel();
 
@@ -675,11 +675,19 @@ namespace DtDc_Billing.Controllers
 
             string Todayda = Convert.ToString(today.Date.ToString("MM-dd-yyyy"));
             string[] Todaydate = Todayda.Split('-');
+
+            //string Todayda = Convert.ToString(today.Date.ToString("MM/dd/yyyy"));
+            //string[] Todaydate = Todayda.Split('/');
+
             string TodayMonth = Todaydate[0];
             string TodayYear = Todaydate[2];
 
             string da = Convert.ToString(sixMonthsBack.Date.ToString("MM-dd-yyyy"));
             string[] SixMonthBackdate = da.Split('-');
+
+            //string da = Convert.ToString(sixMonthsBack.Date.ToString("MM/dd/yyyy"));
+            //string[] SixMonthBackdate = da.Split('/');
+
             string SixMonthBackMonth = SixMonthBackdate[0];
             string SixMonthBackYear = SixMonthBackdate[2];
 
@@ -739,11 +747,19 @@ namespace DtDc_Billing.Controllers
 
             string Todayda = Convert.ToString(today.Date.ToString("MM-dd-yyyy"));
             string[] Todaydate = Todayda.Split('-');
+
+            //string Todayda = Convert.ToString(today.Date.ToString("MM/dd/yyyy"));
+            //string[] Todaydate = Todayda.Split('/');
+
             string TodayMonth = Todaydate[0];
             string TodayYear = Todaydate[2];
 
             string da = Convert.ToString(sixMonthsBack.Date.ToString("MM-dd-yyyy"));
             string[] SixMonthBackdate = da.Split('-');
+
+            //string da = Convert.ToString(sixMonthsBack.Date.ToString("MM/dd/yyyy"));
+            //string[] SixMonthBackdate = da.Split('/');
+
             string SixMonthBackMonth = SixMonthBackdate[0];
             string SixMonthBackYear = SixMonthBackdate[2];
 
