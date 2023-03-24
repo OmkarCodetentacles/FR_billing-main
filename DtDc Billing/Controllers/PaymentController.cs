@@ -97,13 +97,18 @@ namespace DtDc_Billing.Controllers
                     cashb.paid = Convert.ToDouble(cashb.paid) + Convert.ToDouble(cash.C_Total_Amount);
                     db.Entry(cashb).State = EntityState.Modified;
                     cash.Pfcode = strpf;
+
                     db.Cashes.Add(cash);
                     db.SaveChanges();
 
-                    return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                    //return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
                 }
+                //var het =  Convert.ToDouble(cashb.ba) - Convert.ToDouble(cash.C_Total_Amount);
+                TempData["remainingAmount"] = balance - Convert.ToDouble(cash.C_Total_Amount);
             }
 
+            TempData["Message"] = "Payment added successfully";
+            
             return PartialView("CashPartial", cash);
         }
 
@@ -132,10 +137,11 @@ namespace DtDc_Billing.Controllers
 
                     db.Cheques.Add(cheque);
                     db.SaveChanges();
-                    return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                    //  return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(cheque.totalAmount);
                 }
             }
-
+            TempData["Message"] = "Payment added successfully";
             return PartialView("ChequePartial", cheque);
         }
 
@@ -163,10 +169,11 @@ namespace DtDc_Billing.Controllers
                     nEFT.Pfcode = strpf;
                     db.NEFTs.Add(nEFT);
                     db.SaveChanges();
-                    return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(nEFT.N_Total_Amount);
+                    //return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
                 }
             }
-
+            TempData["Message"] = "Payment added successfully";
             return PartialView("NeftPartial", nEFT);
         }
 
@@ -207,10 +214,6 @@ namespace DtDc_Billing.Controllers
                     creditNote.Pfcode = strpf;
                     db.CreditNotes.Add(creditNote);
                     db.SaveChanges();
-
-
-
-
 
                     LocalReport lr = new LocalReport();
 
@@ -287,7 +290,8 @@ namespace DtDc_Billing.Controllers
                 }
 
                 TempData["success"] = "pdf";
-                return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                TempData["remainingAmount"] = balance - Convert.ToDouble(creditNote.Cr_Amount);
+                // return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
             }
             return PartialView("CreditNotePartial", creditNote);
         }

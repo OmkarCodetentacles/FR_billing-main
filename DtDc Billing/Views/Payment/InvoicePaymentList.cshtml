@@ -31,7 +31,7 @@
                     <div class="modal-body">
 
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
+                            <li class="nav-item active">
                                 <a class="nav-link active" data-toggle="tab" href="#home">Cash</a>
                             </li>
                             <li class="nav-item">
@@ -367,7 +367,7 @@
 
             $('#tempinserteddate,#tempch_date,#tempneftdate,#cr_date').datepicker({
                 autoclose: true,
-                format: 'mm-dd-yyyy'
+                format: 'dd-mm-yyyy'
             })
         });
     </script>
@@ -385,47 +385,6 @@
 
     </script>
 
-
-
-    @if (TempData["success"] != null)
-    {
-        <script>
-        $("#overlayBlock").show();
-    /**/
-
-
-
-        /**/
-        var myParamether = '@TempData["Customer_Id"]';
-    var firmid = '@TempData["Firmid"]'
-    var base_url = window.location.origin;
-
-        /**/
-        $("#overlayBlock").hide();
-        var win = window.open(base_url + '/PDF/' + myParamether + '_CreditNoteReceipt.pdf','_blank');
-
-        if (win) {
-            //Browser has allowed it to be opened
-            win.focus();
-        } else {
-            //Browser has blocked it
-            alert('Please allow popups for this website');
-        }
-  //  window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
-        //$.get("/Invoice/SavepdInvoice", { myParameter: myParamether, firmid:firmid }, function (data) {
-        //    $('#saveinv').attr('href', "http://admin.infantjesussolutions.in/PDF/" + data);
-
-
-
-
-        //});
-
-        </script>
-
-
-
-
-    }
 
     @if (ViewBag.status != null)
     {
