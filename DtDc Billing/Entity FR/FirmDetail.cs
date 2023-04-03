@@ -25,6 +25,8 @@ namespace DtDc_Billing.Entity_FR
             this.Cheques = new HashSet<Cheque>();
             this.Franchisees = new HashSet<Franchisee>();
             this.Franchisees1 = new HashSet<Franchisee>();
+            this.Franchisees2 = new HashSet<Franchisee>();
+            this.Franchisees3 = new HashSet<Franchisee>();
         }
     
         public long Firm_Id { get; set; }
@@ -46,5 +48,9 @@ namespace DtDc_Billing.Entity_FR
         public virtual ICollection<Franchisee> Franchisees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Franchisee> Franchisees1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Franchisee> Franchisees2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Franchisee> Franchisees3 { get; set; }
     }
 }

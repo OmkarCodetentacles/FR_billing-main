@@ -319,6 +319,12 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnAccounttype;
             
+            private global::System.Data.DataColumn columnInvoiceStart;
+            
+            private global::System.Data.DataColumn columnLogoFilePath;
+            
+            private global::System.Data.DataColumn columnStampFilePath;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public FranchiseeDataTable() {
@@ -514,6 +520,30 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InvoiceStartColumn {
+                get {
+                    return this.columnInvoiceStart;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LogoFilePathColumn {
+                get {
+                    return this.columnLogoFilePath;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn StampFilePathColumn {
+                get {
+                    return this.columnStampFilePath;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -568,7 +598,10 @@ namespace DtDc_Billing {
                         string Accountno, 
                         string IFSCcode, 
                         string Branch, 
-                        string Accounttype) {
+                        string Accounttype, 
+                        string InvoiceStart, 
+                        string LogoFilePath, 
+                        string StampFilePath) {
                 FranchiseeRow rowFranchiseeRow = ((FranchiseeRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -590,7 +623,10 @@ namespace DtDc_Billing {
                         Accountno,
                         IFSCcode,
                         Branch,
-                        Accounttype};
+                        Accounttype,
+                        InvoiceStart,
+                        LogoFilePath,
+                        StampFilePath};
                 rowFranchiseeRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowFranchiseeRow);
                 return rowFranchiseeRow;
@@ -640,6 +676,9 @@ namespace DtDc_Billing {
                 this.columnIFSCcode = base.Columns["IFSCcode"];
                 this.columnBranch = base.Columns["Branch"];
                 this.columnAccounttype = base.Columns["Accounttype"];
+                this.columnInvoiceStart = base.Columns["InvoiceStart"];
+                this.columnLogoFilePath = base.Columns["LogoFilePath"];
+                this.columnStampFilePath = base.Columns["StampFilePath"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -685,6 +724,12 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnBranch);
                 this.columnAccounttype = new global::System.Data.DataColumn("Accounttype", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAccounttype);
+                this.columnInvoiceStart = new global::System.Data.DataColumn("InvoiceStart", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInvoiceStart);
+                this.columnLogoFilePath = new global::System.Data.DataColumn("LogoFilePath", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogoFilePath);
+                this.columnStampFilePath = new global::System.Data.DataColumn("StampFilePath", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStampFilePath);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnPF_Code}, true));
                 this.columnF_Id.AutoIncrement = true;
@@ -711,6 +756,9 @@ namespace DtDc_Billing {
                 this.columnIFSCcode.MaxLength = 200;
                 this.columnBranch.MaxLength = 200;
                 this.columnAccounttype.MaxLength = 200;
+                this.columnInvoiceStart.MaxLength = 5;
+                this.columnLogoFilePath.MaxLength = 500;
+                this.columnStampFilePath.MaxLength = 2147483647;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1163,6 +1211,54 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InvoiceStart {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.InvoiceStartColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InvoiceStart\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.InvoiceStartColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LogoFilePath {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.LogoFilePathColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LogoFilePath\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.LogoFilePathColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string StampFilePath {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.StampFilePathColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'StampFilePath\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.StampFilePathColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsF_AddressNull() {
                 return this.IsNull(this.tableFranchisee.F_AddressColumn);
             }
@@ -1376,6 +1472,42 @@ namespace DtDc_Billing {
             public void SetAccounttypeNull() {
                 this[this.tableFranchisee.AccounttypeColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInvoiceStartNull() {
+                return this.IsNull(this.tableFranchisee.InvoiceStartColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInvoiceStartNull() {
+                this[this.tableFranchisee.InvoiceStartColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLogoFilePathNull() {
+                return this.IsNull(this.tableFranchisee.LogoFilePathColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLogoFilePathNull() {
+                this[this.tableFranchisee.LogoFilePathColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsStampFilePathNull() {
+                return this.IsNull(this.tableFranchisee.StampFilePathColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetStampFilePathNull() {
+                this[this.tableFranchisee.StampFilePathColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1557,6 +1689,9 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             tableMapping.ColumnMappings.Add("IFSCcode", "IFSCcode");
             tableMapping.ColumnMappings.Add("Branch", "Branch");
             tableMapping.ColumnMappings.Add("Accounttype", "Accounttype");
+            tableMapping.ColumnMappings.Add("InvoiceStart", "InvoiceStart");
+            tableMapping.ColumnMappings.Add("LogoFilePath", "LogoFilePath");
+            tableMapping.ColumnMappings.Add("StampFilePath", "StampFilePath");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
@@ -1565,7 +1700,7 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Franchisee] ([PF_Code], [F_Address], [OwnerName], [BranchName], [GstNo], [Franchisee_Name], [ContactNo], [Branch_Area], [Datetime_Fr], [Pan_No], [Firm_Id], [Sendermail], [password], [AccountName], [Bankname], [Accountno], [IFSCcode], [Branch], [Accounttype]) VALUES (@PF_Code, @F_Address, @OwnerName, @BranchName, @GstNo, @Franchisee_Name, @ContactNo, @Branch_Area, @Datetime_Fr, @Pan_No, @Firm_Id, @Sendermail, @password, @AccountName, @Bankname, @Accountno, @IFSCcode, @Branch, @Accounttype)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Franchisee] ([PF_Code], [F_Address], [OwnerName], [BranchName], [GstNo], [Franchisee_Name], [ContactNo], [Branch_Area], [Datetime_Fr], [Pan_No], [Firm_Id], [Sendermail], [password], [AccountName], [Bankname], [Accountno], [IFSCcode], [Branch], [Accounttype], [InvoiceStart], [LogoFilePath], [StampFilePath]) VALUES (@PF_Code, @F_Address, @OwnerName, @BranchName, @GstNo, @Franchisee_Name, @ContactNo, @Branch_Area, @Datetime_Fr, @Pan_No, @Firm_Id, @Sendermail, @password, @AccountName, @Bankname, @Accountno, @IFSCcode, @Branch, @Accounttype, @InvoiceStart, @LogoFilePath, @StampFilePath)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@F_Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "F_Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1586,9 +1721,12 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IFSCcode", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IFSCcode", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Branch", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Branch", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Accounttype", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Accounttype", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStart", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStart", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LogoFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LogoFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StampFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StampFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [Franchisee] SET [PF_Code] = @PF_Code, [F_Address] = @F_Address, [OwnerName] = @OwnerName, [BranchName] = @BranchName, [GstNo] = @GstNo, [Franchisee_Name] = @Franchisee_Name, [ContactNo] = @ContactNo, [Branch_Area] = @Branch_Area, [Datetime_Fr] = @Datetime_Fr, [Pan_No] = @Pan_No, [Firm_Id] = @Firm_Id, [Sendermail] = @Sendermail, [password] = @password, [AccountName] = @AccountName, [Bankname] = @Bankname, [Accountno] = @Accountno, [IFSCcode] = @IFSCcode, [Branch] = @Branch, [Accounttype] = @Accounttype WHERE (([PF_Code] = @Original_PF_Code))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Franchisee] SET [PF_Code] = @PF_Code, [F_Address] = @F_Address, [OwnerName] = @OwnerName, [BranchName] = @BranchName, [GstNo] = @GstNo, [Franchisee_Name] = @Franchisee_Name, [ContactNo] = @ContactNo, [Branch_Area] = @Branch_Area, [Datetime_Fr] = @Datetime_Fr, [Pan_No] = @Pan_No, [Firm_Id] = @Firm_Id, [Sendermail] = @Sendermail, [password] = @password, [AccountName] = @AccountName, [Bankname] = @Bankname, [Accountno] = @Accountno, [IFSCcode] = @IFSCcode, [Branch] = @Branch, [Accounttype] = @Accounttype, [InvoiceStart] = @InvoiceStart, [LogoFilePath] = @LogoFilePath, [StampFilePath] = @StampFilePath WHERE (([PF_Code] = @Original_PF_Code))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@F_Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "F_Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1609,6 +1747,9 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IFSCcode", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IFSCcode", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Branch", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Branch", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Accounttype", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Accounttype", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStart", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStart", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LogoFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LogoFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StampFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StampFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -1616,7 +1757,7 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DB_A43B74_veerexpressConnectionString"].ConnectionString;
+            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["db_a92afa_frbillingConnectionString"].ConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1626,7 +1767,7 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = @"SELECT        F_Id, PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, 
-                         Accounttype
+                         Accounttype, InvoiceStart, LogoFilePath, StampFilePath
 FROM            Franchisee";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
@@ -1734,7 +1875,10 @@ FROM            Franchisee";
                     string Accountno, 
                     string IFSCcode, 
                     string Branch, 
-                    string Accounttype) {
+                    string Accounttype, 
+                    string InvoiceStart, 
+                    string LogoFilePath, 
+                    string StampFilePath) {
             if ((PF_Code == null)) {
                 throw new global::System.ArgumentNullException("PF_Code");
             }
@@ -1849,6 +1993,24 @@ FROM            Franchisee";
             else {
                 this.Adapter.InsertCommand.Parameters[18].Value = ((string)(Accounttype));
             }
+            if ((InvoiceStart == null)) {
+                this.Adapter.InsertCommand.Parameters[19].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[19].Value = ((string)(InvoiceStart));
+            }
+            if ((LogoFilePath == null)) {
+                this.Adapter.InsertCommand.Parameters[20].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[20].Value = ((string)(LogoFilePath));
+            }
+            if ((StampFilePath == null)) {
+                this.Adapter.InsertCommand.Parameters[21].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[21].Value = ((string)(StampFilePath));
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -1889,6 +2051,9 @@ FROM            Franchisee";
                     string IFSCcode, 
                     string Branch, 
                     string Accounttype, 
+                    string InvoiceStart, 
+                    string LogoFilePath, 
+                    string StampFilePath, 
                     string Original_PF_Code) {
             if ((PF_Code == null)) {
                 throw new global::System.ArgumentNullException("PF_Code");
@@ -2004,11 +2169,29 @@ FROM            Franchisee";
             else {
                 this.Adapter.UpdateCommand.Parameters[18].Value = ((string)(Accounttype));
             }
+            if ((InvoiceStart == null)) {
+                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((string)(InvoiceStart));
+            }
+            if ((LogoFilePath == null)) {
+                this.Adapter.UpdateCommand.Parameters[20].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[20].Value = ((string)(LogoFilePath));
+            }
+            if ((StampFilePath == null)) {
+                this.Adapter.UpdateCommand.Parameters[21].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[21].Value = ((string)(StampFilePath));
+            }
             if ((Original_PF_Code == null)) {
                 throw new global::System.ArgumentNullException("Original_PF_Code");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[19].Value = ((string)(Original_PF_Code));
+                this.Adapter.UpdateCommand.Parameters[22].Value = ((string)(Original_PF_Code));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2049,8 +2232,11 @@ FROM            Franchisee";
                     string IFSCcode, 
                     string Branch, 
                     string Accounttype, 
+                    string InvoiceStart, 
+                    string LogoFilePath, 
+                    string StampFilePath, 
                     string Original_PF_Code) {
-            return this.Update(Original_PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, Accounttype, Original_PF_Code);
+            return this.Update(Original_PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, Accounttype, InvoiceStart, LogoFilePath, StampFilePath, Original_PF_Code);
         }
     }
     

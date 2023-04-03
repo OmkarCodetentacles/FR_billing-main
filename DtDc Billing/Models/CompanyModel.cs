@@ -55,10 +55,10 @@ namespace DtDc_Billing.Models
 
         public Nullable<System.DateTime> Datetime_Comp { get; set; }
 
-        [Required(ErrorMessage = "Please Enter Gst No")]
+        
         public string Gst_No { get; set; }
 
-        [Required(ErrorMessage = "Please Enter Pan No")]
+        
         public string Pan_No { get; set; }
 
         public Nullable<double> Royalty_Charges { get; set; }

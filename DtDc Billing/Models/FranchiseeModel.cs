@@ -45,5 +45,7 @@ namespace DtDc_Billing.Models
         [Required(ErrorMessage = "Please Enter Invoice Start Prefix")]
         public string InvoiceStart { get; set; }
 
+        public string StampFilePath { get; set; }
+
     }
 }

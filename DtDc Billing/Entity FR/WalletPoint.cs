@@ -18,9 +18,11 @@ namespace DtDc_Billing.Entity_FR
         public string MobileNo { get; set; }
         public Nullable<float> Wallet_Money { get; set; }
         public Nullable<System.DateTime> Datetime_Wa { get; set; }
-        public Nullable<double> Redeemed { get; set; }
-        public string Name { get; set; }
 
+        public Nullable<float> Redeemed { get; set; }
+        public string Name { get; set; }
         public string PFCode { get; set; }
+
+
     }
 }

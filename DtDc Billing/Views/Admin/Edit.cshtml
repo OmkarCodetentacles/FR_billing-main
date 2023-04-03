@@ -1,211 +1,225 @@
 ﻿@model DtDc_Billing.Models.FranchiseeModel
 @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h4>Edit Franchisee</h4>
-                    </div>
-                    <!-- /.box-header -->
-
-
-                    <div class="form-horizontal">
-                        <div class="box-body" style="margin-top:10px" >
-
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            @Html.HiddenFor(model => model.F_Id)
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="StampFilePath" value="@Model.StampFilePath">
+<form enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Edit Franchisee</h4>
+                </div>
+                <!-- /.box-header -->
 
 
-                            @Html.HiddenFor(model => model.PF_Code)
-                            @Html.HiddenFor(model => model.password)
-                            @Html.HiddenFor(model => model.Datetime_Fr)
+                <div class="form-horizontal">
+                    <div class="box-body" style="margin-top:10px">
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @Html.HiddenFor(model => model.F_Id)
 
 
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="">PF Code</label>
-                                        <div class="">
-                                            @Html.TextBoxFor(model => model.PF_Code, new { @class = "form-control input-sm", @readonly = "readonly" })
-                                            @Html.ValidationMessageFor(model => model.PF_Code, "", new { @class = "text-danger" })
-                                        </div>
+                        @Html.HiddenFor(model => model.PF_Code)
+                        @Html.HiddenFor(model => model.password)
+                        @Html.HiddenFor(model => model.Datetime_Fr)
+
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="">PF Code</label>
+                                    <div class="">
+                                        @Html.TextBoxFor(model => model.PF_Code, new { @class = "form-control input-sm", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.PF_Code, "", new { @class = "text-danger" })
                                     </div>
-
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Franchisee Name </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Franchisee_Name, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Franchisee_Name, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
 
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class="">Email ID</label>
-                                        <div class="">
-                                            @Html.TextBoxFor(model => model.Sendermail, new { @class = "form-control input-sm", @readonly = "readonly" })
-                                            @Html.ValidationMessageFor(model => model.Sendermail, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Franchisee Address</label>
-                                        <div class="">
-                                            @Html.TextAreaFor(model => model.F_Address, new { @class = "form-control input-sm", @rows = 1 })
-                                            @Html.ValidationMessageFor(model => model.F_Address, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Owner Name </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.OwnerName, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.OwnerName, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Invoice Start Prefix</label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.InvoiceStart, new { htmlAttributes = new { @class = "form-control input-sm", @maxlength = "5" } })
-                                            @Html.ValidationMessageFor(model => model.InvoiceStart, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> GST No </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.GstNo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Pan_No, htmlAttributes: new { @class = "col-md-2" })
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Contact No</label>
-                                        <div class="">
-                                            @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control input-sm", @readonly = "readonly" })
-                                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Account Name </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Bank Name  </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Bankname, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Bankname, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Account No </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Accountno, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Accountno, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> IFSC Code </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.IFSCcode, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.IFSCcode, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Branch </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Branch, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label class=""> Account Type </label>
-                                        <div class="">
-                                            @Html.EditorFor(model => model.Accounttype, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @Html.ValidationMessageFor(model => model.Accounttype, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-
-                                </div>
-                               
-                                <div class="col-md-10" style="text-align: end;">
-                                    <div class="form-group">
-                                        <div class="">
-                                            <input type="submit" value="Save" class="btn btn-primary" />
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
-                            
-                           
-                            
-                            
-                            
-                            
-                            
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Franchisee Name </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Franchisee_Name, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Franchisee_Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class="">Email ID</label>
+                                    <div class="">
+                                        @Html.TextBoxFor(model => model.Sendermail, new { @class = "form-control input-sm", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.Sendermail, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Franchisee Address</label>
+                                    <div class="">
+                                        @Html.TextAreaFor(model => model.F_Address, new { @class = "form-control input-sm", @rows = 1 })
+                                        @Html.ValidationMessageFor(model => model.F_Address, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Owner Name </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.OwnerName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.OwnerName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Invoice Start Prefix</label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.InvoiceStart, new { htmlAttributes = new { @class = "form-control input-sm", @maxlength = "5" } })
+                                        @Html.ValidationMessageFor(model => model.InvoiceStart, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> GST No </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.GstNo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Pan_No, htmlAttributes: new { @class = "col-md-2" })
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Contact No</label>
+                                    <div class="">
+                                        @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control input-sm", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Account Name </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Bank Name  </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Bankname, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Bankname, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Account No </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Accountno, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Accountno, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> IFSC Code </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.IFSCcode, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.IFSCcode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Branch </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Branch, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label class=""> Account Type </label>
+                                    <div class="">
+                                        @Html.EditorFor(model => model.Accounttype, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.Accounttype, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    @if (Model.StampFilePath != null)
+                                    {
+                                        <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100">
+                                    }
+                                    <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
+                                    <div class="">
+                                        @* <form enctype="multipart/form-data">*@
+                                        <input type="file" name="file" id="file">
+                                       @* <button type="button" id="uploadBtn" class="btn btn-success">Upload</button>*@
+                                        @*</form>*@
+                                        @* <input type="file" name="httpPostedFileBase" id="file" class="form-control" />*@
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-10" style="text-align: end;">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
 
-
                 </div>
+
+
             </div>
         </div>
+    </div>
+</form>
 
-    }
+        }
 
 
-    <script>
+        <script>
 
         $(document).ready(function () {
 
@@ -219,5 +233,28 @@
 
         });
 
-    </script>
- 
+        </script>
+
+        <script>
+            $(function () {
+                $('#uploadBtn').click(function () {
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+
+                    $.ajax({
+                        url: '/Admin/UploadFile',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function (data) {
+                          //  alert('File uploaded successfully!');
+                            // Save file path in database
+                        },
+                        error: function () {
+                            alert('Error uploading file!');
+                        }
+                    });
+                });
+            });
+        </script>

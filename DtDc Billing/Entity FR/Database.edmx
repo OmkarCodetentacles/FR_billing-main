@@ -274,6 +274,7 @@
           <Property Name="Accounttype" Type="varchar" MaxLength="200" />
           <Property Name="InvoiceStart" Type="varchar" MaxLength="5" />
           <Property Name="LogoFilePath" Type="varchar" MaxLength="500" />
+          <Property Name="StampFilePath" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Holiday">
           <Key>
@@ -2442,8 +2443,10 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="CreditNotes" Relationship="db_a71c08_elitetokenModel.FK__CreditNot__Firm___4B422AD5" FromRole="FirmDetail" ToRole="CreditNote" />
           <NavigationProperty Name="NEFTs" Relationship="db_a71c08_elitetokenModel.FK__NEFT__Firm_Id__5D60DB10" FromRole="FirmDetail" ToRole="NEFT" />
           <NavigationProperty Name="Cheques" Relationship="db_a71c08_elitetokenModel.FK__Cheque__Firm_Id__4959E263" FromRole="FirmDetail" ToRole="Cheque" />
-          <NavigationProperty Name="Franchisees" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="FirmDetail" ToRole="Franchisee" />
-          <NavigationProperty Name="Franchisees1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="FirmDetail" ToRole="Franchisee" />
+          <NavigationProperty Name="Franchisees" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___2BC97F7C" FromRole="FirmDetail" ToRole="Franchisee" />
+          <NavigationProperty Name="Franchisees1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___2CBDA3B5" FromRole="FirmDetail" ToRole="Franchisee" />
+          <NavigationProperty Name="Franchisees2" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___30C33EC3" FromRole="FirmDetail" ToRole="Franchisee" />
+          <NavigationProperty Name="Franchisees3" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___31B762FC" FromRole="FirmDetail" ToRole="Franchisee" />
         </EntityType>
         <EntityType Name="Holiday">
           <Key>
@@ -3560,6 +3563,9 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="currentDate" Mode="In" Type="DateTime" />
             <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a71c08_elitetokenModel.getReceiptDetails_Result)">
+          <Parameter Name="pfcode" Mode="In" Type="String" />
+          </FunctionImport>
           <EntitySet Name="Franchisees" EntityType="db_a71c08_elitetokenModel.Franchisee" />
           <AssociationSet Name="fk_company" Association="db_a71c08_elitetokenModel.fk_company">
             <End Role="Franchisee" EntitySet="Franchisees" />
@@ -3573,11 +3579,19 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <End Role="Franchisee" EntitySet="Franchisees" />
             <End Role="Expense" EntitySet="Expenses" />
           </AssociationSet>
-          <AssociationSet Name="FK__Franchise__Firm___57A801BA" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA">
+          <AssociationSet Name="FK__Franchise__Firm___2BC97F7C" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___2BC97F7C">
             <End Role="FirmDetail" EntitySet="FirmDetails" />
             <End Role="Franchisee" EntitySet="Franchisees" />
           </AssociationSet>
-          <AssociationSet Name="FK__Franchise__Firm___589C25F3" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3">
+          <AssociationSet Name="FK__Franchise__Firm___2CBDA3B5" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___2CBDA3B5">
+            <End Role="FirmDetail" EntitySet="FirmDetails" />
+            <End Role="Franchisee" EntitySet="Franchisees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Franchise__Firm___30C33EC3" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___30C33EC3">
+            <End Role="FirmDetail" EntitySet="FirmDetails" />
+            <End Role="Franchisee" EntitySet="Franchisees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Franchise__Firm___31B762FC" Association="db_a71c08_elitetokenModel.FK__Franchise__Firm___31B762FC">
             <End Role="FirmDetail" EntitySet="FirmDetails" />
             <End Role="Franchisee" EntitySet="Franchisees" />
           </AssociationSet>
@@ -3613,9 +3627,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <End Role="Franchisee" EntitySet="Franchisees" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a71c08_elitetokenModel.getReceiptDetails_Result)">
-            <Parameter Name="pfcode" Mode="In" Type="String" />
-          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="getNotification_Result">
           <Property Type="Int32" Name="N_ID" Nullable="false" />
@@ -4238,6 +4249,20 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Double" Name="todayExp" Nullable="true" />
           <Property Type="Double" Name="monthexp" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="getReceiptDetails_Result">
+          <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Destination" Nullable="true" />
+          <Property Type="String" Name="sender_phone" Nullable="true" />
+          <Property Type="String" Name="SenderCity" Nullable="true" />
+          <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Reciepents_phone" Nullable="true" />
+          <Property Type="String" Name="Reciepents" Nullable="true" />
+          <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
+          <Property Type="Single" Name="Charges_Total" Nullable="true" />
+          <Property Type="DateTime" Name="Datetime_Cons" Nullable="true" Precision="23" />
+          <Property Type="Single" Name="Paid_Amount" Nullable="true" />
+        </ComplexType>
         <EntityType Name="Franchisee">
           <Key>
             <PropertyRef Name="PF_Code" />
@@ -4264,11 +4289,14 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Accounttype" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="LogoFilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="StampFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Companies" Relationship="db_a71c08_elitetokenModel.fk_company" FromRole="Franchisee" ToRole="Company" />
           <NavigationProperty Name="Employees" Relationship="db_a71c08_elitetokenModel.Emp_Fk" FromRole="Franchisee" ToRole="Employee" />
           <NavigationProperty Name="Expenses" Relationship="db_a71c08_elitetokenModel.fk_exp" FromRole="Franchisee" ToRole="Expense" />
-          <NavigationProperty Name="FirmDetail" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___57A801BA" FromRole="Franchisee" ToRole="FirmDetail" />
-          <NavigationProperty Name="FirmDetail1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___589C25F3" FromRole="Franchisee" ToRole="FirmDetail" />
+          <NavigationProperty Name="FirmDetail" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___2BC97F7C" FromRole="Franchisee" ToRole="FirmDetail" />
+          <NavigationProperty Name="FirmDetail1" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___2CBDA3B5" FromRole="Franchisee" ToRole="FirmDetail" />
+          <NavigationProperty Name="FirmDetail2" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___30C33EC3" FromRole="Franchisee" ToRole="FirmDetail" />
+          <NavigationProperty Name="FirmDetail3" Relationship="db_a71c08_elitetokenModel.FK__Franchise__Firm___31B762FC" FromRole="Franchisee" ToRole="FirmDetail" />
           <NavigationProperty Name="Receipt_details" Relationship="db_a71c08_elitetokenModel.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
           <NavigationProperty Name="Payments" Relationship="db_a71c08_elitetokenModel.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
           <NavigationProperty Name="Savings" Relationship="db_a71c08_elitetokenModel.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
@@ -4314,7 +4342,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Franchise__Firm___57A801BA">
+        <Association Name="FK__Franchise__Firm___2BC97F7C">
           <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
           <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4326,7 +4354,31 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Franchise__Firm___589C25F3">
+        <Association Name="FK__Franchise__Firm___2CBDA3B5">
+          <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
+          <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FirmDetail">
+              <PropertyRef Name="Firm_Id" />
+            </Principal>
+            <Dependent Role="Franchisee">
+              <PropertyRef Name="Firm_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Franchise__Firm___30C33EC3">
+          <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
+          <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FirmDetail">
+              <PropertyRef Name="Firm_Id" />
+            </Principal>
+            <Dependent Role="Franchisee">
+              <PropertyRef Name="Firm_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Franchise__Firm___31B762FC">
           <End Type="db_a71c08_elitetokenModel.FirmDetail" Role="FirmDetail" Multiplicity="0..1" />
           <End Type="db_a71c08_elitetokenModel.Franchisee" Role="Franchisee" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4434,20 +4486,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="getReceiptDetails_Result">
-          <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="Destination" Nullable="true" />
-          <Property Type="String" Name="sender_phone" Nullable="true" />
-          <Property Type="String" Name="SenderCity" Nullable="true" />
-          <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Reciepents_phone" Nullable="true" />
-          <Property Type="String" Name="Reciepents" Nullable="true" />
-          <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
-          <Property Type="Single" Name="Charges_Total" Nullable="true" />
-          <Property Type="DateTime" Name="Datetime_Cons" Nullable="true" Precision="23" />
-          <Property Type="Single" Name="Paid_Amount" Nullable="true" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5753,9 +5791,28 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getReceiptDetails" FunctionName="db_a71c08_elitetokenModel.Store.getReceiptDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a71c08_elitetokenModel.getReceiptDetails_Result">
+                <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="sender_phone" ColumnName="sender_phone" />
+                <ScalarProperty Name="SenderCity" ColumnName="SenderCity" />
+                <ScalarProperty Name="SenderPincode" ColumnName="SenderPincode" />
+                <ScalarProperty Name="Reciepents_phone" ColumnName="Reciepents_phone" />
+                <ScalarProperty Name="Reciepents" ColumnName="Reciepents" />
+                <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+                <ScalarProperty Name="ReciepentsPincode" ColumnName="ReciepentsPincode" />
+                <ScalarProperty Name="Charges_Total" ColumnName="Charges_Total" />
+                <ScalarProperty Name="Datetime_Cons" ColumnName="Datetime_Cons" />
+                <ScalarProperty Name="Paid_Amount" ColumnName="Paid_Amount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <EntitySetMapping Name="Franchisees">
             <EntityTypeMapping TypeName="db_a71c08_elitetokenModel.Franchisee">
               <MappingFragment StoreEntitySet="Franchisee">
+                <ScalarProperty Name="StampFilePath" ColumnName="StampFilePath" />
                 <ScalarProperty Name="LogoFilePath" ColumnName="LogoFilePath" />
                 <ScalarProperty Name="InvoiceStart" ColumnName="InvoiceStart" />
                 <ScalarProperty Name="Accounttype" ColumnName="Accounttype" />
@@ -5781,24 +5838,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="getReceiptDetails" FunctionName="db_a71c08_elitetokenModel.Store.getReceiptDetails">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a71c08_elitetokenModel.getReceiptDetails_Result">
-                <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
-                <ScalarProperty Name="Destination" ColumnName="Destination" />
-                <ScalarProperty Name="sender_phone" ColumnName="sender_phone" />
-                <ScalarProperty Name="SenderCity" ColumnName="SenderCity" />
-                <ScalarProperty Name="SenderPincode" ColumnName="SenderPincode" />
-                <ScalarProperty Name="Reciepents_phone" ColumnName="Reciepents_phone" />
-                <ScalarProperty Name="Reciepents" ColumnName="Reciepents" />
-                <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-                <ScalarProperty Name="ReciepentsPincode" ColumnName="ReciepentsPincode" />
-                <ScalarProperty Name="Charges_Total" ColumnName="Charges_Total" />
-                <ScalarProperty Name="Datetime_Cons" ColumnName="Datetime_Cons" />
-                <ScalarProperty Name="Paid_Amount" ColumnName="Paid_Amount" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

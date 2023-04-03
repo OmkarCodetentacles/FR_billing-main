@@ -589,14 +589,14 @@ Select(e => new
              Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                            .ToList();
 
-                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno);
 
                 var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
 
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
-                string frgst = dataset2.FirstOrDefault().GstNo;
+                string frgst = franchisee.FirstOrDefault().GstNo;
 
                 string discount = dataset3.FirstOrDefault().discount;
                 if (discount == "no")
@@ -647,7 +647,7 @@ Select(e => new
 
                 lr.EnableExternalImages = true;
                 ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-                ReportDataSource rd1 = new ReportDataSource("franchisees", dataset2);
+                ReportDataSource rd1 = new ReportDataSource("franchisee", franchisee);
                 ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
                 ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
 
@@ -1810,7 +1810,7 @@ Select(e => new
 
                 ////////////////////////////////////
                 ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-                ReportDataSource rd1 = new ReportDataSource("franchisees", dataset2);
+                ReportDataSource rd1 = new ReportDataSource("franchisee", dataset2);
                 ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
                 ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
 

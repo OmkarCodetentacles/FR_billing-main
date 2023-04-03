@@ -52,6 +52,7 @@ namespace DtDc_Billing.Entity_FR
         public string Accounttype { get; set; }
         public string InvoiceStart { get; set; }
         public string LogoFilePath { get; set; }
+        public string StampFilePath { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }
@@ -61,6 +62,8 @@ namespace DtDc_Billing.Entity_FR
         public virtual ICollection<Expense> Expenses { get; set; }
         public virtual FirmDetail FirmDetail { get; set; }
         public virtual FirmDetail FirmDetail1 { get; set; }
+        public virtual FirmDetail FirmDetail2 { get; set; }
+        public virtual FirmDetail FirmDetail3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receipt_details> Receipt_details { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

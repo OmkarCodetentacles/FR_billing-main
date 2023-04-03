@@ -28,6 +28,7 @@ using static System.Net.WebRequestMethods;
 using static DtDc_Billing.Models.sendEmail;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System.Windows;
+using Microsoft.SqlServer.Management.Sdk.Sfc;
 
 namespace DtDc_Billing.Controllers
 {
@@ -165,7 +166,7 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-                var obj = db.getLogin(login.UserName, login.Password, login.PFCode).Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode }).FirstOrDefault();
+                var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), login.PFCode.Trim()).Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode }).FirstOrDefault();
 
                 if (obj != null)
                 {
@@ -811,8 +812,18 @@ namespace DtDc_Billing.Controllers
                     tr.diff_weight = Convert.ToDouble(values[4].Trim('\''));
                     tr.topay = "no";
                     tr.cod = "no";
-                    tr.Insurance = "no";
+                    //tr.Insurance = "no";
                     tr.Type_t = values[16].Trim('\'');
+                    tr.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+
+                    if (tr.BillAmount == 0.00)
+                    {
+                        tr.Insurance = "nocoverage";
+                    }
+                    else
+                    {
+                        tr.Insurance = "ownerrisk";
+                    }
 
 
                     Transaction insertupdate = db.Transactions.Where(m => m.Consignment_no == tr.Consignment_no).FirstOrDefault();
@@ -855,6 +866,9 @@ namespace DtDc_Billing.Controllers
                         insertupdate.dtdcamount = Convert.ToDouble(values[11].Trim('\''));
                         insertupdate.diff_weight = Convert.ToDouble(values[4].Trim('\''));
                         insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
+
+                        insertupdate.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+                        insertupdate.Insurance = tr.Insurance;
 
                         db.Entry(insertupdate).State = EntityState.Modified;
 
@@ -2284,10 +2298,8 @@ namespace DtDc_Billing.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
                 Franchisee Fr = new Franchisee();
-
+                
                 Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 Fr.F_Address = franchisee.F_Address;
                 Fr.OwnerName = franchisee.OwnerName;
@@ -2307,6 +2319,14 @@ namespace DtDc_Billing.Controllers
                 Fr.Branch = franchisee.Branch;
                 Fr.Accounttype = franchisee.Accounttype;
                 Fr.InvoiceStart = franchisee.InvoiceStart;
+
+                var getNewFilePath = "";
+                if (franchisee.StampFilePath == null)
+                {
+                    getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
+                }
+                Fr.StampFilePath = (franchisee.StampFilePath==null || franchisee.StampFilePath == "")? getNewFilePath:franchisee.StampFilePath ;
+
 
                 db.Entry(Fr).State = EntityState.Modified;
                 db.SaveChanges();
@@ -2333,6 +2353,7 @@ namespace DtDc_Billing.Controllers
                 Reg.Branch = franchisee.Branch;
                 Reg.AccountType = franchisee.Accounttype;
                 Reg.InvoiceStart = franchisee.InvoiceStart;
+
                
 
                 db.Entry(Reg).State = EntityState.Modified;
@@ -2347,6 +2368,56 @@ namespace DtDc_Billing.Controllers
         public ActionResult AddLogo()
         {
             return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult UploadFile()
+        {
+            string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var myFile = Request.Files[i];
+
+                if (myFile != null && myFile.ContentLength != 0)
+                {
+                    var file = Request.Files[0];
+                    if (file != null)
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+                        var newFileName = Pfcode;
+
+                        var path = Path.Combine(Server.MapPath("~/Stamps"), fileName);
+
+                        // Get the file extension
+                        string fileExtension = Path.GetExtension(path);
+                        file.SaveAs(path);
+
+
+                        string originalFilePath = path;
+                        string newFilePath = Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
+
+
+                        // Rename the file
+                        System.IO.File.Delete(newFilePath);
+                        System.IO.File.Move(originalFilePath, newFilePath);
+
+
+                        // Save file path in database
+                        try
+                        {
+
+                            var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
+                            franchises.StampFilePath = "http://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+                            db.SaveChanges();
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
+                    }
+                }
+            }
+            return Json(new { success = true });
         }
 
         [HttpPost]
@@ -2433,7 +2504,8 @@ namespace DtDc_Billing.Controllers
             Fr.Branch = data.Branch;
             Fr.Accounttype = data.Accounttype;
             Fr.InvoiceStart = data.InvoiceStart;
-            
+            Fr.StampFilePath = data.StampFilePath;
+
 
             if (Fr == null)
             {
