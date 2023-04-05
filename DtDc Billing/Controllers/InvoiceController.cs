@@ -396,7 +396,7 @@ Select(e => new
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-            string invstart1 = dataInvStart + "/2022-23/";
+            string invstart1 = dataInvStart + "/2023-24/";
 
             if (invoice.discount == "yes")
             {
@@ -1430,7 +1430,7 @@ Select(e => new
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
 
-                    string invstart1 = dataInvStart + "/2022-23/";
+                    string invstart1 = dataInvStart + "/2023-24/";
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
@@ -2051,7 +2051,7 @@ Select(e => new
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
 
-                    string invstart1 = dataInvStart + "/2022-23/";
+                    string invstart1 = dataInvStart + "/2023-24/";
                    
                     string filePath = Server.MapPath("/PDF/" + invstart1 + i + ".pdf");
 
@@ -2090,7 +2090,7 @@ Select(e => new
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-            string invstart1 = dataInvStart + "/2022-23/";
+            string invstart1 = dataInvStart + "/2023-24/";
 
             //string invstart1 = "IJS/2022-23/";
                 string no = "";
