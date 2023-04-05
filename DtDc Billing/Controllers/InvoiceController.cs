@@ -26,7 +26,8 @@ namespace DtDc_Billing.Controllers
         private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
        
       
-        string invstart = "INV/2022-23/";
+       // string invstart = "INV/2022-23/";
+        string invstart = "INV/2023-24/";
 
         //[OutputCache(Duration = 600, VaryByParam = "none", Location = OutputCacheLocation.Server)]
         public ActionResult GenerateInvoice(string Invoiceno = null)
@@ -40,7 +41,7 @@ namespace DtDc_Billing.Controllers
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-                string invstart1 = dataInvStart + "/2022-23/";
+                string invstart1 = dataInvStart + "/2023-24/";
                 string no = "";
                 string finalstring = "";
           
@@ -395,7 +396,7 @@ Select(e => new
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-            string invstart1 = dataInvStart + "/2022-23/";
+            string invstart1 = dataInvStart + "/2023-24/";
 
             if (invoice.discount == "yes")
             {
@@ -1429,7 +1430,7 @@ Select(e => new
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
 
-                    string invstart1 = dataInvStart + "/2022-23/";
+                    string invstart1 = dataInvStart + "/2023-24/";
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
@@ -2016,7 +2017,7 @@ Select(e => new
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-            string invstart1 = dataInvStart + "/2022-23/";
+            string invstart1 = dataInvStart + "/2023-24/";
 
             ViewBag.Zipinv = invstart1;
 
@@ -2050,7 +2051,7 @@ Select(e => new
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
 
-                    string invstart1 = dataInvStart + "/2022-23/";
+                    string invstart1 = dataInvStart + "/2023-24/";
                    
                     string filePath = Server.MapPath("/PDF/" + invstart1 + i + ".pdf");
 
@@ -2089,7 +2090,7 @@ Select(e => new
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
-            string invstart1 = dataInvStart + "/2022-23/";
+            string invstart1 = dataInvStart + "/2023-24/";
 
             //string invstart1 = "IJS/2022-23/";
                 string no = "";

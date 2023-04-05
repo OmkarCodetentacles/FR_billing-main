@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using DtDc_Billing.CustomModel;
 
 namespace DtDc_Billing.Controllers
 {
@@ -244,7 +245,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult CustomerIdAutocomplete()
         {
 
-            string strpfcode= Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string strpfcode = CommonFunctions.getSessionPfcode();
             var entity = db.Companies.Select(e => new
 {
     e.Company_Id,
