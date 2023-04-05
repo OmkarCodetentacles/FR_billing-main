@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.Entity_FR;
+﻿using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
 using System;
@@ -811,6 +812,10 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult BusinessAnalysis(string Fromdatetime, string ToDatetime, string Custid)
         {
+            var Pfcode = CommonFunctions.getSessionPfcode();
+
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
