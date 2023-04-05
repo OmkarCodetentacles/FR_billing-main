@@ -2,14 +2,14 @@
 @model IEnumerable<DtDc_Billing.Models.RemainingModel>
 @{
     ViewBag.Title = "Remaining";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-
+  
 
 <!-- Main content -->
 <div class="content-wrapper">
-    <section class="content"  >
-        <div class="container">
+    <div class="container">
+        <section class="">
+
             <div class="box">
 
                 <div class="box-header with-border">
@@ -69,7 +69,7 @@
                             <table id="table_display_block" class="table table-bordered table-striped table-responsive remaining-table">
                                 <thead>
                                     <tr>
-                                        <th  >Receipt Date</th>
+                                        <th>Receipt Date</th>
                                         <th>Expiring in</th>
                                         <th>Start No</th>
                                         <th>End No </th>
@@ -296,22 +296,22 @@
                             </table>
 
                             @*<div class="pagination">
-                        @{
-                            var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+                                    @{
+                                        var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                            if (getTotalCount > 10)
-                            {
+                                        if (getTotalCount > 10)
+                                        {
 
-                                for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                                {
+                                            for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                                            {
 
-                                    <a href="@Url.Action("Remaining","Stationery", new { size = ViewBag.size, pageNo = ii,PfCode = ViewBag.PfCode})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                                                <a href="@Url.Action("Remaining","Stationery", new { size = ViewBag.size, pageNo = ii,PfCode = ViewBag.PfCode})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
-                                }
-                            }
-                        }
-                    </div>*@
+                                            }
+                                        }
+                                    }
+                                </div>*@
 
                         </div>
                         <!-- /.box-body -->
@@ -369,134 +369,128 @@
             </div>
             <!-- /.row -->
             <div class="row">
-              
+
 
             </div>
-        </div>
-
-    </section>
+        </section>
     </div>
-    <!-- /.content -->
-    @functions {
 
-        public long NoofConsignments(string startno, string endno)
-        {
+</div>
 
-            long startConsignment = Convert.ToInt64(startno.Substring(1));
-            long EndConsignment = Convert.ToInt64(endno.Substring(1));
+<!-- /.content -->
+@functions {
 
-            long diff = EndConsignment - startConsignment;
+    public long NoofConsignments(string startno, string endno)
+    {
 
-            return diff + 1;
+        long startConsignment = Convert.ToInt64(startno.Substring(1));
+        long EndConsignment = Convert.ToInt64(endno.Substring(1));
 
-        }
+        long diff = EndConsignment - startConsignment;
 
-
-        public DateTime getDate(string tempdate)
-        {
-
-            var sd = tempdate.Split('-');
-
-            var d = DateTime.Parse(sd[1] + "/" + sd[0] + "/" + sd[2]);
-
-            var dd = d.Date.AddDays(60);
-            return dd;
-        }
-
-
-        //public long UsedConsignments(string startno, string endno)
-        //{
-
-        //    long startConsignment = Convert.ToInt64(startno.Substring(1));
-        //    long EndConsignment = Convert.ToInt64(endno.Substring(1));
-
-        //    long diff = EndConsignment - startConsignment;
-
-        //    return diff;
-
-        //}
+        return diff + 1;
 
     }
 
-    <script>
 
-        $(document).ready(function () {
-            $('.sbmt').click(function () {
-                var PfCode = $('#PfCode').val();
+    public DateTime getDate(string tempdate)
+    {
 
-                var Type = $('#RemainingType').val();
+        var sd = tempdate.Split('-');
 
-                if (Type == "") {
-                    alert("Please Select Type");
-                    return false;
+        var d = DateTime.Parse(sd[1] + "/" + sd[0] + "/" + sd[2]);
+
+        var dd = d.Date.AddDays(60);
+        return dd;
+    }
+
+
+    //public long UsedConsignments(string startno, string endno)
+    //{
+
+    //    long startConsignment = Convert.ToInt64(startno.Substring(1));
+    //    long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+    //    long diff = EndConsignment - startConsignment;
+
+    //    return diff;
+
+    //}
+
+}
+
+<script>
+
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var PfCode = $('#PfCode').val();
+
+            var Type = $('#RemainingType').val();
+
+            if (Type == "") {
+                alert("Please Select Type");
+                return false;
+            }
+
+            else {
+                return true;
+            }
+
+        });
+
+
+
+
+
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $('.showd').click(function () {
+
+
+            var startno = $(this).data('datac');
+            var endno = $(this).data('datad');
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Stationery/RemainingConsignments',
+                data: { startno: startno, endno: endno },
+                success: function (Data) {
+                    $('#example2 tbody').empty();
+                    var rows;
+                    $.each(Data, function (i, item) {
+                        rows += "<tr>"
+                            + "<td>" + item + "</td>"
+
+                            + "</tr>";
+                    });
+                    $('#example2 tbody').append(rows);
+
+
+
                 }
-
-                else {
-                    return true;
-                }
-
-            });
-
-            
-
-
-           
-        });
-
-    </script>
-
-    <script>
-
-        $(document).ready(function () {
-            $('.showd').click(function () {
-
-
-                var startno = $(this).data('datac');
-                var endno = $(this).data('datad');
-
-                $.ajax({
-                    type: 'Get',
-                    dataType: 'json',
-                    url: '/Stationery/RemainingConsignments',
-                    data: { startno: startno, endno: endno },
-                    success: function (Data) {
-                        $('#example2 tbody').empty();
-                        var rows;
-                        $.each(Data, function (i, item) {
-                            rows += "<tr>"
-                                + "<td>" + item + "</td>"
-
-                                + "</tr>";
-                        });
-                        $('#example2 tbody').append(rows);
-
-
-
-                    }
-                });
-
             });
 
         });
-    </script>
-    <script>
-        $(function () {
-            $('#table_display_block').dataTable({
-                "bPaginate": true,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": true,
-                "bInfo": false,
-                "bAutoWidth": false
-            });
-        });
-    </script>
 
-    <style>
-        .Reqired {
-            color: red;
-        }
-        .remaining-table .with-border{
-            width:14.28%;
-        }
-    </style>
+    });
+</script>
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+
