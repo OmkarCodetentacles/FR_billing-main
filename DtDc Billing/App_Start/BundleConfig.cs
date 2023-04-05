@@ -30,31 +30,31 @@ namespace DtDc_Billing
             //               ));
 
 
-            bundles.Add(new ScriptBundle("~/admin-lte/js").Include(
-           "~/admin-lte/js/app.js",
-           "~/admin-lte/plugins/fastclick/fastclick.js"
+         //   bundles.Add(new ScriptBundle("~/admin-lte/js").Include(
+         //  "~/admin-lte/js/app.js",
+         //  "~/admin-lte/plugins/fastclick/fastclick.js"
 
-           ));
+         //  ));
 
-            bundles.Add(new ScriptBundle("~/bundles/Plugins").Include(
-         "~/admin-lte/plugins/datatables/jquery.dataTables.js",
-         "~/admin-lte/plugins/datatables/dataTables.bootstrap.js",
-         "~/Scripts/jquery.unobtrusive-ajax.min.js",
-         "~/Scripts/jquery.validate.unobtrusive.min.js",
-         "~/admin-lte/js/adminlte.min.js",
-         "~/admin-lte/js/icheck.min.js",
-         "~/admin-lte/bower_components/select2/dist/js/select2.full.min.js",
-         "~/Content/themes/base/datepicker.css",
-         "~/admin-lte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css",
-         "~/admin-lte/bower_components/select2/dist/css/select2.min.css"
-         ));
+         //   bundles.Add(new ScriptBundle("~/bundles/Plugins").Include(
+         //"~/admin-lte/plugins/datatables/jquery.dataTables.js",
+         //"~/admin-lte/plugins/datatables/dataTables.bootstrap.js",
+         //"~/Scripts/jquery.unobtrusive-ajax.min.js",
+         //"~/Scripts/jquery.validate.unobtrusive.min.js",
+         //"~/admin-lte/js/adminlte.min.js",
+         //"~/admin-lte/js/icheck.min.js",
+         //"~/admin-lte/bower_components/select2/dist/js/select2.full.min.js",
+         //"~/Content/themes/base/datepicker.css",
+         //"~/admin-lte/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css",
+         //"~/admin-lte/bower_components/select2/dist/css/select2.min.css"
+         //));
 
 
-            bundles.Add(new StyleBundle("~/ratemaster/css").Include(
-                           "~/admin-lte/bower_components/Ionicons/css/ionicons.min.css",
-                           "~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css",
-                           "~/Content/ratemaster.css"
-                           ));
+         //   bundles.Add(new StyleBundle("~/ratemaster/css").Include(
+         //                  "~/admin-lte/bower_components/Ionicons/css/ionicons.min.css",
+         //                  "~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css",
+         //                  "~/Content/ratemaster.css"
+         //                  ));
 
           
 
