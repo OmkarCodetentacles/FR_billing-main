@@ -2,54 +2,56 @@
 @model IEnumerable<DtDc_Billing.Entity_FR.dtdcPlu>
 
 
-    @using (Ajax.BeginForm("RateMasterplus", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp3" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+  <section  >
+      <div class="container">
+          @using (Ajax.BeginForm("RateMasterplus", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp3" }))
+          {
+              @Html.AntiForgeryToken()
+              @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <input type="hidden" value="@ViewBag.companyid" name="comppid">
+              <input type="hidden" value="@ViewBag.companyid" name="comppid">
 
 
-        <div class="col-sm-12 text-center">
-            <h4 style="opacity:0;">PTP</h4>
-        </div>
+              <div class="col-sm-12 text-center">
+                  <h4 style="opacity:0;">PTP</h4>
+              </div>
 
-        <table class="table table-bordered table-striped" id="dtdc_plus">
-            <thead>
-                <tr class="upto-input">
-                    <th>
-                        @*<h4>@Html.DisplayNameFor(model => model.destination)</h4>*@
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Upto500gm)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.Add500gm)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.U10to25kg)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.U25to50)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.U50to100)</label>
-                    </th>
-                    <th>
-                        <label>@Html.DisplayNameFor(model => model.add100kg)</label>
-                    </th>
-                    @*<th>
+              <table class="table table-bordered table-striped" id="dtdc_plus">
+                  <thead>
+                      <tr class="upto-input">
+                          <th>
+                              @*<h4>@Html.DisplayNameFor(model => model.destination)</h4>*@
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.Upto500gm)</label>
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.Add500gm)</label>
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.U10to25kg)</label>
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.U25to50)</label>
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.U50to100)</label>
+                          </th>
+                          <th>
+                              <label>@Html.DisplayNameFor(model => model.add100kg)</label>
+                          </th>
+                          @*<th>
                             <label>@Html.DisplayNameFor(model => model.go149)</label>
                         </th>
                         <th>
                             <label>@Html.DisplayNameFor(model => model.go99)</label>
                         </th>*@
-                </tr>
-            </thead>
-            <tbody>
+                      </tr>
+                  </thead>
+                  <tbody>
 
 
-                @*<th>
+                      @*<th>
                         @Html.DisplayNameFor(model => model.Company.Email)
                     </th>
                     <th>
@@ -58,54 +60,56 @@
 
 
 
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="sectors">
-                            @Html.DisplayFor(modelItem => item.destination)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Upto500gm)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Add500gm)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.U10to25kg)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.U25to50)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.U50to100)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.add100kg)
-                        </td>
-                        @*<td>
+                      @foreach (var item in Model)
+                      {
+                          <tr>
+                              <td class="sectors">
+                                  @Html.DisplayFor(modelItem => item.destination)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.Upto500gm)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.Add500gm)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.U10to25kg)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.U25to50)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.U50to100)
+                              </td>
+                              <td>
+                                  @Html.EditorFor(modelItem => item.add100kg)
+                              </td>
+                              @*<td>
                                 @Html.EditorFor(modelItem => item.go149)
                             </td>
                             <td>
                                 @Html.EditorFor(modelItem => item.go99)
                             </td>*@
 
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Sector_Id)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Company_id)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.plus_id)
-                        </td>
-                    </tr>
-                }
+                              <td class="hidden">
+                                  @Html.HiddenFor(modelItem => item.Sector_Id)
+                              </td>
+                              <td class="hidden">
+                                  @Html.HiddenFor(modelItem => item.Company_id)
+                              </td>
+                              <td class="hidden">
+                                  @Html.HiddenFor(modelItem => item.plus_id)
+                              </td>
+                          </tr>
+                      }
 
-            </tbody>
+                  </tbody>
 
-        </table>
-        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
-    }
+              </table>
+              <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+          }
+      </div>
+  </section>
   
     @if (ViewBag.Message != null)
     {
