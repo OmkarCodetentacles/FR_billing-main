@@ -1,52 +1,56 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.express_cargo>
 
 
-    @using (Ajax.BeginForm("RatemasterCargo", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp5" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+   <section>
+       <div class="container">
+           @using (Ajax.BeginForm("RatemasterCargo", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp5" }))
+           {
+               @Html.AntiForgeryToken()
+               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="col-sm-12 text-center">
-            <h4 style="opacity:0;">PTP</h4>
-        </div>
-        <input type="hidden" value="@ViewBag.companyid" name="comppid">
+               <div class="col-sm-12 text-center">
+                   <h4 style="opacity:0;">PTP</h4>
+               </div>
+               <input type="hidden" value="@ViewBag.companyid" name="comppid">
 
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Sector.Sector_Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Exslab1)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Exslab2)
-                    </th>
-                   
-                </tr>
-            </thead>
+               <table class="table table-bordered table-striped">
+                   <thead>
+                       <tr>
+                           <th>
+                               @Html.DisplayNameFor(model => model.Sector.Sector_Name)
+                           </th>
+                           <th>
+                               @Html.DisplayNameFor(model => model.Exslab1)
+                           </th>
+                           <th>
+                               @Html.DisplayNameFor(model => model.Exslab2)
+                           </th>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.Exslab1)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.Exslab2)
-                    </td>
-                   
-                </tr>
-            }
+                       </tr>
+                   </thead>
 
-        </table>
-        <input style="float:right" type="submit" class="btn btn-primary" name="submit" value="Next" />
-    }
+                   @foreach (var item in Model)
+                   {
+                       <tr>
+                           <td>
+                               @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                           </td>
+                           <td>
+                               @Html.EditorFor(modelItem => item.Exslab1)
+                           </td>
+                           <td>
+                               @Html.EditorFor(modelItem => item.Exslab2)
+                           </td>
+
+                       </tr>
+                   }
+
+               </table>
+               <input style="float:right" type="submit" class="btn btn-primary" name="submit" value="Next" />
+           }
+       </div>
+   </section>
  
 
     @if (ViewBag.Message != null)

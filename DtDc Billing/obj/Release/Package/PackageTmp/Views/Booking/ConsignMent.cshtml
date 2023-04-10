@@ -14,7 +14,7 @@
     }
 </style>
 <div class="content-wrapper">
-    <section class="content">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
@@ -23,31 +23,31 @@
                     @using (Html.BeginForm("importTextFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
                     {
 
-                        @Html.AntiForgeryToken()
+                    @Html.AntiForgeryToken()
 
 
-                        <div class="box-header with-border">
-                            <div class="col-sm-7">
+                    <div class="box-header with-border">
+                        <div class="col-sm-7">
 
-                                <h4>
-                                    Book Consignment
-                                </h4>
+                            <h4>
+                                Book Consignment
+                            </h4>
+                        </div>
+
+
+                        <div class="col-sm-5">
+                            <div class="col-sm-8">
+                                <input id="File1" required type="file" name="ImportText" />
                             </div>
-
-
-                            <div class="col-sm-5">
-                                <div class="col-sm-8">
-                                    <input id="File1" required type="file" name="ImportText" />
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="submit" class="btn btn-primary pull-right" value="Import From text" />
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">
-                                <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
+                            <div class="col-sm-4">
+                                <input type="submit" class="btn btn-primary pull-right" value="Import From text" />
                             </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
+                        </div>
+                    </div>
 
                     }
 
@@ -63,6 +63,8 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+        
+   
     </div>
 

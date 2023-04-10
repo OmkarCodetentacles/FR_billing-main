@@ -5,32 +5,37 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
+<section>
+    <div class="container">
+        <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Firm_Name)
-        </th>
-        <th></th>
-    </tr>
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Firm_Name)
+                </th>
+                <th></th>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Firm_Name)
-        </td>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Firm_Name)
+                    </td>
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Firm_Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Firm_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Firm_Id })
-        </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Firm_Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Firm_Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Firm_Id })
+                    </td>
 
-    </tr>
-}
+                </tr>
+            }
 
-</table>
+        </table>
+    </div>
+</section>

@@ -8,7 +8,7 @@
 }
 
 <div class="content-wrapper">
-    <section class="content">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-info">
@@ -17,7 +17,7 @@
                             Edit Company RateMater
                         </span>
                         <span class="pull-right">
-                            <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary"> Add Company</a>
+                            <a href="@Url.Action(" AddCompany","Ratemaster")" class="btn btn-primary"> Add Company</a>
                         </span>
                     </div>
                     <!-- /.box-header -->
@@ -30,7 +30,7 @@
                                         <th style="display:none">
                                             @Html.DisplayNameFor(model => model.Company_Id)
                                         </th>
-                                        <th style="width: 68px;" >
+                                        <th style="width: 68px;">
                                             Sr No
                                         </th>
                                         <th> Option</th>
@@ -55,61 +55,61 @@
                                 </thead>
                                 <tbody>
                                     @{
-                                        int srno = 1;
-                                        foreach (var item in Model)
-                                        {
-                                            var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
-                                            <tr>
-                                                <td style="display:none">
-                                                    @Html.DisplayFor(modelItem => item.Company_Id)
-                                                </td>
+                                    int srno = 1;
+                                    foreach (var item in Model)
+                                    {
+                                    var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
+                                    <tr>
+                                        <td style="display:none">
+                                            @Html.DisplayFor(modelItem => item.Company_Id)
+                                        </td>
 
-                                                <td>
-                                                    @srno
-                                                </td>
-                                                <td>
+                                        <td>
+                                            @srno
+                                        </td>
+                                        <td>
 
-                                                    @Html.ActionLink("Edit", "EditCompanyRate", new { id = id })
+                                            @Html.ActionLink("Edit", "EditCompanyRate", new { id = id })
 
-                                                </td>
-                                                <td>
-                                                    <div class="hideextra" >
-                                                        @Html.DisplayFor(modelItem => item.Company_Name)
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pf_code)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Phone)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Email)
-                                                </td>
+                                        </td>
+                                        <td>
+                                            <div class="hideextra">
+                                                @Html.DisplayFor(modelItem => item.Company_Name)
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Pf_code)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Phone)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Email)
+                                        </td>
 
-                                                <td>
-                                                    <div class="hideextra" >
-                                                        @Html.DisplayFor(modelItem => item.Company_Address)
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success", target = "_blank" })
-                                                </td>
-                                                <td>
-                                                    @if (item.Company_Name == "BASIC_TS")
-                                                    {
-                                                        <input type="button" value="Delete" class="btn btn-danger" disabled>
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
-                                                          new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger" })
-                                                    }
-                                                </td>
+                                        <td>
+                                            <div class="hideextra">
+                                                @Html.DisplayFor(modelItem => item.Company_Address)
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success", target = "_blank" })
+                                        </td>
+                                        <td>
+                                            @if (item.Company_Name == "BASIC_TS")
+                                            {
+                                            <input type="button" value="Delete" class="btn btn-danger" disabled>
+                                            }
+                                            else
+                                            {
+                                            @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
+                                            new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger" })
+                                            }
+                                        </td>
 
-                                            </tr>
-                                            srno++;
-                                        }
+                                    </tr>
+                                    srno++;
+                                    }
                                     }
                                 </tbody>
 
@@ -120,7 +120,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+   
+       
+  
     </div>
     @if (TempData["Success"] != null)
     {
