@@ -76,12 +76,12 @@
                                     </div>
                                 </div>
                             </div>
-
+                            @Html.Partial("RangeLineChart")
                             <table id="check-booking-list" class="table table-striped table-bordered table-responsive height-450">
                                 <thead>
                                     <tr>
                                         <th>
-                                            Sr No
+                                            Sr.No
                                         </th>
                                         <th>
                                             Consignment no
@@ -96,18 +96,14 @@
                                             Destination
                                         </th>
                                         <th>
-                                            Pincode
-                                        </th>
-                                        <th>
-                                            Mode
-                                        </th>
-                                        <th>
                                             Amount
                                         </th>
 
-
                                         <th>
                                             Dtdc Amount
+                                        </th>
+                                        <th>
+                                            <span class="text-success">Profit↑</span>/<span class="text-danger">Loss↓</span>(%)
                                         </th>
                                     </tr>
                                 </thead>
@@ -132,12 +128,7 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pincode)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Mode)
-                                                </td>
+
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Amount)
                                                 </td>
@@ -147,6 +138,7 @@
                                                     @Html.DisplayFor(modelItem => item.dtdcamount)
                                                 </td>
 
+                                                <td class="@((((item.Amount-item.dtdcamount)/ item.dtdcamount) *100) >0?"text-success":"text-danger")"><b>@(((item.Amount- item.dtdcamount) / item.dtdcamount) *100)</b></td>
                                             </tr>
 
                                             i++;
@@ -154,11 +146,12 @@
                                     }
                                 </tbody>
                             </table>
+
                             <br>
 
                             <!-- /input-group -->
 
-                            <div class="col-sm-4 ">
+                            <div class="col-sm-3">
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-primary total-label">Total</button>
@@ -170,7 +163,7 @@
                             <!-- /input-group -->
                             <!-- /input-group -->
 
-                            <div class="col-sm-4 ">
+                            <div class="col-sm-3">
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-success">DTDC Total</button>
@@ -182,18 +175,26 @@
                             <!-- /input-group -->
                             <!-- /input-group -->
 
-                            <div class="col-sm-4 ">
+                            <div class="col-sm-3">
                                 <div class="input-group">
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-danger">Profit</button>
+                                        <button type="button" class="@((Model.Sum(m=>(m.Amount-(m.dtdcamount ?? 0))))>0?"btn btn-success":"btn btn-danger")">Profit/Loss</button>
                                     </div>
                                     <!-- /btn-group -->
                                     <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>(m.Amount-(m.dtdcamount ?? 0)))">
                                 </div>
                             </div>
+
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="@((Model.Sum(m=>((m.Amount-(m.dtdcamount ?? 0))/m.dtdcamount)*100))>0?"btn btn-success":"btn btn-danger")">Profit↑/Loss↓(%)</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>((m.Amount-(m.dtdcamount ?? 0))/m.dtdcamount)*100)">
+                                </div>
+                            </div>
                             <!-- /input-group -->
-
-
 
 
                         </div>
