@@ -13,7 +13,7 @@
 <div class="content-wrapper">
     <section class="container">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 no-padding">
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h4>Payment Details</h4>
@@ -33,45 +33,69 @@
                                             if (ViewBag.Custid != null)
                                             {
                                                 <div class="col-md-3">
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="CustomerId" type="text">
+                                                    <div class="form-group">
+                                                        <label>CustomerId</label>
+                                                    
+                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                                                 </div>
+                                                    </div>
                                             }
                                             else
                                             {
-                                                <div class="col-md-3">
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" placeholder="CustomerId" type="text">
-                                                </div>
-                                            }
-                                            if (ViewBag.fromdate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
-                                                </div>
-                                            }
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
 
-                                            if (ViewBag.todate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid"  type="text">
+                                        </div>
+                                        </div>
+                                        }
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>From Date</label>
 
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
+                                        </div>
+                                        </div>
+                                        }
+                                        else
+                                        {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>From Date</label>
 
-                                            <div class="col-md-2">
-                                                <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
-                                            </div>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker"  type="text">
+                                        </div>
+                                        </div>
+                                        }
+
+                                        if (ViewBag.todate != null)
+                                        {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>To Date</label>
+
+                                            <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                        </div>
+                                        </div>
+                                        }
+
+                                        else
+                                        {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>To Date</label>
+
+                                            <input style="margin-right:50px" name="ToDatetime" class="form-control"  id="datepicker1" type="text">
+                                        </div>
+                                        </div>
+                                        }
+
+                                        <div class="col-md-2" style="margin-top:20px">
+                                            <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
+                                        </div>
 
                                         }
 
@@ -279,7 +303,7 @@
         }
 
         .box-body {
-            overflow: scroll
+            overflow: auto;
         }
 
         @@-webkit-keyframes spin {
