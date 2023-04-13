@@ -31,5 +31,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual Company Company { get; set; }
         public virtual Sector Sector { get; set; }
         public virtual Sector Sector1 { get; set; }
+        public virtual Sector Sector2 { get; set; }
+        public virtual Sector Sector3 { get; set; }
     }
 }

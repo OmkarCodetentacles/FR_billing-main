@@ -12,7 +12,7 @@ namespace DtDc_Billing.Models
 {
     public class SessionAdminold : ActionFilterAttribute
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -39,7 +39,7 @@ namespace DtDc_Billing.Models
     [OutputCache(CacheProfile = "Cachefast")]
     public class SessionUserModule : ActionFilterAttribute
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

@@ -52,5 +52,7 @@ namespace DtDc_Billing.Entity_FR
     
         public virtual FirmDetail FirmDetail { get; set; }
         public virtual FirmDetail FirmDetail1 { get; set; }
+        public virtual FirmDetail FirmDetail2 { get; set; }
+        public virtual FirmDetail FirmDetail3 { get; set; }
     }
 }

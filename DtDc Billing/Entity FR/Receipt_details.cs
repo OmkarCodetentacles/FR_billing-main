@@ -72,7 +72,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<System.DateTime> Datetime_Cons { get; set; }
         public Nullable<float> Paid_Amount { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Franchisee Franchisee { get; set; }
+        public virtual User User { get; set; }
     }
 }

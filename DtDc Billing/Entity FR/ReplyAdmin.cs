@@ -22,5 +22,7 @@ namespace DtDc_Billing.Entity_FR
     
         public virtual Complaint Complaint { get; set; }
         public virtual Complaint Complaint1 { get; set; }
+        public virtual Complaint Complaint2 { get; set; }
+        public virtual Complaint Complaint3 { get; set; }
     }
 }

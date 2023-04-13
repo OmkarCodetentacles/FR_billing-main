@@ -1,84 +1,101 @@
 ﻿@model DtDc_Billing.Entity_FR.Cheque
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" id="successmsg">
+        <strong>Success! </strong>@TempData["Message"]
+    </div>
+}
+
+
 @using (Ajax.BeginForm("Cheque", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "ChequeP", OnSuccess = "createsuccess" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+    <div class="form-horizontal">
 
-    <hr />
-    @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <input type="hidden" class="Firm_Id" name="Firm_Id">
-    <div class="form-group">
-        <label class="col-md-4">Amount</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.C_Amount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.C_Amount, "", new { @class = "text-danger" })
+        <hr />
+        @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" class="Firm_Id" name="Firm_Id">
+        <div class="form-group">
+            <label class="col-md-4">Amount</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.C_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.C_Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Tds Amount</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Tds_amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Tds_amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Date</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+                @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Bank Name and Branch</label>
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.bank_name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Cheque no </label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.branch_Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.branch_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Total Amt</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.totalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.totalAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Invoice No</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-success pull-right " />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Tds Amount</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Tds_amount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Tds_amount, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Date</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
-            @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Bank Name and Branch</label>
-        <div class="col-md-8">
-            @Html.TextAreaFor(model => model.bank_name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Cheque no </label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.branch_Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.branch_Name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Total Amt</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.totalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.totalAmount, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-md-4">Invoice No</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-12">
-            <input type="submit" value="Save" class="btn btn-success pull-right " />
-        </div>
-    </div>
-</div>
 }
 
 <script>
 
-    function createsuccess(data) {
-        if (data.RedirectUrl)
-            window.location.href = data.RedirectUrl;
+    function createsuccess() {
+        $('#C_Amount').removeAttr('value');
+        $('#tempinserteddate').removeAttr('value');
+        $('#tempch_date').removeAttr('value');
+        $('#Tds_amount').removeAttr('value');
+        $('#bank_name').removeAttr('value');
+        $('#branch_Name').removeAttr('value');
+        $('#totalAmount').removeAttr('value');
+
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
     }
 
     $(document).ready(function () {
@@ -90,7 +107,7 @@
             var Tds_amount = $('#Tds_amount').val();
 
 
-            var addition=  (parseFloat("0" + C_Amount) + parseFloat("0" + Tds_amount));
+            var addition = (parseFloat("0" + C_Amount) + parseFloat("0" + Tds_amount));
 
             $('#totalAmount').val(addition);
 

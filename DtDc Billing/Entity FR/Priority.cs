@@ -28,6 +28,8 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> prislab4 { get; set; }
     
         public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
         public virtual Sector Sector { get; set; }
+        public virtual Sector Sector1 { get; set; }
     }
 }

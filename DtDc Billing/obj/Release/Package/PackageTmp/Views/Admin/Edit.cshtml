@@ -1,10 +1,12 @@
 ﻿@model DtDc_Billing.Models.FranchiseeModel
 @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
-
+{
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="StampFilePath" value="@Model.StampFilePath">
+<form enctype="multipart/form-data">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12 no-padding "  >
+            <div class="col-md-12 no-padding " >
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h4>Edit Franchisee</h4>
@@ -13,7 +15,7 @@
 
 
                     <div class="form-horizontal">
-                        <div class="box-body" style="margin-top:10px" >
+                        <div class="box-body" style="margin-top:10px; padding:20px">
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -26,7 +28,7 @@
 
 
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4 ">
                                     <div class="form-group">
                                         <label class="">PF Code</label>
                                         <div class="">
@@ -36,7 +38,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Franchisee Name </label>
                                         <div class="">
@@ -46,7 +48,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class="">Email ID</label>
                                         <div class="">
@@ -56,7 +58,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Franchisee Address</label>
                                         <div class="">
@@ -66,7 +68,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Owner Name </label>
                                         <div class="">
@@ -76,7 +78,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Invoice Start Prefix</label>
                                         <div class="">
@@ -86,7 +88,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> GST No </label>
                                         <div class="">
@@ -96,7 +98,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Pan_No, htmlAttributes: new { @class = "col-md-2" })
                                         <div class="">
@@ -106,7 +108,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Contact No</label>
                                         <div class="">
@@ -116,7 +118,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Account Name </label>
                                         <div class="">
@@ -126,7 +128,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Bank Name  </label>
                                         <div class="">
@@ -136,7 +138,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Account No </label>
                                         <div class="">
@@ -146,7 +148,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> IFSC Code </label>
                                         <div class="">
@@ -156,7 +158,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Branch </label>
                                         <div class="">
@@ -166,7 +168,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         <label class=""> Account Type </label>
                                         <div class="">
@@ -176,23 +178,35 @@
                                     </div>
 
                                 </div>
-                               
-                                <div class="col-md-10" style="text-align: end;">
+                                <div class="col-6 col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        @if (Model.StampFilePath != null)
+                                        {
+                                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;" >
+                                        }
+                                        <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
+                                        <div class="">
+                                            @* <form enctype="multipart/form-data">*@
+                                            <input type="file" name="file" id="file">
+                                            @* <button type="button" id="uploadBtn" class="btn btn-success">Upload</button>*@
+                                            @*</form>*@
+                                            @* <input type="file" name="httpPostedFileBase" id="file" class="form-control" />*@
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12" style="text-align: start;">
                                     <div class="form-group">
                                         <div class="">
-                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-                            
-                           
-                            
-                            
-                            
-                            
-                            
+
                         </div>
 
                     </div>
@@ -201,11 +215,14 @@
                 </div>
             </div>
         </div>
+    </div>
+    
+</form>
 
-    }
+        }
 
 
-    <script>
+        <script>
 
         $(document).ready(function () {
 
@@ -219,5 +236,28 @@
 
         });
 
-    </script>
- 
+        </script>
+
+        <script>
+            $(function () {
+                $('#uploadBtn').click(function () {
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+
+                    $.ajax({
+                        url: '/Admin/UploadFile',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function (data) {
+                          //  alert('File uploaded successfully!');
+                            // Save file path in database
+                        },
+                        error: function () {
+                            alert('Error uploading file!');
+                        }
+                    });
+                });
+            });
+        </script>

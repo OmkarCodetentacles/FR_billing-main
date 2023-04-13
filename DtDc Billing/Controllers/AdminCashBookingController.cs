@@ -24,7 +24,7 @@ namespace DtDc_Billing.Controllers
     //[SessionUserModule]
     public class AdminCashBookingController : Controller
     {
-        db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         //Add_History add_History = new Add_History();
         // GET: Booking

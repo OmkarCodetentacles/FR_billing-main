@@ -19,6 +19,8 @@ namespace DtDc_Billing.Entity_FR
         {
             this.ReplyAdmins = new HashSet<ReplyAdmin>();
             this.ReplyAdmins1 = new HashSet<ReplyAdmin>();
+            this.ReplyAdmins2 = new HashSet<ReplyAdmin>();
+            this.ReplyAdmins3 = new HashSet<ReplyAdmin>();
         }
     
         public long Complaint_ID { get; set; }
@@ -33,5 +35,9 @@ namespace DtDc_Billing.Entity_FR
         public virtual ICollection<ReplyAdmin> ReplyAdmins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReplyAdmin> ReplyAdmins1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReplyAdmin> ReplyAdmins2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReplyAdmin> ReplyAdmins3 { get; set; }
     }
 }

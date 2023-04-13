@@ -19,9 +19,14 @@ namespace DtDc_Billing.Entity_FR
         {
             this.Nondoxes = new HashSet<Nondox>();
             this.Nondoxes1 = new HashSet<Nondox>();
+            this.Nondoxes2 = new HashSet<Nondox>();
+            this.Nondoxes3 = new HashSet<Nondox>();
             this.Priorities = new HashSet<Priority>();
+            this.Priorities1 = new HashSet<Priority>();
             this.Ratems = new HashSet<Ratem>();
             this.Ratems1 = new HashSet<Ratem>();
+            this.Ratems2 = new HashSet<Ratem>();
+            this.Ratems3 = new HashSet<Ratem>();
             this.dtdcPlus = new HashSet<dtdcPlu>();
             this.Dtdc_Ptp = new HashSet<Dtdc_Ptp>();
             this.express_cargo = new HashSet<express_cargo>();
@@ -61,11 +66,22 @@ namespace DtDc_Billing.Entity_FR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nondox> Nondoxes1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Nondox> Nondoxes2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Nondox> Nondoxes3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Priority> Priorities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Priority> Priorities1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ratem> Ratems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ratem> Ratems1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ratem> Ratems2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ratem> Ratems3 { get; set; }
+        public virtual Franchisee Franchisee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dtdcPlu> dtdcPlus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,6 +90,5 @@ namespace DtDc_Billing.Entity_FR
         public virtual ICollection<express_cargo> express_cargo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
-        public virtual Franchisee Franchisee { get; set; }
     }
 }

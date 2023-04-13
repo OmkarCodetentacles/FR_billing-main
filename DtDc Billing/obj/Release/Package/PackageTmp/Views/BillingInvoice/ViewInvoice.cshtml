@@ -13,178 +13,181 @@
 
 
 
-<section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h4>View Invoice</h4>
-                </div>
+<section class=" content-wrapper">
+    <div class="container" >
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-info">
+                    <div class="box-header with-border " style="display:flex" >
+                        <h4>View Invoice</h4>
+                    </div>
 
 
-                <div class="box-body">
-                    @using (Html.BeginForm())
-                    {
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="row">
+                    <div class="box-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="row">
 
-                                        <div class="col-sm-12">
+                                            <div class="col-sm-12">
 
-                                            @if (ViewBag.fromdate != null)
-                                            {
-                                                <div class="col-md-4">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                                                @if (ViewBag.fromdate != null)
+                                                {
+                                                    <div class="col-md-4">
+                                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-4">
+
+                                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.todaydate.ToString("dd-MM-yyyy")" placeholder="From Date" type="text">
+                                                    </div>
+                                                }
+
+                                                @if (ViewBag.todate != null)
+                                                {
+                                                    <div class="col-md-4">
+
+                                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                                    </div>
+                                                }
+
+                                                else
+                                                {
+                                                    <div class="col-md-4">
+
+                                                        <input style="margin-right:50px" name="ToDatetime" value="@ViewBag.todaydate.ToString("dd-MM-yyyy")" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                                    </div>
+                                                }
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-block btn-primary sbmt">Search</button>
+                                                    </div>
                                                 </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-4">
 
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.todaydate.ToString("dd-MM-yyyy")" placeholder="From Date" type="text">
-                                                </div>
-                                            }
-
-                                            @if (ViewBag.todate != null)
-                                            {
-                                                <div class="col-md-4">
-
-                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-
-                                            else
-                                            {
-                                                <div class="col-md-4">
-
-                                                    <input style="margin-right:50px" name="ToDatetime" value="@ViewBag.todaydate.ToString("dd-MM-yyyy")" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-                                            <div class="col-md-2">
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-block btn-primary sbmt">Search</button>
-                                                </div>
                                             </div>
 
                                         </div>
-
                                     </div>
                                 </div>
+
                             </div>
-
-                        </div>
-                    }
+                        }
 
 
-                </div>
+                    </div>
 
 
-                <div class="form-horizontal">
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-striped table-bordered table-responsive height-450">
-                            <tr>
-                                <th></th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.invoiceno)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Customer_Id)
-                                </th>
-
-                                <th>
-                                    @Html.DisplayNameFor(model => model.invoicedate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodfrom)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodto)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.total)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.fullsurchargetax)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.servicetax)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.servicetaxtotal)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.othercharge)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.netamount)
-                                </th>
-
-
-                            </tr>
-
-                            @foreach (var item in Model)
-                            {
+                    <div class="form-horizontal">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table class="table table-striped table-bordered table-responsive height-450">
                                 <tr>
-                                    <td>
-                                        <a href="@Url.Action("Download","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
-                                    </td>
+                                    <th></th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoiceno)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Customer_Id)
+                                    </th>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.invoiceno)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Customer_Id)
-                                    </td>
-                                    <td>
-                                        @item.invoicedate.Value.ToString("dd/MM/yyyy")
-                                    </td>
-                                    <td>
-                                       @item.periodfrom.Value.ToString("dd/MM/yyyy")
-                                    </td>
-                                    <td>
-                                      @item.periodto.Value.ToString("dd/MM/yyyy")
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.total)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.servicetax)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.othercharge)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.netamount)
-                                    </td>
-
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoicedate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodfrom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.othercharge)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.netamount)
+                                    </th>
 
 
                                 </tr>
-                            }
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@Url.Action("Download","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.invoiceno)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer_Id)
+                                        </td>
+                                        <td>
+                                            @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @item.periodto.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.total)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.othercharge)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.netamount)
+                                        </td>
 
 
-                        </table>
+
+                                    </tr>
+                                }
+
+
+                            </table>
+                        </div>
                     </div>
+                    <!-- /.box-body -->
                 </div>
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
+            <!-- /.col -->
         </div>
-        <!-- /.col -->
     </div>
     <!-- /.row -->
 </section>

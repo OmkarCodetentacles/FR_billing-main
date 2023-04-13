@@ -19,12 +19,19 @@ namespace DtDc_Billing.Entity_FR
         {
             this.Dtdc_Ptp = new HashSet<Dtdc_Ptp>();
             this.Dtdc_Ptp1 = new HashSet<Dtdc_Ptp>();
+            this.Dtdc_Ptp2 = new HashSet<Dtdc_Ptp>();
+            this.Dtdc_Ptp3 = new HashSet<Dtdc_Ptp>();
             this.dtdcPlus = new HashSet<dtdcPlu>();
             this.dtdcPlus1 = new HashSet<dtdcPlu>();
+            this.dtdcPlus2 = new HashSet<dtdcPlu>();
+            this.dtdcPlus3 = new HashSet<dtdcPlu>();
             this.express_cargo = new HashSet<express_cargo>();
             this.express_cargo1 = new HashSet<express_cargo>();
+            this.express_cargo2 = new HashSet<express_cargo>();
+            this.express_cargo3 = new HashSet<express_cargo>();
             this.Nondoxes = new HashSet<Nondox>();
             this.Priorities = new HashSet<Priority>();
+            this.Priorities1 = new HashSet<Priority>();
             this.Ratems = new HashSet<Ratem>();
         }
     
@@ -43,19 +50,33 @@ namespace DtDc_Billing.Entity_FR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dtdc_Ptp> Dtdc_Ptp1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dtdc_Ptp> Dtdc_Ptp2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dtdc_Ptp> Dtdc_Ptp3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dtdcPlu> dtdcPlus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<dtdcPlu> dtdcPlus1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<dtdcPlu> dtdcPlus2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<dtdcPlu> dtdcPlus3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<express_cargo> express_cargo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<express_cargo> express_cargo1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<express_cargo> express_cargo2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<express_cargo> express_cargo3 { get; set; }
+        public virtual Franchisee Franchisee { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nondox> Nondoxes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Priority> Priorities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Priority> Priorities1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ratem> Ratems { get; set; }
-        public virtual Franchisee Franchisee { get; set; }
     }
 }

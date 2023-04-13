@@ -1,0 +1,112 @@
+﻿@model DtDc_Billing.Entity_FR.Cash
+
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" id="successmsg">
+        <strong>Success! </strong>@TempData["Message"]
+    </div>
+}
+
+@using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" class="Firm_Id" name="Firm_Id">
+        <div class="form-group">
+            <label class="col-md-4">Amount</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.inserteddate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.inserteddate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.inserteddate, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <label class="col-md-4">Date</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+                @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
+                @*@Html.TextBoxFor(model => model.tempinserteddate, "{ 0:dd / MM / yyyy}")
+                    @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })*@
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Tds Amount</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.C_Tds_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.C_Tds_Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Total Amt</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.C_Total_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.C_Total_Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4">Invoice No</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" value="Save" class="btn btn-success pull-right " />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<script>
+
+    function createsuccess() {
+        $('#Amount').removeAttr('value');
+        $('#tempinserteddate').removeAttr('value');
+        $('#C_Tds_Amount').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
+
+
+    }
+
+    $(document).ready(function () {
+
+        $("#Amount,#C_Tds_Amount").keyup(function () {
+
+            var Amount = $('#Amount').val();
+
+            var C_Tds_Amount = $('#C_Tds_Amount').val();
+
+
+            var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+            $('#C_Total_Amount').val(addition);
+
+        });
+
+    });
+</script>

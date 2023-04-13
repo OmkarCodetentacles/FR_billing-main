@@ -23,7 +23,7 @@ namespace DtDc_Billing.Controllers
     [OutputCache(CacheProfile = "Cachefast")]
     public class BookingController : Controller
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Booking
         public ActionResult ConsignMent()
         {

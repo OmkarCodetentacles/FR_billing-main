@@ -1,5 +1,13 @@
 ﻿@model DtDc_Billing.Entity_FR.Cash
 
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" id="successmsg">
+        <strong>Success! </strong>@TempData["Message"]
+    </div>
+}
+
 @using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
 {
     @Html.AntiForgeryToken()
@@ -32,7 +40,7 @@
                 @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
                 @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
                 @*@Html.TextBoxFor(model => model.tempinserteddate, "{ 0:dd / MM / yyyy}")
-                @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })*@
+                    @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })*@
 
             </div>
         </div>
@@ -74,9 +82,15 @@
 
 <script>
 
-    function createsuccess(data) {
-        if (data.RedirectUrl)
-            window.location.href = data.RedirectUrl;
+    function createsuccess() {
+        $('#Amount').removeAttr('value');
+        $('#tempinserteddate').removeAttr('value');
+        $('#C_Tds_Amount').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
+       
+            
     }
 
     $(document).ready(function () {

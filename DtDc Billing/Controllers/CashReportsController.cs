@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.Entity_FR;
+﻿using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Newtonsoft.Json;
 using System;
@@ -19,7 +20,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class CashReportsController : Controller
     {
-        db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Reports
         [SessionTimeout]
         public ActionResult ReceiptReports()
@@ -1168,7 +1169,7 @@ namespace DtDc_Billing.Controllers
         }
 
 
-        public void ExportToExcelWallet(List<WalletPoint> rc)
+        public void ExportToExcelWallet(List<WalletPointModel> rc)
         {
             //string pfcode = Session["pfCode"].ToString();
 
@@ -1479,7 +1480,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         public ActionResult WalletReportsAdmin()
         {
 
-            List<WalletPoint> list =
+            List<WalletPointModel> list =
        (from student in db.WalletPoints       
        select new 
        {
@@ -1498,12 +1499,12 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                     where od.sender_phone == student.MobileNo
                     select od.Pf_Code).FirstOrDefault(),
 
-       }).AsEnumerable().Select(x => new WalletPoint
+       }).AsEnumerable().Select(x => new WalletPointModel
        {
            MobileNo = x.MobileNo,
            Wallet_Money = x.Wallet_Money,
            Datetime_Wa = x.Datetime_Wa,
-           Redeemed = x.Redeemed,
+           Redeemed = x.Redeemed ?? 0,
            Name=x.Name,
            PFCode=x.PFCode
        }).ToList(); 
@@ -1520,7 +1521,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         public ActionResult WalletReportsAdmin(string demo)
         {
 
-            List<WalletPoint> list =
+            List<WalletPointModel> list =
        (from student in db.WalletPoints
         select new
         {
@@ -1539,12 +1540,12 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                       where od.sender_phone == student.MobileNo
                       select od.Pf_Code).FirstOrDefault(),
 
-        }).AsEnumerable().Select(x => new WalletPoint
+        }).AsEnumerable().Select(x => new WalletPointModel
         {
             MobileNo = x.MobileNo,
             Wallet_Money = x.Wallet_Money,
             Datetime_Wa = x.Datetime_Wa,
-            Redeemed = x.Redeemed,
+            Redeemed = x.Redeemed ?? 0,
             Name = x.Name,
             PFCode = x.PFCode
         }).ToList();
