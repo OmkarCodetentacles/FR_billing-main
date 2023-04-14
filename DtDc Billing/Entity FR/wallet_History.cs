@@ -24,7 +24,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<System.DateTime> datetime { get; set; }
         public string mobile_no { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Franchisee Franchisee { get; set; }
+        public virtual User User { get; set; }
     }
 }

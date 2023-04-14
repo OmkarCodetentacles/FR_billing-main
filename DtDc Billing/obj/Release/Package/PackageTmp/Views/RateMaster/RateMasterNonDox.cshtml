@@ -6,238 +6,243 @@
 <!-- Content Header (Page header) -->
 <!-- Main content -->
 
-<div class="col-sm-12 text-center">
-    <h4>Air Rate Cargo</h4>
-</div>
+<section>
 
-    @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2" }))
-    {
-
-        <input type="hidden" value="@ViewBag.companyid" name="comppid">
-
-
-        foreach (var item in Model)
-        {
-            if (item.NoOfSlabN != null)
-            {
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-            }
-            else
-            {
-                <div class="col-sm-6">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                        </div>
-
-                    </div>
-                </div>
-                break;
-
-
-            }
-
-        }
-
-
-
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-        <table class="table table-bordered table-striped" id="NonDoxTableAir">
-            <thead>
-                <tr class="upto-input">
-                    <th>
-                        @*<h4>Sectors</h4>*@
-                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                    </th>
-                    <th>
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl1" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab2Air">
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl2" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab3Air">
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl3" />
-                        <label>Kg</label>
-                    </th>
-                    <th>
-                        <label>Addtional</label>
-                        <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl4" />
-                        <label>Kg</label>
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td class="sectors">
-                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Aslab1)
-                        </td>
-                        <td class="slab2Air">
-                            @Html.EditorFor(modelItem => item.Aslab2)
-                        </td>
-                        <td class="slab3Air">
-                            @Html.EditorFor(modelItem => item.Aslab3)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Aslab4)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Non_ID)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Sector_Id)
-                        </td>
-
-
-                    </tr>
-                }
-            </tbody>
-
-        </table>
-
+    <div class="container">
         <div class="col-sm-12 text-center">
-            <h4>Rate Surface Cargo</h4>
+            <h4>Air Rate Cargo</h4>
         </div>
 
-
-        foreach (var item in Model)
+        @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2" }))
         {
-            if (item.NoOfSlabS != null)
+
+            <input type="hidden" value="@ViewBag.companyid" name="comppid">
+
+
+            foreach (var item in Model)
             {
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-            }
-            else
-            {
-
-                <div class="col-sm-6">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-
-            }
-
-        }
-
-        <table class="table table-bordered table-striped" id="NonDoxTableSirf">
-            <thead>
-                <tr class="upto-input">
-                    <th>
-                        @*<h4>Sectors</h4>*@
-                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                    </th>
-                    <th>
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl1" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab2Sirf">
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl2" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab3Sirf">
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl3" />
-                        <label>Kg</label>
-                    </th>
-                    <th>
-                        <label>
-                            Addtional
-                        </label>
-                        <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl4" />
-                        <label>Kg</label>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+                if (item.NoOfSlabN != null)
                 {
-                    <tr>
-                        <td class="sectors">
-                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Sslab1)
-                        </td>
-                        <td class="slab2Sirf">
-                            @Html.EditorFor(modelItem => item.Sslab2)
-                        </td>
-                        <td class="slab3Sirf">
-                            @Html.EditorFor(modelItem => item.Sslab3)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.Sslab4)
-                        </td>
-                        @*<td class="hidden">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+                else
+                {
+                    <div class="col-sm-6">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    break;
+
+
+                }
+
+            }
+
+
+
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <table class="table table-bordered table-striped" id="NonDoxTableAir">
+                <thead>
+                    <tr class="upto-input">
+                        <th>
+                            @*<h4>Sectors</h4>*@
+                            @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                        </th>
+                        <th>
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl1" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab2Air">
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl2" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab3Air">
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl3" />
+                            <label>Kg</label>
+                        </th>
+                        <th>
+                            <label>Addtional</label>
+                            <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl4" />
+                            <label>Kg</label>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="sectors">
+                                @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.Aslab1)
+                            </td>
+                            <td class="slab2Air">
+                                @Html.EditorFor(modelItem => item.Aslab2)
+                            </td>
+                            <td class="slab3Air">
+                                @Html.EditorFor(modelItem => item.Aslab3)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.Aslab4)
+                            </td>
+                            <td class="hidden">
+                                @Html.HiddenFor(modelItem => item.Non_ID)
+                            </td>
+                            <td class="hidden">
+                                @Html.HiddenFor(modelItem => item.Sector_Id)
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+            <div class="col-sm-12 text-center">
+                <h4>Rate Surface Cargo</h4>
+            </div>
+
+
+            foreach (var item in Model)
+            {
+                if (item.NoOfSlabS != null)
+                {
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+                else
+                {
+
+                    <div class="col-sm-6">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+
+                }
+
+            }
+
+            <table class="table table-bordered table-striped" id="NonDoxTableSirf">
+                <thead>
+                    <tr class="upto-input">
+                        <th>
+                            @*<h4>Sectors</h4>*@
+                            @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                        </th>
+                        <th>
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl1" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab2Sirf">
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl2" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab3Sirf">
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl3" />
+                            <label>Kg</label>
+                        </th>
+                        <th>
+                            <label>
+                                Addtional
+                            </label>
+                            <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl4" />
+                            <label>Kg</label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="sectors">
+                                @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.Sslab1)
+                            </td>
+                            <td class="slab2Sirf">
+                                @Html.EditorFor(modelItem => item.Sslab2)
+                            </td>
+                            <td class="slab3Sirf">
+                                @Html.EditorFor(modelItem => item.Sslab3)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.Sslab4)
+                            </td>
+                            @*<td class="hidden">
                                 @Html.HiddenFor(modelItem => item.Non_ID)
                             </td>
                             <td class="hidden">
                                 @Html.HiddenFor(modelItem => item.Sector_Id)
                             </td>*@
-                    </tr>
-                }
-            </tbody>
+                        </tr>
+                    }
+                </tbody>
 
-        </table>
-        <div class="col-sm-12">
-            <input class="btn bg-maroon pull-right" type="submit" name="submit" value="Save" />
-        </div>
-    }
+            </table>
+            <div class="col-sm-12">
+                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+            </div>
+        }
+    </div>
+</section>
     
     <!-- /.box-body -->
     @if (ViewBag.Message != null)

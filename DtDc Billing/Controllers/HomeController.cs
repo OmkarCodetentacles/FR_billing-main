@@ -27,7 +27,7 @@ namespace DtDc_Billing.Controllers
   
     public class HomeController : Controller
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         //sLogger logger = LogManager.GetCurrentClassLogger();
         //[OutputCache(CacheProfile = "Cachefast")]   
         public ActionResult Index()
@@ -320,7 +320,7 @@ namespace DtDc_Billing.Controllers
                     Directory.CreateDirectory(backupDestination);
                 }
                 string fileName = dbNAme + " of " + DateTime.Now.ToString("yyyy-MM-dd@HH_mm") + ".bak";
-                //string conString = ConfigurationManager.ConnectionStrings["db_a71c08_elitetokenEntities"].ConnectionString;
+                //string conString = ConfigurationManager.ConnectionStrings["db_a92afa_frbillingEntities"].ConnectionString;
 
                 // string conString = @"Server=sql5104.site4now.net;database=db_a71c08_elitetoken;user id=db_a71c08_elitetoken_admin;password=Test@123;Integrated Security=true;Connection Timeout=60;Connection Lifetime=0;Min Pool Size=0;Max Pool Size=100;Pooling=true";
                 string conString = @"Data Source=sql5104.site4now.net;Initial Catalog=db_a71c08_elitetoken; User ID=db_a71c08_elitetoken_admin; Password=Test@123; Connection Timeout=60;Connection Lifetime=0;Min Pool Size=0;Max Pool Size=100;Pooling=true";

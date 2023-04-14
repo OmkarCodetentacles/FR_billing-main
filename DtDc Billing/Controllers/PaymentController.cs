@@ -19,7 +19,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class PaymentController : Controller
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Payment
         public ActionResult InvoicePaymentList()
         {
@@ -50,7 +50,6 @@ namespace DtDc_Billing.Controllers
 
             var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
             {
-                invoiceno = x.invoiceno,
                 total = x.total,
                 fullsurchargetax = x.fullsurchargetax,
                 fullsurchargetaxtotal = x.fullsurchargetaxtotal,
@@ -58,15 +57,12 @@ namespace DtDc_Billing.Controllers
                 servicetaxtotal = x.servicetaxtotal,
                 othercharge = x.othercharge,
                 netamount = x.netamount,
-                Firm_Id = x.Firm_Id,
                 Customer_Id = x.Customer_Id,
                 paid = x.paid ?? 0,
-                tempInvoicedate = x.tempInvoicedate,
                 Royalty_charges = x.Royalty_charges,
                 Docket_charges = x.Docket_charges,
-                Balance = Convert.ToInt32(x.netamount) - Convert.ToInt32((x.paid ?? 0))
-                // discount = x.discount,
-                // totalCount = x.totalCount ?? 0
+                Balance = x.Balance ?? 0
+                
             }).ToList();
 
 

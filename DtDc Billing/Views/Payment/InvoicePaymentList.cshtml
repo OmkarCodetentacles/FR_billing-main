@@ -11,7 +11,11 @@
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 <!-- Main content -->
-
+<style>
+    .padding-left-0{
+        padding-left:0
+    }
+</style>
 <div class="content-wrapper">
     <section>
 
@@ -107,177 +111,147 @@
             <div class="box-header with-border">
                 <h4>Add Payment</h4>
             </div><!-- /.box-header -->
-            @using (Html.BeginForm())
-            {
-                
-                @*<br /><br />
 
-            <br /><br />*@
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
 
-            }
+                @using (Html.BeginForm())
+                {
 
-
-        <div class="box-body">
-            <!-- column -->
-            <!-- Horizontal Form -->
-            <div class="row">
-                <div class="col-md-3">
                     <div class="form-group">
+                        <div class="col-sm-3 padding-left-0">
+                            <label>Payment Status</label>
 
-                        <label>Payment Status</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="All" selected="selected">All</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Unpaid">Unpaid</option>
 
-                        <select name="status" id="status" class="form-control">
-                            <option value="All">All</option>
-                            <option value="Paid">Paid</option>
-                            <option value="Unpaid">Unpaid</option>
+                            </select>
 
-                        </select>
-
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group" style="margin-top:25px">
+                    <div class="col-md-3">
+                        <div class="form-group">
                         <label></label>
-                        <input type="submit" class="btn btn-primary" name="Show" value="Show" />
+                        <input type="submit" class="btn btn-primary" name="Show" value="Show" style="margin-top:25px"/>
                     </div>
+                        </div>
+
+                    <br /><br />
+
+                    <br /><br />
+
+                }
+
+
+                
+
+
+                    <!-- column -->
+                    <!-- Horizontal Form -->
+
+                    <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    Company Name
+                                </th>
+
+                                <th>Sub Total</th>
+                                <th>
+                                    FSC
+                                </th>
+                                <th>
+                                    FSC Total
+                                </th>
+                                <th>
+                                    GST
+                                </th>
+                                <th>
+                                    GST Total
+                                </th>
+                                <th>
+                                    Net Amount
+                                </th>
+                                <th>Paid</th>
+                                <th>Balance</th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.Balance == 0) //
+                                        {
+                                            <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default">
+                                                Add Payments
+                                            </button>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customer_Id)
+                                    </td>
+
+                                    <td>
+                                        @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.servicetax)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                    </td>
+
+                                    <td>
+                                        @item.netamount.Value.ToString("##")
+                                    </td>
+                                    <td>
+                                        @(item.paid)
+                                    </td>
+                                    <td>
+                                        @(item.Balance)
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-default" id="clickme">
+                                            View Invoice
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
                 </div>
+                    </div>
+
+
             </div>
 
-            <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>
-                            Customer_Id
-                        </th>
 
-                        <th>
-                            invoiceno
-
-                        </th>
-                        <th>
-                            Invoicedate
-                        </th>
-                        @*<th>
-                        @Html.DisplayNameFor(model => model.periodfrom)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.periodto)
-                    </th>*@
-                        @*<th>
-                        @Html.DisplayNameFor(model => model.total)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Royalty_charges)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Docket_charges)
-                    </th>*@
-                        <th>Sub Total</th>
-                        <th>
-                            FSC
-                        </th>
-                        <th>
-                            FSC Total
-                        </th>
-                        <th>
-                            GST
-                        </th>
-                        <th>
-                            GST Total
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.netamount)
-                        </th>
-                        <th>Paid</th>
-                        <th>Balance</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @if (item.Balance == 0) //
-                                {
-                                    <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
-                                }
-                                else
-                                {
-                                    <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default">
-                                        Add Payments
-                                    </button>
-                                }
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Customer_Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.invoiceno)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.tempInvoicedate)
-                            </td>
-                            @*<td>
-                            @Html.DisplayFor(modelItem => item.Tempdatefrom)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TempdateTo)
-                        </td>*@
-                            @*<td>
-                            @Html.DisplayFor(modelItem => item.total)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Royalty_charges)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Docket_charges)
-                        </td>*@
-                            <td>
-                                @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.servicetax)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                            </td>
-
-                            <td>
-                                @item.netamount.Value.ToString("##")
-                            </td>
-                            <td>
-                                @(item.paid)
-                            </td>
-                            <td>
-                                @(item.Balance)
-                            </td>
-
-
-
-
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <!-- /.box -->
+            <!--/.col (right) -->
+            <!-- /.row -->
         </div>
-
-
-        </div>
-        <!-- /.box -->
-        <!--/.col (right) -->
-        <!-- /.row -->
-    </section>
+</section>
     <!-- /.content -->
 
 </div>
@@ -342,6 +316,10 @@
             display: inline-block;
             padding-right: 20px;
         }
+
+        .invoicetable {
+            display: none !important;
+        }
     </style>
 
 
@@ -399,5 +377,6 @@
             });
         </script>
     }
+
 
 

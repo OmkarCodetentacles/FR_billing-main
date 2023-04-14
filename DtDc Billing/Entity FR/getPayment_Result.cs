@@ -13,12 +13,6 @@ namespace DtDc_Billing.Entity_FR
     
     public partial class getPayment_Result
     {
-        public Nullable<double> Column1 { get; set; }
-        public Nullable<double> Column2 { get; set; }
-        public Nullable<double> Column3 { get; set; }
-        public string Customer_Id { get; set; }
-        public string invoiceno { get; set; }
-        public Nullable<double> total { get; set; }
         public Nullable<double> fullsurchargetax { get; set; }
         public Nullable<double> fullsurchargetaxtotal { get; set; }
         public Nullable<double> servicetax { get; set; }
@@ -26,12 +20,10 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> othercharge { get; set; }
         public Nullable<double> netamount { get; set; }
         public Nullable<double> paid { get; set; }
+        public Nullable<double> Balance { get; set; }
+        public Nullable<double> total { get; set; }
         public Nullable<double> Royalty_charges { get; set; }
         public Nullable<double> Docket_charges { get; set; }
-        public string TempdateTo { get; set; }
-        public string tempInvoicedate { get; set; }
-        public string Address { get; set; }
-        public string Invoice_Lable { get; set; }
-        public Nullable<long> Firm_Id { get; set; }
+        public string Customer_Id { get; set; }
     }
 }

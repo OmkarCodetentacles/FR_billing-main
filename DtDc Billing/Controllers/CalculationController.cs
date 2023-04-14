@@ -11,7 +11,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class CalculationController : Controller
     {
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Calculation
         [HttpPost]
         public ActionResult CalulateAmt(string Consignment, string custid, string Pincode, string mode, string qty, double charweight, string type)

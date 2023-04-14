@@ -5,48 +5,53 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<h2>list</h2>
+<section>
+    <div class="container">
+        <h2>list</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Amount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.inserteddate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tempinserteddate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Invoiceno)
-        </th>
-        <th></th>
-    </tr>
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.inserteddate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tempinserteddate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Invoiceno)
+                </th>
+                <th></th>
+            </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.inserteddate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.tempinserteddate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Invoiceno)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Cash_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Cash_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Cash_id })
-        </td>
-    </tr>
-}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.inserteddate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tempinserteddate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoiceno)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Cash_id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Cash_id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Cash_id })
+                    </td>
+                </tr>
+            }
 
-</table>
+        </table>
+    </div>
+</section>

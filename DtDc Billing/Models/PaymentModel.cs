@@ -19,7 +19,7 @@ namespace DtDc_Billing.Models
         public Nullable<double> netamount { get; set; }    
         public Nullable<double> paid { get; set; }
         public string discount { get; set; }
-        public int Balance { get; set; }
+        public double Balance { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public string tempInvoicedate { get; set; }
         public Nullable<double> Royalty_charges { get; set; }

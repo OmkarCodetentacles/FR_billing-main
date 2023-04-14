@@ -26,5 +26,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<System.DateTime> tempneftdate { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }
+        public virtual FirmDetail FirmDetail1 { get; set; }
     }
 }

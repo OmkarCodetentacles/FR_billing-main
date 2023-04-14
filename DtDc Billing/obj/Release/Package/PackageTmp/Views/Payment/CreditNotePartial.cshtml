@@ -1,65 +1,120 @@
 ﻿@model DtDc_Billing.Entity_FR.CreditNote
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" id="successmsg">
+        <strong>Success! </strong>@TempData["Message"]
+    </div>
+}
+
+
 @using (Ajax.BeginForm("CreditNote", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CreditP", OnSuccess = "createsuccess" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+   <section>
+       <div class="container">
+           <div class="form-horizontal">
 
-    @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <input type="hidden" class="Firm_Id" name="Firm_Id">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        <label class="col-md-4">Amount</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Cr_Amount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Cr_Amount, "", new { @class = "text-danger" })
-        </div>
-    </div>
+               @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+               <input type="hidden" class="Firm_Id" name="Firm_Id">
+               <hr />
+               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+               <div class="form-group">
+                   <label class="col-md-4">Amount</label>
+                   <div class="col-md-8">
+                       @Html.EditorFor(model => model.Cr_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                       @Html.ValidationMessageFor(model => model.Cr_Amount, "", new { @class = "text-danger" })
+                   </div>
+               </div>
 
-    <div class="form-group">
-        <label class="col-md-4">Date</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
-            @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
-        </div>
-    </div>
+               <div class="form-group">
+                   <label class="col-md-4">Date</label>
+                   <div class="col-md-8">
+                       @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+                       @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+                   </div>
+               </div>
 
-    <div class="form-group">
-        <label class="col-md-4">Invoice No</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
-            @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
-        </div>
-    </div>
+               <div class="form-group">
+                   <label class="col-md-4">Invoice No</label>
+                   <div class="col-md-8">
+                       @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+                       @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+                   </div>
+               </div>
 
-    <div class="form-group">
-        <div class="col-md-12">
-            <input type="submit" value="Save & Print" class="btn btn-success pull-right " />
-        </div>
-    </div>
-</div>
+               <div class="form-group">
+                   <div class="col-md-12">
+                       <input type="submit" value="Save & Print" class="btn btn-success pull-right " />
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 }
 
 
 <script>
 
-    function createsuccess(data) {
-        if (data.RedirectUrl)
-            window.location.href = data.RedirectUrl;
+    function createsuccess() {
+        $('#Cr_Amount').removeAttr('value');
+        $('#tempinserteddate').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
     }
 </script>
 
 <script>
 
     $("#CreditP").submit(function (event) {
-       
+
         event.preventDefault();
 
         $("#overlayBlock").show();
     });
 
-   
+
 </script>
+
+@if (TempData["success"] != null)
+{
+    <script>
+        $("#overlayBlock").show();
+    /**/
+
+
+
+        /**/
+        var myParamether = '@TempData["Customer_Id"]';
+    var firmid = '@TempData["Firmid"]'
+    var base_url = window.location.origin;
+
+        /**/
+        $("#overlayBlock").hide();
+        var win = window.open(base_url + '/PDF/' + myParamether + '_CreditNoteReceipt.pdf','_blank');
+
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+  //  window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
+        //$.get("/Invoice/SavepdInvoice", { myParameter: myParamether, firmid:firmid }, function (data) {
+        //    $('#saveinv').attr('href', "http://admin.infantjesussolutions.in/PDF/" + data);
+
+
+
+
+        //});
+
+    </script>
+
+
+
+
+}

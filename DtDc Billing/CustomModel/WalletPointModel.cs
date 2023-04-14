@@ -11,7 +11,7 @@ namespace DtDc_Billing.CustomModel
         public string MobileNo { get; set; }
         public Nullable<float> Wallet_Money { get; set; }
         public Nullable<System.DateTime> Datetime_Wa { get; set; }
-        public double Redeemed { get; set; }
+        public float Redeemed { get; set; }
         public string Name { get; set; }
         public string PFCode { get; set; }
     }

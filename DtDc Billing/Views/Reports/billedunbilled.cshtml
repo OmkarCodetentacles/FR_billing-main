@@ -13,169 +13,187 @@
 
 
 <div class="content-wrapper">
-    <section class="conatiner">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h4>Billed Unbilled List</h4>
-                    </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h4>Billed Unbilled List</h4>
+        </div>
+        <div class="box-body">
+
+            <div class="row">
+                <div class="col-sm-12">
 
                     <div class="form-horizontal">
-                        <div class="box-body">
-
-                            <div class="row">
-                                <div class="">
-                                    <div class="form-group">
 
 
+                        <div class="row">
+                            <div class="">
+                                <div class="form-group">
 
-                                        @using (Html.BeginForm())
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        if (ViewBag.fromdate != null)
                                         {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date</label>
 
-                                            if (ViewBag.fromdate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
                                                 </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
-                                                </div>
-                                            }
-
-                                            if (ViewBag.todate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-
-
-
-                                            @*<div class="col-md-2">
-                                                <div class=" pf-code">
-                                                    @Html.DropDownList("PfCode")
-                                                </div>
-                                                </div>*@
-                                            <div class="col-md-2">
-                                                <div class=" pf-code">
-                                                    @Html.DropDownList("status", new List<SelectListItem>
-        {
-            new SelectListItem{ Text="Billed", Value = "Billed" },
-            new SelectListItem{ Text="Unbilled", Value = "Unbilled" },
-            new SelectListItem{ Text="Both", Value = "Both" },
-         })
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" />
-                                            </div>
-
-                                            <div class="col-md-2 pull-right">
-                                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" />
                                             </div>
                                         }
-
+                                        else
+                                        {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <input name="Fromdatetime" class="form-control" id="datepicker"  type="text">
                                     </div>
+                                    </div>
+                                    }
+
+                                    if (ViewBag.todate != null)
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control"  id="datepicker1" type="text">
+                                    </div>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                    </div>
+                                    </div>
+                                    }
+
+
+
+                                    @*<div class="col-md-2">
+        <div class=" pf-code">
+            @Html.DropDownList("PfCode")
+        </div>
+        </div>*@
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label></label>
+                                        
+                                        <div class=" pf-code">
+                                            @Html.DropDownList("status", new List<SelectListItem>
+{
+    new SelectListItem{ Text="Billed", Value = "Billed" },
+    new SelectListItem{ Text="Unbilled", Value = "Unbilled" },
+    new SelectListItem{ Text="Both", Value = "Both" },
+ })
+
+                                        </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-2" style="margin-top:25px">
+                                        <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" />
+                                    </div>
+
+                                    <div class="col-md-2 pull-right" style="margin-top:25px">
+                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" />
+                                    </div>
+                                    }
+
                                 </div>
                             </div>
-
-
-                            <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
-                                <thead>
-
-                                    <tr>
-                                        <th>
-                                            Sr No
-                                        </th>
-                                        <th>
-                                            Consignment no
-
-                                        </th>
-                                        <th>
-                                            Pincode
-                                        </th>
-                                        <th>
-                                            Booking Date
-                                        </th>
-
-                                        <th>
-                                            Company Id
-                                        </th>
-                                        <th>
-                                            Weight
-                                        </th>
-                                        <th>
-                                            Quantity
-                                        </th>
-                                        <th>
-                                            Amount
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{ int i = 1;
-                                        foreach (var item in Model)
-                                        {
-                                            <tr>
-
-                                                <td>
-                                                    @i
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Consignment_no)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pincode)
-                                                </td>
-                                                <td>
-                                                    @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                                </td>
-
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Customer_Id)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Actual_weight)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Quanntity)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Amount)
-                                                </td>
-                                            </tr>
-
-                                            i++;
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-
-                            @if (ViewBag.totalamt != null)
-                            {
-                                <p> Total Amount : @ViewBag.totalamt </p>
-
-                            }
-
-
                         </div>
+
+
+                        <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                            <thead>
+
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        Consignment no
+
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+
+                                    <th>
+                                        Company Id
+                                    </th>
+                                    <th>
+                                        Weight
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pincode)
+                                            </td>
+                                            <td>
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Actual_weight)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Quanntity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        @if (ViewBag.totalamt != null)
+                        {
+                            <p> Total Amount : @ViewBag.totalamt </p>
+
+                        }
+
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
     </div>
+
+</div>
     <script>
     $(document).ready(function () {
 

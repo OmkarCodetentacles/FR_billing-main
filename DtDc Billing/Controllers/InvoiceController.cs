@@ -23,7 +23,7 @@ namespace DtDc_Billing.Controllers
     public class InvoiceController : Controller
     {
 
-        private db_a71c08_elitetokenEntities db = new db_a71c08_elitetokenEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
        
       
        // string invstart = "INV/2022-23/";
@@ -475,7 +475,7 @@ Select(e => new
                     ViewBag.success = "Invoice Added SuccessFully";
 
                     /////////////////// update consignment///////////////////////
-                    using (var db = new db_a71c08_elitetokenEntities())
+                    using (var db = new db_a92afa_frbillingEntities())
                     {
                         var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno).ToList();
 
@@ -562,7 +562,7 @@ Select(e => new
 
 
                     /////////////////// update consignment///////////////////////
-                    using (var db = new db_a71c08_elitetokenEntities())
+                    using (var db = new db_a92afa_frbillingEntities())
                     {
                         var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno).ToList();
 
@@ -1530,7 +1530,7 @@ Select(e => new
 
 
                         /****************For Billed unbilled ******************/
-                        using (var db = new db_a71c08_elitetokenEntities())
+                        using (var db = new db_a92afa_frbillingEntities())
                         {
                             var Companies1 = db.Transactions.Where(m => m.status_t == inv.invoiceno).ToList();
 
@@ -2359,7 +2359,7 @@ Select(e => new
                 }
 
                 /////////////////// update consignment///////////////////////
-                using (var db = new db_a71c08_elitetokenEntities())
+                using (var db = new db_a92afa_frbillingEntities())
                 {
 
 

@@ -13,6 +13,7 @@ namespace DtDc_Billing.Entity_FR
     
     public partial class getCheckBookingListWithoutCompany_Result
     {
+        public string customer_id { get; set; }
         public string Consignment_no { get; set; }
         public Nullable<double> chargable_weight { get; set; }
         public Nullable<int> Quanntity { get; set; }
