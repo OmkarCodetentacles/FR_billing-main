@@ -14,199 +14,228 @@
     .box-body{
         overflow:scroll;
     }
+    .padding-left-0{
+        padding-left:0
+    }
 </style>
 
 <div class="content-wrapper">
-    <section class="container">
-        <div class="row">
-            <div class="col-sm-12 no-padding">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h4>Creditor's Report</h4>
-                    </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h4>Creditor's Report</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
 
                     <div class="form-horizontal">
-                        <div class="box-body">
-
-                            <div class="row">
-                                <div class="">
-                                    <div class="form-group">
 
 
-                                        @using (Html.BeginForm())
+                        @*<div class="row">
+                            <div class="">*@
+                                <div class="form-group">
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        if (ViewBag.Custid != null)
                                         {
-
-                                            if (ViewBag.Custid != null)
-                                            {
-                                                <div class="col-md-2">
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="CustomerId" type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-2">
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" placeholder="CustomerId" type="text">
-                                                </div>
-                                            }
-                                            if (ViewBag.fromdate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
-                                                </div>
-                                            }
-
-                                            if (ViewBag.todate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-
-                                            <div class="col-md-2">
-                                                <select name="status" class="form-control">
-                                                    <option value="Paid">Paid</option>
-                                                    <option value="Unpaid">Unpaid</option>
-                                                    <option value="both">both</option>
-                                                </select>
+                                            <div class="col-md-2 padding-left-0">
+                                                <div class="form-group">
+                                                    <label>CustomerId</label>
+                                              
+                                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid"  type="text">
                                             </div>
-
-                                            <div class="col-md-2">
-                                                <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
-                                            </div>
-
-                                            <div class="col-md-12  pull-right">
-                                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt" style="margin-top: 5px;" />
-
-                                                <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
-
-                                                <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
-
-                                            </div>
-
+                                                </div>
                                         }
+                                        else
+                                        {
+                                <div class="col-md-2 padding-left-0">
+                                    <div class="form-group">
+                                        <label>CustomerId</label>
+                                        <input name="Custid" style="margin-right:10px" class="form-control" id="custid"  type="text">
+                                    </div>
+                                    </div>
+                                    }
+                                    if (ViewBag.fromdate != null)
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate"  type="text">
+                                    </div>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        <input name="Fromdatetime" class="form-control" id="datepicker"  type="text">
+                                    </div>
+                                    </div>
+                                    }
 
+                                    if (ViewBag.todate != null)
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control"  id="datepicker1" type="text">
+                                    </div>
+                                    </div>
+                                    }
 
+                                    else
+                                    {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                    </div>
+                                    </div>
+                                    }
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                       
+                                        <select name="status" class="form-control">
+                                            <option value="Paid">Paid</option>
+                                            <option value="Unpaid">Unpaid</option>
+                                            <option value="both">both</option>
+                                        </select>
+                                            </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group" style="margin-top:25px">
+                                        <label></label>
+                                        <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
+                                    </div>
+                                        </div>
+
+                                    <div class="col-md-12  pull-right padding-left-0" >
+                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt" style="margin-top: 5px;" />
+
+                                        <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
+
+                                        <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
 
                                     </div>
-                                </div>
-                            </div>
 
-                            <table id="table_display_block" class="table table-bordered table-responsive height-450">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.invoiceno)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Customer_Id)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.invoicedate)
-                                        </th>
-                                        <th>
-                                            Due days
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.periodfrom)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.periodto)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.total)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.fullsurchargetax)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.servicetax)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.servicetaxtotal)
-                                        </th>
-
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.netamount)
-                                        </th>
-                                        <th>Paid</th>
-                                        <th>
-                                            Balance
-                                        </th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr class="@(item.discountamount==0 ? "paid-party" : "unpaid-party")">
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.invoiceno)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Customer_Id)
-                                            </td>
-                                            <td>
-                                                @item.invoicedate.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            <td>
-                                                @getdays((DateTime)item.invoicedate)
-                                            </td>
-                                            <td>
-                                                @item.periodfrom.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            <td>
-                                                @item.periodto.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.total)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.servicetax)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                            </td>
-
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.netamount)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.paid)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.discountamount)
-                                            </td>
-                                        </tr>
                                     }
-                                </tbody>
-                            </table>
 
-                            <!-- /input-group -->
-                            <div class="row mt-15">
+
+
+                                </div>
+                            @*</div>
+                        </div>*@
+
+                        <table id="table_display_block" class="table table-bordered table-responsive height-450">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoiceno)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Customer_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoicedate)
+                                    </th>
+                                    <th>
+                                        Due days
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodfrom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetaxtotal)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.netamount)
+                                    </th>
+                                    <th>Paid</th>
+                                    <th>
+                                        Balance
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="@(item.discountamount==0 ? "paid-party" : "unpaid-party")">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.invoiceno)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer_Id)
+                                        </td>
+                                        <td>
+                                            @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @getdays((DateTime)item.invoicedate)
+                                        </td>
+                                        <td>
+                                            @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @item.periodto.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.total)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.netamount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.paid)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.discountamount)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <!-- /input-group -->
+                        <div class="row mt-15">
                             <div class="col-sm-4 ">
                                 <div class="input-group">
                                     <div class="input-group-btn">
@@ -242,14 +271,14 @@
                             </div>
                             <!-- /input-group -->
 
-                                </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+ 
 
     </div>
     @functions {
