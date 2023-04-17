@@ -30,7 +30,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <ul class="nav nav-tabs" role="tablist">
+                        @*<ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item active">
                                 <a class="nav-link active" data-toggle="tab" href="#home">Cash</a>
                             </li>
@@ -43,7 +43,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#menu3">Credit Note</a>
                             </li>
-                        </ul>
+                        </ul>*@
 
 
                         <div class="tab-content">
@@ -54,40 +54,10 @@
                                     <input type="hidden" class="Firm_Id">
                                 </h5>
                                 <div id="CashP">
-                                    @{ Html.RenderPartial("CashPartial", (DtDc_Billing.Entity_FR.Cash)ViewBag.Cash);}
+                                    @{ Html.RenderPartial("MakePaymentPartial", (DtDc_Billing.CustomModel.MakePaymentModel)ViewBag.Cash);}
                                 </div>
                             </div>
-                            <div id="menu1" class="tab-pane fade">
-                                <br>
-                                <h5>
-                                    <span class="Netamount text-info "></span><span class="Balance text-danger pull-right"></span>
-                                    <input type="hidden" class="Firm_Id">
-                                </h5>
-                                <div id="ChequeP">
-                                    @{ Html.RenderPartial("ChequePartial", (DtDc_Billing.Entity_FR.Cheque)ViewBag.Cheque);}
-                                </div>
-                            </div>
-                            <div id="menu2" class="tab-pane fade">
-                                <br>
-                                <h5>
-                                    <span class="Netamount text-info "></span><span class="Balance text-danger pull-right"></span>
-                                    <input type="hidden" class="Firm_Id">
-                                </h5>
-                                <div id="NeftP">
-                                    @{ Html.RenderPartial("NeftPartial", (DtDc_Billing.Entity_FR.NEFT)ViewBag.Neft);}
-                                </div>
-                            </div>
-
-                            <div id="menu3" class="tab-pane fade">
-                                <br>
-                                <h5>
-                                    <span class="Netamount text-info "></span><span class="Balance text-danger pull-right"></span>
-                                    <input type="hidden" class="Firm_Id">
-                                </h5>
-                                <div id="CreditP">
-                                    @{ Html.RenderPartial("CreditNotePartial", (DtDc_Billing.Entity_FR.CreditNote)ViewBag.Credit);}
-                                </div>
-                            </div>
+                        
                         </div>
 
 
@@ -167,7 +137,7 @@
                             </th>
                             <th>Paid</th>
                             <th>Balance</th>
-                            <th></th>
+                           
 
                         </tr>
                     </thead>
@@ -218,11 +188,7 @@
                                 <td>
                                     @(item.Balance)
                                 </td>
-                                <td>
-                                    <button type="button" class="btn btn-default" id="clickme">
-                                        View Invoice
-                                    </button>
-                                </td>
+                              
 
                             </tr>
                         }

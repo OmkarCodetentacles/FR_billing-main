@@ -4,6 +4,26 @@
     ViewBag.Title = "Add_Saving";
     Layout = "~/Views/Shared/AdminCashCounterLayout.cshtml";
 }
+<style>
+    textarea {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+</style>
 
 @*<h2>Add_Saving</h2>
 
@@ -70,28 +90,37 @@
                         <!-- form start -->
                         <form class="form-horizontal">
                             <div class="box-body">
-                                <div class="form-group lblamt" style="margin-top:20px">
+                                <div class="form-group lblamt">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
-                                            <div class="">
-                                                @Html.EditorFor(model => model.Saving_amount, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount" } })
-                                                @Html.ValidationMessageFor(model => model.Saving_amount, "", new { @class = "text-danger" })
+                                            <div class="form-group">
+                                                <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.Saving_amount, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount" } })
+                                                    @Html.ValidationMessageFor(model => model.Saving_amount, "", new { @class = "text-danger" })
+                                                </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
-                                            <div class="">
-                                                @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address", rows = "5" } })
-                                                @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
+                                                    <div class="">
+                                                        @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address" } })
+                                                        @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-md-2">
+                                                @*<div class="box-footer">*@
+                                                <div class="form-group">
+                                                    <label></label>
+                                                    <div class="">
+                                                        <input type="submit" class="btn btn-primary" value="Add" />
+                                                    </div>
+                                                    </div>
+                                                    @*</div>*@
+                                                </div>
                                         </div>
-                                        <div class="col-md-1">
-                                            <div class="box-footer">
-                                                <input type="submit" class="btn btn-primary pull-right" value="Add" />
-                                            </div>
-                                        </div>
-                                    </div>
 
                                 </div>
 

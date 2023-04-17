@@ -456,6 +456,24 @@
     <Property Name="Datetime_Pay" Type="datetime" />
     <Property Name="User_Id" Type="bigint" />
   </EntityType>
+  <EntityType Name="PaymentDetails">
+    <Key>
+      <PropertyRef Name="PaymentDetailsId" />
+    </Key>
+    <Property Name="PaymentDetailsId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PaymentType" Type="varchar" MaxLength="100" />
+    <Property Name="Amount" Type="float" />
+    <Property Name="TdsAmount" Type="float" />
+    <Property Name="TotalAmount" Type="float" />
+    <Property Name="InvoiceNo" Type="varchar(max)" />
+    <Property Name="ChequeNo" Type="varchar" MaxLength="100" />
+    <Property Name="TransactionId" Type="varchar" MaxLength="200" />
+    <Property Name="PaymentDate" Type="datetime" />
+    <Property Name="FirmId" Type="bigint" />
+    <Property Name="PfCode" Type="varchar" MaxLength="100" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+    <Property Name="Paid" Type="float" />
+  </EntityType>
   <EntityType Name="paymentLog">
     <Key>
       <PropertyRef Name="id" />
@@ -834,18 +852,6 @@
     <Property Name="Datetime_Wa" Type="datetime" />
   </EntityType>
   <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.invalidCon' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="invalidCon">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.openConCount' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="openConCount">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="TransactionView">
     <Key>
@@ -900,12 +906,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Property Name="remarks" Type="varchar" MaxLength="100" />
     <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="unSignPincode">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
   <Association Name="Emp_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
     <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -1861,6 +1861,20 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
   </Function>
   <Function Name="getRemainingAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="getUserModuleList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="PaymentDetailsSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PaymentType" Type="varchar" Mode="In" />
+    <Parameter Name="Amount" Type="float" Mode="In" />
+    <Parameter Name="TdsAmount" Type="float" Mode="In" />
+    <Parameter Name="TotalAmount" Type="float" Mode="In" />
+    <Parameter Name="InvoiceNo" Type="varchar(max)" Mode="In" />
+    <Parameter Name="ChequeNo" Type="varchar" Mode="In" />
+    <Parameter Name="TransactionId" Type="varchar" Mode="In" />
+    <Parameter Name="PaymentDate" Type="datetime" Mode="In" />
+    <Parameter Name="FirmId" Type="bigint" Mode="In" />
+    <Parameter Name="PfCode" Type="varchar" Mode="In" />
+    <Parameter Name="CompanyName" Type="varchar" Mode="In" />
+    <Parameter Name="Paid" Type="float" Mode="In" />
+  </Function>
   <Function Name="paymentLogSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Pfcode" Type="varchar" Mode="In" />
     <Parameter Name="ownerName" Type="varchar" Mode="In" />
@@ -1957,6 +1971,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
     <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="popupimage" EntityType="Self.popupimage" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Priority" EntityType="Self.Priority" Schema="dbo" store:Type="Tables" />

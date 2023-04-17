@@ -10,7 +10,7 @@
     <div class="content-wrapper">
         <section class="container">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 no-padding">
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h4>
@@ -25,7 +25,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="col-sm-6">
-                                            <div>
+                                            <div class="form-group">
                                                 <label for="email">Customer Id:</label>
 
                                                 @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
@@ -34,7 +34,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-                                            <div>
+                                            <div  class="form-group">
                                                 <label for="pwd">Address:</label>
                                                 <br />
                                                 @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
@@ -42,7 +42,7 @@
                                         </div>
 
                                         <div class="col-sm-6">
-                                            <div>
+                                            <div class="form-group">
                                                 <label for="email">Invoice No:</label>
                                                 @if (Model != null && Model.invoiceno.Length > 10)
                                                 {
@@ -61,40 +61,40 @@
                                                 {
                                                     @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                                 }
-
-
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="email">Period From:</label>
                                                 @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
 
-
+                                                </div>
                                                 @*<label for="email">Firm Details:</label>
-                                                                           @Html.DropDownList("Firm_Name",
-                                                    (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
+                                   @Html.DropDownList("Firm_Name",
+            (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
 
                                                 @*  @Html.DropDownList("Firm_Id", "Firm_Name")*@
                                                 @* @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
 
 
                                                 @*<label for="departmentsDropdown">Firm Name</label>
-                                                    <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
+            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
 
 
 
-                                                    @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
                                             </div>
-                                        </div>
+                                       
 
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="email">Invoice Date:</label>
                                                 @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email">Period To:</label>
+                                                    @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
 
-
-                                                <label for="email">Period To:</label>
-                                                @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
-
+                                                </div>
                                             </div>
-                                        </div>
                                         <div class="col-sm-12">  <input type="button" class="btn btn-primary pull-right" id="show" value="Show" /></div>
                                     </div>
                                 </div>
@@ -135,8 +135,9 @@
                                                     <!-- select -->
                                                     <div class="">
                                                         <div class="row">
-                                                            <div class="col-sm-12 col-xs-12 mb-15">
+                                                            <div class="col-sm-12 col-xs-12 mb-15" style="padding-left:30px">
                                                                 <!-- radio -->
+
                                                                 <div class="form-group">
                                                                     <div class="" style="display:flex">
                                                                         <label for="amount" class=" control-label">Invoice Discount : </label>
@@ -177,13 +178,13 @@
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "yes")
-                                                                                        <span style=" margin: 5px;">Yes</span>
+                                                                                        <span style=" margin:20px;">Yes</span>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="radio">
                                                                                     <label>
                                                                                         @Html.RadioButtonFor(m => m.discount, "no", new { @checked = true })
-                                                                                        <span style=" margin: 5px;">No</span>
+                                                                                        <span style=" margin: 20px;">No</span>
                                                                                     </label>
                                                                                 </div>
                                                                             }
@@ -211,16 +212,16 @@
 
                                                                             <div class="radio">
                                                                                 <label>
-                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked style="margin: -10px;" >
-                                                                                    <span style=" margin: 5px;" > Yes</span>
+                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked  >
+                                                                                    <span style=" margin: 20px;" > Yes</span>
                                                                                 </label>
                                                                             </div>
 
 
                                                                             <div class="radio">
                                                                                 <label>
-                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no" style="margin: -10px;">
-                                                                                    <span style=" margin: 5px;">
+                                                                                    <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no" >
+                                                                                    <span style=" margin: 20px;">
                                                                                         No
                                                                                     </span>
                                                                                 </label>
@@ -231,8 +232,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12 col-xs-12 mb-15">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-5">
+                                                                <div class="col-md-5">
+                                                                    <div class="form-group">
+
                                                                         <label for="total-amt" class=" control-label">Total</label>
 
                                                                         <div class="">
@@ -240,65 +242,79 @@
 
                                                                         </div>
                                                                     </div>
+                                                                   </div>
                                                                     <div class="col-md-5">
+                                                                        <div class="form-group">
                                                                         <label for="fuelsurcharge" class=" control-label">FuelSurcharge Tax</label>
-                                                                        <div class="" style="display:flex">
+                                                                        <div class="" style="display:flex;gap:2px">
                                                                             @Html.EditorFor(model => model.fullsurchargetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
                                                                             @Html.EditorFor(model => model.fullsurchargetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
                                                                         </div>
-                                                                       
-                                                                    </div>
-                                                                    <div class="col-md-5">
-                                                                        <label for="subtotal" class=" control-label">SubTotal</label>
-
-                                                                        <div class="">
-                                                                            <input type="text" class="form-control" id="subtotal" readonly="readonly" placeholder="0">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-5">
-                                                                        <label for="service-charge" class=" control-label">Royalty Charge</label>
+                                                                        <div class="form-group">
+                                                                            <label for="subtotal" class=" control-label">SubTotal</label>
 
-                                                                        <div class="">
-
-                                                                            @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
-
+                                                                            <div class="">
+                                                                                <input type="text" class="form-control" id="subtotal" readonly="readonly" placeholder="0">
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                        </div>
                                                                     <div class="col-md-5">
-                                                                        <label for="service-charge" class=" control-label">Docket Charge</label>
+                                                                        <div class="form-group">
+                                                                            <label for="service-charge" class=" control-label">Royalty Charge</label>
 
+                                                                            <div class="">
 
-                                                                        <div class="">
-                                                                            @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                                                @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+
+                                                                            </div>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
                                                                     <div class="col-md-5">
-                                                                        <label for="gst-total" class=" control-label">GST</label>
-                                                                        <div class="" style="display:flex" >
-                                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
-                                                                            @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                                        <div class="form-group">
+                                                                            <label for="service-charge" class=" control-label">Docket Charge</label>
+
+
+                                                                            <div class="">
+                                                                                @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                                            </div>
                                                                         </div>
-                                                                        
-                                                                    </div>
+                                                                        </div>
                                                                     <div class="col-md-5">
-                                                                        <label for="other-charge" class=" control-label">Other Charge</label>
-
-                                                                        <div class="">
-                                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                                        <div class="form-group">
+                                                                            <label for="gst-total" class=" control-label">GST</label>
+                                                                            <div class="" style="display:flex;gap:2px">
+                                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+                                                                                @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                                            </div>
 
                                                                         </div>
-                                                                    </div>
+                                                                        </div>
                                                                     <div class="col-md-5">
-                                                                        <label for="net-amount" class=" control-label">Net Amount</label>
+                                                                        <div class="form-group">
+                                                                            <label for="other-charge" class=" control-label">Other Charge</label>
 
-                                                                        <div class="">
+                                                                            <div class="">
+                                                                                @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
 
-                                                                            @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
-
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                
+                                                                        </div>
+                                                                    <div class="col-md-5">
+                                                                        <div class="form-group">
+                                                                            <label for="net-amount" class=" control-label">Net Amount</label>
+
+                                                                            <div class="">
+
+                                                                                @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                   
+
                                                             </div>
                                                         </div>
                                                     </div>

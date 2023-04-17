@@ -13,7 +13,7 @@
 <!-- Main content -->
 
 <div class="content-wrapper">
-    <section class="container">
+    <section>
 
         <div class="overlay" id="overlayBlock">
             <div class="loader"></div>
@@ -115,7 +115,7 @@
                         <label>Payment Status</label>
 
                         <select name="status" id="status" class="form-control">
-                            <option value="All">All</option>
+                            <option value="All" selected="selected">All</option>
                             <option value="Paid">Paid</option>
                             <option value="Unpaid">Unpaid</option>
 
@@ -134,6 +134,9 @@
             }
 
 
+        <div>
+
+          
             <div class="box-body">
                 <!-- column -->
                 <!-- Horizontal Form -->
@@ -143,31 +146,9 @@
                         <tr>
                             <th></th>
                             <th>
-                                Customer_Id
+                                Company Name
                             </th>
 
-                            <th>
-                                invoiceno
-
-                            </th>
-                            <th>
-                                Invoicedate
-                            </th>
-                            @*<th>
-                                    @Html.DisplayNameFor(model => model.periodfrom)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodto)
-                                </th>*@
-                            @*<th>
-                                    @Html.DisplayNameFor(model => model.total)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Royalty_charges)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Docket_charges)
-                                </th>*@
                             <th>Sub Total</th>
                             <th>
                                 FSC
@@ -182,10 +163,11 @@
                                 GST Total
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.netamount)
+                                Net Amount
                             </th>
                             <th>Paid</th>
                             <th>Balance</th>
+                           
 
                         </tr>
                     </thead>
@@ -210,27 +192,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Customer_Id)
                                 </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.invoiceno)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.tempInvoicedate)
-                                </td>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.Tempdatefrom)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TempdateTo)
-                                    </td>*@
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.total)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Royalty_charges)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Docket_charges)
-                                    </td>*@
+
                                 <td>
                                     @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
                                 </td>
@@ -256,23 +218,24 @@
                                 <td>
                                     @(item.Balance)
                                 </td>
-
-
-
-
+                              
 
                             </tr>
                         }
                     </tbody>
                 </table>
+
             </div>
 
 
+
         </div>
-        <!-- /.box -->
-        <!--/.col (right) -->
-        <!-- /.row -->
-    </section>
+
+           
+            <!-- /.box -->
+            <!--/.col (right) -->
+            <!-- /.row -->
+</section>
     <!-- /.content -->
 
 </div>
@@ -337,6 +300,10 @@
             display: inline-block;
             padding-right: 20px;
         }
+
+        .invoicetable {
+            display: none !important;
+        }
     </style>
 
 
@@ -394,5 +361,6 @@
             });
         </script>
     }
+
 
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
@@ -25,7 +26,7 @@ namespace DtDc_Billing.Controllers
         {
 
             List<PaymentModel> list = new List<PaymentModel>();
-            ViewBag.Cash = new Cash();
+            ViewBag.Cash = new MakePaymentModel();
             ViewBag.Cheque = new Cheque();
             ViewBag.Neft = new NEFT();
             ViewBag.Credit = new CreditNote();
@@ -43,7 +44,7 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.status = status;
 
-            ViewBag.Cash = new Cash();
+            ViewBag.Cash = new MakePaymentModel();
             ViewBag.Cheque = new Cheque();
             ViewBag.Neft = new NEFT();
             ViewBag.Credit = new CreditNote();
@@ -71,6 +72,51 @@ namespace DtDc_Billing.Controllers
 
         }
 
+
+        public ActionResult MakePayment(MakePaymentModel payment)
+        {
+            if(ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                //var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                var obj = db.getPayment("Unpaid", strpf).Select(x => new PaymentModel
+                {
+                    total = x.total,
+                    fullsurchargetax = x.fullsurchargetax,
+                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                    servicetax = x.servicetax,
+                    servicetaxtotal = x.servicetaxtotal,
+                    othercharge = x.othercharge,
+                    netamount = x.netamount,
+                    Customer_Id = x.Customer_Id,
+                    paid = x.paid ?? 0,
+                    Royalty_charges = x.Royalty_charges,
+                    Docket_charges = x.Docket_charges,
+                    Balance = x.Balance ?? 0
+
+                }).Where(x=>x.Customer_Id == payment.CompanyName).FirstOrDefault();
+
+              
+                if (payment.TotalAmount > obj.Balance)
+                {
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                   
+                    var paid = obj.paid!=null ? (Convert.ToDouble(obj.paid)):0 + payment.TotalAmount!= null? Convert.ToDouble(payment.TotalAmount):0;
+
+                    var save = db.PaymentDetailsSave(payment.PaymentType, payment.Amount, payment.TdsAmount,payment.TotalAmount ,payment.InvoiceNo, payment.ChequeNo, payment.TransactionId, payment.PaymentDate,payment.FirmId , strpf, payment.CompanyName, paid);
+
+                   
+                }
+
+                }
+            TempData["Message"] = "Payment added successfully";
+            return PartialView("MakePaymentPartial", payment);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
