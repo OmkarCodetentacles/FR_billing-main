@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,7 +20,9 @@ namespace DtDc_Billing.Models
         public Nullable<System.DateTime> dateTime { get; set; }
         
         public string ownerName { get; set; }
-        
+
+        [Required]
+        [RegularExpression(@"^(?:.*[a-z]){4,}$", ErrorMessage = "user Name must be greater than or equal 4 characters.")]
         public string userName { get; set; }
         [Required]
         public string password { get; set; }
@@ -35,7 +38,9 @@ namespace DtDc_Billing.Models
         public string address { get; set; }
 
         public string referralCode { get; set; }
-        public string referralby { get; set; }
+        public string referral { get; set; }
+
+        public bool isUserNameExist { get; set; }
 
 
     }

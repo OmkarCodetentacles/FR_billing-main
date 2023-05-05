@@ -547,6 +547,24 @@
     <NavigationProperty Name="Franchisee" Relationship="Self.fk_Pay" FromRole="Payment" ToRole="Franchisee" />
     <NavigationProperty Name="User" Relationship="Self.fk_emppay" FromRole="Payment" ToRole="Users" />
   </EntityType>
+  <EntityType Name="PaymentDetail">
+    <Key>
+      <PropertyRef Name="PaymentDetailsId" />
+    </Key>
+    <Property Name="PaymentDetailsId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="TdsAmount" Type="Double" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="InvoiceNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChequeNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+    <Property Name="FirmId" Type="Int64" />
+    <Property Name="PfCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Paid" Type="Double" />
+  </EntityType>
   <EntityType Name="paymentLog">
     <Key>
       <PropertyRef Name="id" />
@@ -1899,6 +1917,7 @@
     <EntitySet Name="Notifications" EntityType="Self.Notification" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
     <EntitySet Name="Payments" EntityType="Self.Payment" />
+    <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
     <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
     <EntitySet Name="popupimages" EntityType="Self.popupimage" />
     <EntitySet Name="Priorities" EntityType="Self.Priority" />
@@ -2281,10 +2300,6 @@
       <Parameter Name="password" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="getNotification" ReturnType="Collection(db_a92afa_frbillingModel.getNotification_Result)" />
-    <FunctionImport Name="getPayment" ReturnType="Collection(db_a92afa_frbillingModel.getPayment_Result)">
-      <Parameter Name="PaymentType" Mode="In" Type="String" />
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="getPaymentTrackCash" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackCash_Result)">
       <Parameter Name="fromDate" Mode="In" Type="DateTime" />
       <Parameter Name="toDate" Mode="In" Type="DateTime" />
@@ -2317,6 +2332,20 @@
     </FunctionImport>
     <FunctionImport Name="getRemainingAll" ReturnType="Collection(db_a92afa_frbillingModel.getRemainingAll_Result)" />
     <FunctionImport Name="getUserModuleList" ReturnType="Collection(db_a92afa_frbillingModel.getUserModuleList_Result)" />
+    <FunctionImport Name="PaymentDetailsSave">
+      <Parameter Name="PaymentType" Mode="In" Type="String" />
+      <Parameter Name="Amount" Mode="In" Type="Double" />
+      <Parameter Name="TdsAmount" Mode="In" Type="Double" />
+      <Parameter Name="TotalAmount" Mode="In" Type="Double" />
+      <Parameter Name="InvoiceNo" Mode="In" Type="String" />
+      <Parameter Name="ChequeNo" Mode="In" Type="String" />
+      <Parameter Name="TransactionId" Mode="In" Type="String" />
+      <Parameter Name="PaymentDate" Mode="In" Type="DateTime" />
+      <Parameter Name="FirmId" Mode="In" Type="Int64" />
+      <Parameter Name="PfCode" Mode="In" Type="String" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Paid" Mode="In" Type="Double" />
+    </FunctionImport>
     <FunctionImport Name="paymentLogSave">
       <Parameter Name="Pfcode" Mode="In" Type="String" />
       <Parameter Name="ownerName" Mode="In" Type="String" />
@@ -2379,6 +2408,10 @@
       <Parameter Name="Pfcode" Mode="In" Type="String" />
       <Parameter Name="FirmId" Mode="In" Type="Int64" />
       <Parameter Name="FirmName" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getPayment" ReturnType="Collection(db_a92afa_frbillingModel.getPayment_Result)">
+      <Parameter Name="PaymentType" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
@@ -2551,6 +2584,7 @@
     <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="referralCode" Nullable="true" MaxLength="100" />
   </ComplexType>
   <ComplexType Name="getLoginforDev_Result">
     <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
@@ -2563,20 +2597,6 @@
     <Property Type="Boolean" Name="Status" Nullable="true" />
     <Property Type="String" Name="url_path" Nullable="true" MaxLength="150" />
     <Property Type="String" Name="description" Nullable="true" MaxLength="200" />
-  </ComplexType>
-  <ComplexType Name="getPayment_Result">
-    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
-    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
-    <Property Type="Double" Name="servicetax" Nullable="true" />
-    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
-    <Property Type="Double" Name="othercharge" Nullable="true" />
-    <Property Type="Double" Name="netamount" Nullable="true" />
-    <Property Type="Double" Name="paid" Nullable="true" />
-    <Property Type="Double" Name="Balance" Nullable="true" />
-    <Property Type="Double" Name="total" Nullable="true" />
-    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
-    <Property Type="Double" Name="Docket_charges" Nullable="true" />
-    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
   </ComplexType>
   <ComplexType Name="getPaymentTrackCash_Result">
     <Property Type="Double" Name="Amount" Nullable="true" />
@@ -2746,5 +2766,22 @@
     <Property Type="String" Name="Sender" Nullable="true" />
     <Property Type="String" Name="Receiver" Nullable="true" />
     <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="getPayment_Result">
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="othercharge" Nullable="true" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="Double" Name="Balance" Nullable="true" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+    <Property Type="Double" Name="Docket_charges" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
   </ComplexType>
 </Schema>

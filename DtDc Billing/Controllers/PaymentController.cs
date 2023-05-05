@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
@@ -26,7 +27,7 @@ namespace DtDc_Billing.Controllers
         {
 
             List<PaymentModel> list = new List<PaymentModel>();
-            ViewBag.Cash = new MakePaymentModel();
+            ViewBag.Cash = new Cash();
             ViewBag.Cheque = new Cheque();
             ViewBag.Neft = new NEFT();
             ViewBag.Credit = new CreditNote();
@@ -34,6 +35,7 @@ namespace DtDc_Billing.Controllers
             //var transactions = db.Invoices.AsEnumerable();
 
             //return View(transactions.ToList());
+
             return View(list);
         }
 
@@ -44,13 +46,14 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.status = status;
 
-            ViewBag.Cash = new MakePaymentModel();
+            ViewBag.Cash = new Cash();
             ViewBag.Cheque = new Cheque();
             ViewBag.Neft = new NEFT();
             ViewBag.Credit = new CreditNote();
 
             var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
             {
+                invoiceno = x.invoiceno,
                 total = x.total,
                 fullsurchargetax = x.fullsurchargetax,
                 fullsurchargetaxtotal = x.fullsurchargetaxtotal,
@@ -58,12 +61,15 @@ namespace DtDc_Billing.Controllers
                 servicetaxtotal = x.servicetaxtotal,
                 othercharge = x.othercharge,
                 netamount = x.netamount,
+                Firm_Id = x.Firm_Id,
                 Customer_Id = x.Customer_Id,
                 paid = x.paid ?? 0,
+                tempInvoicedate = x.tempInvoicedate,
                 Royalty_charges = x.Royalty_charges,
                 Docket_charges = x.Docket_charges,
                 Balance = x.Balance ?? 0
-                
+                // discount = x.discount,
+                // totalCount = x.totalCount ?? 0
             }).ToList();
 
 
@@ -106,14 +112,17 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                    
-                    var paid = obj.paid!=null ? (Convert.ToDouble(obj.paid)):0 + payment.TotalAmount!= null? Convert.ToDouble(payment.TotalAmount):0;
+                    var paid = Convert.ToDouble(payment.TotalAmount);
 
-                    var save = db.PaymentDetailsSave(payment.PaymentType, payment.Amount, payment.TdsAmount,payment.TotalAmount ,payment.InvoiceNo, payment.ChequeNo, payment.TransactionId, payment.PaymentDate,payment.FirmId , strpf, payment.CompanyName, paid);
+                    var save = db.PaymentDetailsSave(payment.PaymentType, payment.Amount, payment.TdsAmount,payment.TotalAmount ,payment.InvoiceNo, payment.ChequeNo, payment.TransactionId, payment.tempinserteddate, payment.FirmId , strpf, payment.CompanyName, paid);
 
-                   
+                    TempData["remainingAmount"] = obj.Balance - Convert.ToDouble(payment.TotalAmount);
+                    TempData["isSuccsse"] = save.ToString();
                 }
 
                 }
+
+            
             TempData["Message"] = "Payment added successfully";
             return PartialView("MakePaymentPartial", payment);
         }

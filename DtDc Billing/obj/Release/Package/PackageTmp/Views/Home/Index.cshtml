@@ -1,38 +1,95 @@
 ﻿@model DtDc_Billing.CustomModel.dashboardDataModel
- 
+
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
+<style>
+      /* (A) WARNING KEYFRAMES */
+      @@keyframes blinking {
+          0% {
+              background-color: #ff3d50;
+              color: #ddd;
+          }
 
+          100% {
+              background-color: #222291;
+              color: #fff;
+          }
+      }
+
+      /* (B) ATTACH WARNING KEYFRAMES TO CONTAINER */
+      #demo {
+          /*font-size: 1.3em;
+    font-weight: bold;*/
+          padding: 4px;
+          animation: blinking 3s infinite;
+          width: 80%;
+          margin: auto;
+          /* width: 60%;
+    border: 3px solid #73AD21;*/
+          /*padding: 10px;*/
+          background-color: #ffffff;
+          cursor: pointer;
+      }
+
+      .bannerDiv {
+          width: 100%;
+      }
+
+    .notify-badge {
+        position: absolute;
+        /* right: 632px; */
+        top: 53px;
+        background: #da2f2f;
+        text-align: center;
+        border-radius: 30px 30px 30px 30px;
+        color: white;
+        padding: 2px 8px;
+        font-size: 17px;
+    }
+</style>
 
 
 
 <div class="content-wrapper">
-    <section class="container">
 
-        <!--<div class="col-sm-3 " style="float: right" ;>
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-danger total-label">Complaint Count</button>
-                </div>-->
-        <!-- /btn-group -->
-        <!--<input type="text" class="form-control total-amount" value="@Model.complaintCount">
-            </div>
+
+
+    <!--<div class="col-sm-3 " style="float: right" ;>
+    <div class="input-group">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-danger total-label">Complaint Count</button>
         </div>-->
-        @*@{
+    <!-- /btn-group -->
+    <!--<input type="text" class="form-control total-amount" value="@Model.complaintCount">
+        </div>
+    </div>-->
+    @*@{
 
             Html.RenderPartial("NotificationPartial");
         }*@
 
-        <div class="row">
-            <div class="col-md-12">
+    <div class="box">
+        <div class="box-header with-border">
+            <h4>Dashboard</h4>
+        </div><!-- /.box-header -->
 
-                <div class="box-body">
+
+        <div class="box-body">
+            <div id="demo">
+                <a target="_blank" href="~/assets/images/Offers Fr billing.png">
+                    <span class="notify-badge"><blink>offer</blink></span>
+                    <img src="~/assets/images/Offers Fr billing.png" alt="Pineapple" class="bannerDiv" height="200">
+                </a>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
 
 
                     <div class="">
-                        <h1 style=" margin: 14px; font-weight: 600; color: #000000; font-size: 20px;">Dashboard</h1>
+                        <h1 style=" margin: 14px; font-weight: 600; color: #000000; font-size: 20px;display:none;">Dashboard</h1>
 
                         @if (ViewBag.before30days <= ViewBag.NowDate && ViewBag.After1Year >= ViewBag.NowDate) //|| ViewBag.NowDate <= ViewBag.After1Year)
                         {
@@ -60,49 +117,49 @@
 
                                 <div class="col-12 col-xs-12 col-md-4 col-lg-2 col-xl-4 " style="padding-left: 0;">
                                     <!-- small box -->
-                                  
-                                        <div class="small-box bg-aqua ">
-                                            <div class="row">
-                                                <div class="col-8 col-xs-8 col-md-8 col-lg-8">
-                                                    <div class="inner">
 
-                                                        <span id="Todayamt" class="info-box-number">   <small>Loading...</small></span>
+                                    <div class="small-box bg-aqua ">
+                                        <div class="row">
+                                            <div class="col-8 col-xs-8 col-md-8 col-lg-8">
+                                                <div class="inner">
 
-                                                        <p class="collectionpara text-truncate">Today Cash Collection</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-4 col-xs-4 col-md-4 col-lg-4 " >
-                                                    <div class="icon">
-                                                        <i class="fa fa-inr"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 col-xs-12 col-md-12   col-lg-12">
-                                                    <div class="arrow1">
-                                                        @*<a href="@Url.Action("PfReportDaily","Reports")" class="small-box-footer"> <i class="fa-solid fa-angle-down"></i></a>*@
-                                                        @if (ViewBag.Date != null)
-                                                        {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })"><i class="fa fa-arrow-circle-right"></i></a>
-                                                        }
-                                                    </div>
-                                                </div>
+                                                    <span id="Todayamt" class="info-box-number">   <small>Loading...</small></span>
 
+                                                    <p class="collectionpara text-truncate">Today Cash Collection</p>
+                                                </div>
                                             </div>
-                                           
-                                            
-                                            
+                                            <div class="col-4 col-xs-4 col-md-4 col-lg-4 ">
+                                                <div class="icon">
+                                                    <i class="fa fa-inr"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-xs-12 col-md-12   col-lg-12">
+                                                <div class="arrow1">
+                                                    @*<a href="@Url.Action("PfReportDaily","Reports")" class="small-box-footer"> <i class="fa-solid fa-angle-down"></i></a>*@
+                                                    @if (ViewBag.Date != null)
+                                                    {
+                                                        <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer"><i class="fa fa-arrow-circle-right"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })"><i class="fa fa-arrow-circle-right"></i></a>
+                                                    }
+                                                </div>
+                                            </div>
 
-                                       
+                                        </div>
+
+
+
+
+
                                     </div>
                                 </div>
                                 <!-- ./col -->
                                 <div class="col-12 col-xs-12 col-md-4 col-lg-2 col-xl-4 " style="padding-left: 0;">
 
                                     <div class="small-box " style="background-color: #ffffff !important; color: white; border: 3px solid #eff5ff; width: 90%; border-radius: 10px; padding: 13px; ">
-                                        <div class="row" >
+                                        <div class="row">
                                             <div class="col-8 col-xs-8 col-md-8 col-lg-8">
                                                 <div class="inner">
 
@@ -130,9 +187,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
-                                        
+
+
+
 
                                     </div>
                                 </div>
@@ -140,7 +197,7 @@
                                 <div class="col-12 col-xs-12 col-md-4 col-lg-2 col-xl-4 " style="padding-left: 0;">
                                     <!-- small box -->
                                     <div class="small-box bg-yellow ">
-                                        <div class="row" >
+                                        <div class="row">
                                             <div class="col-8 col-xs-8 col-md-8 col-lg-8">
                                                 <div class="inner">
 
@@ -168,9 +225,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
-                                        
+
+
+
 
                                     </div>
                                 </div>
@@ -246,9 +303,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
-                                       
+
+
+
                                     </div>
                                 </div>
 
@@ -256,7 +313,7 @@
 
                                 <div class="col-12 col-xs-12 col-md-4 col-lg-2 col-xl-4 " style="padding: 0;">
                                     <!-- small box -->
-                                    <div class="small-box bg-aqua " style="width: 96%;" >
+                                    <div class="small-box bg-aqua " style="width: 96%;">
                                         <div class="row">
                                             <div class="col-8 col-xs-8 col-md-8 col-lg-8">
                                                 <div class="inner">
@@ -279,9 +336,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        
-                                        
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -315,276 +372,278 @@
 
                         }
 
-                    <div class="row note1">
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="" >
-                            <div class="row"  style=" min-height: 410px; background: white; border-radius: 17px; padding: 13px; width: 99%; ">
-                                <div class="text-center notetxt">
-                                    <div class="notstyl">
-                                        <p><strong style="color: #0049af; font-size: 20px;">Billing Reports</strong> </p>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4 ">
-                                    <a href="@Url.Action("Todaysale","Reports")">
-                                        <div class="info-box billing-cards ">
-
-
-                                            <div class="info-box-content">
-                                                <span class="info-box-text">Todays Sale</span>
-                                                <span class="info-box-number">
-                                                    <strong>@Model.sumOfBilling</strong>
-                                                </span>
-                                                
-                                            </div>
-                                            <!-- /.info-box-content -->
+                        <div class="row note1 mt-15 mb-15">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="">
+                                <div class="row" style=" min-height: 410px;border:1px solid #ccc; background: white; border-radius: 17px; padding: 13px; width: 99%; ">
+                                    <div class="text-center notetxt">
+                                        <div class="notstyl">
+                                            <p><strong style="color: #0049af; font-size: 20px;">Billing Reports</strong> </p>
                                         </div>
-                                    </a>
-
-                                </div>
+                                    </div>
 
 
 
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4 ">
+                                        <a href="@Url.Action("Todaysale","Reports")">
+                                            <div class="info-box billing-cards ">
+
+
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Todays Sale</span>
+                                                    <span class="info-box-number">
+                                                        <strong>@Model.sumOfBilling</strong>
+                                                    </span>
+
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                            <div class="info-box billing-cards">
+
+
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">This Month Sale</span>
+                                                    <span class="info-box-number"> <strong id="sumofbillingcurrentmonth">@Model.sumOfBillingCurrentMonth</strong></span>
+
+                                                </div>
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
                                         <div class="info-box billing-cards">
 
 
                                             <div class="info-box-content">
-                                                <span class="info-box-text">This Month Sale</span>
-                                                <span class="info-box-number"> <strong id="sumofbillingcurrentmonth">@Model.sumOfBillingCurrentMonth</strong></span>
-                                                
-                                            </div>
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
-
-                                </div>
-
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <div class="info-box billing-cards">
-
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Avg Sale per month</span>
-                                            <span class="info-box-number"> <strong>@Model.avgOfBillingSum.ToString()</strong></span>
-                                            
-
-                                        </div>
-                                        <!-- /.info-box-content -->
-                                    </div>
-                                </div>
-
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <div class="info-box billing-cards  ">
-
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Todays No of Bookings</span>
-                                            <span class="info-box-number"> <strong>@Model.countOfBilling</strong></span>
-                                            
-
-
-
-                                        </div>
-                                        <!-- /.info-box-content -->
-                                    </div></a>
-
-                                </div>
-
-
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
-                                        <div class="info-box  billing-cards">
-                                            <div class="info-box-content">
-                                                <span class="info-box-text">This Month No. of Bookings</span>
-                                                <span class="info-box-number"> <strong id="countofbillingcurrentmonth">@Model.countofbillingcurrentmonth</strong></span>
-                                                
-
+                                                <span class="info-box-text">Avg Sale per month</span>
+                                                <span class="info-box-number"> <strong>@Model.avgOfBillingSum.ToString()</strong></span>
 
 
                                             </div>
-
-
                                             <!-- /.info-box-content -->
                                         </div>
-                                    </a>
-
-                                </div>
-
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <div class="info-box  billing-cards ">
-
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Avg No. of Bookings</span>
-                                            <span class="info-box-number"> <strong>@ViewBag.avgofbillingcount</strong></span>
-
-                                            
-
-                                        </div>
-                                        <!-- /.info-box-content -->
                                     </div>
-                                </div>
 
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
-                                        <div class="info-box billing-cards ">
 
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <div class="info-box billing-cards  ">
 
 
                                             <div class="info-box-content">
-                                                <span class="info-box-text">Total Sale</span>
-                                                <span class="info-box-number"> <strong id="totalsale">Loading...</strong></span>
+                                                <span class="info-box-text">Todays No of Bookings</span>
+                                                <span class="info-box-number"> <strong>@Model.countOfBilling</strong></span>
 
-                                                
+
+
 
                                             </div>
+                                            <!-- /.info-box-content -->
+                                        </div></a>
 
+                                    </div>
+
+
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                            <div class="info-box  billing-cards">
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">This Month No. of Bookings</span>
+                                                    <span class="info-box-number"> <strong id="countofbillingcurrentmonth">@Model.countofbillingcurrentmonth</strong></span>
+
+
+
+
+                                                </div>
+
+
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <div class="info-box  billing-cards ">
+
+
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Avg No. of Bookings</span>
+                                                <span class="info-box-number"> <strong>@ViewBag.avgofbillingcount</strong></span>
+
+
+
+                                            </div>
                                             <!-- /.info-box-content -->
                                         </div>
-                                    </a>
-                                   
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                            <div class="info-box billing-cards ">
+
+
+
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Total Sale</span>
+                                                    <span class="info-box-number"> <strong id="totalsale">Loading...</strong></span>
+
+
+
+                                                </div>
+
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
+                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                            <div class="info-box billing-cards">
+
+
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Total No of Bookings</span>
+                                                    <span class="info-box-number"> <strong id="totalnoofbook">Loading...</strong></span>
+
+
+
+                                                </div>
+
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+
                                 </div>
 
-
-                                <div class="col-12 col-xs-12 col-sm-6  col-md-4 col-lg-4">
-                                    <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })"><div class="info-box billing-cards">
-
-
-                                                                                                                                                                      <div class="info-box-content">
-                                                                                                                                                                          <span class="info-box-text">Total No of Bookings</span>
-                                                                                                                                                                          <span class="info-box-number"> <strong id="totalnoofbook">Loading...</strong></span>
-
-                                                                                                                                                                          
-
-                                                                                                                                                                      </div>
-
-    <!-- /.info-box-content -->
-</div></a>
-                                    
-                                </div>
 
 
 
                             </div>
-                                
-                              
-                           
-
-                        </div>
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 " style="padding-right: 0;" >
-                            <div class="row note2" style=" min-height: 410px; background: white; border-radius: 17px; padding: 13px; width: 100%; padding-left: 0 ">
-                                <div class="text-center notetxt">
-                                    <div class="notstyl">
-                                        <p><strong style="color: #bc3f30;">Note : </strong> <span style="font-size: 15px;">No. of Consignment showing in below reports will not appear in Invoice</span></p>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 " style="padding-right: 0;">
+                                <div class="row note2" style=" min-height: 410px; background: white; border-radius: 17px; padding: 13px; width: 100%; padding-left: 0 ">
+                                    <div class="text-center notetxt">
+                                        <div class="notstyl">
+                                            <p><strong style="color: #bc3f30;">Note : </strong> <span style="font-size: 15px;">No. of Consignment showing in below reports will not appear in Invoice</span></p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
-                                    <a class="text-black" href="@Url.Action("Nobookinglist", "Booking")">
-                                        <div class="info-box ">
-                                            <div class="row">
-                                                <div class="col-sm-4">
+                                    <div class="col-md-6">
+                                        <a class="text-black" href="@Url.Action("Nobookinglist", "Booking")">
+                                            <div class="info-box ">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
 
-                                                    <span class="info-box-icon"><i class="fa fa-envelope-open-o icon1"></i></span>
+                                                        <span class="info-box-icon"><i class="fa fa-envelope-open-o icon1"></i></span>
+                                                    </div>
+                                                    <div class="col-sm-8 " style="text-align:end">
+
+
+                                                        <span class="info-box-number"> <p style="margin:0">@Model.openConCount</p></span>
+                                                        <span class="info-box-text">Open Consginment</span>
+                                                    </div>
+
+
+
+
                                                 </div>
-                                                <div class="col-sm-8 " style="text-align:end">
 
 
-                                                    <span class="info-box-number"> <p style="margin:0">@Model.openConCount</p></span>
-                                                    <span class="info-box-text">Open Consginment</span>
-                                                </div>
-
-
-
-
+                                                <!-- /.info-box-content -->
                                             </div>
-                                           
+                                        </a>
 
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
-
-                                </div>
+                                    </div>
 
 
 
-                                <div class="col-md-6">
-                                    <a class="text-black" href="@Url.Action("Destinations", "BillingReports")">
-                                        <div class="info-box ">
-                                            <div class="row">
+                                    <div class="col-md-6">
+                                        <a class="text-black" href="@Url.Action("Destinations", "BillingReports")">
+                                            <div class="info-box ">
+                                                <div class="row">
 
-                                                <div class="col-sm-4">
-                                                    <span class="info-box-icon"><i class="fa fa-map-marker icon2"></i></span>
+                                                    <div class="col-sm-4">
+                                                        <span class="info-box-icon"><i class="fa fa-map-marker icon2"></i></span>
+                                                    </div>
+                                                    <div class="col-sm-8" style="text-align:end">
+                                                        <div class="">
+
+                                                            <span class="info-box-number"> <p style="margin:0">@Model.unSignPincode</p></span>
+                                                            <span class="info-box-text">New Pincodes Found</span>
+
+
+
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <div class="col-sm-8" style="text-align:end">
-                                                    <div class="">
-
-                                                        <span class="info-box-number"> <p style="margin:0">@Model.unSignPincode</p></span>
-                                                        <span class="info-box-text">New Pincodes Found</span>
 
 
 
+                                                <!-- /.info-box-content -->
+                                            </div>
+                                        </a>
+
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
+                                            <div class="info-box ">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
+                                                    </div>
+                                                    <div class="col-sm-8" style="text-align:end">
+                                                        <div class="">
+
+                                                            <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
+                                                            <span class="info-box-text">Invalid Consginment Found</span>
+
+
+                                                        </div>
                                                     </div>
                                                 </div>
 
+
+
+                                                <!-- /.info-box-content -->
                                             </div>
-                                           
+                                        </a>
 
-
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
-
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
-                                        <div class="info-box ">
-                                            <div class="row">
-                                                <div class="col-sm-4">
-                                                    <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
-                                                </div>
-                                                <div class="col-sm-8" style="text-align:end">
-                                                    <div class="">
-
-                                                        <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
-                                                        <span class="info-box-text">Invalid Consginment Found</span>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                           
-
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
+                                    </div>
 
                                 </div>
 
                             </div>
-                            
+
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-right: 0;padding-left:0 ">
+                                @{Html.RenderAction("Jschart", "Home", new { pfcode = ViewBag.PfCode });}
+
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 0; padding-right: 0 ">
+
+                                @{Html.RenderAction("JschartforCashcounter", "Home", new { pfcode = ViewBag.PfCode });}
+                            </div>
+
                         </div>
-
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-right: 0;padding-left:0 ">
-                            @{Html.RenderAction("Jschart", "Home", new { pfcode = ViewBag.PfCode });}
-
-                        </div>
-                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 0; padding-right: 0 ">
-
-                            @{Html.RenderAction("JschartforCashcounter", "Home", new { pfcode = ViewBag.PfCode });}
-                        </div>
-
-                    </div>
 
                         @*@{Html.RenderAction("steplinechart", "Home");}*@
                         @{Html.RenderAction("DestinationAndProductPartial", "Home");}
@@ -592,42 +651,42 @@
                     </div>
 
                 </div>
-                </div>
             </div>
-    </section>
+        </div>
+    </div>
 </div>
 
-    @if (ViewBag.sendmail != null)
-    {
-        <script>
-        alert('@ViewBag.sendmail');
-        </script>
-    }
-
-
-
-
-
-
-    @if (ViewBag.RedirectSector == true)
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                $('#overlay').modal('show');
-
-            });
-
-
-        </script>
-    }
-
-
-
+@if (ViewBag.sendmail != null)
+{
     <script>
+        alert('@ViewBag.sendmail');
+    </script>
+}
+
+
+
+
+
+
+@if (ViewBag.RedirectSector == true)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#overlay').modal('show');
+
+        });
+
+
+    </script>
+}
+
+
+
+<script>
     $(document).ready(function () {
 
-      
+
 
      $.ajax({
             type: 'GET',
@@ -668,4 +727,4 @@
 
     });
 
-    </script>
+</script>

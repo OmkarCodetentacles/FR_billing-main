@@ -489,6 +489,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PaymentDetails">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.PaymentDetail">
+        <MappingFragment StoreEntitySet="PaymentDetails">
+          <ScalarProperty Name="PaymentDetailsId" ColumnName="PaymentDetailsId" />
+          <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+          <ScalarProperty Name="ChequeNo" ColumnName="ChequeNo" />
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+          <ScalarProperty Name="FirmId" ColumnName="FirmId" />
+          <ScalarProperty Name="PfCode" ColumnName="PfCode" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="Paid" ColumnName="Paid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="paymentLogs">
       <EntityTypeMapping TypeName="db_a92afa_frbillingModel.paymentLog">
         <MappingFragment StoreEntitySet="paymentLog">
@@ -1157,6 +1176,7 @@
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+          <ScalarProperty Name="referralCode" ColumnName="referralCode" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -1177,24 +1197,6 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="url_path" ColumnName="url_path" />
           <ScalarProperty Name="description" ColumnName="description" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="getPayment" FunctionName="db_a92afa_frbillingModel.Store.getPayment">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getPayment_Result">
-          <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
-          <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
-          <ScalarProperty Name="servicetax" ColumnName="servicetax" />
-          <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
-          <ScalarProperty Name="othercharge" ColumnName="othercharge" />
-          <ScalarProperty Name="netamount" ColumnName="netamount" />
-          <ScalarProperty Name="paid" ColumnName="paid" />
-          <ScalarProperty Name="Balance" ColumnName="Balance" />
-          <ScalarProperty Name="total" ColumnName="total" />
-          <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
-          <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
-          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -1332,6 +1334,7 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="PaymentDetailsSave" FunctionName="db_a92afa_frbillingModel.Store.PaymentDetailsSave" />
     <FunctionImportMapping FunctionImportName="paymentLogSave" FunctionName="db_a92afa_frbillingModel.Store.paymentLogSave" />
     <FunctionImportMapping FunctionImportName="ReceipentsPhoneFromReceiptdetails" FunctionName="db_a92afa_frbillingModel.Store.ReceipentsPhoneFromReceiptdetails">
       <ResultMapping>
@@ -1415,5 +1418,26 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
+    <FunctionImportMapping FunctionImportName="getPayment" FunctionName="db_a92afa_frbillingModel.Store.getPayment">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getPayment_Result">
+          <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+          <ScalarProperty Name="tempInvoicedate" ColumnName="tempInvoicedate" />
+          <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
+          <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
+          <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
+          <ScalarProperty Name="servicetax" ColumnName="servicetax" />
+          <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
+          <ScalarProperty Name="othercharge" ColumnName="othercharge" />
+          <ScalarProperty Name="netamount" ColumnName="netamount" />
+          <ScalarProperty Name="paid" ColumnName="paid" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
+          <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
+          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

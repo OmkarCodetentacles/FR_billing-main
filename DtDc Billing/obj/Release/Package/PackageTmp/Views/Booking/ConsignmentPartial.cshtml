@@ -8,16 +8,28 @@
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
     <style>
-        # edit-consignment {
+        #edit-consignment {
             
             max-height: 300px;
         }
+        label {
+            width: 85px !important;
+        }
+        .form-select{
+            width:85px !important;
+        }
+        .type-select .form-select{
+            width:60px !important;
+        }
+        .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+            position: absolute;
+            margin-left: -41px !important;
+        }
     </style>
-    <div class="container">
+   
         <div id="sg1">
-            <div class="row">
-                <div class="col-md-4">
-                    <label>
+           
+                    <label style="width: 125px !important;">
                         Consi no
                         @if (ViewBag.nextconsignment != null)
                         {
@@ -32,33 +44,27 @@
                             @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
                         }
                     </label>
-                </div>
-                <div class="col-md-4">
-                    <label>
+                
+                    <label style="width: 125px !important;">
                         Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
                     </label>
-                </div>
-                <div class="col-md-4">
+               
 
-
-                    <label>
+                    <label style="width: 125px !important;">
                         Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
-                    <label>
+              
+                    <label style="width: 105px !important">
                         Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
+            
                     <label>
                         Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
                     </label>
 
-                </div>
-                <div class="col-md-4">
+              
                     <label>
                         Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
    new SelectListItem() {Text = "AR", Value="AR"},
@@ -101,59 +107,49 @@
    new SelectListItem() {Text = "DNS", Value="DNS"},
    new SelectListItem() {Text = "GEC", Value="GEC"},
    new SelectListItem() {Text = "PEC", Value="PEC"},
-   new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-control" })
+   new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select" })
 
 
                     </label>
-                </div>
-                <div class="col-md-4">
-                    <label>
+               
+                    <label style="width: 70px !important;">
                         Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
+               
 
-                    <label>
+                    <label style="width: 70px !important;">
                         char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
 
-                </div>
-                <div class="col-md-4">
-                    <label>
+               
+                    <label style="width: 65px !important;">
                         Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
-                    <label>
+              
+                    <label style="width: 60px !important; " class=type-select>
                         Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
    new SelectListItem() {Text = "D", Value="D"},
-   new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-control" })
+   new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                     </label>
-                </div>
-                <div class="col-md-4">
+               
                     <label>
                         Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
+          
                     <label>
                         Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
 
                     </label>
-                </div>
-                <div class="col-md-4">
+              
                     <label>
                         Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
                     </label>
-                </div>
-
-            </div>
-
+             
 
 
 
@@ -171,7 +167,7 @@
                 <!-- Form Name -->
                 <!-- Multiple Radios -->
                 <div class="row">
-                    <div id="insshow" class="col-sm-3">
+                    <div id="insshow" class="col-sm-5">
                         <label class="col-md-2 radio-label" for="radios">Insuarance</label>
 
                         <div class="radio-inline">
@@ -185,12 +181,12 @@
                             <label for="radios-1">
                                 @*<input name="Insurance" id="radios-1" value="no" type="radio" checked>*@
                                 @Html.RadioButtonFor(m => m.Insurance, "no", new { @checked = true, @id = "Insurance" })
-                                Owner Risk
-                            </label>
+                               Owner Risk
+</label>
                         </div>
                     </div>
-
-                    <div class="col-sm-9" id="insdiv">
+                  
+                    <div class="col-sm-7" id="insdiv">
                         <label>
                             Bill Amount
 
@@ -255,25 +251,25 @@
                     </div>
                 </div>
                 <!-- Multiple Radios -->
-                <div class="row">
-                    <div id="codradio" class="col-sm-5">
-                        <label class="col-md-2 radio-label" for="radios">COD</label>
+           
+                    <div id="codradio">
+                        <label class="radio-label" for="radios">COD</label>
 
                         <div class="radio-inline">
                             <label for="radios-0">
                                 @Html.RadioButtonFor(m => m.cod, "yes")
-                                Yes
+                                <span style="padding-left:20px">Yes</span>
                             </label>
                         </div>
                         <div class="radio-inline">
                             <label for="radios-1">
                                 @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
-                                No
+                                <span style="padding-left:20px">No</span>
                             </label>
                         </div>
                     </div>
 
-                    <div class="col-sm-7" id="coddiv">
+                    <div  id="coddiv">
                         <label>
                             Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
@@ -291,13 +287,13 @@
                             @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
                         </label>
                     </div>
-                </div>
+              
             </fieldset>
             <div class="text-right">
                 <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
             </div>
         </div>
-    </div>
+ 
 
 
 

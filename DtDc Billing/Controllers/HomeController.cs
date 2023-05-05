@@ -793,5 +793,12 @@ namespace DtDc_Billing.Controllers
                 ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
             return View();
         }
+
+
+        public ActionResult Share()
+        {
+            return View();
+        }
     }
+
 }

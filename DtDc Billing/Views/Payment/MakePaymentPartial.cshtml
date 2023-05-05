@@ -14,21 +14,11 @@
 
 <div class="form-horizontal">
 
-    <hr />
+    <hr/>
     @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <input type="hidden" name="Firm_Id" value="">
-    <input type="hidden" name="CompanyName" value="">
-
-        
-    @*<div class="form-group">
-        <label class="col-md-4">Company Name</label>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
-
+    
+    
     <div class="form-group">
         <label class="col-md-4">Amount</label>
         <div class="col-md-8">
@@ -41,8 +31,8 @@
     <div class="form-group">
         <label class="col-md-4">Date</label>
         <div class="col-md-8">
-            @Html.EditorFor(model => model.PaymentDate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
-            @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+            @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
 
         </div>
     </div>
@@ -124,7 +114,7 @@
     function createsuccess() {
         $('#Amount').removeAttr('value');
         $('#tempinserteddate').removeAttr('value');
-        $('#C_Tds_Amount').removeAttr('value');
+        $('#TdsAmount').removeAttr('value');
         $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
 
         $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
@@ -134,16 +124,16 @@
 
     $(document).ready(function () {
 
-        $("#Amount,#C_Tds_Amount").keyup(function () {
+        $("#Amount,#TdsAmount").keyup(function () {
 
             var Amount = $('#Amount').val();
 
-            var C_Tds_Amount = $('#C_Tds_Amount').val();
+            var C_Tds_Amount = $('#TdsAmount').val();
 
 
             var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
 
-            $('#C_Total_Amount').val(addition);
+            $('#TotalAmount').val(addition);
 
         });
 
@@ -152,6 +142,12 @@
 
 <script>
     $(document).ready(function () {
+
+        //var get = $(".company_name").val();
+        //alert(get);
+        //$('.company_name_value').val(get);
+
+
         $('input[name="PaymentType"]').on('click', function () {
             var selectedValue = $(this).val();
             alert(selectedValue);
@@ -172,3 +168,5 @@
         });
     });
     </script>
+
+

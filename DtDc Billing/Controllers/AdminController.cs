@@ -166,7 +166,7 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-                var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), login.PFCode.Trim()).Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode }).FirstOrDefault();
+                var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode }).FirstOrDefault();
 
                 if (obj != null)
                 {
@@ -213,7 +213,7 @@ namespace DtDc_Billing.Controllers
                         After1Year = date1.AddYears(1);
 
                     }
-                    var firmlist = db.FirmDetails.ToList();
+                    //var firmlist = db.FirmDetails.ToList();
 
                     Session["After1Year"] = After1Year;
 
@@ -222,13 +222,19 @@ namespace DtDc_Billing.Controllers
                         Session["Admin"] = obj.registrationId.ToString();
                         Session["UserName"] = obj.userName.ToString();
                         Session["PFCode"] = obj.Pfcode.ToString();
-                        Session["firmlist"] = firmlist;
+                       // Session["firmlist"] = firmlist;
                         string decodedUrl = "";
 
                         HttpCookie cookie = new HttpCookie("Cookies");
                         cookie["AdminValue"] = obj.Pfcode.ToString();
 
                         cookie["UserValue"] = obj.userName.ToString();
+                        cookie.Expires = DateTime.Now.AddDays(1);
+                        Response.Cookies.Add(cookie);
+
+
+
+                        cookie["referalCode"] = obj.referralCode.ToString();
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
 
@@ -3017,9 +3023,34 @@ namespace DtDc_Billing.Controllers
 
         }
 
-        public ActionResult Register()
+        [HttpGet]
+        public JsonResult userNameCheck(string username)
         {
+            bool isValid = db.registrations.Where(x => x.userName == username).FirstOrDefault() != null ? false : true;
 
+            return Json(isValid, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Register(string referral="")
+        {
+            string testParameter = Request.QueryString["referral"];
+
+            if(referral != "")
+            {
+                var isValidReferral = db.registrations.Where(x => x.referralCode == referral && x.isPaid == true).FirstOrDefault()!= null ? true : false;
+
+                if(isValidReferral)
+                {
+                    TempData["referralCode"] = referral;
+                }
+                else
+                {
+                    referral = "";
+                    ModelState.AddModelError("Error", "Invalid referral or not paid yet");
+                }
+
+            }
+            
             return View();
         }
         [HttpPost]
@@ -3029,17 +3060,49 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-
+                var flag = false;
                 var Pfcheck = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
 
 
                 if (Pfcheck != null)
                 {
+                    flag = true;
                     ModelState.AddModelError("customError", "Pfcode already exist");
+                   
+                }
+
+                if(userDetails.isUserNameExist == false)
+                {
+                    flag = true;
+                    ModelState.AddModelError("usernameerror", "User name already exist");
+                }
+                
+              
+
+                if (userDetails.referral != "")
+                {
+                    var isValidReferral = db.registrations.Where(x => x.referralCode == userDetails.referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
+
+                    if (isValidReferral)
+                    {
+                        userDetails.referral = userDetails.referral;
+                    }
+                    else
+                    {
+                        flag = true;
+                        userDetails.referral = "";
+                        ModelState.AddModelError("Error", "Invalid referral or not paid yet");
+                    }
+
+                }
+
+
+                if (flag)
+                {
                     return View("Register", userDetails);
                 }
 
-                var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referralby);
+                var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referral);
 
                 var savefranchisee = db.FranchiseeSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.password, userDetails.mobileNo, userDetails.address);
 

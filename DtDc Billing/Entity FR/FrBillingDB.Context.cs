@@ -360,19 +360,6 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getNotification_Result>("getNotification");
         }
     
-        public virtual ObjectResult<getPayment_Result> getPayment(string paymentType, string pfcode)
-        {
-            var paymentTypeParameter = paymentType != null ?
-                new ObjectParameter("PaymentType", paymentType) :
-                new ObjectParameter("PaymentType", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPayment_Result>("getPayment", paymentTypeParameter, pfcodeParameter);
-        }
-    
         public virtual ObjectResult<getPaymentTrackCash_Result> getPaymentTrackCash(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string companyName, string pfcode)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -767,6 +754,19 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("FirmName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
+        }
+    
+        public virtual ObjectResult<getPayment_Result> getPayment(string paymentType, string pfcode)
+        {
+            var paymentTypeParameter = paymentType != null ?
+                new ObjectParameter("PaymentType", paymentType) :
+                new ObjectParameter("PaymentType", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPayment_Result>("getPayment", paymentTypeParameter, pfcodeParameter);
         }
     }
 }
