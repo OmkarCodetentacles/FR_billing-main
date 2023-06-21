@@ -2438,7 +2438,7 @@ Select(e => new
 
 
                 ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-                ReportDataSource rd1 = new ReportDataSource("franchisees", dataset2);
+                ReportDataSource rd1 = new ReportDataSource("franchisee", dataset2);
                 ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
                 ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
 
@@ -2788,7 +2788,7 @@ Select(e => new
 
                 ////////////////////////////////////
                 ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-                ReportDataSource rd1 = new ReportDataSource("franchisees", dataset2);
+                ReportDataSource rd1 = new ReportDataSource("franchisee", dataset2);
                 ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
                 ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
 

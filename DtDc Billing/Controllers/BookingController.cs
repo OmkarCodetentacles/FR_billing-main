@@ -16,6 +16,7 @@ using System.Drawing.Imaging;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using DtDc_Billing.CustomModel;
+using System.Threading.Tasks;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1389,9 +1390,296 @@ Select(e => new
             return View(db.Companies.Where(m => m.Pf_code == pfcode).ToList());
         }
 
-
-
         ////////////////////////////////////
+
+
+        [HttpGet]
+        public ActionResult importFromExcel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult importFromExcel(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase != null)
+            {
+                var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
+                var damageResult = importConsignmentFromExcel.Import1Async(httpPostedFileBase, PfCode);
+
+                TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+
+            return View();
+        }
+
+
+
+
+        [HttpGet]
+        public ActionResult importFromExcelWhole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult importFromExcelWhole(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase != null)
+            {
+                var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
+                var damageResult = importConsignmentFromExcel.Import2Async(httpPostedFileBase, PfCode);
+
+                TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+
+
+            return RedirectToAction("importFromExcel");
+        }
+
+
+        [HttpGet]
+        public ActionResult AddNewimporFromExcel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewimporFromExcel(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase != null)
+            {
+                var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
+                var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
+
+                TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+            return RedirectToAction("importFromExcel");
+        }
+
+
+        public ActionResult importTextFile()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> importTextFile(HttpPostedFileBase ImportText)
+        {
+            string filePath = string.Empty;
+
+            if (ImportText != null)
+            {
+                string path = Server.MapPath("~/UploadsText/");
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + Path.GetFileName(ImportText.FileName);
+                string extension = Path.GetExtension(ImportText.FileName);
+                ImportText.SaveAs(filePath);
+
+                Task.Run(() => InsertRecords(filePath, ImportText.FileName));
+
+            }
+
+            TempData["Upload"] = "File Uploaded Successfully!";
+
+            return RedirectToAction("ConsignMent", "Booking");
+        }
+
+
+        public void InsertRecords(string filePath, string Filename)
+        {
+            List<Transaction> Tranjaction = new List<Transaction>();
+
+
+
+            //Read the contents of CSV file.
+            string csvData = System.IO.File.ReadAllText(filePath);
+
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            //Execute a loop over the rows.
+            int i = 0;
+            foreach (string row in csvData.Split('\n'))
+            {
+                i++;
+                if (i <= 2)
+                {
+                    continue;
+                }
+
+                if (!string.IsNullOrEmpty(row))
+                {
+
+                    string[] values = row.Split('"');
+
+
+                    Transaction tr = new Transaction();
+
+                    string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+                    string bdate = DateTime.ParseExact(values[10].Trim('\''), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+
+
+                    tr.Consignment_no = values[1].Trim('\'').Trim();
+                    tr.Pf_Code = values[3].Trim('\'');
+                    tr.Actual_weight = Convert.ToDouble(values[4].Trim('\''));
+                    tr.Mode = values[5].Trim('\'');
+                    tr.Quanntity = Convert.ToInt16(values[8].Trim('\''));
+                    tr.Pincode = values[9].Trim('\'');
+                    tr.booking_date = Convert.ToDateTime(bdate);
+                    tr.tembookingdate = values[10].Trim('\'');
+                    tr.dtdcamount = Convert.ToDouble(values[11].Trim('\''));
+                    tr.chargable_weight = Convert.ToDouble(values[4].Trim('\''));
+                    tr.diff_weight = Convert.ToDouble(values[4].Trim('\''));
+                    tr.topay = "no";
+                    tr.cod = "no";
+                    //tr.Insurance = "no";
+                    tr.Type_t = values[16].Trim('\'');
+                    tr.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+
+                    if (tr.BillAmount == 0.00)
+                    {
+                        tr.Insurance = "nocoverage";
+                    }
+                    else
+                    {
+                        tr.Insurance = "ownerrisk";
+                    }
+
+
+                    Transaction insertupdate = db.Transactions.Where(m => m.Consignment_no == tr.Consignment_no && m.Pf_Code == PfCode).FirstOrDefault();
+
+
+
+
+
+                    if (insertupdate == null)
+                    {
+                        // db.Entry(insertupdate).State = EntityState.Detached;
+
+                        db.Transactions.Add(tr);
+                        try
+                        {
+                            // Your code...
+                            // Could also be before try if you know the exception occurs in SaveChanges
+
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            foreach (var eve in e.EntityValidationErrors)
+                            {
+                                Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage);
+                                }
+                            }
+                            throw;
+                        }
+
+                    }
+                    else
+                    {
+                        insertupdate.Pf_Code = values[3].Trim('\'');
+                        insertupdate.dtdcamount = Convert.ToDouble(values[11].Trim('\''));
+                        insertupdate.diff_weight = Convert.ToDouble(values[4].Trim('\''));
+                        insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
+
+                        insertupdate.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+                        insertupdate.Insurance = tr.Insurance;
+
+                        db.Entry(insertupdate).State = EntityState.Modified;
+
+                        try
+                        {
+                            // Your code...
+                            // Could also be before try if you know the exception occurs in SaveChanges
+
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException e)
+                        {
+                            foreach (var eve in e.EntityValidationErrors)
+                            {
+                                Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                foreach (var ve in eve.ValidationErrors)
+                                {
+                                    Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                        ve.PropertyName, ve.ErrorMessage);
+                                }
+                            }
+                            throw;
+                        }
+
+                        // db.SaveChanges();
+
+                    }
+
+
+
+
+                }
+
+
+            }
+
+           
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> InternationalimportTextFile(HttpPostedFileBase ImportText)
+        {
+
+            string filePath = string.Empty;
+
+            if (ImportText != null)
+            {
+                string path = Server.MapPath("~/UploadsText/");
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + Path.GetFileName(ImportText.FileName);
+                string extension = Path.GetExtension(ImportText.FileName);
+                ImportText.SaveAs(filePath);
+
+                Task.Run(() => InsertRecords(filePath, ImportText.FileName));
+
+            }
+
+            TempData["Upload"] = "File Uploaded Successfully!";
+
+            return RedirectToAction("ConsignMent", "Booking");
+
+        }
 
     }
 }
