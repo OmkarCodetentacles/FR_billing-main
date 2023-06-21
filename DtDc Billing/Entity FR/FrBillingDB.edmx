@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="db_a92afa_frbillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="db_a92afa_frbillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="addcodamount">
           <Key>
             <PropertyRef Name="am_id" />
@@ -461,6 +461,24 @@
           <Property Name="Datetime_Pay" Type="datetime" />
           <Property Name="User_Id" Type="bigint" />
         </EntityType>
+        <EntityType Name="PaymentDetails">
+          <Key>
+            <PropertyRef Name="PaymentDetailsId" />
+          </Key>
+          <Property Name="PaymentDetailsId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentType" Type="varchar" MaxLength="100" />
+          <Property Name="Amount" Type="float" />
+          <Property Name="TdsAmount" Type="float" />
+          <Property Name="TotalAmount" Type="float" />
+          <Property Name="InvoiceNo" Type="varchar(max)" />
+          <Property Name="ChequeNo" Type="varchar" MaxLength="100" />
+          <Property Name="TransactionId" Type="varchar" MaxLength="200" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="FirmId" Type="bigint" />
+          <Property Name="PfCode" Type="varchar" MaxLength="100" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="200" />
+          <Property Name="Paid" Type="float" />
+        </EntityType>
         <EntityType Name="paymentLog">
           <Key>
             <PropertyRef Name="id" />
@@ -839,18 +857,6 @@
           <Property Name="Datetime_Wa" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.invalidCon' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="invalidCon">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.openConCount' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="openConCount">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TransactionView">
           <Key>
@@ -905,12 +911,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="remarks" Type="varchar" MaxLength="100" />
           <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="unSignPincode">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
         <Association Name="Emp_Fk">
           <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -1866,6 +1866,20 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
         </Function>
         <Function Name="getRemainingAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getUserModuleList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="PaymentDetailsSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PaymentType" Type="varchar" Mode="In" />
+          <Parameter Name="Amount" Type="float" Mode="In" />
+          <Parameter Name="TdsAmount" Type="float" Mode="In" />
+          <Parameter Name="TotalAmount" Type="float" Mode="In" />
+          <Parameter Name="InvoiceNo" Type="varchar(max)" Mode="In" />
+          <Parameter Name="ChequeNo" Type="varchar" Mode="In" />
+          <Parameter Name="TransactionId" Type="varchar" Mode="In" />
+          <Parameter Name="PaymentDate" Type="datetime" Mode="In" />
+          <Parameter Name="FirmId" Type="bigint" Mode="In" />
+          <Parameter Name="PfCode" Type="varchar" Mode="In" />
+          <Parameter Name="CompanyName" Type="varchar" Mode="In" />
+          <Parameter Name="Paid" Type="float" Mode="In" />
+        </Function>
         <Function Name="paymentLogSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Pfcode" Type="varchar" Mode="In" />
           <Parameter Name="ownerName" Type="varchar" Mode="In" />
@@ -1962,6 +1976,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="popupimage" EntityType="Self.popupimage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Priority" EntityType="Self.Priority" Schema="dbo" store:Type="Tables" />
@@ -2317,8 +2332,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_a92afa_frbillingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2868,6 +2882,24 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Name="User_Id" Type="Int64" />
           <NavigationProperty Name="Franchisee" Relationship="Self.fk_Pay" FromRole="Payment" ToRole="Franchisee" />
           <NavigationProperty Name="User" Relationship="Self.fk_emppay" FromRole="Payment" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="PaymentDetail">
+          <Key>
+            <PropertyRef Name="PaymentDetailsId" />
+          </Key>
+          <Property Name="PaymentDetailsId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="TdsAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ChequeNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="FirmId" Type="Int64" />
+          <Property Name="PfCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Paid" Type="Double" />
         </EntityType>
         <EntityType Name="paymentLog">
           <Key>
@@ -4221,6 +4253,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
           <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
           <EntitySet Name="popupimages" EntityType="Self.popupimage" />
           <EntitySet Name="Priorities" EntityType="Self.Priority" />
@@ -4542,7 +4575,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           </FunctionImport>
           <FunctionImport Name="DatabaseBackup" />
           <FunctionImport Name="destinationCount" ReturnType="Collection(db_a92afa_frbillingModel.destinationCount_Result)">
-            <Parameter Name="Pfcode" Mode="In" Type="String" />
+          <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FranchiseeSave">
             <Parameter Name="PF_Code" Mode="In" Type="String" />
@@ -4561,7 +4594,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getCheckBookingListAll" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListAll_Result)">
-            <Parameter Name="pfcode" Mode="In" Type="String" />
+          <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getCheckBookingListWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -4591,7 +4624,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getIssueList" ReturnType="Collection(db_a92afa_frbillingModel.getIssueList_Result)">
-            <Parameter Name="Pfcode" Mode="In" Type="String" />
+          <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getLogin" ReturnType="Collection(db_a92afa_frbillingModel.getLogin_Result)">
             <Parameter Name="username" Mode="In" Type="String" />
@@ -4603,10 +4636,6 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getNotification" ReturnType="Collection(db_a92afa_frbillingModel.getNotification_Result)" />
-          <FunctionImport Name="getPayment" ReturnType="Collection(db_a92afa_frbillingModel.getPayment_Result)">
-            <Parameter Name="PaymentType" Mode="In" Type="String" />
-            <Parameter Name="pfcode" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="getPaymentTrackCash" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackCash_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
@@ -4632,13 +4661,27 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a92afa_frbillingModel.getReceiptDetails_Result)">
-            <Parameter Name="pfcode" Mode="In" Type="String" />
+          <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getRemaining" ReturnType="Collection(db_a92afa_frbillingModel.getRemaining_Result)">
-            <Parameter Name="PfCode" Mode="In" Type="String" />
+          <Parameter Name="PfCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getRemainingAll" ReturnType="Collection(db_a92afa_frbillingModel.getRemainingAll_Result)" />
           <FunctionImport Name="getUserModuleList" ReturnType="Collection(db_a92afa_frbillingModel.getUserModuleList_Result)" />
+          <FunctionImport Name="PaymentDetailsSave">
+            <Parameter Name="PaymentType" Mode="In" Type="String" />
+            <Parameter Name="Amount" Mode="In" Type="Double" />
+            <Parameter Name="TdsAmount" Mode="In" Type="Double" />
+            <Parameter Name="TotalAmount" Mode="In" Type="Double" />
+            <Parameter Name="InvoiceNo" Mode="In" Type="String" />
+            <Parameter Name="ChequeNo" Mode="In" Type="String" />
+            <Parameter Name="TransactionId" Mode="In" Type="String" />
+            <Parameter Name="PaymentDate" Mode="In" Type="DateTime" />
+            <Parameter Name="FirmId" Mode="In" Type="Int64" />
+            <Parameter Name="PfCode" Mode="In" Type="String" />
+            <Parameter Name="CompanyName" Mode="In" Type="String" />
+            <Parameter Name="Paid" Mode="In" Type="Double" />
+          </FunctionImport>
           <FunctionImport Name="paymentLogSave">
             <Parameter Name="Pfcode" Mode="In" Type="String" />
             <Parameter Name="ownerName" Mode="In" Type="String" />
@@ -4701,6 +4744,10 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="Pfcode" Mode="In" Type="String" />
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="getPayment" ReturnType="Collection(db_a92afa_frbillingModel.getPayment_Result)">
+            <Parameter Name="PaymentType" Mode="In" Type="String" />
+            <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
@@ -4873,6 +4920,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="referralCode" Nullable="true" MaxLength="100" />
         </ComplexType>
         <ComplexType Name="getLoginforDev_Result">
           <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
@@ -4885,20 +4933,6 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Type="Boolean" Name="Status" Nullable="true" />
           <Property Type="String" Name="url_path" Nullable="true" MaxLength="150" />
           <Property Type="String" Name="description" Nullable="true" MaxLength="200" />
-        </ComplexType>
-        <ComplexType Name="getPayment_Result">
-          <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
-          <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
-          <Property Type="Double" Name="servicetax" Nullable="true" />
-          <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
-          <Property Type="Double" Name="othercharge" Nullable="true" />
-          <Property Type="Double" Name="netamount" Nullable="true" />
-          <Property Type="Double" Name="paid" Nullable="true" />
-          <Property Type="Double" Name="Balance" Nullable="true" />
-          <Property Type="Double" Name="total" Nullable="true" />
-          <Property Type="Double" Name="Royalty_charges" Nullable="true" />
-          <Property Type="Double" Name="Docket_charges" Nullable="true" />
-          <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
         </ComplexType>
         <ComplexType Name="getPaymentTrackCash_Result">
           <Property Type="Double" Name="Amount" Nullable="true" />
@@ -5068,6 +5102,23 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Type="String" Name="Sender" Nullable="true" />
           <Property Type="String" Name="Receiver" Nullable="true" />
           <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="getPayment_Result">
+          <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+          <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+          <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="servicetax" Nullable="true" />
+          <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="othercharge" Nullable="true" />
+          <Property Type="Double" Name="netamount" Nullable="true" />
+          <Property Type="Double" Name="paid" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
+          <Property Type="Double" Name="total" Nullable="true" />
+          <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+          <Property Type="Double" Name="Docket_charges" Nullable="true" />
+          <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -5560,6 +5611,25 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="Description_" ColumnName="Description_" />
                 <ScalarProperty Name="Datetime_Pay" ColumnName="Datetime_Pay" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentDetails">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.PaymentDetail">
+              <MappingFragment StoreEntitySet="PaymentDetails">
+                <ScalarProperty Name="PaymentDetailsId" ColumnName="PaymentDetailsId" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="ChequeNo" ColumnName="ChequeNo" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="FirmId" ColumnName="FirmId" />
+                <ScalarProperty Name="PfCode" ColumnName="PfCode" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6231,6 +6301,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+                <ScalarProperty Name="referralCode" ColumnName="referralCode" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -6251,24 +6322,6 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="url_path" ColumnName="url_path" />
                 <ScalarProperty Name="description" ColumnName="description" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getPayment" FunctionName="db_a92afa_frbillingModel.Store.getPayment">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getPayment_Result">
-                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
-                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
-                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
-                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
-                <ScalarProperty Name="othercharge" ColumnName="othercharge" />
-                <ScalarProperty Name="netamount" ColumnName="netamount" />
-                <ScalarProperty Name="paid" ColumnName="paid" />
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
-                <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
-                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -6406,6 +6459,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PaymentDetailsSave" FunctionName="db_a92afa_frbillingModel.Store.PaymentDetailsSave" />
           <FunctionImportMapping FunctionImportName="paymentLogSave" FunctionName="db_a92afa_frbillingModel.Store.paymentLogSave" />
           <FunctionImportMapping FunctionImportName="ReceipentsPhoneFromReceiptdetails" FunctionName="db_a92afa_frbillingModel.Store.ReceipentsPhoneFromReceiptdetails">
             <ResultMapping>
@@ -6489,6 +6543,27 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
+          <FunctionImportMapping FunctionImportName="getPayment" FunctionName="db_a92afa_frbillingModel.Store.getPayment">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getPayment_Result">
+                <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+                <ScalarProperty Name="tempInvoicedate" ColumnName="tempInvoicedate" />
+                <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
+                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
+                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
+                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
+                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
+                <ScalarProperty Name="othercharge" ColumnName="othercharge" />
+                <ScalarProperty Name="netamount" ColumnName="netamount" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
+                <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

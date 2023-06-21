@@ -1,21 +1,31 @@
 ﻿@model DtDc_Billing.Models.FranchiseeModel
+
+<style>
+    #frmEmp{
+        margin:15px 0;
+        text-align:left;
+    }
+</style>
 @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <input type="hidden" name="StampFilePath" value="@Model.StampFilePath">
 <form enctype="multipart/form-data">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 no-padding " >
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h4>Edit Franchisee</h4>
-                    </div>
-                    <!-- /.box-header -->
+
+    @*<div class="content-wrapper">*@
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h4>Edit Franchisee</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 ">
+
+                        <!-- /.box-header -->
 
 
-                    <div class="form-horizontal">
-                        <div class="box-body" style="margin-top:10px; padding:20px">
+                        <div class="form-horizontal">
+
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -182,7 +192,7 @@
                                     <div class="form-group">
                                         @if (Model.StampFilePath != null)
                                         {
-                                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;" >
+                                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
                                         }
                                         <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
                                         <div class="">
@@ -197,7 +207,7 @@
 
                                 </div>
 
-                                <div class="col-md-12" style="text-align: start;">
+                                <div class="col-md-12" style="text-align: right;">
                                     <div class="form-group">
                                         <div class="">
                                             <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
@@ -215,8 +225,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    
+    @*</div>*@
+   
 </form>
 
         }

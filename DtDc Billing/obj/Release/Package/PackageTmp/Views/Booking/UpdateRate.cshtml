@@ -14,206 +14,226 @@
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 <div class="content-wrapper">
-    <section class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h4>Update Rate</h4>
-                    </div>
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h4>Update Rate</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+
 
                     <div class="form-horizontal">
-                        <div class="box-body">
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
 
 
+                        @*<div class="row">
+                            <div class="col-md-12">*@
+                                <div class="form-group">
 
 
-                                        @using (Html.BeginForm())
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+
+                                        if (ViewBag.Custid != null)
                                         {
-
-
-                                            if (ViewBag.Custid != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Custid" style="margin-right:10px;margin-bottom:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="Customer id " type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Custid" style="margin-right: 10px; margin-bottom: 10px" class="form-control" id="custid" placeholder="Customer id " type="text">
-                                                </div>
-                                            }
-                                            if (ViewBag.fromdate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text" style="margin-bottom: 10px">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text" style="margin-bottom: 10px">
-                                                </div>
-                                            }
-                                            if (ViewBag.todate != null)
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right: 50px; margin-bottom: 10px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="col-md-3">
-                                                    <input style="margin-right: 50px; margin-bottom: 10px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            }
                                             <div class="col-md-3">
-                                                <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="submit" value="Show" style="margin-bottom: 10px" />
-                                                <input type="submit" class="pull-right btn btn-success col-sm-12" id="UpdateRate" name="submit" value="UpdateRate" style="margin-bottom: 10px" />
+                                                <div class="form-group">
+                                                    <label>Customer id</label>
+                                                    <input name="Custid" style="margin-right:10px;margin-bottom:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                                </div>
                                             </div>
                                         }
-                                    </div>
-                                </div>
-                            </div>
-
-                            <table id="check-booking-list" class="table table-striped table-bordered table-responsive ">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            Sr No
-                                        </th>
-                                        <th>
-                                            Consignment no
-                                        </th>
-                                        <th>
-                                            Weight
-                                        </th>
-                                        <th>
-                                            Destination
-                                        </th>
-                                        <th>
-                                            Pincode
-                                        </th>
-
-                                        <th>
-                                            customer ID
-                                        </th>
-                                        <th>
-                                            Mode
-                                        </th>
-                                        <th>
-                                            Amount
-                                        </th>
-                                        <th>
-                                            Booking Date
-                                        </th>
-                                        <th>
-                                            Insurance
-                                        </th>
-                                        <th>
-                                            Claim amount
-                                        </th>
-                                        <th>
-                                            Percentage
-                                        </th>
-                                        <th>
-                                            Risk surcharge
-                                        </th>
-                                        <th>
-                                            Other Charges
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{ int i = 1;
-                                        foreach (var item in Model)
+                                        else
                                         {
-                                            <tr>
-
-                                                <td>
-                                                    @i
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Consignment_no)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.chargable_weight)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pincode)
-                                                </td>
-
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Customer_Id)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Mode)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Amount)
-                                                </td>
-                                                <td>
-                                                    @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Insurance)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Claimamount)
-                                                </td>
-
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Percentage)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.calinsuranceamount)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.loadingcharge)
-                                                </td>
-                                                <td>
-                                                    @(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))
-                                                </td>
-
-                                            </tr>
-
-                                            i++;
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Customer id</label>
+                                                    <input name="Custid" style="margin-right: 10px; margin-bottom: 10px" class="form-control" id="custid" type="text">
+                                                </div>
+                                            </div>
                                         }
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date</label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="margin-bottom: 10px">
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date</label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style="margin-bottom: 10px">
+                                                </div>
+                                            </div>
+                                        }
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date</label>
+                                                    <input style="margin-right: 50px; margin-bottom: 10px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date</label>
+                                                    <input style="margin-right: 50px; margin-bottom: 10px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="col-md-3" style="display: flex; margin-top: 20px;">
+                                            <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="submit" value="Show" style="margin-bottom: 10px" />
+                                            <input type="submit" class="pull-right btn btn-success sbmt col-sm-12" id="UpdateRate" name="submit" value="UpdateRate" style="margin-bottom: 10px" />
+                                        </div>
                                     }
-                                </tbody>
-                            </table>
-                            <br>
-                            <!-- /input-group -->
-
-                            <div class="col-sm-3 " style="float: right" ;>
-                                <div class="input-group">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-danger total-label">Total</button>
-                                    </div>
-                                    <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" value="@ViewBag.totalamt">
                                 </div>
-                            </div>
-                            <!-- /input-group -->
+                            @*</div>
+                        </div>*@
 
+                        <table id="check-booking-list" class="table table-striped table-bordered table-responsive ">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        Consignment no
+                                    </th>
+                                    <th>
+                                        Weight
+                                    </th>
+                                    <th>
+                                        Destination
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+
+                                    <th>
+                                        customer ID
+                                    </th>
+                                    <th>
+                                        Mode
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+                                    <th>
+                                        Insurance
+                                    </th>
+                                    <th>
+                                        Claim amount
+                                    </th>
+                                    <th>
+                                        Percentage
+                                    </th>
+                                    <th>
+                                        Risk surcharge
+                                    </th>
+                                    <th>
+                                        Other Charges
+                                    </th>
+                                    <th>
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.chargable_weight)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pincode)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Insurance)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Claimamount)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Percentage)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.calinsuranceamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.loadingcharge)
+                                            </td>
+                                            <td>
+                                                @(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))
+                                            </td>
+
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <!-- /input-group -->
+
+                        <div class="col-sm-3 " style="float: right" ;>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger total-label">Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" value="@ViewBag.totalamt">
+                            </div>
                         </div>
+                        <!-- /input-group -->
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
     </div>
+
+</div>
 
     @if (ViewBag.successmsg != null)
     {

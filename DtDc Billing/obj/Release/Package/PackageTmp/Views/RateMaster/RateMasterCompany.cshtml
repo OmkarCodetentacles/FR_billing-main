@@ -3,12 +3,31 @@
 @using (Html.BeginForm("RatemasterCompany", "Ratemaster"))
 {
     @Html.AntiForgeryToken()
-   
+   <style>
+       textarea {
+           display: block;
+           width: 100%;
+           height: 34px;
+           padding: 6px 12px;
+           font-size: 14px;
+           line-height: 1.42857143;
+           color: #555;
+           background-color: #fff;
+           background-image: none;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+           box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+           -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+           -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+       }
+   </style>
        <section>
 
-           <div class="container">
-               <div class="form-horizontal">
-                   <div class="box-body">
+         
+               <div class="form-horizontal" style="padding:20px 0">
+                  
                        <div class="row">
                            <div class="col-md-4">
                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -123,8 +142,8 @@
                            <div class="col-md-4">
                                <div class="form-group">
                                    <label class="">Royalty Charges</label>
-                                   <div style="display:flex;">
-                                       <div class="" style=" width: 740px;">
+                                   <div style="display:flex;width:100%">
+                                       <div class="" style=" width: 94%;">
                                            @Html.EditorFor(model => model.Royalty_Charges, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                            @Html.ValidationMessageFor(model => model.Royalty_Charges, "", new { @class = "text-danger" })
                                        </div>
@@ -245,10 +264,10 @@
                                </div>
                            </div>
                        </div>
-                   </div>
+                 
 
                </div>
-           </div>
+         
        </section>
         
 }

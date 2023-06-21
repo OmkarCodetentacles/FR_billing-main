@@ -1,35 +1,88 @@
 ﻿@model DtDc_Billing.CustomModel.dashboardDataModel
- 
+
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
+<style>
+      /* (A) WARNING KEYFRAMES */
+      @@keyframes blinking {
+          0% {
+              background-color: #ff3d50;
+              color: #ddd;
+          }
 
+          100% {
+              background-color: #222291;
+              color: #fff;
+          }
+      }
+
+      /* (B) ATTACH WARNING KEYFRAMES TO CONTAINER */
+      #demo {
+          /*font-size: 1.3em;
+    font-weight: bold;*/
+          padding: 4px;
+          animation: blinking 3s infinite;
+          width: 80%;
+          margin: auto;
+          /* width: 60%;
+    border: 3px solid #73AD21;*/
+          /*padding: 10px;*/
+          background-color: #ffffff;
+          cursor: pointer;
+      }
+
+      .bannerDiv {
+          width: 100%;
+      }
+
+    .notify-badge {
+        position: absolute;
+        /* right: 632px; */
+        top: 53px;
+        background: #da2f2f;
+        text-align: center;
+        border-radius: 30px 30px 30px 30px;
+        color: white;
+        padding: 2px 8px;
+        font-size: 17px;
+    }
+</style>
 
 
 
 <div class="content-wrapper">
 
 
-        <!--<div class="col-sm-3 " style="float: right" ;>
-        <div class="input-group">
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-danger total-label">Complaint Count</button>
-            </div>-->
-        <!-- /btn-group -->
-        <!--<input type="text" class="form-control total-amount" value="@Model.complaintCount">
+
+    <!--<div class="col-sm-3 " style="float: right" ;>
+    <div class="input-group">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-danger total-label">Complaint Count</button>
+        </div>-->
+    <!-- /btn-group -->
+    <!--<input type="text" class="form-control total-amount" value="@Model.complaintCount">
         </div>
     </div>-->
-        @*@{
+    @*@{
 
             Html.RenderPartial("NotificationPartial");
         }*@
+
     <div class="box">
         <div class="box-header with-border">
             <h4>Dashboard</h4>
         </div><!-- /.box-header -->
-        <div class="box-body">
 
+
+        <div class="box-body">
+            <div id="demo">
+                <a target="_blank" href="~/assets/images/Offers Fr billing.png">
+                    <span class="notify-badge"><blink>offer</blink></span>
+                    <img src="~/assets/images/Offers Fr billing.png" alt="Pineapple" class="bannerDiv" height="200">
+                </a>
+            </div>
             <div class="row">
                 <div class="col-md-12">
 
@@ -603,37 +656,37 @@
     </div>
 </div>
 
-    @if (ViewBag.sendmail != null)
-    {
-        <script>
-        alert('@ViewBag.sendmail');
-        </script>
-    }
-
-
-
-
-
-
-    @if (ViewBag.RedirectSector == true)
-    {
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                $('#overlay').modal('show');
-
-            });
-
-
-        </script>
-    }
-
-
-
+@if (ViewBag.sendmail != null)
+{
     <script>
+        alert('@ViewBag.sendmail');
+    </script>
+}
+
+
+
+
+
+
+@if (ViewBag.RedirectSector == true)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#overlay').modal('show');
+
+        });
+
+
+    </script>
+}
+
+
+
+<script>
     $(document).ready(function () {
 
-      
+
 
      $.ajax({
             type: 'GET',
@@ -674,4 +727,4 @@
 
     });
 
-    </script>
+</script>

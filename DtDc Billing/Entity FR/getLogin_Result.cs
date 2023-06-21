@@ -17,5 +17,6 @@ namespace DtDc_Billing.Entity_FR
         public string username { get; set; }
         public string password { get; set; }
         public string Pfcode { get; set; }
+        public string referralCode { get; set; }
     }
 }

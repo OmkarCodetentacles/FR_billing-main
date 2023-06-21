@@ -12,62 +12,65 @@
         margin-right: 0.5em;
         padding-top: 1.5em;
     }
+  
+    .choosefile {
+        padding: 7px !important;
+    }
 </style>
 <div class="content-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-info">
+    <div class="box box-info">
 
 
-                    @using (Html.BeginForm("importTextFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
-                    {
+        @using (Html.BeginForm("importTextFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
+        {
 
-                        @Html.AntiForgeryToken()
-
-
-                        <div class="box-header with-border">
-                            <div class="row">
-                                <div class="col-sm-7">
-
-                                    <h4>
-                                        Book Consignment
-                                    </h4>
-                                </div>
+            @Html.AntiForgeryToken()
 
 
-                                <div class="col-sm-5">
-                                    <div class="col-sm-8">
-                                        <input id="File1" required type="file" name="ImportText" />
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <input type="submit" class="btn btn-primary pull-right" value="Import From text" />
-                                    </div>
-                                </div>
+            <div class="box-header with-border">
+                <div class="row">
+                    <div class="col-md-6">
 
-                                <div class="col-sm-3">
-                                    <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
-                                </div>
-                            </div>
-                           
+                        <h4>
+                            Book Consignment
+                        </h4>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="col-sm-8">
+                            <input id="File1" required type="file" name="ImportText" class="choosefile" />
                         </div>
+                        <div class="col-sm-4">
+                            <input type="submit" class="btn btn-primary pull-right btn-submitt" value="Import From text" />
+                        </div>
+                    </div>
 
-                    }
+                    <div class="col-sm-3">
+                        <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
+                    </div>
+                </div>
+
+            </div>
+
+        }
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
 
 
 
                     <div class="form-horizontal">
-                        <div class="box-body">
-                            <div id="form-Cons">
-                                @Html.Partial("ConsignmentPartial", Model)
-                            </div>
+
+                        <div id="form-Cons">
+                            @Html.Partial("ConsignmentPartial", Model)
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-       
-    
-    </div>
+
+
+</div>
 

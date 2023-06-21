@@ -17,9 +17,9 @@ namespace DtDc_Billing.Models
         [Required(ErrorMessage = "Please Enter Password")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Please Enter PFCode")]
-        [Display(Name = "PFCode")]
-        public string PFCode { get; set; }
+        //[Required(ErrorMessage = "Please Enter PFCode")]
+        //[Display(Name = "PFCode")]
+        //public string PFCode { get; set; }
 
 
     }

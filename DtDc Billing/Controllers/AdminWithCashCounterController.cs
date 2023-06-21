@@ -48,11 +48,11 @@ namespace DtDc_Billing.Controllers
         {
 
           
-            var obj = db.getLogin(login.UserName, login.Password,login.PFCode).Select(x => new registration { registrationId = x.registrationId, userName = x.username , Pfcode=x.Pfcode }).FirstOrDefault();
+            var obj = db.getLogin(login.UserName, login.Password,"").Select(x => new registration { registrationId = x.registrationId, userName = x.username , Pfcode=x.Pfcode }).FirstOrDefault();
 
-            var objUser = db.Users.Where(a => a.Email.ToLower().Equals(emplogin.UserName.ToLower()) && a.Password_U.Equals(login.Password) && a.PF_Code==login.PFCode && a.Usertype.Contains("CashCounter")).FirstOrDefault();
+            var objUser = db.Users.Where(a => a.Email.ToLower().Equals(emplogin.UserName.ToLower()) && a.Password_U.Equals(login.Password) && a.Usertype.Contains("CashCounter")).FirstOrDefault();
             
-            var objBilling = db.Users.Where(a => a.Email.Equals(emplogin.UserName) && a.Password_U.Equals(login.Password) && a.PF_Code == login.PFCode && a.Usertype.Contains("Billing")).FirstOrDefault();
+            var objBilling = db.Users.Where(a => a.Email.Equals(emplogin.UserName) && a.Password_U.Equals(login.Password) && a.Usertype.Contains("Billing")).FirstOrDefault();
 
             var types = db.Users.Where(m => m.Email == emplogin.UserName).Select(m => m.Usertype).FirstOrDefault();
 

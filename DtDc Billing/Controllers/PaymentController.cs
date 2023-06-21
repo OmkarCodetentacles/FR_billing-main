@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
@@ -33,6 +35,7 @@ namespace DtDc_Billing.Controllers
             //var transactions = db.Invoices.AsEnumerable();
 
             //return View(transactions.ToList());
+
             return View(list);
         }
 
@@ -50,6 +53,7 @@ namespace DtDc_Billing.Controllers
 
             var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
             {
+                invoiceno = x.invoiceno,
                 total = x.total,
                 fullsurchargetax = x.fullsurchargetax,
                 fullsurchargetaxtotal = x.fullsurchargetaxtotal,
@@ -57,12 +61,15 @@ namespace DtDc_Billing.Controllers
                 servicetaxtotal = x.servicetaxtotal,
                 othercharge = x.othercharge,
                 netamount = x.netamount,
+                Firm_Id = x.Firm_Id,
                 Customer_Id = x.Customer_Id,
                 paid = x.paid ?? 0,
+                tempInvoicedate = x.tempInvoicedate,
                 Royalty_charges = x.Royalty_charges,
                 Docket_charges = x.Docket_charges,
                 Balance = x.Balance ?? 0
-                
+                // discount = x.discount,
+                // totalCount = x.totalCount ?? 0
             }).ToList();
 
 
@@ -71,6 +78,54 @@ namespace DtDc_Billing.Controllers
 
         }
 
+
+        public ActionResult MakePayment(MakePaymentModel payment)
+        {
+            if(ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                //var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                var obj = db.getPayment("Unpaid", strpf).Select(x => new PaymentModel
+                {
+                    total = x.total,
+                    fullsurchargetax = x.fullsurchargetax,
+                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                    servicetax = x.servicetax,
+                    servicetaxtotal = x.servicetaxtotal,
+                    othercharge = x.othercharge,
+                    netamount = x.netamount,
+                    Customer_Id = x.Customer_Id,
+                    paid = x.paid ?? 0,
+                    Royalty_charges = x.Royalty_charges,
+                    Docket_charges = x.Docket_charges,
+                    Balance = x.Balance ?? 0
+
+                }).Where(x=>x.Customer_Id == payment.CompanyName).FirstOrDefault();
+
+              
+                if (payment.TotalAmount > obj.Balance)
+                {
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                   
+                    var paid = Convert.ToDouble(payment.TotalAmount);
+
+                    var save = db.PaymentDetailsSave(payment.PaymentType, payment.Amount, payment.TdsAmount,payment.TotalAmount ,payment.InvoiceNo, payment.ChequeNo, payment.TransactionId, payment.tempinserteddate, payment.FirmId , strpf, payment.CompanyName, paid);
+
+                    TempData["remainingAmount"] = obj.Balance - Convert.ToDouble(payment.TotalAmount);
+                    TempData["isSuccsse"] = save.ToString();
+                }
+
+                }
+
+            
+            TempData["Message"] = "Payment added successfully";
+            return PartialView("MakePaymentPartial", payment);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

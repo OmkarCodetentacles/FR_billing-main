@@ -6,161 +6,167 @@
     ViewBag.Title = "EditCompanyRateMaster";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
-
+<style>
+    #example2 {
+        white-space: nowrap;
+    }
+</style>
 <div class="content-wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <span class="fs-20">
-                            Edit Company RateMater
-                        </span>
-                        <span class="pull-right">
-                            <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary"> Add Company</a>
-                        </span>
-                    </div>
-                    <!-- /.box-header -->
-                    <!-- form start -->
+    <div class="box box-info">
+        <div class="box-header with-border" style="display:flex">
+            <h4>
+                Edit Company RateMater
+            </h4>
+            <span class="pull-right">
+                <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary"> Add Company</a>
+            </span>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
                     <form class="form-horizontal">
-                        <div class="box-body">
-                            <table id="example2" class="table table-bordered table-responsive table-striped" style="overflow:auto;">
-                                <thead>
-                                    <tr>
-                                        <th style="display:none">
-                                            @Html.DisplayNameFor(model => model.Company_Id)
-                                        </th>
-                                        <th style="width: 68px;">
-                                            Sr No
-                                        </th>
-                                        <th> Option</th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Company_Name)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Pf_code)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Phone)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Email)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.Company_Address)
-                                        </th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{
-                                        int srno = 1;
-                                        foreach (var item in Model)
-                                        {
-                                            var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
-                                            <tr>
-                                                <td style="display:none">
-                                                    @Html.DisplayFor(modelItem => item.Company_Id)
-                                                </td>
 
-                                                <td>
-                                                    @srno
-                                                </td>
-                                                <td>
 
-                                                    @Html.ActionLink("Edit", "EditCompanyRate", new { id = id })
+                        <table id="example2" class="table table-bordered table-responsive table-striped" style="overflow:auto;">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">
+                                        @Html.DisplayNameFor(model => model.Company_Id)
+                                    </th>
+                                    <th style="width: 68px;">
+                                        Sr No
+                                    </th>
+                                    <th> Option</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Company_Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Pf_code)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Phone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Company_Address)
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int srno = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
+                                        <tr>
+                                            <td style="display:none">
+                                                @Html.DisplayFor(modelItem => item.Company_Id)
+                                            </td>
 
-                                                </td>
-                                                <td>
-                                                    <div class="hideextra">
-                                                        @Html.DisplayFor(modelItem => item.Company_Name)
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pf_code)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Phone)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Email)
-                                                </td>
+                                            <td>
+                                                @srno
+                                            </td>
+                                            <td>
 
-                                                <td>
-                                                    <div class="hideextra">
-                                                        @Html.DisplayFor(modelItem => item.Company_Address)
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success", target = "_blank" })
-                                                </td>
-                                                <td>
-                                                    @if (item.Company_Name == "BASIC_TS")
-                                                    {
-                                                        <input type="button" value="Delete" class="btn btn-danger" disabled>
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
-                                                          new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger" })
-                                                    }
-                                                </td>
+                                                @Html.ActionLink("Edit", "EditCompanyRate", new { id = id })
 
-                                            </tr>
-                                            srno++;
-                                        }
+                                            </td>
+                                            <td>
+                                                <div class="hideextra">
+                                                    @Html.DisplayFor(modelItem => item.Company_Name)
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pf_code)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Phone)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Email)
+                                            </td>
+
+                                            <td>
+                                                <div class="hideextra">
+                                                    @Html.DisplayFor(modelItem => item.Company_Address)
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success", target = "_blank" })
+                                            </td>
+                                            <td>
+                                                @if (item.Company_Name == "BASIC_TS")
+                                                {
+                                                    <input type="button" value="Delete" class="btn btn-danger" disabled>
+                                                }
+                                                else
+                                                {
+                                                    @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
+                                                      new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger" })
+                                                }
+                                            </td>
+
+                                        </tr>
+                                        srno++;
                                     }
-                                </tbody>
+                                }
+                            </tbody>
 
-                            </table>
-                        </div>
+                        </table>
+
                     </form>
-
                 </div>
             </div>
+
+
+
         </div>
+
     </div>
-       
-   
-    </div>
-    @if (TempData["Success"] != null)
-    {
-        <script type="text/javascript">
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
         alert("@TempData["Success"] ");
-        </script>
+    </script>
+}
+
+<style>
+    .fs-20 {
+        font-size: 20px;
     }
 
-    <style>
-        .fs-20 {
-            font-size: 20px;
+    @@media (max-width: 768px) {
+        #rate-mater-edit {
+            display: block;
         }
 
-        @@media (max-width: 768px) {
-            #rate-mater-edit {
-                display: block;
-            }
-
-            .table td.fit,
-            .table th.fit {
-                white-space: nowrap;
-                width: 1%;
-            }
+        .table td.fit,
+        .table th.fit {
+            white-space: nowrap;
+            width: 1%;
         }
-    </style>
+    }
+</style>
 
 
-    <script>
-        $(function () {
-            $('#example1').DataTable()
-            $('#example2').DataTable({
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            })
+<script>
+    $(function () {
+        $('#example1').DataTable()
+        $('#example2').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
         })
-    </script>
-    
+    })
+</script>

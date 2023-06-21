@@ -1,0 +1,172 @@
+﻿@model DtDc_Billing.CustomModel.MakePaymentModel
+
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success" id="successmsg">
+        <strong>Success! </strong>@TempData["Message"]
+    </div>
+}
+
+@using (Ajax.BeginForm("MakePayment", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    <hr/>
+    @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+    
+    <div class="form-group">
+        <label class="col-md-4">Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-4">Date</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+            @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group" id="Tds_Amount">
+        <label class="col-md-4">Tds Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TdsAmount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TdsAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4">Total Amt</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Please select payment type:</p>
+        <input type="radio" id="CASH" name="PaymentType" value="CASH" checked="checked">
+        <label for="html">CASH</label><br>
+
+        <input type="radio" id="CHEQUE" name="PaymentType" value="CHEQUE">
+        <label for="css">CHEQUE</label><br>
+
+        <input type="radio" id="RTGS" name="PaymentType" value="RTGS">
+        <label for="javascript">RTGS</label><br>
+
+        <input type="radio" id="CREDIT" name="PaymentType" value="CREDIT">
+        <label for="javascript">CREDIT NOTE</label>
+
+        <br>
+    </div>
+
+    <div class="form-group" id="Cheque_No" style="display:none;">
+        <label class="col-md-4">Cheque No</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.ChequeNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ChequeNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group" id="Transaction_Id" style="display:none;">
+        <label class="col-md-4">Transaction Id</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.TransactionId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TransactionId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-4">Invoice No</label>
+        <div class="col-md-8">
+            @*@Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno" }*@
+            <textarea id="InvoiceNo" name="InvoiceNo" rows="4" cols="50" class="form-control Invoiceno"></textarea>
+            @Html.ValidationMessageFor(model => model.InvoiceNo, "", new { @class = "text-danger" })
+
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Save" class="btn btn-success pull-right " />
+        </div>
+    </div>
+</div>
+    }
+
+
+
+
+    <script>
+
+    function createsuccess() {
+        $('#Amount').removeAttr('value');
+        $('#tempinserteddate').removeAttr('value');
+        $('#TdsAmount').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
+
+
+    }
+
+    $(document).ready(function () {
+
+        $("#Amount,#TdsAmount").keyup(function () {
+
+            var Amount = $('#Amount').val();
+
+            var C_Tds_Amount = $('#TdsAmount').val();
+
+
+            var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+            $('#TotalAmount').val(addition);
+
+        });
+
+    });
+    </script>
+
+<script>
+    $(document).ready(function () {
+
+        //var get = $(".company_name").val();
+        //alert(get);
+        //$('.company_name_value').val(get);
+
+
+        $('input[name="PaymentType"]').on('click', function () {
+            var selectedValue = $(this).val();
+            alert(selectedValue);
+            if (selectedValue === 'CASH') {
+                $('#Cheque_No').hide();
+                $('#Transaction_Id').hide();
+            } else if (selectedValue === 'CHEQUE') {
+                $('#Cheque_No').show();
+                $('#Transaction_Id').hide();
+            } else if (selectedValue === 'RTGS') {
+                $('#Transaction_Id').show();
+                $('#Cheque_No').hide();
+            } else if (selectedValue === 'CREDIT') {
+                $('#Tds_Amount').hide();
+                $('#Cheque_No').hide();
+                $('#Transaction_Id').hide();
+            }
+        });
+    });
+    </script>
+
+

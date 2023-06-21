@@ -278,121 +278,120 @@
 </div>
 
 
-    <style>
-        .overlay {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: #00000052;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-            display: none;
+<style>
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
         }
 
-        .loader {
-            position: absolute;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid blue;
-            border-bottom: 16px solid blue;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite;
-            top: 40%;
-            animation: spin 2s linear infinite;
-            bottom: 50%;
-            left: 50%;
-            right: 50%;
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
         }
 
-
-        @@-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
+        100% {
+            transform: rotate(360deg);
         }
-
-        @@keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+    }
 
 
-        #generate-invoice {
-            display: block;
-            height: 400px;
-        }
+    #generate-invoice {
+        display: block;
+        height: 400px;
+    }
 
-        .radio {
-            display: inline-block;
-            padding-right: 20px;
-        }
-    </style>
-
-
-    <style>
-        .input-validation-error {
-            border: 1px solid #ff0000 !important;
-        }
-    </style>
-
-    <script>
-
-        $(document).ready(function () {
-            $(".addpmt").click(function () {
-                var d = $(this).data('datac');
-                var netamt = $(this).data('dataamt');
-                netamt = Math.round(netamt);
-                var paid = $(this).data('databal');
-
-                var Firm_Id = $(this).data('datafirmid');
-
-                $('.Invoiceno').val(d);
-                $('.Firm_Id').val(Firm_Id);
-                $('.Netamount').text('Net Amount Is' + " : " + netamt);
-                $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
+    .radio {
+        display: inline-block;
+        padding-right: 20px;
+    }
+</style>
 
 
-            });
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
 
-            $('#tempinserteddate,#tempch_date,#tempneftdate,#cr_date').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-        });
-    </script>
-    <script>
-        $(function () {
-            $('#table_display_block').dataTable({
-                "bPaginate": true,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": true,
-                "bInfo": false,
-                "bAutoWidth": false
-            });
+<script>
+
+    $(document).ready(function () {
+        $(".addpmt").click(function () {
+            var d = $(this).data('datac');
+            var netamt = $(this).data('dataamt');
+            netamt = Math.round(netamt);
+            var paid = $(this).data('databal');
+
+            var Firm_Id = $(this).data('datafirmid');
+
+            $('.Invoiceno').val(d);
+            $('.Firm_Id').val(Firm_Id);
+            $('.Netamount').text('Net Amount Is' + " : " + netamt);
+            $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
+
+
         });
 
-    </script>
+        $('#tempinserteddate,#tempch_date,#tempneftdate,#cr_date').datepicker({
+            autoclose: true,
+            format: 'mm-dd-yyyy'
+        })
+    });
+</script>
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+
+</script>
 
 
-    @if (ViewBag.status != null)
-    {
-        <script>
+@if (ViewBag.status != null)
+{
+    <script>
                 $(document).ready(function() {
                     $('#status').val('@ViewBag.status');
             });
-        </script>
-    }
-
+    </script>
+}
 

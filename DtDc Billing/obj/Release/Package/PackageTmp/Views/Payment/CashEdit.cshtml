@@ -8,26 +8,32 @@
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+    .control-label{
+        text-align:left !important;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h4>Edit</h4>
 
-<section class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h4>Edit</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
 
-                </div>
-                <!-- /.box-header -->
+                    <!-- /.box-header -->
 
 
-                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "submit" }))
-                {
-                    @Html.AntiForgeryToken()
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "submit" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                    <div class="form-horizontal">
-                        <div class="box-body">  
+                        <div class="form-horizontal">
 
-                           
+
+
                             <div class="row">
                                 <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
                                 <input type="hidden" id="Firm_Id" value="@ViewBag.firmid" name="Firm_Id" />
@@ -46,7 +52,7 @@
                                 <div class="col-md-4">
                                     @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
-                                    
+
                                 </div>
                             </div>
 
@@ -79,7 +85,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.C_Total_Amount, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-4">
-                                    @Html.EditorFor(model => model.C_Total_Amount, new { htmlAttributes = new { @class = "form-control" , @readonly = "readonly"} })
+                                    @Html.EditorFor(model => model.C_Total_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.C_Total_Amount, "", new { @class = "text-danger" })
                                     <span class="errormsd text-danger">Billed amount is greater than enter amount!</span>
                                 </div>
@@ -88,16 +94,19 @@
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
                                     <input type="submit" value="Save" id="submit" class="btn btn-primary" />
-                                    
+
                                 </div>
                             </div>
-                        </div>
+                       
                     </div>
                 }
+                </div>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+
+
+</div>
 @if(TempData["Updatedsuccss"] != null)
 {
 <script>

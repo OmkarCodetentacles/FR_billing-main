@@ -59,6 +59,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Other_Service> Other_Service { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<paymentLog> paymentLogs { get; set; }
         public virtual DbSet<popupimage> popupimages { get; set; }
         public virtual DbSet<Priority> Priorities { get; set; }
@@ -359,19 +360,6 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getNotification_Result>("getNotification");
         }
     
-        public virtual ObjectResult<getPayment_Result> getPayment(string paymentType, string pfcode)
-        {
-            var paymentTypeParameter = paymentType != null ?
-                new ObjectParameter("PaymentType", paymentType) :
-                new ObjectParameter("PaymentType", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPayment_Result>("getPayment", paymentTypeParameter, pfcodeParameter);
-        }
-    
         public virtual ObjectResult<getPaymentTrackCash_Result> getPaymentTrackCash(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string companyName, string pfcode)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -482,6 +470,59 @@ namespace DtDc_Billing.Entity_FR
         public virtual ObjectResult<getUserModuleList_Result> getUserModuleList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getUserModuleList_Result>("getUserModuleList");
+        }
+    
+        public virtual int PaymentDetailsSave(string paymentType, Nullable<double> amount, Nullable<double> tdsAmount, Nullable<double> totalAmount, string invoiceNo, string chequeNo, string transactionId, Nullable<System.DateTime> paymentDate, Nullable<long> firmId, string pfCode, string companyName, Nullable<double> paid)
+        {
+            var paymentTypeParameter = paymentType != null ?
+                new ObjectParameter("PaymentType", paymentType) :
+                new ObjectParameter("PaymentType", typeof(string));
+    
+            var amountParameter = amount.HasValue ?
+                new ObjectParameter("Amount", amount) :
+                new ObjectParameter("Amount", typeof(double));
+    
+            var tdsAmountParameter = tdsAmount.HasValue ?
+                new ObjectParameter("TdsAmount", tdsAmount) :
+                new ObjectParameter("TdsAmount", typeof(double));
+    
+            var totalAmountParameter = totalAmount.HasValue ?
+                new ObjectParameter("TotalAmount", totalAmount) :
+                new ObjectParameter("TotalAmount", typeof(double));
+    
+            var invoiceNoParameter = invoiceNo != null ?
+                new ObjectParameter("InvoiceNo", invoiceNo) :
+                new ObjectParameter("InvoiceNo", typeof(string));
+    
+            var chequeNoParameter = chequeNo != null ?
+                new ObjectParameter("ChequeNo", chequeNo) :
+                new ObjectParameter("ChequeNo", typeof(string));
+    
+            var transactionIdParameter = transactionId != null ?
+                new ObjectParameter("TransactionId", transactionId) :
+                new ObjectParameter("TransactionId", typeof(string));
+    
+            var paymentDateParameter = paymentDate.HasValue ?
+                new ObjectParameter("PaymentDate", paymentDate) :
+                new ObjectParameter("PaymentDate", typeof(System.DateTime));
+    
+            var firmIdParameter = firmId.HasValue ?
+                new ObjectParameter("FirmId", firmId) :
+                new ObjectParameter("FirmId", typeof(long));
+    
+            var pfCodeParameter = pfCode != null ?
+                new ObjectParameter("PfCode", pfCode) :
+                new ObjectParameter("PfCode", typeof(string));
+    
+            var companyNameParameter = companyName != null ?
+                new ObjectParameter("CompanyName", companyName) :
+                new ObjectParameter("CompanyName", typeof(string));
+    
+            var paidParameter = paid.HasValue ?
+                new ObjectParameter("Paid", paid) :
+                new ObjectParameter("Paid", typeof(double));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PaymentDetailsSave", paymentTypeParameter, amountParameter, tdsAmountParameter, totalAmountParameter, invoiceNoParameter, chequeNoParameter, transactionIdParameter, paymentDateParameter, firmIdParameter, pfCodeParameter, companyNameParameter, paidParameter);
         }
     
         public virtual int paymentLogSave(string pfcode, string ownerName, Nullable<double> totalAmount, Nullable<long> registrationId, string paymentLogId, string status, Nullable<System.DateTime> dateTime, string description, string paymentmethod)
@@ -713,6 +754,19 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("FirmName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
+        }
+    
+        public virtual ObjectResult<getPayment_Result> getPayment(string paymentType, string pfcode)
+        {
+            var paymentTypeParameter = paymentType != null ?
+                new ObjectParameter("PaymentType", paymentType) :
+                new ObjectParameter("PaymentType", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getPayment_Result>("getPayment", paymentTypeParameter, pfcodeParameter);
         }
     }
 }

@@ -214,12 +214,14 @@
             {
                 @Html.AntiForgeryToken()
 
+                <input type="hidden" name="isUserNameExist" id="isUserNameExist">
                 <div class="login-box-body login-form">
                     <div class="main-div">
 
                         <div class="form-group has-feedback">
                             @Html.EditorFor(model => model.Pfcode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Pfcode" } })
                             @Html.ValidationMessageFor(model => model.Pfcode, "", new { @class = "text-danger" })
+                            @Html.ValidationMessage("customError", new { @class = "text-danger" })
                             <span class="glyphicon glyphicon-th form-control-feedback"></span>
                         </div>
 
@@ -235,28 +237,25 @@
                             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                         </div>
 
-                        @*<div class="form-group has-feedback">
-            @Html.EditorFor(model => model.ownerName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Owner Name" } })
-            @Html.ValidationMessageFor(model => model.ownerName, "", new { @class = "text-danger" })
-            <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
-        </div>*@
-
                         <div class="form-group has-feedback">
                             @Html.EditorFor(model => model.mobileNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mobile No" } })
                             @Html.ValidationMessageFor(model => model.mobileNo, "", new { @class = "text-danger" })
                             <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
                         </div>
-                        @*<div class="form-group has-feedback">
-            @Html.TextAreaFor(model => model.address, new { @class = "form-control", cols = 35, @rows = 3, @placeholder = "Address" })
-            @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                        <div class="form-group has-feedback">
+                            @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control", @placeholder = "User Name" } })
+                            @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
 
-        </div>
-        <div class="form-group has-feedback">
-            @Html.EditorFor(model => model.userName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Username" } })
-            @Html.ValidationMessageFor(model => model.userName, "", new { @class = "text-danger" })
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-        </div>*@
+                            <span class="glyphicon glyphicon-user form-control-feedback">
+                                <i class="fa-li fa fa-spinner fa-spin loaderspin" style="display:none">
+                                </i>
 
+                                <span class="text-success"> <i class="fa-li fa fa-check-square correcttick" style="display:none"></i></span>
+                            </span>
+
+                            <span class="text-danger errorcheck"><small></small></span>
+                            @Html.ValidationMessage("usernameerror", new { @class = "text-danger" })
+                        </div>
                         <div class="form-group has-feedback">
                             @Html.PasswordFor(model => model.password, new { @class = "form-control", @placeholder = "Password" })
                             @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
@@ -270,8 +269,9 @@
                         </div>
 
                         <div class="form-group has-feedback">
-                            @Html.EditorFor(model => model.referralby, new { htmlAttributes = new { @class = "form-control", @placeholder = "Referral Code" } })
-                            @Html.ValidationMessageFor(model => model.referralby, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.referral, new { htmlAttributes = new { @class = "form-control", @placeholder = "Referral Code", @value = TempData["referralCode"] } })
+                            @Html.ValidationMessageFor(model => model.referral, "", new { @class = "text-danger" })
+                            @Html.ValidationMessage("Error", new { @class = "text-danger" })
                             <span class="glyphicon glyphicon-share-alt form-control-feedback"></span>
                         </div>
 
@@ -308,6 +308,47 @@
     <!-- iCheck -->
     <script src="../../plugins/iCheck/icheck.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+    <script>
+        $('#userName').change(function () {
+             
+            var userName = $("#userName").val();
+            $(".loaderspin").show();
+            if (userName.length >= 4) {
+                $(".correcttick").hide();
+                
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Admin/userNameCheck',
+                    data: { username: userName },
+                    success: function (Data) {
+                        $(".loaderspin").hide();
+                        if (Data == true) {
+                            $(".correcttick").show();
+                            $("#isUserNameExist").val(true);
+                        }
+                        else {
+                            $(".correcttick").hide();
+                            $(".loaderspin").hide();
+                            $(".errorcheck").html("User name already exist");
+                            $("#isUserNameExist").val(false);
+                        }
+                       
+                    }
+                });
+                
+            }
+        })
+
+
+        //$('#userName').focusout(function () {
+
+        //})
+        </script>
+
 
 
 </body>

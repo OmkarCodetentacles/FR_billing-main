@@ -9,99 +9,110 @@
 
 
 <div class="content-wrapper">
-    <section class="container">
-        <div class="row">
-            @using (Html.BeginForm())
-            {
-                <div class="col-sm-12">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h4>Generate Multiple Invoice</h4>
-                        </div>
 
-                        <div class="form-horizontal">
-                            <div class="box-body">
 
-                                <div class="row">
-                                    <div class="col-md-8 col-md-offset-1">
-                                        <div class="col-md-12">
+    @using (Html.BeginForm())
+    {
 
-                                            <div class="subject-info-box-1">
-                                                <select multiple="multiple" id='lstBox1' class="form-control">
-                                                    @foreach (var i in ViewBag.Complist)
-                                                    {
-                                                        <option value="@i">@i</option>
-                                                    }
-                                                </select>
-                                            </div>
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h4>Generate Multiple Invoice</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-horizontal">
 
-                                            <div class="subject-info-arrows text-center" style="margin-top:15px">
-                                                @*<input type='button' id='btnAllRight' value='>>' class="btn btn-default" /><br />*@
-                                                <input type='button' id='btnRight' value='>' class="btn btn-default" /><br />
-                                                <input type='button' id='btnLeft' value='<' class="btn btn-default" /><br />
-                                                @*<input type='button' id='btnAllLeft' value='<<' class="btn btn-default" />*@
-                                            </div>
 
-                                            <div class="subject-info-box-2">
-                                                <select multiple="multiple" id='lstBox2' name="Companies" class="form-control"></select>
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-8 no-padding">
+                                            <div class="col-md-12">
 
-                                        </div>
-                                        <br /><br /><br />
-                                        <div class="col-sm-6 ">
-                                            <div class="form-group">
-                                                <div class="col-md-12">
-                                                    <label for="email">Invoice Date:</label>
-                                                    @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
-
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label for="email">Period From:</label>
-                                                    @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label for="email">Period To:</label>
-                                                    @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label for="email">GST:</label>
-                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @class = "form-control" } })
+                                                <div class="subject-info-box-1">
+                                                    <select multiple="multiple" id='lstBox1' class="form-control">
+                                                        @foreach (var i in ViewBag.Complist)
+                                                        {
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                    </select>
                                                 </div>
 
-                                                <div class="col-md-6">
-                                                    @*<label for="email">Firm Details:</label>
-
-                                                        @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
-
-                                                    @*<label for="departmentsDropdown">Firm Name</label>
-                                                        <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
-
-
-                                                        @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
-
-
+                                                <div class="subject-info-arrows text-center" style="margin-top:15px">
+                                                    @*<input type='button' id='btnAllRight' value='>>' class="btn btn-default" /><br />*@
+                                                    <input type='button' id='btnRight' value='>' class="btn btn-default" /><br />
+                                                    <input type='button' id='btnLeft' value='<' class="btn btn-default" /><br />
+                                                    @*<input type='button' id='btnAllLeft' value='<<' class="btn btn-default" />*@
                                                 </div>
 
-                                                <div class="col-sm-12">
-                                                    <input type="submit" name="submit" class="btn btn-success sbmt" value="Save" style="width:auto" />
-                                                    &nbsp;
-                                                    <button type="submit" name="submit" class="btn bg-maroon sbmt" value="Email" style="width:auto">Send Mail</button>
-
-
-
+                                                <div class="subject-info-box-2">
+                                                    <select multiple="multiple" id='lstBox2' name="Companies" class="form-control"></select>
                                                 </div>
-
 
                                             </div>
+                                            <br /><br /><br />
+                                            <div class="col-sm-6 mt-15">
+                                                <div class="form-group">
+                                                    @*<div class="col-md-12">*@
+                                                        <div class="form-group">
+                                                            <label for="email">Invoice Date:</label>
+                                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                                        </div>
+                                                    @*</div>*@
+                                                    @*<div class="col-md-12">*@
+                                                        <div class="form-group">
+                                                            <label for="email">Period From:</label>
+                                                            @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+                                                        </div>
+                                                    @*</div>*@
+                                                    @*<div class="col-md-12">*@
+                                                        <div class="form-group">
+                                                            <label for="email">Period To:</label>
+                                                            @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
+                                                        </div>
+                                                    @*</div>*@
+                                                    @*<div class="col-md-6">*@
+                                                        <div class="form-group">
+                                                            <label for="email">GST:</label>
+                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @class = "form-control" } })
+                                                        </div>
+                                                    @*</div>*@
 
-                                            <div style="display:none">
+                                                    <div class="col-md-6">
+                                                        @*<label for="email">Firm Details:</label>
 
-                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
-                                                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "1000" } })
-                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "10.10" } })
-                                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
-                                                @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+                                            @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
 
+                                                        @*<label for="departmentsDropdown">Firm Name</label>
+                                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+
+
+                                            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+
+
+                                                    </div>
+
+                                                    <div class="col-sm-12 no-padding" >
+                                                        <div class="form-group">
+                                                            <input type="submit" name="submit" class="btn btn-success sbmt" value="Save" style="width:auto" />
+                                                            &nbsp;
+                                                            <button type="submit" name="submit" class="btn bg-maroon sbmt" value="Email" style="width:auto">Send Mail</button>
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div style="display:none">
+
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+                                                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "1000" } })
+                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "10.10" } })
+                                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+                                                    @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -109,10 +120,10 @@
                             </div>
                         </div>
                     </div>
+                  
                 </div>
-            }
-        </div>
-    </section>
+    }
+
     </div>
     <style>
         .input-validation-error {

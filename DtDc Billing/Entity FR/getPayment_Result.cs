@@ -13,6 +13,9 @@ namespace DtDc_Billing.Entity_FR
     
     public partial class getPayment_Result
     {
+        public string invoiceno { get; set; }
+        public string tempInvoicedate { get; set; }
+        public Nullable<long> Firm_Id { get; set; }
         public Nullable<double> fullsurchargetax { get; set; }
         public Nullable<double> fullsurchargetaxtotal { get; set; }
         public Nullable<double> servicetax { get; set; }

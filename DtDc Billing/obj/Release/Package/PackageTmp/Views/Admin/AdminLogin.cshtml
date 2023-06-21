@@ -41,7 +41,10 @@
 
     <style>
 
-
+        .demobutton
+        {
+            margin-top:10px!important;
+        }
 
         body#LoginForm {
             background-image: url('../../assets/images/123.png');
@@ -232,11 +235,11 @@
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback">
+                @*<div class="form-group has-feedback">
                     @Html.EditorFor(model => model.PFCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "PFCode" } })
                     @Html.ValidationMessageFor(model => model.PFCode, "", new { @class = "text-danger" })
                     <span class="glyphicon glyphicon-option-vertical form-control-feedback"></span>
-                </div>
+                </div>*@
 
 
                 <span class="text-danger">@Html.ValidationMessage("LoginAuth")</span>
@@ -244,23 +247,27 @@
                     <div class="col-xs-12">
                         <div class="checkbox icheck">
                             Dont have an account yet? <a href="@Url.Action("Register","Admin")"> Sign Up!</a>
+                           
                         </div>
                     </div>
 
                     <!-- /.col -->
-                    <div class="col-xs-6">
+                    <div class="col-xs-12">
 
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                        <button id="btndemo" class="btn btn-default btn-block btn-flat demobutton" onclick="fun()">Click For Demo</button>
+
                     </div>
-                    <div class="col-xs-6">
+                   
+                    @*<div class="col-xs-12">
                         <p class="login-box-msg mymsg">
                             <b>
-                                <button id="btndemo" class="btn btn-primary btn-block btn-flat" onclick="fun()">Click For Demo</button>
+                               
 
                             </b>
                         </p>
-                        <!-- /.col -->
-                    </div>
+                      
+                    </div>*@
 
 
 
