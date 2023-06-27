@@ -161,11 +161,11 @@ throw new Error('AdminLTE requires jQuery')
   }
 
   var Selector = {
-    data     : '.box',
-    collapsed: '.collapsed-box',
-    body     : '.box-body',
-    footer   : '.box-footer',
-    tools    : '.box-tools'
+        data: '.box-collapsed',
+        collapsed: '.collapsed-box',
+        body: '.box-body-collapsed',
+        footer   : '.box-footer',
+        tools    : '.box-tools-collapsed'
   }
 
   var ClassName = {

@@ -47,5 +47,6 @@ namespace DtDc_Billing.Models
 
         public string StampFilePath { get; set; }
 
+       
     }
 }

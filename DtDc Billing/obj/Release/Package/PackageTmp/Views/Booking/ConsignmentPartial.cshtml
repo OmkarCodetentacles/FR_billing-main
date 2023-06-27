@@ -8,6 +8,13 @@
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
     <style>
+        .padding-left-0 {
+            padding-left: 0 !important
+        }
+
+        no-padding {
+            padding: 0 !important
+        }
         #edit-consignment {
             
             max-height: 300px;
@@ -167,8 +174,8 @@
                 <!-- Form Name -->
                 <!-- Multiple Radios -->
                 <div class="row">
-                    <div id="insshow" class="col-sm-5">
-                        <label class="col-md-2 radio-label" for="radios">Insuarance</label>
+                    <div id="insshow" class="col-sm-5 no-padding">
+                        <label class="col-md-2 padding-left-0 radio-label" for="radios">Insuarance</label>
 
                         <div class="radio-inline">
                             <label for="radios-0">
@@ -213,7 +220,7 @@
 
                 <!-- Multiple Radios -->
                 <div class="row">
-                    <div id="topayradio" class="col-sm-5">
+                    <div id="topayradio" class="col-sm-5 no-padding">
                         <label class="col-md-2 radio-label" for="radios">To Pay </label>
 
                         <div class="radio-inline">
@@ -251,25 +258,25 @@
                     </div>
                 </div>
                 <!-- Multiple Radios -->
-           
-                    <div id="codradio">
-                        <label class="radio-label" for="radios">COD</label>
+           <div class="row">
+                    <div id="codradio" class="col-sm-5 no-padding">
+                        <label class="radio-label col-sm-2 " for="radios">COD</label>
 
                         <div class="radio-inline">
                             <label for="radios-0">
                                 @Html.RadioButtonFor(m => m.cod, "yes")
-                                <span style="padding-left:20px">Yes</span>
+                                Yes
                             </label>
                         </div>
                         <div class="radio-inline">
                             <label for="radios-1">
                                 @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
-                                <span style="padding-left:20px">No</span>
+                                No
                             </label>
                         </div>
                     </div>
 
-                    <div  id="coddiv">
+                    <div  id="coddiv" class="col-sm-7">
                         <label>
                             Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
@@ -287,7 +294,7 @@
                             @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
                         </label>
                     </div>
-              
+              </div>
             </fieldset>
             <div class="text-right">
                 <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />

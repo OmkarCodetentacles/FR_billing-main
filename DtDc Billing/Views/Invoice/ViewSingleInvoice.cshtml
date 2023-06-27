@@ -33,6 +33,7 @@
                         <thead>
                             <tr>
                                 <th></th>
+                                <th></th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.invoiceno)
                                 </th>
@@ -82,6 +83,9 @@
                                         @*@Html.ActionLink("View", "ReportsinglePrinterMethod", new { myParameter = item.invoiceno }) |*@
                                         <a href="@Url.Action("Download","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
                                         @Html.ActionLink("Edit", "GenerateInvoiceSingle", new { Invoiceno = item.invoiceno, Firm_Id = item.Firm_Id })
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Delete", "ViewSingleInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')" })
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.invoiceno)
@@ -137,22 +141,22 @@
     <!-- /.content -->
 </div>
 
-    <script>
-        $(function () {
+<script>
+    $(function () {
 
-            $('#table_display_block').dataTable({
-                "bPaginate": false,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": true,
-                "bInfo": false,
-                "bAutoWidth": false
-            });
-
-
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
         });
-    </script>
-    @*<script>
+
+
+    });
+</script>
+@*<script>
     var a =@Request.Params["Firm_Id"];
 
     $(document).ready(function () {
@@ -197,4 +201,21 @@
 
 
     </script>*@
-  
+
+
+
+@if (TempData["error"] != null)
+{
+    <script>
+        alert('@TempData["error"]');
+    </script>
+}
+
+
+
+@if (TempData["success"] != null)
+{
+    <script>
+        alert('@TempData["success"]');
+    </script>
+}

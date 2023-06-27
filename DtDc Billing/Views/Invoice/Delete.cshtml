@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h4>Delete Invoice</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="form-horizontal">
+
+
+                        @*<div class="row">
+                            <div class="col-md-12">*@
+                        <div class="form-group">
+
+
+                            @using (Html.BeginForm())
+                            {
+
+
+                                <div class="col-md-3 padding-left-0">
+                                    <div class="form-group">
+                                        <label>Invoice No.</label>
+
+                                        <input name="invoiceNo" class="form-control" id="invoiceNo" type="text" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <input type="submit" class="btn btn-primary sbmt" name="Delete" value="Delete" />
+                                </div>
+
+                            }
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.status != null)
+{
+    <script>
+                $(document).ready(function() {
+                    $('#status').val('@ViewBag.status');
+            });
+    </script>
+}
+
+@if(TempData["error"] != null)
+{ 
+    <script>
+        alert('@TempData["error"]');
+    </script>
+}
