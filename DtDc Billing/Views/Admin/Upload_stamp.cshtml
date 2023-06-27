@@ -1,0 +1,124 @@
+﻿
+
+<style>
+    #frmEmp{
+        margin:15px 0;
+        text-align:left;
+    }
+</style>
+@using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+<form enctype="multipart/form-data">
+
+    @*<div class="content-wrapper">*@
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h4>Upload Stamp</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12 ">
+
+                        <!-- /.box-header -->
+
+
+                        <div class="form-horizontal">
+
+
+                            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            @Html.HiddenFor(model => model.F_Id)
+
+
+                            @Html.HiddenFor(model => model.PF_Code)
+                            @Html.HiddenFor(model => model.password)
+                            @Html.HiddenFor(model => model.Datetime_Fr)*@
+
+
+                            <div class="row">
+                             
+                                <div class="col-6 col-sm-6 col-md-4">
+                                    <div class="form-group">
+                                        @*@if (Model.StampFilePath != null)
+                                        {
+                                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
+                                        }*@
+                                        <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
+                                        <div class="">
+                                            @* <form enctype="multipart/form-data">*@
+                                            <input type="file" name="file" id="file">
+                                            @* <button type="button" id="uploadBtn" class="btn btn-success">Upload</button>*@
+                                            @*</form>*@
+                                            @* <input type="file" name="httpPostedFileBase" id="file" class="form-control" />*@
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12" style="text-align: right;">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    @*</div>*@
+   
+</form>
+
+        }
+
+
+        <script>
+
+        $(document).ready(function () {
+
+            var data = '@TempData["Success"]';
+
+            if (data != null && data!="")
+            {
+                alert(data);
+            }
+
+
+        });
+
+        </script>
+
+        <script>
+            $(function () {
+                $('#uploadBtn').click(function () {
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+
+                    $.ajax({
+                        url: '/Admin/UploadFile',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function (data) {
+                          //  alert('File uploaded successfully!');
+                            // Save file path in database
+                        },
+                        error: function () {
+                            alert('Error uploading file!');
+                        }
+                    });
+                });
+            });
+        </script>
