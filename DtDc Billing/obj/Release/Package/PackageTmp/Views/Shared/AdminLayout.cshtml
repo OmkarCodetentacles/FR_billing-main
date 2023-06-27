@@ -77,12 +77,8 @@
         <!-- Main Header -->
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                @*<span class="logo-mini logo-text"><b>IS</b></span>*@
-                <!-- logo for regular state and mobile devices -->
-                @*<span class="logo-lg logo-text"><img src="http://atkxpress.com/images/atkexpress-logo.jpg" style="width: 100%;"></span>*@
-
+            <a href="@Url.Action("Index","Home")" class="logo">
+               
                 <div class="logo-lg logo-text" style="
     text-align: center;
 ">
@@ -208,7 +204,7 @@
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 @if (Request.Cookies["Cookies"]["UserValue"] != null)
                                 {
-                                    <span> @Request.Cookies["Cookies"]["UserValue"]</span>
+                                    <span class="text-danger"><b> @Request.Cookies["Cookies"]["UserValue"]</b></span>
                                 }
                             </a>
 
@@ -217,7 +213,7 @@
                         </li>
 
                         <li class="user-footer">
-                            <a href="@Url.Action("LogOut","Admin")"><i class="fa fa-share fa-fw"></i>  Sign Out   </a>
+                            <a href="@Url.Action("LogOut","Admin")"><i class="fa fa-power-off"></i>  Sign Out   </a>
                         </li>
 
 
@@ -316,8 +312,8 @@
                             <li><a href="@Url.Action("Nobookinglist","Booking")"><i class="fa fa-circle-o"></i> No Booking Data</a></li>
                             <li><a href="@Url.Action("MultipleBooking","Booking")"><i class="fa fa-circle-o"></i> Multiple Booking</a></li>
                             @*<li><a href="@Url.Action("MultipleBookingReceipt","Booking")"><i class="fa fa-circle-o"></i> Import From CashCounter</a></li>*@
-                            <li><a href="@Url.Action("importTextFile","Admin")"><i class="fa fa-circle-o"></i> Import From Text</a></li>
-                            <li><a href="@Url.Action("importFromExcel","Admin")"><i class="fa fa-circle-o"></i> Import From Excel</a></li>
+                            <li><a href="@Url.Action("importTextFile","Booking")"><i class="fa fa-circle-o"></i> Import From Text</a></li>
+                            <li><a href="@Url.Action("importFromExcel","Booking")"><i class="fa fa-circle-o"></i> Import From Excel</a></li>
                             @*<li><a href="@Url.Action("weightdiffModify","Booking")"><i class="fa fa-circle-o"></i> Weight Difference</a></li>
                 <li><a href="@Url.Action("BulkUpdation","Booking")"><i class="fa fa-circle-o"></i> Bulk Updation</a></li>
                 <li><a href="@Url.Action("ViewConsignment","Booking")"><i class="fa fa-circle-o"></i> View Consignment</a></li>
@@ -392,7 +388,7 @@
 
                     <li class="treeview">
                         <a href="javascript:;">
-                            <i class="fa fa-circle-o"></i> <span>Cashcounter Reports</span>
+                            <i class="fa fa-line-chart"></i> <span>Cashcounter Reports</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -406,7 +402,7 @@
                     </li>
                     <li class="treeview">
                         <a href="javascript:;">
-                            <i class="fa fa-circle-o"></i> <span>Billing Reports</span>
+                            <i class="fa fa-line-chart"></i> <span>Billing Reports</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
