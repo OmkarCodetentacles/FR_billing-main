@@ -1823,56 +1823,85 @@ namespace DtDc_Billing.Controllers
             return PartialView();
         }
 
+        //[HttpPost]
+        //public ActionResult UploadFile()
+        //{
+        //    string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    for (int i = 0; i < Request.Files.Count; i++)
+        //    {
+        //        var myFile = Request.Files[i];
+
+        //        if (myFile != null && myFile.ContentLength != 0)
+        //        {
+        //            var file = Request.Files[0];
+        //            if (file != null)
+        //            {
+        //                var fileName = Path.GetFileName(file.FileName);
+        //                var newFileName = Pfcode;
+
+        //                var path = Path.Combine(Server.MapPath("~/Stamps"), fileName);
+
+        //                // Get the file extension
+        //                string fileExtension = Path.GetExtension(path);
+        //                file.SaveAs(path);
+
+
+        //                string originalFilePath = path;
+        //                string newFilePath = Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
+
+
+        //                // Rename the file
+        //                System.IO.File.Delete(newFilePath);
+        //                System.IO.File.Move(originalFilePath, newFilePath);
+
+
+        //                // Save file path in database
+        //                try
+        //                {
+
+        //                    var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
+        //                    franchises.StampFilePath = "http://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+        //                    db.SaveChanges();
+        //                }
+        //                catch(Exception e)
+        //                {
+
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return Json(new { success = true });
+        //}
+
+
         [HttpPost]
-        public ActionResult UploadFile()
+        public ActionResult UploadFile(HttpPostedFileBase image)
         {
-            string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            for (int i = 0; i < Request.Files.Count; i++)
+            if (image != null && image.ContentLength > 0)
             {
-                var myFile = Request.Files[i];
+                string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                var fileName = Path.GetFileName(image.FileName);
+                var filePath = Path.Combine(Server.MapPath("~/Stamps"), fileName);
+                // Get the file extension
+                string fileExtension = Path.GetExtension(filePath);
+                image.SaveAs(filePath);
 
-                if (myFile != null && myFile.ContentLength != 0)
+                try
                 {
-                    var file = Request.Files[0];
-                    if (file != null)
-                    {
-                        var fileName = Path.GetFileName(file.FileName);
-                        var newFileName = Pfcode;
 
-                        var path = Path.Combine(Server.MapPath("~/Stamps"), fileName);
-
-                        // Get the file extension
-                        string fileExtension = Path.GetExtension(path);
-                        file.SaveAs(path);
-
-
-                        string originalFilePath = path;
-                        string newFilePath = Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
-
-
-                        // Rename the file
-                        System.IO.File.Delete(newFilePath);
-                        System.IO.File.Move(originalFilePath, newFilePath);
-
-
-                        // Save file path in database
-                        try
-                        {
-
-                            var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
-                            franchises.StampFilePath = "http://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
-                            db.SaveChanges();
-                        }
-                        catch(Exception e)
-                        {
-
-                        }
-                    }
+                    var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
+                    franchises.StampFilePath = "http://frbilling.com/Stamps/" + fileName;
+                    db.SaveChanges();
                 }
-            }
-            return Json(new { success = true });
-        }
+                catch (Exception e)
+                {
 
+                }
+                return Json("Success");
+            }
+
+            return Json("Error");
+        }
         [HttpPost]
         public ActionResult AddLogo(AddlogoModel logo)
         {
