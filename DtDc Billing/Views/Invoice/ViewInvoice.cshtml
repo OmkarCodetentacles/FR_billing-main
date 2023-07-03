@@ -45,7 +45,7 @@
 </style>
 <div class="content-wrapper">
     <div class="box box-info">
-        <div class="box-header with-border d-flex" style="display:flex">
+        <div class="box-header with-border d-flex" style="display:flex;justify-content:space-between">
             <h4>
                 View Invoice
 
@@ -174,12 +174,12 @@
                                         <td>@i</td>
                                         <td>
                                             @*   @Html.ActionLink("View", "ReportPrinterMethod", new { myParameter = item.invoiceno, firmid = item.Firm_Id })*@
-                                            <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank">View</a>
-                                            @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno })
+                                            <a class="view-btn" href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank">View</a>
+                                            @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno }, new {@class="edit-btn" })
 
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')" })
+                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')",@class = "delete-btn" })
                                         </td>
 
                                         <td>
