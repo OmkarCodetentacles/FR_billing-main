@@ -81,11 +81,11 @@
                                 <tr>
                                     <td>
                                         @*@Html.ActionLink("View", "ReportsinglePrinterMethod", new { myParameter = item.invoiceno }) |*@
-                                        <a href="@Url.Action("Download","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
-                                        @Html.ActionLink("Edit", "GenerateInvoiceSingle", new { Invoiceno = item.invoiceno, Firm_Id = item.Firm_Id })
+                                        <a  class="view-btn" href="@Url.Action("Download","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
+                                        @Html.ActionLink("Edit", "GenerateInvoiceSingle", new { Invoiceno = item.invoiceno, Firm_Id = item.Firm_Id }, new { @class = "edit-btn" })
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Delete", "ViewSingleInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')" })
+                                        @Html.ActionLink("Delete", "ViewSingleInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.invoiceno)
