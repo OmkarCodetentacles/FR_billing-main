@@ -152,7 +152,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AdminLogin(AdminLogin login, string ReturnUrl)
         {
-
+            
             if (ModelState.IsValid)
             {
                 var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode }).FirstOrDefault();
@@ -164,6 +164,17 @@ namespace DtDc_Billing.Controllers
                                    select d).FirstOrDefault();
 
 
+                    // Get the current date
+                    DateTime currentDate = DateTime.Now;
+                    // Add 30 days to the current date
+                    DateTime newDate = ObjData.dateTime.Value.AddDays(ObjData.subscriptionForInDays ?? 0);
+
+                    if (currentDate > newDate)
+                    {
+                       
+                        ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
+                        return View();
+                    }
 
                     DateTime After1Year;
 
@@ -2523,10 +2534,9 @@ namespace DtDc_Billing.Controllers
                     flag = true;
                     ModelState.AddModelError("usernameerror", "User name already exist");
                 }
-                
-              
 
-                if (userDetails.referral != "")
+                
+                if (userDetails.referral != "" && userDetails.referral != null)
                 {
                     var isValidReferral = db.registrations.Where(x => x.referralCode == userDetails.referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
 
@@ -2960,7 +2970,7 @@ namespace DtDc_Billing.Controllers
                     _smtp.Credentials = _network;
 
                     
-                    _smtp.Send(_mailmsg);
+                    //_smtp.Send(_mailmsg);
 
                     TempData["success"] = "Register successfully";
                     return RedirectToAction("makePaymentPartial", "Admin", user);

@@ -454,7 +454,7 @@ namespace DtDc_Billing.Controllers
 
 
 
-        [SessionTimeout]
+        [SessionAdmin]
         public ActionResult DailyReport()
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();

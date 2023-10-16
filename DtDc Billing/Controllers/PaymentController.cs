@@ -67,7 +67,7 @@ namespace DtDc_Billing.Controllers
                 tempInvoicedate = x.tempInvoicedate,
                 Royalty_charges = x.Royalty_charges,
                 Docket_charges = x.Docket_charges,
-                Balance = x.Balance ?? 0
+                Balance = x.Balance 
                 // discount = x.discount,
                 // totalCount = x.totalCount ?? 0
             }).ToList();
@@ -100,7 +100,7 @@ namespace DtDc_Billing.Controllers
                     paid = x.paid ?? 0,
                     Royalty_charges = x.Royalty_charges,
                     Docket_charges = x.Docket_charges,
-                    Balance = x.Balance ?? 0
+                    Balance = x.Balance
 
                 }).Where(x=>x.Customer_Id == payment.CompanyName).FirstOrDefault();
 

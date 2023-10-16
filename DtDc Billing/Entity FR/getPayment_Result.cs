@@ -23,7 +23,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> othercharge { get; set; }
         public Nullable<double> netamount { get; set; }
         public Nullable<double> paid { get; set; }
-        public Nullable<double> Balance { get; set; }
+        public double Balance { get; set; }
         public Nullable<double> total { get; set; }
         public Nullable<double> Royalty_charges { get; set; }
         public Nullable<double> Docket_charges { get; set; }
