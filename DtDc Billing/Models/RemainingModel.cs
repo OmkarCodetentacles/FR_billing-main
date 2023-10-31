@@ -22,7 +22,6 @@ namespace DtDc_Billing.Models
         public Nullable<int> Status { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public int totalCount { get; set; }
-       // public Nullable<long> Pf_code { get; set; }
 
 
 

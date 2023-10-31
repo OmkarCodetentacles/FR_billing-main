@@ -1,0 +1,2788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_a92afa_frbillingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="addcodamount">
+    <Key>
+      <PropertyRef Name="am_id" />
+    </Key>
+    <Property Name="am_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="chequeno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="bank_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="branch" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consinment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="addtopayamount">
+    <Key>
+      <PropertyRef Name="ad_id" />
+    </Key>
+    <Property Name="ad_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sapno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consinmentno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="date" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="A_Id" />
+    </Key>
+    <Property Name="A_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="A_Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Adm" Type="DateTime" Precision="3" />
+    <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="AdminAccessPage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ModuleName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Accesspage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AcceessDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Cash">
+    <Key>
+      <PropertyRef Name="Cash_id" />
+    </Key>
+    <Property Name="Cash_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="inserteddate" Type="DateTime" Precision="3" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="C_Tds_Amount" Type="Double" />
+    <Property Name="C_Total_Amount" Type="Double" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="tempinserteddate" Type="DateTime" Precision="3" />
+    <Property Name="tempch_date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Cash__Firm_Id__2180FB33" FromRole="Cash" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Cash__Firm_Id__2334397B" FromRole="Cash" ToRole="FirmDetails" />
+  </EntityType>
+  <EntityType Name="Cheque">
+    <Key>
+      <PropertyRef Name="Cheque_id" />
+    </Key>
+    <Property Name="Cheque_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="C_Amount" Type="Double" />
+    <Property Name="ch_date" Type="DateTime" Precision="3" />
+    <Property Name="bank_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="branch_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="totalAmount" Type="Double" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="Tds_amount" Type="Double" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="tempch_date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Cheque__Firm_Id__22751F6C" FromRole="Cheque" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Cheque__Firm_Id__24285DB4" FromRole="Cheque" ToRole="FirmDetails" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Company_Id" />
+    </Key>
+    <Property Name="Company_Id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="c_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Phone" Type="Int64" />
+    <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Insurance" Type="Double" />
+    <Property Name="Minimum_Risk_Charge" Type="Double" />
+    <Property Name="Other_Details" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="Fuel_Sur_Charge" Type="Double" />
+    <Property Name="Topay_Charge" Type="Double" />
+    <Property Name="Cod_Charge" Type="Double" />
+    <Property Name="Gec_Fuel_Sur_Charge" Type="Double" />
+    <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Company_Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="Company_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Comp" Type="DateTime" Precision="3" />
+    <Property Name="Gst_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pan_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Royalty_Charges" Type="Double" />
+    <Property Name="D_Docket" Type="Double" />
+    <Property Name="P_Docket" Type="Double" />
+    <Property Name="E_Docket" Type="Double" />
+    <Property Name="V_Docket" Type="Double" />
+    <Property Name="I_Docket" Type="Double" />
+    <Property Name="N_Docket" Type="Double" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="G_Docket" Type="Double" />
+    <NavigationProperty Name="Nondoxes" Relationship="Self.FK__Nondox__Company___32767D0B" FromRole="Company" ToRole="Nondox" />
+    <NavigationProperty Name="Nondoxes1" Relationship="Self.FK__Nondox__Company___336AA144" FromRole="Company" ToRole="Nondox" />
+    <NavigationProperty Name="Nondoxes2" Relationship="Self.FK__Nondox__Company___37703C52" FromRole="Company" ToRole="Nondox" />
+    <NavigationProperty Name="Nondoxes3" Relationship="Self.FK__Nondox__Company___3864608B" FromRole="Company" ToRole="Nondox" />
+    <NavigationProperty Name="Priorities" Relationship="Self.FK__Priority__Compan__345EC57D" FromRole="Company" ToRole="Priority" />
+    <NavigationProperty Name="Priorities1" Relationship="Self.FK__Priority__Compan__3C34F16F" FromRole="Company" ToRole="Priority" />
+    <NavigationProperty Name="Ratems" Relationship="Self.FK__Ratem__Company_i__36470DEF" FromRole="Company" ToRole="Ratem" />
+    <NavigationProperty Name="Ratems1" Relationship="Self.FK__Ratem__Company_i__373B3228" FromRole="Company" ToRole="Ratem" />
+    <NavigationProperty Name="Ratems2" Relationship="Self.FK__Ratem__Company_i__3E1D39E1" FromRole="Company" ToRole="Ratem" />
+    <NavigationProperty Name="Ratems3" Relationship="Self.FK__Ratem__Company_i__3F115E1A" FromRole="Company" ToRole="Ratem" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_company" FromRole="Company" ToRole="Franchisee" />
+    <NavigationProperty Name="dtdcPlus" Relationship="Self.fk_nond" FromRole="Company" ToRole="dtdcPlus" />
+    <NavigationProperty Name="Dtdc_Ptp" Relationship="Self.fk_ptp" FromRole="Company" ToRole="Dtdc_Ptp" />
+    <NavigationProperty Name="express_cargo" Relationship="Self.fk_ptpexp" FromRole="Company" ToRole="express_cargo" />
+    <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction" FromRole="Company" ToRole="Transactions" />
+  </EntityType>
+  <EntityType Name="Complaint">
+    <Key>
+      <PropertyRef Name="Complaint_ID" />
+    </Key>
+    <Property Name="Complaint_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Complaint_Date" Type="DateTime" Precision="3" />
+    <Property Name="Company_id" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="C_Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ReplyAdmins" Relationship="Self.FK__ReplyAdmi__Compl__382F5661" FromRole="Complaint" ToRole="ReplyAdmin" />
+    <NavigationProperty Name="ReplyAdmins1" Relationship="Self.FK__ReplyAdmi__Compl__39237A9A" FromRole="Complaint" ToRole="ReplyAdmin" />
+    <NavigationProperty Name="ReplyAdmins2" Relationship="Self.FK__ReplyAdmi__Compl__42E1EEFE" FromRole="Complaint" ToRole="ReplyAdmin" />
+    <NavigationProperty Name="ReplyAdmins3" Relationship="Self.FK__ReplyAdmi__Compl__43D61337" FromRole="Complaint" ToRole="ReplyAdmin" />
+  </EntityType>
+  <EntityType Name="CreditNote">
+    <Key>
+      <PropertyRef Name="Cr_id" />
+    </Key>
+    <Property Name="Cr_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cr_Amount" Type="Double" />
+    <Property Name="cr_date" Type="DateTime" Precision="3" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="Creditnoteno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="tempch_date" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__CreditNot__Firm___245D67DE" FromRole="CreditNote" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__CreditNot__Firm___251C81ED" FromRole="CreditNote" ToRole="FirmDetails" />
+  </EntityType>
+  <EntityType Name="deliverydata">
+    <Key>
+      <PropertyRef Name="d_id" />
+    </Key>
+    <Property Name="d_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="consinmentno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="delivered_date" Type="DateTime" Precision="3" />
+    <Property Name="delivered_time" Type="DateTime" Precision="3" />
+    <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdelivereddate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="DemoTest">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="DemoTest1">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CodeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Destination">
+    <Key>
+      <PropertyRef Name="Dest_Id" />
+    </Key>
+    <Property Name="Dest_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="State_" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Dtdc_Ptp">
+    <Key>
+      <PropertyRef Name="ptp_id" />
+    </Key>
+    <Property Name="ptp_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dest" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PUpto500gm" Type="Double" />
+    <Property Name="PAdd500gm" Type="Double" />
+    <Property Name="PU10to25kg" Type="Double" />
+    <Property Name="PU25to50" Type="Double" />
+    <Property Name="PU50to100" Type="Double" />
+    <Property Name="Padd100kg" Type="Double" />
+    <Property Name="P2Upto500gm" Type="Double" />
+    <Property Name="P2Add500gm" Type="Double" />
+    <Property Name="P2U10to25kg" Type="Double" />
+    <Property Name="P2U25to50" Type="Double" />
+    <Property Name="P2U50to100" Type="Double" />
+    <Property Name="P2add100kg" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <NavigationProperty Name="Company" Relationship="Self.fk_ptp" FromRole="Dtdc_Ptp" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.FK__Dtdc_Ptp__Sector__25518C17" FromRole="Dtdc_Ptp" ToRole="Sectors" />
+    <NavigationProperty Name="Sector1" Relationship="Self.FK__Dtdc_Ptp__Sector__2610A626" FromRole="Dtdc_Ptp" ToRole="Sectors" />
+    <NavigationProperty Name="Sector2" Relationship="Self.FK__Dtdc_Ptp__Sector__2645B050" FromRole="Dtdc_Ptp" ToRole="Sectors" />
+    <NavigationProperty Name="Sector3" Relationship="Self.FK__Dtdc_Ptp__Sector__2704CA5F" FromRole="Dtdc_Ptp" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="dtdcPlu">
+    <Key>
+      <PropertyRef Name="plus_id" />
+    </Key>
+    <Property Name="plus_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="destination" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Upto500gm" Type="Double" />
+    <Property Name="U10to25kg" Type="Double" />
+    <Property Name="U25to50" Type="Double" />
+    <Property Name="U50to100" Type="Double" />
+    <Property Name="add100kg" Type="Double" />
+    <Property Name="go149" Type="Double" />
+    <Property Name="go99" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Add500gm" Type="Double" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="CashCounterPlus" Type="Boolean" />
+    <NavigationProperty Name="Company" Relationship="Self.fk_nond" FromRole="dtdcPlus" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.FK__dtdcPlus__Sector__27F8EE98" FromRole="dtdcPlus" ToRole="Sectors" />
+    <NavigationProperty Name="Sector1" Relationship="Self.FK__dtdcPlus__Sector__282DF8C2" FromRole="dtdcPlus" ToRole="Sectors" />
+    <NavigationProperty Name="Sector2" Relationship="Self.FK__dtdcPlus__Sector__28ED12D1" FromRole="dtdcPlus" ToRole="Sectors" />
+    <NavigationProperty Name="Sector3" Relationship="Self.FK__dtdcPlus__Sector__29221CFB" FromRole="dtdcPlus" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Emp_Id" />
+    </Key>
+    <Property Name="Emp_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Emp_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="Int64" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Emp_Role" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="E_Password" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.Emp_Fk" FromRole="Employee" ToRole="Franchisee" />
+  </EntityType>
+  <EntityType Name="Expense">
+    <Key>
+      <PropertyRef Name="Exp_ID" />
+    </Key>
+    <Property Name="Exp_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Single" />
+    <Property Name="Rason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Category" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Exp" Type="DateTime" Precision="3" />
+    <Property Name="User_Id" Type="Int64" />
+    <NavigationProperty Name="User" Relationship="Self.fk_emexp" FromRole="Expense" ToRole="Users" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_exp" FromRole="Expense" ToRole="Franchisee" />
+  </EntityType>
+  <EntityType Name="ExpiredStationary">
+    <Key>
+      <PropertyRef Name="Ex_Id" />
+    </Key>
+    <Property Name="Ex_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Expiry_Date" Type="DateTime" Precision="0" />
+    <Property Name="Expiry_Exceded" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="days" Type="Int32" />
+  </EntityType>
+  <EntityType Name="express_cargo">
+    <Key>
+      <PropertyRef Name="Exp_Id" />
+    </Key>
+    <Property Name="Exp_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Exslab1" Type="Double" />
+    <Property Name="Exslab2" Type="Double" />
+    <Property Name="Upto" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="CashCounterExpr" Type="Boolean" />
+    <NavigationProperty Name="Company" Relationship="Self.fk_ptpexp" FromRole="express_cargo" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.FK__express_c__Secto__29E1370A" FromRole="express_cargo" ToRole="Sectors" />
+    <NavigationProperty Name="Sector1" Relationship="Self.FK__express_c__Secto__2AD55B43" FromRole="express_cargo" ToRole="Sectors" />
+    <NavigationProperty Name="Sector2" Relationship="Self.FK__express_c__Secto__2DE6D218" FromRole="express_cargo" ToRole="Sectors" />
+    <NavigationProperty Name="Sector3" Relationship="Self.FK__express_c__Secto__2EDAF651" FromRole="express_cargo" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="FirmDetail">
+    <Key>
+      <PropertyRef Name="Firm_Id" />
+    </Key>
+    <Property Name="Firm_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Firm_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Cashes" Relationship="Self.FK__Cash__Firm_Id__2180FB33" FromRole="FirmDetails" ToRole="Cash" />
+    <NavigationProperty Name="Cashes1" Relationship="Self.FK__Cash__Firm_Id__2334397B" FromRole="FirmDetails" ToRole="Cash" />
+    <NavigationProperty Name="Cheques" Relationship="Self.FK__Cheque__Firm_Id__22751F6C" FromRole="FirmDetails" ToRole="Cheque" />
+    <NavigationProperty Name="Cheques1" Relationship="Self.FK__Cheque__Firm_Id__24285DB4" FromRole="FirmDetails" ToRole="Cheque" />
+    <NavigationProperty Name="CreditNotes" Relationship="Self.FK__CreditNot__Firm___245D67DE" FromRole="FirmDetails" ToRole="CreditNote" />
+    <NavigationProperty Name="CreditNotes1" Relationship="Self.FK__CreditNot__Firm___251C81ED" FromRole="FirmDetails" ToRole="CreditNote" />
+    <NavigationProperty Name="Franchisees" Relationship="Self.FK__Franchise__Firm___2BC97F7C" FromRole="FirmDetails" ToRole="Franchisee" />
+    <NavigationProperty Name="Franchisees1" Relationship="Self.FK__Franchise__Firm___2CBDA3B5" FromRole="FirmDetails" ToRole="Franchisee" />
+    <NavigationProperty Name="Franchisees2" Relationship="Self.FK__Franchise__Firm___30C33EC3" FromRole="FirmDetails" ToRole="Franchisee" />
+    <NavigationProperty Name="Franchisees3" Relationship="Self.FK__Franchise__Firm___31B762FC" FromRole="FirmDetails" ToRole="Franchisee" />
+    <NavigationProperty Name="Invoices" Relationship="Self.FK__Invoice__Firm_Id__2F9A1060" FromRole="FirmDetails" ToRole="Invoice" />
+    <NavigationProperty Name="Invoices1" Relationship="Self.FK__Invoice__Firm_Id__308E3499" FromRole="FirmDetails" ToRole="Invoice" />
+    <NavigationProperty Name="Invoices2" Relationship="Self.FK__Invoice__Firm_Id__3493CFA7" FromRole="FirmDetails" ToRole="Invoice" />
+    <NavigationProperty Name="Invoices3" Relationship="Self.FK__Invoice__Firm_Id__3587F3E0" FromRole="FirmDetails" ToRole="Invoice" />
+    <NavigationProperty Name="NEFTs" Relationship="Self.FK__NEFT__Firm_Id__318258D2" FromRole="FirmDetails" ToRole="NEFT" />
+    <NavigationProperty Name="NEFTs1" Relationship="Self.FK__NEFT__Firm_Id__367C1819" FromRole="FirmDetails" ToRole="NEFT" />
+  </EntityType>
+  <EntityType Name="Franchisee">
+    <Key>
+      <PropertyRef Name="PF_Code" />
+    </Key>
+    <Property Name="F_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="F_Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BranchName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GstNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Franchisee_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Branch_Area" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Fr" Type="DateTime" Precision="3" />
+    <Property Name="Pan_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Sendermail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Bankname" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Accountno" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="IFSCcode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Accounttype" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="LogoFilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="StampFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Companies" Relationship="Self.fk_company" FromRole="Franchisee" ToRole="Company" />
+    <NavigationProperty Name="Employees" Relationship="Self.Emp_Fk" FromRole="Franchisee" ToRole="Employee" />
+    <NavigationProperty Name="Expenses" Relationship="Self.fk_exp" FromRole="Franchisee" ToRole="Expense" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Franchise__Firm___2BC97F7C" FromRole="Franchisee" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Franchise__Firm___2CBDA3B5" FromRole="Franchisee" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail2" Relationship="Self.FK__Franchise__Firm___30C33EC3" FromRole="Franchisee" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail3" Relationship="Self.FK__Franchise__Firm___31B762FC" FromRole="Franchisee" ToRole="FirmDetails" />
+    <NavigationProperty Name="Receipt_details" Relationship="Self.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
+    <NavigationProperty Name="Payments" Relationship="Self.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
+    <NavigationProperty Name="Savings" Relationship="Self.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
+    <NavigationProperty Name="Sectors" Relationship="Self.fk_sect" FromRole="Franchisee" ToRole="Sectors" />
+    <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction1" FromRole="Franchisee" ToRole="Transactions" />
+    <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
+    <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
+    <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Holiday">
+    <Key>
+      <PropertyRef Name="Holiday_ID" />
+    </Key>
+    <Property Name="Holiday_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="H_Year" Type="Int32" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="H_Month" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="H_datetime" Type="DateTime" Precision="0" />
+    <Property Name="Holiday_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Holiday1">
+    <Key>
+      <PropertyRef Name="Holiday_ID" />
+    </Key>
+    <Property Name="Holiday_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="H_year" Type="Int64" />
+    <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="H_month" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="H_datetime" Type="DateTime" Precision="3" />
+    <Property Name="Holiday_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="User_Id" Type="Int64" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Holidays__User_I__2DB1C7EE" FromRole="Holidays" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Holidays__User_I__2EA5EC27" FromRole="Holidays" ToRole="Users" />
+    <NavigationProperty Name="User2" Relationship="Self.FK__Holidays__User_I__32AB8735" FromRole="Holidays" ToRole="Users" />
+    <NavigationProperty Name="User3" Relationship="Self.FK__Holidays__User_I__339FAB6E" FromRole="Holidays" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Invoice">
+    <Key>
+      <PropertyRef Name="IN_Id" />
+    </Key>
+    <Property Name="IN_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="invoicedate" Type="DateTime" Precision="3" />
+    <Property Name="periodfrom" Type="DateTime" Precision="3" />
+    <Property Name="periodto" Type="DateTime" Precision="3" />
+    <Property Name="total" Type="Double" />
+    <Property Name="fullsurchargetax" Type="Double" />
+    <Property Name="fullsurchargetaxtotal" Type="Double" />
+    <Property Name="servicetax" Type="Double" />
+    <Property Name="servicetaxtotal" Type="Double" />
+    <Property Name="othercharge" Type="Double" />
+    <Property Name="netamount" Type="Double" />
+    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fid" Type="Int32" />
+    <Property Name="annyear" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="paid" Type="Double" />
+    <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="discount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="discountper" Type="Double" />
+    <Property Name="discountamount" Type="Double" />
+    <Property Name="servicecharges" Type="Double" />
+    <Property Name="Royalty_charges" Type="Double" />
+    <Property Name="Docket_charges" Type="Double" />
+    <Property Name="Tempdatefrom" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TempdateTo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempInvoicedate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Invoice_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Total_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Royalti_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Docket_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Amount4" Type="Double" />
+    <Property Name="Amount4_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Invoice__Firm_Id__2F9A1060" FromRole="Invoice" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Invoice__Firm_Id__308E3499" FromRole="Invoice" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail2" Relationship="Self.FK__Invoice__Firm_Id__3493CFA7" FromRole="Invoice" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail3" Relationship="Self.FK__Invoice__Firm_Id__3587F3E0" FromRole="Invoice" ToRole="FirmDetails" />
+  </EntityType>
+  <EntityType Name="Issue">
+    <Key>
+      <PropertyRef Name="Issue_id" />
+    </Key>
+    <Property Name="Issue_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="startno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="endno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="noofleafs" Type="Int32" />
+    <Property Name="Inssuedate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Comapny_Id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="LoginDev">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="NEFT">
+    <Key>
+      <PropertyRef Name="Neft_id" />
+    </Key>
+    <Property Name="Neft_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NeftAmount" Type="Double" />
+    <Property Name="neftdate" Type="DateTime" Precision="3" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="Transaction_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="N_Tds_Amount" Type="Double" />
+    <Property Name="N_Total_Amount" Type="Double" />
+    <Property Name="Firm_Id" Type="Int64" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="tempneftdate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="FirmDetail" Relationship="Self.FK__NEFT__Firm_Id__318258D2" FromRole="NEFT" ToRole="FirmDetails" />
+    <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__NEFT__Firm_Id__367C1819" FromRole="NEFT" ToRole="FirmDetails" />
+  </EntityType>
+  <EntityType Name="NewNotification">
+    <Key>
+      <PropertyRef Name="Notification_ID" />
+    </Key>
+    <Property Name="Notification_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NotificationName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ModelAddedUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="FromDate" Type="DateTime" Precision="3" />
+    <Property Name="ToDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Nondox">
+    <Key>
+      <PropertyRef Name="Non_ID" />
+    </Key>
+    <Property Name="Non_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Aslab1" Type="Double" />
+    <Property Name="Aslab2" Type="Double" />
+    <Property Name="Aslab3" Type="Double" />
+    <Property Name="Aslab4" Type="Double" />
+    <Property Name="Sslab1" Type="Double" />
+    <Property Name="Sslab2" Type="Double" />
+    <Property Name="Sslab3" Type="Double" />
+    <Property Name="Sslab4" Type="Double" />
+    <Property Name="AUptosl1" Type="Double" />
+    <Property Name="AUptosl2" Type="Double" />
+    <Property Name="AUptosl3" Type="Double" />
+    <Property Name="AUptosl4" Type="Double" />
+    <Property Name="SUptosl1" Type="Double" />
+    <Property Name="SUptosl2" Type="Double" />
+    <Property Name="SUptosl3" Type="Double" />
+    <Property Name="SUptosl4" Type="Double" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="NoOfSlabN" Type="Int32" />
+    <Property Name="NoOfSlabS" Type="Int32" />
+    <Property Name="CashCounterNon" Type="Boolean" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__Nondox__Company___32767D0B" FromRole="Nondox" ToRole="Company" />
+    <NavigationProperty Name="Company1" Relationship="Self.FK__Nondox__Company___336AA144" FromRole="Nondox" ToRole="Company" />
+    <NavigationProperty Name="Company2" Relationship="Self.FK__Nondox__Company___37703C52" FromRole="Nondox" ToRole="Company" />
+    <NavigationProperty Name="Company3" Relationship="Self.FK__Nondox__Company___3864608B" FromRole="Nondox" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.fk_nod" FromRole="Nondox" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="N_ID" />
+    </Key>
+    <Property Name="N_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="dateN" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="Boolean" />
+    <Property Name="url_path" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Other_Service">
+    <Key>
+      <PropertyRef Name="Service_Other_Id" />
+    </Key>
+    <Property Name="Service_Other_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pincode_Other" Type="Int64" />
+    <Property Name="Service_Other" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Pay_ID" />
+    </Key>
+    <Property Name="Pay_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="amount" Type="Single" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Pay" Type="DateTime" Precision="3" />
+    <Property Name="User_Id" Type="Int64" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_Pay" FromRole="Payment" ToRole="Franchisee" />
+    <NavigationProperty Name="User" Relationship="Self.fk_emppay" FromRole="Payment" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="PaymentDetail">
+    <Key>
+      <PropertyRef Name="PaymentDetailsId" />
+    </Key>
+    <Property Name="PaymentDetailsId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="TdsAmount" Type="Double" />
+    <Property Name="TotalAmount" Type="Double" />
+    <Property Name="InvoiceNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ChequeNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+    <Property Name="FirmId" Type="Int64" />
+    <Property Name="PfCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Paid" Type="Double" />
+  </EntityType>
+  <EntityType Name="paymentLog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pfcode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ownerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="totalAmount" Type="Double" />
+    <Property Name="registrationId" Type="Int64" />
+    <Property Name="paymentLogId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="dateTime" Type="DateTime" Precision="3" />
+    <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="paymentmethod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RenewalDate" Type="DateTime" Precision="3" />
+    <Property Name="RenewalStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="popupimage">
+    <Key>
+      <PropertyRef Name="imageid" />
+    </Key>
+    <Property Name="imageid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Upload_Date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Priority">
+    <Key>
+      <PropertyRef Name="pri_id" />
+    </Key>
+    <Property Name="pri_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="prislab1" Type="Double" />
+    <Property Name="prislab2" Type="Double" />
+    <Property Name="prislab3" Type="Double" />
+    <Property Name="priupto1" Type="Double" />
+    <Property Name="priupto2" Type="Double" />
+    <Property Name="priupto3" Type="Double" />
+    <Property Name="priupto4" Type="Double" />
+    <Property Name="prinoofslab" Type="Int32" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="prislab4" Type="Double" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__Priority__Compan__345EC57D" FromRole="Priority" ToRole="Company" />
+    <NavigationProperty Name="Company1" Relationship="Self.FK__Priority__Compan__3C34F16F" FromRole="Priority" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.FK__Priority__Sector__3552E9B6" FromRole="Priority" ToRole="Sectors" />
+    <NavigationProperty Name="Sector1" Relationship="Self.FK__Priority__Sector__3D2915A8" FromRole="Priority" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="RaiseIssue">
+    <Key>
+      <PropertyRef Name="RaiseIssue_ID" />
+    </Key>
+    <Property Name="RaiseIssue_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RaiseIssue_ScreenShotFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="RaiseIssue_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="RaiseIssue_Status" Type="Int32" />
+    <Property Name="RaiseIssue_datetime" Type="DateTime" Precision="0" />
+    <Property Name="RaiseIssue_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Domain_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="RaiseIssue_FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Ratem">
+    <Key>
+      <PropertyRef Name="Rete_Id" />
+    </Key>
+    <Property Name="Rete_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="slab1" Type="Double" />
+    <Property Name="slab2" Type="Double" />
+    <Property Name="slab3" Type="Double" />
+    <Property Name="slab4" Type="Double" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="Uptosl1" Type="Double" />
+    <Property Name="Uptosl2" Type="Double" />
+    <Property Name="Uptosl3" Type="Double" />
+    <Property Name="Uptosl4" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="NoOfSlab" Type="Int32" />
+    <Property Name="CashCounter" Type="Boolean" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__Ratem__Company_i__36470DEF" FromRole="Ratem" ToRole="Company" />
+    <NavigationProperty Name="Company1" Relationship="Self.FK__Ratem__Company_i__373B3228" FromRole="Ratem" ToRole="Company" />
+    <NavigationProperty Name="Company2" Relationship="Self.FK__Ratem__Company_i__3E1D39E1" FromRole="Ratem" ToRole="Company" />
+    <NavigationProperty Name="Company3" Relationship="Self.FK__Ratem__Company_i__3F115E1A" FromRole="Ratem" ToRole="Company" />
+    <NavigationProperty Name="Sector" Relationship="Self.fk_rateamaster" FromRole="Ratem" ToRole="Sectors" />
+  </EntityType>
+  <EntityType Name="Receipt_details">
+    <Key>
+      <PropertyRef Name="Receipt_Id" />
+    </Key>
+    <Property Name="Receipt_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Destination" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sender_phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sender_Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SenderCompany" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SenderAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SenderCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SenderState" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SenderPincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Reciepents_phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Reciepents_Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Reciepents" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReciepentCompany" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReciepentsAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReciepentsCity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReciepentsState" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ReciepentsPincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Shipmenttype" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Shipment_Length" Type="Single" />
+    <Property Name="Shipment_Quantity" Type="Int32" />
+    <Property Name="Shipment_Breadth" Type="Single" />
+    <Property Name="Shipment_Heigth" Type="Single" />
+    <Property Name="DivideBy" Type="Single" />
+    <Property Name="TotalNo" Type="Int32" />
+    <Property Name="Actual_Weight" Type="Single" />
+    <Property Name="volumetric_Weight" Type="Single" />
+    <Property Name="DescriptionContent1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DescriptionContent2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DescriptionContent3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Amount1" Type="Single" />
+    <Property Name="Amount2" Type="Single" />
+    <Property Name="Amount3" Type="Single" />
+    <Property Name="Total_Amount" Type="Single" />
+    <Property Name="Insurance" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Insuance_Percentage" Type="Single" />
+    <Property Name="Insuance_Amount" Type="Single" />
+    <Property Name="Charges_Amount" Type="Single" Nullable="false" />
+    <Property Name="Charges_Service" Type="Single" />
+    <Property Name="Risk_Surcharge" Type="Single" />
+    <Property Name="Service_Tax" Type="Single" />
+    <Property Name="Charges_Total" Type="Single" />
+    <Property Name="Cash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Credit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Credit_Amount" Type="Int32" />
+    <Property Name="secure_Pack" Type="Boolean" />
+    <Property Name="Passport" Type="Boolean" />
+    <Property Name="OfficeSunday" Type="Boolean" />
+    <Property Name="Shipment_Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Addition_charge" Type="Single" />
+    <Property Name="Addition_Lable" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Discount" Type="Single" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="User_Id" Type="Int64" />
+    <Property Name="Datetime_Cons" Type="DateTime" Precision="3" />
+    <Property Name="Paid_Amount" Type="Single" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_emprecept" FromRole="Receipt_details" ToRole="Franchisee" />
+    <NavigationProperty Name="User" Relationship="Self.fk_rece" FromRole="Receipt_details" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="RedeemOtp">
+    <Key>
+      <PropertyRef Name="Otp_Id" />
+    </Key>
+    <Property Name="Otp_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Otp" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile_No" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="verified" Type="Boolean" />
+    <Property Name="Datetime" Type="DateTime" Precision="3" />
+    <Property Name="Datetime_Redeem" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="registration">
+    <Key>
+      <PropertyRef Name="registrationId" />
+    </Key>
+    <Property Name="registrationId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pfcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="franchiseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="emailId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="dateTime" Type="DateTime" Precision="3" />
+    <Property Name="ownerName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isPaid" Type="Boolean" />
+    <Property Name="referralCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="mobileNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="referralby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GSTNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Pan_No" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BankName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="IFSC_Code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewal" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewalEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
+    <Property Name="subscriptionForInDays" Type="Int32" />
+  </EntityType>
+  <EntityType Name="ReplyAdmin">
+    <Key>
+      <PropertyRef Name="Reply_ID" />
+    </Key>
+    <Property Name="Reply_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Reply_Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Complaint_ID" Type="Int64" />
+    <Property Name="AdminOrUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Replydate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Complaint" Relationship="Self.FK__ReplyAdmi__Compl__382F5661" FromRole="ReplyAdmin" ToRole="Complaint" />
+    <NavigationProperty Name="Complaint1" Relationship="Self.FK__ReplyAdmi__Compl__39237A9A" FromRole="ReplyAdmin" ToRole="Complaint" />
+    <NavigationProperty Name="Complaint2" Relationship="Self.FK__ReplyAdmi__Compl__42E1EEFE" FromRole="ReplyAdmin" ToRole="Complaint" />
+    <NavigationProperty Name="Complaint3" Relationship="Self.FK__ReplyAdmi__Compl__43D61337" FromRole="ReplyAdmin" ToRole="Complaint" />
+  </EntityType>
+  <EntityType Name="Saving">
+    <Key>
+      <PropertyRef Name="Saving_ID" />
+    </Key>
+    <Property Name="Saving_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Saving_amount" Type="Single" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Rason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_Sav" Type="DateTime" Precision="3" />
+    <Property Name="User_Id" Type="Int64" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_Sav" FromRole="Saving" ToRole="Franchisee" />
+    <NavigationProperty Name="User" Relationship="Self.fk_empsav" FromRole="Saving" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sectorName">
+    <Key>
+      <PropertyRef Name="sname_id" />
+    </Key>
+    <Property Name="sname_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sname" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Sector">
+    <Key>
+      <PropertyRef Name="Sector_Id" />
+    </Key>
+    <Property Name="Sector_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Sector_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode_values" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="Priority" Type="Int32" />
+    <Property Name="CashD" Type="Boolean" />
+    <Property Name="CashN" Type="Boolean" />
+    <Property Name="BillD" Type="Boolean" />
+    <Property Name="BillN" Type="Boolean" />
+    <NavigationProperty Name="Dtdc_Ptp" Relationship="Self.FK__Dtdc_Ptp__Sector__25518C17" FromRole="Sectors" ToRole="Dtdc_Ptp" />
+    <NavigationProperty Name="Dtdc_Ptp1" Relationship="Self.FK__Dtdc_Ptp__Sector__2610A626" FromRole="Sectors" ToRole="Dtdc_Ptp" />
+    <NavigationProperty Name="Dtdc_Ptp2" Relationship="Self.FK__Dtdc_Ptp__Sector__2645B050" FromRole="Sectors" ToRole="Dtdc_Ptp" />
+    <NavigationProperty Name="Dtdc_Ptp3" Relationship="Self.FK__Dtdc_Ptp__Sector__2704CA5F" FromRole="Sectors" ToRole="Dtdc_Ptp" />
+    <NavigationProperty Name="dtdcPlus" Relationship="Self.FK__dtdcPlus__Sector__27F8EE98" FromRole="Sectors" ToRole="dtdcPlus" />
+    <NavigationProperty Name="dtdcPlus1" Relationship="Self.FK__dtdcPlus__Sector__282DF8C2" FromRole="Sectors" ToRole="dtdcPlus" />
+    <NavigationProperty Name="dtdcPlus2" Relationship="Self.FK__dtdcPlus__Sector__28ED12D1" FromRole="Sectors" ToRole="dtdcPlus" />
+    <NavigationProperty Name="dtdcPlus3" Relationship="Self.FK__dtdcPlus__Sector__29221CFB" FromRole="Sectors" ToRole="dtdcPlus" />
+    <NavigationProperty Name="express_cargo" Relationship="Self.FK__express_c__Secto__29E1370A" FromRole="Sectors" ToRole="express_cargo" />
+    <NavigationProperty Name="express_cargo1" Relationship="Self.FK__express_c__Secto__2AD55B43" FromRole="Sectors" ToRole="express_cargo" />
+    <NavigationProperty Name="express_cargo2" Relationship="Self.FK__express_c__Secto__2DE6D218" FromRole="Sectors" ToRole="express_cargo" />
+    <NavigationProperty Name="express_cargo3" Relationship="Self.FK__express_c__Secto__2EDAF651" FromRole="Sectors" ToRole="express_cargo" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_sect" FromRole="Sectors" ToRole="Franchisee" />
+    <NavigationProperty Name="Nondoxes" Relationship="Self.fk_nod" FromRole="Sectors" ToRole="Nondox" />
+    <NavigationProperty Name="Priorities" Relationship="Self.FK__Priority__Sector__3552E9B6" FromRole="Sectors" ToRole="Priority" />
+    <NavigationProperty Name="Priorities1" Relationship="Self.FK__Priority__Sector__3D2915A8" FromRole="Sectors" ToRole="Priority" />
+    <NavigationProperty Name="Ratems" Relationship="Self.fk_rateamaster" FromRole="Sectors" ToRole="Ratem" />
+  </EntityType>
+  <EntityType Name="Sendmessage">
+    <Key>
+      <PropertyRef Name="M_ID" />
+    </Key>
+    <Property Name="M_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile_No" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="datetime_msg" Type="DateTime" Precision="3" />
+    <Property Name="User_Id" Type="Int64" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.sendmasg_Fk" FromRole="Sendmessage" ToRole="Franchisee" />
+  </EntityType>
+  <EntityType Name="Service_list">
+    <Key>
+      <PropertyRef Name="Service_Id" />
+    </Key>
+    <Property Name="Service_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Service_" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="singleinvoiceconsignment">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Invoice_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Stationary">
+    <Key>
+      <PropertyRef Name="S_id" />
+    </Key>
+    <Property Name="S_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="recieptdate" Type="DateTime" Precision="3" />
+    <Property Name="startno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="endno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="noofleafs" Type="Int32" />
+    <Property Name="noofbooks" Type="Int32" />
+    <Property Name="Expiry_Date" Type="DateTime" Precision="3" />
+    <Property Name="fid" Type="Int32" />
+    <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="temprecdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tempExpiry_Date" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Status" Type="Int32" />
+  </EntityType>
+  <EntityType Name="SupportTicket">
+    <Key>
+      <PropertyRef Name="SupportTicketsId" />
+    </Key>
+    <Property Name="SupportTicketsId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ScreenshotUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateTime" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RaiseBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FirmId" Type="Int64" />
+    <Property Name="FirmName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="T_id" />
+    </Key>
+    <Property Name="T_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="booking_date" Type="DateTime" Precision="3" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Quanntity" Type="Int32" />
+    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="codAmount" Type="Double" />
+    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TopayAmount" Type="Double" />
+    <Property Name="Topaycharges" Type="Double" />
+    <Property Name="codcharges" Type="Double" />
+    <Property Name="codtotalamount" Type="Double" />
+    <Property Name="dtdcamount" Type="Double" />
+    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="rateperkg" Type="Double" />
+    <Property Name="docketcharege" Type="Double" />
+    <Property Name="fovcharge" Type="Double" />
+    <Property Name="loadingcharge" Type="Double" />
+    <Property Name="odocharge" Type="Double" />
+    <Property Name="Risksurcharge" Type="Double" />
+    <Property Name="Invoice_No" Type="Int64" />
+    <Property Name="BillAmount" Type="Double" />
+    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Actual_weight" Type="Double" />
+    <Property Name="chargable_weight" Type="Double" />
+    <Property Name="AdminEmp" Type="Int32" />
+    <Property Name="diff_weight" Type="Double" />
+    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="compaddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Company" Relationship="Self.fk_Tansaction" FromRole="Transactions" ToRole="Company" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.fk_Tansaction1" FromRole="Transactions" ToRole="Franchisee" />
+  </EntityType>
+  <EntityType Name="UserModuleList">
+    <Key>
+      <PropertyRef Name="UserModuleId" />
+    </Key>
+    <Property Name="UserModuleId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="User_Id" Type="Int64" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Usertype" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ModuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="User_Id" />
+    </Key>
+    <Property Name="User_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Contact_no" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Password_U" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Usertype" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Datetime_User" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Expenses" Relationship="Self.fk_emexp" FromRole="Users" ToRole="Expense" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.User_Fk" FromRole="Users" ToRole="Franchisee" />
+    <NavigationProperty Name="Holidays" Relationship="Self.FK__Holidays__User_I__2DB1C7EE" FromRole="Users" ToRole="Holidays" />
+    <NavigationProperty Name="Holidays1" Relationship="Self.FK__Holidays__User_I__2EA5EC27" FromRole="Users" ToRole="Holidays" />
+    <NavigationProperty Name="Holidays2" Relationship="Self.FK__Holidays__User_I__32AB8735" FromRole="Users" ToRole="Holidays" />
+    <NavigationProperty Name="Holidays3" Relationship="Self.FK__Holidays__User_I__339FAB6E" FromRole="Users" ToRole="Holidays" />
+    <NavigationProperty Name="Payments" Relationship="Self.fk_emppay" FromRole="Users" ToRole="Payment" />
+    <NavigationProperty Name="Receipt_details" Relationship="Self.fk_rece" FromRole="Users" ToRole="Receipt_details" />
+    <NavigationProperty Name="Savings" Relationship="Self.fk_empsav" FromRole="Users" ToRole="Saving" />
+    <NavigationProperty Name="wallet_History" Relationship="Self.fk_emeall" FromRole="Users" ToRole="wallet_History" />
+  </EntityType>
+  <EntityType Name="wallet_History">
+    <Key>
+      <PropertyRef Name="H_Id" />
+    </Key>
+    <Property Name="H_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="H_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="User_Id" Type="Int64" />
+    <Property Name="PF_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Receipt_Id" Type="Int64" />
+    <Property Name="consignment_no" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="datetime" Type="DateTime" Precision="3" />
+    <Property Name="mobile_no" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Franchisee" Relationship="Self.sendwall_Fk" FromRole="wallet_History" ToRole="Franchisee" />
+    <NavigationProperty Name="User" Relationship="Self.fk_emeall" FromRole="wallet_History" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="WalletPoint">
+    <Key>
+      <PropertyRef Name="Wallet_Id" />
+    </Key>
+    <Property Name="Wallet_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Wallet_Money" Type="Single" />
+    <Property Name="Datetime_Wa" Type="DateTime" Precision="3" />
+  </EntityType>
+  <Association Name="FK__Cash__Firm_Id__2180FB33">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cash">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cash__Firm_Id__2334397B">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Cash" Type="Self.Cash" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cash">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cheque__Firm_Id__22751F6C">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Cheque" Type="Self.Cheque" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cheque">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Cheque__Firm_Id__24285DB4">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Cheque" Type="Self.Cheque" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Cheque">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___32767D0B">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___336AA144">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___37703C52">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___3864608B">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Compan__345EC57D">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Compan__3C34F16F">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__36470DEF">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__373B3228">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__3E1D39E1">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__3F115E1A">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_company">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Company" Type="Self.Company" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Company">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_nond">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ptp">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ptpexp">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Tansaction">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__382F5661">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__39237A9A">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__42E1EEFE">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ReplyAdmi__Compl__43D61337">
+    <End Role="Complaint" Type="Self.Complaint" Multiplicity="0..1" />
+    <End Role="ReplyAdmin" Type="Self.ReplyAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Complaint">
+        <PropertyRef Name="Complaint_ID" />
+      </Principal>
+      <Dependent Role="ReplyAdmin">
+        <PropertyRef Name="Complaint_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CreditNot__Firm___245D67DE">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="CreditNote" Type="Self.CreditNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="CreditNote">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CreditNot__Firm___251C81ED">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="CreditNote" Type="Self.CreditNote" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="CreditNote">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__25518C17">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__2610A626">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__2645B050">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__2704CA5F">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__27F8EE98">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__282DF8C2">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__28ED12D1">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__29221CFB">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Emp_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emexp">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Expense" Type="Self.Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_exp">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Expense" Type="Self.Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__29E1370A">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__2AD55B43">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__2DE6D218">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__2EDAF651">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___2BC97F7C">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___2CBDA3B5">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___30C33EC3">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Franchise__Firm___31B762FC">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Franchisee">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__2F9A1060">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__308E3499">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__3493CFA7">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Invoice__Firm_Id__3587F3E0">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="Invoice">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__NEFT__Firm_Id__318258D2">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="NEFT" Type="Self.NEFT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="NEFT">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__NEFT__Firm_Id__367C1819">
+    <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
+    <End Role="NEFT" Type="Self.NEFT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FirmDetails">
+        <PropertyRef Name="Firm_Id" />
+      </Principal>
+      <Dependent Role="NEFT">
+        <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emprecept">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Receipt_details" Type="Self.Receipt_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Receipt_details">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Pay">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Sav">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Saving" Type="Self.Saving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Saving">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_sect">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Sectors">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Tansaction1">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Transactions">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="sendmasg_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Sendmessage" Type="Self.Sendmessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Sendmessage">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="sendwall_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="wallet_History" Type="Self.wallet_History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="wallet_History">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="User_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__2DB1C7EE">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holiday1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__2EA5EC27">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holiday1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__32AB8735">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holiday1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Holidays__User_I__339FAB6E">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Holidays" Type="Self.Holiday1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Holidays">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_nod">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emppay">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Sector__3552E9B6">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Priority__Sector__3D2915A8">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Priority">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_rateamaster">
+    <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_rece">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Receipt_details" Type="Self.Receipt_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Receipt_details">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_empsav">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Saving" Type="Self.Saving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Saving">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emeall">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="wallet_History" Type="Self.wallet_History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="wallet_History">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="db_a92afa_frbillingEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="addcodamounts" EntityType="Self.addcodamount" />
+    <EntitySet Name="addtopayamounts" EntityType="Self.addtopayamount" />
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="AdminAccessPages" EntityType="Self.AdminAccessPage" />
+    <EntitySet Name="Cashes" EntityType="Self.Cash" />
+    <EntitySet Name="Cheques" EntityType="Self.Cheque" />
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="Complaints" EntityType="Self.Complaint" />
+    <EntitySet Name="CreditNotes" EntityType="Self.CreditNote" />
+    <EntitySet Name="deliverydatas" EntityType="Self.deliverydata" />
+    <EntitySet Name="DemoTests" EntityType="Self.DemoTest" />
+    <EntitySet Name="DemoTest1" EntityType="Self.DemoTest1" />
+    <EntitySet Name="Destinations" EntityType="Self.Destination" />
+    <EntitySet Name="Dtdc_Ptp" EntityType="Self.Dtdc_Ptp" />
+    <EntitySet Name="dtdcPlus" EntityType="Self.dtdcPlu" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Expenses" EntityType="Self.Expense" />
+    <EntitySet Name="ExpiredStationaries" EntityType="Self.ExpiredStationary" />
+    <EntitySet Name="express_cargo" EntityType="Self.express_cargo" />
+    <EntitySet Name="FirmDetails" EntityType="Self.FirmDetail" />
+    <EntitySet Name="Franchisees" EntityType="Self.Franchisee" />
+    <EntitySet Name="Holidays" EntityType="Self.Holiday" />
+    <EntitySet Name="Holidays1" EntityType="Self.Holiday1" />
+    <EntitySet Name="Invoices" EntityType="Self.Invoice" />
+    <EntitySet Name="Issues" EntityType="Self.Issue" />
+    <EntitySet Name="LoginDevs" EntityType="Self.LoginDev" />
+    <EntitySet Name="NEFTs" EntityType="Self.NEFT" />
+    <EntitySet Name="NewNotifications" EntityType="Self.NewNotification" />
+    <EntitySet Name="Nondoxes" EntityType="Self.Nondox" />
+    <EntitySet Name="Notifications" EntityType="Self.Notification" />
+    <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
+    <EntitySet Name="Payments" EntityType="Self.Payment" />
+    <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
+    <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
+    <EntitySet Name="popupimages" EntityType="Self.popupimage" />
+    <EntitySet Name="Priorities" EntityType="Self.Priority" />
+    <EntitySet Name="RaiseIssues" EntityType="Self.RaiseIssue" />
+    <EntitySet Name="Ratems" EntityType="Self.Ratem" />
+    <EntitySet Name="Receipt_details" EntityType="Self.Receipt_details" />
+    <EntitySet Name="RedeemOtps" EntityType="Self.RedeemOtp" />
+    <EntitySet Name="registrations" EntityType="Self.registration" />
+    <EntitySet Name="ReplyAdmins" EntityType="Self.ReplyAdmin" />
+    <EntitySet Name="Savings" EntityType="Self.Saving" />
+    <EntitySet Name="sectorNames" EntityType="Self.sectorName" />
+    <EntitySet Name="Sectors" EntityType="Self.Sector" />
+    <EntitySet Name="Sendmessages" EntityType="Self.Sendmessage" />
+    <EntitySet Name="Service_list" EntityType="Self.Service_list" />
+    <EntitySet Name="singleinvoiceconsignments" EntityType="Self.singleinvoiceconsignment" />
+    <EntitySet Name="Stationaries" EntityType="Self.Stationary" />
+    <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
+    <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+    <EntitySet Name="UserModuleLists" EntityType="Self.UserModuleList" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="wallet_History" EntityType="Self.wallet_History" />
+    <EntitySet Name="WalletPoints" EntityType="Self.WalletPoint" />
+    <AssociationSet Name="FK__Cash__Firm_Id__2180FB33" Association="Self.FK__Cash__Firm_Id__2180FB33">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cash" EntitySet="Cashes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cash__Firm_Id__2334397B" Association="Self.FK__Cash__Firm_Id__2334397B">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cash" EntitySet="Cashes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cheque__Firm_Id__22751F6C" Association="Self.FK__Cheque__Firm_Id__22751F6C">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cheque" EntitySet="Cheques" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Cheque__Firm_Id__24285DB4" Association="Self.FK__Cheque__Firm_Id__24285DB4">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Cheque" EntitySet="Cheques" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___32767D0B" Association="Self.FK__Nondox__Company___32767D0B">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Nondox" EntitySet="Nondoxes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___336AA144" Association="Self.FK__Nondox__Company___336AA144">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Nondox" EntitySet="Nondoxes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___37703C52" Association="Self.FK__Nondox__Company___37703C52">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Nondox" EntitySet="Nondoxes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___3864608B" Association="Self.FK__Nondox__Company___3864608B">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Nondox" EntitySet="Nondoxes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Compan__345EC57D" Association="Self.FK__Priority__Compan__345EC57D">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Priority" EntitySet="Priorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Compan__3C34F16F" Association="Self.FK__Priority__Compan__3C34F16F">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Priority" EntitySet="Priorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__36470DEF" Association="Self.FK__Ratem__Company_i__36470DEF">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Ratem" EntitySet="Ratems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__373B3228" Association="Self.FK__Ratem__Company_i__373B3228">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Ratem" EntitySet="Ratems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__3E1D39E1" Association="Self.FK__Ratem__Company_i__3E1D39E1">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Ratem" EntitySet="Ratems" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__3F115E1A" Association="Self.FK__Ratem__Company_i__3F115E1A">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Ratem" EntitySet="Ratems" />
+    </AssociationSet>
+    <AssociationSet Name="fk_company" Association="Self.fk_company">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Company" EntitySet="Companies" />
+    </AssociationSet>
+    <AssociationSet Name="fk_nond" Association="Self.fk_nond">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ptp" Association="Self.fk_ptp">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ptpexp" Association="Self.fk_ptpexp">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Tansaction" Association="Self.fk_Tansaction">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__382F5661" Association="Self.FK__ReplyAdmi__Compl__382F5661">
+      <End Role="Complaint" EntitySet="Complaints" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__39237A9A" Association="Self.FK__ReplyAdmi__Compl__39237A9A">
+      <End Role="Complaint" EntitySet="Complaints" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__42E1EEFE" Association="Self.FK__ReplyAdmi__Compl__42E1EEFE">
+      <End Role="Complaint" EntitySet="Complaints" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ReplyAdmi__Compl__43D61337" Association="Self.FK__ReplyAdmi__Compl__43D61337">
+      <End Role="Complaint" EntitySet="Complaints" />
+      <End Role="ReplyAdmin" EntitySet="ReplyAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CreditNot__Firm___245D67DE" Association="Self.FK__CreditNot__Firm___245D67DE">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="CreditNote" EntitySet="CreditNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CreditNot__Firm___251C81ED" Association="Self.FK__CreditNot__Firm___251C81ED">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="CreditNote" EntitySet="CreditNotes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__25518C17" Association="Self.FK__Dtdc_Ptp__Sector__25518C17">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2610A626" Association="Self.FK__Dtdc_Ptp__Sector__2610A626">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2645B050" Association="Self.FK__Dtdc_Ptp__Sector__2645B050">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__2704CA5F" Association="Self.FK__Dtdc_Ptp__Sector__2704CA5F">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__27F8EE98" Association="Self.FK__dtdcPlus__Sector__27F8EE98">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__282DF8C2" Association="Self.FK__dtdcPlus__Sector__282DF8C2">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__28ED12D1" Association="Self.FK__dtdcPlus__Sector__28ED12D1">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__29221CFB" Association="Self.FK__dtdcPlus__Sector__29221CFB">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emexp" Association="Self.fk_emexp">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Expense" EntitySet="Expenses" />
+    </AssociationSet>
+    <AssociationSet Name="fk_exp" Association="Self.fk_exp">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Expense" EntitySet="Expenses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__29E1370A" Association="Self.FK__express_c__Secto__29E1370A">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__2AD55B43" Association="Self.FK__express_c__Secto__2AD55B43">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__2DE6D218" Association="Self.FK__express_c__Secto__2DE6D218">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__2EDAF651" Association="Self.FK__express_c__Secto__2EDAF651">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___2BC97F7C" Association="Self.FK__Franchise__Firm___2BC97F7C">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___2CBDA3B5" Association="Self.FK__Franchise__Firm___2CBDA3B5">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___30C33EC3" Association="Self.FK__Franchise__Firm___30C33EC3">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Franchise__Firm___31B762FC" Association="Self.FK__Franchise__Firm___31B762FC">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Franchisee" EntitySet="Franchisees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__2F9A1060" Association="Self.FK__Invoice__Firm_Id__2F9A1060">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__308E3499" Association="Self.FK__Invoice__Firm_Id__308E3499">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__3493CFA7" Association="Self.FK__Invoice__Firm_Id__3493CFA7">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Invoice__Firm_Id__3587F3E0" Association="Self.FK__Invoice__Firm_Id__3587F3E0">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="Invoice" EntitySet="Invoices" />
+    </AssociationSet>
+    <AssociationSet Name="FK__NEFT__Firm_Id__318258D2" Association="Self.FK__NEFT__Firm_Id__318258D2">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="NEFT" EntitySet="NEFTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__NEFT__Firm_Id__367C1819" Association="Self.FK__NEFT__Firm_Id__367C1819">
+      <End Role="FirmDetails" EntitySet="FirmDetails" />
+      <End Role="NEFT" EntitySet="NEFTs" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emprecept" Association="Self.fk_emprecept">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Receipt_details" EntitySet="Receipt_details" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Pay" Association="Self.fk_Pay">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Payment" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Sav" Association="Self.fk_Sav">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Saving" EntitySet="Savings" />
+    </AssociationSet>
+    <AssociationSet Name="fk_sect" Association="Self.fk_sect">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Sectors" EntitySet="Sectors" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Tansaction1" Association="Self.fk_Tansaction1">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Transactions" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="sendmasg_Fk" Association="Self.sendmasg_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Sendmessage" EntitySet="Sendmessages" />
+    </AssociationSet>
+    <AssociationSet Name="sendwall_Fk" Association="Self.sendwall_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="wallet_History" EntitySet="wallet_History" />
+    </AssociationSet>
+    <AssociationSet Name="User_Fk" Association="Self.User_Fk">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__2DB1C7EE" Association="Self.FK__Holidays__User_I__2DB1C7EE">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays1" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__2EA5EC27" Association="Self.FK__Holidays__User_I__2EA5EC27">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays1" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__32AB8735" Association="Self.FK__Holidays__User_I__32AB8735">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays1" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Holidays__User_I__339FAB6E" Association="Self.FK__Holidays__User_I__339FAB6E">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Holidays" EntitySet="Holidays1" />
+    </AssociationSet>
+    <AssociationSet Name="fk_nod" Association="Self.fk_nod">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Nondox" EntitySet="Nondoxes" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emppay" Association="Self.fk_emppay">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Payment" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Sector__3552E9B6" Association="Self.FK__Priority__Sector__3552E9B6">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Priority" EntitySet="Priorities" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Priority__Sector__3D2915A8" Association="Self.FK__Priority__Sector__3D2915A8">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Priority" EntitySet="Priorities" />
+    </AssociationSet>
+    <AssociationSet Name="fk_rateamaster" Association="Self.fk_rateamaster">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Ratem" EntitySet="Ratems" />
+    </AssociationSet>
+    <AssociationSet Name="fk_rece" Association="Self.fk_rece">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Receipt_details" EntitySet="Receipt_details" />
+    </AssociationSet>
+    <AssociationSet Name="fk_empsav" Association="Self.fk_empsav">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Saving" EntitySet="Savings" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emeall" Association="Self.fk_emeall">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="wallet_History" EntitySet="wallet_History" />
+    </AssociationSet>
+    <FunctionImport Name="CreateTicketSave">
+      <Parameter Name="Subject" Mode="In" Type="String" />
+      <Parameter Name="Url" Mode="In" Type="String" />
+      <Parameter Name="Details" Mode="In" Type="String" />
+      <Parameter Name="ScreenshotUrl" Mode="In" Type="String" />
+      <Parameter Name="Priority" Mode="In" Type="Int32" />
+      <Parameter Name="RaiseBy" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+      <Parameter Name="FirmName" Mode="In" Type="String" />
+      <Parameter Name="DateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="dashboardData" ReturnType="Collection(db_a92afa_frbillingModel.dashboardData_Result)">
+      <Parameter Name="currentDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="DatabaseBackup" />
+    <FunctionImport Name="destinationCount" ReturnType="Collection(db_a92afa_frbillingModel.destinationCount_Result)">
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="FranchiseeSave">
+      <Parameter Name="PF_Code" Mode="In" Type="String" />
+      <Parameter Name="Franchisee_Name" Mode="In" Type="String" />
+      <Parameter Name="Sendermail" Mode="In" Type="String" />
+      <Parameter Name="Datetime_Fr" Mode="In" Type="DateTime" />
+      <Parameter Name="OwnerName" Mode="In" Type="String" />
+      <Parameter Name="password" Mode="In" Type="String" />
+      <Parameter Name="ContactNo" Mode="In" Type="String" />
+      <Parameter Name="F_Address" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCheckBookingList" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingList_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCheckBookingListAll" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListAll_Result)">
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCheckBookingListWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCreditorsInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoice_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCreditorsInvoiceWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithoutCompany_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getInvoice_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getInvoiceWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getInvoiceWithoutCompany_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getIssueList" ReturnType="Collection(db_a92afa_frbillingModel.getIssueList_Result)">
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getLogin" ReturnType="Collection(db_a92afa_frbillingModel.getLogin_Result)">
+      <Parameter Name="username" Mode="In" Type="String" />
+      <Parameter Name="password" Mode="In" Type="String" />
+      <Parameter Name="PFCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getLoginforDev" ReturnType="Collection(db_a92afa_frbillingModel.getLoginforDev_Result)">
+      <Parameter Name="username" Mode="In" Type="String" />
+      <Parameter Name="password" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getNotification" ReturnType="Collection(db_a92afa_frbillingModel.getNotification_Result)" />
+    <FunctionImport Name="getPayment" ReturnType="Collection(db_a92afa_frbillingModel.getPayment_Result)">
+      <Parameter Name="PaymentType" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getPaymentTrackCash" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackCash_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getPaymentTrackCheque" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackCheque_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getPaymentTrackCreditNote" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackCreditNote_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getPaymentTrackNEFT" ReturnType="Collection(db_a92afa_frbillingModel.getPaymentTrackNEFT_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a92afa_frbillingModel.getReceiptDetails_Result)">
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getRemaining" ReturnType="Collection(db_a92afa_frbillingModel.getRemaining_Result)">
+      <Parameter Name="PfCode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getRemainingAll" ReturnType="Collection(db_a92afa_frbillingModel.getRemainingAll_Result)" />
+    <FunctionImport Name="getUserModuleList" ReturnType="Collection(db_a92afa_frbillingModel.getUserModuleList_Result)" />
+    <FunctionImport Name="PaymentDetailsSave">
+      <Parameter Name="PaymentType" Mode="In" Type="String" />
+      <Parameter Name="Amount" Mode="In" Type="Double" />
+      <Parameter Name="TdsAmount" Mode="In" Type="Double" />
+      <Parameter Name="TotalAmount" Mode="In" Type="Double" />
+      <Parameter Name="InvoiceNo" Mode="In" Type="String" />
+      <Parameter Name="ChequeNo" Mode="In" Type="String" />
+      <Parameter Name="TransactionId" Mode="In" Type="String" />
+      <Parameter Name="PaymentDate" Mode="In" Type="DateTime" />
+      <Parameter Name="FirmId" Mode="In" Type="Int64" />
+      <Parameter Name="PfCode" Mode="In" Type="String" />
+      <Parameter Name="CompanyName" Mode="In" Type="String" />
+      <Parameter Name="Paid" Mode="In" Type="Double" />
+    </FunctionImport>
+    <FunctionImport Name="paymentLogSave">
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+      <Parameter Name="ownerName" Mode="In" Type="String" />
+      <Parameter Name="totalAmount" Mode="In" Type="Double" />
+      <Parameter Name="registrationId" Mode="In" Type="Int64" />
+      <Parameter Name="paymentLogId" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="String" />
+      <Parameter Name="dateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="description" Mode="In" Type="String" />
+      <Parameter Name="paymentmethod" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="ReceipentsPhoneFromReceiptdetails" ReturnType="Collection(db_a92afa_frbillingModel.ReceipentsPhoneFromReceiptdetails_Result)">
+      <Parameter Name="enterValue" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="registrationSave">
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+      <Parameter Name="franchiseName" Mode="In" Type="String" />
+      <Parameter Name="emailId" Mode="In" Type="String" />
+      <Parameter Name="dateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="ownerName" Mode="In" Type="String" />
+      <Parameter Name="userName" Mode="In" Type="String" />
+      <Parameter Name="password" Mode="In" Type="String" />
+      <Parameter Name="isPaid" Mode="In" Type="Boolean" />
+      <Parameter Name="mobileNo" Mode="In" Type="String" />
+      <Parameter Name="address" Mode="In" Type="String" />
+      <Parameter Name="referralCode" Mode="In" Type="String" />
+      <Parameter Name="referralby" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="RenewalpaymentLogSave">
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+      <Parameter Name="ownerName" Mode="In" Type="String" />
+      <Parameter Name="totalAmount" Mode="In" Type="Double" />
+      <Parameter Name="registrationId" Mode="In" Type="Int64" />
+      <Parameter Name="paymentLogId" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="String" />
+      <Parameter Name="dateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="description" Mode="In" Type="String" />
+      <Parameter Name="RenewalStatus" Mode="In" Type="String" />
+      <Parameter Name="RenewalDate" Mode="In" Type="DateTime" />
+      <Parameter Name="paymentmethod" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SenderPhoneFromReceiptdetails" ReturnType="Collection(db_a92afa_frbillingModel.SenderPhoneFromReceiptdetails_Result)">
+      <Parameter Name="enterValue" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Sp_GetSingleConsignment" ReturnType="Collection(db_a92afa_frbillingModel.Sp_GetSingleConsignment_Result)">
+      <Parameter Name="Con_no" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="TicketSave">
+      <Parameter Name="Subject" Mode="In" Type="String" />
+      <Parameter Name="Url" Mode="In" Type="String" />
+      <Parameter Name="Details" Mode="In" Type="String" />
+      <Parameter Name="ScreenshotUrl" Mode="In" Type="String" />
+      <Parameter Name="DateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="Status" Mode="In" Type="String" />
+      <Parameter Name="Priority" Mode="In" Type="String" />
+      <Parameter Name="RaiseBy" Mode="In" Type="String" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+      <Parameter Name="FirmId" Mode="In" Type="Int64" />
+      <Parameter Name="FirmName" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="TransactionViews" EntityType="db_a92afa_frbillingModel.TransactionView" />
+  </EntityContainer>
+  <ComplexType Name="dashboardData_Result">
+    <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
+    <Property Type="Int32" Name="openConCount" Nullable="true" />
+    <Property Type="Int32" Name="unSignPincode" Nullable="true" />
+    <Property Type="Int32" Name="invalidCon" Nullable="true" />
+    <Property Type="Int32" Name="complaintcount" Nullable="true" />
+    <Property Type="Double" Name="sumOfBilling" Nullable="true" />
+    <Property Type="Int32" Name="countOfBilling" Nullable="true" />
+    <Property Type="Double" Name="avgOfBillingSum" Nullable="true" />
+    <Property Type="Double" Name="sumOfBillingCurrentMonth" Nullable="true" />
+    <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
+    <Property Type="Double" Name="todayExp" Nullable="true" />
+    <Property Type="Double" Name="monthexp" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="destinationCount_Result">
+    <Property Type="String" Name="Destination" Nullable="true" />
+    <Property Type="Int32" Name="DestCount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCheckBookingList_Result">
+    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCheckBookingListAll_Result">
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCheckBookingListWithoutCompany_Result">
+    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCreditorsInvoice_Result">
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getCreditorsInvoiceWithoutCompany_Result">
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getInvoice_Result">
+    <Property Type="Int32" Name="IN_Id" Nullable="false" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="othercharge" Nullable="true" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="String" Name="discount" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+    <Property Type="Double" Name="Docket_charges" Nullable="true" />
+    <Property Type="String" Name="Tempdatefrom" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="TempdateTo" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Invoice_Lable" Nullable="true" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+    <Property Type="Int32" Name="totalCount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getInvoiceWithoutCompany_Result">
+    <Property Type="Int32" Name="IN_Id" Nullable="false" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="othercharge" Nullable="true" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="String" Name="discount" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+    <Property Type="Double" Name="Docket_charges" Nullable="true" />
+    <Property Type="String" Name="Tempdatefrom" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="TempdateTo" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Invoice_Lable" Nullable="true" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+    <Property Type="Int32" Name="totalCount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getIssueList_Result">
+    <Property Type="Int64" Name="SupportTicketsId" Nullable="false" />
+    <Property Type="String" Name="Subject" Nullable="true" />
+    <Property Type="String" Name="Url" Nullable="true" />
+    <Property Type="String" Name="Details" Nullable="true" />
+    <Property Type="String" Name="ScreenshotUrl" Nullable="true" />
+    <Property Type="DateTime" Name="DateTime" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Status" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Priority" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="RaiseBy" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="FirmName" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="DayCount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getLogin_Result">
+    <Property Type="Int64" Name="registrationId" Nullable="false" />
+    <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="referralCode" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getLoginforDev_Result">
+    <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="getNotification_Result">
+    <Property Type="Int32" Name="N_ID" Nullable="false" />
+    <Property Type="String" Name="Message" Nullable="true" />
+    <Property Type="DateTime" Name="dateN" Nullable="true" Precision="23" />
+    <Property Type="Boolean" Name="Status" Nullable="true" />
+    <Property Type="String" Name="url_path" Nullable="true" MaxLength="150" />
+    <Property Type="String" Name="description" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <ComplexType Name="getPayment_Result">
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="othercharge" Nullable="true" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="Double" Name="Balance" Nullable="false" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+    <Property Type="Double" Name="Docket_charges" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="getPaymentTrackCash_Result">
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Modeofpayment" Nullable="false" MaxLength="4" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="DateTime" Name="tempinserteddate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="remark" Nullable="false" MaxLength="1" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getPaymentTrackCheque_Result">
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Modeofpayment" Nullable="false" MaxLength="6" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="DateTime" Name="tempinserteddate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="remark" Nullable="true" MaxLength="200" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getPaymentTrackCreditNote_Result">
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Modeofpayment" Nullable="false" MaxLength="10" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="DateTime" Name="tempinserteddate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="remark" Nullable="true" MaxLength="50" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getPaymentTrackNEFT_Result">
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Modeofpayment" Nullable="false" MaxLength="4" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="DateTime" Name="tempinserteddate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="remark" Nullable="true" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getReceiptDetails_Result">
+    <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Destination" Nullable="true" />
+    <Property Type="String" Name="sender_phone" Nullable="true" />
+    <Property Type="String" Name="SenderCity" Nullable="true" />
+    <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Reciepents_phone" Nullable="true" />
+    <Property Type="String" Name="Reciepents" Nullable="true" />
+    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
+    <Property Type="Single" Name="Charges_Total" Nullable="true" />
+    <Property Type="DateTime" Name="Datetime_Cons" Nullable="true" Precision="23" />
+    <Property Type="Single" Name="Paid_Amount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getRemaining_Result">
+    <Property Type="Int32" Name="S_id" Nullable="false" />
+    <Property Type="DateTime" Name="recieptdate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="startno" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="endno" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="noofleafs" Nullable="true" />
+    <Property Type="Int32" Name="noofbooks" Nullable="true" />
+    <Property Type="DateTime" Name="Expiry_Date" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="fid" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="String" Name="temprecdate" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="tempExpiry_Date" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Pf_code" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="Int32" Name="totalCOUNTER" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getRemainingAll_Result">
+    <Property Type="Int32" Name="S_id" Nullable="false" />
+    <Property Type="DateTime" Name="recieptdate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="startno" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="endno" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="noofleafs" Nullable="true" />
+    <Property Type="Int32" Name="noofbooks" Nullable="true" />
+    <Property Type="DateTime" Name="Expiry_Date" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="fid" Nullable="true" />
+    <Property Type="String" Name="Invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="String" Name="temprecdate" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="tempExpiry_Date" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Pf_code" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="Status" Nullable="true" />
+    <Property Type="Int32" Name="totalCOUNTER" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getUserModuleList_Result">
+    <Property Type="Int64" Name="UserModuleId" Nullable="false" />
+    <Property Type="Int64" Name="User_Id" Nullable="false" />
+    <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="PF_Code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Usertype" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="ModuleName" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="ReceipentsPhoneFromReceiptdetails_Result">
+    <Property Type="String" Name="Reciepents_phone" Nullable="true" />
+    <Property Type="String" Name="Reciepents" Nullable="true" />
+    <Property Type="String" Name="Reciepents_Email" Nullable="true" />
+    <Property Type="String" Name="ReciepentsAddress" Nullable="true" />
+    <Property Type="String" Name="ReciepentCompany" Nullable="true" />
+    <Property Type="String" Name="ReciepentsCity" Nullable="true" />
+    <Property Type="String" Name="ReciepentsState" Nullable="true" />
+    <Property Type="String" Name="ReciepentsPincode" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Destination" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="SenderPhoneFromReceiptdetails_Result">
+    <Property Type="String" Name="sender_phone" Nullable="true" />
+    <Property Type="String" Name="Sender" Nullable="true" />
+    <Property Type="String" Name="Sender_Email" Nullable="true" />
+    <Property Type="String" Name="SenderAddress" Nullable="true" />
+    <Property Type="String" Name="SenderCompany" Nullable="true" />
+    <Property Type="String" Name="SenderCity" Nullable="true" />
+    <Property Type="String" Name="SenderState" Nullable="true" />
+    <Property Type="String" Name="SenderPincode" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="Sp_GetSingleConsignment_Result">
+    <Property Type="Int64" Name="T_id" Nullable="false" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Weight_t" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Company_id" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Claimamount" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="calinsuranceamount" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="remark" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="topay" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="codAmount" Nullable="true" />
+    <Property Type="String" Name="consignee" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="consigner" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="cod" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="TopayAmount" Nullable="true" />
+    <Property Type="Double" Name="Topaycharges" Nullable="true" />
+    <Property Type="Double" Name="codcharges" Nullable="true" />
+    <Property Type="Double" Name="codtotalamount" Nullable="true" />
+    <Property Type="Double" Name="dtdcamount" Nullable="true" />
+    <Property Type="String" Name="status_t" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="rateperkg" Nullable="true" />
+    <Property Type="Double" Name="docketcharege" Nullable="true" />
+    <Property Type="Double" Name="fovcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+    <Property Type="Double" Name="odocharge" Nullable="true" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Int64" Name="Invoice_No" Nullable="true" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="tembookingdate" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="Actual_weight" Nullable="true" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="AdminEmp" Nullable="true" />
+    <Property Type="Double" Name="diff_weight" Nullable="true" />
+    <Property Type="String" Name="Sender" Nullable="true" />
+    <Property Type="String" Name="Receiver" Nullable="true" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+  </ComplexType>
+  <EntityType Name="TransactionView">
+    <Key>
+      <PropertyRef Name="T_id" />
+    </Key>
+    <Property Name="T_id" Type="Int64" Nullable="false" />
+    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="booking_date" Type="DateTime" Precision="3" />
+    <Property Name="compaddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Quanntity" Type="Int32" />
+    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="codAmount" Type="Double" />
+    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TopayAmount" Type="Double" />
+    <Property Name="Topaycharges" Type="Double" />
+    <Property Name="codcharges" Type="Double" />
+    <Property Name="codtotalamount" Type="Double" />
+    <Property Name="dtdcamount" Type="Double" />
+    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="rateperkg" Type="Double" />
+    <Property Name="docketcharege" Type="Double" />
+    <Property Name="fovcharge" Type="Double" />
+    <Property Name="loadingcharge" Type="Double" />
+    <Property Name="odocharge" Type="Double" />
+    <Property Name="Risksurcharge" Type="Double" />
+    <Property Name="Invoice_No" Type="Int64" />
+    <Property Name="BillAmount" Type="Double" />
+    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Actual_weight" Type="Double" />
+    <Property Name="chargable_weight" Type="Double" />
+    <Property Name="AdminEmp" Type="Int32" />
+    <Property Name="diff_weight" Type="Double" />
+    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdelivereddate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

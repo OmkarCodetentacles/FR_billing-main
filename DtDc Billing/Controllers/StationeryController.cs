@@ -123,10 +123,22 @@ namespace DtDc_Billing.Controllers
             ViewBag.RemainingType = items;
 
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code == pfcode), "PF_Code", "PF_Code");
-            //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
-            //return View(st);
-            return View(list);
+            ViewBag.PfCode = pfcode;
+
+
+            var obj = db.Stationaries.Where(x=>x.Pf_code == pfcode).Select(x => new RemainingModel
+            {
+
+
+                startno = x.startno,
+                endno = x.endno,
+                Expiry_Date = x.Expiry_Date,
+                temprecdate = x.temprecdate,
+                totalCount = 0
+
+            }).ToList();
+
+            return View(obj);
         }
 
 
@@ -141,7 +153,7 @@ namespace DtDc_Billing.Controllers
 
             PfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            ViewBag.PfCode = new SelectList(db.Franchisees.Where(d => d.PF_Code == PfCode), "PF_Code", "PF_Code");
+            ViewBag.PfCode = PfCode;
 
             List<SelectListItem> items = new List<SelectListItem>();
 
@@ -153,50 +165,41 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.RemainingType = items;
 
-            //if (PfCode == "")
-            //{
-            //    var obj = db.getRemainingAll().Select(x => new RemainingModel
-            //    {
+            var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
+            {
 
+                S_id = x.S_id,
+                Invoiceno = x.Invoiceno,
+                recieptdate = x.recieptdate,
+                noofbooks = x.noofbooks,
+                noofleafs = x.noofleafs,
+                Expiry_Date = x.Expiry_Date,
+                startno = x.startno,
+                endno = x.endno,
+                Status = x.Status,
+                fid = x.fid,
+                tempExpiry_Date = x.tempExpiry_Date,
+                temprecdate = x.temprecdate,
+                Pf_code = x.Pf_code,
+               // totalCount = x.totalCount ?? 0
+            }).ToList();
 
-            //        startno = x.startno,
-            //        endno = x.endno,
-            //        Expiry_Date = x.Expiry_Date,
-            //        temprecdate = x.temprecdate,
-            //        totalCount = x.totalCOUNTER ?? 0
+           
+            foreach (var j in obj)
+            {
 
-            //    }).ToList();
+                int counter = 0;
+                char stch = j.startno[0];
+                char Endch = j.endno[0];
+                counter = db.Transactions.Where(m => (m.Consignment_no.CompareTo(j.startno.ToString()) >= 0 && m.Consignment_no.CompareTo(j.endno.ToString()) <= 0) && m.Customer_Id != null && m.Customer_Id.Length > 1).Count();
+                str.Add(counter.ToString());
+                counter = 0;
 
+            }
 
+            ViewBag.str = str.ToArray();
 
-            //    ViewBag.type = RemainingType;
-
-            //    return View(obj);
-            //}
-            //else
-            //{
-                var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
-                {
-
-
-                    startno = x.startno,
-                    endno = x.endno,
-                    Expiry_Date = x.Expiry_Date,
-                    temprecdate = x.temprecdate,
-                    totalCount = x.totalCOUNTER ?? 0
-
-                }).ToList();
-
-
-                ViewBag.type = RemainingType;
-                return View(obj);
-
-
-            //}
-
-            //return View();
-
-
+            return View(obj);
 
         }
 
