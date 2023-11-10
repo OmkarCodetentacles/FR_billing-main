@@ -27,15 +27,16 @@
     .dow, .prev, .datepicker-switch, .next {
         border-right: 0 !important;
     }
-    #example1{
-       white-space:nowrap;
-    }
+    
     .box-body {
         overflow: auto;
     }
+    .creditorsreport th{
+         width: 7.69% !important;
+    }
 </style>
 <div class="content-wrapper">
-    <div class="box box-info">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>Creditors  Report</h4>
         </div><!-- /.box-header -->
@@ -46,27 +47,26 @@
 
                     @using (Html.BeginForm())
                     {
-                        <span class="text-danger">@TempData["dateSelect"]</span>
                         <div class="row">
                             @*<div class="col-md-2">
-                    <div class="form-group">
-                        <label>PF Code</label>
-                        <div class="pf-code">
-                            @Html.DropDownList("PfCode", "-Please select-")
-                        </div>
-                    </div>
-                </div>*@
+                                    <div class="form-group">
+                                        <label>PF Code</label>
+                                        <div class="pf-code">
+                                            @Html.DropDownList("PfCode", "-Please select-")
+                                        </div>
+                                    </div>
+                                </div>*@
 
                             <!--<div class="col-md-2">
-                <div class="form-group">
-                    <label>Employee Id</label>
-                    <div class="emp-id">-->
+                                <div class="form-group">
+                                    <label>Employee Id</label>
+                                    <div class="emp-id">-->
                             @*@Html.DropDownList("Employees", "-Please select-")*@
                             <!--<input type="text" name="Employees" id="Employees" value="@ViewBag.Employees" class="form-control">
 
-                    </div>
-                </div>
-            </div>-->
+                                    </div>
+                                </div>
+                            </div>-->
 
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -119,7 +119,7 @@
                             <div class="col-md-2 pull-right">
                                 <div class="form-group">
                                     <label> </label>
-                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" />
+                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" style="margin-left:auto" />
                                 </div>
                             </div>
 
@@ -130,7 +130,7 @@
 
 
 
-                    <table id="example1" class="table table-striped table-bordered table-scroll table-responsive">
+                    <table id="example1" class="table creditorsreport">
                         <thead>
                             <tr>
                                 <th>
@@ -144,8 +144,8 @@
                                 </th>
 
                                 @*<th>
-                        @Html.DisplayNameFor(model => model.Sender)
-                    </th>*@
+                                        @Html.DisplayNameFor(model => model.Sender)
+                                    </th>*@
 
 
                                 <th>
@@ -203,8 +203,8 @@
                                     </td>
 
                                     @*<td>
-                            @Html.DisplayFor(modelItem => item.Sender)
-                        </td>*@
+                                            @Html.DisplayFor(modelItem => item.Sender)
+                                        </td>*@
 
 
                                     <td>
@@ -247,10 +247,10 @@
                                         @(item.Charges_Total - item.Paid_Amount)
                                     </td>
                                     @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                        </td>*@
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                        </td>*@
                                 </tr>
                             }
                         </tbody>

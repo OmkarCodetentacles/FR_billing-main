@@ -71,6 +71,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<long> User_Id { get; set; }
         public Nullable<System.DateTime> Datetime_Cons { get; set; }
         public Nullable<float> Paid_Amount { get; set; }
+        public string BarcodeImage { get; set; }
     
         public virtual Franchisee Franchisee { get; set; }
         public virtual User User { get; set; }

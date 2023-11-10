@@ -26,7 +26,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Adminsss
-       
+
         //[SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
@@ -35,7 +35,7 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-       
+
         public ActionResult Index()
         {
             return View();
@@ -97,7 +97,7 @@ namespace DtDc_Billing.Controllers
                 _smtp.Send(_mailmsg);
                 TempData["success"] = "Mail has been send successfully!!";
             }
-            
+
             return PartialView("ContactUsPartialView", contact);
         }
 
@@ -123,7 +123,7 @@ namespace DtDc_Billing.Controllers
                 _mailmsg.Subject = subject;
 
                 //Set Body Text of Email   
-                _mailmsg.Body = "mail id from newsletters "+ newsletters.email;
+                _mailmsg.Body = "mail id from newsletters " + newsletters.email;
 
 
                 //Now set your SMTP   
@@ -152,7 +152,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AdminLogin(AdminLogin login, string ReturnUrl)
         {
-            
+
             if (ModelState.IsValid)
             {
                 var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode }).FirstOrDefault();
@@ -171,7 +171,7 @@ namespace DtDc_Billing.Controllers
 
                     if (currentDate > newDate)
                     {
-                       
+
                         ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
                         return View();
                     }
@@ -222,7 +222,7 @@ namespace DtDc_Billing.Controllers
                         Session["Admin"] = obj.registrationId.ToString();
                         Session["UserName"] = obj.userName.ToString();
                         Session["PFCode"] = obj.Pfcode.ToString();
-                       // Session["firmlist"] = firmlist;
+                        // Session["firmlist"] = firmlist;
                         string decodedUrl = "";
 
                         HttpCookie cookie = new HttpCookie("Cookies");
@@ -239,20 +239,21 @@ namespace DtDc_Billing.Controllers
                         Response.Cookies.Add(cookie);
 
 
-                        
-                        int customTimeout =15;
+
+                        int customTimeout = 30;
                         FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                                          1,  
-                         obj.registrationId.ToString(),  
-                          DateTime.Now,  
+                                          1,
+                         obj.registrationId.ToString(),
+                          DateTime.Now,
                          DateTime.Now.AddMinutes(customTimeout),  // Expiration time
-                          false,  
-                            obj.userName  
+                          false,
+                            obj.userName
                         );
                         string encryptedTicket = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                         authCookie.Expires = ticket.Expiration;
                         Response.Cookies.Add(authCookie);
+
                         var objaccessPAge = (from d in db.AdminAccessPages
                                              where d.Pfcode == obj.Pfcode.ToString()
                                              select new { d.Accesspage }).FirstOrDefault();
@@ -337,7 +338,7 @@ namespace DtDc_Billing.Controllers
 
                 }
             }
-           
+
             return View();
         }
 
@@ -547,9 +548,9 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
-          
+
             List<SelectListItem> items1 = new List<SelectListItem>();
-           
+
             items1.Add(new SelectListItem { Text = "Stationary", Value = "Stationary".ToString() });
 
             items1.Add(new SelectListItem { Text = "RateMaster", Value = "RateMaster".ToString() });
@@ -557,7 +558,7 @@ namespace DtDc_Billing.Controllers
             items1.Add(new SelectListItem { Text = "Booking", Value = "Booking".ToString() });
 
             items1.Add(new SelectListItem { Text = "Invoice", Value = "Invoice".ToString() });
-            
+
             items1.Add(new SelectListItem { Text = "Payment", Value = "Payment".ToString() });
 
             items1.Add(new SelectListItem { Text = "Track", Value = "Track".ToString() });
@@ -600,7 +601,7 @@ namespace DtDc_Billing.Controllers
         }
         [SessionAdmin]
         [HttpPost]
-        public ActionResult CreateUser(User user, string[] Usertype, string[] ModuletypeCash,string[] ModuletypeBilling)
+        public ActionResult CreateUser(User user, string[] Usertype, string[] ModuletypeCash, string[] ModuletypeBilling)
         {
             List<SelectListItem> items = new List<SelectListItem>();
 
@@ -608,9 +609,9 @@ namespace DtDc_Billing.Controllers
 
             items.Add(new SelectListItem { Text = "Billing", Value = "Billing" });
 
-          
-            
-            
+
+
+
             List<SelectListItem> items1 = new List<SelectListItem>();
 
             items1.Add(new SelectListItem { Text = "Stationary", Value = "Stationary".ToString() });
@@ -674,66 +675,66 @@ namespace DtDc_Billing.Controllers
                 // CheckBox.IsSelected = false;
 
                 // ViewBag.Moduletype = CheckBox;
-                string str = "",strbilling="";
+                string str = "", strbilling = "";
 
                 string[] split = user.Usertype.Split(',');
 
-                if (ModuletypeCash.Count() !=null)
+                if (ModuletypeCash.Count() != null)
                 {
                     for (int i = 0; i < ModuletypeCash.Count();)
                     {
                         str = ModuletypeCash[i];
-    
-                            var data = (from d in db.UserModuleLists
-                                        where d.ModuleName == str
-                                        && d.UserName == user.Name
-                                        && d.Usertype == "CashCounter"
-                                        select d).ToList();
 
-                            if (data.Count() == 0)
-                            {
-                                UserModuleList userm = new UserModuleList();
+                        var data = (from d in db.UserModuleLists
+                                    where d.ModuleName == str
+                                    && d.UserName == user.Name
+                                    && d.Usertype == "CashCounter"
+                                    select d).ToList();
 
-                                userm.ModuleName = ModuletypeCash[i];
-                                userm.PF_Code = user.PF_Code;
-                                userm.User_Id = user.User_Id;
-                                userm.UserName = user.Name;
-                                userm.Usertype = "CashCounter";
-                                db.UserModuleLists.Add(userm);
-                                db.SaveChanges();
-                            }
-                            
+                        if (data.Count() == 0)
+                        {
+                            UserModuleList userm = new UserModuleList();
+
+                            userm.ModuleName = ModuletypeCash[i];
+                            userm.PF_Code = user.PF_Code;
+                            userm.User_Id = user.User_Id;
+                            userm.UserName = user.Name;
+                            userm.Usertype = "CashCounter";
+                            db.UserModuleLists.Add(userm);
+                            db.SaveChanges();
+                        }
+
 
                         i++;
                     }
                 }
 
-                if (ModuletypeBilling.Count() !=null)
+                if (ModuletypeBilling.Count() != null)
                 {
                     for (int i = 0; i < ModuletypeBilling.Count();)
                     {
                         strbilling = ModuletypeBilling[i];
 
-                        
-                            var data = (from d in db.UserModuleLists
-                                        where d.ModuleName == strbilling
-                                        && d.UserName == user.Name
-                                        && d.Usertype == "Billing"
-                                        select d).ToList();
 
-                            if (data.Count() == 0)
-                            {
-                                UserModuleList userm = new UserModuleList();
+                        var data = (from d in db.UserModuleLists
+                                    where d.ModuleName == strbilling
+                                    && d.UserName == user.Name
+                                    && d.Usertype == "Billing"
+                                    select d).ToList();
 
-                                userm.ModuleName = ModuletypeBilling[i];
-                                userm.PF_Code = user.PF_Code;
-                                userm.User_Id = user.User_Id;
-                                userm.UserName = user.Name;
-                                userm.Usertype = "Billing";
-                                db.UserModuleLists.Add(userm);
-                                db.SaveChanges();
-                            }
-                           
+                        if (data.Count() == 0)
+                        {
+                            UserModuleList userm = new UserModuleList();
+
+                            userm.ModuleName = ModuletypeBilling[i];
+                            userm.PF_Code = user.PF_Code;
+                            userm.User_Id = user.User_Id;
+                            userm.UserName = user.Name;
+                            userm.Usertype = "Billing";
+                            db.UserModuleLists.Add(userm);
+                            db.SaveChanges();
+                        }
+
 
                         i++;
                     }
@@ -755,10 +756,10 @@ namespace DtDc_Billing.Controllers
             ViewBag.Usertype = items;
 
 
-          
-             
 
-                return View(user);
+
+
+            return View(user);
 
         }
 
@@ -838,11 +839,11 @@ namespace DtDc_Billing.Controllers
                 }
             }
 
-            var modulelist = db.UserModuleLists.Where(m => m.User_Id == id && m.Usertype=="CashCounter").Select(m => m.ModuleName).ToList();
-            
+            var modulelist = db.UserModuleLists.Where(m => m.User_Id == id && m.Usertype == "CashCounter").Select(m => m.ModuleName).ToList();
+
             foreach (var item in items1)
             {
-                foreach(var list in modulelist)
+                foreach (var list in modulelist)
                 {
                     if (list == item.Value)
                     {
@@ -850,7 +851,7 @@ namespace DtDc_Billing.Controllers
 
                     }
                 }
-                
+
             }
 
             var modulelistBilling = db.UserModuleLists.Where(m => m.User_Id == id && m.Usertype == "Billing").Select(m => m.ModuleName).ToList();
@@ -894,9 +895,9 @@ namespace DtDc_Billing.Controllers
 
                 string[] split = user.Usertype.Split(',');
 
-             
+
                 var data1 = (from d in db.UserModuleLists
-                             where  d.UserName == user.Name
+                             where d.UserName == user.Name
                              && d.Usertype == "Billing"
                                && d.User_Id == user.User_Id
                              select d).ToList();
@@ -955,7 +956,7 @@ namespace DtDc_Billing.Controllers
 
             items.Add(new SelectListItem { Text = "Billing", Value = "Billing" });
 
-           
+
 
             ViewBag.PF_Code = new SelectList(db.Franchisees, "PF_Code", "PF_Code", user.PF_Code);
             return View(user);
@@ -1427,7 +1428,7 @@ namespace DtDc_Billing.Controllers
                                select u).ToList();
             ViewBag.pfcode = PfCode;//stored in hidden format on the view
 
-           
+
             return View(st);
         }
 
@@ -1435,20 +1436,20 @@ namespace DtDc_Billing.Controllers
 
         [SessionAdmin]
         [HttpPost]
-        public ActionResult Add_SectorPin(registration franchisee,FormCollection fc)
+        public ActionResult Add_SectorPin(registration franchisee, FormCollection fc)
         {
             //Adding Eantries To the Sector Table
             var sectornamelist = db.sectorNames.ToList();
             // [RegularExpression("^[0-9]*$", ErrorMessage = "Pincode must be numeric")]
-           
-       
-        var code = (from u in db.registrations
-                          where u.Pfcode == franchisee.Pfcode
-                          select u).FirstOrDefault();
+
+
+            var code = (from u in db.registrations
+                        where u.Pfcode == franchisee.Pfcode
+                        select u).FirstOrDefault();
 
             var datasector = (from d in db.Sectors
-                             where d.Pf_code == franchisee.Pfcode
-                             select d);
+                              where d.Pf_code == franchisee.Pfcode
+                              select d);
 
             if (datasector != null)
             {
@@ -1463,7 +1464,7 @@ namespace DtDc_Billing.Controllers
 
                     for (int j = 0; j < strarr.Count(); j++)
                     {
-                        
+
                         if (!Regex.Match(strarr[j], @"^(\d{6})?$").Success)
                         {
                             //TempData["PinError1"] = "Pincode must be numeric!";
@@ -1475,12 +1476,12 @@ namespace DtDc_Billing.Controllers
 
                             }
                             List<Sector> secct = (from u in db.Sectors
-                                                   where u.Pf_code == franchisee.Pfcode
+                                                  where u.Pf_code == franchisee.Pfcode
 
-                                                   select u).ToList();
-                            ViewBag.DataSector = secct; 
+                                                  select u).ToList();
+                            ViewBag.DataSector = secct;
                             ViewBag.Message = "Pincode must be numeric";
-                           // return View("FranchiseeList", fc);
+                            // return View("FranchiseeList", fc);
                             return PartialView("Add_SectorPin", secct);
                             //return View(fc);
                         }
@@ -1502,33 +1503,33 @@ namespace DtDc_Billing.Controllers
                     }
 
                 }
-                    int result = pincodearayy.Count(s => s == null);
+                int result = pincodearayy.Count(s => s == null);
 
-                    if (result > 0)
-                    {
-                        ModelState.AddModelError("PinError", "All Fields Are Compulsary");
+                if (result > 0)
+                {
+                    ModelState.AddModelError("PinError", "All Fields Are Compulsary");
 
-                        List<Sector> stt = (from u in db.Sectors
-                                            where u.Pf_code == franchisee.Pfcode
-                                            && u.Pincode_values == null
-                                            select u).ToList();
-                        ViewBag.DataSector = stt;
-                        return View(stt);
-                    }
-                    else
-                    {
-                        db.SaveChanges();
-                        TempData["Success"] = "Sectors Added Successfully!";
-                    }
+                    List<Sector> stt = (from u in db.Sectors
+                                        where u.Pf_code == franchisee.Pfcode
+                                        && u.Pincode_values == null
+                                        select u).ToList();
+                    ViewBag.DataSector = stt;
+                    return View(stt);
+                }
+                else
+                {
+                    db.SaveChanges();
+                    TempData["Success"] = "Sectors Added Successfully!";
+                }
 
 
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 List<Sector> secct1 = (from u in db.Sectors
-                                   where u.Pf_code == pfcode//franchisee.Pfcode
+                                       where u.Pf_code == pfcode//franchisee.Pfcode
 
                                        select u).ToList();
                 ViewBag.DataSector = secct1;
-                return View("Add_SectorPin",secct1);
+                return View("Add_SectorPin", secct1);
 
             }
             else
@@ -1647,7 +1648,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.DataSector = st;
 
             return View(st);
-           //return View();
+            //return View();
 
             //////////////////////////////////////////////
 
@@ -1794,7 +1795,7 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
                 Franchisee Fr = new Franchisee();
-                
+
                 Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 Fr.F_Address = franchisee.F_Address;
                 Fr.OwnerName = franchisee.OwnerName;
@@ -1819,9 +1820,9 @@ namespace DtDc_Billing.Controllers
                 if (franchisee.StampFilePath == null)
                 {
                     getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
-                    
+
                 }
-                Fr.StampFilePath = (franchisee.StampFilePath==null || franchisee.StampFilePath == "")? getNewFilePath:franchisee.StampFilePath ;
+                Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
 
 
                 db.Entry(Fr).State = EntityState.Modified;
@@ -1837,7 +1838,7 @@ namespace DtDc_Billing.Controllers
                 Reg.Branch = franchisee.BranchName;
                 Reg.GSTNo = franchisee.GstNo;
                 Reg.franchiseName = franchisee.Franchisee_Name;
-                Reg.mobileNo = franchisee.ContactNo;            
+                Reg.mobileNo = franchisee.ContactNo;
                 Reg.dateTime = franchisee.Datetime_Fr;
                 Reg.Pan_No = franchisee.Pan_No;
                 Reg.emailId = franchisee.Sendermail;
@@ -1850,7 +1851,7 @@ namespace DtDc_Billing.Controllers
                 Reg.AccountType = franchisee.Accounttype;
                 Reg.InvoiceStart = franchisee.InvoiceStart;
 
-               
+
 
                 db.Entry(Reg).State = EntityState.Modified;
                 db.SaveChanges();
@@ -1866,7 +1867,7 @@ namespace DtDc_Billing.Controllers
             return PartialView();
         }
 
-        
+
         [HttpPost]
         public ActionResult UploadFile()
         {
@@ -1907,7 +1908,7 @@ namespace DtDc_Billing.Controllers
                             franchises.StampFilePath = "http://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
                             db.SaveChanges();
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
 
                         }
@@ -1923,10 +1924,10 @@ namespace DtDc_Billing.Controllers
             var r = new Regex(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$");
             if (!r.IsMatch(logo.file.FileName))
             {
-               // ModelState.AddModelError("fileerr", "Only Image files allowed.");
-               TempData["Success1"] = "Only Image files allowed!";
+                // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+                TempData["Success1"] = "Only Image files allowed!";
             }
-           else
+            else
             {
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 string _FileName = "";
@@ -1936,15 +1937,15 @@ namespace DtDc_Billing.Controllers
                 {
                     _FileName = Path.GetFileName(logo.file.FileName);
                     _path = Server.MapPath("~/UploadedLogo/" + _FileName);
-                    
+
                     logo.file.SaveAs(_path);
                 }
-              
+
                 var lo = (from d in db.Franchisees
-                           where d.PF_Code == strpf
+                          where d.PF_Code == strpf
                           select d).FirstOrDefault();
 
-               
+
                 lo.LogoFilePath = _FileName;
 
                 db.Entry(lo).State = EntityState.Modified;
@@ -1961,7 +1962,7 @@ namespace DtDc_Billing.Controllers
         }
 
 
-            public ActionResult ImportCsv()
+        public ActionResult ImportCsv()
         {
             return View();
         }
@@ -2011,7 +2012,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.Company = Fr;
 
 
-     
+
             List<Sector> st = (from u in db.Sectors
                                where u.Pf_code == strpf
                                orderby u.Priority
@@ -2028,7 +2029,7 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-       
+
         public ActionResult UserList()
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -2036,7 +2037,7 @@ namespace DtDc_Billing.Controllers
             var datauser = (from d in db.Users
                             where d.PF_Code == strpf
                             select d).ToList();
-           
+
             return View(datauser.ToList());
         }
 
@@ -2282,7 +2283,7 @@ namespace DtDc_Billing.Controllers
             ViewData["Category"] = Cat;
 
 
-           
+
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -2309,9 +2310,9 @@ namespace DtDc_Billing.Controllers
             {
                 list = db.Expenses.Where(m => m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
             }
-            else if((Pf_Code == null && Pf_Code == "") || (Category == null && Category == "") || (ToDatetime != "" && Fromdatetime != null))
+            else if ((Pf_Code == null && Pf_Code == "") || (Category == null && Category == "") || (ToDatetime != "" && Fromdatetime != null))
             {
-                list = db.Expenses.Where(m=> DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+                list = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
             }
             else
             {
@@ -2332,8 +2333,8 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
-       
-            List<SelectListItem> expe = new List<SelectListItem>(); 
+
+            List<SelectListItem> expe = new List<SelectListItem>();
 
 
             expe.Add(new SelectListItem { Text = "Select", Value = "" });
@@ -2507,8 +2508,8 @@ namespace DtDc_Billing.Controllers
             FormsAuthentication.SignOut();
             Session.Abandon(); // it will clear the session at the end of request
                                //return RedirectToAction("Adminlogin", "Admin");
-            //string SubPath = "http://codetentacles-005-site1.htempurl.com/";
-           // return Redirect(SubPath);
+                               //string SubPath = "http://codetentacles-005-site1.htempurl.com/";
+                               // return Redirect(SubPath);
             return RedirectToAction("Adminlogin", "Admin");
 
 
@@ -2522,15 +2523,15 @@ namespace DtDc_Billing.Controllers
             return Json(isValid, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Register(string referral="")
+        public ActionResult Register(string referral = "")
         {
             string testParameter = Request.QueryString["referral"];
 
-            if(referral != "")
+            if (referral != "")
             {
-                var isValidReferral = db.registrations.Where(x => x.referralCode == referral && x.isPaid == true).FirstOrDefault()!= null ? true : false;
+                var isValidReferral = db.registrations.Where(x => x.referralCode == referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
 
-                if(isValidReferral)
+                if (isValidReferral)
                 {
                     TempData["referralCode"] = referral;
                 }
@@ -2541,7 +2542,7 @@ namespace DtDc_Billing.Controllers
                 }
 
             }
-            
+
             return View();
         }
         [HttpPost]
@@ -2559,16 +2560,16 @@ namespace DtDc_Billing.Controllers
                 {
                     flag = true;
                     ModelState.AddModelError("customError", "Pfcode already exist");
-                   
+
                 }
 
-                if(userDetails.isUserNameExist == false)
+                if (userDetails.isUserNameExist == false)
                 {
                     flag = true;
                     ModelState.AddModelError("usernameerror", "User name already exist");
                 }
 
-                
+
                 if (userDetails.referral != "" && userDetails.referral != null)
                 {
                     var isValidReferral = db.registrations.Where(x => x.referralCode == userDetails.referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
@@ -2963,46 +2964,46 @@ namespace DtDc_Billing.Controllers
                 user.address = userDetails.address;
 
                 Session["DataName"] = user.name;
-                Session["Dataemail"] = user.email; 
-                Session["Datacontact"] = user.mobileNo; 
+                Session["Dataemail"] = user.email;
+                Session["Datacontact"] = user.mobileNo;
                 Session["Dataaddress"] = user.address;
 
                 if (save > 0)
                 {
                     string FilePath = Server.MapPath("~/images/RegisterMailTemplete.html");
-                        //"http://codetentacles-005-site1.htempurl.com/images/RegisterMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
+                    //"http://codetentacles-005-site1.htempurl.com/images/RegisterMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
                     StreamReader str = new StreamReader(FilePath);
                     string MailText = str.ReadToEnd();
                     str.Close();
 
                     MailText = MailText.Replace("[newusername]", userDetails.franchiseName);
-                    
+
                     string subject = "Welcome To FrBilling Subscription";
 
-                   
+
                     MailMessage _mailmsg = new MailMessage();
 
-                    
-                    _mailmsg.IsBodyHtml = true;        
-                    _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");    
-                    _mailmsg.To.Add(userDetails.emailId);              
-                    _mailmsg.Subject = subject;      
+
+                    _mailmsg.IsBodyHtml = true;
+                    _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
+                    _mailmsg.To.Add(userDetails.emailId);
+                    _mailmsg.Subject = subject;
                     _mailmsg.Body = MailText;
 
                     SmtpClient _smtp = new SmtpClient();
- 
+
                     _smtp.Host = "smtp.gmail.com";
- 
+
                     _smtp.Port = 587;
 
-                  
+
                     _smtp.EnableSsl = true;
                     _smtp.UseDefaultCredentials = false;
-                    
+
                     NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
                     _smtp.Credentials = _network;
 
-                    
+
                     //_smtp.Send(_mailmsg);
 
                     TempData["success"] = "Register successfully";
@@ -3180,7 +3181,7 @@ namespace DtDc_Billing.Controllers
 
                 var ObjData = (from d in db.paymentLogs
                                where d.paymentLogId == paymentid
-                               && d.RenewalStatus==null
+                               && d.RenewalStatus == null
                                select d).FirstOrDefault();
 
                 string strdate = Convert.ToString(ObjData.dateTime);
@@ -3189,16 +3190,16 @@ namespace DtDc_Billing.Controllers
                 DateTime date1 = Convert.ToDateTime(date);
 
                 string FilePath = Server.MapPath("~/images/PaymentMailTemplete.html");
-               //"http://codetentacles-005-site1.htempurl.com/images/PaymentMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
+                //"http://codetentacles-005-site1.htempurl.com/images/PaymentMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
                 StreamReader str = new StreamReader(FilePath);
                 string MailText = str.ReadToEnd();
                 str.Close();
 
                 //Repalce [newusername] = signup user name   
                 MailText = MailText.Replace("[newusername]", ObjData.ownerName);
-                MailText = MailText.Replace("[Date]",date1.ToString("MM/dd/yyyy"));
+                MailText = MailText.Replace("[Date]", date1.ToString("MM/dd/yyyy"));
                 MailText = MailText.Replace("[amount]", amount.ToString());
-                
+
 
                 string subject = "FrBilling Subscription Payment Details";
 
@@ -3264,7 +3265,7 @@ namespace DtDc_Billing.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken()]
-        public ActionResult PaymentSuccess(string paymentSuccess="1")
+        public ActionResult PaymentSuccess(string paymentSuccess = "1")
         {
             string SubPath = "http://codetentacles-005-site1.htempurl.com/Admin/AdminLogin?isPaymentSuccess=1";
             return Redirect(SubPath);

@@ -24,6 +24,7 @@ namespace DtDc_Billing.Models
         public Nullable<int> noofleafs { get; set; }
 
         [Required(ErrorMessage = "Please Enter noofbooks")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please Enter  a value greater than 0.")]
         public Nullable<int> noofbooks { get; set; }
 
         public Nullable<System.DateTime> Expiry_Date { get; set; }

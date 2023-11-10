@@ -35,8 +35,8 @@
         color: #555;
         background-color: #fff;
         background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        border: 1px solid #0049af26 !important;
+        border-radius: 0;
         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
         box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
         -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
@@ -46,8 +46,11 @@
     .padding-left-0{
         padding-left:0 !important;
     }
-    .btn-info{
-        width:auto;
+    .padding-right-0{
+        padding-right:0 !important;
+    }
+    .btn-info {
+        width: auto;
     }
 </style>
 
@@ -59,7 +62,7 @@
 
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="padding: 16px 16px !important">
         <!-- Content Header (Page header) -->
         <div class="box-body1" style="padding:15px">
             <div class="row">
@@ -101,7 +104,7 @@
         <section id="consignment" class="content">
             <div class="row">
                 <!-- left column -->
-                <div class="col-md-6">
+                <div class="col-md-6" style="padding-right:"0">
                     <!-- Horizontal Form -->
                     <div class="box box-info">
                         <div class="box-header with-border">
@@ -122,8 +125,6 @@
                                             <option value="texto A">
 
                                         </datalist>
-                                        <span id="phoneValidationMessage" class="text-danger" style="display: none;">Invalid phone number.</span>
-
                                     </div>
                                     <label for="" class="col-sm-2">Email</label>
                                     <div class="col-sm-4 nopadding">
@@ -146,31 +147,32 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="" class="col-sm-2 padding-left-0">Address</label>
-                                    <div class="col-sm-10 padding-right-0">
+                                    <label for="" class="col-sm-2 padding-left-0 padding-right-0">Address</label>
+                                    <div class="col-sm-4 padding-right-0 padding-left-0" style="padding-right">
                                         @Html.TextAreaFor(model => model.SenderAddress, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Address" } })
                                         @Html.ValidationMessageFor(model => model.SenderAddress, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <label class="col-sm-2 ">City</label>
+                                    <div class="col-sm-4 padding-left-0 padding-right-0" >
+                                        @Html.EditorFor(model => model.SenderCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
+                                        @Html.ValidationMessageFor(model => model.SenderCity, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label class="col-sm-1 padding-left-0">City</label>
-                                    <div class="col-sm-3">
-                                        @Html.EditorFor(model => model.SenderCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
-                                        @Html.ValidationMessageFor(model => model.SenderCity, "", new { @class = "text-danger" })
-
-                                    </div>
+                                   
                                 
                                
-                                    <label class="col-sm-1 no-padding">State</label>
-                                    <div class="col-sm-3 no-padding">
+                                    <label class="col-sm-2 no-padding">State</label>
+                                    <div class="col-sm-4 no-padding">
                                         @Html.EditorFor(model => model.SenderState, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "State" } })
                                     </div>
                               
                            
                                     <label for="" class="col-sm-2 padding-right-0">Pincode</label>
-                                    <div class="col-sm-2 padding-left-0 padding-right-0">
+                                    <div class="col-sm-4 padding-left-0 padding-right-0">
 
                                         @Html.EditorFor(model => model.SenderPincode, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Pincode", @id = "Pincode" } })
                                         @Html.ValidationMessageFor(model => model.SenderPincode, "", new { @class = "text-danger" })
@@ -193,7 +195,7 @@
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="" class="col-sm-2 padding-left-0">Ph No</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
                                         @*@Html.EditorFor(model => model.Reciepents_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number", @id = "receipientphno" } })*@
                                         <input list="texto_pronto1" name="Reciepents_phone" id="Reciepents_phone" class="form-control input-sm" oninput="validatePhoneNumberReceipt(this)">
@@ -201,13 +203,11 @@
                                             <option value="texto A">
 
                                         </datalist>
-                                        <span id="phoneValidationMessageRece" class="text-danger" style="display: none;">Invalid phone number.</span>
-
                                         @Html.ValidationMessageFor(model => model.Reciepents_phone, "", new { @class = "text-danger" })
 
                                     </div>
                                     <label for="" class="col-sm-2 ">Email</label>
-                                    <div class="col-sm-4 padding-right-0">
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
                                         @Html.EditorFor(model => model.Reciepents_Email, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Email" } })
 
@@ -215,13 +215,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="" class="col-sm-2  padding-left-0">Recipient</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
                                         @Html.EditorFor(model => model.Reciepents, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Recipient's Name" } })
 
                                     </div>
-                                    <label for="" class="col-sm-2">Company</label>
-                                    <div class="col-sm-4 padding-right-0">
+                                    <label for="" class="col-sm-2 padding-right-0">Company</label>
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
 
                                         @Html.EditorFor(model => model.ReciepentCompany, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Company" } })
@@ -230,28 +230,29 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="inputPassword3" class="col-sm-2  padding-left-0">Address</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
 
                                         @Html.TextAreaFor(model => model.ReciepentsAddress, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Address" } })
 
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="" class="col-sm-1 padding-left-0">City</label>
-                                    <div class="col-sm-3">
+                                    <label for="" class="col-sm-2 ">City</label>
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
                                         @Html.EditorFor(model => model.ReciepentsCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
 
                                     </div>
-                                    <label class="col-sm-1 nopadding">State</label>
-                                    <div class="col-sm-3 nopadding">
+                                </div>
+                                <div class="form-group">
+                                    
+                                    <label class="col-sm-2 nopadding">State</label>
+                                    <div class="col-sm-4 nopadding">
 
                                         @Html.EditorFor(model => model.ReciepentsState, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "State" } })
 
                                     </div>
                                     <label class="col-sm-2 padding-right-0">Pincode</label>
-                                    <div class="col-sm-2 padding-left-0">
+                                    <div class="col-sm-4 padding-right-0 padding-left-0">
 
                                         @Html.EditorFor(model => model.ReciepentsPincode, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Pincode" } })
 
@@ -337,9 +338,9 @@
                                 </div>
                                 <div class="row">
 
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-2" style="padding-right: 0; padding-left: 5px;">
+                                        <div class="col-sm-12">
+                                            <div class="">
+                                                <div class="col-sm-2" >
                                                     <div class="label1">
                                                         <label>L </label>
                                                         <label class="pull-right"><strong> X </strong> </label>
@@ -348,7 +349,7 @@
                                                         @Html.EditorFor(model => model.Shipment_Length, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2"style="padding-right: 0; padding-left: 5px;" >
+                                                <div class="col-sm-2" >
                                                     <div class="label1">
                                                         <label>B</label>
                                                         <label class="pull-right"><strong> X </strong> </label>
@@ -357,7 +358,7 @@
                                                         @Html.EditorFor(model => model.Shipment_Quantity, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2" style="padding-right: 0; padding-left: 5px;">
+                                                <div class="col-sm-2" >
                                                     <div class="label1">
                                                         <label>H </label>
                                                         <label class="pull-right"><strong> X </strong> </label>
@@ -366,7 +367,7 @@
                                                         @Html.EditorFor(model => model.Shipment_Breadth, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2"style="padding-right: 0; padding-left: 5px;" >
+                                                <div class="col-sm-2" >
                                                     <div class="label1">
                                                         <label>Pcs </label>
                                                         <label class="pull-right"><strong> / </strong> </label>
@@ -375,7 +376,7 @@
                                                         @Html.EditorFor(model => model.Shipment_Heigth, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2" style="padding-right: 0; padding-left: 5px;">
+                                                <div class="col-sm-2" >
                                                     <label>Devide By</label>
                                                     <div class="pad-5">
                                                         @Html.EditorFor(model => model.DivideBy, new { htmlAttributes = new { @class = "form-control input-sm", @Value = 3000 } })
@@ -383,10 +384,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label class=" col-sm-4 col-md-offset-2">V.Wt</label>
-                                                <div class="col-sm-6">
+                                        <div class="col-sm-12" style="margin:10px 0" >
+                                            <div class="form-group" >
+                                                <label class=" col-sm-2 " style="margin:10px 0">V.Wt</label>
+                                                <div class="col-sm-8">
                                                     @Html.EditorFor(model => model.volumetric_Weight, new { htmlAttributes = new { @class = "form-control input-sm volw", @placeholder = "Vol. Weight" } })
                                                 </div>
                                             </div>
@@ -417,33 +418,33 @@
                             <div class="box-body">
                                 <!-- radio -->
                                 <div class="col-md-12 no-padding">
-                                    <div class="form-group">
-                                        <div class="col-sm-8 padding-left-0">
+                                    <div class="form-group"> 
+                                        <div class="col-sm-8 ">
 
                                             @Html.EditorFor(model => model.DescriptionContent1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
 
                                         </div>
-                                        <div class="col-sm-4 padding-right-0">
-                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount",@id="amount1" } })
+                                        <div class="col-sm-4 ">
+                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" , @id = "amount1" } })
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-8 padding-left-0">
+                                        <div class="col-sm-8 ">
                                             @Html.EditorFor(model => model.DescriptionContent2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
 
                                         </div>
-                                        <div class="col-sm-4 padding-right-0">
+                                        <div class="col-sm-4 ">
                                             @Html.EditorFor(model => model.Amount2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount", @id = "amount2" } })
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-sm-8 padding-left-0">
+                                        <div class="col-sm-8 ">
                                             @Html.EditorFor(model => model.DescriptionContent3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
 
                                         </div>
-                                        <div class="col-sm-4 padding-right-0">
+                                        <div class="col-sm-4 ">
                                             @Html.EditorFor(model => model.Amount3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount", @id = "amount3" } })
 
                                         </div>
@@ -458,7 +459,7 @@
                                         <label for="" class="col-sm-12 text-right control-label">Total Value of Goods</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4 padding-right-0">
+                                <div class="col-md-4 ">
                                     <div class="form-group">
                                         
                                             @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total", @id = "totalAmountInput" } })
@@ -493,7 +494,7 @@
                         <div class="form-horizontal">
                             <div class="box-body">
                                 <!-- radio -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div id="insurance">
                                         <div class="form-group">
                                             <label for="" class="col-sm-4">Insurance</label>
@@ -537,7 +538,7 @@
                                 </div>
 
 
-                                <div class="col-md-6">
+                                <div class="col-md-8">
 
                                     <div class="form-group">
                                         <label for="" class="col-sm-6 nopadding">Amount</label>
@@ -847,8 +848,8 @@
                                         }
 
                                     </div>
-                                    <div id="redeem-btn" class="col-md-3">
-                                        <div class="container">
+                                    <div id="redeem-btn" class="col-md-3 " style="text-align:end; padding:10px 0">
+                                        <div class="">
                                             <button type="button" class="btn bg-maroon btn-sm" id="MainRedeem" data-toggle="modal" data-target="#myModal">Redeem</button>
                                             <div class="modal" id="myModal" role="dialog">
                                                 <div class="modal-dialog">
@@ -1000,26 +1001,19 @@
 
 
 <script>
-//Check Mobile Number Validation 
+    //Check Mobile Number Validation 
     function validatePhoneNumber(input) {
         input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
-
         var phoneValidationMessage = document.getElementById("phoneValidationMessage");
-
-
         if (input.value.length === 10) {
             phoneValidationMessage.style.display = "none";
         } else {
             phoneValidationMessage.style.display = "block";
         }
     }
-
     function validatePhoneNumberReceipt(input) {
         input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
-
         var phoneValidationMessage = document.getElementById("phoneValidationMessageRece");
-
-
         if (input.value.length === 10) {
             phoneValidationMessage.style.display = "none";
         } else {
@@ -1031,16 +1025,12 @@
         var amount1 = parseFloat($("#amount1").val()) || 0;
         var amount2 = parseFloat($("#amount2").val()) || 0;
         var amount3 = parseFloat($("#amount3").val()) || 0;
-
         var totalAmount = amount1 + amount2 + amount3;
-
         // Update the Total_Amount input field using jQuery
         $("#totalAmountInput").val(totalAmount);
     }
-
     // Call the calculateTotal function when the input values change
     $("#amount1, #amount2, #amount3").on("input", calculateTotal);
-
 
     function showinsurance() {
         $('#insurance').show();
@@ -2524,12 +2514,10 @@ $(document).ready(function () {
         font-size: 12px;
     }
 
-    #consignment label {
-        padding-right: 0px;
-    }
+   
 
     .padding-left-0 {
-        padding-left: 0px;
+        padding-left: 0px !important;
     }
 
    /* .pad-5 input {

@@ -2412,19 +2412,13 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         [HttpPost]
         public ActionResult creditorsreport(string Employees, string ToDatetime, string Fromdatetime, string Submit)
         {
-            List<Receipt_details> rc = new List<Receipt_details>();
-            if (Fromdatetime == null || ToDatetime == null || Fromdatetime == "" || ToDatetime == "")
-            {
-                TempData["dateSelect"] = "Select both dates";
-                return View(rc);
-            }
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             if (Employees == null)
             {
                 Employees = "";
             }
 
-            
+            List<Receipt_details> rc = new List<Receipt_details>();
 
             rc = db.Receipt_details.ToList();
 

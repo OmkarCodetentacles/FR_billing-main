@@ -8,6 +8,15 @@
     .padding-left-0{
         padding-left:0
     }
+    .PaymentDetails th{
+        width:10% !important;
+    }
+    table {
+        max-height: 400px !important;
+        display: inline-table !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
 </style>
 
 <div class="overlay" id="overlayBlock">
@@ -16,7 +25,7 @@
 
 
 <div class="content-wrapper">
-    <div class="box box-info">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>Payment Details</h4>
         </div>
@@ -59,7 +68,7 @@
                                         {
                                             <div class="col-md-3 padding-left-0">
                                                 <div class="form-group">
-                                                    <label>From Date</label>
+                                                    <label>From Date <span style="color:red" > *</span>: </label>
 
                                                     <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
                                                 </div>
@@ -69,7 +78,7 @@
                                         {
                                             <div class="col-md-3 padding-left-0">
                                                 <div class="form-group">
-                                                    <label>From Date</label>
+                                                    <label>From Date <span style="color:red"> *</span>:</label>
 
                                                     <input name="Fromdatetime" class="form-control" id="datepicker" type="text">
                                                 </div>
@@ -80,7 +89,7 @@
                                         {
                                             <div class="col-md-3 padding-left-0">
                                                 <div class="form-group">
-                                                    <label>To Date</label>
+                                                    <label>To Date <span style="color:red"> *</span>:</label>
 
                                                     <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
                                                 </div>
@@ -91,7 +100,7 @@
                                         {
                                             <div class="col-md-3 padding-left-0">
                                                 <div class="form-group">
-                                                    <label>To Date</label>
+                                                    <label>To Date <span style="color:red"> *</span>:</label>
 
                                                     <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
                                                 </div>
@@ -111,7 +120,7 @@
                         </div>*@
 
 
-                        <table id="check-booking-list" class="table table-striped table-bordered table-responsive height-450">
+                        <table id="check-booking-list" class="table PaymentDetails">
                             <thead>
                                 <tr>
                                     <th>Sr.No</th>
@@ -153,21 +162,21 @@
                                             <td>
                                                 @if (item.Modeofpayment == "Cash")
                                                 {
-                                                    <a href="@Url.Action("CashEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a class="edit-btn" href="@Url.Action("CashEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
 
                                                 }
                                                 else if (item.Modeofpayment == "Cheque")
                                                 {
-                                                    <a href="@Url.Action("ChequeEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a class="edit-btn"  href="@Url.Action("ChequeEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
                                                 }
                                                 else if (item.Modeofpayment == "NEFT")
                                                 {
-                                                    <a href="@Url.Action("NEFTEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a class="edit-btn" href="@Url.Action("NEFTEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
                                                 }
                                                 else if (item.Modeofpayment == "CreditNote")
                                                 {
-                                                    <a href="@Url.Action("CreditEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
-                                                    <a href="#" onClick="Print(@item.id)" ;> Print </a>
+                                                    <a class="edit-btn" href="@Url.Action("CreditEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a class="  btn-primary sbmt" href="#" onClick="Print(@item.id)" ; style="padding:6px "> Print </a>
                                                 }
                                             </td>
                                             <td>

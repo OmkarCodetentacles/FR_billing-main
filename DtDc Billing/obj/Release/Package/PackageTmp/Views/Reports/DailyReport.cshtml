@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.Receipt_details>
 @{
     ViewBag.Title = "DailyReport";
-    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
 }
+
 
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -10,8 +11,8 @@
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 
-<div class="content-wrapper" id="dailyrptwrpr">
-    <section class="content">
+
+    <section class="conatiner">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
@@ -47,13 +48,13 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                            <button type="submit" class="btn btn-block btn-success">Search</button>
                                         </div>
                                     </div>
 
 
                                     <div class="col-sm-2">
-                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block " />
+                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success" />
                                     </div>
 
 
@@ -70,39 +71,44 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="box box-info">
-                            <div class="box-header with-border bginfo">
-                                <h3 class="box-title titlnew">Consignment Report</h3>
-                                <p class="totlpaymt pull-right label label-primary">Total :  @(ViewBag.paidamount ?? 0)</p>
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Daily Report</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body " style=" overflow: auto;">
-                                <table id="example1" class="table table-striped table-bordered table-scroll  tbloverflow">
+                            <div class="box-body">
+                                <table id="example1" class="table table-striped table-bordered table-scroll">
                                     <thead>
                                         <tr>
-                                            <th>Sr.No</th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Consignment_No)
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Sender)
+                                                @Html.DisplayNameFor(model => model.Destination)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.sender_phone)
                                             </th>
 
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Destination)
+                                                @Html.DisplayNameFor(model => model.Sender)
                                             </th>
 
 
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Actual_Weight)
+                                                @Html.DisplayNameFor(model => model.SenderCity)
                                             </th>
 
                                             <th>
-                                                @Html.DisplayNameFor(model => model.volumetric_Weight)
+                                                @Html.DisplayNameFor(model => model.SenderPincode)
                                             </th>
                                             <th>
-                                                Payment Mode
+                                                @Html.DisplayNameFor(model => model.Reciepents_phone)
+                                            </th>
+
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Reciepents)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.ReciepentsPincode)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(model => model.Paid_Amount)
@@ -111,45 +117,51 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @{ int i = 1;
-                                            foreach (var item in Model)
-                                            {
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Consignment_No)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Destination)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.sender_phone)
+                                                </td>
 
-                                                <tr>
-                                                    <td>@(i++)</td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Consignment_No)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Sender)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.sender_phone)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Destination)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Actual_Weight)
-                                                    </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Sender)
+                                                </td>
 
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.volumetric_Weight)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Credit)
-                                                    </td>
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.Paid_Amount)
-                                                    </td>
-                                                    @*<td>
-                                                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                                                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                                                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                                                        </td>*@
 
-                                                </tr>
-                                            }
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SenderCity)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SenderPincode)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Reciepents_phone)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Reciepents)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ReciepentsPincode)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Paid_Amount)
+                                                </td>
+                                                @*<td>
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                                    </td>*@
+                                            </tr>
                                         }
                                     </tbody>
 
@@ -157,16 +169,14 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="box box-info">
-                            <div class="box-header with-border bginfo">
-                                <h3 class="box-title titlnew">Expense</h3>
-                                <p class="totlpaymt pull-right label label-primary">Total :  @ViewBag.expenseCount</p>
-                            </div>
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Expense</h3>
+                            </div><!-- /.box-header -->
                             <div class="box-body">
-
-                                <table id="example1" class="table table-striped table-bordered table-scroll  tbloverflow">
+                                <p>Total Expense Amt</p>  @ViewBag.expenseCount
+                                <table id="example1" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>
@@ -197,7 +207,11 @@
 
 
 
-
+                                                @*<td>
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                                    </td>*@
                                             </tr>
                                         }
                                     </tbody>
@@ -207,20 +221,16 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="row">
-
-
                     <div class="col-md-6">
                         <div class="box box-info">
-                            <div class="box-header with-border bginfo">
-                                <h3 class="box-title titlnew">Payment</h3>
-                                <p class="totlpaymt pull-right label label-primary">Total : @ViewBag.PaymentCount </p>
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Payment</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body ">
-
-                                <table id="example1" class="table table-striped table-bordered table-scroll  tbloverflow">
+                            <div class="box-body">
+                                <p>Total Payment Amt</p>  @ViewBag.PaymentCount
+                                <table id="example1" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>
@@ -252,6 +262,14 @@
                                                     @item.Description_
                                                 </td>
 
+
+
+
+                                                @*<td>
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                                    </td>*@
                                             </tr>
                                         }
                                     </tbody>
@@ -263,14 +281,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="box box-info">
-                            <div class="box-header with-border bginfo">
-                                <h3 class="box-title titlnew">Savings</h3>
-                                <p class="totlpaymt pull-right label label-primary">Total : @ViewBag.Savingscount </p>
-                            </div>
-
-                            <div class="box-body ">
-
-                                <table id="example1" class="table table-striped table-bordered tbloverflow table-scroll">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Payment</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <p>Total Savings Amt </p>  @ViewBag.Savingscount
+                                <table id="example1" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>
@@ -301,7 +317,11 @@
 
 
 
-
+                                                @*<td>
+                                                        @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                                    </td>*@
                                             </tr>
                                         }
                                     </tbody>
@@ -315,115 +335,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-info">
-                            <div class="box-body    ">
-                                @*<p>Total Amount </p>  @ViewBag.sum*@
-
-                                <div class="col-md-9">
-                                    <table id="formpaytble">
-                                        <tbody>
-                                            <tr>
-                                                <td class=" total-label"> By Cash</td>
-                                                <td class="sign">+</td>
-                                                <td class=" "> @ViewBag.bycash</td>
-
-                                            </tr>
-
-
-                                            <tr>
-                                                <td class=" total-label"> By Card</td>
-                                                <td class="sign">+</td>
-                                                <td class=" "> @ViewBag.bycard</td>
-
-                                            </tr>
-
-
-                                            <tr>
-                                                <td class=" total-label"> By Cheque</td>
-                                                <td class="sign">+</td>
-                                                <td class=" "> @ViewBag.bycheque</td>
-
-                                            </tr>
-
-
-                                            <tr>
-                                                <td class=" total-label"> By Credit</td>
-                                                <td class="sign">+</td>
-                                                <td class=" "> @ViewBag.bycredit</td>
-
-                                            </tr>
-
-                                            <tr>
-                                                <td class=" total-label"> By Other</td>
-                                                <td class="sign">+</td>
-                                                <td class=" ">  @ViewBag.byother</td>
-
-                                            </tr>
-                                            <tr>
-                                                <td class=" total-label">Payment</td>
-                                                <td class="sign">+</td>
-                                                <td class="">  @ViewBag.PaymentCount</td>
-                                            </tr>
-                                            <tr>
-                                                <td class=" total-label titlnew">Expense</td>
-                                                <td class="sign">-</td>
-                                                <td class="titlnew"> @ViewBag.expenseCount</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class=" total-label titlnewgreen">Total</td>
-                                                <td class="sign"></td>
-                                                <td class="titlnewgreen ">   @ViewBag.sum</td>
-
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-
-                                </div>
-
-                                @*<div class="row">
-                                        <div class="col-md-12">
-                                            <div class="box box-info">
-                                                <div class="box-body text-left">
-                                                    <p>Total Amount:   @ViewBag.sum</p>
-                                                    <p>By Cash:   @ViewBag.bycash</p>
-                                                    <p>By Card:   @ViewBag.bycard</p>
-                                                    <p>By Cheque:   @ViewBag.bycheque</p>
-                                                    <p>By Credit:   @ViewBag.bycredit</p>
-                                                    <p>By Other:   @ViewBag.byother</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>*@
-                                @*<div class="col-md-2">
-                                        <p> Credit Amount: @ViewBag.openingbal</p>
-                                    </div>*@
-
-                                <!-- /input-group -->
-
-                                <div class="col-sm-3 " style="float: right" ;>
-                                    <div class="input-group">
-                                        <div class="input-group-btn">
-                                            <button type="button" class="btn btn-default total-label">Credit Amount</button>
-                                        </div>
-                                        <!-- /btn-group -->
-                                        <input type="text" class="form-control" value="@ViewBag.openingcreditamount">
-                                    </div>
-                                </div>
-                                <!-- /input-group -->
+                            <div class="box-body text-right">
+                                <p>Total Amount </p>  @ViewBag.sum
                             </div>
                         </div>
                     </div>
-
-
                 </div>
 
             </div>
         </div>
     </section>
 
-</div>
+
 
 <script>
     //Date picker
@@ -432,11 +355,10 @@
         format: 'dd-mm-yyyy'
     })
 
-    $(function () {
-
-        $('#example1').dataTable({
-
-        });
-    });
 </script>
 
+<style>
+    .box-body {
+        OVERFLOW-X: SCROLL;
+    }
+</style>

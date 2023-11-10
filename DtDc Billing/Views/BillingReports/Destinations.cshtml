@@ -7,10 +7,10 @@
 
 
 <div class="content-wrapper">
-    <section class="container">
+    <section class="">
         <div class="row">
             <div class="col-xs-12">
-                <div class="box box-info">
+                <div class="box box-info" style="padding: 16px 16px !important">
                     <div class="box-header with-border">
                         <h4> New Destination</h4>
                     </div><!-- /.box-header -->
@@ -19,37 +19,38 @@
                         {
                             @Html.AntiForgeryToken()
 
-                            <div class="form-horizontal">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                <div class="form-group">
-                                    <div class="col-md-2">
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                            <div class="row" >
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label>Pincode</label>
-                                    </div>
-                                    <div class="col-md-4">
                                         <input type="text" name="Pincode" class="form-control" />
                                         <p class="text-danger">@Html.ValidationMessage("Pincode")</p>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-2">
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
                                         <label>Name</label>
-                                    </div>
-                                    <div class="col-md-4">
                                         <input type="text" name="Name" class="form-control" />
                                         <p class="text-danger">@Html.ValidationMessage("Name")</p>
                                     </div>
 
                                 </div>
-
-
-
-                                <div class="form-group">
-                                    <div class="col-md-6">
-                                        <input type="submit" value="Add" class="btn btn-primary pull-right" />
-                                    </div>
+                                <div class="col-md-2" style="margin:22px auto" >
+                                    <input type="submit" value="Add" class="btn btn-primary pull-right" />
                                 </div>
                             </div>
+
+
+
+                           
+                        </div>
                         }
 
 

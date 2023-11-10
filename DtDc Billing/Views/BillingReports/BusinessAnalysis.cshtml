@@ -14,9 +14,18 @@
     .box-body {
         overflow: auto;
     }
+    .BusinessAnalysis th{
+        width:12.5% !important;
+    }
+    table {
+        max-height: 400px !important;
+        display: inline-table !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
 </style>
 <div class="content-wrapper">
-    <div class="box box-info">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>Business Analysis</h4>
         </div>
@@ -29,81 +38,83 @@
 
                         <div class="row">
                             <div class="">
-                                <div class="form-group">
+                                <div>
+                                    <div class="form-group">
 
 
 
 
-                                    @using (Html.BeginForm())
-                                    {
-
-
-                                        if (ViewBag.Custid != null)
+                                        @using (Html.BeginForm())
                                         {
-                                            <div class="col-md-4">
-                                                <div class="form-group">
 
-                                            <label>Customer id</label>
-                                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
-                                            </div>
+
+                                            if (ViewBag.Custid != null)
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+
+                                                        <label>Customer id</label>
+                                                        <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                                    </div>
                                                 </div>
-                                        }
-                                        else
-                                        {
-                                <div class="col-md-4">
-                                    <div class="form-group">
+                                            }
+                                            else
+                                            {
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
 
-                                        <label>Customer id</label>
-                                        <input name="Custid" style="margin-right:10px" class="form-control" id="custid"  type="text">
-                                    </div>
-                                    </div>
-                                    }
-                                    if (ViewBag.fromdate != null)
-                                    {
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>From Date</label>
-                                       
-                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate"  type="text">
-                                    </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date</label>
-                                        <input name="Fromdatetime" class="form-control" id="datepicker"  type="text">
-                                    </div>
-                                    </div>
-                                    }
-                                    if (ViewBag.todate != null)
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>To Date</label>
-                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text">
-                                    </div>
-                                    </div>
-                                    }
-                                    else
-                                    {
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>To Date</label>
-                                            <input style="margin-right:50px" name="ToDatetime" class="form-control"  id="datepicker1" type="text">
-                                        </div>
-                                        </div>
+                                                        <label>Customer id</label>
+                                                        <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                                    </div>
+                                                </div>
+                                            }
+                                            if (ViewBag.fromdate != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>From Date <span style="color:red" >*</span>: </label>
+
+                                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>From Date <span style="color:red">*</span>:</label>
+                                                        <input name="Fromdatetime" class="form-control" id="datepicker" type="text" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            if (ViewBag.todate != null)
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>To Date <span style="color:red">*</span>:</label>
+                                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>To Date <span style="color:red">*</span>:</label>
+                                                        <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="col-md-2" style="margin-top:21px">
+                                                <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" />
+                                            </div>
                                         }
-                                        <div class="col-md-2" style="margin-top:21px">
-                                            <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" />
-                                        </div>
-                                        }
                                     </div>
+                                </div>
                             </div>
                         </div>
                         @Html.Partial("RangeLineChart")
-                        <table id="check-booking-list" class="table table-striped table-bordered table-responsive height-450">
+                        <table id="check-booking-list" class="table BusinessAnalysis">
                             <thead>
                                 <tr>
                                     <th>
@@ -170,6 +181,9 @@
                                         i++;
                                     }
                                 }
+                                <tr>
+                                    <td colspan="8" >Data Not Found</td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -277,12 +291,7 @@
 
     });
     </script>
-    <style>
-        #check-booking-list {
-            display: block;
-            min-height: 400px;
-        }
-    </style>
+    
     <script>
         $(document).ready(function () {
 

@@ -139,7 +139,7 @@ namespace DtDc_Billing.Controllers
                 /////////////////////////
 
                 var barcode = GenerateBarCode(consignmentno);
-                Recp_De.BarcodeImage = barcode;
+                  Recp_De.BarcodeImage = barcode;
 
 
 

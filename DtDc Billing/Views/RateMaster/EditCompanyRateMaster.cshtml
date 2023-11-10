@@ -7,18 +7,18 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <style>
-    #example2 {
-        white-space: nowrap;
+    .edittable th{
+        width:12.5% !important;
     }
 </style>
 <div class="content-wrapper">
-    <div class="box box-info">
-        <div class="box-header with-border" style="display:flex">
+    <div class="box box-info" style="padding: 16px 16px">
+        <div class="box-header with-border" style="display:flex; justify-content:space-between "">
             <h4>
                 Edit Company RateMater
             </h4>
             <span class="pull-right">
-                <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary"> Add Company</a>
+                <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary ml-3"> Add Company</a>
             </span>
         </div>
         <!-- /.box-header -->
@@ -29,7 +29,7 @@
                     <form class="form-horizontal">
 
 
-                        <table id="example2" class="table table-bordered table-responsive table-striped" style="overflow:auto;">
+                        <table id="example2" class="table   edittable" style="overflow:auto;">
                             <thead>
                                 <tr>
                                     <th style="display:none">
@@ -42,9 +42,7 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.Company_Name)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Pf_code)
-                                    </th>
+                                   
                                     <th>
                                         @Html.DisplayNameFor(model => model.Phone)
                                     </th>
@@ -82,9 +80,7 @@
                                                     @Html.DisplayFor(modelItem => item.Company_Name)
                                                 </div>
                                             </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Pf_code)
-                                            </td>
+                                           
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Phone)
                                             </td>

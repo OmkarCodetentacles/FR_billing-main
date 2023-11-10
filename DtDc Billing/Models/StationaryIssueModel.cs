@@ -16,7 +16,7 @@ namespace DtDc_Billing.Models
         [Required(ErrorMessage = "Please Enter End No")]
         public string endno { get; set; }
 
-       
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value greater than 0.")]
         public Nullable<int> noofleafs { get; set; }
 
         

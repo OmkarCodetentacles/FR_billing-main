@@ -6,18 +6,16 @@
         text-align:left;
     }
 </style>
-@using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+
     
 <form enctype="multipart/form-data">
 
-    @*<div class="content-wrapper">*@
-        <div class="box box-info">
-            <div class="box-header with-border">
+    <div class="" style="padding: 0px 15px">
+        <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
+            <div class="box-header with-border" style="background:none;border:none" >
                 <h4>Upload Stamp</h4>
             </div>
-            <div class="box-body">
+            <div class="" style="padding:0 20px">
                 <div class="row">
                     <div class="col-md-12 ">
 
@@ -60,7 +58,7 @@
 
                                 <div class="col-md-12" style="text-align: right;">
                                     <div class="form-group">
-                                        <div class="">
+                                        <div class="col-6 col-sm-6 col-md-4" style="padding: 0 19px">
                                             <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
                                         </div>
                                     </div>
@@ -76,11 +74,11 @@
                 </div>
             </div>
         </div>
-    @*</div>*@
+    </div>
    
 </form>
 
-        }
+
 
 
         <script>
@@ -112,6 +110,12 @@
                         contentType: false,
                         type: 'POST',
                         success: function (data) {
+                            if (data.success) {
+                                alert('File uploaded successfully!');
+                            }
+                            else {
+                                alert('Something Went Wrong Try Again!');
+                            }
                           //  alert('File uploaded successfully!');
                             // Save file path in database
                         },

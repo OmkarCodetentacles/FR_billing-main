@@ -6,13 +6,24 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-
+<style>
+    .BookingData th{
+        width: 12.5% !important;
+    }
+    table {
+        max-height: 400px !important;
+        display: inline-table !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+        width: 100% !important;
+    }
+</style>
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 <div class="content-wrapper">
-    <div class="box box-info">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>No Booking List</h4>
         </div>
@@ -36,8 +47,8 @@
                                         {
                                             <div class="col-md-3"style="padding-left:0">
                                                 <div class="form-group">
-                                                    <label>From Date</label>
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="">
+                                                    <label>From Date <span style="color:red">*</span> : </label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="" required>
                                                 </div>
                                             </div>
                                         }
@@ -45,8 +56,8 @@
                                         {
                                             <div class="col-md-3" style="padding-left:0">
                                                 <div class="form-group">
-                                                    <label>From Date</label>
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style=" ">
+                                                    <label>From Date <span style="color:red">*</span> : </label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style=" " required>
                                                 </div>
                                             </div>
                                         }
@@ -55,9 +66,9 @@
                                         {
                                             <div class="col-md-3" style="padding-left:0">
                                                 <div class="form-group">
-                                                    <label>From Date</label>
+                                                    <label>From Date <span style="color:red">*</span> : </label>
 
-                                                    <input value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                                    <input value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
                                                 </div>
                                             </div>
                                         }
@@ -65,8 +76,8 @@
                                         {
                                             <div class="col-md-3" style="padding-left:0">
                                                 <div class="form-group">
-                                                    <label>To Date</label>
-                                                    <input name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                                    <label>To Date <span style="color:red">*</span> : </label>
+                                                    <input name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
                                                 </div>
                                             </div>
                                         }
@@ -94,7 +105,7 @@
                         </div>*@
 
 
-                        <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                        <table id="table_display_block" class="table BookingData">
                             <thead>
                                 <tr>
                                     <th>
