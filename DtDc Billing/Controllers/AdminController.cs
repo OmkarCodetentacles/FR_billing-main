@@ -239,6 +239,20 @@ namespace DtDc_Billing.Controllers
                         Response.Cookies.Add(cookie);
 
 
+                        
+                        int customTimeout =15;
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                                          1,  
+                         obj.registrationId.ToString(),  
+                          DateTime.Now,  
+                         DateTime.Now.AddMinutes(customTimeout),  // Expiration time
+                          false,  
+                            obj.userName  
+                        );
+                        string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+                        HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                        authCookie.Expires = ticket.Expiration;
+                        Response.Cookies.Add(authCookie);
                         var objaccessPAge = (from d in db.AdminAccessPages
                                              where d.Pfcode == obj.Pfcode.ToString()
                                              select new { d.Accesspage }).FirstOrDefault();
@@ -1711,7 +1725,7 @@ namespace DtDc_Billing.Controllers
 
 
 
-       
+
         //public ActionResult Edit(string PfCode)
         //{
 
@@ -1755,6 +1769,23 @@ namespace DtDc_Billing.Controllers
 
         //    return View(Fr);
         //}
+        //[HttpPost]
+        //public ActionResult UploadStamp(FranchiseeModel franchisee)
+        //{
+        //    Franchisee Fr = new Franchisee();
+
+        //    Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    var getNewFilePath = "";
+        //    if (franchisee.StampFilePath == null)
+        //    {
+        //        getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
+        //    }
+        //    Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
+
+
+        //    db.Entry(Fr).State = EntityState.Modified;
+        //    db.SaveChanges();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1788,6 +1819,7 @@ namespace DtDc_Billing.Controllers
                 if (franchisee.StampFilePath == null)
                 {
                     getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
+                    
                 }
                 Fr.StampFilePath = (franchisee.StampFilePath==null || franchisee.StampFilePath == "")? getNewFilePath:franchisee.StampFilePath ;
 
@@ -1834,6 +1866,7 @@ namespace DtDc_Billing.Controllers
             return PartialView();
         }
 
+        
         [HttpPost]
         public ActionResult UploadFile()
         {

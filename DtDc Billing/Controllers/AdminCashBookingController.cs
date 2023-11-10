@@ -4,7 +4,8 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using IronBarCode;
-using Microsoft.Reporting.WebForms;
+using Microsoft.Reporting.WinForms;
+using Razorpay.Api;
 using Spire.Barcode;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace DtDc_Billing.Controllers
         // [SessionUserModule]
         public ActionResult Printreceipt()
         {
-           
+
             return View();
         }
 
@@ -137,6 +138,9 @@ namespace DtDc_Billing.Controllers
 
                 /////////////////////////
 
+                var barcode = GenerateBarCode(consignmentno);
+                Recp_De.BarcodeImage = barcode;
+
 
 
                 db.Receipt_details.Add(Recp_De);
@@ -161,9 +165,9 @@ namespace DtDc_Billing.Controllers
                     //receipt.Consignment_No;//receipt_.Consignment_No;
                     //string consignmnetno = id;
                     //string consignmnetno = "P61118465";
-                    //LocalReport lr = new LocalReport();
+                    // LocalReport lr = new LocalReport();
 
-
+                    LocalReport lr = new LocalReport();
 
 
 
@@ -175,67 +179,76 @@ namespace DtDc_Billing.Controllers
 
 
 
-                    //var Recieptdetails = db.Receipt_details.Where(m => m.Consignment_No == consignmentno);//.ToList();
-
-                    // var barcode = GenerateBarCode(consignmentno);
-
-                    // string path = Path.Combine(Server.MapPath("~/RdlcReport"), "cashcounter.rdlc");
-
-                    //if (System.IO.File.Exists(path))
-                    //{
-                    //    lr.ReportPath = path;
-                    //}
-
-                    //ReportDataSource rd = new ReportDataSource("Recieptdetails", Recieptdetails);
+                    var Recieptdetails = db.Receipt_details.Where(m => m.Consignment_No == consignmentno);//.ToList();
 
 
+                    // db.Entry(reciept_Details).State = EntityState.Modified;
+
+                    string path = Path.Combine(Server.MapPath("~/rdlcreport"), "cashcounter.rdlc");
+
+                    lr.EnableExternalImages = true;
+                    lr.EnableHyperlinks = true;
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+                    ReportDataSource rd = new ReportDataSource("DataSet1", Recieptdetails);
+                    ReportParameter rp = new ReportParameter("rpt_img", "file:///" + barcode);
 
 
-                    //  lr.DataSources.Add(rd);
 
-                    //  string reportType = "PDF";
-                    //  string mimeType;
-                    //  string encoding;
-                    //  string fileNameExte;
-
-                    //  string deviceInfo =
-                    //      "<DeviceInfo>" +
-                    //      "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                    //      "<PageHeight>11in</PageHeight>" +
-                    //     "<Margintop>0.1in</Margintop>" +
-                    //       "<Marginleft>0.1in</Marginleft>" +
-                    //        "<Marginright>0.1in</Marginright>" +
-                    //         "<Marginbottom>0.5in</Marginbottom>" +
-                    //         "</DeviceInfo>";
-
-                    //  Warning[] warnings;
-                    //  string[] streams;
-                    //  byte[] renderByte;
+                    lr.SetParameters(rp);
 
 
-                    //  renderByte = lr.Render
-                    //(reportType,
-                    //deviceInfo,
-                    //out mimeType,
-                    //out encoding,
-                    //out fileNameExte,
-                    //out streams,
-                    //out warnings
-                    //);
 
-                    //ViewBag.pdf = false;
-                    //ViewBag.pdf = true;
 
-                    //savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+                    lr.DataSources.Add(rd);
 
-                    //using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                    //{
-                    //    stream.Write(renderByte, 0, renderByte.Length);
-                    //}
+                    string reportType = "PDF";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
 
-                    //// return Redirect(savePath);
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                       "<Margintop>0.1in</Margintop>" +
+                         "<Marginleft>0.1in</Marginleft>" +
+                          "<Marginright>0.1in</Marginright>" +
+                           "<Marginbottom>0.5in</Marginbottom>" +
+                           "</DeviceInfo>";
 
-                    //Download(consignmentno);
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+
+                    renderByte = lr.Render
+                  (reportType,
+                  deviceInfo,
+                  out mimeType,
+                  out encoding,
+                  out fileNameExte,
+                  out streams,
+                  out warnings
+                  );
+
+                    ViewBag.pdf = false;
+                    ViewBag.pdf = true;
+                    //   savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
+
+                    savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+                    }
+
+                    // return Redirect(savePath);
+
+                    Download(consignmentno);
                 }
 
                 /////////////////Setting Next  Consignment number
@@ -348,7 +361,7 @@ namespace DtDc_Billing.Controllers
 
                 //    db.Entry(AddPoints).State = EntityState.Modified;
 
-                //}
+                // }
                 //db.SaveChanges();
 
                 //////////Alert After Added Cosingmnt///
@@ -386,7 +399,7 @@ namespace DtDc_Billing.Controllers
 
             //string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
             //string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
-            string savePath = "http://frbilling.com/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
+            string savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
 
             //string savePath = "http://admin.infantjesussolutions.in/PDF/" + invoice.Firm_Id + "-" + invoice.invoiceno.Replace("/", "-") + ".pdf";
 
@@ -530,6 +543,7 @@ Select(e => new
 {
     e.Pincode
 }).ToList();
+
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
@@ -1443,7 +1457,7 @@ Select(e => new
             {
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-             LocalReport lr = new LocalReport();
+                LocalReport lr = new LocalReport();
 
                 string ProductType = "";
 
@@ -1496,16 +1510,16 @@ Select(e => new
 
                 lr.SetParameters(rp);
 
-                lr.SetParameters(rp1); 
-                
+                lr.SetParameters(rp1);
+
                 lr.Refresh();
 
                 lr.DataSources.Add(rd);
                 lr.DataSources.Add(rd1);
                 lr.DataSources.Add(rd2);
-               
-              
-               
+
+
+
 
                 string reportType = "PDF";
                 string mimeType;
@@ -2064,7 +2078,7 @@ Select(e => new
         }
 
         [HttpPost]
-        public string  GenerateBarCode(string barcode)
+        public string GenerateBarCode(string barcode)
         {
             //using (MemoryStream memoryStream = new MemoryStream())
             //{
@@ -2086,18 +2100,26 @@ Select(e => new
             //    }
             //}
             string imageName = barcode + "." + ImageType.Png;
-             string imagePath = "/BarcodeImages/" + imageName;
-              string imageServerPath = Server.MapPath("~" + imagePath);
+            string imagePath = "/BarcodeImages/" + imageName;
+            // string baseUrl = "https://frbilling.com/";
+
+            //  Uri imageUri = new Uri(new Uri(baseUrl), imagePath);
+            //  string imageServerPath = imageUri.AbsoluteUri;
+
+            //string imageServerPath = Request.Url.GetLeftPart(UriPartial.Authority) + imagePath;
+            // string imageServerPath = "http://frbilling.com/BarcodeImages/" + imagePath;
+
+            string imageServerPath = Server.MapPath("~" + imagePath);
 
             BarcodeSettings bs = new BarcodeSettings();
 
             bs.Type = BarCodeType.Code39;
             bs.Data = barcode;
-         
-            //BarCodeGenerator bg = new BarCodeGenerator(bs);
-            BarCodeGenerator bg = new BarCodeGenerator(bs);
-            bg.GenerateImage().Save(imageServerPath);
 
+            BarCodeGenerator bg = new BarCodeGenerator(bs);
+            // bg.GenerateImage().Save(imageServerPath);
+
+            bg.GenerateImage().Save(imageServerPath);  // Save the image to the server path
 
             //ViewBag.BarcodeImage = imageServerPath;
 
@@ -2105,10 +2127,10 @@ Select(e => new
             //ViewBag.BarcodeImage = System.Diagnostics.Process.Start(imageServerPath);
 
             return imageServerPath;
-    }
-     
+        }
 
-         public string CheckTempPass(string temppass, string consignmentno)
+
+        public string CheckTempPass(string temppass, string consignmentno)
         {
             db.Configuration.ProxyCreationEnabled = false;
             var Pass = "Veer#1234";

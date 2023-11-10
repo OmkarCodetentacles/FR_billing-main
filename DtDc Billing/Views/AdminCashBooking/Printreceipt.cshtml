@@ -115,13 +115,15 @@
                                     <label for="" class="col-sm-2 padding-left-0">Ph No</label>
                                     <div class="col-sm-4 nopadding">
                                         @*@Html.EditorFor(model => model.sender_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number" } })*@
-                                        <input list="texto_pronto" name="sender_phone" id="sender_phone" class="form-control input-sm">
+                                        <input list="texto_pronto" name="sender_phone" id="sender_phone" class="form-control input-sm" oninput="validatePhoneNumber(this)">
                                         @Html.ValidationMessageFor(model => model.sender_phone, "", new { @class = "text-danger" })
 
                                         <datalist id="texto_pronto">
                                             <option value="texto A">
 
                                         </datalist>
+                                        <span id="phoneValidationMessage" class="text-danger" style="display: none;">Invalid phone number.</span>
+
                                     </div>
                                     <label for="" class="col-sm-2">Email</label>
                                     <div class="col-sm-4 nopadding">
@@ -194,11 +196,13 @@
                                     <div class="col-sm-4">
 
                                         @*@Html.EditorFor(model => model.Reciepents_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number", @id = "receipientphno" } })*@
-                                        <input list="texto_pronto1" name="Reciepents_phone" id="Reciepents_phone" class="form-control input-sm">
+                                        <input list="texto_pronto1" name="Reciepents_phone" id="Reciepents_phone" class="form-control input-sm" oninput="validatePhoneNumberReceipt(this)">
                                         <datalist id="texto_pronto1">
                                             <option value="texto A">
 
                                         </datalist>
+                                        <span id="phoneValidationMessageRece" class="text-danger" style="display: none;">Invalid phone number.</span>
+
                                         @Html.ValidationMessageFor(model => model.Reciepents_phone, "", new { @class = "text-danger" })
 
                                     </div>
@@ -420,7 +424,7 @@
 
                                         </div>
                                         <div class="col-sm-4 padding-right-0">
-                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount",@id="amount1" } })
 
                                         </div>
                                     </div>
@@ -430,7 +434,7 @@
 
                                         </div>
                                         <div class="col-sm-4 padding-right-0">
-                                            @Html.EditorFor(model => model.Amount2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+                                            @Html.EditorFor(model => model.Amount2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount", @id = "amount2" } })
 
                                         </div>
                                     </div>
@@ -440,7 +444,7 @@
 
                                         </div>
                                         <div class="col-sm-4 padding-right-0">
-                                            @Html.EditorFor(model => model.Amount3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+                                            @Html.EditorFor(model => model.Amount3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount", @id = "amount3" } })
 
                                         </div>
                                     </div>
@@ -457,7 +461,7 @@
                                 <div class="col-md-4 padding-right-0">
                                     <div class="form-group">
                                         
-                                            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total" } })
+                                            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total", @id = "totalAmountInput" } })
 
                                       
                                     </div>
@@ -996,6 +1000,47 @@
 
 
 <script>
+//Check Mobile Number Validation 
+    function validatePhoneNumber(input) {
+        input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
+
+        var phoneValidationMessage = document.getElementById("phoneValidationMessage");
+
+
+        if (input.value.length === 10) {
+            phoneValidationMessage.style.display = "none";
+        } else {
+            phoneValidationMessage.style.display = "block";
+        }
+    }
+
+    function validatePhoneNumberReceipt(input) {
+        input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
+
+        var phoneValidationMessage = document.getElementById("phoneValidationMessageRece");
+
+
+        if (input.value.length === 10) {
+            phoneValidationMessage.style.display = "none";
+        } else {
+            phoneValidationMessage.style.display = "block";
+        }
+    }
+    //Calculate Total of Values of Gooods in Description of Content
+    function calculateTotal() {
+        var amount1 = parseFloat($("#amount1").val()) || 0;
+        var amount2 = parseFloat($("#amount2").val()) || 0;
+        var amount3 = parseFloat($("#amount3").val()) || 0;
+
+        var totalAmount = amount1 + amount2 + amount3;
+
+        // Update the Total_Amount input field using jQuery
+        $("#totalAmountInput").val(totalAmount);
+    }
+
+    // Call the calculateTotal function when the input values change
+    $("#amount1, #amount2, #amount3").on("input", calculateTotal);
+
 
     function showinsurance() {
         $('#insurance').show();
