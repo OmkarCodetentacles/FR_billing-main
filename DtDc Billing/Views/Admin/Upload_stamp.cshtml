@@ -1,18 +1,20 @@
 ﻿
-
 <style>
-    #frmEmp{
-        margin:15px 0;
-        text-align:left;
+    #frmEmp {
+        margin: 15px 0;
+        text-align: left;
     }
 </style>
 
-    
+@* @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
+        {
+    @Html.AntiForgeryToken() *@
+
 <form enctype="multipart/form-data">
 
     <div class="" style="padding: 0px 15px">
         <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
-            <div class="box-header with-border" style="background:none;border:none" >
+            <div class="box-header with-border" style="background:none;border:none">
                 <h4>Upload Stamp</h4>
             </div>
             <div class="" style="padding:0 20px">
@@ -27,22 +29,22 @@
 
                             @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                            @Html.HiddenFor(model => model.F_Id)
+                                @Html.HiddenFor(model => model.F_Id)
 
 
-                            @Html.HiddenFor(model => model.PF_Code)
-                            @Html.HiddenFor(model => model.password)
-                            @Html.HiddenFor(model => model.Datetime_Fr)*@
+                                @Html.HiddenFor(model => model.PF_Code)
+                                @Html.HiddenFor(model => model.password)
+                                @Html.HiddenFor(model => model.Datetime_Fr)*@
 
 
                             <div class="row">
-                             
+
                                 <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         @*@if (Model.StampFilePath != null)
-                                        {
-                                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
-                                        }*@
+                                            {
+                                                <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
+                                            }*@
                                         <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
                                         <div class="">
                                             @* <form enctype="multipart/form-data">*@
@@ -75,54 +77,57 @@
             </div>
         </div>
     </div>
-   
+
 </form>
 
 
+@*}*@
 
 
-        <script>
+<script>
 
-        $(document).ready(function () {
+@*$(document).ready(function () {
 
-            var data = '@TempData["Success"]';
+    var data = '@TempData["Success"]';
 
-            if (data != null && data!="")
-            {
-                alert(data);
-            }
+    if (data != null && data!="")
+    {
+        alert(data);
+    }
 
 
-        });
+});*@
 
-        </script>
+</script>
 
-        <script>
-            $(function () {
-                $('#uploadBtn').click(function () {
-                    var formData = new FormData();
-                    formData.append('file', $('#file')[0].files[0]);
 
-                    $.ajax({
-                        url: '/Admin/UploadFile',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        type: 'POST',
-                        success: function (data) {
-                            if (data.success) {
-                                alert('File uploaded successfully!');
-                            }
-                            else {
-                                alert('Something Went Wrong Try Again!');
-                            }
-                          //  alert('File uploaded successfully!');
-                            // Save file path in database
-                        },
-                        error: function () {
-                            alert('Error uploading file!');
-                        }
-                    });
-                });
+<script>
+  
+        $('#uploadBtn').click(function () {
+            alert("Hello");
+            var formData = new FormData();
+            formData.append('file', $('#file')[0].files[0]);
+
+            $.ajax({
+                url: '/Admin/UploadFile',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        alert('File uploaded successfully!');
+                    }
+                    else {
+                        alert('Something Went Wrong Try Again!');
+                    }
+                    //  alert('File uploaded successfully!');
+                    // Save file path in database
+                },
+                error: function () {
+                    alert('Error uploading file!');
+                }
             });
-        </script>
+        });
+  
+</script>
