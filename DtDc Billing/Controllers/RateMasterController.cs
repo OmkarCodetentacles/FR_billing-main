@@ -737,6 +737,8 @@ namespace DtDc_Billing.Controllers
         [ValidateAntiForgeryToken]
         [HandleError]
         public ActionResult RatemasterDox(int? only, FormCollection fc, float[] slab1, string comppid)
+        
+        
         {
             comppid = comppid.Replace("__", "&").Replace("xdotx", "."); ;
             var CompanyId = comppid;
@@ -1309,7 +1311,7 @@ namespace DtDc_Billing.Controllers
 
                 var compid = comppid;
 
-                ViewBag.Message = "Updated SuccessFully";
+                ViewBag.Message = "Priority Updated SuccessFully";
 
                 @ViewBag.Slabspri = db.Priorities.Where(m => m.Company_id == compid).FirstOrDefault();
 

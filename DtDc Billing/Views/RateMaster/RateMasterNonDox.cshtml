@@ -243,11 +243,23 @@
         }
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+            alert("Ratemaster Non Dox ")
+            e.preventDefault();
 
 
-<div class="overlay" id="overlayBlock">
-    <div class="loader"></div>
-</div>
+            $('form input[type="submit"]').prop('disabled', true);
+
+
+            $('form').submit();
+
+        });
+
+
+    });
+</script>
 
 
 <style>
@@ -282,7 +294,7 @@
         $(document).ready(function () {
 
             alert('@ViewBag.Message');
-            setTim
+            $(this).prop('disabled', false);
 
         });
        
@@ -293,7 +305,7 @@
 
 <script>
     $(document).ready(function () {
-
+       
 
         var test ="@ViewBag.NonDox[0].NoOfSlabN";
 
