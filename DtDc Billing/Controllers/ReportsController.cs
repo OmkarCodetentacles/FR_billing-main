@@ -1099,7 +1099,6 @@ namespace DtDc_Billing.Controllers
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
 
-
             string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
             fromdate = Convert.ToDateTime(bdatefrom);
 
