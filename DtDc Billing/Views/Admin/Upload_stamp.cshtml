@@ -61,7 +61,7 @@
                                 <div class="col-md-12" style="text-align: right;">
                                     <div class="form-group">
                                         <div class="col-6 col-sm-6 col-md-4" style="padding: 0 19px">
-                                            <input type="submit" value="Save" class="btn btn-primary" id="uploadBtn" />
+                                            <input type="button" value="Save" class="btn btn-primary" id="uploadStamp" />
                                         </div>
                                     </div>
 
@@ -102,12 +102,11 @@
 
 
 <script>
-  
-        $('#uploadBtn').click(function () {
-            alert("Hello");
+    $(function () {
+        $('#uploadStamp').click(function () {
+            debugger;
             var formData = new FormData();
             formData.append('file', $('#file')[0].files[0]);
-
             $.ajax({
                 url: '/Admin/UploadFile',
                 data: formData,
@@ -115,13 +114,7 @@
                 contentType: false,
                 type: 'POST',
                 success: function (data) {
-                    if (data.success) {
-                        alert('File uploaded successfully!');
-                    }
-                    else {
-                        alert('Something Went Wrong Try Again!');
-                    }
-                    //  alert('File uploaded successfully!');
+                    alert('File uploaded successfully!');
                     // Save file path in database
                 },
                 error: function () {
@@ -129,5 +122,6 @@
                 }
             });
         });
-  
+    });
+
 </script>

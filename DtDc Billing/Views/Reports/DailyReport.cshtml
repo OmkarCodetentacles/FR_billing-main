@@ -44,7 +44,7 @@
                             <div class="box-header with-border">
                                 <h3 class="box-title">Daily Report</h3>
                             </div><!-- /.box-header -->
-                            <div class="box-body">
+                             <div class="box-body">
                                 @using (Html.BeginForm())
                                 {
 
@@ -191,29 +191,32 @@
                                                                 Reason
                                                             </th>
 
-
+                                                       
 
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach (var item in ViewBag.Expense)
                                                         {
-                                                            <tr>
-                                                                <td>
-                                                                    @item.Amount
-                                                                </td>
-                                                       
-                                                                <td>
-                                                                    @item.Rason
-                                                                </td>
 
 
+                                                            if(item == null)
+                                                            {
+                                                                <tr class="odd"><td valign="top" colspan="9" class="dataTables_empty">No data available in table</td></tr>
 
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @item.Amount
+                                                                    </td>
 
-
-
-
-                                                            </tr>
+                                                                    <td>
+                                                                        @item.Rason
+                                                                    </td>
+                                                                </tr>
+                                                            }
                                                         }
                                                     </tbody>
 
