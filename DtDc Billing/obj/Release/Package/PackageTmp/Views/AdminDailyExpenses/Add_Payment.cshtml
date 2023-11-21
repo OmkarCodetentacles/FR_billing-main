@@ -19,12 +19,12 @@
         height: 34px;
         padding: 6px 12px;
         font-size: 14px;
-        line-height: 1.42857143;
-        color: #555;
-        background-color: #fff;
+        /* line-height: 1.42857143; */
+        /* color: #555; */
+        /* background-color: #fff; */
         background-image: none;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        border: 1px solid #0049af26 !important;
+        /* border-radius: 4px; */
         -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
         box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
         -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
@@ -33,6 +33,9 @@
     }
     .box-body{
         overflow:auto;
+    }
+    .AddPayment th{
+        width: 8.33% !important;
     }
 </style>
 
@@ -43,7 +46,7 @@
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <!-- Main content -->
-    <div class="box box-info">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4 class="box-title">Add Payment</h4>
         </div>
@@ -57,28 +60,28 @@
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-7">
                                     <label for="inputEmail3" class="">Consignment_No<span class="Reqired">*</span></label>
                                     <div class="">
                                         @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Consignment_No" } })
                                         @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-7">
                                     <label for="inputEmail3" class="">amount<span class="Reqired">*</span></label>
                                     <div class="">
                                         @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter amount" } })
                                         @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-7">
                                     <label for="inputPassword3" class="">Description_<span class="Reqired">*</span></label>
                                     <div class="">
                                         @Html.TextAreaFor(model => model.Description_, new { htmlAttributes = new { @class = "form-control", placeholder = "Description", rows = "5" } })
                                         @Html.ValidationMessageFor(model => model.Description_, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-7">
                                     <div class="box-footer">
 
                                         <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin-top:10px" />
@@ -101,13 +104,13 @@
         <!-- Row -->
         <div class="row">
             <div class="col-xs-12">
-                <div class="box">
+                <div class="box" style="padding: 16px 16px !important">
                     <div class="box-header">
                         <h3 class="box-title">Consignment Report</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body" style="overflow:auto;">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table AddPayment">
 
                             <thead>
                                 <tr>

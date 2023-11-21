@@ -10,7 +10,7 @@
 </style>
 
     <section>
-        <div class="container">
+        <div class="">
             @using (Ajax.BeginForm("RateMasterPtp", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp4" }))
             {
                 @Html.AntiForgeryToken()
@@ -147,10 +147,24 @@
                 </table>
 
 
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"/>
             }
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+
+            $('#submitBtn').on('click', function (e) {
+                alert("Rate Master PTP")
+                e.preventDefault();
+
+
+                $(this).prop('disabled', true);
+
+                $('form').submit();
+            });
+        });
+</script>
 
     @if (ViewBag.Message != null)
     {
@@ -158,7 +172,8 @@
 
 $(document).ready(function(){
 
-alert('@ViewBag.Message');
+    alert('@ViewBag.Message');
+    $(this).prop('disabled', false);
 
 });
 

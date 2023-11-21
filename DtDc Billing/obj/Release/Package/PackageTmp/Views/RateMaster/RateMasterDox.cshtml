@@ -4,7 +4,7 @@
 
 
 <section>
-    <div class="container">
+    <div class="">
         @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
         {
             @Html.AntiForgeryToken()
@@ -55,73 +55,73 @@
 
             }
             <div class="row">
-            <div class="col-lg-12 no-padding">
+                <div class="col-lg-12 no-padding">
 
 
-            <table class="table table-bordered table-striped" id="DoxTable">
-                <thead>
-                    <tr class="upto-input">
-                        <th>
-                            @*<h4>Sectors</h4>*@
-                            @*<input type="hidden" name="hide" value="@ViewBag.Slabs.Uptosl1" />*@
-                        </th>
-                        <th>
-                            <label>Upto</label>
-                            <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl1" />
-                            <label>Kg</label>
-                        </th>
-                        <th class="slab2">
-                            <label>Upto</label>
-                            <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl2" />
-                            <label>Kg</label>
-                        </th>
-                        <th class="slab3">
-                            <label>Upto</label>
-                            <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl3" />
-                            <label>Kg</label>
-                        </th>
-                        <th>
-                            <label>Additional</label>
-                            <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl4" />
-                            <label>Kg</label>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="sectors">
-                                @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                            </td>
-                            <td>
-                                @Html.EditorFor(modelItem => item.slab1)
-                            </td>
-                            <td class="slab2">
-                                @Html.EditorFor(modelItem => item.slab2)
-                            </td>
-                            <td class="slab3">
-                                @Html.EditorFor(modelItem => item.slab3)
-                            </td>
-                            <td>
-                                @Html.EditorFor(modelItem => item.slab4)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Rete_Id)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Sector_Id)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
+                    <table class="table table-bordered table-striped" id="DoxTable">
+                        <thead>
+                            <tr class="upto-input">
+                                <th>
+                                    @*<h4>Sectors</h4>*@
+                                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs.Uptosl1" />*@
+                                </th>
+                                <th>
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl1" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab2">
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl2" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab3">
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl3" />
+                                    <label>Kg</label>
+                                </th>
+                                <th>
+                                    <label>Additional</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl4" />
+                                    <label>Kg</label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="sectors">
+                                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.slab1)
+                                    </td>
+                                    <td class="slab2">
+                                        @Html.EditorFor(modelItem => item.slab2)
+                                    </td>
+                                    <td class="slab3">
+                                        @Html.EditorFor(modelItem => item.slab3)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.slab4)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Rete_Id)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
 
-            </table>
+                    </table>
                 </div>
-                </div>
+            </div>
             <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
             <div class="col-sm-12">
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
             </div>
 
         }
@@ -130,15 +130,25 @@
 
 
 
-    <script>
+<script>
+
+
     $(document).ready(function () {
 
+    //    $('#submitBtn').on('click', function (e) {
+    //        alert("Rate Master Dox ")
+    //        e.preventDefault();
+
+
+    //        $(this).prop('disabled', true);
+
+    //        $('form').submit();
+    //    });
         //$('#DoxTable td:nth-child(2)').hide();
         //$('#DoxTable td:nth-child(3)').hide();
 
         //$('#DoxTable th:nth-child(2)').hide();
         //$('#DoxTable th:nth-child(3)').hide();
-
 
         var test = @ViewBag.Dox[0].NoOfSlab;
 
@@ -213,42 +223,41 @@
 
         });
     });
+</script>
+
+
+
+
+
+@if (ViewBag.Message != null)
+{
+    <script>
+
+$(document).ready(function(){
+
+    alert('@ViewBag.Message');
+
+    $(this).prop('disabled', false);
+
+});
+
     </script>
 
+}
 
 
+@if (ViewBag.Session != null)
+{
+    <script>
 
+        $(document).ready(function () {
 
+        alert('@ViewBag.Session');
 
-
-    @if (ViewBag.Message != null)
-    {
-        <script>
-
-$(document).ready(function(){
-
-alert('@ViewBag.Message');
 
 });
 
-        </script>
+    </script>
 
-    }
-
-
-    @if (ViewBag.Session != null)
-    {
-        <script>
-
-$(document).ready(function(){
-
-alert('@ViewBag.Session');
-
-});
-
-        </script>
-
-    }
-
-
+}
 

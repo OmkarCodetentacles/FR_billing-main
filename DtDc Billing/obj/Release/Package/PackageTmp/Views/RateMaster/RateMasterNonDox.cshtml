@@ -8,7 +8,7 @@
 
 <section>
 
-    <div class="container">
+    <div class="">
         <div class="col-sm-12 text-center">
             <h4>Air Rate Cargo</h4>
         </div>
@@ -227,41 +227,85 @@
                                 @Html.EditorFor(modelItem => item.Sslab4)
                             </td>
                             @*<td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Non_ID)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Sector_Id)
-                            </td>*@
+                                    @Html.HiddenFor(modelItem => item.Non_ID)
+                                </td>
+                                <td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                                </td>*@
                         </tr>
                     }
                 </tbody>
 
             </table>
             <div class="col-sm-12">
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"/>
             </div>
         }
     </div>
 </section>
-    
-    <!-- /.box-body -->
-    @if (ViewBag.Message != null)
-    {
-        <script>
+<script>
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+            alert("Ratemaster Non Dox ")
+            e.preventDefault();
 
-$(document).ready(function(){
 
-alert('@ViewBag.Message');
+            $('form input[type="submit"]').prop('disabled', true);
 
-});
 
-        </script>
+            $('form').submit();
 
+        });
+
+
+    });
+</script>
+
+
+<style>
+    #royalty-per {
+        vertical-align: sub;
     }
 
-    <script>
-    $(document).ready(function () {
+    #Pf_code, #Royalty_Charges, #D_Docket, #P_Docket, #E_Docket, #V_Docket, #I_Docket, #N_Docket, #Insurance, #Minimum_Risk_Charge, #Other_Details, #Fuel_Sur_Charge, #Topay_Charge, #Cod_Charge, #Gec_Fuel_Sur_Charge {
+        width: 100%;
+    }
+</style>
 
+
+
+<style>
+    .logo-text {
+        font-size: 1.3em;
+        font-family: 'Roboto Slab', serif;
+    }
+</style>
+<!--Adding Loader after submit
+    -->
+
+
+
+
+<!-- /.box-body -->
+@if (ViewBag.Message != null)
+{
+    <script>
+      
+        $(document).ready(function () {
+
+            alert('@ViewBag.Message');
+            $(this).prop('disabled', false);
+
+        });
+       
+
+    </script>
+
+}
+
+<script>
+    $(document).ready(function () {
+       
 
         var test ="@ViewBag.NonDox[0].NoOfSlabN";
 
@@ -335,9 +379,9 @@ alert('@ViewBag.Message');
 
         });
     });
-    </script>
+</script>
 
-    <script>
+<script>
     $(document).ready(function () {
 
 
@@ -411,7 +455,7 @@ alert('@ViewBag.Message');
 
         });
     });
-    </script>
+</script>
 
 
 

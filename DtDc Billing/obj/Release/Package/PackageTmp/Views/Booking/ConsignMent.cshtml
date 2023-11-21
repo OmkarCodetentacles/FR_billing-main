@@ -2,7 +2,7 @@
 
 
 @{
-    
+
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <style>
@@ -12,16 +12,16 @@
         margin-right: 0.5em;
         padding-top: 1.5em;
     }
-  
+
     .choosefile {
         padding: 7px !important;
     }
 </style>
 <div class="content-wrapper">
-    <div class="box box-info">
+    <div class="box box-info" style="padding:16px 16px">
 
 
-        @using (Html.BeginForm("importTextFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
+        @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
         {
 
             @Html.AntiForgeryToken()
@@ -74,3 +74,9 @@
 
 </div>
 
+@if (TempData["Upload"] != null)
+{
+    <script>
+        alert('@TempData["Upload"]');
+    </script>
+}

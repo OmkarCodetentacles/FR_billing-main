@@ -159,7 +159,7 @@ namespace DtDc_Billing.Controllers
                     ViewBag.pdf = false;
                     ViewBag.pdf = true;
                     ViewBag.Consignmetno = reciept_Details.Consignment_No;
-                    //Printcashcounter(consignmentno);
+                    Printcashcounter(consignmentno);
 
 
                     //receipt.Consignment_No;//receipt_.Consignment_No;
@@ -239,7 +239,7 @@ namespace DtDc_Billing.Controllers
                     ViewBag.pdf = true;
                     //   savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
 
-                    savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+                    savePath = Server.MapPath("~/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
 
                     using (FileStream stream = new FileStream(savePath, FileMode.Create))
                     {
@@ -399,8 +399,11 @@ namespace DtDc_Billing.Controllers
 
             //string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
             //string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
-            string savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
 
+             string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No + ".pdf");
+
+           // string savePath = "https://frbilling.com/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
+           
             //string savePath = "http://admin.infantjesussolutions.in/PDF/" + invoice.Firm_Id + "-" + invoice.invoiceno.Replace("/", "-") + ".pdf";
 
             return Redirect(savePath);
@@ -1551,7 +1554,8 @@ Select(e => new
               out warnings
               );
 
-                string savePath = Server.MapPath("~/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No + ".pdf");
+                //string savePath = Server.MapPath("~/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No + ".pdf");
+                string savePath = Server.MapPath("~/ConsignmentPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No + ".pdf");
 
                 using (FileStream stream = new FileStream(savePath, FileMode.Create))
                 {

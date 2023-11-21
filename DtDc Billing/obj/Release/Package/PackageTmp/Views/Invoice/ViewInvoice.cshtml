@@ -40,12 +40,15 @@
 <!-- Main content -->
 <style>
     .btn-warning {
-        padding:8px;
+        padding: 8px;
+    }
+    .Viewinvoice th{
+         width: 7.69% !important;
     }
 </style>
 <div class="content-wrapper">
-    <div class="box box-info">
-        <div class="box-header with-border d-flex" style="display:flex">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border d-flex" style="display:flex; justify-content:space-between">
             <h4>
                 View Invoice
 
@@ -60,28 +63,28 @@
                 <div class="col-xs-12">
 
 
-                    @using (Html.BeginForm())
+                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
                     {
 
                         <!--<label for="cars">Size:</label>
-                        <select name="size">
-                            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
-                            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-                            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
+        <select name="size">
+            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
+            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
+            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
                         @*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@
 
                         <!--</select>-->
 
 
                         @*<div class="col-md-5">
-                                <div class="form-group">
-                                    <div class="pf-code">
-                                        <label>Firm Name</label>
-                                        <label class="Reqired">*</label>
-                                        @Html.DropDownList("FirmDetails", "-Please select-")
-                                    </div>
-                                </div>
-                            </div>*@
+                <div class="form-group">
+                    <div class="pf-code">
+                        <label>Firm Name</label>
+                        <label class="Reqired">*</label>
+                        @Html.DropDownList("FirmDetails", "-Please select-")
+                    </div>
+                </div>
+            </div>*@
 
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
@@ -110,20 +113,20 @@
                         <input type="hidden" value="@ViewBag.Companyid">
 
                         @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
-                        <br /><br />
+                        
                         <div class="col-md-2">
-                            <input type="submit" class="btn btn-primary sbmt" name="submit" value="Submit" style="margin:0" />
+                            <input type="submit" class="btn btn-primary sbmt" name="submit" value="Submit" style="margin:33px auto" />
                         </div>
 
                         <br /><br /><br /><br />
                     }
                     <!-- /.box-header -->
 
-                    <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                    <table id="table_display_block" class="table Viewinvoice">
                         <thead>
                             <tr>
                                 <th>Sr.No</th>
-                                <th></th>
+                               
                                 <th>
                                     @Html.DisplayNameFor(model => model.invoiceno)
                                 </th>
@@ -177,6 +180,9 @@
                                             @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno })
 
                                         </td>
+                                        <td>
+                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')" })
+                                        </td>
 
                                         <td>
                                             @Html.DisplayFor(modelItem => item.invoiceno)
@@ -227,22 +233,22 @@
                     </table>
 
                     @*<div class="pagination">
-                            @{
-                                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+            @{
+                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                                if (getTotalCount > 10)
-                                {
+                if (getTotalCount > 10)
+                {
 
-                                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                                    {
+                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                    {
 
-                                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
-                                    }
-                                }
-                            }
-                        </div>*@
+                    }
+                }
+            }
+        </div>*@
                 </div>
 
                 <!-- /.box-body -->
@@ -310,7 +316,7 @@
 
         });
 
-       
+
 
 
 
@@ -319,50 +325,50 @@
 </script>
 
 @*<script>
-    var a =@Request.Params["Firm_Id"];
+        var a =@Request.Params["Firm_Id"];
 
-    $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            url: "/Invoice/getFirm",
-            data: "{}",
-            success: function (data) {
-                // var s = '<option value="-1">Please Select a Department</option>';
-                var s;
-                for (var i = 0; i < data.length; i++) {
-                    s += '<option value="' + data[i].Firm_Id + '">' + data[i].Firm_Name + '</option>';
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Invoice/getFirm",
+                data: "{}",
+                success: function (data) {
+                    // var s = '<option value="-1">Please Select a Department</option>';
+                    var s;
+                    for (var i = 0; i < data.length; i++) {
+                        s += '<option value="' + data[i].Firm_Id + '">' + data[i].Firm_Name + '</option>';
+                    }
+                    $("#FirmDetails").html(s);
+
+                    $("#FirmDetails").val(a);
+
+
                 }
-                $("#FirmDetails").html(s);
-
-                $("#FirmDetails").val(a);
-
-
-            }
 
 
 
+            });
         });
-    });
 
 
-</script>
+    </script>
 
-<script>
-    $("#FirmDetails").change(function () {
-        //var selectedStudentVal = $("#ddlStudent").val();
-        //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
+    <script>
+        $("#FirmDetails").change(function () {
+            //var selectedStudentVal = $("#ddlStudent").val();
+            //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
 
-        var departmentsDropdown = $("#FirmDetails").val();
-        // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
-        window.location.replace("/Invoice/ViewInvoice?Firm_Id=" + departmentsDropdown);
+            var departmentsDropdown = $("#FirmDetails").val();
+            // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
+            window.location.replace("/Invoice/ViewInvoice?Firm_Id=" + departmentsDropdown);
 
-        $("#FirmDetails").html(departmentsDropdown);
-    });
-
-
+            $("#FirmDetails").html(departmentsDropdown);
+        });
 
 
-</script>*@
+
+
+    </script>*@
 
 
 <style>
@@ -504,3 +510,20 @@ select: function(event, ui) {
 
 
     </script>*@
+
+
+@if (TempData["error"] != null)
+{
+    <script>
+        alert('@TempData["error"]');
+    </script>
+}
+
+
+
+@if (TempData["success"] != null)
+{
+    <script>
+        alert('@TempData["success"]');
+    </script>
+}

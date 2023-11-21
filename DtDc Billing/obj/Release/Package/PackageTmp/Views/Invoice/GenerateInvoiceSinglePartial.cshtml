@@ -11,66 +11,94 @@
         .padding-left-0{
             padding-left:0
         }
+        Generatesingleinvoice th {
+            width: 7.69% !important;
+        }
+        table {
+            max-height: 400px !important;
+            display: inline-table !important;
+            overflow: auto !important;
+            border: 1px solid #e5ecf7;
+        }
     </style>
     <div class="content-wrapper">
-      <div class="box box-info">
+      <div class="box box-info" style="padding: 16px 16px !important">
           <div class="box-header with-border">
               <h4>Generate SINGLE Invoice</h4>
           </div>
           <div class="box-body">
               <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 ">
 
                       <!-- /.box-header -->
 
                       <div class="form-horizontal">
 
-                          @*<div class="row">
-                              <div class="col-md-12">*@
-                                  <div class="col-sm-6 padding-left-0">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="col-sm-12 padding-left-0">
                                       <div class="form-group">
-                                          <label for="email">Customer Id:</label>
-
-                                          @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                          <div class="col-md-3" ><label for="email">Customer Id:</label></div>
+                                          
+                                          <div class="col-md-9">
+                                              @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                          </div>
+                                          
 
 
                                       </div>
                                   </div>
-                                  <div class="col-sm-6 padding-left-0">
+                                  <div class="col-sm-12 padding-left-0">
                                       <div class="form-group">
-                                          <label for="pwd">Address:</label>
-                                          <br />
-                                          @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
+                                          <div class="col-md-3">
+                                              <label for="pwd">Address:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
+                                          </div>
+                                          
+                                         
+
                                       </div>
                                   </div>
 
-                                  <div class="col-sm-6 padding-left-0">
+                                  <div class="col-sm-12 padding-left-0">
                                       <div class="form-group">
-                                          <label for="email">Invoice No:</label>
-                                          @if (Model != null && Model.invoiceno.Length > 10)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
-                                          }
+                                          <div class="col-md-3">
+                                              <label for="email">Invoice No:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              @if (Model != null && Model.invoiceno.Length > 10)
+                                              {
+                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
+                                              }
 
-                                          else if (ViewBag.nextinvoice != null)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
-                                          }
-                                          else if (ViewBag.lastInvoiceno != null)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
-                                          }
-                                          else
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                          }
+                                              else if (ViewBag.nextinvoice != null)
+                                              {
+                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
+                                              }
+                                              else if (ViewBag.lastInvoiceno != null)
+                                              {
+                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
+                                              }
+                                              else
+                                              {
+                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                              }
+                                          </div>
+                                          
                                       </div>
                                   </div>
-                                  <div class="col-md-6 padding-left-0">
+                                  <div class="col-md-12 padding-left-0">
                                       <div class="form-group">
-
-                                          <label for="email">Period From:</label>
-                                          @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+                                          <div class="col-md-3">
+                                              <label for="email">Period From:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+                                          </div>
+                                         
+                                          
 
                                       </div>
                                   </div>
@@ -82,47 +110,64 @@
                                 @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
-                                  <div class="col-sm-6 padding-left-0">
+                                  <div class="col-sm-12 padding-left-0">
                                       <div class="form-group">
-                                          <label for="email">Invoice Date:</label>
-                                          @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                          <div class="col-md-3"> <label for="email">Invoice Date:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                          </div>
+                                          
 
                                       </div>
                                   </div>
-                                  <div class="col-sm-6 padding-left-0">
+                                  <div class="col-sm-12 padding-left-0">
                                       <div class="form-group">
-                                          <label for="email">Period To:</label>
-                                          @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
-
-                                      </div>
-
-                                  </div>
-
-
-                                  <div class="col-sm-6 padding-left-0">
-                                      <div class="form-group">
-                                          <label for="email">Consignment No:</label>
-                                          <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" />
-
-                                      </div>
-
-                                  </div>
-
-                                  <div class="col-sm-6">
-                                      <div class="form-group">
-
-                                          <button type="button" id="AddCons" style="margin:0;" class="btn btn-primary">Add</button>
+                                          <div class="col-md-3">
+                                              <label for="email">Period To:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
+                                          </div>
+                                         
+                                          
 
                                       </div>
 
                                   </div>
 
 
-                              @*</div>*@
+                                  <div class="col-sm-12 padding-left-0">
+                                      <div class="form-group">
+                                          <div class="col-md-3">
+                                              <label for="email">Consignment No:</label>
+                                          </div>
+                                          <div class="col-md-9">
+                                              <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" style="width:100%" />
+                                          </div>
+                                         
+
+                                      </div>
+
+                                  </div>
+
+                                  <div class="col-sm-12">
+                                      <div class="form-group" style="text-align:end">
+                                          <div class="col-md-12">
+                                              <button type="button" id="AddCons" style="margin:0;" class="btn btn-primary">Add</button>
+                                          </div>
+                                          
+
+                                      </div>
+
+                                  </div>
+
+
+                              </div>
 
                              <div class="row">
                                   <div class="col-md-12">
-                                      <table id="generate-invoice" class="table table-bordered table-striped table-responsive">
+                                      <table id="generate-invoice" class="table Generatesingleinvoice">
                                           <thead>
                                               <tr>
                                                   <th>Sr. No</th>
@@ -140,7 +185,11 @@
                                                   <th>Total</th>
                                               </tr>
                                           </thead>
-                                          <tbody></tbody>
+                                          <tbody>
+                                              <tr>
+                                                  <td colspan="13" >No Data Found</td>
+                                              </tr>
+                                          </tbody>
 
                                       </table>
                                   </div>
@@ -224,9 +273,6 @@
                                                                   </div>
 
                                                               </div>
-                                                              <!-- radio -->
-                                                          </div>
-                                                          <div class="col-md-6">
                                                               <div class="form-group">
 
                                                                   <label for="amount" class=" control-label">Reverse Charge</label>
@@ -250,9 +296,11 @@
 
 
                                                               </div>
-                                                              @*</div>*@
-                                                              </div>
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <!-- radio -->
+                                                          </div>
+                                                          <div class="col-md-6">
+                                                              
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="total-amt" class=" control-label">Total</label>
@@ -264,7 +312,7 @@
 
                                                                   </div>
                                                               </div>
-                                                              <div class="col-sm-6 col-xs-6 ">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div id="two-block-inline" class="form-group">
 
                                                                       <label for="fuelsurcharge" class=" control-label">FuelSurcharge Tax</label>
@@ -279,7 +327,7 @@
                                                                       </div>
                                                                   </div>
                                                               </div>
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="subtotal" class=" control-label">SubTotal</label>
@@ -289,7 +337,7 @@
                                                                       </div>
                                                                   </div>
                                                               </div>
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="service-charge" class="control-label">Royalty Charge</label>
@@ -302,15 +350,10 @@
                                                                   </div>
                                                               </div>
 
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="service-charge" class=" control-label">Docket Charge</label>
-
-
-
-
-
 
 
                                                                       <div class="">
@@ -320,7 +363,7 @@
                                                               </div>
 
 
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="gst-total" class=" control-label">GST</label>
@@ -333,7 +376,7 @@
                                                                       </div>
                                                                   </div>
                                                               </div>
-                                                              <div class="col-sm-6 col-xs-6">
+                                                              <div class="col-sm-12 col-xs-12">
                                                                   <div class="form-group">
 
                                                                       <label for="other-charge" class=" control-label">Other Charge</label>
@@ -346,7 +389,7 @@
                                                               </div>
                                                               <div class="form-group">
 
-                                                                  <div class="col-sm-6">
+                                                                  <div class="col-sm-12">
 
                                                                       <label for="net-amount" class=" control-label">Net Amount</label>
 
@@ -359,6 +402,8 @@
                                                                   </div>
 
                                                               </div>
+                                                          </div>
+                                                          
 
                                                           </div>
                                                       @*</div>*@
@@ -366,7 +411,7 @@
 
 
                                               <!-- /.box-body -->
-                                              <div class="box-footer">
+                                              <div  style="padding:20px" >
                                                   <button type="submit" name="submit" value="Sms" class="btn btn-primary">Send Invoice From SMS</button>
                                                   <button type="submit" name="submit" value="Email" class="btn btn-primary">Send Invoice From Email</button>
                                                   @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
@@ -393,7 +438,7 @@
       </div>
      
     </div>
-
+</div>
 
 }
 <style>
@@ -402,6 +447,7 @@
         display: inline-block;
         padding-right: 20px;
     }
+    
 </style>
 
 

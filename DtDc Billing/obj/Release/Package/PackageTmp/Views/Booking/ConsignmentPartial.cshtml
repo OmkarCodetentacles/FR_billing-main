@@ -3,160 +3,166 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
+<style>
+    .padding-left-0 {
+        padding-left: 0 !important
+    }
 
+    no-padding {
+        padding: 0 !important
+    }
+
+    #edit-consignment {
+        max-height: 300px;
+    }
+
+    .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+        position: absolute;
+        margin-left: -41px !important;
+    }
+
+    label {
+        display: inline-block;
+        width: 21% !important;
+        margin-right: 0.5em;
+        padding-top: 1.5em;
+    }
+
+    select {
+        border: 1px solid #0049af30 !important;
+        border-radius: 0px !important;
+        height: 40px !important;
+        padding: 10px;
+        width: 100% !important;
+    }
+</style>
 
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
-    <style>
-        .padding-left-0 {
-            padding-left: 0 !important
-        }
-
-        no-padding {
-            padding: 0 !important
-        }
-        #edit-consignment {
-            
-            max-height: 300px;
-        }
-        label {
-            width: 85px !important;
-        }
-        .form-select{
-            width:85px !important;
-        }
-        .type-select .form-select{
-            width:60px !important;
-        }
-        .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
-            position: absolute;
-            margin-left: -41px !important;
-        }
-    </style>
-   
-        <div id="sg1">
-           
-                    <label style="width: 125px !important;">
-                        Consi no
-                        @if (ViewBag.nextconsignment != null)
-                        {
-                            @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
-
-                            <script>
-                                $('#Consignment_no').keyup();
-                            </script>
-                        }
-                        else
-                        {
-                            @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
-                        }
-                    </label>
-                
-                    <label style="width: 125px !important;">
-                        Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
-                    </label>
-               
-
-                    <label style="width: 125px !important;">
-                        Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
-
-                    </label>
-              
-                    <label style="width: 105px !important">
-                        Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
-
-                    </label>
-            
-                    <label>
-                        Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
-                    </label>
-
-              
-                    <label>
-                        Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
-   new SelectListItem() {Text = "AR", Value="AR"},
-   new SelectListItem() {Text = "AC", Value="AC"},
-   new SelectListItem() {Text = "SF", Value="SF"},
-   new SelectListItem() {Text = "SC1", Value="SC1"},
-   new SelectListItem() {Text = "AR1", Value="AR1"},
-   new SelectListItem() {Text = "AC1", Value="AC1"},
-   new SelectListItem() {Text = "SF1", Value="SF1"},
-   new SelectListItem() {Text = "D1Z", Value="D1Z"},
-   new SelectListItem() {Text = "CP1", Value="CP1"},
-   new SelectListItem() {Text = "CP2", Value="CP2"},
-   new SelectListItem() {Text = "CSP", Value="CSP"},
-   new SelectListItem() {Text = "D1Z", Value="D1Z"},
-   new SelectListItem() {Text = "D2Z", Value="D2Z"},
-   new SelectListItem() {Text = "DZ2", Value="DZ2"},
-   new SelectListItem() {Text = "D10", Value="D10"},
-   new SelectListItem() {Text = "D12", Value="D12"},
-   new SelectListItem() {Text = "DM2", Value="DM2"},
-   new SelectListItem() {Text = "DCP", Value="DCP"},
-   new SelectListItem() {Text = "DC2", Value="DC2"},
-   new SelectListItem() {Text = "DCD", Value="DCD"},
-   new SelectListItem() {Text = "DZB", Value="DZB"},
-   new SelectListItem() {Text = "DSF", Value="DSF"},
-   new SelectListItem() {Text = "D2D", Value="D2D"},
-   new SelectListItem() {Text = "DZS", Value="DZS"},
-   new SelectListItem() {Text = "ZSP", Value="ZSP"},
-   new SelectListItem() {Text = "DAR", Value="DAR"},
-   new SelectListItem() {Text = "DMB", Value="DMB"},
-   new SelectListItem() {Text = "DMD", Value="DMD"},
-   new SelectListItem() {Text = "DMS", Value="DMS"},
-   new SelectListItem() {Text = "DSM", Value="DSM"},
-   new SelectListItem() {Text = "MSP", Value="MSP"},
-   new SelectListItem() {Text = "MSP", Value="MSP"},
-   new SelectListItem() {Text = "DNB", Value="DNB"},
-   new SelectListItem() {Text = "DNB", Value="DNB"},
-   new SelectListItem() {Text = "DNP", Value="DNP"},
-   new SelectListItem() {Text = "DN2", Value="DN2"},
-   new SelectListItem() {Text = "DND", Value="DND"},
-   new SelectListItem() {Text = "DNS", Value="DNS"},
-   new SelectListItem() {Text = "GEC", Value="GEC"},
-   new SelectListItem() {Text = "PEC", Value="PEC"},
-   new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select" })
 
 
-                    </label>
-               
-                    <label style="width: 70px !important;">
-                        Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+    <div id="sg1">
 
-                    </label>
-               
+        <label>
+            Consi no
+            @if (ViewBag.nextconsignment != null)
+            {
+                @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
 
-                    <label style="width: 70px !important;">
-                        char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+                <script>
+                    $('#Consignment_no').keyup();
+                </script>
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
+            }
+        </label>
 
-                    </label>
+        <label>
+            Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+        </label>
 
-               
-                    <label style="width: 65px !important;">
-                        Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
 
-                    </label>
-              
-                    <label style="width: 60px !important; " class=type-select>
-                        Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
-   new SelectListItem() {Text = "D", Value="D"},
-   new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
-                    </label>
-               
-                    <label>
-                        Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+        <label>
+            Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
 
-                    </label>
-          
-                    <label>
-                        Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
+        </label>
 
-                    </label>
-              
-                    <label>
-                        Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+        <label>
+            Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
 
-                    </label>
-             
+        </label>
+
+        <label>
+            Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+        </label>
+
+
+        <label>
+            Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
+new SelectListItem() {Text = "AR", Value="AR"},
+new SelectListItem() {Text = "AC", Value="AC"},
+new SelectListItem() {Text = "SF", Value="SF"},
+new SelectListItem() {Text = "SC1", Value="SC1"},
+new SelectListItem() {Text = "AR1", Value="AR1"},
+new SelectListItem() {Text = "AC1", Value="AC1"},
+new SelectListItem() {Text = "SF1", Value="SF1"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "CP1", Value="CP1"},
+new SelectListItem() {Text = "CP2", Value="CP2"},
+new SelectListItem() {Text = "CSP", Value="CSP"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "D2Z", Value="D2Z"},
+new SelectListItem() {Text = "DZ2", Value="DZ2"},
+new SelectListItem() {Text = "D10", Value="D10"},
+new SelectListItem() {Text = "D12", Value="D12"},
+new SelectListItem() {Text = "DM2", Value="DM2"},
+new SelectListItem() {Text = "DCP", Value="DCP"},
+new SelectListItem() {Text = "DC2", Value="DC2"},
+new SelectListItem() {Text = "DCD", Value="DCD"},
+new SelectListItem() {Text = "DZB", Value="DZB"},
+new SelectListItem() {Text = "DSF", Value="DSF"},
+new SelectListItem() {Text = "D2D", Value="D2D"},
+new SelectListItem() {Text = "DZS", Value="DZS"},
+new SelectListItem() {Text = "ZSP", Value="ZSP"},
+new SelectListItem() {Text = "DAR", Value="DAR"},
+new SelectListItem() {Text = "DMB", Value="DMB"},
+new SelectListItem() {Text = "DMD", Value="DMD"},
+new SelectListItem() {Text = "DMS", Value="DMS"},
+new SelectListItem() {Text = "DSM", Value="DSM"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNP", Value="DNP"},
+new SelectListItem() {Text = "DN2", Value="DN2"},
+new SelectListItem() {Text = "DND", Value="DND"},
+new SelectListItem() {Text = "DNS", Value="DNS"},
+new SelectListItem() {Text = "GEC", Value="GEC"},
+new SelectListItem() {Text = "PEC", Value="PEC"},
+new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select" })
+
+
+        </label>
+
+        <label>
+            Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </label>
+
+
+        <label>
+            char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+
+        <label>
+            Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label class="type-select">
+            Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
+new SelectListItem() {Text = "D", Value="D"},
+new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
+        </label>
+
+        <label>
+            Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label>
+            Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label>
+            Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </label>
 
 
 
@@ -170,137 +176,140 @@
 
 
 
-            <fieldset class="form-horizontal">
-                <!-- Form Name -->
-                <!-- Multiple Radios -->
-                <div class="row">
-                    <div id="insshow" class="col-sm-5 no-padding">
-                        <label class="col-md-2 padding-left-0 radio-label" for="radios">Insuarance</label>
 
-                        <div class="radio-inline">
-                            <label for="radios-0">
+        <fieldset class="form-horizontal" style=" border-top: 1px solid #d9e4f3; margin: 30px 0px;">
+            <!-- Form Name -->
+            <!-- Multiple Radios -->
+            <div class="row">
+                <div id="insshow" class="col-sm-12 no-padding" style="display: grid;">
+                    <label class="col-md-2 padding-left-0 radio-label" for="radios" style="padding-top:0;"><b>Insuarance</b></label>
+
+                    <div>
+                        <div class="radio-inline" style="padding-top:0">
+                            <label for="radios-0 col-md-3">
                                 @*<input name="Insurance" id="radios-0" value="yes" checked="checked" type="radio">*@
                                 @Html.RadioButtonFor(m => m.Insurance, "yes")
                                 Carrier Risk
                             </label>
                         </div>
-                        <div class="radio-inline">
-                            <label for="radios-1">
+                        <div class="radio-inline" style="padding-top:0">
+                            <label for="radios-1 col-md-3">
                                 @*<input name="Insurance" id="radios-1" value="no" type="radio" checked>*@
                                 @Html.RadioButtonFor(m => m.Insurance, "no", new { @checked = true, @id = "Insurance" })
-                               Owner Risk
-</label>
+                                Owner Risk
+                            </label>
                         </div>
                     </div>
-                  
-                    <div class="col-sm-7" id="insdiv">
-                        <label>
-                            Bill Amount
-
-                            @Html.EditorFor(model => model.BillAmount, new { htmlAttributes = new { @class = "form-control" } })
-
-                        </label>
-                        <label>
-                            <span class="insurancelable">Insuarance</span>
-                            @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
-
-                        </label>
-                        <label>
-                            <span class="resksurlable"> Risk surcharge </span> @Html.EditorFor(model => model.Risksurcharge, new { htmlAttributes = new { @class = "form-control" } })
-
-                        </label>
-                        <label>
-                            Invoice No @Html.EditorFor(model => model.Invoice_No, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
-                        </label>
-                    </div>
-
-
                 </div>
 
-                <!-- Multiple Radios -->
-                <div class="row">
-                    <div id="topayradio" class="col-sm-5 no-padding">
-                        <label class="col-md-2 radio-label" for="radios">To Pay </label>
+                <div class="col-sm-12" id="insdiv">
+                    <label>
+                        Bill Amount
 
-                        <div class="radio-inline">
-                            <label for="radios-0">
-                                @*<input name="topay" id="radios-0" value="yes" checked="checked" type="radio">*@
-                                @Html.RadioButtonFor(m => m.topay, "yes")
-                                Yes
-                            </label>
-                        </div>
-                        <div class="radio-inline">
-                            <label for="radios-1">
+                        @Html.EditorFor(model => model.BillAmount, new { htmlAttributes = new { @class = "form-control" } })
 
-                                @*<input name="topay" id="radios-1" value="no" type="radio" checked>*@
-                                @Html.RadioButtonFor(m => m.topay, "no", new { @checked = true })
-                                No
-                            </label>
-                        </div>
-                    </div>
+                    </label>
+                    <label>
+                        <span class="insurancelable">Insuarance</span>
+                        @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
 
-                    <div class="col-sm-7" id="Topaydiv">
-                        <label>
-                            To pay Charges @Html.EditorFor(model => model.Topaycharges, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Topaycharges, "", new { @class = "text-danger" })
-                        </label>
-                        <label>
-                            Consignee
-                            @Html.EditorFor(model => model.consignee, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.consignee, "", new { @class = "text-danger" })
-                        </label>
-                        <label>
-                            To pay Amount
-                            @Html.EditorFor(model => model.TopayAmount, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
-                        </label>
-                    </div>
+                    </label>
+                    <label>
+                        <span class="resksurlable"> Risk surcharge </span> @Html.EditorFor(model => model.Risksurcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </label>
+                    <label>
+                        Invoice No @Html.EditorFor(model => model.Invoice_No, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                    </label>
                 </div>
-                <!-- Multiple Radios -->
-           <div class="row">
-                    <div id="codradio" class="col-sm-5 no-padding">
-                        <label class="radio-label col-sm-2 " for="radios">COD</label>
 
-                        <div class="radio-inline">
-                            <label for="radios-0">
-                                @Html.RadioButtonFor(m => m.cod, "yes")
-                                Yes
-                            </label>
-                        </div>
-                        <div class="radio-inline">
-                            <label for="radios-1">
-                                @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
-                                No
-                            </label>
-                        </div>
-                    </div>
 
-                    <div  id="coddiv" class="col-sm-7">
-                        <label>
-                            Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
-                        </label>
-                        <label>
-                            Cod Charges @Html.EditorFor(model => model.codcharges, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.codcharges, "", new { @class = "text-danger" })
-                        </label>
-                        <label>
-                            Consigner @Html.EditorFor(model => model.consigner, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.consigner, "", new { @class = "text-danger" })
-                        </label>
-                        <label>
-                            cod Total Amount @Html.EditorFor(model => model.codtotalamount, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
-                        </label>
-                    </div>
-              </div>
-            </fieldset>
-            <div class="text-right">
-                <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
             </div>
+
+            <!-- Multiple Radios -->
+            <div class="row">
+                <div id="topayradio" class="col-sm-5 no-padding">
+                    <label class="col-md-2 radio-label" for="radios">To Pay </label>
+
+                    <div class="radio-inline">
+                        <label for="radios-0">
+                            @*<input name="topay" id="radios-0" value="yes" checked="checked" type="radio">*@
+                            @Html.RadioButtonFor(m => m.topay, "yes")
+                            Yes
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label for="radios-1">
+
+                            @*<input name="topay" id="radios-1" value="no" type="radio" checked>*@
+                            @Html.RadioButtonFor(m => m.topay, "no", new { @checked = true })
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-sm-7" id="Topaydiv">
+                    <label>
+                        To pay Charges @Html.EditorFor(model => model.Topaycharges, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Topaycharges, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Consignee
+                        @Html.EditorFor(model => model.consignee, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.consignee, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        To pay Amount
+                        @Html.EditorFor(model => model.TopayAmount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+            </div>
+            <!-- Multiple Radios -->
+            <div class="row">
+                <div id="codradio" class="col-sm-5 no-padding">
+                    <label class="radio-label col-sm-2 " for="radios">COD</label>
+
+                    <div class="radio-inline">
+                        <label for="radios-0">
+                            @Html.RadioButtonFor(m => m.cod, "yes")
+                            Yes
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label for="radios-1">
+                            @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div id="coddiv" class="col-sm-7">
+                    <label>
+                        Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Cod Charges @Html.EditorFor(model => model.codcharges, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codcharges, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Consigner @Html.EditorFor(model => model.consigner, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.consigner, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        cod Total Amount @Html.EditorFor(model => model.codtotalamount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="text-right">
+            <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
         </div>
- 
+    </div>
+
 
 
 
@@ -354,7 +363,7 @@
 
 
 
-   
+
 
 
         $(function () {
@@ -518,7 +527,7 @@ $.ajax({
                     url: '/Booking/Consignmentdetails',
                     data: { Cosignmentno: consno },
                     success: function (Data) {
-                      
+
                         //$('#Customer_Id').val(Data.Customer_Id);
                         $('#compaddress').val(Data.compaddress);
                         $('#booking_date').val(Data.booking_date);
@@ -554,7 +563,7 @@ $.ajax({
 
 
                         var companyid = Data.Customer_Id;
-                      
+
                         //<----------IF Consignment Is Booked--------->
                         if (companyid != null) {
 
@@ -689,7 +698,7 @@ $.ajax({
                 $("#insdiv").show();
                 $('.insurancelable').html("Insuarance");
                 $('.resksurlable').html("Risk surcharge");
-               
+
             }
             else {
                 $("#insdiv").show();
@@ -880,30 +889,6 @@ $.ajax({
         width: 6em;
         position: relative;
         top: -3em;
-    }
-
-    label {
-        display: inline-block;
-        width: 85px;
-        margin-right: .5em;
-        padding-top: 1.5em;
-    }
-
-    .radio-label {
-        width: 100px;
-        padding-top: 3em;
-    }
-
-    .form-horizontal .radio-inline {
-        padding-top: 1.5em;
-    }
-
-        .form-horizontal .radio-inline label {
-            width: 80px;
-        }
-
-    .form-horizontal .col-sm-9 label {
-        width: 120px;
     }
 </style>
 
