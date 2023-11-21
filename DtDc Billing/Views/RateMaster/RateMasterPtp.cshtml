@@ -148,13 +148,27 @@
 
                 <div class="row" >
                     <div class="col-md-12" >
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
                     </div>
                 </div>
                 
             }
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+
+            $('#submitBtn').on('click', function (e) {
+                alert("Rate Master PTP")
+                e.preventDefault();
+
+
+                $(this).prop('disabled', true);
+
+                $('form').submit();
+            });
+        });
+</script>
 
     @if (ViewBag.Message != null)
     {
@@ -162,7 +176,8 @@
 
 $(document).ready(function(){
 
-alert('@ViewBag.Message');
+    alert('@ViewBag.Message');
+    $(this).prop('disabled', false);
 
 });
 

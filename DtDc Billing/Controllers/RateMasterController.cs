@@ -190,7 +190,7 @@ namespace DtDc_Billing.Controllers
         {
             ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
-
+            TempData["ShowLoader"] = true;
             List<SelectListItem> items = new List<SelectListItem>();
 
             items.Add(new SelectListItem { Text = "0", Value = "0", Selected = true });
@@ -229,6 +229,8 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
                 // Business Logic
+                TempData["ShowLoader"] = true;
+
 
                 Company comp = new Company();
 
@@ -440,7 +442,6 @@ namespace DtDc_Billing.Controllers
                 ViewBag.SuccessCompany = "Company Added SuccessFully";
 
 
-
                 double? selectedval = db.Companies.Where(m => m.Company_Id == empmodel.Company_Id).Select(m => m.Minimum_Risk_Charge).FirstOrDefault();
 
 
@@ -467,6 +468,9 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.Minimum_Risk_Charge = items;
 
+
+                TempData["Success"] = "Company Added SuccessFully!";
+                TempData["ShowLoader"] = false;
 
 
                 return RedirectToAction("Index","RateMaster", new { id=empmodel.Company_Id });
@@ -541,6 +545,7 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
+                TempData["ShowLoader"] = true;
 
 
                 // Business Logic
@@ -669,7 +674,7 @@ namespace DtDc_Billing.Controllers
               
 
                 ViewBag.Message = "Company Updated SuccessFully";
-
+                TempData["ShowLoader"] = false;
                 @ViewBag.Slabs = db.Ratems.Where(m => m.Company_id == empmodel.Company_Id).FirstOrDefault();
 
                 ViewBag.Company = new Company();
@@ -732,6 +737,8 @@ namespace DtDc_Billing.Controllers
         [ValidateAntiForgeryToken]
         [HandleError]
         public ActionResult RatemasterDox(int? only, FormCollection fc, float[] slab1, string comppid)
+        
+        
         {
             comppid = comppid.Replace("__", "&").Replace("xdotx", "."); ;
             var CompanyId = comppid;
@@ -755,7 +762,6 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-
                 var rateidarray = fc.GetValues("item.Rete_Id");
                 var slab1arayy = fc.GetValues("item.slab1");
                 var slab2arayy = fc.GetValues("item.slab2");
@@ -824,7 +830,6 @@ namespace DtDc_Billing.Controllers
                 var compid = comppid;
 
                 ViewBag.Message = "Dox Updated SuccessFully";
-
                 @ViewBag.Slabs = db.Ratems.Where(m => m.Company_id == compid).FirstOrDefault();
 
                 return PartialView("RatemasterDox", db.Ratems.Where(m => m.Company_id == compid &&  m.Sector.BillD == true).OrderBy(m => m.Sector.Priority).ToList());
@@ -853,6 +858,8 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
+                TempData["ShowLoader"] = true;
+
                 var Non_IDarray = fc.GetValues("item.Non_ID");
                 var Aslab1arayy = fc.GetValues("item.Aslab1");
                 var Aslab2arayy = fc.GetValues("item.Aslab2");
@@ -955,7 +962,7 @@ namespace DtDc_Billing.Controllers
                 var compid = comppid;
 
                 ViewBag.Message = "NonDox Updated SuccessFully";
-
+                TempData["ShowLoader"] = false;
                 @ViewBag.Slabs1 = db.Nondoxes.Where(m => m.Company_id == compid).FirstOrDefault();
 
                 ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
@@ -981,7 +988,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.companyid = comppid;
             if (ModelState.IsValid)
             {
-
+                TempData["ShowLoader"] = true;
                 var plus_idarray = fc.GetValues("item.plus_id");
                 var Upto500gmarray = fc.GetValues("item.Upto500gm");
                 var U10to25kgarayy = fc.GetValues("item.U10to25kg");
@@ -1036,7 +1043,7 @@ namespace DtDc_Billing.Controllers
                 var compid = comppid;
 
                 ViewBag.Message = "Dtdc Plus Updated SuccessFully";
-
+                TempData["ShowLoader"] = false;
                 @ViewBag.Slabs = db.Dtdc_Ptp.Where(m => m.Company_id == compid).FirstOrDefault();
 
                 return PartialView("RatemasterPlus", db.dtdcPlus.Where(m => m.Company_id == compid).ToList());
@@ -1055,6 +1062,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.companyid = comppid;
             if (ModelState.IsValid)
             {
+                TempData["ShowLoader"] = true;
 
                 var Ptp_idarray = fc.GetValues("item.ptp_id");
                 var PUpto500gmarray = fc.GetValues("item.PUpto500gm");
@@ -1156,7 +1164,7 @@ namespace DtDc_Billing.Controllers
                 var compid = comppid;
 
                 ViewBag.Message = "DtdcPtp Updated SuccessFully";
-
+                TempData["ShowLoader"] = false;
                 @ViewBag.Slabs = db.Dtdc_Ptp.Where(m => m.Company_id == compid).FirstOrDefault();
 
                 return PartialView("RatemasterPtp", db.Dtdc_Ptp.Where(m => m.Company_id == compid).Include(e => e.Sector).ToList());
@@ -1180,6 +1188,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.companyid = comppid;
             if (ModelState.IsValid)
             {
+                TempData["ShowLoader"] = true;
                 var Exp_Idarray = fc.GetValues("item.Exp_Id");
                 var Exslab1array = fc.GetValues("item.Exslab1");
                 var Exslab2arayy = fc.GetValues("item.Exslab2");
@@ -1208,7 +1217,7 @@ namespace DtDc_Billing.Controllers
                     rm.Exslab2 = Convert.ToDouble(Exslab2arayy[i]);
 
                     ViewBag.Message = "Express Cargo Updated SuccessFully";
-
+                    TempData["ShowLoader"] = false;
                     db.Entry(rm).State = EntityState.Modified;
                     db.SaveChanges();
                 }
@@ -1302,7 +1311,7 @@ namespace DtDc_Billing.Controllers
 
                 var compid = comppid;
 
-                ViewBag.Message = "Updated SuccessFully";
+                ViewBag.Message = "Priority Updated SuccessFully";
 
                 @ViewBag.Slabspri = db.Priorities.Where(m => m.Company_id == compid).FirstOrDefault();
 
