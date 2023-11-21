@@ -167,7 +167,7 @@ namespace DtDc_Billing.Controllers
                     //string consignmnetno = "P61118465";
                     // LocalReport lr = new LocalReport();
 
-                    LocalReport lr = new LocalReport();
+                 //   LocalReport lr = new LocalReport();
 
 
 
@@ -179,72 +179,72 @@ namespace DtDc_Billing.Controllers
 
 
 
-                    var Recieptdetails = db.Receipt_details.Where(m => m.Consignment_No == consignmentno);//.ToList();
+                  //  var Recieptdetails = db.Receipt_details.Where(m => m.Consignment_No == consignmentno);//.ToList();
 
 
-                    // db.Entry(reciept_Details).State = EntityState.Modified;
+                  //  // db.Entry(reciept_Details).State = EntityState.Modified;
 
-                    string path = Path.Combine(Server.MapPath("~/rdlcreport"), "cashcounter.rdlc");
+                  //  string path = Path.Combine(Server.MapPath("~/rdlcreport"), "cashcounter.rdlc");
 
-                    lr.EnableExternalImages = true;
-                    lr.EnableHyperlinks = true;
+                  //  lr.EnableExternalImages = true;
+                  //  lr.EnableHyperlinks = true;
 
-                    if (System.IO.File.Exists(path))
-                    {
-                        lr.ReportPath = path;
-                    }
-                    ReportDataSource rd = new ReportDataSource("DataSet1", Recieptdetails);
-                    ReportParameter rp = new ReportParameter("rpt_img", "file:///" + barcode);
-
-
-
-                    lr.SetParameters(rp);
+                  //  if (System.IO.File.Exists(path))
+                  //  {
+                  //      lr.ReportPath = path;
+                  //  }
+                  //  ReportDataSource rd = new ReportDataSource("DataSet1", Recieptdetails);
+                  //  ReportParameter rp = new ReportParameter("rpt_img", "file:///" + barcode);
 
 
 
-
-                    lr.DataSources.Add(rd);
-
-                    string reportType = "PDF";
-                    string mimeType;
-                    string encoding;
-                    string fileNameExte;
-
-                    string deviceInfo =
-                        "<DeviceInfo>" +
-                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                        "<PageHeight>11in</PageHeight>" +
-                       "<Margintop>0.1in</Margintop>" +
-                         "<Marginleft>0.1in</Marginleft>" +
-                          "<Marginright>0.1in</Marginright>" +
-                           "<Marginbottom>0.5in</Marginbottom>" +
-                           "</DeviceInfo>";
-
-                    Warning[] warnings;
-                    string[] streams;
-                    byte[] renderByte;
+                  //  lr.SetParameters(rp);
 
 
-                    renderByte = lr.Render
-                  (reportType,
-                  deviceInfo,
-                  out mimeType,
-                  out encoding,
-                  out fileNameExte,
-                  out streams,
-                  out warnings
-                  );
 
-                    ViewBag.pdf = false;
-                    ViewBag.pdf = true;
-                    //   savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
 
-                    savePath = Server.MapPath("~/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+                  //  lr.DataSources.Add(rd);
 
-                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                    {
-                        stream.Write(renderByte, 0, renderByte.Length);
-                    }
+                  //  string reportType = "PDF";
+                  //  string mimeType;
+                  //  string encoding;
+                  //  string fileNameExte;
+
+                  //  string deviceInfo =
+                  //      "<DeviceInfo>" +
+                  //      "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                  //      "<PageHeight>11in</PageHeight>" +
+                  //     "<Margintop>0.1in</Margintop>" +
+                  //       "<Marginleft>0.1in</Marginleft>" +
+                  //        "<Marginright>0.1in</Marginright>" +
+                  //         "<Marginbottom>0.5in</Marginbottom>" +
+                  //         "</DeviceInfo>";
+
+                  //  Warning[] warnings;
+                  //  string[] streams;
+                  //  byte[] renderByte;
+
+
+                  //  renderByte = lr.Render
+                  //(reportType,
+                  //deviceInfo,
+                  //out mimeType,
+                  //out encoding,
+                  //out fileNameExte,
+                  //out streams,
+                  //out warnings
+                  //);
+
+                  //  ViewBag.pdf = false;
+                  //  ViewBag.pdf = true;
+                  //  //   savePath = "https://frbilling.com/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf";
+
+                  //  savePath = Server.MapPath("~/CashcounterPDF/" + "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No.Replace("/", "-") + ".pdf");
+
+                  //  using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                  //  {
+                  //      stream.Write(renderByte, 0, renderByte.Length);
+                  //  }
 
                     // return Redirect(savePath);
 

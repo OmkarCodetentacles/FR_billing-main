@@ -885,7 +885,7 @@
                                     <div class="row">
                                         <div class="col-md-12 text-right">
 
-                                            <button type="submit" value="Print" name="Submit" class="btn btn-info">Save and Print</button>
+                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="loadershow">Save and Print</button>
                                             <button type="submit" value="Save" class="btn btn-info btn-sm">Save</button>
 
                                             @*<a href="@Url.Action("Printcashcounter","Booking")"  class="btn btn-default btn-flat">Print</a>*@
@@ -910,7 +910,35 @@
     </div>
     <!-- /.content-wrapper -->
 }
+<script>
+         // Show loader if TempData flag is set
 
+        @*function showLoader() {
+            var showLoader = '@TempData["ShowLoader"]';
+
+            document.getElementById('overlayBlock').style.display = 'block';
+
+        }
+
+
+     $(document).ready(function () {
+         $('#loadershow').on('click', function () {
+
+         showLoader('overlayBlock');
+     });
+     var data = '@TempData["Success"]';
+
+     if (data != null && data!="")
+     {
+         alert(data);
+
+     }
+
+
+ });*@
+
+   
+</script>
 
 <!-- Modal -->
 <div class="example-modal">
@@ -2335,6 +2363,7 @@ $(document).ready(function () {
         $(document).ready(function () {
 
             alert('Consignment Added SuccessFully');
+            //document.getElementById('overlayBlock').style.display = 'none';
 
         });
 
@@ -2412,9 +2441,14 @@ $(document).ready(function () {
                 return false;
 
             }
-            else {
+            else if (phone.length != 10 || phone.length != 11) {
                 alert("Phone number Should Be 10 To 11 Digits");
                 return false;
+
+            }
+            else {
+               // document.getElementById('overlayBlock').style.display = 'block';
+
             }
 
 

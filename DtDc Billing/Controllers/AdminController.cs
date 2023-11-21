@@ -1770,24 +1770,24 @@ namespace DtDc_Billing.Controllers
 
         //    return View(Fr);
         //}
-        [HttpPost]
-        public ActionResult UploadStamp(FranchiseeModel franchisee)
-        {
-            Franchisee Fr = new Franchisee();
+        //[HttpPost]
+        //public ActionResult UploadStamp(FranchiseeModel franchisee)
+        //{
+        //    Franchisee Fr = new Franchisee();
 
-            Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            var getNewFilePath = "";
-            if (franchisee.StampFilePath == null)
-            {
-                getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
-            }
-            Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
+        //    Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    var getNewFilePath = "";
+        //    if (franchisee.StampFilePath == null)
+        //    {
+        //        getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
+        //    }
+        //    Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
 
 
-            db.Entry(Fr).State = EntityState.Modified;
-            db.SaveChanges();
-            return Json(new { success = true });
-        }
+        //    db.Entry(Fr).State = EntityState.Modified;
+        //    db.SaveChanges();
+        //    return Json(new { success = true });
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1947,7 +1947,7 @@ namespace DtDc_Billing.Controllers
                           select d).FirstOrDefault();
 
 
-                lo.LogoFilePath = _FileName;
+                lo.LogoFilePath = _path;
 
                 db.Entry(lo).State = EntityState.Modified;
                 db.SaveChanges();
