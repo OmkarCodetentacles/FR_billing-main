@@ -48,12 +48,12 @@
                                 @using (Html.BeginForm())
                                 {
 
-                                    <div class="col-md-6 no-padding">
-                                        <div class="form-group mt-5">
-                                            <label class="col-md-2 no-padding">Date:</label>
-                                            <div class="col-md-8">
+                                    <div class="col-md-12 no-padding">
+                                        <div class="form-group mt-5" >
+                                            <div class="col-md-3" style="padding:0;">
+                                                <label class=" no-padding">Date:</label>
                                                 <div class="input-group date">
-                                                    <div class="input-group-addon">
+                                                    <div class="input-group-addon" style="border-radius:0 !important">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
                                                     @if (ViewBag.date != null)
@@ -66,28 +66,32 @@
                                                     }
                                                 </div>
                                             </div>
+                                            <div class="col-md-1"  >
+                                                <div class="form-group" style="margin: 24px auto" >
+                                                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1" >
+                                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block " style="margin: 24px auto" />
+                                            </div>
                                         </div>
+                                       
+
                                         <!-- /.form-group -->
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-block btn-primary">Search</button>
-                                        </div>
-                                    </div>
+                                    
 
 
-                                    <div class="col-sm-2">
-                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block " />
-                                    </div>
+                                   
 
 
                                 }
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="box box-info">
-                                            <div class="box-header with-border bginfo" style="margin-bottom:20px">
-                                                <h3 class="box-title titlnew">Consignment Report</h3>
-                                                <p class="totlpaymt pull-right label label-primary">Total :  @(ViewBag.paidamount ?? 0)</p>
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Consignment Report</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(ViewBag.paidamount ?? 0)</p>
                                             </div><!-- /.box-header -->
                                             <div class="mt-5" >
                                                 <table id="example1" class="table Consignmentreport">
@@ -175,9 +179,9 @@
 
                                     <div class="col-md-6">
                                         <div class="box box-info">
-                                            <div class="box-header with-border bginfo">
-                                                <h3 class="box-title titlnew">Expense</h3>
-                                                <p class="totlpaymt pull-right label label-primary">Total :  @ViewBag.expenseCount</p>
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew"style="margin:0" >Expense</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @ViewBag.expenseCount</p>
                                             </div>
                                             <div class="">
 
@@ -226,9 +230,9 @@
 
                                     <div class="col-md-6">
                                         <div class="box box-info">
-                                            <div class="box-header with-border bginfo">
-                                                <h3 class="box-title titlnew">Payment</h3>
-                                                <p class="totlpaymt pull-right label label-primary">Total : @ViewBag.PaymentCount </p>
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Payment</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total : @ViewBag.PaymentCount </p>
                                             </div><!-- /.box-header -->
                                             <div class=" ">
 
@@ -275,9 +279,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="box box-info">
-                                            <div class="box-header with-border bginfo">
-                                                <h3 class="box-title titlnew">Savings</h3>
-                                                <p class="totlpaymt pull-right label label-primary">Total : @ViewBag.Savingscount </p>
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Savings</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total : @ViewBag.Savingscount </p>
                                             </div>
 
                                             <div class=" ">
@@ -326,7 +330,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="padding:0">
                                         <div class="box box-info">
                                             <div class="    ">
                                                 @*<p>Total Amount </p>  @ViewBag.sum*@

@@ -50,31 +50,10 @@
     <div class="box" style="padding: 16px 16px">
 
         <div class="box-header with-border row" style="margin:0">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h4>Remaining Stationary</h4>
             </div>
-            <div class="col-md-6">
-                @using (Html.BeginForm())
-                {
-
-
-
-                  <div style="display:flex; gap:10px; justify-content:right">
-                      <div class="form-group" style="margin:0">
-                          <label>Select Type</label> <span class="Reqired" style="color:red">* </span>:
-                          @Html.DropDownList("RemainingType")
-                      </div>
-                      <input type="submit" class="btn btn-primary pull-right sbmt" name="Show" value="Show" style="margin:0" />
-                  </div>
-
-
-
-
-                    <input type="hidden" id="PfCode" value="@ViewBag.PfCode">
-
-                }
-                
-            </div>
+            
 
         </div>
         <div class="box-body">
@@ -85,16 +64,37 @@
 
                     <div class="form-horizontal">
 
+                        <div class="col-md-12">
+                            @using (Html.BeginForm())
+                            {
 
 
 
-                       
+                                <div style="display:flex; gap:10px; justify-content:center">
+                                    <div class="form-group" style="margin:0">
+                                        <label>Select Type</label> <span class="Reqired" style="color:red">* </span>:
+                                        @Html.DropDownList("RemainingType")
+                                    </div>
+                                    <input type="submit" class="btn btn-primary pull-right sbmt" name="Show" value="Show" style="margin:0" />
+                                </div>
+
+
+
+
+                                <input type="hidden" id="PfCode" value="@ViewBag.PfCode">
+
+                            }
+
+                        </div>
+
+
+
 
                     </div>
                 </div>
                 <!-- /.box-body -->
             </div>
-            <div class="row" style="margin-top:20px">
+            <div class="row" style="margin-top:50px">
                 <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
 
                     <table id="table_display_block" class="table Ramainingtable">

@@ -21,7 +21,7 @@
     }
     label {
         display: inline-block;
-        width: 21% !important;
+        width: 24% !important;
         margin-right: 0.5em;
         padding-top: 1.5em;
     }
@@ -42,7 +42,7 @@
     <div id="sg1">
 
         <label >
-            Consi no
+            Consi no<span style="color:red">*</span>:
             @if (ViewBag.nextconsignment != null)
             {
                 @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
@@ -58,7 +58,7 @@
         </label>
 
         <label >
-            Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+            Cust Id<span style="color:red">*</span>:  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
         </label>
 
 
@@ -68,12 +68,12 @@
         </label>
 
         <label>
-            Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
+            Book date<span style="color:red">*</span>: @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
 
         </label>
 
         <label >
-            Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+            Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
         </label>
 
 
@@ -131,13 +131,13 @@ new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select"
 
 
         <label >
-            char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+            char Wt<span style="color:red">*</span>: @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
         </label>
 
 
         <label>
-            Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+            Qty<span style="color:red">*</span>: @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
 
         </label>
 
@@ -175,23 +175,23 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
 
 
-        <fieldset class="form-horizontal" style=" border-top: 1px solid #d9e4f3; margin: 30px 0px;">
+        <fieldset class="form-horizontal" >
             <!-- Form Name -->
             <!-- Multiple Radios -->
             <div class="row">
                 <div id="insshow" class="col-sm-12 no-padding" style="display: grid;">
-                    <label class="col-md-2 padding-left-0 radio-label" for="radios" style="padding-top:0;"><b>Insuarance</b></label>
+                    <label class="col-md-2 padding-left-0 radio-label" for="radios" style="padding-top: 0; margin: 30px 16px 0px"><b>Insuarance</b></label>
 
-                    <div>
-                        <div class="radio-inline" style="padding-top:0">
-                            <label for="radios-0 col-md-3">
+                    <div style="padding: 0px 11px 0px" >
+                        <div class="radio-inline col-md-4" style="padding-top:0">
+                            <label for="radios-0 ">
                                 @*<input name="Insurance" id="radios-0" value="yes" checked="checked" type="radio">*@
                                 @Html.RadioButtonFor(m => m.Insurance, "yes")
                                 Carrier Risk
                             </label>
                         </div>
-                        <div class="radio-inline" style="padding-top:0">
-                            <label for="radios-1 col-md-3">
+                        <div class="radio-inline col-md-4" style="padding-top:0">
+                            <label for="radios-1 ">
                                 @*<input name="Insurance" id="radios-1" value="no" type="radio" checked>*@
                                 @Html.RadioButtonFor(m => m.Insurance, "no", new { @checked = true, @id = "Insurance" })
                                 Owner Risk
@@ -269,13 +269,13 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                 <div id="codradio" class="col-sm-5 no-padding">
                     <label class="radio-label col-sm-2 " for="radios">COD</label>
 
-                    <div class="radio-inline">
+                    <div class="radio-inline ">
                         <label for="radios-0">
                             @Html.RadioButtonFor(m => m.cod, "yes")
                             Yes
                         </label>
                     </div>
-                    <div class="radio-inline">
+                    <div class="radio-inline ">
                         <label for="radios-1">
                             @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
                             No
@@ -303,7 +303,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                 </div>
             </div>
         </fieldset>
-        <div class="text-right">
+        <div class="text-right" style="margin: 30px">
             <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
         </div>
     </div>
