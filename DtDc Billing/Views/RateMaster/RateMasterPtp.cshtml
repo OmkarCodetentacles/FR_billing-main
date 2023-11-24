@@ -11,6 +11,14 @@
 
     <section>
         <div class="">
+            @{
+                var successMessage = ViewBag.Message as string;
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            }
             @using (Ajax.BeginForm("RateMasterPtp", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp4" }))
             {
                 @Html.AntiForgeryToken()
@@ -147,7 +155,7 @@
                 </table>
 
 
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"/>
+                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
             }
         </div>
     </section>
@@ -170,9 +178,9 @@
     {
         <script>
 
-$(document).ready(function(){
+        $(document).ready(function(){
 
-    alert('@ViewBag.Message');
+   // alert('@ViewBag.Message');
    // $(this).prop('disabled', false);
 
 });

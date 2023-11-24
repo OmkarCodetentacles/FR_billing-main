@@ -28,6 +28,12 @@ namespace DtDc_Billing.Controllers
         // GET: Booking
         public ActionResult ConsignMent()
         {
+            // Retrieve the message from TempData
+                 string uploadMessage = TempData["Upload"] as string;
+
+            // Pass the message to the view using ViewBag
+            ViewBag.UploadMessage = uploadMessage;
+
             return View();
         }
 
@@ -352,7 +358,7 @@ Select(e => new
                 if (tr != null)
                 {
 
-                    ; db.Entry(tr).State = EntityState.Detached;
+                    db.Entry(tr).State = EntityState.Detached;
 
 
                     transaction.T_id = tr.T_id;
@@ -1073,7 +1079,7 @@ Select(e => new
 
             DateTime? fromdate;
             DateTime? todate;
-
+           
             if (Fromdatetime != "")
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -1497,7 +1503,7 @@ Select(e => new
                 string extension = Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
-                Task.Run(() => InsertRecords(filePath, ImportText.FileName));
+              Task.Run(() => InsertRecords(filePath, ImportText.FileName));
 
             }
 
@@ -1537,26 +1543,26 @@ Select(e => new
 
                     string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-                    string bdate = DateTime.ParseExact(values[10].Trim('\''), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                    string bdate = DateTime.ParseExact(values[10].Replace("~", "").Trim('\''), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
 
 
                     tr.Consignment_no = values[1].Trim('\'').Trim();
                     tr.Pf_Code = values[3].Trim('\'');
-                    tr.Actual_weight = Convert.ToDouble(values[4].Trim('\''));
+                    tr.Actual_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
                     tr.Mode = values[5].Trim('\'');
                     tr.Quanntity = Convert.ToInt16(values[8].Trim('\''));
                     tr.Pincode = values[9].Trim('\'');
                     tr.booking_date = Convert.ToDateTime(bdate);
                     tr.tembookingdate = values[10].Trim('\'');
-                    tr.dtdcamount = Convert.ToDouble(values[11].Trim('\''));
-                    tr.chargable_weight = Convert.ToDouble(values[4].Trim('\''));
-                    tr.diff_weight = Convert.ToDouble(values[4].Trim('\''));
+                    tr.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
+                    tr.chargable_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
+                    tr.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
                     tr.topay = "no";
                     tr.cod = "no";
                     //tr.Insurance = "no";
                     tr.Type_t = values[16].Trim('\'');
-                    tr.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+                    tr.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
 
                     if (tr.BillAmount == 0.00)
                     {
@@ -1605,8 +1611,8 @@ Select(e => new
                     else
                     {
                         insertupdate.Pf_Code = values[3].Trim('\'');
-                        insertupdate.dtdcamount = Convert.ToDouble(values[11].Trim('\''));
-                        insertupdate.diff_weight = Convert.ToDouble(values[4].Trim('\''));
+                        insertupdate.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
+                        insertupdate.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
                         insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
 
                         insertupdate.BillAmount = Convert.ToDouble(values[21].Trim('\''));

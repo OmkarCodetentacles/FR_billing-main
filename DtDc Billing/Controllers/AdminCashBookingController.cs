@@ -67,12 +67,17 @@ namespace DtDc_Billing.Controllers
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-
+            if (Submit == "Clear")
+            {
+                ModelState.Clear();
+                Receipt_DetailsModel receipt_DetailsModel = new Receipt_DetailsModel(); 
+                return View(receipt_DetailsModel);  
+            }
 
             //////////////////////////////////////////////////////////////////////////
 
-            if (ModelState.IsValid)
-            {
+           if (ModelState.IsValid)
+           {
                 Receipt_details Recp_De = new Receipt_details();
 
                 Recp_De.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -370,9 +375,12 @@ namespace DtDc_Billing.Controllers
 
 
 
+
                 ModelState.Clear();
+                ViewBag.Discount = reciept_Details.Discount;
 
-
+                Receipt_DetailsModel RDModel = new Receipt_DetailsModel();
+                return View(RDModel);
                 //return View(new Receipt_details());
                 //return View(Printcashcounter(consignmentno));
 

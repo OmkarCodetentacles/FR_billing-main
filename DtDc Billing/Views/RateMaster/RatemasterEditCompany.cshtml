@@ -12,8 +12,26 @@
 
     <div class="form-horizontal mt-15">
         <!-- /.box-header -->
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
+
+        @{
+            var sMessage = TempData["Success"] as string;
+        }
+
+        @if (!string.IsNullOrEmpty(sMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
 
 
+       
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             <label class="col-md-3 padding-left-0">Company Id</label>
@@ -134,14 +152,14 @@
 
         @*<div class="form-group">
 
-                <label class="col-md-3"><P></P>MF Code</label>
-                <div class="col-md-2">
-                    @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly" })
+            <label class="col-md-3"><P></P>MF Code</label>
+            <div class="col-md-2">
+                @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly" })
 
-                    @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
+                @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
         <div class="form-group">
             <label class="col-md-3 padding-left-0">GST No</label>
@@ -216,20 +234,20 @@
         </div>
 
         @*<div class="form-group">
-                <label class="col-md-3">UserName</label>
-                <div class="col-md-5">
-                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                </div>
+            <label class="col-md-3">UserName</label>
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
             </div>
+        </div>
 
-            <div class="form-group">
-                <label class="col-md-3">Password</label>
-                <div class="col-md-5">
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+        <div class="form-group">
+            <label class="col-md-3">Password</label>
+            <div class="col-md-5">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
 
 
@@ -237,7 +255,7 @@
         <input type="hidden" id="selected_tab" name="selected_tab" value="1" />
         <div class="form-group">
             <div class="col-md-9 col-md-offset-3">
-                <input type="submit" value="Next" class="btn btn-primary" id="editBtn"/>
+                <input type="submit" value="Next" class="btn btn-primary" id="editBtn" />
             </div>
         </div>
     </div>
@@ -256,6 +274,7 @@
      if (data != null && data!="")
      {
          alert(data);
+         document.getElementById('overlayBlock').style.display = 'none';
 
      }
 
@@ -282,8 +301,7 @@
 
 $(document).ready(function(){
 
-alert('@ViewBag.Message');
-    document.getElementById('overlayBlock').style.display = 'none';
+//alert('@ViewBag.Message');
 
 });
 

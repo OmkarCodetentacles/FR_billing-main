@@ -6,25 +6,29 @@
 }
 
 <style>
-    .box-body{
-        overflow:auto;
+    .box-body {
+        overflow: auto;
     }
+
     .label1 {
         display: flex;
         justify-content: space-between;
-    
     }
+
     label {
         vertical-align: middle;
         align-items: center;
         display: flex;
     }
+
     #DisableDisc {
         width: auto;
     }
-    .box-title{
-        margin-top:10px;
+
+    .box-title {
+        margin-top: 10px;
     }
+
     textarea {
         display: block;
         width: 100%;
@@ -43,17 +47,19 @@
         -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
         transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     }
-    .padding-left-0{
-        padding-left:0 !important;
+
+    .padding-left-0 {
+        padding-left: 0 !important;
     }
-    .padding-right-0{
-        padding-right:0 !important;
+
+    .padding-right-0 {
+        padding-right: 0 !important;
     }
+
     .btn-info {
         width: auto;
     }
 </style>
-
 
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "receiptform", LoadingElementId = "overlayBlock", }))
@@ -104,7 +110,7 @@
         <section id="consignment" class="content">
             <div class="row">
                 <!-- left column -->
-                <div class="col-md-6" style="padding-right:"0">
+                <div class="col-md-6" style="padding-right:" 0">
                     <!-- Horizontal Form -->
                     <div class="box box-info">
                         <div class="box-header with-border">
@@ -154,23 +160,23 @@
 
                                     </div>
                                     <label class="col-sm-2 ">City</label>
-                                    <div class="col-sm-4 padding-left-0 padding-right-0" >
+                                    <div class="col-sm-4 padding-left-0 padding-right-0">
                                         @Html.EditorFor(model => model.SenderCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
                                         @Html.ValidationMessageFor(model => model.SenderCity, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
-                                   
-                                
-                               
+
+
+
                                     <label class="col-sm-2 no-padding">State</label>
                                     <div class="col-sm-4 no-padding">
                                         @Html.EditorFor(model => model.SenderState, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "State" } })
                                     </div>
-                              
-                           
+
+
                                     <label for="" class="col-sm-2 padding-right-0">Pincode</label>
                                     <div class="col-sm-4 padding-left-0 padding-right-0">
 
@@ -178,8 +184,8 @@
                                         @Html.ValidationMessageFor(model => model.SenderPincode, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                            
-                                </div>
+
+                            </div>
                         </div>
 
                     </div>
@@ -244,7 +250,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    
+
                                     <label class="col-sm-2 nopadding">State</label>
                                     <div class="col-sm-4 nopadding">
 
@@ -274,49 +280,49 @@
                             <div class="box-body ">
                                 <!-- radio -->
                                 <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Type</label>
-                                        <div class="radio col-md-6 no-padding">
-                                            <label style="padding-left:0">
-                                                @*<input type="radio" name="Shipmenttype" id="dox" value="D" checked>*@
-                                                @Html.RadioButtonFor(model => model.Shipmenttype, "D", new { @checked = true, @id = "dox" })
-                                                <span style="margin-left:20px">Dox</span>
-                                            </label>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Type</label>
+                                            <div class="radio col-md-6 no-padding">
+                                                <label style="padding-left:0">
+                                                    @*<input type="radio" name="Shipmenttype" id="dox" value="D" checked>*@
+                                                    @Html.RadioButtonFor(model => model.Shipmenttype, "D", new { @checked = true, @id = "dox" })
+                                                    <span style="margin-left:20px">Dox</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio col-md-6 no-padding">
+                                                <label style="padding-left:0">
+                                                    @*<input type="radio" name="Shipmenttype" id="nondox" value="N">*@
+                                                    @Html.RadioButtonFor(model => model.Shipmenttype, "N", new { @id = "nondox" })
+                                                    <span style="margin-left:20px">Non Dox</span>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div class="radio col-md-6 no-padding">
-                                            <label style="padding-left:0">
-                                                @*<input type="radio" name="Shipmenttype" id="nondox" value="N">*@
-                                                @Html.RadioButtonFor(model => model.Shipmenttype, "N", new { @id = "nondox" })
-                                                <span style="margin-left:20px">Non Dox</span>
-                                            </label>
+                                        <div class="form-group">
+                                            <div class="radio col-sm-6 no-padding">
+                                                <label style="padding-left:0">
+                                                    @*<input type="radio" name="Shipment_Mode" id="air" value="Air" checked>*@
+                                                    @Html.RadioButtonFor(model => model.Shipment_Mode, "Air", new { @checked = true, @id = "air" })
+                                                    <span style="margin-left:20px">Air</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio col-sm-6 nopadding">
+                                                <label style="padding-left:0">
+                                                    @*<input type="radio" name="Shipment_Mode" id="surface" value="Surface">*@
+                                                    @Html.RadioButtonFor(model => model.Shipment_Mode, "Surface", new { @id = "surface" })
+                                                    <span style="margin-left:20px"> Surface</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio col-sm-12 no-padding">
+                                                <label style="padding-left:0">
+                                                    @*<input type="radio" name="Shipment_Mode" id="international" value="International">*@
+                                                    @Html.RadioButtonFor(model => model.Shipment_Mode, "International", new { @id = "international" })
+                                                    <span style="margin-left:20px">International</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="radio col-sm-6 no-padding">
-                                            <label style="padding-left:0">
-                                                @*<input type="radio" name="Shipment_Mode" id="air" value="Air" checked>*@
-                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "Air", new { @checked = true, @id = "air" })
-                                                <span style="margin-left:20px">Air</span>
-                                            </label>
-                                        </div>
-                                        <div class="radio col-sm-6 nopadding">
-                                            <label style="padding-left:0">
-                                                @*<input type="radio" name="Shipment_Mode" id="surface" value="Surface">*@
-                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "Surface", new { @id = "surface" })
-                                                <span style="margin-left:20px"> Surface</span>
-                                            </label>
-                                        </div>
-                                        <div class="radio col-sm-12 no-padding">
-                                            <label style="padding-left:0">
-                                                @*<input type="radio" name="Shipment_Mode" id="international" value="International">*@
-                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "International", new { @id = "international" })
-                                                <span style="margin-left:20px">International</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                           
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-sm-4 col-md-offset-2">QTY</label>
@@ -338,60 +344,60 @@
                                 </div>
                                 <div class="row">
 
-                                        <div class="col-sm-12">
-                                            <div class="row">
-                                                <div class="col-sm-3">
-                                                    <div class="label1">
-                                                        <label>L </label>
-                                                        <label class="pull-right"><strong> X </strong> </label>
-                                                    </div>
-                                                    <div class="pad-5">
-                                                        @Html.EditorFor(model => model.Shipment_Length, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <div class="label1">
+                                                    <label>L </label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <div class="label1">
-                                                        <label>B</label>
-                                                        <label class="pull-right"><strong> X </strong> </label>
-                                                    </div>
-                                                    <div class="pad-5">
-                                                        @Html.EditorFor(model => model.Shipment_Quantity, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                    </div>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.Shipment_Length, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <div class="label1">
-                                                        <label>H </label>
-                                                        <label class="pull-right"><strong> X </strong> </label>
-                                                    </div>
-                                                    <div class="pad-5">
-                                                        @Html.EditorFor(model => model.Shipment_Breadth, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                    </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="label1">
+                                                    <label>B</label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <div class="label1">
-                                                        <label>Pcs </label>
-                                                        <label class="pull-right"><strong> / </strong> </label>
-                                                    </div>
-                                                    <div class="pad-5">
-                                                        @Html.EditorFor(model => model.Shipment_Heigth, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                    </div>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.Shipment_Quantity, new { htmlAttributes = new { @class = "form-control input-sm" } })
                                                 </div>
-                                                <div class="col-sm-3" style="margin:10px 0">
-                                                    <label>Devide By</label>
-                                                    <div class="pad-5">
-                                                        @Html.EditorFor(model => model.DivideBy, new { htmlAttributes = new { @class = "form-control input-sm", @Value = 3000 } })
-                                                    </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="label1">
+                                                    <label>H </label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
                                                 </div>
-                                                <div class="col-sm-9" style="margin:10px 0">
-                                                    
-                                                        <label >V.Wt</label>
-                                                        <div class="pad-5">
-                                                            @Html.EditorFor(model => model.volumetric_Weight, new { htmlAttributes = new { @class = "form-control input-sm volw", @placeholder = "Vol. Weight" } })
-                                                        </div>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.Shipment_Breadth, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="label1">
+                                                    <label>Pcs </label>
+                                                    <label class="pull-right"><strong> / </strong> </label>
+                                                </div>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.Shipment_Heigth, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3" style="margin:10px 0">
+                                                <label>Devide By</label>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.DivideBy, new { htmlAttributes = new { @class = "form-control input-sm", @Value = 3000 } })
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-9" style="margin:10px 0">
+
+                                                <label>V.Wt</label>
+                                                <div class="pad-5">
+                                                    @Html.EditorFor(model => model.volumetric_Weight, new { htmlAttributes = new { @class = "form-control input-sm volw", @placeholder = "Vol. Weight" } })
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                                    </div>
+
 
                                 </div>
 
@@ -404,13 +410,13 @@
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <div class="row mt-15">
-                            <div class="col-md-8">
-                                <h4 class="box-title">Description of Content</h4>
-                            </div>
-                            <div class="col-md-4">
-                                <h3 class="box-title">Value Of Goods</h3>
-                            </div>
+                                <div class="col-md-8">
+                                    <h4 class="box-title">Description of Content</h4>
                                 </div>
+                                <div class="col-md-4">
+                                    <h3 class="box-title">Value Of Goods</h3>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
@@ -418,14 +424,14 @@
                             <div class="box-body">
                                 <!-- radio -->
                                 <div class="col-md-12 no-padding">
-                                    <div class="form-group"> 
+                                    <div class="form-group">
                                         <div class="col-sm-8 ">
 
                                             @Html.EditorFor(model => model.DescriptionContent1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
 
                                         </div>
                                         <div class="col-sm-4 ">
-                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" , @id = "amount1" } })
+                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount", @id = "amount1" } })
 
                                         </div>
                                     </div>
@@ -451,26 +457,26 @@
                                     </div>
                                 </div>
 
-                            
-                            <!-- /.box-body -->
-                            <div class="">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="" class="col-sm-12 text-right control-label">Total Value of Goods</label>
+
+                                <!-- /.box-body -->
+                                <div class="">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-12 text-right control-label">Total Value of Goods</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4 ">
-                                    <div class="form-group">
-                                        
+                                    <div class="col-md-4 ">
+                                        <div class="form-group">
+
                                             @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total", @id = "totalAmountInput" } })
 
-                                      
+
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- /.box-footer -->
                             </div>
-                            <!-- /.box-footer -->
                         </div>
-    </div>
                     </div>
                     <!-- /.box -->
                 </div>
@@ -634,25 +640,25 @@
                                             <label>
                                                 <input type="radio" name="credit" id="credit" value="credit">
                                                 <span style="margin-left:20px"> Credit</span>
-</label>
+                                            </label>
                                         </div>
                                         <div class="radio col-md-4">
                                             <label>
                                                 <input type="radio" name="credit" id="cheque" value="cheque">
                                                 <span style="margin-left:20px"> Cheque</span>
-</label>
+                                            </label>
                                         </div>
                                         <div class="radio col-md-4">
                                             <label>
                                                 <input type="radio" name="credit" id="card" value="card">
                                                 <span style="margin-left:20px">Card</span>
-</label>
+                                            </label>
                                         </div>
                                         <div class="radio col-md-4">
                                             <label>
                                                 <input type="radio" name="credit" id="other" value="other">
                                                 <span style="margin-left:20px">Other</span>
-</label>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -885,7 +891,7 @@
                                     <div class="row">
                                         <div class="col-md-12 text-right">
 
-                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="loadershow">Save and Print</button>
+                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="">Save and Print</button>
                                             <button type="submit" value="Save" class="btn btn-info btn-sm">Save</button>
 
                                             @*<a href="@Url.Action("Printcashcounter","Booking")"  class="btn btn-default btn-flat">Print</a>*@
@@ -898,7 +904,7 @@
                                 </div>
                                 <!-- /.box-footer -->
                             </div>
-                            </div>
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>
@@ -911,33 +917,25 @@
     <!-- /.content-wrapper -->
 }
 <script>
-         // Show loader if TempData flag is set
-
-        @*function showLoader() {
-            var showLoader = '@TempData["ShowLoader"]';
-
-            document.getElementById('overlayBlock').style.display = 'block';
-
-        }
+    $(document).ready(function () {
+        debugger;
+    $('#uploadBtn').on('click', function () {
 
 
-     $(document).ready(function () {
-         $('#loadershow').on('click', function () {
+        showLoader('overlayBlock');
+    });
+    var data = '@TempData["Success"]';
 
-         showLoader('overlayBlock');
-     });
-     var data = '@TempData["Success"]';
+    if (data != null && data!="")
+    {
+        alert(data);
 
-     if (data != null && data!="")
-     {
-         alert(data);
-
-     }
+    }
 
 
- });*@
+});
 
-   
+
 </script>
 
 <!-- Modal -->
@@ -980,7 +978,7 @@
         padding-left: 8%;
     }
 
-   
+
 
 
     @@media (min-width:769px) {
@@ -995,6 +993,7 @@
             margin: 30px auto;
         }
     }
+
     .overlay {
         position: fixed;
         width: 100%;
@@ -1021,12 +1020,11 @@
         left: 50%;
         right: 50%;
     }
-
 </style>
 
 
 <script>
-    //Check Mobile Number Validation 
+    //Check Mobile Number Validation
     function validatePhoneNumber(input) {
         input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
         var phoneValidationMessage = document.getElementById("phoneValidationMessage");
@@ -2419,7 +2417,7 @@ $(document).ready(function () {
     //    }
     //});
 
-    
+
     $(function () { //shorthand document.ready function
         $('#receiptform').on('submit', function (e) { //use on if jQuery 1.7+
 
@@ -2430,6 +2428,7 @@ $(document).ready(function () {
 
 
             if (phone.length > 9 && phone.length < 12) {
+                $("#overlayBlock").show();
                 return true;
 
             }
@@ -2447,7 +2446,8 @@ $(document).ready(function () {
 
             }
             else {
-               // document.getElementById('overlayBlock').style.display = 'block';
+                $("#overlayBlock").show();
+
 
             }
 
@@ -2545,13 +2545,13 @@ $(document).ready(function () {
         font-size: 12px;
     }
 
-   
+
 
     .padding-left-0 {
         padding-left: 0px !important;
     }
 
-   /* .pad-5 input {
+    /* .pad-5 input {
         padding: 5px;
     }*/
 

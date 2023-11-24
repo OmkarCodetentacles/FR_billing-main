@@ -23,7 +23,16 @@
                                             @using (Html.BeginForm("MultipleBooking", "Booking"))
                                             {
                                                 <div class="">
+
                                                     <div class="row">
+                                                        @{
+                                                            var successMessage = ViewBag.Message as string;
+                                                        }
+
+                                                        @if (!string.IsNullOrEmpty(successMessage))
+                                                        {
+                                                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                                        }
                                                         <div class="form-group">
                                                             <div class="col-md-7">
                                                                 <div class="row">
@@ -89,7 +98,7 @@
     @if (ViewBag.Message != null)
     {
         <script type="text/javascript">
-         alert("@ViewBag.Message");
+        // alert("@ViewBag.Message");
         </script>
     }
     <script>

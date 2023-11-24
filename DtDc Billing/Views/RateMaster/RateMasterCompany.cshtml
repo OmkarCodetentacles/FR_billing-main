@@ -1,6 +1,6 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
 
-@using (Html.BeginForm("RatemasterCompany", "Ratemaster"))
+@using (Html.BeginForm("RatemasterCompany", "Ratemaster",new {id= "frmEmp" }))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -29,7 +29,9 @@
         <div class="form-horizontal" style=" padding: 20px; border: 1px solid #dddddd;">
 
             <div class="row">
+              
                 <div class="form-group">
+
                     <div class="col-md-7">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="row">
@@ -41,7 +43,11 @@
 
                                 @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
                             </div>
-                            @Html.ValidationMessage("C_IdError")
+                            @*@Html.ValidationMessage("C_IdError")*@
+                            <span style="color:red;">@Html.ValidationMessage("C_IdError")</span>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -362,7 +368,7 @@
                         <div style=" text-align: end;">
                             <input type="submit" value="Next" class="btn btn-primary" id="uploadBtn" />
 
-                          
+
                         </div>
                     </div>
                 </div>
@@ -379,17 +385,17 @@
 
  $(document).ready(function () {
      $('#uploadBtn').on('click', function () {
-
+         alert("Show Loader")
     
          showLoader('overlayBlock');
+         // Get the form element
+         var form = $('#frmEmp');
+         alert("Show Loader")
+         // Submit the form
+         form.submit();
+            
      });
-     var data = '@TempData["Success"]';
-
-     if (data != null && data!="")
-     {
-         alert(data);
-
-     }
+   
 
 
  });

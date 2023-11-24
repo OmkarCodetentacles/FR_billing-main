@@ -22,7 +22,14 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-horizontal">
+                                    @{
+                                        var successMessage = ViewBag.Success as string;
+                                    }
 
+                                    @if (!string.IsNullOrEmpty(successMessage))
+                                    {
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                    }
 
                                     <div class="row">
                                         <div class="col-md-12 no-padding">
@@ -58,7 +65,7 @@
                                                                 <div class="col-md-3">
                                                                     <label for="email">Invoice Date:</label>
                                                                 </div>
-                                                                <div class="col-md-9" style="padding:0" >
+                                                                <div class="col-md-9" style="padding:0">
                                                                     @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
                                                                 </div>
                                                             </div>
@@ -74,8 +81,8 @@
                                                                     @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -88,8 +95,8 @@
                                                                     @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -102,26 +109,26 @@
                                                                     @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @class = "form-control" } })
                                                                 </div>
                                                             </div>
-                                                           
-                                                            
+
+
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-12">
                                                         @*<label for="email">Firm Details:</label>
 
-                                            @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
+                            @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
 
                                                         @*<label for="departmentsDropdown">Firm Name</label>
-                                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
 
 
-                                            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+                            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
                                                     </div>
 
-                                                    <div class="col-sm-12 no-padding" style="text-align:end" >
+                                                    <div class="col-sm-12 no-padding" style="text-align:end">
                                                         <div class="form-group">
                                                             <input type="submit" name="submit" class="btn btn-success " value="Save" style="width:auto" />
                                                             &nbsp;
@@ -354,7 +361,7 @@
     @if (ViewBag.Success != null)
     {
         <script>
-    alert('@ViewBag.Success');
+ //   alert('@ViewBag.Success');
         </script>
     }
 

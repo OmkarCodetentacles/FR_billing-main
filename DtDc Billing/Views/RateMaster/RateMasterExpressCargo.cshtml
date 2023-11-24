@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.express_cargo>
 <section>
     <div class="">
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
         @using (Ajax.BeginForm("RatemasterCargo", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp5" }))
         {
             @Html.AntiForgeryToken()
@@ -47,7 +55,7 @@
                 }
 
             </table>
-            <input style="float:right" type="submit" class="btn btn-primary" name="submit" value="Save" id="submitBtn"/>
+            <input style="float:right" type="submit" class="btn btn-primary" name="submit" value="Save" id="submitBtn" />
         }
     </div>
 </section>
@@ -73,7 +81,7 @@
 
 $(document).ready(function(){
 
-alert('@ViewBag.Message');
+//alert('@ViewBag.Message');
     //$(this).prop('disabled', false);
 
 });

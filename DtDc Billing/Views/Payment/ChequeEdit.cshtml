@@ -16,6 +16,15 @@
                 <div class="box-header with-border">
                     <h4>Edit</h4>
 
+                    @{
+                        var sMessage =TempData["Updatedsuccss"] as string;
+                    }
+                    @if (!string.IsNullOrEmpty(sMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                    }
+
+
                 </div>
                 <!-- /.box-header -->
 
@@ -117,7 +126,7 @@
 @if (TempData["Updatedsuccss"] != null)
 {
     <script>
-    alert("@TempData["Updatedsuccss"]");
+    //alert("@TempData["Updatedsuccss"]");
     </script>
 }
 

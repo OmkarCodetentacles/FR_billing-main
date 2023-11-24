@@ -5,6 +5,14 @@
 
 <section>
     <div class="">
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
         @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
         {
             @Html.AntiForgeryToken()
@@ -235,7 +243,7 @@
 
 $(document).ready(function(){
 
-    alert('@ViewBag.Message');
+   // alert('@ViewBag.Message');
 
     $(this).prop('disabled', false);
 

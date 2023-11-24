@@ -1916,7 +1916,8 @@ namespace DtDc_Billing.Controllers
                     }
                 }
             }
-            return Json(new { success = true });
+        TempData["Success"] = "Updated Successfully";
+            return Json(new { success = true});
         }
 
         [HttpPost]

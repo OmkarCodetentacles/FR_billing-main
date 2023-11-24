@@ -223,7 +223,7 @@ namespace DtDc_Billing.Controllers
             if (abc != null)
             {
                 ModelState.AddModelError("C_IdError", "Company Id Already Exist");
-
+                TempData["Error"] = "Company Id Already Exist";
             }
             //Take PfCode From Session//
             if (ModelState.IsValid)

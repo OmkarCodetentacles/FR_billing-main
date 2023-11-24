@@ -10,18 +10,21 @@
 {
 
     <style>
-        .padding-left-0{
-            padding-left:0 !important
+        .padding-left-0 {
+            padding-left: 0 !important
         }
-        no-padding{
-            padding:0 !important
+
+        no-padding {
+            padding: 0 !important
         }
+
         label {
             display: inline-block;
             width: 21% !important;
             margin-right: 0.5em;
             padding-top: 1.5em;
         }
+
         select {
             border: 1px solid #0049af30 !important;
             border-radius: 0px !important;
@@ -29,20 +32,29 @@
             padding: 10px;
             width: 100% !important;
         }
-       
 
-       
+
+
         .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
             position: absolute;
             margin-left: -41px !important;
         }
+
         .edit-table th {
             width: 7.25% !important;
         }
     </style>
   
-    <div id="sg1">
 
+    <div id="sg1">
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
         <label>
             Consi no
             @if (ViewBag.nextconsignment != null)
@@ -140,7 +152,7 @@ new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select"
         </label>
         <label>
             <p>Type</p>
-             @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
+            @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
 new SelectListItem() {Text = "D", Value="D"},
 new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
@@ -301,7 +313,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             <input type="submit" value="Submit" id="submitbook" class="btn btn-success" />
         </div>
     </div>
-  
+
 
 }
 
@@ -340,13 +352,13 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
         padding-top: 1.5em;
     }
 
-   
 
-    
 
-        .form-horizontal .radio-inline label {
-            width: 80px;
-        }
+
+
+    .form-horizontal .radio-inline label {
+        width: 80px;
+    }
 
     .form-horizontal .col-sm-9 label {
         width: 120px;
@@ -989,6 +1001,6 @@ $.ajax({
 @if (ViewBag.Message != null)
 {
     <script type="text/javascript">
-         alert("@ViewBag.Message");
+        // alert("@ViewBag.Message");
     </script>
 }

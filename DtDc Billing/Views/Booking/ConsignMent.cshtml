@@ -17,6 +17,20 @@
         padding: 7px !important;
     }
 </style>
+@{
+    var successMessage = TempData["Upload"] as string;
+    var sMessage = ViewBag["UploadMessage"] as string;
+
+
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+}
 <div class="content-wrapper">
     <div class="box box-info" style="padding:16px 16px">
 
@@ -77,6 +91,6 @@
 @if (TempData["Upload"] != null)
 {
     <script>
-        alert('@TempData["Upload"]');
+       alert('@TempData["Upload"]');
     </script>
 }
