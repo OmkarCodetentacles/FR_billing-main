@@ -10,15 +10,7 @@
             <div class="box box-info" style="border: 1px solid #dbdbdb !important;background:white ">
                 <div class="box-header with-border" style="background:none; border:none">
 
-                    @{
-                        var successMessage = TempData["Success"] as string;
-                    }
-
-                    @if (!string.IsNullOrEmpty(successMessage))
-                    {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                    }
-
+                  
                     <h4 class="box-title">Add Sector</h4>
                 </div>
                 <div class="sector">
@@ -31,6 +23,15 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
+                        @{
+                            var successMessage = TempData["Success1"] as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+
                         <div class="form-horizontal">
                             <div class="" style="padding:0 20px;background:none">
                                 <table id="add-sector-pin" class="table table-responsive table-bordered" style="display:inline-table !important; width:100%; text-align:center;">
@@ -100,19 +101,19 @@
 
 
 
-@if (TempData["Success1"] != null)
+@*@if (TempData["Success1"] != null)
 {
     <script>
 
         $(document).ready(function () {
 
-            alert('Franchisee Added Success fully Please Fill Ratemater');
+            alert('Franchisee Added Successfully Please Fill Ratemater');
 
         });
 
     </script>
 
-}
+}*@
 
 <script>
     $(function () {

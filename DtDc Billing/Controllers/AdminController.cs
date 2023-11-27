@@ -1855,7 +1855,7 @@ namespace DtDc_Billing.Controllers
 
 
                 db.Entry(Reg).State = EntityState.Modified;
-              //  db.SaveChanges();
+                //db.SaveChanges();
 
                 TempData["Success"] = "franchisee Updated  Successfully!";
                 return View(franchisee);

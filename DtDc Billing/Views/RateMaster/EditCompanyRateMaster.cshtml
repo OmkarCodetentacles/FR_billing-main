@@ -138,13 +138,36 @@
 
     </div>
 </div>
+<script>
 
-@if (TempData["Success"] != null)
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+
+</script>.
+
+@*@if (TempData["Success"] != null)
 {
     <script type="text/javascript">
       //  alert("@TempData["Success"] ");
     </script>
-}
+}*@
 
 <style>
     .fs-20 {

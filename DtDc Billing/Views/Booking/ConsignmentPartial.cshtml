@@ -36,22 +36,19 @@
         width: 100% !important;
     }
 </style>
-@{
-    var succeessdata = TempData["Upload"] as string;
-}
 
-@if (!string.IsNullOrEmpty(succeessdata))
-{
-    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", succeessdata))
-}
-@{
-    var smessage = ViewBag.Message as string;
-}
+  @{ 
+      var smessage =ViewBag.Message as string;
 
-@if (!string.IsNullOrEmpty(smessage))
-{
-    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
-}
+
+  }
+  
+
+
+   @if(!string.IsNullOrEmpty(smessage))
+    {
+@Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
+    }
 
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {

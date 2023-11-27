@@ -1,6 +1,6 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
 
-@using (Html.BeginForm("RatemasterCompany", "Ratemaster",new {id= "frmEmp" }))
+@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp" }))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -25,11 +25,11 @@
     </style>
     <section>
 
-
+      
         <div class="form-horizontal" style=" padding: 20px; border: 1px solid #dddddd;">
 
             <div class="row">
-              
+
                 <div class="form-group">
 
                     <div class="col-md-7">
@@ -383,23 +383,26 @@
 }
 <script>
 
+    // Scroll to the top of the page
+    function scrollToTop() {
+            window.scrollTo(0, 0);
+    }
+
  $(document).ready(function () {
      $('#uploadBtn').on('click', function () {
-         alert("Show Loader")
-    
+            scrollToTop();
          showLoader('overlayBlock');
          // Get the form element
          var form = $('#frmEmp');
-         alert("Show Loader")
          // Submit the form
          form.submit();
-            
+
      });
-   
+
 
 
  });
- 
+
 
     function validatePhoneNumber(input) {
         input.value = input.value.replace(/[^0-9]/g, '').substring(0, 10);
@@ -415,24 +418,24 @@
 
 </script>
 <script>
-    //$(document).ready(function () {
-    //    // Show loader when a tab is clicked
-    //    $('#Tab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    //        var tabId = $(e.target).attr('href');
-    //        var loaderId = 'frmEmp' + tabId.charAt(tabId.length - 1);
-    //        showLoader(loaderId);
-    //    });
+        //$(document).ready(function () {
+                //    // Show loader when a tab is clicked
+                //    $('#Tab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                //        var tabId = $(e.target).attr('href');
+                //        var loaderId = 'frmEmp' + tabId.charAt(tabId.length - 1);
+                //        showLoader(loaderId);
+                //    });
 
-    //    // Function to show loader
-    //    function showLoader(loaderId) {
-    //        document.getElementById(loaderId).style.display = 'block';
-    //        setTimeout(function () {
-    //            // Simulate a delay (you can remove this setTimeout in your actual implementation)
-    //            // Hide the loader after the delay
-    //            document.getElementById(loaderId).style.display = 'none';
-    //        }, 2000); // Change 2000 to the actual time your action takes
-    //    }
-    //});
+                //    // Function to show loader
+                //    function showLoader(loaderId) {
+                //        document.getElementById(loaderId).style.display = 'block';
+                //        setTimeout(function () {
+                //            // Simulate a delay (you can remove this setTimeout in your actual implementation)
+                //            // Hide the loader after the delay
+                //            document.getElementById(loaderId).style.display = 'none';
+                //        }, 2000); // Change 2000 to the actual time your action takes
+                //    }
+                //});
 </script>
 
 <div class="overlay" id="overlayBlock">
@@ -451,16 +454,16 @@
     }
 </style>
 
-    <script>
+<script>
      // Show loader if TempData flag is set
-       
+
         function showLoader() {
             var showLoader = '@TempData["ShowLoader"]';
 
             document.getElementById('overlayBlock').style.display = 'block';
-     
+
         }
-    </script>
+</script>
 
 
 <style>

@@ -34,7 +34,17 @@
             <div class="row">
                 <!-- Horizontal Form -->
                 <div class="col-md-12">
+                    @if (ViewBag.Message != null)
+                    {
 
+                        string successMessage = ViewBag.Message;
+
+                        if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+
+                    }
                     @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
@@ -139,13 +149,13 @@
 
                             <!-- select -->
                             @*<div class="form-group">
-                                <label class=" control-label">MF Code</label>
-                                <div class="">
-                                    @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly"})
-                                    @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
-                                    @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
-                                </div>
-                            </div>*@
+                    <label class=" control-label">MF Code</label>
+                    <div class="">
+                        @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly"})
+                        @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
                             <!-- /.box-body -->
                             <!-- /.box-footer -->
@@ -165,17 +175,7 @@
 
             </div>
         </div>
-        @if (ViewBag.Message != null)
-        {
-
-            string successMessage = ViewBag.Message;
-
-            if (!string.IsNullOrEmpty(successMessage))
-            {
-                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-            }
-
-        }
+      
     </div>
 
 
