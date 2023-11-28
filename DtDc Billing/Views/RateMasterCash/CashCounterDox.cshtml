@@ -2,7 +2,14 @@
 
 
 
+@{
+                var successMessage = ViewBag.Message as string;
+}
 
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+}
 
 @using (Ajax.BeginForm("CashCounterDox", "RateMasterCash", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
 {
@@ -245,7 +252,7 @@
 
 
 
-@if (ViewBag.Message != null)
+@*@if (ViewBag.Message != null)
 {
     <script>
 
@@ -257,7 +264,7 @@ alert('@ViewBag.Message');
 
     </script>
 
-}
+}*@
 
 
 @if (ViewBag.Session != null)

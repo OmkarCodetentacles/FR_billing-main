@@ -18,6 +18,15 @@
                             <div class="col-md-12">
 
 
+                                @{
+                                    var failMessage = TempData["fail"] as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(failMessage))
+                                {
+                                   
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", failMessage))
+                                }
 
                                 @using (Html.BeginForm("DeleteCons", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
@@ -28,11 +37,11 @@
 
                                             @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                                @Html.HiddenFor(model => model.F_Id, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.F_Id, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.F_Id, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.F_Id, "", new { @class = "text-danger" })
 
 
-                                                @Html.HiddenFor(model => model.PF_Code)*@
+                    @Html.HiddenFor(model => model.PF_Code)*@
 
                                             <div class="form-group">
                                                 <label class="col-md-2"> Consignment No</label>
@@ -42,11 +51,11 @@
 
 
 
-                                               
-                                                    <div class="col-md-2">
-                                                        <input type="submit" value="Delete" class="btn btn-danger" />
-                                                    </div>
-                                                
+
+                                                <div class="col-md-2">
+                                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                                </div>
+
 
                                             </div>
                                         </div>
@@ -65,9 +74,9 @@
 </section>
 
 
-@if (TempData["fail"] != null)
+@*@if (TempData["fail"] != null)
 {
     <script>
         alert('@TempData["fail"]');
     </script>
-}
+}*@

@@ -26,7 +26,19 @@
 
                 <div class="col-md-8">
                     <!-- form start -->
+                    @if (ViewBag.Message != null)
+                    {
+                                     
+                       
+                            var successMessage = ViewBag.Message as String;
+                     
 
+                       
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        
+
+                      
+                    }
                     <form class="form-horizontal">
                         @Html.HiddenFor(model => model.S_id)
                         <div class="box-body">
@@ -101,22 +113,7 @@
     </div>
 }
 
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-            alert("@ViewBag.Message");
 
-        @{
-            var successMessage = @ViewBag.Message as String;
-        }
-
-        @if (!string.IsNullOrEmpty(successMessage))
-        {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-        }
-
-    </script>
-}
 
 <script>
     $(document).ready(function () {

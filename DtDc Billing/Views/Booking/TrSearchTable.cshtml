@@ -6,6 +6,10 @@
             <div class="form-group">
 
 
+
+                <div id="alertmessage">
+
+                </div>
                 @using (Ajax.BeginForm("Trtableseacrh", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "tr-table", InsertionMode = InsertionMode.Replace }))
                 {
 
@@ -14,65 +18,65 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>CustomerId</label>
-                            
-                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid"  type="text">
-                        </div>
+
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                             </div>
+                        </div>
                     }
                     else
                     {
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label>CustomerId</label>
-                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid"  type="text">
-                </div>
-                </div>
-                }
-                if (ViewBag.fromdate != null)
-                {
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>From Date</label>
-                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate"  type="text">
-                </div>
-                </div>
-                }
-                else
-                {
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>From Date</label>
-                    <input name="Fromdatetime" class="form-control" id="datepicker"  type="text">
-                </div>
-                </div>
-                }
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>CustomerId</label>
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                            </div>
+                        </div>
+                    }
+                    if (ViewBag.fromdate != null)
+                    {
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input name="Fromdatetime" class="form-control" id="datepicker" type="text">
+                            </div>
+                        </div>
+                    }
 
-                if (ViewBag.todate != null)
-                {
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>To Date</label>
-                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text">
-                </div>
-                </div>
-                }
+                    if (ViewBag.todate != null)
+                    {
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                            </div>
+                        </div>
+                    }
 
-                else
-                {
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label>To Date</label>
-                    <input style="margin-right:50px" name="ToDatetime" class="form-control"  id="datepicker1" type="text">
-                </div>
-                </div>
-                }
+                    else
+                    {
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                            </div>
+                        </div>
+                    }
 
-            <div class="col-md-2 p-0" style="margin-top:12px">
-                <div class="form-group">
-                    <label></label>
-                    <input type="submit" class="btn btn-primary" id="submitajx" name="Show" value="Show" style=" display: block; width: 100%" />
-                </div>
-                </div>
+                    <div class="col-md-2 p-0" style="margin-top:12px">
+                        <div class="form-group">
+                            <label></label>
+                            <input type="submit" class="btn btn-primary" id="submitajx" name="Show" value="Show" style=" display: block; width: 100%" />
+                        </div>
+                    </div>
 
                 }
 
@@ -247,7 +251,15 @@
                         url: '/Booking/DeleteConsignment',
                         data: { Consignment_No: d },
                         success: function (Data) {
-                            alert(Data);
+                            var successMessageDiv = $('<div>', {
+                                'class': 'alert alert-success d-flex justify-content-between align-items-center'
+
+                            }).html('<strong>Success!</strong><span>' + Data + '</span><button type="button" class="close" data-dismiss="alert">X</button></div>');
+
+
+                            $("#alertmessage").append(successMessageDiv);
+
+                           // alert(Data);
                             $('#submitajx').trigger('click');
                         }
                     });

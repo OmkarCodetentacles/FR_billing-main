@@ -5,6 +5,15 @@
 <section>
     <div class="container">
         <div class="row">
+            @if (ViewBag.Message != null)
+            {
+                var sMessage = ViewBag.Message as string;
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+            }
+
+
+          
+
             <div class="col-md-7 ">
                 <div class="form-group">
 
@@ -96,12 +105,12 @@
 
     </div>
 </section>
-@if (ViewBag.Message != null)
+@*@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
          alert("@ViewBag.Message");
     </script>
-}
+}*@
 
 
 

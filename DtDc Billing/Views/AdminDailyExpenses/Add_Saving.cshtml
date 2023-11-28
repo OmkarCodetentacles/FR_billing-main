@@ -87,6 +87,15 @@
             <div class="row">
                 <div class="col-md-12">
 
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        successMessage = "Saving Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form class="form-horizontal">
@@ -125,11 +134,11 @@
 
                         </div>
 
-               
-                <!-- /.box-body -->
-                <!-- /.box-footer -->
-                </form>
-            </div>
+
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
         </div>
     </div>
 </div>
@@ -140,7 +149,7 @@
 }
 
 
-@if (ViewBag.Success != null)
+@*@if (ViewBag.Success != null)
 {
     <script>
 
@@ -152,7 +161,7 @@
 
     </script>
 
-}
+}*@
 
 
 

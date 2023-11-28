@@ -1827,7 +1827,7 @@ namespace DtDc_Billing.Controllers
 
 
                 db.Entry(Fr).State = EntityState.Modified;
-              //  db.SaveChanges();
+                db.SaveChanges();
 
                 var Reg = (from d in db.registrations
                            where d.Pfcode == franchisee.PF_Code
@@ -1855,7 +1855,7 @@ namespace DtDc_Billing.Controllers
 
 
                 db.Entry(Reg).State = EntityState.Modified;
-                //db.SaveChanges();
+                db.SaveChanges();
 
                 TempData["Success"] = "franchisee Updated  Successfully!";
                 return View(franchisee);

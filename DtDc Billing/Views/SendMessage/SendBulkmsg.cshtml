@@ -11,164 +11,173 @@
 <div class="content-wrapper">
     <section class="container">
         <div class="row">
+         
+          
+
+            @if (TempData["Success"]!=null)
+            {
+               var successMessage = "Message Sent SuccessFully";
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            }
             <!-- left column -->
             @using (Html.BeginForm())
             {
-            <div class="col-md-6">
+                <div class="col-md-6">
 
-                <!-- general form elements -->
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Send Massage </h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <!-- form start -->
-
-                    @Html.AntiForgeryToken()
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label>Select</label>
-                            <select name="Consignname" class="form-control">
-                                <option value="P">P</option>
-                                <option value="D">D</option>
-                                <option value="E">E</option>
-                                <option value="V">V</option>
-                                <option value="I">I</option>
-                                <option value="N">N</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>From Date:</label>
-
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                @if (ViewBag.Fromdatetime != null)
-                    {
-                        <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
-        }
-        else
-        {
-            <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
-}
-                                @Html.ValidationMessage("Fromdateeror")
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <label>To Date:</label>
-
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                @if (ViewBag.ToDatetime != null)
-                    {
-                        <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
-        }
-        else
-        {
-            <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
-}
-                                @Html.ValidationMessage("Todateeror")
-                            </div>
-
-                        </div>
-
-
-
-                    </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer">
-                        <button type="submit" name="submitbtn" class="btn btn-primary">Submit</button>
-                    </div>
-
-                </div>
-                <!-- /.box -->
-                <!-- Form Element sizes -->
-                <!-- /.box -->
-
-                <div class="box box-primary">
-                    <div class="box-body">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
                         <div class="box-header with-border">
-
-                            <h3 class="box-title">Type Msg</h3>
-
+                            <h3 class="box-title">Send Massage </h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
+
+                        @Html.AntiForgeryToken()
                         <div class="box-body">
-                            <textarea name="message" rows="10" cols="50"> </textarea>
+                            <div class="form-group">
+                                <label>Select</label>
+                                <select name="Consignname" class="form-control">
+                                    <option value="P">P</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="V">V</option>
+                                    <option value="I">I</option>
+                                    <option value="N">N</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>From Date:</label>
+
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    @if (ViewBag.Fromdatetime != null)
+                                    {
+                                        <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                                    }
+                                    else
+                                    {
+                                        <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                                    }
+                                    @Html.ValidationMessage("Fromdateeror")
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>To Date:</label>
+
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    @if (ViewBag.ToDatetime != null)
+                                    {
+                                        <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                                    }
+                                    else
+                                    {
+                                        <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                                    }
+                                    @Html.ValidationMessage("Todateeror")
+                                </div>
+
+                            </div>
+
+
+
                         </div>
-                       
+                        <!-- /.box-body -->
+
                         <div class="box-footer">
-                            <button type="submit" value="msagsend" name="submitbtn" class="btn btn-primary">Send</button>
+                            <button type="submit" name="submitbtn" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                    <!-- Form Element sizes -->
+                    <!-- /.box -->
+
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <div class="box-header with-border">
+
+                                <h3 class="box-title">Type Msg</h3>
+
+                            </div>
+                            <!-- /.box-header -->
+                            <!-- form start -->
+                            <div class="box-body">
+                                <textarea name="message" rows="10" cols="50"> </textarea>
+                            </div>
+
+                            <div class="box-footer">
+                                <button type="submit" value="msagsend" name="submitbtn" class="btn btn-primary">Send</button>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
-    
-            </div>
             }
             <!--/.col (left) -->
             <!-- right column -->
-                <div class="col-md-6">
-                    <div class="box box-primary">
-                        <div class="box-body">
-                            <table id="example1" class="table table-striped table-bordered">
-                                <thead>
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table id="example1" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sender Phone</th>
+                                    <th>Consignment No</th>
+                                    <th>Sender</th>
+                                    <th>Destination</th>
+                                    <th>Charge Total</th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tr>
+                                @foreach (var item in Model)
+                                {
                                     <tr>
-                                        <th>Sender Phone</th>
-                                        <th>Consignment No</th>
-                                        <th>Sender</th>
-                                        <th>Destination</th>
-                                        <th>Charge Total</th>
-
-
-
+                                        <td>@item.sender_phone</td>
+                                        <td>@item.Consignment_No</td>
+                                        <td>@item.Sender</td>
+                                        <td>@item.Destination</td>
+                                        <td>@item.Charges_Total</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    </tr>
-                                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.sender_phone</td>
-                            <td>@item.Consignment_No</td>
-                            <td>@item.Sender</td>
-                            <td>@item.Destination</td>
-                            <td>@item.Charges_Total</td>
-                        </tr>
-    }
-                                </tbody>
+                                }
+                            </tbody>
 
-                            </table>
-                        </div>
-
-                        <!--/.col (right) -->
+                        </table>
                     </div>
+
+                    <!--/.col (right) -->
                 </div>
-                    <!-- /.row -->
+            </div>
+            <!-- /.row -->
 
 
 
-                    <div>
+            <div>
 
-                    </div>
+            </div>
+        </div>
 </section>
 
 </div>
 
-@if (TempData["Success"] == "sent")
+@*@if (TempData["Success"] == "sent")
 {
     <script>
         alert("Message Sent SuccessFully");
     </script>
-}
+}*@
 
 
 <script type="text/javascript">

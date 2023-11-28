@@ -72,6 +72,14 @@
         <!-- Content Header (Page header) -->
         <div class="box-body1" style="padding:15px">
             <div class="row">
+                @{
+                    var successMessage = ViewBag.success as string;
+                }
+
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                }
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Consignment No</label>
@@ -891,13 +899,13 @@
                                     <div class="row">
                                         <div class="col-md-12 text-right">
 
-                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="">Save and Print</button>
+                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="submit">Save and Print</button>
                                             <button type="submit" value="Save" class="btn btn-info btn-sm">Save</button>
 
                                             @*<a href="@Url.Action("Printcashcounter","Booking")"  class="btn btn-default btn-flat">Print</a>*@
 
-                                            <button type="submit" value="Sms" name="Submit" class="btn btn-success btn-sm">Save With SMS</button>
-                                            <button type="submit"  value="Clear" class="btn btn-danger btn-sm">Clear</button>
+                                            <button type="submit" value="Sms" name="Submit" class="btn btn-success btn-sm" id="submit">Save With SMS</button>
+                                            <button type="submit" value="Clear" class="btn btn-danger btn-sm" id="submit">Clear</button>
                                         </div>
 
                                     </div>
@@ -916,9 +924,30 @@
     </div>
     <!-- /.content-wrapper -->
 }
+
 <script>
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    function showLoader() {
+
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
+
+
+    $(document).on('click', '#submit', function () {
+
+      
+        scrollToTop();
+        showLoader();
+    });
+</script>
+@*<script>
     $(document).ready(function () {
-        debugger;
+
     $('#uploadBtn').on('click', function () {
 
 
@@ -936,7 +965,7 @@
 });
 
 
-</script>
+</script>*@
 
 <!-- Modal -->
 <div class="example-modal">
@@ -2354,11 +2383,11 @@ $(document).ready(function () {
     </script>
 }
 
-@if (ViewBag.Success != null)
+@*if (ViewBag.Success != null)
 {
     <script>
 
-        $(document).ready(function () {
+       // $(document).ready(function () {
 
             alert('Consignment Added SuccessFully');
             //document.getElementById('overlayBlock').style.display = 'none';
@@ -2367,7 +2396,7 @@ $(document).ready(function () {
 
     </script>
 
-}
+}*@
 
 @if (ViewBag.Discount != null && ViewBag.Discount != 0)
 {
@@ -2591,3 +2620,4 @@ $(document).ready(function () {
 
 <a id="savecon" style="" href="" download>
 </a>
+

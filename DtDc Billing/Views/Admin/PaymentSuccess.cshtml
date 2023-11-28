@@ -15,15 +15,15 @@
                 <div class="choice__title">
                     @if (TempData["msg"] != null)
                     {
-                        <div class="alert alert-success">
-                            <strong>Success!</strong> @TempData["msg"]
-                        </div>
+                        var successMessage = TempData["msg"] as string;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+
                     }
                     else if (TempData["error"] != null)
                     {
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong> @TempData["error"]
-                        </div>
+                        var errorMessage = TempData["error"] as string;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+
                     }
                     <h6 class="text-center wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">Our Plans</h6>
                     <h2 class="text-center wow animate__animated animate__fadeInUp">Mosto Plans for Everyone</h2>
@@ -33,7 +33,7 @@
                         dolor sit amet, consectetur adipiscing elit. Quisque tristique
                         tincidunt arcu.
                     </p>
-            </div>
+                </div>
                 <div class="row">
                     <input type="submit" value="Login" class="btn btn-primary">
                 </div>

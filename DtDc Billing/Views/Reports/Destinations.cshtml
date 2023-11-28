@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EmpBilling.EntityFr.Transaction>
+﻿@model IEnumerable<EmpBilling.EntityFr.Destinations>
 
 @{
     ViewBag.Title = "Destinations";
@@ -11,7 +11,17 @@
             <div class="box box-info" style="padding: 16px 16px !important">
                 <div class="box-header with-border">
                     <h4> New Destination</h4>
+
                 </div><!-- /.box-header -->
+                @{
+                    var successMessage = TempData["Success"] as string;
+                }
+
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    successMessage = "Destination Added SuccessFully!!";
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                }
                 <div class="box-body">
                     @using (Html.BeginForm("Create", "Destinations", FormMethod.Post))
                     {
@@ -88,7 +98,7 @@
     </div>
 </section>
 
-@if (TempData["Success"] != null)
+@@*if (TempData["Success"] != null)
 {
     <script>
 
@@ -100,4 +110,4 @@
 
     </script>
 
-}
+}*@

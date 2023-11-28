@@ -53,7 +53,15 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
 
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        successMessage = "Payment Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <!-- /.box-header -->
                     <!-- form start -->
                     <div class="form-horizontal">
@@ -191,7 +199,7 @@
 <!-- /.content-wrapper -->
 
 
-@if (ViewBag.Success != null)
+@*@if (ViewBag.Success != null)
 {
     <script>
 
@@ -203,7 +211,7 @@
 
     </script>
 
-}
+}*@
 
 
 <script>

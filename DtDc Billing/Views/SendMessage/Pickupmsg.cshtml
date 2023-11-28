@@ -3,7 +3,15 @@
     ViewBag.Title = "Pickupmsg";
     Layout = "~/Views/Shared/AdminCashCounterLayout.cshtml";
 }
+@{
+    var successMessage = TempData["Success"] as string;
+}
 
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    successMessage = "Message Sent SuccessFully";
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+}
 <link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
 <div class="content-wrapper">
     <section class="container">
@@ -65,11 +73,11 @@
                             <tbody>
                                 </tr>
                                 @foreach (var item in ViewBag.pickuptable)
-                {
-                    <tr>
-                        <td>@item.Mobile_No</td>
-                        <td>@item.Consignment_No</td>
-                        <td>@item.datetime_msg</td>
+                                {
+                                    <tr>
+                                        <td>@item.Mobile_No</td>
+                                        <td>@item.Consignment_No</td>
+                                        <td>@item.datetime_msg</td>
 
 
 
@@ -78,33 +86,33 @@
 
 
 
-                    </tr>
-}
+                                    </tr>
+                                }
                             </tbody>
 
                         </table>
                     </div>
                 </div>
 
-                    <!--/.col (right) -->
-                </div>
-                <!-- /.row -->
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
 
 
 
-                <div>
+            <div>
 
-                </div>
-</section>
+            </div>
+    </section>
 
 </div>
 
-@if (TempData["Success"] == "sent")
+@*@if (TempData["Success"] == "sent")
 {
     <script>
         alert("Message Sent SuccessFully");
     </script>
-}
+}*@
 
 
 <script type="text/javascript">

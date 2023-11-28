@@ -42,6 +42,15 @@
             <div class="row">
                 <div class="col-md-12">
 
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        successMessage = "Expenses Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <!-- /.box-header -->
                     <!-- form start -->
                     <div class="form-horizontal">
@@ -71,7 +80,7 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="box-footer">
-                                        
+
                                         <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin: 14px 0" />
                                     </div>
                                 </div>
@@ -106,7 +115,7 @@
 </style>
 
 
-@if (ViewBag.Success != null)
+@*@if (ViewBag.Success != null)
 {
     <script>
 
@@ -118,6 +127,6 @@
 
     </script>
 
-}
+}*@
 
 
