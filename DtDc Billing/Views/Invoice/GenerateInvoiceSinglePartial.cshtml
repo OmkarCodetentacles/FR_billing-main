@@ -18,9 +18,13 @@
 
         table {
             max-height: 400px !important;
-            display: inline-table !important;
+            display: list-item !important;
             overflow: auto !important;
             border: 1px solid #e5ecf7;
+        }
+
+        th {
+            width: 7.69%;
         }
     </style>
     <div class="content-wrapper">
@@ -31,7 +35,6 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-12 ">
-
                         @{
                             var successMessage = ViewBag.success as string;
                         }
@@ -113,11 +116,11 @@
                                         </div>
                                     </div>
                                     @*<label for="departmentsDropdown">Firm Name</label>
-                                        <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
+                    <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
 
 
 
-                                        @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+                    @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
                                     <div class="col-sm-12 padding-left-0">
@@ -176,7 +179,7 @@
 
                                 </div>
 
-                                <div class="row">
+                                <div class="">
                                     <div class="col-md-12">
                                         <table id="generate-invoice" class="table Generatesingleinvoice">
                                             <thead>
@@ -215,7 +218,7 @@
                                     @*<div class="box-body">*@
                                     <!-- select -->
                                     @*<div class="">*@
-                                    <div class="row">
+                                    <div class="row" style="margin:0">
                                         @*<div class="col-sm-12 col-xs-12 mb-15">*@
                                         <!-- radio -->
                                         <div class="col-md-6">
@@ -423,11 +426,11 @@
 
                                     <!-- /.box-body -->
                                     <div style="padding:20px">
-                                        @*<button type="submit" name="submit" value="Sms" class="btn btn-primary">Send Invoice From SMS</button>*@
-                                        <button type="submit" name="submit" value="Email" class="btn btn-primary" id="Generate">Send Invoice From Email</button>
+                                        <button type="submit" name="submit" value="Sms" class="btn btn-primary">Send Invoice From SMS</button>
+                                        <button type="submit" name="submit" value="Email" class="btn btn-primary">Send Invoice From Email</button>
                                         @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
                                         <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary">Generate</button>
-                                        <button type="submit" name="submit" value="Save" class="btn btn-success pull-right" id="Generate">Save</button>
+                                        <button type="submit" name="submit" value="Save" class="btn btn-success pull-right">Save</button>
                                     </div>
                                     <!-- /.box-footer -->
                                 </form>
@@ -449,7 +452,6 @@
 
         </div>
     </div>
-
 }
 <style>
 
@@ -466,7 +468,7 @@
     }
 </style>
 
-        
+
 <script>
     // Scroll to the top of the page
     function scrollToTop() {

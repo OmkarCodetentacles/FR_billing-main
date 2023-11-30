@@ -42,11 +42,12 @@
     .btn-warning {
         padding: 8px;
     }
-    .Viewinvoice th{
-         width: 7.69% !important;
+
+    .Viewinvoice th {
+        width: 7.69% !important;
     }
 </style>
-<div class="content-wrapper">
+<<div class="content-wrapper">
     <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border d-flex" style="display:flex; justify-content:space-between">
             <h4>
@@ -57,48 +58,47 @@
             <a href="@Url.Action("InvoiceZip", "Invoice")" class="btn btn-warning pull-right">Download Bundle Of Invoice</a>
 
         </div>
-        @{
-            var successMessage = TempData["success"] as string;
-            var errorMessage = TempData["error"] as string;
-        }
-
-
-        @if (!string.IsNullOrEmpty(successMessage))
-        {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-        }
-        @if (!string.IsNullOrEmpty(errorMessage))
-        {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
-        }
         <div class="box-body">
 
             <div class="row">
                 <div class="col-xs-12">
+                    @{
+                        var successMessage = TempData["success"] as string;
+                        var errorMessage = TempData["error"] as string;
+                    }
 
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                    }
 
                     @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
                     {
 
                         <!--<label for="cars">Size:</label>
-                    <select name="size">
-                        <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
-                        <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-                        <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
+        <select name="size">
+            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
+            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
+            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
                         @*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@
 
                         <!--</select>-->
 
 
                         @*<div class="col-md-5">
-                            <div class="form-group">
-                                <div class="pf-code">
-                                    <label>Firm Name</label>
-                                    <label class="Reqired">*</label>
-                                    @Html.DropDownList("FirmDetails", "-Please select-")
-                                </div>
-                            </div>
-                        </div>*@
+                <div class="form-group">
+                    <div class="pf-code">
+                        <label>Firm Name</label>
+                        <label class="Reqired">*</label>
+                        @Html.DropDownList("FirmDetails", "-Please select-")
+                    </div>
+                </div>
+            </div>*@
 
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
@@ -128,8 +128,8 @@
 
                         @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
-                        <div class="col-md-2">
-                            <input type="submit" class="btn btn-primary sbmt" name="submit" value="Submit" style="margin:33px auto" />
+                        <div class="col-md-1" style="padding:0">
+                            <input type="submit" class="btn btn-primary sbmt" name="submit" value="Submit" style="margin:33px auto;width:100%" />
                         </div>
 
                         <br /><br /><br /><br />
@@ -247,22 +247,22 @@
                     </table>
 
                     @*<div class="pagination">
-                        @{
-                            var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+            @{
+                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                            if (getTotalCount > 10)
-                            {
+                if (getTotalCount > 10)
+                {
 
-                                for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                                {
+                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                    {
 
-                                    <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
-                                }
-                            }
-                        }
-                    </div>*@
+                    }
+                }
+            }
+        </div>*@
                 </div>
 
                 <!-- /.box-body -->

@@ -3,27 +3,27 @@
 @using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp" }))
 {
     @Html.AntiForgeryToken()
-    <style>
-        textarea {
-            display: block;
-            width: 100%;
-            height: 34px;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            color: #555;
-            background-color: #fff;
-            background-image: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-        }
-    </style>
-    <section>
+   <style>
+       textarea {
+           display: block;
+           width: 100%;
+           height: 34px;
+           padding: 6px 12px;
+           font-size: 14px;
+           line-height: 1.42857143;
+           color: #555;
+           background-color: #fff;
+           background-image: none;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+           -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+           box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+           -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+           -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+           transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+       }
+   </style>
+       <section>
 
       
         <div class="form-horizontal" style=" padding: 20px; border: 1px solid #dddddd;">
@@ -67,249 +67,346 @@
                 <div class="form-group" style="margin-bottom:20px">
                     <div class="col-md-7">
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Company Address<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.TextAreaFor(model => model.Company_Address, new { @class = "form-control input-sm", @required = "required", @rows = 1 })
-                                @Html.ValidationMessageFor(model => model.Company_Address, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Phone Number<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", oninput = "validatePhoneNumber(this)" } })
-                                <span id="phoneValidationMessage" style="color:red"></span>
-                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Email<span style="color:red">*</span></label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Insurance</label>
-                            </div>
-                            <div class="col-md-9">
-                                <div style="display:flex;width:100%">
-                                    <div style=" width: 94%;">
-                                        @Html.EditorFor(model => model.Insurance, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        @Html.ValidationMessageFor(model => model.Insurance, "", new { @class = "text-danger" })
-                                    </div>
-                                    <span id="royalty-per">
-                                        %
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Minimum Risk Surcharge</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.DropDownList("Minimum_Risk_Charge", null, htmlAttributes: new { @class = "form-control input-sm" })
-                                @Html.ValidationMessageFor(model => model.Minimum_Risk_Charge, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Other Details</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Other_Details, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.Other_Details, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
+         
+           <div class="form-horizontal" style=" padding: 20px; border: 1px solid #dddddd;">
 
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Topay Charge</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Topay_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.Topay_Charge, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">COD Charge</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Cod_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.Cod_Charge, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Fuel Surcharge</label>
-                            </div>
-                            <div class="col-md-9">
-                                <div style="display:flex;width:100%">
-                                    <div style="width:94%">
-                                        @Html.EditorFor(model => model.Fuel_Sur_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        @Html.ValidationMessageFor(model => model.Fuel_Sur_Charge, "", new { @class = "text-danger" })
-                                    </div>
-                                    <span id="royalty-per">
-                                        %
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">GEC Fuel Surcharge</label>
-                            </div>
-                            <div class="col-md-9">
-                                <div style="display:flex;width:100%">
-                                    <div style="width:94%">
-                                        @Html.EditorFor(model => model.Gec_Fuel_Sur_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        @Html.ValidationMessageFor(model => model.Gec_Fuel_Sur_Charge, "", new { @class = "text-danger" })
-                                    </div>
-                                    <span id="royalty-per">
-                                        %
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">Royalty Charges</label>
-                            </div>
-                            <div class="col-md-9">
-                                <div style="display:flex;width:100%">
-                                    <div class="" style=" width: 94%;">
-                                        @Html.EditorFor(model => model.Royalty_Charges, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                        @Html.ValidationMessageFor(model => model.Royalty_Charges, "", new { @class = "text-danger" })
-                                    </div>
-                                    <span id="royalty-per">
-                                        %
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+               <div class="row">
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Company Id<span style="color:red">*</span></label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Company_Id, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                   @Html.ValidationMessage("C_IdError")
+                                   @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Company Name<span style="color:red">*</span></label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Company_Name, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                   @Html.ValidationMessageFor(model => model.Company_Name, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group" style="margin-bottom:20px">
+                       <div class="col-md-7">
 
-                        @Html.Hidden("Pf_code")
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">GST No</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Gst_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.Gst_No, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Company Address<span style="color:red">*</span></label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.TextAreaFor(model => model.Company_Address, new { @class = "form-control input-sm", @required = "required", @rows = 1 })
+                                   @Html.ValidationMessageFor(model => model.Company_Address, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Phone Number<span style="color:red">*</span></label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" } })
+                                   @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Email<span style="color:red">*</span></label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                   @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Insurance</label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div style="display:flex;width:100%">
+                                       <div style=" width: 94%;">
+                                           @Html.EditorFor(model => model.Insurance, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                           @Html.ValidationMessageFor(model => model.Insurance, "", new { @class = "text-danger" })
+                                       </div>
+                                       <span id="royalty-per">
+                                           %
+                                       </span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Minimum Risk Surcharge</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.DropDownList("Minimum_Risk_Charge", null, htmlAttributes: new { @class = "form-control input-sm" })
+                                   @Html.ValidationMessageFor(model => model.Minimum_Risk_Charge, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Other Details</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Other_Details, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.Other_Details, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
 
-                                <label class="">Pan No</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Topay Charge</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Topay_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.Topay_Charge, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">COD Charge</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Cod_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.Cod_Charge, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Fuel Surcharge</label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div style="display:flex;width:100%">
+                                       <div style="width:94%">
+                                           @Html.EditorFor(model => model.Fuel_Sur_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                           @Html.ValidationMessageFor(model => model.Fuel_Sur_Charge, "", new { @class = "text-danger" })
+                                       </div>
+                                       <span id="royalty-per">
+                                           %
+                                       </span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">GEC Fuel Surcharge</label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div style="display:flex;width:100%">
+                                       <div style="width:94%">
+                                           @Html.EditorFor(model => model.Gec_Fuel_Sur_Charge, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                           @Html.ValidationMessageFor(model => model.Gec_Fuel_Sur_Charge, "", new { @class = "text-danger" })
+                                       </div>
+                                       <span id="royalty-per">
+                                           %
+                                       </span>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">Royalty Charges</label>
+                               </div>
+                               <div class="col-md-9">
+                                   <div style="display:flex;width:100%">
+                                       <div class="" style=" width: 94%;">
+                                           @Html.EditorFor(model => model.Royalty_Charges, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                           @Html.ValidationMessageFor(model => model.Royalty_Charges, "", new { @class = "text-danger" })
+                                       </div>
+                                       <span id="royalty-per">
+                                           %
+                                       </span>
+                                   </div>
+                               </div>
+                           </div>
 
-                                <label class="">D</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.D_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.D_Docket, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
 
-                                <label class="">M</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.P_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.P_Docket, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label class="">E</label>
-                            </div>
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.E_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                @Html.ValidationMessageFor(model => model.E_Docket, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-7">
+                           @Html.Hidden("Pf_code")
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">GST No</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Gst_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.Gst_No, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+
+                                   <label class="">Pan No</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+
+                                   <label class="">D</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.D_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.D_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+
+                                   <label class="">M</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.P_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.P_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">E</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.E_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.E_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">V</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.V_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.V_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">I</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.I_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.I_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">N</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.N_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.N_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <div class="col-md-7">
+                           <div class="row">
+                               <div class="col-md-3">
+                                   <label class="">G</label>
+                               </div>
+                               <div class="col-md-9">
+                                   @Html.EditorFor(model => model.G_Docket, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                   @Html.ValidationMessageFor(model => model.G_Docket, "", new { @class = "text-danger" })
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="col-md-7">
+                       <input type="hidden" id="selected_tab" name="selected_tab" value="1" />
+                       <div class="form-group">
+                           <div style=" text-align: end;">
+                               <input type="submit" value="Next" class="btn btn-success pull-right" />
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
 
                         <div class="row">
                             <div class="col-md-3">
@@ -376,6 +473,9 @@
 
 
         </div>
+
+           </div>
+                 
 
 
     </section>
