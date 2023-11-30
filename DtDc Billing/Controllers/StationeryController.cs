@@ -108,8 +108,13 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpGet]
-        public ActionResult Remaining()
+        public ActionResult Remaining(string PfCode=null, string RemainingType=null)
         {
+            if (PfCode == null)
+            {
+                 PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            }
             List<RemainingModel> list = new List<RemainingModel>();
 
             List<SelectListItem> items = new List<SelectListItem>();
@@ -121,84 +126,104 @@ namespace DtDc_Billing.Controllers
             items.Add(new SelectListItem { Text = "RemainingDone", Value = "RemainingDone" });
 
             ViewBag.RemainingType = items;
-
+    
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code == pfcode), "PF_Code", "PF_Code");
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
             //return View(st);
+
+            var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
+            {
+
+                S_id = x.S_id,
+                startno = x.startno,
+                endno = x.endno,
+                Expiry_Date = x.Expiry_Date,
+                temprecdate = x.temprecdate,
+                totalCount = x.totalCOUNTER ?? 0
+
+            }).ToList();
+
+
+            ViewBag.type = RemainingType;
+
+            if (obj != null)
+            {
+                return View(obj);
+            }
             return View(list);
         }
 
 
-        [HttpPost]
-        public ActionResult Remaining(string PfCode, string RemainingType)
-        {
+        //[HttpPost]
+        //public ActionResult Remaining(string PfCode, string RemainingType)
+        //{
 
 
-            //var st = db.Stationaries.Where(m => m.Pf_code == PfCode || PfCode == "").ToList();
+        //    //var st = db.Stationaries.Where(m => m.Pf_code == PfCode || PfCode == "").ToList();
 
-            List<string> str = new List<string>();
+        //    List<string> str = new List<string>();
 
-            PfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    PfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            ViewBag.PfCode = new SelectList(db.Franchisees.Where(d => d.PF_Code == PfCode), "PF_Code", "PF_Code");
+        //    ViewBag.PfCode = new SelectList(db.Franchisees.Where(d => d.PF_Code == PfCode), "PF_Code", "PF_Code");
 
-            List<SelectListItem> items = new List<SelectListItem>();
+        //    List<SelectListItem> items = new List<SelectListItem>();
 
-            items.Add(new SelectListItem { Text = "All", Value = "All" });
+        //    items.Add(new SelectListItem { Text = "All", Value = "All" });
 
-            items.Add(new SelectListItem { Text = "Remaining", Value = "Remaining" });
+        //    items.Add(new SelectListItem { Text = "Remaining", Value = "Remaining" });
 
-            items.Add(new SelectListItem { Text = "RemainingDone", Value = "RemainingDone" });
+        //    items.Add(new SelectListItem { Text = "RemainingDone", Value = "RemainingDone" });
 
-            ViewBag.RemainingType = items;
+        //    ViewBag.RemainingType = items;
 
-            //if (PfCode == "")
-            //{
-            //    var obj = db.getRemainingAll().Select(x => new RemainingModel
-            //    {
-
-
-            //        startno = x.startno,
-            //        endno = x.endno,
-            //        Expiry_Date = x.Expiry_Date,
-            //        temprecdate = x.temprecdate,
-            //        totalCount = x.totalCOUNTER ?? 0
-
-            //    }).ToList();
+        //    //if (PfCode == "")
+        //    //{
+        //    //    var obj = db.getRemainingAll().Select(x => new RemainingModel
+        //    //    {
 
 
+        //    //        startno = x.startno,
+        //    //        endno = x.endno,
+        //    //        Expiry_Date = x.Expiry_Date,
+        //    //        temprecdate = x.temprecdate,
+        //    //        totalCount = x.totalCOUNTER ?? 0
 
-            //    ViewBag.type = RemainingType;
-
-            //    return View(obj);
-            //}
-            //else
-            //{
-                var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
-                {
-
-
-                    startno = x.startno,
-                    endno = x.endno,
-                    Expiry_Date = x.Expiry_Date,
-                    temprecdate = x.temprecdate,
-                    totalCount = x.totalCOUNTER ?? 0
-
-                }).ToList();
-
-
-                ViewBag.type = RemainingType;
-                return View(obj);
-
-
-            //}
-
-            //return View();
+        //    //    }).ToList();
 
 
 
-        }
+        //    //    ViewBag.type = RemainingType;
+
+        //    //    return View(obj);
+        //    //}
+        //    //else
+        //    //{
+        //        var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
+        //        {
+
+        //            S_id=x.S_id,
+        //            startno = x.startno,
+        //            endno = x.endno,
+        //            Expiry_Date = x.Expiry_Date,
+        //            temprecdate = x.temprecdate,
+        //            totalCount = x.totalCOUNTER ?? 0
+
+        //        }).ToList();
+
+
+        //        ViewBag.type = RemainingType;
+        //        return View(obj);
+
+
+        //    //}
+
+        //    //return View();
+
+
+
+        //    }
 
 
         public JsonResult RemainingConsignments(string startno, string endno)
@@ -378,9 +403,32 @@ Select(e => new
 
         }
 
+        [HttpGet]
+        public ActionResult DeleteStationary(int stationary_id, string type, bool isDelete = false)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            if (isDelete)
+            {
+                var checkStationaryNo = db.Stationaries.Where(x => x.S_id == stationary_id && x.Pf_code == strpf).FirstOrDefault();
+                if (checkStationaryNo == null)
+                {
+                    TempData["error"] = "Invalid Stationary No";
 
+                }
+                else
+                {
+                    db.Stationaries.Remove(checkStationaryNo);
+                    db.SaveChanges();
+                    TempData["success"] = " Stationary Delete successfully";
+                }
+               
+            }
+            return RedirectToAction("Remaining", new { PfCode = strpf, RemainingType=type });
+           
 
+        
+        }
 
 
     }
