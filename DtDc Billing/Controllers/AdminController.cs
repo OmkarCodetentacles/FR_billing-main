@@ -1906,7 +1906,8 @@ namespace DtDc_Billing.Controllers
                         {
 
                             var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
-                            franchises.StampFilePath = "http://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+                           // franchises.StampFilePath = "https://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+                            franchises.StampFilePath=newFilePath;
                             db.SaveChanges();
                         }
                         catch (Exception e)

@@ -9,9 +9,10 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <style>
-    .showd{
-        padding:7px !important;
-        height:auto !important
+    .showd {
+        padding: 7px !important;
+        height: auto !important;
+      
     }
     .main-footer{
         margin-left:0;
@@ -21,7 +22,7 @@
     }
 
     .Ramainingtable1 th {
-        width: 10% !important;
+        width: 40% !important;
     }
 
     .Ramainingtable2 th {
@@ -32,6 +33,10 @@
         display: list-item !important;
         overflow: auto !important;
         border: 1px solid #e5ecf7;
+    }
+
+    .wide-header {
+        width: 600px; /* Adjust the width as needed */
     }
 </style>
 
@@ -50,13 +55,26 @@
 
 
                 <div class="col-sm-12">
+                    @{
+                        var successMessage = @TempData["success"] as string;
+                        var errorMessage = TempData["error"] as string;
+                    }
 
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
+                    }
+                    
                     <div class="form-horizontal">
 
 
 
 
-                        @using (Html.BeginForm())
+                        @using (Html.BeginForm("Remaining", "Stationery", FormMethod.Get))
                         {
 
 
@@ -107,10 +125,11 @@
                             <th>End No </th>
                             <th>No Of Consignment</th>
                             <th>Used</th>
-                            <th>Remining</th>
-                            <th>Action</th>
+                            <th>Remining</th>Action
+                            <th style="width:500px;">Action</th>
                         </tr>
                     </thead>
+                    <tbody>
                     <tbody>
                         @{
                             var sum10 = 0;
@@ -178,7 +197,13 @@
 
                                             </td>
 
-                                            <td><input id="showd" class="showd" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /></td>
+                                            <td style="width:200px;">
+                                                <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /><br/><br />
+                                              @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id=i.S_id, isDelete = true,type= "RemainingDone" }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
+                                                @*<br/>
+                                                <input id="deleteId" class="" type="button" value="Delete" data-datac="@i.S_id"/>*@
+                                            </td>
+                                    
                                         </tr>
                                     }
                                     j++;
@@ -245,7 +270,13 @@
 
                                             </td>
 
-                                            <td><input id="showd" class="showd" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /></td>
+                                            <td style="width:200px;">
+                                                <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno"/><br/><br />
+                                               @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isDelete = true,type= "Remaining" }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
+                                              
+                                                @*<input id="deleteId" class="" type="button" value="Delete" data-datac="@i.S_id" />*@
+
+                                            </td>
                                         </tr>
                                     }
                                     j++;
@@ -311,7 +342,21 @@
 
                                         </td>
 
-                                        <td><input id="showd" class="showd" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /></td>
+                                        <td style="width:200px;">
+                                            <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno"  /><br /><br />
+                                            @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isdelete = true, type = "All" }, new { onclick = "return confirm('do you really want to delete this invoice?')", @class = "delete-btn" })
+
+                                            @*@using (Html.BeginForm("DeleteStationary", "Stationery", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="stationary_id" value="@i.S_id" />
+                                                <input type="hidden" name="isdelete" value="true" />
+                                                <input type="hidden" name="type" value="All" />
+
+                                                <button type="submit" onclick="return confirm('Do you really want to delete this Stationary?')" class="delete-btn">Delete</button>
+                                            }*@
+
+                                        </td>
                                     </tr>
                                     j++;
                                 }
@@ -478,11 +523,9 @@
 </script>
 
 <script>
-
-    $(document).ready(function () {
-        $('.showd').click(function () {
-
-
+    $(document).on('click', '#showd', function () {
+   
+            
             var startno = $(this).data('datac');
             var endno = $(this).data('datad');
 
@@ -500,6 +543,7 @@
 
                             + "</tr>";
                     });
+                   
                     $('#example2 tbody').append(rows);
 
 
@@ -507,7 +551,8 @@
                 }
             });
 
-        });
+        
+       
 
     });
 </script>

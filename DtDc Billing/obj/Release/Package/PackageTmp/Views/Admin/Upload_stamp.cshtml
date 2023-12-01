@@ -5,7 +5,11 @@
         text-align: left;
     }
 </style>
-
+<script>
+    $(document).ready(function () {
+        $("#message").hide();
+    })
+</script>
 @* @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
         {
     @Html.AntiForgeryToken() *@
@@ -23,18 +27,21 @@
 
                         <!-- /.box-header -->
 
+                        <div id="alertmessage">
+
+                        </div>
 
                         <div class="form-horizontal">
 
 
                             @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                @Html.HiddenFor(model => model.F_Id)
+            @Html.HiddenFor(model => model.F_Id)
 
 
-                                @Html.HiddenFor(model => model.PF_Code)
-                                @Html.HiddenFor(model => model.password)
-                                @Html.HiddenFor(model => model.Datetime_Fr)*@
+            @Html.HiddenFor(model => model.PF_Code)
+            @Html.HiddenFor(model => model.password)
+            @Html.HiddenFor(model => model.Datetime_Fr)*@
 
 
                             <div class="row">
@@ -42,9 +49,9 @@
                                 <div class="col-6 col-sm-6 col-md-4">
                                     <div class="form-group">
                                         @*@if (Model.StampFilePath != null)
-                                            {
-                                                <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
-                                            }*@
+                        {
+                            <img src="@Model.StampFilePath" alt="Flowers in Chania" width="160" height="100" style="object-fit: cover;">
+                        }*@
                                         <label class=""> Upload Stamp<small> (It will appear on invoice)</small> </label>
                                         <div class="">
                                             @* <form enctype="multipart/form-data">*@
@@ -61,7 +68,7 @@
                                 <div class="col-md-12" style="text-align: right;">
                                     <div class="form-group">
                                         <div class="col-6 col-sm-6 col-md-4" style="padding: 0 19px">
-                                            <input type="button" value="Save" class="btn btn-primary" id="uploadStamp" />
+                                            <input type="button" value="Save" class="btn btn-success pull-right" id="uploadStamp" />
                                         </div>
                                     </div>
 
@@ -81,47 +88,91 @@
 </form>
 
 
+
 @*}*@
 
-
 <script>
+    $(document).on('click', '#uploadStamp', function () {
+        var formData = new FormData();
+        formData.append('file', $('#file')[0].files[0]);
+        $.ajax({
+            url: '/Admin/UploadFile',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (data) {
+                var successMessage = "Stamp Uploaded Successfully!";
+                
 
-@*$(document).ready(function () {
+                    
+                var successMessageDiv = $('<div>', {
+                    'class': 'alert alert-success d-flex justify-content-between align-items-center'
+                   
+                }).html('<strong>Success!</strong><span>' + successMessage + '</span><button type="button" class="close" data-dismiss="alert">X</button></div>');
+               
 
-    var data = '@TempData["Success"]';
+                $("#alertmessage").append(successMessageDiv);
 
-    if (data != null && data!="")
-    {
-        alert(data);
-    }
-
-
-});*@
-
-</script>
-
-
-<script>
-    $(function () {
-        $('#uploadStamp').click(function () {
-            debugger;
-            var formData = new FormData();
-            formData.append('file', $('#file')[0].files[0]);
-            $.ajax({
-                url: '/Admin/UploadFile',
-                data: formData,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function (data) {
-                    alert('File uploaded successfully!');
-                    // Save file path in database
-                },
-                error: function () {
-                    alert('Error uploading file!');
-                }
-            });
+               
+            },
+            error: function () {
+                $("#errormessage").html('<span>' + "Error Uploading File" + '</span>');
+                alert('Error uploading file!');
+                $("#error-alert").show();
+            }
         });
     });
+</script>
+
+<script>
+    //$(document).ready(function () {
+    //    $("#uploadStamp").click(function () {
+    //        alert("Document Ready")
+    //    });
+    //})
+    //$(function () {
+    //    alert("submit button");
+    //    $('#uploadStamp').click(function () {
+    //        alert("submit button");
+    //        var formData = new FormData();
+    //        formData.append('file', $('#file')[0].files[0]);
+    //        $.ajax({
+    //            url: '/Admin/UploadFile',
+    //            data: formData,
+    //            processData: false,
+    //            contentType: false,
+    //            type: 'POST',
+    //            success: function (data) {
+    //                alert(data)
+    //                var data = "Stamp Uploaded Successfully!";
+    //                var successAlert = $('<div>', {
+    //                    'class': 'alert alert-success d-flex justify-content-between align-items-center',
+    //                    'id': 'success-alert',
+    //                    'style': 'display:none;'
+    //                }).html('<strong>Success!</strong><span id="successmessage">' + data + '</span><button type="button" class="close" data-dismiss="alert">X</button>');
+
+    //                // Append the success alert to a container (e.g., the body)
+    //                $('body').append(successAlert);
+
+    //                // Show the success alert
+    //                successAlert.show();
+    //            },
+    //            error: function () {
+    //                $("#errormessage").html('<span>' + "Error Uploading File" + '</span>');
+    //                alert('Error uploading file!');
+    //                $("#error-alert").show();
+    //            }
+    //        });
+    //    });
+    //});
 
 </script>
+
+<style>
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+</style>

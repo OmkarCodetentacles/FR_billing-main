@@ -53,36 +53,60 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
 
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        successMessage = "Payment Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <!-- /.box-header -->
                     <!-- form start -->
                     <div class="form-horizontal">
 
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-7">
-                                    <label for="inputEmail3" class="">Consignment_No<span class="Reqired">*</span></label>
-                                    <div class="">
-                                        @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Consignment_No" } })
-                                        @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
+                                <div class="col-md-7" style="margin-bottom: 20px;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="inputEmail3" class="">Consignment_No<span class="Reqired">*</span></label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Consignment_No" } })
+                                            @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
+                                  
+                                </div>
+                                <div class="col-md-7" style="margin-bottom: 20px;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="inputEmail3" class="">amount<span class="Reqired">*</span></label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter amount" } })
+                                            @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-md-7" style="margin-bottom: 20px;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="inputPassword3" class="">Description_<span class="Reqired">*</span></label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.TextAreaFor(model => model.Description_, new { htmlAttributes = new { @class = "form-control", placeholder = "Description", rows = "5" } })
+                                            @Html.ValidationMessageFor(model => model.Description_, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    
+                                    
                                 </div>
                                 <div class="col-md-7">
-                                    <label for="inputEmail3" class="">amount<span class="Reqired">*</span></label>
-                                    <div class="">
-                                        @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter amount" } })
-                                        @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <label for="inputPassword3" class="">Description_<span class="Reqired">*</span></label>
-                                    <div class="">
-                                        @Html.TextAreaFor(model => model.Description_, new { htmlAttributes = new { @class = "form-control", placeholder = "Description", rows = "5" } })
-                                        @Html.ValidationMessageFor(model => model.Description_, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="box-footer">
+                                    <div >
 
                                         <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin-top:10px" />
                                     </div>
@@ -191,7 +215,7 @@
 <!-- /.content-wrapper -->
 
 
-@if (ViewBag.Success != null)
+@*@if (ViewBag.Success != null)
 {
     <script>
 
@@ -203,7 +227,7 @@
 
     </script>
 
-}
+}*@
 
 
 <script>

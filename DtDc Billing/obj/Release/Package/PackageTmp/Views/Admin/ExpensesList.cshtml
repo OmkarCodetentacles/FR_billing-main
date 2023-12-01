@@ -18,6 +18,25 @@
                     <div class="box-header with-border">
                         <h4>Expenses</h4>
                     </div>
+                    @{
+                        var successMessage = TempData["updated"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @{
+                        var deleteMessage = TempData["delete"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(deleteMessage))
+                    {
+
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", deleteMessage))
+                    }
+
                     <div class="form-horizontal">
                         <div class="box-body">
                             @using (Html.BeginForm("ExpensesList", "Admin", FormMethod.Post))
@@ -25,13 +44,13 @@
                                 @*<div class="col-md-2">
 
 
-                                        <label>PF Code</label>
-                                        <div class="pf-code">
-                                            @Html.DropDownList("Pf_Code", null, "-Please select-", new { @class = "form-control" })
+                        <label>PF Code</label>
+                        <div class="pf-code">
+                            @Html.DropDownList("Pf_Code", null, "-Please select-", new { @class = "form-control" })
 
-                                        </div>
+                        </div>
 
-                                    </div>*@
+                    </div>*@
 
                                 <div class="col-md-2">
 
@@ -182,19 +201,19 @@
 
     </section>
     </div>
-    @if (TempData["updated"] != null)
+    @*@if (TempData["updated"] != null)
     {
         <script>
         alert('@TempData["updated"]');
         </script>
-    }
+    }*@
 
-    @if (TempData["delete"] != null)
+    @*@if (TempData["delete"] != null)
     {
         <script>
         alert('@TempData["delete"]');
         </script>
-    }
+    }*@
 
 
     <script>

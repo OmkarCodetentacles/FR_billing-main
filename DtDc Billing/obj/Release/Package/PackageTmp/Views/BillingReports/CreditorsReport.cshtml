@@ -28,111 +28,125 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-12">
+                    @{
 
+                        var errorMessage = TempData["error"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                    }
                     <div class="form-horizontal">
 
 
                         @*<div class="row">
-                            <div class="">*@
-                                <div class="form-group">
+            <div class="">*@
+                        <div class="form-group">
 
 
-                                    @using (Html.BeginForm())
-                                    {
+                            @using (Html.BeginForm())
+                            {
 
-                                        if (ViewBag.Custid != null)
-                                        {
-                                            <div class="col-md-2 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>CustomerId</label>
-                                              
-                                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid"  type="text">
-                                            </div>
-                                                </div>
-                                        }
-                                        else
-                                        {
-                                <div class="col-md-2 padding-left-0">
-                                    <div class="form-group">
-                                        <label>CustomerId</label>
-                                        <input name="Custid" style="margin-right:10px" class="form-control" id="custid"  type="text">
-                                    </div>
-                                    </div>
-                                    }
-                                    if (ViewBag.fromdate != null)
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date <span style="color:red" >*</span>: </label>
-                                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate"  type="text" required>
-                                    </div>
-                                    </div>
-                                    }
-                                    else
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date <span style="color:red">*</span>:</label>
-                                        <input name="Fromdatetime" class="form-control" id="datepicker"  type="text" required>
-                                    </div>
-                                    </div>
-                                    }
+                                if (ViewBag.Custid != null)
+                                {
+                                    <div class="col-md-1 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
 
-                                    if (ViewBag.todate != null)
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>To Date <span style="color:red">*</span>:</label>
-                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control"  id="datepicker1" type="text" required>
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                        </div>
                                     </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-1 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                        </div>
                                     </div>
-                                    }
-
-                                    else
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>To Date <span style="color:red">*</span>:</label>
-                                        <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                }
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span>: </label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" required>
+                                        </div>
                                     </div>
-                                    </div>
-                                    }
-
+                                }
+                                else
+                                {
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>Status</label>
-                                       
+                                            <label>From Date <span style="color:red">*</span>:</label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span>:</label>
+                                            <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span>:</label>
+                                            <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Status</label>
+
                                         <select name="status" class="form-control">
                                             <option value="Paid">Paid</option>
                                             <option value="Unpaid">Unpaid</option>
                                             <option value="both">both</option>
                                         </select>
-                                            </div>
                                     </div>
+                                </div>
 
-                                    <div class="col-md-2">
-                                        <div class="form-group" style="margin-top:22px">
-                                        <label></label>
-                                        <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
-                                    </div>
-                                        </div>
+                                <div class="col-lg-1 col-md-2 col-sm-4 col-xs-12" style="margin-top:22px">
 
-                                    <div class="col-md-12  pull-right padding-left-0" >
-                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt" style="margin-top: 5px;" />
+                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width: 100%" />
 
-                                        <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
+                                </div>
 
-                                        <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style="margin-top: 5px; padding: 15px; line-height: 0;" />
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="margin-top:22px">
 
-                                    </div>
-
-                                    }
+                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt" style=" width:100% !important" />
 
 
 
                                 </div>
-                            @*</div>
-                        </div>*@
+                                <div class="col-lg-1 col-md-2 col-sm-4 col-xs-12 " style="margin-top:22px">
+                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" />
+
+                                </div>
+                                <div class="col-lg-1 col-md-2 col-sm-4 col-xs-12" style="margin-top:22px">
+                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style=" padding: 15px; line-height: 0; width: 100%" />
+
+                                </div>
+
+                            }
+
+
+
+                        </div>
+                        @*</div>
+            </div>*@
 
                         <table id="table_display_block" class="table Creditorsreport">
                             <thead>
@@ -279,90 +293,94 @@
             </div>
         </div>
     </div>
- 
 
-    </div>
-    @functions {
 
-        private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+</div>
 
-        public int getdays(DateTime invoicedate)
-        {
 
-            DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
-            var day = (indianTime.Date - invoicedate.Date).TotalDays;
-            return Convert.ToInt32(day);
-        }
-    }
 
-    @if (ViewBag.select != null)
-    {
-        <script>
+
+                                @functions {
+
+                                    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+
+                                    public int getdays(DateTime invoicedate)
+                                    {
+
+                                        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+                                        var day = (indianTime.Date - invoicedate.Date).TotalDays;
+                                        return Convert.ToInt32(day);
+                                    }
+                                }
+
+                                @if (ViewBag.select != null)
+                                {
+                                    <script>
                 $(document).ready(function() {
         $("select").val('@ViewBag.select');
             });
-        </script>
-    }
+                                    </script>
+                                }
 
-    @if (TempData["error"] != null)
-    {
-        <script>
-    alert('@TempData["error"]');
-        </script>
-    }
+                                @*@if (TempData["error"] != null)
+                {
+                    <script>
+                alert('@TempData["error"]');
+                    </script>
+                }*@
 
-    <script>
+                                <script>
 
-        $(document).ready(function () {
-            $(".custbtn").click(function () {
-                var d = $(this).data('datac');
+                                    $(document).ready(function () {
+                                        $(".custbtn").click(function () {
+                                            var d = $(this).data('datac');
 
-                $('#consinmentno').val(d);
-                $('#consinmentno').keyup();
-
-
-            });
+                                            $('#consinmentno').val(d);
+                                            $('#consinmentno').keyup();
 
 
-
-
-            $('#datepicker').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-            $('#datepicker1').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
+                                        });
 
 
 
-        });
-    </script>
-    <style>
-        #edit-consignment {
-            display: block;
-        }
 
-        .paid-party {
-            color: #008000;
-        }
+                                        $('#datepicker').datepicker({
+                                            autoclose: true,
+                                            format: 'dd-mm-yyyy'
+                                        })
 
-            .paid-party td {
-                border-color: #00800059 !important;
-            }
+                                        $('#datepicker1').datepicker({
+                                            autoclose: true,
+                                            format: 'dd-mm-yyyy'
+                                        })
 
-        .unpaid-party {
-            background-color: #ff000059;
-        }
 
-            .unpaid-party td {
-                border-color: #ff000059 !important;
-            }
-    </style>
 
-    <script>
+                                    });
+                                </script>
+                                <style>
+                                    #edit-consignment {
+                                        display: block;
+                                    }
+
+                                    .paid-party {
+                                        color: #008000;
+                                    }
+
+                                        .paid-party td {
+                                            border-color: #00800059 !important;
+                                        }
+
+                                    .unpaid-party {
+                                        background-color: #ff000059;
+                                    }
+
+                                        .unpaid-party td {
+                                            border-color: #ff000059 !important;
+                                        }
+                                </style>
+
+                                <script>
 
 /////Sender Autocomplete
 $(function () {
@@ -410,44 +428,43 @@ select: function(event, ui) {
         }
     });
 });
-    </script>
+                                </script>
 
 
 
-    <script>
-        $(document).ready(function () {
-            $('.sbmt').click(function () {
-                var frmdate = $('#datepicker').val();
+                                <script>
+                                    $(document).ready(function () {
+                                        $('.sbmt').click(function () {
+                                            var frmdate = $('#datepicker').val();
 
-                var todate = $('#datepicker1').val();
+                                            var todate = $('#datepicker1').val();
 
-                if (frmdate == "") {
-                    alert("Please Enter Start Date");
-                    return false;
-                }
-                else if (todate == "") {
-                    alert("Please Enter End Date");
-                    return false;
-                }
-                else {
-                    return true;
-                }
+                                            if (frmdate == "") {
+                                                alert("Please Enter Start Date");
+                                                return false;
+                                            }
+                                            else if (todate == "") {
+                                                alert("Please Enter End Date");
+                                                return false;
+                                            }
+                                            else {
+                                                return true;
+                                            }
 
-            });
+                                        });
 
-        });
-    </script>
+                                    });
+                                </script>
 
-    <script>
-        $(function () {
-            $('#table_display_block').dataTable({
-                "bPaginate": false,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": true,
-                "bInfo": false,
-                "bAutoWidth": false
-            });
-        });
-    </script>
-  
+                                <script>
+                                    $(function () {
+                                        $('#table_display_block').dataTable({
+                                            "bPaginate": false,
+                                            "bLengthChange": true,
+                                            "bFilter": true,
+                                            "bSort": true,
+                                            "bInfo": false,
+                                            "bAutoWidth": false
+                                        });
+                                    });
+                                </script>

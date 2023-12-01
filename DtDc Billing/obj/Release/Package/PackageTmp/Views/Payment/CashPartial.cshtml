@@ -1,11 +1,19 @@
 ﻿@model DtDc_Billing.Entity_FR.Cash
 
 
-@if (TempData["Message"] != null)
+@*@if (TempData["Message"] != null)
 {
     <div class="alert alert-success" id="successmsg">
         <strong>Success! </strong>@TempData["Message"]
     </div>
+}*@
+
+@{
+    var sMessage = TempData["Message"] as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
 }
 
 @using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
@@ -89,8 +97,8 @@
         $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
 
         $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
-       
-            
+
+
     }
 
     $(document).ready(function () {

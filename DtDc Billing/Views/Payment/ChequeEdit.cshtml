@@ -9,7 +9,7 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
-<section class="container">
+<section class="content-wrapper">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info" style="padding: 16px 16px !important">
@@ -38,10 +38,10 @@
                             <div class="row">
                                 <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
                                 <input type="hidden" id="Firm_Id" value="@ViewBag.firmid" name="Firm_Id" />
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-6" style="text-align:right">
                                     <h5> Balance :  <strong class="text-danger">@(ViewBag.netamount - ViewBag.paidamt)</strong></h5>
                                 </div>
                             </div>
@@ -49,70 +49,115 @@
                             @Html.HiddenFor(model => model.Cheque_id)
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.C_Amount, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.C_Amount, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.C_Amount, "", new { @class = "text-danger" })
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.C_Amount, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.C_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.C_Amount, "", new { @class = "text-danger" })
+                                    </div>
+
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.tempch_date, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
-                                    @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.tempch_date, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.tempch_date, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+                                        @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+                                    </div>
+
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.bank_name, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.bank_name, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.bank_name, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.bank_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
+                                    </div>
+
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.branch_Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.branch_Name, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.branch_Name, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.branch_Name, htmlAttributes: new { @class = "control-label " })
 
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.branch_Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.branch_Name, "", new { @class = "text-danger" })
+                                    </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Invoiceno, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control"} })
-                                    @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Tds_amount, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.Tds_amount, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.Tds_amount, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.totalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-4">
-                                    @Html.EditorFor(model => model.totalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.totalAmount, "", new { @class = "text-danger" })
-                                    <span class="errormsd text-danger">Billed amount is greater than enter amount!</span>
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.Invoiceno, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.Tds_amount, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.Tds_amount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Tds_amount, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.totalAmount, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.totalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.totalAmount, "", new { @class = "text-danger" })
+                                        <span class="errormsd text-danger">Billed amount is greater than enter amount!</span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-7" >
+                                    <div class=" col-md-12">
+                                        <input type="submit" value="Save" class="btn btn-primary pull-right" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+
                         </div>
                     </div>
                 }

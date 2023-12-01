@@ -2,9 +2,19 @@
 
 
 
-
 <section>
-    <div class="">
+
+ 
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
+
+    <div class="" style="padding: 20px; border: 1px solid #dddddd;">
         @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
         {
             @Html.AntiForgeryToken()
@@ -54,8 +64,8 @@
                 }
 
             }
-            <div class="row">
-                <div class="col-lg-12 no-padding">
+    <div class="row">
+        <div class="col-lg-12 ">
 
 
                     <table class="table table-bordered table-striped" id="DoxTable">
@@ -117,18 +127,28 @@
                         </tbody>
 
                     </table>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
-            <div class="col-sm-12">
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
-            </div>
+         
 
         }
     </div>
 </section>
 
-
+<style>
+    table {
+        max-height: 400px !important;
+        display: inline-table !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
 
 <script>
 
@@ -235,7 +255,7 @@
 
 $(document).ready(function(){
 
-    alert('@ViewBag.Message');
+   // alert('@ViewBag.Message');
 
     $(this).prop('disabled', false);
 
@@ -252,7 +272,7 @@ $(document).ready(function(){
 
         $(document).ready(function () {
 
-        alert('@ViewBag.Session');
+       alert('@ViewBag.Session');
 
 
 });

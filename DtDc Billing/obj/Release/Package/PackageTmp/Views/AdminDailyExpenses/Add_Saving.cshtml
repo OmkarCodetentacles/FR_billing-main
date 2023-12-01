@@ -87,49 +87,63 @@
             <div class="row">
                 <div class="col-md-12">
 
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        successMessage = "Saving Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form class="form-horizontal">
 
                         <div class="form-group lblamt">
                             <div class="row">
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
-                                        <div class="">
+                                <div class="col-md-7" style="margin-bottom: 20px;">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                        </div>
+                                        <div class="col-md-9">
                                             @Html.EditorFor(model => model.Saving_amount, new { htmlAttributes = new { @class = "form-control", placeholder = "Amount" } })
                                             @Html.ValidationMessageFor(model => model.Saving_amount, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
+                                   
                                 </div>
-                                <div class="col-md-7">
+                                <div class="col-md-7" style="margin-bottom: 20px;">
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
-                                        <div class="">
-                                            @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address" } })
-                                            @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address" } })
+                                                @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                            </div>
                                         </div>
+                                       
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    @*<div class="box-footer">*@
-                                    <div class="form-group">
-                                        <label></label>
                                         <div class="">
                                             <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" />
                                         </div>
-                                    </div>
-                                    @*</div>*@
+                                    
+                                  
                                 </div>
                             </div>
 
                         </div>
 
-               
-                <!-- /.box-body -->
-                <!-- /.box-footer -->
-                </form>
-            </div>
+
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
         </div>
     </div>
 </div>
@@ -140,7 +154,7 @@
 }
 
 
-@if (ViewBag.Success != null)
+@*@if (ViewBag.Success != null)
 {
     <script>
 
@@ -152,7 +166,7 @@
 
     </script>
 
-}
+}*@
 
 
 

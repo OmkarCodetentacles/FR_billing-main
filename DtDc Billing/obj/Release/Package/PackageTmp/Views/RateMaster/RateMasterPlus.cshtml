@@ -6,8 +6,20 @@
         width:13%;
     }
 </style>
-  <section  >
-      <div class="">
+
+ 
+          @{
+              var successMessage = ViewBag.Message as string;
+          }
+
+          @if (!string.IsNullOrEmpty(successMessage))
+          {
+              @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+          }
+
+  <section>
+      <div class="" style="padding: 20px; border: 1px solid #dddddd;">
+
           @using (Ajax.BeginForm("RateMasterplus", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp3" }))
           {
               @Html.AntiForgeryToken()
@@ -110,7 +122,12 @@
                   </tbody>
 
               </table>
-              <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+              <div class="row" >
+                  <div class="col-md-12" >
+                      <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+                  </div>
+                 
+              </div>
           }
       </div>
   </section>
@@ -135,7 +152,7 @@
 
 $(document).ready(function(){
 
-    alert('@ViewBag.Message');
+    //alert('@ViewBag.Message');
   //  $(this).prop('disabled', false);
 
 

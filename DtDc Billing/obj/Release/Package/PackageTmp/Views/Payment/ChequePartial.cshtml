@@ -1,10 +1,17 @@
 ﻿@model DtDc_Billing.Entity_FR.Cheque
 
-@if (TempData["Message"] != null)
+@*@if (TempData["Message"] != null)
 {
     <div class="alert alert-success" id="successmsg">
         <strong>Success! </strong>@TempData["Message"]
     </div>
+}*@
+@{
+    var sMessage = TempData["Message"] as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
 }
 
 

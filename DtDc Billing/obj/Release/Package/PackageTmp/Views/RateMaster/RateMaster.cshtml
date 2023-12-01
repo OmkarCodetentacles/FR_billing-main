@@ -3,8 +3,21 @@
 @{
     ViewBag.Title = "RateMaster";
 }
+@{
+    var sMessage = TempData["Success"] as string;
 
-<section >
+
+}
+
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    <script>
+        document.getElementById('overlayBlock').style.display = 'none';
+    </script>
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+}
+
+<section>
     <div class="">
         <h2>RateMaster</h2>
         @using (Html.BeginForm())
@@ -12,7 +25,6 @@
             <label> 2 Slab<input type="radio" name="Slabrad" checked="checked" value="2" /></label>
             <label> 3 Slab<input type="radio" name="Slabrad" value="3" /></label>
             <label>4 Slab<input type="radio" name="Slabrad" value="4" /></label>
-
 
             <div class="col-sm-12 container">
                 <div class="col-sm-2">
@@ -225,13 +237,35 @@
 
 
             <div class="col-sm-12">
-                <input style="float:right" class="btn bg-maroon" type="submit" name="" value="Submit" />
+                <input style="float:right" class="btn bg-maroon" type="submit" name="" value="Submit" id="submitBtn" />
             </div>
         }
     </div>
 </section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
 
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+
+</script>
 <script>
 
     $(document).ready(function () {

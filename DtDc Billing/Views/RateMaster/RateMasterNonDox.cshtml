@@ -235,11 +235,11 @@
                                     @Html.EditorFor(modelItem => item.Sslab4)
                                 </td>
                                 @*<td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Non_ID)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Sector_Id)
-                            </td>*@
+                                        @Html.HiddenFor(modelItem => item.Non_ID)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>*@
                             </tr>
                         }
                     </tbody>
@@ -248,7 +248,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"/>
                     </div>
 
                 </div>
@@ -259,24 +259,34 @@
 
     </div>
 </section>
-@*<script>
-        $(document).ready(function () {
-            $('#submitBtn').on('click', function (e) {
-                alert("Ratemaster Non Dox ")
-                e.preventDefault();
+<script>
+
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+    function showLoader() {
 
 
-                $('form input[type="submit"]').prop('disabled', true);
+        document.getElementById('overlayBlock').style.display = 'block';
 
-
-                $('form').submit();
-
-            });
-
+    }
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
 
         });
-    </script>*@
 
+
+
+    });
+
+</script>.
 
 <style>
     #royalty-per {

@@ -156,7 +156,7 @@
 
 
 
-                <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+                @*<input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />*@
                 <div class="row" >
                     <div class="col-md-12" >
                         <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
@@ -167,21 +167,28 @@
         </div>
     </section>
     <script>
-        //$(document).ready(function () {
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
+        $(document).ready(function () {
+            
+            $('#submitBtn').on('click', function (e) {
+                // Scroll to the top of the page
+                scrollToTop();
+              
+                // Get the form element
+                var form = $('#frmEmp');
+                // Submit the form
+                form.submit();
 
-        //    $('#submitBtn').on('click', function (e) {
-        //        alert("Rate Master PTP")
-        //        e.preventDefault();
+              
 
-
-        //        $(this).prop('disabled', true);
-
-        //        $('form').submit();
-        //    });
-        //});
+                $('form').submit();
+            });
+        });
 </script>
 
-    @if (ViewBag.Message != null)
+    @*@if (ViewBag.Message != null)
     {
         <script>
 
@@ -190,10 +197,10 @@
    // alert('@ViewBag.Message');
    // $(this).prop('disabled', false);
 
-});
+});*@
 
-        </script>
+        <!--</script>
 
-    }
+    }-->
 
 

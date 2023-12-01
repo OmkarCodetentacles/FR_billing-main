@@ -20,6 +20,25 @@
                             <div class="col-md-12">
 
 
+                                @{
+                                    var successMessage = ViewBag.sendmail as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+
+                                @{
+                                    
+                                    var changePassword = ViewBag.changepass as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(changePassword))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", changePassword))
+                                }
+
                                 @using (Html.BeginForm("NewpasswordSave", "Admin"))
                                 {
                                     @Html.AntiForgeryToken()
@@ -77,18 +96,18 @@
     </div>
 </section>
 
-@if (ViewBag.sendmail != null)
+@*@if (ViewBag.sendmail != null)
 {
     <script>
         alert('@ViewBag.sendmail');
     </script>
-}
-@if (ViewBag.changepass != null)
+}*@
+@*@if (ViewBag.changepass != null)
 {
     <script>
         alert('@ViewBag.changepass');
     </script>
-}
+}*@
 
 <script type="text/javascript">
         $(document).ready(function () {

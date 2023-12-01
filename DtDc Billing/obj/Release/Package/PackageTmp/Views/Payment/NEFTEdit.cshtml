@@ -17,6 +17,14 @@
 
                 </div>
                 <!-- /.box-header -->
+                @{
+                    var sMessage = TempData["Updatedsuccss"] as string;
+                }
+                @if (!string.IsNullOrEmpty(sMessage))
+                {
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                }
+
 
                 @using (Html.BeginForm())
                 {
@@ -58,7 +66,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Invoiceno, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-4">
-                                    @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control" , @readonly = "readonly"} })
+                                    @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                     @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -107,7 +115,7 @@
 @if (TempData["Updatedsuccss"] != null)
 {
     <script>
-    alert("@TempData["Updatedsuccss"]");
+    //alert("@TempData["Updatedsuccss"]");
     </script>
 }
 

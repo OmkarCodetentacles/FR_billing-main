@@ -1,83 +1,94 @@
 ﻿@model DtDc_Billing.Models.AddlogoModel
 
 
+
 <style>
     #frmEmp {
         margin: 15px 0;
         text-align: left;
     }
 </style>
+
+
 @using (Html.BeginForm("AddLogo", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<section>
-    <form enctype="multipart/form-data">
+    <section>
+        <form enctype="multipart/form-data">
 
-        <div class="" style="padding: 0px 15px">
-            <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
-                <div class="box-header with-border" style="background:none;border:none">
-                    <h4>Upload Logo</h4>
-                </div>
-                <div class="" style="padding:0 20px">
-                    <div class="row">
-                        <div class="col-md-12 ">
+            <div class="" style="padding: 0px 15px">
+                <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
+                    <div class="box-header with-border" style="background:none;border:none">
+                        <h4>Upload Logo</h4>
+                      
+                    </div>
+                    <div class="" style="padding:0 20px">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                @{
+                                    var successMessage = TempData["Success1"] as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
 
 
+                                <div class="form-horizontal">
+                                    <div class="box-body">
 
-                            <div class="form-horizontal">
-                                <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Upload logo</label>
+                                            <div class="col-md-5">
+                                                <input type="file" name="file" id="file" class="form-control" />
+                                                @Html.ValidationMessage("fileerr")
+                                            </div>
+                                        </div>
 
 
-                                    <div class="form-group">
-                                        <label class="col-md-2 control-label">Upload logo</label>
-                                        <div class="col-md-5">
-                                            <input type="file" name="file" id="file" class="form-control" />
-                                            @Html.ValidationMessage("fileerr")
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                            </div>
                                         </div>
                                     </div>
 
-
-                                    <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
-                                            <input type="submit" value="Save" class="btn btn-primary" />
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
 
+
                         </div>
-
-
                     </div>
                 </div>
             </div>
-        </div>
 
-    </form>
+        </form>
 
-</section>
+    </section>
 
 }
-
 
 <script src="jquery-3.6.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <script>
 
-        $(document).ready(function () {
-
+        @*$(document).ready(function () {
             var data = '@TempData["Success1"]';
+
 
             if (data != null && data!="")
             {
-                alert(data);
+
+               alert(data);
             }
 
 
-        });
+        });*@
 
 </script>
 

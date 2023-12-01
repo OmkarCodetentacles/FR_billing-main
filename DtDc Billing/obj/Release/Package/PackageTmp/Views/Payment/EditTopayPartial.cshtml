@@ -3,6 +3,14 @@
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+@{
+    var sMessage = ViewBag.Message as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+}
+
 
 @using (Ajax.BeginForm("EditTopay", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
@@ -93,12 +101,12 @@
 
 
 
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-         alert("@ViewBag.Message");
-    </script>
-}
+@*@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+             alert("@ViewBag.Message");
+        </script>
+    }*@
 
 
 <script>

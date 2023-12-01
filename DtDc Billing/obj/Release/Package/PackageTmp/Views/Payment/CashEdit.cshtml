@@ -25,14 +25,21 @@
 
                     <!-- /.box-header -->
 
+                    @{
+                        var sMessage = TempData["Updatedsuccss"] as string;
+                    }
+                    @if (!string.IsNullOrEmpty(sMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                    }
+
+
 
                     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "submit" }))
                     {
                         @Html.AntiForgeryToken()
 
                         <div class="form-horizontal">
-
-
 
                             <div class="row">
                                 <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
@@ -97,9 +104,9 @@
 
                                 </div>
                             </div>
-                       
-                    </div>
-                }
+
+                        </div>
+                    }
                 </div>
                 </div>
             </div>
@@ -110,7 +117,7 @@
 @if(TempData["Updatedsuccss"] != null)
 {
 <script>
-    alert("@TempData["Updatedsuccss"]");
+   // alert("@TempData["Updatedsuccss"]");
 </script>
 }
 

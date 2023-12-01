@@ -21,6 +21,14 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
 
+                    @{
+                        var successMessage = ViewBag.success as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     @using (Html.BeginForm())
                     {
                         <div class="row">
@@ -132,12 +140,12 @@
     var selectedemp = @ViewBag.selectedemp;*@
 
 
-@if (ViewBag.success !=null)
+@*@if (ViewBag.success !=null)
 {
     <script>
         alert('@ViewBag.success');
     </script>
-}
+}*@
 <script>
 
     var stateId = $("#PfCode").val();

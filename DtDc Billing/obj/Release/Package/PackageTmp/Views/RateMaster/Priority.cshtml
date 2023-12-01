@@ -1,7 +1,15 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.Priority>
 
-   <section>
+   <section style="padding: 20px; border: 1px solid #dddddd;" >
        <div class="">
+           @{
+               var successMessage = ViewBag.Message as string;
+           }
+
+           @if (!string.IsNullOrEmpty(successMessage))
+           {
+               @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+           }
            @using (Ajax.BeginForm("Priority", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp6" }))
            {
                @Html.AntiForgeryToken()
@@ -31,7 +39,7 @@
                    }
                    else
                    {
-                       <div class="col-sm-6 col-sm-offset-3"  style="padding:10px 0">
+                       <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
                            <div class="box-header" style="padding:0">
                                <div class="col-sm-4">
                                    <label>  @Html.RadioButtonFor(m => item.prinoofslab, 2, new { @checked = "checked" }) Slab 2</label>
@@ -112,8 +120,10 @@
 
                </table>
                <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
-               <div class="col-sm-12">
-                   <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+               <div class="row">
+                   <div class="col-sm-12">
+                       <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                   </div>
                </div>
            }
        </div>
@@ -218,7 +228,7 @@
 
 $(document).ready(function(){
 
-alert('@ViewBag.Message');
+//alert('@ViewBag.Message');
 
 });
 

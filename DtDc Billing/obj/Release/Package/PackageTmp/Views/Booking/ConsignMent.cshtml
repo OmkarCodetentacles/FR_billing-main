@@ -17,10 +17,18 @@
         padding: 7px !important;
     }
 </style>
+
 <div class="content-wrapper">
     <div class="box box-info" style="padding:16px 16px">
 
+        @{
 
+            var succeessdata = TempData["Upload"] as string;
+        }
+        @if (!string.IsNullOrEmpty(succeessdata))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", succeessdata))
+        }
         @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
         {
 
@@ -59,7 +67,6 @@
                 <div class="col-md-12">
 
 
-
                     <div class="form-horizontal">
 
                         <div id="form-Cons">
@@ -74,9 +81,9 @@
 
 </div>
 
-@if (TempData["Upload"] != null)
+@*@if (TempData["Upload"] != null)
 {
     <script>
-        alert('@TempData["Upload"]');
+      // alert('@TempData["Upload"]');
     </script>
-}
+}*@

@@ -33,6 +33,14 @@
                     <form class="form-horizontal">
 
 
+                        @{
+                            var successMessage = TempData["Success"] as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
                         <table id="example2" class="table   edittable" style="overflow:auto;">
                             <thead>
                                 <tr>
@@ -46,7 +54,7 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.Company_Name)
                                     </th>
-                                   
+
                                     <th>
                                         @Html.DisplayNameFor(model => model.Phone)
                                     </th>
@@ -74,9 +82,9 @@
                                             <td>
                                                 @srno
                                             </td>
-                                            <td class="" >
+                                            <td class="">
 
-                                                @Html.ActionLink("Edit", "EditCompanyRate", new { id = id } , new { @class = "edit-btn tableEdit" })
+                                                @Html.ActionLink("Edit", "EditCompanyRate", new { id = id }, new { @class = "edit-btn tableEdit" })
 
                                             </td>
                                             <td>
@@ -84,7 +92,7 @@
                                                     @Html.DisplayFor(modelItem => item.Company_Name)
                                                 </div>
                                             </td>
-                                           
+
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Phone)
                                             </td>
@@ -130,13 +138,36 @@
 
     </div>
 </div>
+<script>
 
-@if (TempData["Success"] != null)
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+
+</script>.
+
+@*@if (TempData["Success"] != null)
 {
     <script type="text/javascript">
-        alert("@TempData["Success"] ");
+      //  alert("@TempData["Success"] ");
     </script>
-}
+}*@
 
 <style>
     .fs-20 {

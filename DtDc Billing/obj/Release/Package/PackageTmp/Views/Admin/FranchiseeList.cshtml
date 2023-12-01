@@ -5,56 +5,71 @@
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <style>
-    #frmEmp, #menu2, #frmEmp1{
+    #frmEmp, #menu2, #frmEmp1 {
         margin: 0px 0 !important;
         text-align: left;
     }
-    .franchiess-edit{
-        padding:0 15px;
+
+    .franchiess-edit {
+        padding: 0 15px;
     }
 </style>
+<script>
+    $(function () {
+        alert("Hide")
+        $("#success-alert").hide();
+        $("#error-alert").hide();
+    }
+</script>
+<section class="content-wrapper" style="background: rgb(245 245 245)">
 
-<div class="">
-    
-</div>
-<section class="content-wrapper" style="background: rgb(245 245 245)" >
-    
-        <div class="row" >
-            <div class="col-md-12 " >
-                <ul id="Tab" class="nav nav-tabs franchiess-edit">
-                    <li class="active"><a data-toggle="tab" href="#home">Edit Franchisee</a></li>
-                    <li><a data-toggle="tab" href="#menu1">Edit Sectors</a></li>
-                    <li><a data-toggle="tab" href="#menu2">Upload Stamp</a></li>
-                    <li><a data-toggle="tab" href="#menu3">Upload Logo</a></li>
+    <div class="row">
+        <div class="col-md-12 ">
 
-                </ul>
-                <div class="tab-content ">
-                    <div id="home" class="tab-pane fade in active">
-                        <div id="frmEmp">
 
-                            @{ Html.RenderPartial("Edit", (DtDc_Billing.Models.FranchiseeModel)ViewBag.Company);}
-                        </div>
+            <ul id="Tab" class="nav nav-tabs franchiess-edit">
+                <li class="active"><a data-toggle="tab" href="#home">Edit Franchisee</a></li>
+                <li><a data-toggle="tab" href="#menu1">Edit Sectors</a></li>
+                <li><a data-toggle="tab" href="#menu2">Upload Stamp</a></li>
+                <li><a data-toggle="tab" href="#menu3">Upload Logo</a></li>
+
+            </ul>
+            @*@if (TempData["Success1"] != null)
+            {
+                <div class="alert alert-success d-flex justify-content-between align-items-center">
+                    <strong>Success!!</strong>@TempData["Success1"]
+                    <button type="button" class="close" data-dismiss="alert">X</button>
+                </div>
+
+            }*@
+            <div class="tab-content ">
+                <div id="home" class="tab-pane fade in active">
+                    <div id="frmEmp">
+
+                        @{ Html.RenderPartial("Edit", (DtDc_Billing.Models.FranchiseeModel)ViewBag.Company);}
                     </div>
-                    <div id="menu1" class="tab-pane fade">
-                        <div id="frmEmp1">
-                            @{ Html.RenderPartial("Add_SectorPin", (IEnumerable<DtDc_Billing.Entity_FR.Sector>)ViewBag.Sectors);}
 
-                        </div>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <div id="frmEmp1">
+                        @{ Html.RenderPartial("Add_SectorPin", (IEnumerable<DtDc_Billing.Entity_FR.Sector>)ViewBag.Sectors);}
+
                     </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <div id="upload">
-                            @{ Html.RenderPartial("Upload_stamp");}
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <div id="upload">
+                        @{ Html.RenderPartial("Upload_stamp");}
 
-                        </div>
                     </div>
-                    <div id="menu3" class="tab-pane fade">
-                        <div id="upload">
-                            @{ Html.RenderPartial("AddLogo");}
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                    <div id="upload">
+                        @{ Html.RenderPartial("AddLogo");}
 
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    
+    </div>
+
 </section>

@@ -15,6 +15,11 @@
                     </div>
                     <!-- /.box-header -->
 
+                    @if (ViewBag.success != null)
+                    {
+                        var successMessage = "Invoice Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
                     <div class="form-horizontal">
                         <div class="box-body">
                             <div class="row">
@@ -35,7 +40,7 @@
                                             @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
                                         </div>
                                     </div>
-                                  
+
                                     <div class="col-sm-3">
                                         <div>
                                             <label for="email">Invoice No:</label>
@@ -83,163 +88,163 @@
                                             <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
 
 
-                                            </div>
-                                            </div>
-                                            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })
-
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <!-- column -->
-                                        <div class="col-sm-12">
-                                            <!-- Horizontal Form -->
-                                            <div class="">
-                                                <!-- form start -->
-                                                <form class="">
-                                                    <div class="box-body">
-                                                        <!-- select -->
-                                                        <div class="">
-                                                            <div class="row">
-                                                                <div class="col-sm-4 col-xs-12 mb-15">
-                                                                    <!-- radio -->
-                                                                    <div class="form-group">
+                                    @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })
 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- column -->
+                                <div class="col-sm-12">
+                                    <!-- Horizontal Form -->
+                                    <div class="">
+                                        <!-- form start -->
+                                        <form class="">
+                                            <div class="box-body">
+                                                <!-- select -->
+                                                <div class="">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-xs-12 mb-15">
+                                                            <!-- radio -->
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                            <!-- radio -->
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-8 col-xs-12 mb-15">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Total_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 1" } })
                                                                     </div>
-                                                                    <!-- radio -->
-                                                                    <div class="form-group">
+
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
 
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-sm-8 col-xs-12 mb-15">
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="col-sm-7">
-                                                                                @Html.EditorFor(model => model.Total_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 1" } })
-                                                                            </div>
+                                                            </div>
 
-                                                                            <div class="col-sm-5">
-                                                                                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
-
-                                                                            </div>
-                                                                        </div>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Royalti_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 2" } })
                                                                     </div>
+                                                                    <div class="col-sm-5">
 
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="col-sm-7">
-                                                                                @Html.EditorFor(model => model.Royalti_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 2" } })
-                                                                            </div>
-                                                                            <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
 
-                                                                                @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
-
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
+                                                                </div>
+                                                            </div>
 
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="col-sm-7">
-                                                                                @Html.EditorFor(model => model.Docket_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 3" } })
-                                                                            </div>
-                                                                            <div class="col-sm-5">
-                                                                                @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
-
-                                                                            </div>
-
-
-
-
-
-
-
-                                                                        </div>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Docket_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 3" } })
                                                                     </div>
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
 
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <div class="col-sm-7">
-                                                                                @Html.EditorFor(model => model.Amount4_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 4" } })
-                                                                            </div>
-                                                                            <div class="col-sm-5">
-                                                                                @Html.EditorFor(model => model.Amount4, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <label for="subtotal" class="col-sm-7 control-label">SubTotal</label>
-
-                                                                            <div class="col-sm-5">
-                                                                                <input type="text" class="form-control" id="subtotal" placeholder="0">
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
 
 
 
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <label for="gst-total" class="col-sm-5 col-xs-12 control-label">GST</label>
-                                                                            <div class="col-sm-2 col-xs-4">
 
 
-                                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
 
-                                                                            </div>
-                                                                            <div class="col-sm-5 col-xs-8">
-                                                                                @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
 
-                                                                            </div>
-                                                                        </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Amount4_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 4" } })
                                                                     </div>
-                                                                    @*<div class="form-group">
-                                            <div class="col-sm-12">
-                                                <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.Amount4, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
 
-                                                <div class="col-sm-8">
-                                                    @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                                    </div>
 
-                                                </div>
-                                            </div>
-                                        </div>*@
-                                                                    <div class="form-group">
-                                                                        <div class="col-sm-12">
-                                                                            <label for="net-amount" class="col-sm-7 control-label">Net Amount</label>
+                                                                </div>
+                                                            </div>
 
-                                                                            <div class="col-sm-5">
-                                                                                @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="subtotal" class="col-sm-7 control-label">SubTotal</label>
 
-                                                                            </div>
-                                                                        </div>
+                                                                    <div class="col-sm-5">
+                                                                        <input type="text" class="form-control" id="subtotal" placeholder="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="gst-total" class="col-sm-5 col-xs-12 control-label">GST</label>
+                                                                    <div class="col-sm-2 col-xs-4">
+
+
+                                                                        @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+
+                                                                    </div>
+                                                                    <div class="col-sm-5 col-xs-8">
+                                                                        @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @*<div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
+
+                                                        <div class="col-sm-8">
+                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="net-amount" class="col-sm-7 control-label">Net Amount</label>
+
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-                                                    <!-- /.box-body -->
-                                                    <div class="box-footer">
-
-                                                        @*<button type="submit" name="submit" value="Email" class="btn btn-primary">Send Invoice From Email</button>*@
-                                                        <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary pull-right">Generate</button>
-
-                                                    </div>
-                                                    <!-- /.box-footer -->
-                                                </form>
+                                                </div>
                                             </div>
-                                            <!-- /.box -->
-                                        </div>
-                                        <!--/.col (right) -->
-                                    </div>
-                                    <!-- /.row -->
 
+
+                                            <!-- /.box-body -->
+                                            <div class="box-footer">
+
+                                                @*<button type="submit" name="submit" value="Email" class="btn btn-primary">Send Invoice From Email</button>*@
+                                                <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary pull-right">Generate</button>
+
+                                            </div>
+                                            <!-- /.box-footer -->
+                                        </form>
+                                    </div>
+                                    <!-- /.box -->
                                 </div>
+                                <!--/.col (right) -->
+                            </div>
+                            <!-- /.row -->
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -267,13 +272,13 @@
 </style>
 
 
-@if (ViewBag.success != null)
+@*@if (ViewBag.success != null)
 {
     <script>
         alert("Invoice Added SuccessFully");
         location.reload(true);
     </script>
-}
+}*@
 
 
 
