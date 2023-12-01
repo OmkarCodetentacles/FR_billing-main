@@ -47,7 +47,7 @@
 
    @if(!string.IsNullOrEmpty(smessage))
     {
-@Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
+        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
     }
 
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
@@ -57,9 +57,7 @@
     <div id="sg1">
 
 
-        <label>
-            Consi no
-        </label>
+        
         <label >
             Consi no<span style="color:red">*</span>:
 
@@ -78,9 +76,9 @@
         </label>
 
 
-        <label>
+        @*<label>
             Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
-        </label>
+        </label>*@
         <label >
             Cust Id<span style="color:red">*</span>:  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -98,9 +96,9 @@
         </label>
 
 
-        <label>
+        @*<label>
             Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
-        </label>
+        </label>*@
         <label >
             Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -161,9 +159,9 @@ new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select"
 
 
 
-        <label>
+        @*<label>
             char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
-        </label>
+                </label>*@
         <label >
             char Wt<span style="color:red">*</span>: @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -1023,8 +1021,8 @@ $.ajax({
 </script>
 
 @*@if (TempData["Upload"] != null)*@
-{
+<!--{
     <script>
       //  alert('@TempData["Upload"]');
     </script>
-}
+}-->

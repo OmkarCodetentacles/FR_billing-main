@@ -6,6 +6,12 @@
         text-align: left;
     }
 </style>
+
+<script>
+    document.getElementById('overlayBlock').style.display = 'none';
+</script>
+
+
 @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -30,7 +36,7 @@
                             {
                                 @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                             }
-    
+
 
                             <div class="form-horizontal">
 
@@ -260,8 +266,8 @@
                                 </div>
 
 
-                                </div>
-                                <div class="form-group">
+                            </div>
+                            @*<div class="form-group">
                                     <div class="col-12 col-sm-12 col-md-7">
                                         <div class="row">
                                             <div class="col-md-3">
@@ -388,34 +394,42 @@
                                         </div>
                                     </div>
 
-                                </div>
-
-                            </div>
+                                </div>*@
 
                         </div>
 
-
                     </div>
+
+
                 </div>
             </div>
-        
+        </div>
+
 
     </form>
 
 }
 
 <script>
+     // Show loader if TempData flag is set
+
+    function showLoader() {
+
+
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
     // Scroll to the top of the page
     function scrollToTop() {
         window.scrollTo(0, 0);
     }
-   
+
         $(document).on('click', '#scrolltotop', function () {
-       
-          
+
+            showLoader('overlayBlock');
             scrollToTop();
         });
-   
+
 
         @*$(document).ready(function () {
 
@@ -430,6 +444,78 @@
         });*@
 
 </script>
+
+<div class="overlay" id="overlayBlock">
+    <div class="loader"></div>
+</div>
+
+
+
+<style>
+    #royalty-per {
+        vertical-align: sub;
+    }
+
+    #Pf_code, #Royalty_Charges, #D_Docket, #P_Docket, #E_Docket, #V_Docket, #I_Docket, #N_Docket, #Insurance, #Minimum_Risk_Charge, #Other_Details, #Fuel_Sur_Charge, #Topay_Charge, #Cod_Charge, #Gec_Fuel_Sur_Charge {
+        width: 100%;
+    }
+</style>
+
+<style>
+    .logo-text {
+        font-size: 1.3em;
+        font-family: 'Roboto Slab', serif;
+    }
+</style>
+<style>
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 
 <script>
             //$(function () {

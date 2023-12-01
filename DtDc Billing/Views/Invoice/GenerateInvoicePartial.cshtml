@@ -41,37 +41,26 @@
                                <div class="form-horizontal">
 
                                    <div class="row">
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
+
                                                <div class="row">
-                                                   <div class="col-md-3">
+
+                                                   <div class="col-md-12">
                                                        <label for="email">Customer Id:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
                                                        @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
                                                    </div>
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
+
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
+
                                                <div class="row">
-                                                   <div class="col-md-3">
-                                                       <label for="pwd">Address:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
-                                                       @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </div>
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
-                                               <div class="row">
-                                                   <div class="col-md-3">
+
+                                                   <div class="col-md-12">
                                                        <label for="email">Invoice No:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
                                                        @if (Model != null && Model.invoiceno.Length > 10)
                                                        {
                                                            @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
@@ -93,26 +82,25 @@
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
+
                                                <div class="row">
-                                                   <div class="col-md-3">
+
+                                                   <div class="col-md-12">
                                                        <label for="email">Period From:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
                                                        @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                                                    </div>
                                                </div>
                                            </div>
                                        </div>
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
 
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
                                                <div class="row">
-                                                   <div class="col-md-3">
+
+                                                   <div class="col-md-12">
                                                        <label for="email">Invoice Date:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
                                                        @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                                                    </div>
 
@@ -120,19 +108,31 @@
 
                                            </div>
                                        </div>
-                                       <div class="form-group">
-                                           <div class="col-sm-7">
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
+
                                                <div class="row">
-                                                   <div class="col-md-3">
+
+                                                   <div class="col-md-12">
                                                        <label for="email">Period To:</label>
-                                                   </div>
-                                                   <div class="col-md-9">
                                                        @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                                                    </div>
                                                </div>
                                            </div>
                                        </div>
-                                       <div class="col-sm-7">
+                                       <div class="col-sm-4">
+                                           <div class="form-group">
+
+                                               <div class="row">
+
+                                                   <div class="col-md-12">
+                                                       <label for="pwd">Address:</label>
+                                                       @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-sm-12">
                                            <input type="button" class="btn btn-primary pull-right" id="show" value="Show" />
                                        </div>
                                    </div>
@@ -313,7 +313,7 @@
                                                        <div class="form-group">
                                                            <div class="row">
                                                                <div class="col-md-3">
-                                                                   <label for="fuelsurcharge" class=" control-label">FuelSurcharge Tax</label>
+                                                                   <label for="fuelsurcharge" class=" control-label" style="text-align:left">FuelSurcharge Tax</label>
                                                                </div>
                                                                <div class="col-md-9" style="display:flex;gap:2px">
                                                                    @Html.EditorFor(model => model.fullsurchargetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
@@ -409,11 +409,11 @@
 
                                                <!-- /.box-body -->
                                                <div style="padding:25px">
-                                                   <button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px">Send Invoice From SMS</button>
-                                                   <button type="submit" name="submit" value="Email" class="btn btn-primary" style="margin-top:10px">Send Invoice From Email</button>
+                                                   <button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>
+                                                   <button type="submit" name="submit" value="Email" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From Email</button>
                                                    @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
                                                    <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary" style="margin-top:10px">Generate</button>
-                                                   <button type="submit" name="submit" value="Save" class="btn btn-success pull-right" style="margin-top:10px">Save</button>
+                                                   <button type="submit" name="submit" value="Save" class="btn btn-success pull-right" style="margin-top:10px" id="Generate">Save</button>
                                                </div>
                                                <!-- /.box-footer -->
                                        </form>
@@ -508,7 +508,7 @@
         window.scrollTo(0, 0);
     }
 
-    $(document).on('click', '#generate', function () {
+    $(document).on('click', '#Generate', function () {
 
      
         scrollToTop();
