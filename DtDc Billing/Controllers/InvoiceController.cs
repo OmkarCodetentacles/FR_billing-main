@@ -410,9 +410,9 @@ Select(e => new
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+       [HttpPost]
         public ActionResult SaveInvoice(InvoiceModel invoice, string submit)
-            {
+        {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var dataInvStart = (from d in db.Franchisees
@@ -712,13 +712,19 @@ Select(e => new
               out warnings
               );
 
-
                 ViewBag.pdf = false;
 
                 //if (submit == "Generate")
                 //{
                 ViewBag.pdf = true;
                 ViewBag.invoiceno = invoice.invoiceno;
+                //}
+
+                //string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+
+                //using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                //{
+                //    stream.Write(renderByte, 0, renderByte.Length);
                 //}
                 if (submit == "Email")
                 {
@@ -2193,7 +2199,7 @@ Select(e => new
 
         [HttpPost]
         public ActionResult SaveSingleInvoice(InvoiceModel invoice, string submit, string consignments)
-        {
+       {
 
             ViewBag.consignmnts = consignments;
 
@@ -2487,13 +2493,17 @@ Select(e => new
               out warnings
               );
 
-
-                ViewBag.pdf = false;
-
+               
                 //if (submit == "Generate")
                 //{
                 ViewBag.pdf = true;
                 ViewBag.invoiceno = invoice.invoiceno;
+                //string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id  + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+
+                //using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                //{
+                //    stream.Write(renderByte, 0, renderByte.Length);
+                //}
                 //}
                 if (submit == "Email")
                 {
@@ -2545,7 +2555,8 @@ Select(e => new
 
 
             return PartialView("GenerateInvoiceSinglePartial", invoice);
-        }
+       }
+
 
         public JsonResult InvoiceTableSingle(string[] array, string Customerid)
         {
@@ -2803,7 +2814,7 @@ Select(e => new
 
                 lr.EnableExternalImages = true;
 
-                //  lr.SetParameters(new ReportParameter[] { parSum });
+                //  lr.SetParameters(new ReportParameter[] { parSum }SavesinglepdInvoice);
 
                 lr.DataSources.Add(rd);
                 lr.DataSources.Add(rd1);
@@ -2925,8 +2936,10 @@ Select(e => new
             var invoice = db.Invoices.Where(m => m.IN_Id == id && m.Pfcode == PfCode).FirstOrDefault();
 
             string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
+            //string fileName = invoice.invoiceno.Replace("/", "-") + ".pdf";
+            //string savePath = Server.MapPath("~/PDF/" + fileName);
 
-            string savePath = "http://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+            string savePath = "https://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
 
             return Redirect(savePath);
 

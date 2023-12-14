@@ -1493,13 +1493,16 @@ namespace DtDc_Billing.Controllers
 
                 if (logo.LogoFilePath == null)
                 {
-                    ReportParameter rp = new ReportParameter("img_logo",Server.MapPath("~/UploadedLogo/goeasy.png"));
+                    ReportParameter rp = new ReportParameter("img_logo", "file:///"+Server.MapPath("~/UploadedLogo/goeasy.png"));
                     lr.SetParameters(rp);
                 }
                 else
                 { 
-                  ReportParameter rp = new ReportParameter("img_logo", Server.MapPath("~/UploadedLogo") + logo.LogoFilePath);
-                  lr.SetParameters(rp);
+
+                 // ReportParameter rp = new ReportParameter("img_logo", "file:///" + logo.LogoFilePath);
+
+                 ReportParameter rp= new ReportParameter("img_logo", "file:///" + logo.LogoFilePath);
+                    lr.SetParameters(rp);
                 }
                 
 

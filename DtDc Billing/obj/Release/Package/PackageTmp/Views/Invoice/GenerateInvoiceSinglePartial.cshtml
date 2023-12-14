@@ -4,11 +4,17 @@
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 <script>
-
-    document.getElementById('overlayBlock').style.display = 'none';
-
+    $("#overlayBlock").hide();
 </script>
+<div class="overlay" id="overlayBlock">
+    <div class="loader"></div>
+</div>
+
+
+
+
 @using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
     <style>
@@ -31,7 +37,7 @@
             width: 7.69%;
         }
     </style>
-   
+
     <div class="content-wrapper">
         <div class="box box-info" style="padding: 16px 16px !important">
             <div class="box-header with-border">
@@ -46,11 +52,7 @@
 
                         @if (!string.IsNullOrEmpty(successMessage))
                         {
-                            <script>
 
-                                document.getElementById('overlayBlock').style.display = 'none';
-
-                            </script>
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                         }
                         <!-- /.box-header -->
@@ -505,9 +507,6 @@
         </script>
     }*@
 
-<div class="overlay" id="overlayBlock">
-    <div class="loader"></div>
-</div>
 
 <style>
     #royalty-per {
@@ -1154,7 +1153,7 @@ $("#Customer_Id").autocomplete({
 @if (ViewBag.invoiceno != null)
 {
     <script>
-
+        $("#overlayBlock").show();
     /**/
     var print = '@ViewBag.pdf';
     /**/
@@ -1167,18 +1166,26 @@ $("#Customer_Id").autocomplete({
 
     //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
         $.get("/Invoice/SavesinglepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', "http://frbilling.com/PDF/" + data);
+            $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
 
-            document.getElementById('saveinv').click();
+          document.getElementById('saveinv').click();
+      
 
 
 
         });
+        $("#overlayBlock").hide();
 }
     </script>
 }
+else
+            {
+                <script>
+                    $("#overlayBlock").hide();
+                </script>
+            }
 
-<a id="saveinv" style="" href="" download>
-
+<a id="savecon" style="" href="" download>
 </a>
+
 

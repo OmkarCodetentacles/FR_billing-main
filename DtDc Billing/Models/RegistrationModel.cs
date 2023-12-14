@@ -22,7 +22,7 @@ namespace DtDc_Billing.Models
         public string ownerName { get; set; }
 
         [Required]
-        [RegularExpression(@"^(?:.*[a-z]){4,}$", ErrorMessage = "user Name must be greater than or equal 4 characters.")]
+        [RegularExpression(@"^.{4,}$", ErrorMessage = "User Name must be greater than or equal 4 characters.")]
         public string userName { get; set; }
         [Required]
         public string password { get; set; }
@@ -30,7 +30,7 @@ namespace DtDc_Billing.Models
         [Compare("password")]
         public string confirmPassword { get; set; }
 
-        public Nullable<bool> isPaid { get; set; }
+        public Nullable<bool> isPaid { get; set; }  
 
         [Required]
         public string mobileNo { get; set; }

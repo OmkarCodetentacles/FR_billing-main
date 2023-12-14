@@ -44,7 +44,7 @@
     }
 
     .Viewinvoice th {
-        width: 7.69% !important;
+        width: 9.69% !important;
     }
 </style>
 <<div class="content-wrapper">
@@ -139,8 +139,10 @@
                     <table id="table_display_block" class="table Viewinvoice">
                         <thead>
                             <tr>
-                                <th>Sr.No</th>
 
+                                <th>Sr.No</th>
+                                <th></th>
+                                <th></th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.invoiceno)
                                 </th>
@@ -187,15 +189,17 @@
                                 foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@i</td>
+                                      <td>@i</td>
                                         <td>
                                             @*   @Html.ActionLink("View", "ReportPrinterMethod", new { myParameter = item.invoiceno, firmid = item.Firm_Id })*@
-                                            <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank">View</a>
-                                            @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno })
+                                            <div style="display:flex; gap:5px" >
+                                                <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank" class="view-btn">View</a>
+                                                @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno }, new { @class = "edit-btn" })
+                                            </div>
 
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')" })
+                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
                                         </td>
 
                                         <td>

@@ -1615,7 +1615,7 @@ Select(e => new
                         insertupdate.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
                         insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
 
-                        insertupdate.BillAmount = Convert.ToDouble(values[21].Trim('\''));
+                        insertupdate.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
                         insertupdate.Insurance = tr.Insurance;
 
                         db.Entry(insertupdate).State = EntityState.Modified;

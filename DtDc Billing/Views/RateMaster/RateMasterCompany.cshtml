@@ -1,6 +1,6 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
 
-@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp" }))
+@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp"}))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -78,7 +78,7 @@
                                 <label class="">Phone Number<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" } })
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" } , oninput = "validatePhoneNumber(this)" })
                                 @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -373,18 +373,40 @@
 
 }
 <script>
+    function validateForm() {
 
+    }
     // Scroll to the top of the page
     function scrollToTop() {
         window.scrollTo(0, 0);
     }
+     function showLoader() {
+     var showLoader = '@TempData["ShowLoader"]';
 
+     document.getElementById('overlayBlock').style.display = 'block';
+
+ }
     $(document).ready(function () {
         $('#uploadBtn').on('click', function () {
             scrollToTop();
-            showLoader('overlayBlock');
-            // Get the form element
-            var form = $('#frmEmp');
+            var companyId = document.getElementById("Company_Id").value;
+            var companyName = document.getElementById("Company_Name").value;
+            var companyAddress = $("#Company_Address").val();
+            var phone = $("#Phone").val();
+            var Email = $("#Email").val();
+
+            if (companyId.trim() === "" || companyName.trim() === "" || companyAddress.trim() === "" || phone.trim() === "" || Email.trim() === "") {
+                alert("Please fill in all the required fields.");
+                return false; // Prevent form submission
+                
+            }
+            if (phone.length !== 10) {
+                alert("Please enter a valid 10-digit phone number.");
+                return false; // Prevent form submission
+            }
+                showLoader('overlayBlock');
+                // Get the form element
+                var form = $('#frmEmp');
             // Submit the form
             form.submit();
 
@@ -408,6 +430,7 @@
 
 
 </script>
+   
 <script>
     //$(document).ready(function () {
     //    // Show loader when a tab is clicked
@@ -445,16 +468,6 @@
     }
 </style>
 
-<script>
-     // Show loader if TempData flag is set
-
-        function showLoader() {
-            var showLoader = '@TempData["ShowLoader"]';
-
-            document.getElementById('overlayBlock').style.display = 'block';
-
-        }
-</script>
 
 
 <style>

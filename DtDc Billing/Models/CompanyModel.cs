@@ -3,10 +3,45 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace DtDc_Billing.Models
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public class NoSpacesOrSpecialCharactersAttribute : ValidationAttribute
+    {
+        private readonly string _specialCharacters;
+
+        public NoSpacesOrSpecialCharactersAttribute(string specialCharacters)
+        {
+            _specialCharacters = specialCharacters;
+        }
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value != null)
+            {
+                string input = value.ToString();
+
+                // Check for spaces at the beginning or end
+                if (input.Trim() != input)
+                {
+                    return new ValidationResult("Company Id cannot have spaces before or after.");
+                }
+
+                // Check for special characters
+                Regex regex = new Regex("[" + Regex.Escape(_specialCharacters) + "]");
+
+                if (regex.IsMatch(input))
+                {
+                    return new ValidationResult("Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&','(' ,')', or spaces.");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
     public class CompanyModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,10 +58,12 @@ namespace DtDc_Billing.Models
             this.Transactions = new HashSet<Transaction>();
         }
 
-        [Required(ErrorMessage = "Please Enter Company Id")]
-        public string Company_Id { get; set; }
 
-        public int c_id { get; set; }
+        [Required(ErrorMessage = "Please Enter Company Id")]
+        [NoSpacesOrSpecialCharacters(". / < > @ #% * & - _ (  )", ErrorMessage = "Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&' '-','_', or spaces.")]
+        public string Company_Id { get; set; }
+    
+    public int c_id { get; set; }
 
         [Required(ErrorMessage = "Please Enter Phone No")]
         [DataType(DataType.PhoneNumber)]

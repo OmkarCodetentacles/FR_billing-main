@@ -227,7 +227,6 @@ namespace DtDc_Billing.Controllers
 
                         HttpCookie cookie = new HttpCookie("Cookies");
                         cookie["AdminValue"] = obj.Pfcode.ToString();
-
                         cookie["UserValue"] = obj.userName.ToString();
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
@@ -1906,8 +1905,8 @@ namespace DtDc_Billing.Controllers
                         {
 
                             var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
-                           // franchises.StampFilePath = "https://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
-                            franchises.StampFilePath=newFilePath;
+                            franchises.StampFilePath = "https://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+                           // franchises.StampFilePath=newFilePath;
                             db.SaveChanges();
                         }
                         catch (Exception e)
@@ -1935,25 +1934,26 @@ namespace DtDc_Billing.Controllers
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 string _FileName = "";
                 string _path = "";
-
                 if (logo.file.ContentLength > 0)
                 {
                     _FileName = Path.GetFileName(logo.file.FileName);
                     _path = Server.MapPath("~/UploadedLogo/" + _FileName);
-
+                  
                     logo.file.SaveAs(_path);
                 }
 
                 var lo = (from d in db.Franchisees
                           where d.PF_Code == strpf
                           select d).FirstOrDefault();
+             //var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName ;
 
 
-                lo.LogoFilePath = _path;
+                lo.LogoFilePath =_path;
 
                 db.Entry(lo).State = EntityState.Modified;
                 db.SaveChanges();
 
+                TempData["Success1"] = "Logo Added Successfully!";
                 TempData["Success1"] = "Logo Added Successfully!";
                 return RedirectToAction("Franchiseelist");
             }
@@ -2552,475 +2552,495 @@ namespace DtDc_Billing.Controllers
         [ValidateAntiForgeryToken()]
         public ActionResult Register(RegistrationModel userDetails)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                var flag = false;
-                var Pfcheck = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
-
-
-                if (Pfcheck != null)
+                if (ModelState.IsValid)
                 {
-                    flag = true;
-                    ModelState.AddModelError("customError", "Pfcode already exist");
-
-                }
-
-                if (userDetails.isUserNameExist == false)
-                {
-                    flag = true;
-                    ModelState.AddModelError("usernameerror", "User name already exist");
-                }
+                    var flag = false;
+                    var saveSector = false;
+                    var Pfcheck = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
 
 
-                if (userDetails.referral != "" && userDetails.referral != null)
-                {
-                    var isValidReferral = db.registrations.Where(x => x.referralCode == userDetails.referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
-
-                    if (isValidReferral)
-                    {
-                        userDetails.referral = userDetails.referral;
-                    }
-                    else
+                    if (Pfcheck != null)
                     {
                         flag = true;
-                        userDetails.referral = "";
-                        ModelState.AddModelError("Error", "Invalid referral or not paid yet");
+                        ModelState.AddModelError("customError", "Pfcode already exist");
+
                     }
 
-                }
-
-
-                if (flag)
-                {
-                    return View("Register", userDetails);
-                }
-
-                var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referral);
-
-                var savefranchisee = db.FranchiseeSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.password, userDetails.mobileNo, userDetails.address);
-
-                //Adding Eantries To the Sector Table
-                var sectornamelist = db.sectorNames.ToList();
-
-                var pfcode = (from u in db.Franchisees
-                              where u.PF_Code == userDetails.Pfcode
-                              select u).FirstOrDefault();
-                if (pfcode != null)
-                {
-                    foreach (var i in sectornamelist)
+                    if (userDetails.isUserNameExist == false)
                     {
-                        Sector sn = new Sector();
-
-                        sn.Pf_code = pfcode.PF_Code;
-                        sn.Sector_Name = i.sname;
-
+                        flag = true;
+                        ModelState.AddModelError("usernameerror", "User name already exist");
+                    }
 
 
-                        sn.CashD = true;
-                        sn.CashN = true;
-                        sn.BillD = true;
-                        sn.BillN = true;
+                    if (userDetails.referral != "" && userDetails.referral != null)
+                    {
+                        var isValidReferral = db.registrations.Where(x => x.referralCode == userDetails.referral && x.isPaid == true).FirstOrDefault() != null ? true : false;
 
-
-                        if (sn.Sector_Name == " Within city")
+                        if (isValidReferral)
                         {
-                            sn.Priority = 1;
-                            sn.Pincode_values = "400001-400610,400615-400706,400710-401203,401205-402209";
-
-                            sn.CashD = true;
-                            sn.CashN = true;
-                            sn.BillD = true;
-                            sn.BillN = true;
-
-                        }
-
-                        else if (sn.Sector_Name == " Within State")
-                        {
-
-                            sn.CashD = true;
-                            sn.CashN = false;
-                            sn.BillD = true;
-                            sn.BillN = false;
-
-                            sn.Priority = 2;
-                            sn.Pincode_values = "400000-403000,404000-450000";
-                        }
-
-
-                        else if (sn.Sector_Name == "North East")
-                        {
-                            sn.Priority = 3;
-                            sn.Pincode_values = "400000-450000,360000-400000,450000-490000";
-
-                            sn.CashD = false;
-                            sn.CashN = true;
-                            sn.BillD = false;
-                            sn.BillN = true;
-
-                        }
-
-                        else if (sn.Sector_Name == "Metro")
-                        {
-                            sn.Priority = 4;
-                            sn.Pincode_values = "180000-200000";
-
-                            sn.CashD = true;
-                            sn.CashN = true;
-                            sn.BillD = true;
-                            sn.BillN = true;
-
-                        }
-
-
-
-                        else if (sn.Sector_Name == "Jammu and Kashmir")
-                        {
-                            sn.Priority = 5;
-                            sn.Pincode_values = "780000-800000,170000-180000";
-
-                            sn.CashD = true;
-                            sn.CashN = true;
-                            sn.BillD = true;
-                            sn.BillN = true;
-
-                        }
-
-
-
-                        else if (sn.Sector_Name == "Rest of India")
-                        {
-                            sn.Priority = 6;
-                            sn.Pincode_values = "000000";
-
-                            sn.CashD = true;
-                            sn.CashN = true;
-                            sn.BillD = true;
-                            sn.BillN = true;
-
+                            userDetails.referral = userDetails.referral;
                         }
                         else
                         {
-                            sn.Pincode_values = null;
+                            flag = true;
+                            userDetails.referral = "";
+                            ModelState.AddModelError("Error", "Invalid referral or not paid yet");
+                        }
+
+                    }
+
+
+                    if (flag)
+                    {
+                        return View("Register", userDetails);
+                    }
+
+                    var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referral);
+
+
+                    if (saveSector)
+                    {
+                        var savefranchisee = db.FranchiseeSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.password, userDetails.mobileNo, userDetails.address);
+
+                        //Adding Eantries To the Sector Table
+                        var sectornamelist = db.sectorNames.ToList();
+
+                        var pfcode = (from u in db.Franchisees
+                                      where u.PF_Code == userDetails.Pfcode
+                                      select u).FirstOrDefault();
+                        if (pfcode != null)
+                        {
+                            foreach (var i in sectornamelist)
+                            {
+                                Sector sn = new Sector();
+
+                                sn.Pf_code = pfcode.PF_Code;
+                                sn.Sector_Name = i.sname;
+
+
+
+                                sn.CashD = true;
+                                sn.CashN = true;
+                                sn.BillD = true;
+                                sn.BillN = true;
+
+
+                                if (sn.Sector_Name == " Within city")
+                                {
+                                    sn.Priority = 1;
+                                    sn.Pincode_values = "400001-400610,400615-400706,400710-401203,401205-402209";
+
+                                    sn.CashD = true;
+                                    sn.CashN = true;
+                                    sn.BillD = true;
+                                    sn.BillN = true;
+
+                                }
+
+                                else if (sn.Sector_Name == " Within State")
+                                {
+
+                                    sn.CashD = true;
+                                    sn.CashN = false;
+                                    sn.BillD = true;
+                                    sn.BillN = false;
+
+                                    sn.Priority = 2;
+                                    sn.Pincode_values = "400000-403000,404000-450000";
+                                }
+
+
+                                else if (sn.Sector_Name == "North East")
+                                {
+                                    sn.Priority = 3;
+                                    sn.Pincode_values = "400000-450000,360000-400000,450000-490000";
+
+                                    sn.CashD = false;
+                                    sn.CashN = true;
+                                    sn.BillD = false;
+                                    sn.BillN = true;
+
+                                }
+
+                                else if (sn.Sector_Name == "Metro")
+                                {
+                                    sn.Priority = 4;
+                                    sn.Pincode_values = "180000-200000";
+
+                                    sn.CashD = true;
+                                    sn.CashN = true;
+                                    sn.BillD = true;
+                                    sn.BillN = true;
+
+                                }
+
+
+
+                                else if (sn.Sector_Name == "Jammu and Kashmir")
+                                {
+                                    sn.Priority = 5;
+                                    sn.Pincode_values = "780000-800000,170000-180000";
+
+                                    sn.CashD = true;
+                                    sn.CashN = true;
+                                    sn.BillD = true;
+                                    sn.BillN = true;
+
+                                }
+
+
+
+                                else if (sn.Sector_Name == "Rest of India")
+                                {
+                                    sn.Priority = 6;
+                                    sn.Pincode_values = "000000";
+
+                                    sn.CashD = true;
+                                    sn.CashN = true;
+                                    sn.BillD = true;
+                                    sn.BillN = true;
+
+                                }
+                                else
+                                {
+                                    sn.Pincode_values = null;
+                                }
+
+
+
+
+                                db.Sectors.Add(sn);
+
+                                db.SaveChanges();
+
+                            }
+                        }
+                        //////////////////////////////////////////////
+
+                        var Companyid = "Cash_" + userDetails.Pfcode;
+
+
+                        var secotrs = db.Sectors.Where(m => m.Pf_code == userDetails.Pfcode).ToList();
+
+                        Company cm = new Company();
+                        cm.Company_Id = Companyid;
+                        cm.Pf_code = userDetails.Pfcode;
+                        cm.Phone = 1234567890;
+                        cm.Company_Address = userDetails.address;
+                        cm.Company_Name = Companyid;
+                        cm.Email = Companyid + "@gmail.com";
+                        db.Companies.Add(cm);
+                        db.SaveChanges();
+
+
+
+                        var basiccompid = "BASIC_TS";
+
+                        var basicrec = db.Ratems.Where(m => m.Company_id == "BASIC_TS").FirstOrDefault();
+
+
+
+                        if (basicrec == null)
+                        {
+                            Company bs = new Company();
+                            bs.Company_Id = basiccompid;
+                            bs.Pf_code = null;
+                            bs.Phone = 1234567890;
+                            bs.Company_Address = userDetails.address;
+                            bs.Company_Name = "BASIC_TS";
+                            bs.Email = "Email@gmail.com";
+                            db.Companies.Add(bs);
+                            db.SaveChanges();
+
+                            int j = 0;
+
+                            foreach (var i in secotrs)
+                            {
+                                Ratem dox = new Ratem();
+                                Nondox ndox = new Nondox();
+                                express_cargo cs = new express_cargo();
+
+                                dox.Company_id = basiccompid;
+                                dox.Sector_Id = i.Sector_Id;
+                                dox.NoOfSlab = 2;
+
+                                dox.slab1 = 1;
+                                dox.slab2 = 1;
+                                dox.slab3 = 1;
+                                dox.slab4 = 1;
+
+                                dox.Uptosl1 = 1;
+                                dox.Uptosl2 = 1;
+                                dox.Uptosl3 = 1;
+                                dox.Uptosl4 = 1;
+
+                                ndox.Company_id = basiccompid;
+                                ndox.Sector_Id = i.Sector_Id;
+                                ndox.NoOfSlabN = 2;
+                                ndox.NoOfSlabS = 2;
+
+                                ndox.Aslab1 = 1;
+                                ndox.Aslab2 = 1;
+                                ndox.Aslab3 = 1;
+                                ndox.Aslab4 = 1;
+
+
+                                ndox.Sslab1 = 1;
+                                ndox.Sslab2 = 1;
+                                ndox.Sslab3 = 1;
+                                ndox.Sslab4 = 1;
+
+                                ndox.AUptosl1 = 1;
+                                ndox.AUptosl2 = 1;
+                                ndox.AUptosl3 = 1;
+                                ndox.AUptosl4 = 1;
+
+                                ndox.SUptosl1 = 1;
+                                ndox.SUptosl2 = 1;
+                                ndox.SUptosl3 = 1;
+                                ndox.SUptosl4 = 1;
+
+
+                                cs.Company_id = basiccompid;
+                                cs.Sector_Id = i.Sector_Id;
+
+                                cs.Exslab1 = 1;
+                                cs.Exslab2 = 1;
+
+                                db.Ratems.Add(dox);
+                                db.Nondoxes.Add(ndox);
+                                db.express_cargo.Add(cs);
+
+                                j++;
+
+                            }
+
+                            int p = 0;
+
+                            for (int i = 0; i < 5; i++)
+                            {
+
+                                dtdcPlu dtplu = new dtdcPlu();
+                                Dtdc_Ptp stptp = new Dtdc_Ptp();
+
+                                if (i == 0)
+                                {
+                                    dtplu.destination = "City Plus";
+                                    stptp.dest = "City";
+                                }
+                                else if (i == 1)
+                                {
+                                    dtplu.destination = "Zonal Plus/Blue";
+                                    stptp.dest = "Zonal";
+
+                                }
+                                else if (i == 2)
+                                {
+                                    dtplu.destination = "Metro Plus/Blue";
+                                    stptp.dest = "Metro";
+                                }
+                                else if (i == 3)
+                                {
+                                    dtplu.destination = "National Plus/Blue";
+                                    stptp.dest = "National";
+                                }
+                                else if (i == 4)
+                                {
+                                    dtplu.destination = "Regional Plus";
+                                    stptp.dest = "Regional";
+                                }
+
+                                dtplu.Company_id = basiccompid;
+
+                                dtplu.Upto500gm = 1;
+                                dtplu.U10to25kg = 1;
+                                dtplu.U25to50 = 1;
+                                dtplu.U50to100 = 1;
+                                dtplu.add100kg = 1;
+                                dtplu.Add500gm = 1;
+
+
+                                stptp.Company_id = basiccompid;
+                                stptp.PUpto500gm = 1;
+                                stptp.PAdd500gm = 1;
+                                stptp.PU10to25kg = 1;
+                                stptp.PU25to50 = 1;
+                                stptp.Padd100kg = 1;
+                                stptp.PU50to100 = 1;
+
+                                stptp.P2Upto500gm = 1;
+                                stptp.P2Add500gm = 1;
+                                stptp.P2U10to25kg = 1;
+                                stptp.P2U25to50 = 1;
+                                stptp.P2add100kg = 1;
+                                stptp.P2U50to100 = 1;
+
+                                db.dtdcPlus.Add(dtplu);
+                                db.Dtdc_Ptp.Add(stptp);
+
+                                p++;
+
+                            }
+
                         }
 
 
 
 
-                        db.Sectors.Add(sn);
+                        foreach (var i in secotrs)
+                        {
+                            Ratem dox = new Ratem();
+                            Nondox ndox = new Nondox();
+                            express_cargo cs = new express_cargo();
+
+                            dox.Company_id = Companyid;
+                            dox.Sector_Id = i.Sector_Id;
+                            dox.NoOfSlab = 2;
+                            //dox.CashCounter = true;
+
+                            ndox.Company_id = Companyid;
+                            ndox.Sector_Id = i.Sector_Id;
+                            ndox.NoOfSlabN = 2;
+                            ndox.NoOfSlabS = 2;
+                            // ndox.CashCounterNon = true;
+
+
+                            cs.Company_id = Companyid;
+                            cs.Sector_Id = i.Sector_Id;
+
+                            // cs.CashCounterExpr = true;
+
+                            db.Ratems.Add(dox);
+                            db.Nondoxes.Add(ndox);
+                            db.express_cargo.Add(cs);
+
+
+                        }
+
+                        for (int i = 0; i < 5; i++)
+                        {
+                            dtdcPlu dtplu = new dtdcPlu();
+                            Dtdc_Ptp stptp = new Dtdc_Ptp();
+
+                            if (i == 0)
+                            {
+                                dtplu.destination = "City Plus";
+                                stptp.dest = "City";
+                            }
+                            else if (i == 1)
+                            {
+                                dtplu.destination = "Zonal Plus/Blue";
+                                stptp.dest = "Zonal";
+
+                            }
+                            else if (i == 2)
+                            {
+                                dtplu.destination = "Metro Plus/Blue";
+                                stptp.dest = "Metro";
+                            }
+                            else if (i == 3)
+                            {
+                                dtplu.destination = "National Plus/Blue";
+                                stptp.dest = "National";
+                            }
+                            else if (i == 4)
+                            {
+                                dtplu.destination = "Regional Plus";
+                                stptp.dest = "Regional";
+                            }
+
+                            dtplu.Company_id = Companyid;
+                            // dtplu.CashCounterPlus = true;
+                            stptp.Company_id = Companyid;
+
+
+                            db.dtdcPlus.Add(dtplu);
+                            db.Dtdc_Ptp.Add(stptp);
+
+                        }
 
                         db.SaveChanges();
 
-                    }
-                }
-                //////////////////////////////////////////////
+                        userDetailsModel user = new userDetailsModel();
 
-                var Companyid = "Cash_" + userDetails.Pfcode;
+                        user.name = userDetails.franchiseName;
+                        user.email = userDetails.emailId;
+                        user.mobileNo = userDetails.mobileNo;
+                        user.address = userDetails.address;
 
+                        Session["DataName"] = user.name;
+                        Session["Dataemail"] = user.email;
+                        Session["Datacontact"] = user.mobileNo;
+                        Session["Dataaddress"] = user.address;
 
-                var secotrs = db.Sectors.Where(m => m.Pf_code == userDetails.Pfcode).ToList();
-
-                Company cm = new Company();
-                cm.Company_Id = Companyid;
-                cm.Pf_code = userDetails.Pfcode;
-                cm.Phone = 1234567890;
-                cm.Company_Address = userDetails.address;
-                cm.Company_Name = Companyid;
-                cm.Email = Companyid + "@gmail.com";
-                db.Companies.Add(cm);
-                db.SaveChanges();
-
-
-
-                var basiccompid = "BASIC_TS";
-
-                var basicrec = db.Ratems.Where(m => m.Company_id == "BASIC_TS").FirstOrDefault();
-
-
-
-                if (basicrec == null)
-                {
-                    Company bs = new Company();
-                    bs.Company_Id = basiccompid;
-                    bs.Pf_code = null;
-                    bs.Phone = 1234567890;
-                    bs.Company_Address = userDetails.address;
-                    bs.Company_Name = "BASIC_TS";
-                    bs.Email = "Email@gmail.com";
-                    db.Companies.Add(bs);
-                    db.SaveChanges();
-
-                    int j = 0;
-
-                    foreach (var i in secotrs)
-                    {
-                        Ratem dox = new Ratem();
-                        Nondox ndox = new Nondox();
-                        express_cargo cs = new express_cargo();
-
-                        dox.Company_id = basiccompid;
-                        dox.Sector_Id = i.Sector_Id;
-                        dox.NoOfSlab = 2;
-
-                        dox.slab1 = 1;
-                        dox.slab2 = 1;
-                        dox.slab3 = 1;
-                        dox.slab4 = 1;
-
-                        dox.Uptosl1 = 1;
-                        dox.Uptosl2 = 1;
-                        dox.Uptosl3 = 1;
-                        dox.Uptosl4 = 1;
-
-                        ndox.Company_id = basiccompid;
-                        ndox.Sector_Id = i.Sector_Id;
-                        ndox.NoOfSlabN = 2;
-                        ndox.NoOfSlabS = 2;
-
-                        ndox.Aslab1 = 1;
-                        ndox.Aslab2 = 1;
-                        ndox.Aslab3 = 1;
-                        ndox.Aslab4 = 1;
-
-
-                        ndox.Sslab1 = 1;
-                        ndox.Sslab2 = 1;
-                        ndox.Sslab3 = 1;
-                        ndox.Sslab4 = 1;
-
-                        ndox.AUptosl1 = 1;
-                        ndox.AUptosl2 = 1;
-                        ndox.AUptosl3 = 1;
-                        ndox.AUptosl4 = 1;
-
-                        ndox.SUptosl1 = 1;
-                        ndox.SUptosl2 = 1;
-                        ndox.SUptosl3 = 1;
-                        ndox.SUptosl4 = 1;
-
-
-                        cs.Company_id = basiccompid;
-                        cs.Sector_Id = i.Sector_Id;
-
-                        cs.Exslab1 = 1;
-                        cs.Exslab2 = 1;
-
-                        db.Ratems.Add(dox);
-                        db.Nondoxes.Add(ndox);
-                        db.express_cargo.Add(cs);
-
-                        j++;
-
-                    }
-
-                    int p = 0;
-
-                    for (int i = 0; i < 5; i++)
-                    {
-
-                        dtdcPlu dtplu = new dtdcPlu();
-                        Dtdc_Ptp stptp = new Dtdc_Ptp();
-
-                        if (i == 0)
+                        if (save > 0)
                         {
-                            dtplu.destination = "City Plus";
-                            stptp.dest = "City";
+                            string FilePath = Server.MapPath("~/images/RegisterMailTemplete.html");
+                            //"http://codetentacles-005-site1.htempurl.com/images/RegisterMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
+                            StreamReader str = new StreamReader(FilePath);
+                            string MailText = str.ReadToEnd();
+                            str.Close();
+
+                            MailText = MailText.Replace("[newusername]", userDetails.franchiseName);
+
+                            string subject = "Welcome To FrBilling Subscription";
+
+
+                            MailMessage _mailmsg = new MailMessage();
+
+
+                            _mailmsg.IsBodyHtml = true;
+                            _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
+                            _mailmsg.To.Add(userDetails.emailId);
+                            _mailmsg.Subject = subject;
+                            _mailmsg.Body = MailText;
+
+                            SmtpClient _smtp = new SmtpClient();
+
+                            _smtp.Host = "smtp.gmail.com";
+
+                            _smtp.Port = 587;
+
+
+                            _smtp.EnableSsl = true;
+                            _smtp.UseDefaultCredentials = false;
+
+                            NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
+                            _smtp.Credentials = _network;
+
+
+                            //_smtp.Send(_mailmsg);
+
+                            TempData["success"] = "Your registration has been successfully completed! To activate your account, please contact us at +91 9209764995.";
+                            //return RedirectToAction("makePaymentPartial", "Admin", user);
+                            return RedirectToAction("Register");
+                            // var userAllDetails = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
+                            // return Json(userAllDetails, JsonRequestBehavior.AllowGet);
                         }
-                        else if (i == 1)
+                        else
                         {
-                            dtplu.destination = "Zonal Plus/Blue";
-                            stptp.dest = "Zonal";
-
+                            TempData["error"] = "Something went wrong Please try Again!!";
                         }
-                        else if (i == 2)
-                        {
-                            dtplu.destination = "Metro Plus/Blue";
-                            stptp.dest = "Metro";
-                        }
-                        else if (i == 3)
-                        {
-                            dtplu.destination = "National Plus/Blue";
-                            stptp.dest = "National";
-                        }
-                        else if (i == 4)
-                        {
-                            dtplu.destination = "Regional Plus";
-                            stptp.dest = "Regional";
-                        }
-
-                        dtplu.Company_id = basiccompid;
-
-                        dtplu.Upto500gm = 1;
-                        dtplu.U10to25kg = 1;
-                        dtplu.U25to50 = 1;
-                        dtplu.U50to100 = 1;
-                        dtplu.add100kg = 1;
-                        dtplu.Add500gm = 1;
-
-
-                        stptp.Company_id = basiccompid;
-                        stptp.PUpto500gm = 1;
-                        stptp.PAdd500gm = 1;
-                        stptp.PU10to25kg = 1;
-                        stptp.PU25to50 = 1;
-                        stptp.Padd100kg = 1;
-                        stptp.PU50to100 = 1;
-
-                        stptp.P2Upto500gm = 1;
-                        stptp.P2Add500gm = 1;
-                        stptp.P2U10to25kg = 1;
-                        stptp.P2U25to50 = 1;
-                        stptp.P2add100kg = 1;
-                        stptp.P2U50to100 = 1;
-
-                        db.dtdcPlus.Add(dtplu);
-                        db.Dtdc_Ptp.Add(stptp);
-
-                        p++;
-
                     }
-
-                }
-
-
-
-
-                foreach (var i in secotrs)
-                {
-                    Ratem dox = new Ratem();
-                    Nondox ndox = new Nondox();
-                    express_cargo cs = new express_cargo();
-
-                    dox.Company_id = Companyid;
-                    dox.Sector_Id = i.Sector_Id;
-                    dox.NoOfSlab = 2;
-                    //dox.CashCounter = true;
-
-                    ndox.Company_id = Companyid;
-                    ndox.Sector_Id = i.Sector_Id;
-                    ndox.NoOfSlabN = 2;
-                    ndox.NoOfSlabS = 2;
-                    // ndox.CashCounterNon = true;
-
-
-                    cs.Company_id = Companyid;
-                    cs.Sector_Id = i.Sector_Id;
-
-                    // cs.CashCounterExpr = true;
-
-                    db.Ratems.Add(dox);
-                    db.Nondoxes.Add(ndox);
-                    db.express_cargo.Add(cs);
-
-
-                }
-
-                for (int i = 0; i < 5; i++)
-                {
-                    dtdcPlu dtplu = new dtdcPlu();
-                    Dtdc_Ptp stptp = new Dtdc_Ptp();
-
-                    if (i == 0)
-                    {
-                        dtplu.destination = "City Plus";
-                        stptp.dest = "City";
-                    }
-                    else if (i == 1)
-                    {
-                        dtplu.destination = "Zonal Plus/Blue";
-                        stptp.dest = "Zonal";
-
-                    }
-                    else if (i == 2)
-                    {
-                        dtplu.destination = "Metro Plus/Blue";
-                        stptp.dest = "Metro";
-                    }
-                    else if (i == 3)
-                    {
-                        dtplu.destination = "National Plus/Blue";
-                        stptp.dest = "National";
-                    }
-                    else if (i == 4)
-                    {
-                        dtplu.destination = "Regional Plus";
-                        stptp.dest = "Regional";
-                    }
-
-                    dtplu.Company_id = Companyid;
-                    // dtplu.CashCounterPlus = true;
-                    stptp.Company_id = Companyid;
-
-
-                    db.dtdcPlus.Add(dtplu);
-                    db.Dtdc_Ptp.Add(stptp);
-
-                }
-
-                db.SaveChanges();
-
-                userDetailsModel user = new userDetailsModel();
-
-                user.name = userDetails.franchiseName;
-                user.email = userDetails.emailId;
-                user.mobileNo = userDetails.mobileNo;
-                user.address = userDetails.address;
-
-                Session["DataName"] = user.name;
-                Session["Dataemail"] = user.email;
-                Session["Datacontact"] = user.mobileNo;
-                Session["Dataaddress"] = user.address;
-
-                if (save > 0)
-                {
-                    string FilePath = Server.MapPath("~/images/RegisterMailTemplete.html");
-                    //"http://codetentacles-005-site1.htempurl.com/images/RegisterMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
-                    StreamReader str = new StreamReader(FilePath);
-                    string MailText = str.ReadToEnd();
-                    str.Close();
-
-                    MailText = MailText.Replace("[newusername]", userDetails.franchiseName);
-
-                    string subject = "Welcome To FrBilling Subscription";
-
-
-                    MailMessage _mailmsg = new MailMessage();
-
-
-                    _mailmsg.IsBodyHtml = true;
-                    _mailmsg.From = new MailAddress("frbillingsoftware@gmail.com");
-                    _mailmsg.To.Add(userDetails.emailId);
-                    _mailmsg.Subject = subject;
-                    _mailmsg.Body = MailText;
-
-                    SmtpClient _smtp = new SmtpClient();
-
-                    _smtp.Host = "smtp.gmail.com";
-
-                    _smtp.Port = 587;
-
-
-                    _smtp.EnableSsl = true;
-                    _smtp.UseDefaultCredentials = false;
-
-                    NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
-                    _smtp.Credentials = _network;
-
-
-                    //_smtp.Send(_mailmsg);
-
-                    TempData["success"] = "Register successfully";
-                    return RedirectToAction("makePaymentPartial", "Admin", user);
-                    // var userAllDetails = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
-                    // return Json(userAllDetails, JsonRequestBehavior.AllowGet);
+                    TempData["succ"] = "1";
                 }
                 else
                 {
-                    TempData["error"] = "Something went wrong";
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                           .Where(y => y.Count > 0)
+                                           .ToList();
                 }
             }
+            catch(Exception e)
+            {
+                
+            }
 
-            return View("Register", userDetails);
+          
+            return View();
 
 
         }
@@ -3256,6 +3276,8 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult makePaymentPartial()
         {
+            //string successMessage = TempData["success"] as string;
+            //ViewBag.SuccessMessage = successMessage;
 
             return View();
         }
