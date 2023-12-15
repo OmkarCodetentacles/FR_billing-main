@@ -1,6 +1,6 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
 
-@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp" }))
+@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp"}))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -78,7 +78,7 @@
                                 <label class="">Phone Number<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" } })
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" } , oninput = "validatePhoneNumber(this)" })
                                 @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -373,7 +373,9 @@
 
 }
 <script>
+    function validateForm() {
 
+    }
     // Scroll to the top of the page
     function scrollToTop() {
         window.scrollTo(0, 0);
@@ -397,6 +399,10 @@
                 alert("Please fill in all the required fields.");
                 return false; // Prevent form submission
                 
+            }
+            if (phone.length !== 10) {
+                alert("Please enter a valid 10-digit phone number.");
+                return false; // Prevent form submission
             }
                 showLoader('overlayBlock');
                 // Get the form element

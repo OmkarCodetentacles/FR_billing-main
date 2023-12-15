@@ -1,11 +1,37 @@
 ﻿<!-- _AlertPartial.cshtml -->
 @model Tuple<string, string>
+    <style>
+        .alert-error {
+            background-color: #f5c6cb;
+            border-color: #f5c6cb;
+            color: #f5c6cb;
+        }
 
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .alert-warning {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
 @if (!string.IsNullOrEmpty(Model.Item2))
 {
-    <div class="alert alert-@Model.Item1 d-flex justify-content-between align-items-center">
-        <strong>@(Model.Item1.ToLower() == "success" ? "Success!!" : "Error:")</strong>@Model.Item2
-        <button type="button" class="close" data-dismiss="alert">X</button>
+    <div class="alert alert-@Model.Item1.ToLower() d-flex justify-content-between align-items-center">
+        <h6>
+            @(Model.Item1.ToLower() == "success" ? "Success!!" : "Error:")
+
+            <strong>
+                @Model.Item2
+            </strong>
+            <button type="button" class="close" data-dismiss="alert">X</button>
+        </h6>
+           
+       
+      
     </div>
 
     <script>
@@ -15,20 +41,28 @@
             if (alertElement) {
                 alertElement.parentNode.removeChild(alertElement);
             }
-        }, 5000);
+        }, 10000); // Use 5000 milliseconds (5 seconds) instead of 10000
+
+          var alertColor = '@((Model.Item1.ToLower() != "success") ? "red" : "")';
+        $('strong').css('color', alertColor);
+
+        // Output the color applied to the alert for debugging
+        console.log("Alert color:", $('.alert').css('color'));
     </script>
+
+  
 }
 
 @*@{
-    var successMessage = TempData["Success1"] as string;
-    var errorMessage = TempData["Error1"] as string;
-}
+        var successMessage = TempData["Success1"] as string;
+        var errorMessage = TempData["Error1"] as string;
+    }
 
-@if (!string.IsNullOrEmpty(successMessage))
-{
-    @Html.Partial("_AlertPartial", new Tuple<string, string>("success", successMessage))
-}
-else if (!string.IsNullOrEmpty(errorMessage))
-{
-    @Html.Partial("_AlertPartial", new Tuple<string, string>("danger", errorMessage))
-}*@
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        @Html.Partial("_AlertPartial", new Tuple<string, string>("success", successMessage))
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        @Html.Partial("_AlertPartial", new Tuple<string, string>("danger", errorMessage))
+    }*@

@@ -165,11 +165,11 @@ namespace DtDc_Billing.Controllers
                         return View();
                     }
 
-                    if (ObjData.Pfcode == "1")
-                    {
-
-                        return RedirectToAction("Index", "Home");
-                    }
+                    //if (ObjData.Pfcode == "1")
+                    //{
+                    //     return Redirect("~/Home/Index");
+                    //  //  return RedirectToAction("Index", "Home");
+                    //}
 
 
                     DateTime currentDate = DateTime.Now;

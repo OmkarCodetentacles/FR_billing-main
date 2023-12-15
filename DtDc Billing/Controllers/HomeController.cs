@@ -232,7 +232,7 @@ namespace DtDc_Billing.Controllers
             DateTime before10days=newDate.AddDays(-10);
             //int totalDaysDifference = date_difference.Days;
 
-            if (currentDate<before10days)
+            if (currentDate >= before10days && currentDate < newDate)
             {
                 ViewBag.ExpiryMessage = "Your subscription is expiring in 10 days. Please renew to continue enjoying our services.";
             }

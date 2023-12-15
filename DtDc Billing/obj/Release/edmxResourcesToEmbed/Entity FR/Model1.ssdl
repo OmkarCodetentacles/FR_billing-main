@@ -444,6 +444,16 @@
     <Property Name="Service_Other" Type="varchar" MaxLength="500" />
     <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
   </EntityType>
+  <EntityType Name="Package">
+    <Key>
+      <PropertyRef Name="Pid" />
+    </Key>
+    <Property Name="Pid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="float" />
+    <Property Name="Despription" Type="varchar" MaxLength="200" />
+    <Property Name="Subcriptionforindays" Type="int" />
+    <Property Name="isPaid" Type="bit" />
+  </EntityType>
   <EntityType Name="Payment">
     <Key>
       <PropertyRef Name="Pay_ID" />
@@ -651,6 +661,7 @@
     <Property Name="IsRenewalEmail" Type="varchar" MaxLength="20" />
     <Property Name="IsRenewalEmailDate" Type="datetime" />
     <Property Name="subscriptionForInDays" Type="int" />
+    <Property Name="paymentDate" Type="datetime" />
   </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
@@ -1990,6 +2001,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
     <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
