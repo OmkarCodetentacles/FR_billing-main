@@ -449,6 +449,16 @@
           <Property Name="Service_Other" Type="varchar" MaxLength="500" />
           <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="Package">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="float" />
+          <Property Name="Despription" Type="varchar" MaxLength="200" />
+          <Property Name="Subcriptionforindays" Type="int" />
+          <Property Name="isPaid" Type="bit" />
+        </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="Pay_ID" />
@@ -656,6 +666,7 @@
           <Property Name="IsRenewalEmail" Type="varchar" MaxLength="20" />
           <Property Name="IsRenewalEmailDate" Type="datetime" />
           <Property Name="subscriptionForInDays" Type="int" />
+          <Property Name="paymentDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -1995,6 +2006,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
@@ -2890,6 +2902,16 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Name="Service_Other" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Package">
+          <Key>
+            <PropertyRef Name="Pid" />
+          </Key>
+          <Property Name="Pid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Double" />
+          <Property Name="Despription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Subcriptionforindays" Type="Int32" />
+          <Property Name="isPaid" Type="Boolean" />
+        </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="Pay_ID" />
@@ -3110,6 +3132,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Name="IsRenewalEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
           <Property Name="subscriptionForInDays" Type="Int32" />
+          <Property Name="paymentDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -4275,6 +4298,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <EntitySet Name="Nondoxes" EntityType="Self.Nondox" />
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
+          <EntitySet Name="Packages" EntityType="Self.Package" />
           <EntitySet Name="Payments" EntityType="Self.Payment" />
           <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
           <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
@@ -4944,6 +4968,18 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="referralCode" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="franchiseName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="emailId" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="dateTime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ownerName" Nullable="true" MaxLength="200" />
+          <Property Type="Boolean" Name="isPaid" Nullable="true" />
+          <Property Type="String" Name="mobileNo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="address" Nullable="true" />
+          <Property Type="String" Name="IsRenewal" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="IsRenewalEmail" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="IsRenewalEmailDate" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="subscriptionForInDays" Nullable="true" />
+          <Property Type="DateTime" Name="paymentDate" Nullable="true" Precision="23" />
         </ComplexType>
         <ComplexType Name="getLoginforDev_Result">
           <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
@@ -5624,6 +5660,17 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Packages">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Package">
+              <MappingFragment StoreEntitySet="Package">
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Despription" ColumnName="Despription" />
+                <ScalarProperty Name="Subcriptionforindays" ColumnName="Subcriptionforindays" />
+                <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Payment">
               <MappingFragment StoreEntitySet="Payment">
@@ -5839,6 +5886,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="IsRenewalEmail" ColumnName="IsRenewalEmail" />
                 <ScalarProperty Name="IsRenewalEmailDate" ColumnName="IsRenewalEmailDate" />
                 <ScalarProperty Name="subscriptionForInDays" ColumnName="subscriptionForInDays" />
+                <ScalarProperty Name="paymentDate" ColumnName="paymentDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6327,6 +6375,18 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
                 <ScalarProperty Name="referralCode" ColumnName="referralCode" />
+                <ScalarProperty Name="franchiseName" ColumnName="franchiseName" />
+                <ScalarProperty Name="emailId" ColumnName="emailId" />
+                <ScalarProperty Name="dateTime" ColumnName="dateTime" />
+                <ScalarProperty Name="ownerName" ColumnName="ownerName" />
+                <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="IsRenewal" ColumnName="IsRenewal" />
+                <ScalarProperty Name="IsRenewalEmail" ColumnName="IsRenewalEmail" />
+                <ScalarProperty Name="IsRenewalEmailDate" ColumnName="IsRenewalEmailDate" />
+                <ScalarProperty Name="subscriptionForInDays" ColumnName="subscriptionForInDays" />
+                <ScalarProperty Name="paymentDate" ColumnName="paymentDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -267,11 +267,11 @@ namespace DtDc_Billing.Controllers
         {
 
 
-            var entity = db.Companies.Where(m => m.Pf_code == id).
-Select(e => new
-{
-    e.Company_Id
-}).Distinct().ToList();
+                    var entity = db.Companies.Where(m => m.Pf_code == id).
+        Select(e => new
+        {
+            e.Company_Id
+        }).Distinct().ToList();
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
@@ -280,18 +280,13 @@ Select(e => new
 
         public ActionResult PincodeautocompleteSender()
         {
-
-
-            var entity = db.Destinations.
-Select(e => new
-{
-    e.Pincode
-}).ToList();
-
-
+                        var entity = db.Destinations.
+            Select(e => new
+            {
+                e.Pincode
+            }).ToList();
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
-
         public JsonResult CustomerDetails(string CustomerId)
         {
             db.Configuration.ProxyCreationEnabled = false;

@@ -533,6 +533,16 @@
     <Property Name="Service_Other" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="Package">
+    <Key>
+      <PropertyRef Name="Pid" />
+    </Key>
+    <Property Name="Pid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="Despription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Subcriptionforindays" Type="Int32" />
+    <Property Name="isPaid" Type="Boolean" />
+  </EntityType>
   <EntityType Name="Payment">
     <Key>
       <PropertyRef Name="Pay_ID" />
@@ -753,6 +763,7 @@
     <Property Name="IsRenewalEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
     <Property Name="subscriptionForInDays" Type="Int32" />
+    <Property Name="paymentDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
@@ -1918,6 +1929,7 @@
     <EntitySet Name="Nondoxes" EntityType="Self.Nondox" />
     <EntitySet Name="Notifications" EntityType="Self.Notification" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
+    <EntitySet Name="Packages" EntityType="Self.Package" />
     <EntitySet Name="Payments" EntityType="Self.Payment" />
     <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
     <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
@@ -2587,6 +2599,18 @@
     <Property Type="String" Name="password" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Pfcode" Nullable="true" MaxLength="20" />
     <Property Type="String" Name="referralCode" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="franchiseName" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="emailId" Nullable="true" MaxLength="200" />
+    <Property Type="DateTime" Name="dateTime" Nullable="true" Precision="23" />
+    <Property Type="String" Name="ownerName" Nullable="true" MaxLength="200" />
+    <Property Type="Boolean" Name="isPaid" Nullable="true" />
+    <Property Type="String" Name="mobileNo" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="address" Nullable="true" />
+    <Property Type="String" Name="IsRenewal" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="IsRenewalEmail" Nullable="true" MaxLength="20" />
+    <Property Type="DateTime" Name="IsRenewalEmailDate" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="subscriptionForInDays" Nullable="true" />
+    <Property Type="DateTime" Name="paymentDate" Nullable="true" Precision="23" />
   </ComplexType>
   <ComplexType Name="getLoginforDev_Result">
     <Property Type="String" Name="username" Nullable="true" MaxLength="50" />

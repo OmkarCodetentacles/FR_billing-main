@@ -18,5 +18,17 @@ namespace DtDc_Billing.Entity_FR
         public string password { get; set; }
         public string Pfcode { get; set; }
         public string referralCode { get; set; }
+        public string franchiseName { get; set; }
+        public string emailId { get; set; }
+        public Nullable<System.DateTime> dateTime { get; set; }
+        public string ownerName { get; set; }
+        public Nullable<bool> isPaid { get; set; }
+        public string mobileNo { get; set; }
+        public string address { get; set; }
+        public string IsRenewal { get; set; }
+        public string IsRenewalEmail { get; set; }
+        public Nullable<System.DateTime> IsRenewalEmailDate { get; set; }
+        public Nullable<int> subscriptionForInDays { get; set; }
+        public Nullable<System.DateTime> paymentDate { get; set; }
     }
 }

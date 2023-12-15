@@ -58,6 +58,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<Nondox> Nondoxes { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Other_Service> Other_Service { get; set; }
+        public virtual DbSet<Package> Packages { get; set; }
         public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<paymentLog> paymentLogs { get; set; }

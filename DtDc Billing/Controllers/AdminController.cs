@@ -18,7 +18,7 @@ using Razorpay.Api;
 using Microsoft.Reporting.WebForms;
 using System.Text.RegularExpressions;
 using static DtDc_Billing.Models.sendEmail;
-
+using Microsoft.SqlServer.Management.Sdk.Differencing;
 namespace DtDc_Billing.Controllers
 {
     //[OutputCache(CacheProfile = "Cachefast")]
@@ -155,37 +155,41 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-                var obj = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode }).FirstOrDefault();
+                var ObjData = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode, franchiseName =x.franchiseName, emailId =x.emailId, dateTime =x.dateTime , ownerName =x.ownerName, isPaid =x.isPaid , mobileNo =x.mobileNo, address =x.address, IsRenewal=x.IsRenewal, IsRenewalEmail =x.IsRenewalEmail , IsRenewalEmailDate =x.IsRenewalEmailDate , subscriptionForInDays =x.subscriptionForInDays , paymentDate =x.paymentDate }).FirstOrDefault();
 
-                if (obj != null)
+                if (ObjData != null)
                 {
-                    var ObjData = (from d in db.registrations
-                                   where d.Pfcode == obj.Pfcode
-                                   select d).FirstOrDefault();
-
-
-                    // Get the current date
-                    DateTime currentDate = DateTime.Now;
-                    // Add 30 days to the current date
-                    DateTime newDate = ObjData.dateTime.Value.AddDays(ObjData.subscriptionForInDays ?? 0);
-
-                    if (currentDate > newDate)
+                    if (ObjData.isPaid!=true)
                     {
-
-                        ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
+                        ModelState.AddModelError("LoginAuth", "Your account is not activated. Please feel free to contact us at +91 9209764995..");
                         return View();
                     }
 
-                    DateTime After1Year;
+                    if (ObjData.Pfcode == "1")
+                    {
 
+                        return RedirectToAction("Index", "Home");
+                    }
+
+
+                    DateTime currentDate = DateTime.Now;
+
+                    System.DateTime newDate = ObjData.paymentDate.Value.AddDays(ObjData.subscriptionForInDays ?? 0);
+                    TimeSpan date_difference = newDate - currentDate;
+                    //int totalDaysDifference = date_difference.Days;
+                   
+                    
+
+                    DateTime After1Year;
+                    DateTime ExpiryDate;
                     var renewalstatuscheck = (from d in db.paymentLogs
-                                              where d.Pfcode == obj.Pfcode.ToString()
+                                              where d.Pfcode == ObjData.Pfcode.ToString()
                                               select new { d.RenewalStatus }).FirstOrDefault();
 
                     if (renewalstatuscheck.RenewalStatus == "1")
                     {
                         var Date = (from d in db.paymentLogs
-                                    where d.Pfcode == obj.Pfcode
+                                    where d.Pfcode == ObjData.Pfcode
                                     select new
                                     {
                                         d.RenewalDate
@@ -195,12 +199,15 @@ namespace DtDc_Billing.Controllers
                         string[] strarr = strdate.Split(' ');
                         string date = strarr[0];
                         DateTime date1 = Convert.ToDateTime(date);
+
                         After1Year = date1.AddYears(1);
+                        //DateTime edate=ObjData.subscriptionForInDays
+                        //ExpiryDate=
                     }
                     else
                     {
                         var Date = (from d in db.registrations
-                                    where d.Pfcode == obj.Pfcode
+                                    where d.Pfcode == ObjData.Pfcode
                                     select new
                                     {
                                         d.dateTime
@@ -213,27 +220,27 @@ namespace DtDc_Billing.Controllers
                         After1Year = date1.AddYears(1);
 
                     }
-                    //var firmlist = db.FirmDetails.ToList();
+                    var firmlist = db.FirmDetails.ToList();
 
                     Session["After1Year"] = After1Year;
 
-                    if (obj != null)
+                    if (ObjData != null)
                     {
-                        Session["Admin"] = obj.registrationId.ToString();
-                        Session["UserName"] = obj.userName.ToString();
-                        Session["PFCode"] = obj.Pfcode.ToString();
+                        Session["Admin"] = ObjData.registrationId.ToString();
+                        Session["UserName"] = ObjData.userName.ToString();
+                        Session["PFCode"] = ObjData.Pfcode.ToString();
                         // Session["firmlist"] = firmlist;
                         string decodedUrl = "";
 
                         HttpCookie cookie = new HttpCookie("Cookies");
-                        cookie["AdminValue"] = obj.Pfcode.ToString();
-                        cookie["UserValue"] = obj.userName.ToString();
+                        cookie["AdminValue"] = ObjData.Pfcode.ToString();
+                        cookie["UserValue"] = ObjData.userName.ToString();
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
 
 
 
-                        cookie["referalCode"] = obj.referralCode.ToString();
+                        cookie["referalCode"] = ObjData.referralCode.ToString();
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
 
@@ -242,11 +249,11 @@ namespace DtDc_Billing.Controllers
                         int customTimeout = 30;
                         FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
                                           1,
-                         obj.registrationId.ToString(),
+                         ObjData.registrationId.ToString(),
                           DateTime.Now,
                          DateTime.Now.AddMinutes(customTimeout),  // Expiration time
                           false,
-                            obj.userName
+                            ObjData.userName
                         );
                         string encryptedTicket = FormsAuthentication.Encrypt(ticket);
                         HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
@@ -254,11 +261,11 @@ namespace DtDc_Billing.Controllers
                         Response.Cookies.Add(authCookie);
 
                         var objaccessPAge = (from d in db.AdminAccessPages
-                                             where d.Pfcode == obj.Pfcode.ToString()
+                                             where d.Pfcode == ObjData.Pfcode.ToString()
                                              select new { d.Accesspage }).FirstOrDefault();
 
                         var renewalstatus = (from d in db.paymentLogs
-                                             where d.Pfcode == obj.Pfcode.ToString()
+                                             where d.Pfcode == ObjData.Pfcode.ToString()
                                              select new { d.RenewalStatus }).FirstOrDefault();
 
                         if (objaccessPAge != null)
@@ -281,19 +288,29 @@ namespace DtDc_Billing.Controllers
                         }
                         else
                         {
-                            if (After1Year.Date <= DateTime.Now.Date)
+                            //if (currentDate > newDate)
+                            //{
+
+                            //    ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
+                            //    return View();
+                            //}
+                            //if (newDate <= DateTime.Now.Date)
+                            //{
+                            //    ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
+                            //    return RedirectToAction("Index", "Admin");
+                            //}
+                            if (newDate <= DateTime.Now.Date)
                             {
-                                ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
+
+                                return RedirectToAction("ExpiredDate", "Admin");
                             }
                             else if (renewalstatus.RenewalStatus == "1")
                             {
-
-
                                 return RedirectToAction("Index", "Home");
                             }
                             else
                             {
-                                if ((After1Year - DateTime.Now).TotalDays < 30)
+                                if ((newDate - DateTime.Now).TotalDays < 30)
                                 {
                                     if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
                                     {
@@ -302,26 +319,27 @@ namespace DtDc_Billing.Controllers
                                         db.SaveChanges();
                                     }
 
-                                    if (ObjData.IsRenewalEmail != "1" || (ObjData.IsRenewalEmailDate == null && ObjData.IsRenewalEmailDate != DateTime.Now.Date))
-                                    {
+                                    //if (ObjData.IsRenewalEmail != "1" || (ObjData.IsRenewalEmailDate == null && ObjData.IsRenewalEmailDate != DateTime.Now.Date))
+                                    //{
 
-                                        ObjData.IsRenewalEmailDate = DateTime.Now.Date;
-                                        ObjData.IsRenewalEmail = "1";
-                                        db.Entry(ObjData).State = EntityState.Modified;
-                                        db.SaveChanges();
+                                    //    ObjData.IsRenewalEmailDate = DateTime.Now.Date;
+                                    //    ObjData.IsRenewalEmail = "1";
+                                    //    db.Entry(ObjData).State = EntityState.Modified;
+                                    //    db.SaveChanges();
 
-                                        ////////send mail//////////
-                                        mail mail = new mail();
-                                        mail.franchiseName = ObjData.franchiseName;
-                                        mail.emailId = ObjData.emailId;
-                                        mail.After1Year = After1Year;
-                                        sendEmail.send(mail);
+                                    //    ////////send mail//////////
+                                    //    mail mail = new mail();
+                                    //    mail.franchiseName = ObjData.franchiseName;
+                                    //    mail.emailId = ObjData.emailId;
+                                    //    mail.After1Year = After1Year;
+                                    //    sendEmail.send(mail);
 
-                                        ///////send mail//////////
+                                    //    ///////send mail//////////
 
 
-                                    }
+                                    //}
                                 }
+                                
                                 return RedirectToAction("Index", "Home");
 
                             }
@@ -337,10 +355,17 @@ namespace DtDc_Billing.Controllers
 
                 }
             }
+           
+                return View();
+            
 
-            return View();
+           
         }
 
+        public ActionResult ExpiredDate()
+        {
+            return View();
+        }
         public ActionResult AdminChangePass()
         {
             return View();
@@ -378,7 +403,7 @@ namespace DtDc_Billing.Controllers
 
                 var Tokne = new String(stringChars);
 
-                string Bodytext = "<html><body>Your Verification Token is -" + Tokne + " </body></html>";
+                string Bodytext = "<html><body>Your Verification Token is -" + "<strong>"+Tokne+"<strong>" + " </body></html>";
 
                 mm.IsBodyHtml = true;
 
@@ -3041,6 +3066,513 @@ namespace DtDc_Billing.Controllers
 
           
             return View();
+
+
+        }
+
+
+        public ActionResult ActivateUser(string Pfcode, int pid)
+        {
+            try
+            {
+
+                var flag = false;
+                var saveSector = false;
+                var Pfcheck = db.registrations.Where(x => x.Pfcode == Pfcode).FirstOrDefault();
+                var package = db.Packages.Where(x => x.Pid == pid).FirstOrDefault();
+
+
+                Pfcheck.subscriptionForInDays = package.Subcriptionforindays;
+                Pfcheck.isPaid = package.isPaid;
+                Pfcheck.paymentDate = DateTime.Now;
+
+                db.Entry(Pfcheck).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                var uregistration = db.registrations.Where(x => x.Pfcode == Pfcode).FirstOrDefault();
+                int edays = (int)Pfcheck.subscriptionForInDays;
+                DateTime paymentdate = (DateTime)uregistration.paymentDate;
+                DateTime expirydate = paymentdate.AddDays(edays);
+
+
+                if (Pfcheck.isPaid == true && expirydate >= DateTime.Now)
+
+                {
+                    Franchisee fr=new Franchisee();
+                    fr.PF_Code=Pfcode.ToUpper();
+                    fr.Franchisee_Name = Pfcheck.franchiseName;
+                    fr.Sendermail = Pfcheck.emailId;
+                    fr.Datetime_Fr=DateTime.Now;
+                    fr.password = Pfcheck.password;
+                    fr.ContactNo = Pfcheck.mobileNo;
+                    var franchisee=db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault(); 
+                    if(franchisee == null)
+                    {
+                        db.Franchisees.Add(fr);
+                        db.SaveChanges();
+                    }
+                       
+
+                    //Adding Eantries To the Sector Table
+                    var sectornamelist = db.sectorNames.ToList();
+
+                    var pfcode = (from u in db.Franchisees
+                                  where u.PF_Code == Pfcode
+                                  select u).FirstOrDefault();
+                    if (pfcode != null)
+                    {
+                        foreach (var i in sectornamelist)
+                        {
+                            Sector sn = new Sector();
+
+                            sn.Pf_code = pfcode.PF_Code;
+                            sn.Sector_Name = i.sname;
+
+
+
+                            sn.CashD = true;
+                            sn.CashN = true;
+                            sn.BillD = true;
+                            sn.BillN = true;
+
+
+                            if (sn.Sector_Name == " Within city")
+                            {
+                                sn.Priority = 1;
+                                sn.Pincode_values = "400001-400610,400615-400706,400710-401203,401205-402209";
+
+                                sn.CashD = true;
+                                sn.CashN = true;
+                                sn.BillD = true;
+                                sn.BillN = true;
+
+                            }
+
+                            else if (sn.Sector_Name == " Within State")
+                            {
+
+                                sn.CashD = true;
+                                sn.CashN = false;
+                                sn.BillD = true;
+                                sn.BillN = false;
+
+                                sn.Priority = 2;
+                                sn.Pincode_values = "400000-403000,404000-450000";
+                            }
+
+
+                            else if (sn.Sector_Name == "North East")
+                            {
+                                sn.Priority = 3;
+                                sn.Pincode_values = "400000-450000,360000-400000,450000-490000";
+
+                                sn.CashD = false;
+                                sn.CashN = true;
+                                sn.BillD = false;
+                                sn.BillN = true;
+
+                            }
+
+                            else if (sn.Sector_Name == "Metro")
+                            {
+                                sn.Priority = 4;
+                                sn.Pincode_values = "180000-200000";
+
+                                sn.CashD = true;
+                                sn.CashN = true;
+                                sn.BillD = true;
+                                sn.BillN = true;
+
+                            }
+
+
+
+                            else if (sn.Sector_Name == "Jammu and Kashmir")
+                            {
+                                sn.Priority = 5;
+                                sn.Pincode_values = "780000-800000,170000-180000";
+
+                                sn.CashD = true;
+                                sn.CashN = true;
+                                sn.BillD = true;
+                                sn.BillN = true;
+
+                            }
+
+
+
+                            else if (sn.Sector_Name == "Rest of India")
+                            {
+                                sn.Priority = 6;
+                                sn.Pincode_values = "000000";
+
+                                sn.CashD = true;
+                                sn.CashN = true;
+                                sn.BillD = true;
+                                sn.BillN = true;
+
+                            }
+                            else
+                            {
+                                sn.Pincode_values = null;
+                            }
+
+
+
+
+                            db.Sectors.Add(sn);
+
+                            //    db.SaveChanges();
+
+                        }
+                    }
+                    //////////////////////////////////////////////
+
+                    var Companyid = "Cash_" + Pfcode.ToUpper();
+
+
+                    var secotrs = db.Sectors.Where(m => m.Pf_code == Pfcode.ToUpper()).ToList();
+
+                    Company cm = new Company();
+                    cm.Company_Id = Companyid;
+                    cm.Pf_code = Pfcode.ToUpper();
+                    cm.Phone = 1234567890;
+                    cm.Company_Address = "";
+                    cm.Company_Name = Companyid;
+                    cm.Email = Companyid + "@gmail.com";
+                    db.Companies.Add(cm);
+                    //  db.SaveChanges();
+
+
+
+                    var basiccompid = "BASIC_TS";
+
+                    var basicrec = db.Ratems.Where(m => m.Company_id == "BASIC_TS").FirstOrDefault();
+
+
+
+                    if (basicrec == null)
+                    {
+                        Company bs = new Company();
+                        bs.Company_Id = basiccompid;
+                        bs.Pf_code = null;
+                        bs.Phone = 1234567890;
+                        bs.Company_Address = "";
+                        bs.Company_Name = "BASIC_TS";
+                        bs.Email = "Email@gmail.com";
+                        db.Companies.Add(bs);
+                        // db.SaveChanges();
+
+                        int j = 0;
+
+                        foreach (var i in secotrs)
+                        {
+                            Ratem dox = new Ratem();
+                            Nondox ndox = new Nondox();
+                            express_cargo cs = new express_cargo();
+
+                            dox.Company_id = basiccompid;
+                            dox.Sector_Id = i.Sector_Id;
+                            dox.NoOfSlab = 2;
+
+                            dox.slab1 = 1;
+                            dox.slab2 = 1;
+                            dox.slab3 = 1;
+                            dox.slab4 = 1;
+
+                            dox.Uptosl1 = 1;
+                            dox.Uptosl2 = 1;
+                            dox.Uptosl3 = 1;
+                            dox.Uptosl4 = 1;
+
+                            ndox.Company_id = basiccompid;
+                            ndox.Sector_Id = i.Sector_Id;
+                            ndox.NoOfSlabN = 2;
+                            ndox.NoOfSlabS = 2;
+
+                            ndox.Aslab1 = 1;
+                            ndox.Aslab2 = 1;
+                            ndox.Aslab3 = 1;
+                            ndox.Aslab4 = 1;
+
+
+                            ndox.Sslab1 = 1;
+                            ndox.Sslab2 = 1;
+                            ndox.Sslab3 = 1;
+                            ndox.Sslab4 = 1;
+
+                            ndox.AUptosl1 = 1;
+                            ndox.AUptosl2 = 1;
+                            ndox.AUptosl3 = 1;
+                            ndox.AUptosl4 = 1;
+
+                            ndox.SUptosl1 = 1;
+                            ndox.SUptosl2 = 1;
+                            ndox.SUptosl3 = 1;
+                            ndox.SUptosl4 = 1;
+
+
+                            cs.Company_id = basiccompid;
+                            cs.Sector_Id = i.Sector_Id;
+
+                            cs.Exslab1 = 1;
+                            cs.Exslab2 = 1;
+
+                            db.Ratems.Add(dox);
+                            db.Nondoxes.Add(ndox);
+                            db.express_cargo.Add(cs);
+
+                            j++;
+
+                        }
+
+                        int p = 0;
+
+                        for (int i = 0; i < 5; i++)
+                        {
+
+                            dtdcPlu dtplu = new dtdcPlu();
+                            Dtdc_Ptp stptp = new Dtdc_Ptp();
+
+                            if (i == 0)
+                            {
+                                dtplu.destination = "City Plus";
+                                stptp.dest = "City";
+                            }
+                            else if (i == 1)
+                            {
+                                dtplu.destination = "Zonal Plus/Blue";
+                                stptp.dest = "Zonal";
+
+                            }
+                            else if (i == 2)
+                            {
+                                dtplu.destination = "Metro Plus/Blue";
+                                stptp.dest = "Metro";
+                            }
+                            else if (i == 3)
+                            {
+                                dtplu.destination = "National Plus/Blue";
+                                stptp.dest = "National";
+                            }
+                            else if (i == 4)
+                            {
+                                dtplu.destination = "Regional Plus";
+                                stptp.dest = "Regional";
+                            }
+
+                            dtplu.Company_id = basiccompid;
+
+                            dtplu.Upto500gm = 1;
+                            dtplu.U10to25kg = 1;
+                            dtplu.U25to50 = 1;
+                            dtplu.U50to100 = 1;
+                            dtplu.add100kg = 1;
+                            dtplu.Add500gm = 1;
+
+
+                            stptp.Company_id = basiccompid;
+                            stptp.PUpto500gm = 1;
+                            stptp.PAdd500gm = 1;
+                            stptp.PU10to25kg = 1;
+                            stptp.PU25to50 = 1;
+                            stptp.Padd100kg = 1;
+                            stptp.PU50to100 = 1;
+
+                            stptp.P2Upto500gm = 1;
+                            stptp.P2Add500gm = 1;
+                            stptp.P2U10to25kg = 1;
+                            stptp.P2U25to50 = 1;
+                            stptp.P2add100kg = 1;
+                            stptp.P2U50to100 = 1;
+
+                            db.dtdcPlus.Add(dtplu);
+                            db.Dtdc_Ptp.Add(stptp);
+
+                            p++;
+
+                        }
+
+                    }
+
+
+
+
+                    foreach (var i in secotrs)
+                    {
+                        Ratem dox = new Ratem();
+                        Nondox ndox = new Nondox();
+                        express_cargo cs = new express_cargo();
+
+                        dox.Company_id = Companyid;
+                        dox.Sector_Id = i.Sector_Id;
+                        dox.NoOfSlab = 2;
+                        //dox.CashCounter = true;
+
+                        ndox.Company_id = Companyid;
+                        ndox.Sector_Id = i.Sector_Id;
+                        ndox.NoOfSlabN = 2;
+                        ndox.NoOfSlabS = 2;
+                        // ndox.CashCounterNon = true;
+
+
+                        cs.Company_id = Companyid;
+                        cs.Sector_Id = i.Sector_Id;
+
+                        // cs.CashCounterExpr = true;
+
+                        db.Ratems.Add(dox);
+                        db.Nondoxes.Add(ndox);
+                        db.express_cargo.Add(cs);
+
+
+                    }
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        dtdcPlu dtplu = new dtdcPlu();
+                        Dtdc_Ptp stptp = new Dtdc_Ptp();
+
+                        if (i == 0)
+                        {
+                            dtplu.destination = "City Plus";
+                            stptp.dest = "City";
+                        }
+                        else if (i == 1)
+                        {
+                            dtplu.destination = "Zonal Plus/Blue";
+                            stptp.dest = "Zonal";
+
+                        }
+                        else if (i == 2)
+                        {
+                            dtplu.destination = "Metro Plus/Blue";
+                            stptp.dest = "Metro";
+                        }
+                        else if (i == 3)
+                        {
+                            dtplu.destination = "National Plus/Blue";
+                            stptp.dest = "National";
+                        }
+                        else if (i == 4)
+                        {
+                            dtplu.destination = "Regional Plus";
+                            stptp.dest = "Regional";
+                        }
+
+                        dtplu.Company_id = Companyid;
+                        // dtplu.CashCounterPlus = true;
+                        stptp.Company_id = Companyid;
+
+
+                        db.dtdcPlus.Add(dtplu);
+                        db.Dtdc_Ptp.Add(stptp);
+
+                    }
+
+                    //  db.SaveChanges();
+
+                    userDetailsModel user = new userDetailsModel();
+                    paymentLog paymentdata = new paymentLog();
+
+                    user.name = Pfcheck.franchiseName;
+                    user.email = Pfcheck.emailId;
+                    user.mobileNo = Pfcheck.mobileNo;
+                    user.address = "";
+
+                    Session["DataName"] = user.name;
+                    Session["Dataemail"] = user.email;
+                    Session["Datacontact"] = user.mobileNo;
+                    Session["Dataaddress"] = user.address;
+                    if (package != null)
+                    {
+
+
+                        paymentdata.Pfcode = Pfcheck.Pfcode;
+                        paymentdata.ownerName = "";
+                        paymentdata.totalAmount = package.Amount;
+                        paymentdata.registrationId = Pfcheck.registrationId;
+                        paymentdata.status = "authorized";
+                        paymentdata.dateTime = DateTime.Now;
+                        paymentdata.description = package.Despription;
+                        paymentdata.paymentmethod = "Cash".ToUpper();
+                        paymentdata.RenewalDate = DateTime.Now;
+
+
+                        var pdata = db.paymentLogs.Where(x => x.Pfcode == paymentdata.Pfcode).FirstOrDefault();
+                        if (pdata == null)
+                        {
+                            db.paymentLogs.Add(paymentdata);
+                            db.SaveChanges();
+                        }
+                        
+
+
+
+
+
+                    }
+                    if (Pfcheck.isPaid==true)
+                    {
+
+                        string emailbody = $@"
+                            <html>
+                            <body>
+                                <p>Dear {Pfcheck.franchiseName},</p>
+
+                                <p>Congratulations! You are now subscribed to FrBilling, and we are thrilled to welcome you on board.</p>
+
+                                <p>Your subscription details:</p>
+                                <ul>
+                                    <li><strong>Subscription Plan:</strong> {Pfcheck.subscriptionForInDays} Days</li>
+                                    <li><strong>Subscription Start Date:</strong> {paymentdata.dateTime}</li>
+                                    <li><strong>Subscription End Date:</strong> {expirydate}</li>
+                                </ul>
+
+                                <p>Thank you for choosing FrBilling. We are committed to providing you with an exceptional experience.</p>
+
+                                <p>If you have any questions or need assistance, feel free to contact our support team at <strong>frbillingsoftware@gmail.com</strong> or call us at <strong>+91 9209764995<strong>.</p>
+
+                                <p>Best Regards,<br/>
+                                The FrBilling Team</p>
+                            </body>
+                            </html>
+                        ";
+                        SendModel emailModel = new SendModel
+                        {
+                            toEmail = Pfcheck.emailId,
+                            subject = "Welcome To Fr-Billing Subscription",
+                            body = emailbody
+                        };
+                        SendEmailModel sm = new SendEmailModel();
+                        var mailmessage = sm.Main(emailModel);
+
+                        // TempData["success"] = "Your registration has been successfully completed!";
+                        //return RedirectToAction("makePaymentPartial", "Admin", user);
+                        return RedirectToAction("AdminLogin");
+                        // var userAllDetails = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
+                        // return Json(userAllDetails, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        TempData["error"] = "Something went wrong Please try Again!!";
+                    }
+                }
+            
+                else
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                                       .Where(y => y.Count > 0)
+                                       .ToList();
+            }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return RedirectToAction("AdminLogin");
 
 
         }

@@ -44,6 +44,9 @@ namespace DtDc_Billing.Controllers
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
+            
+          
+
             var obj = db.dashboardData(localTime, PfCode).Select(x => new dashboardDataModel
             {
                 expiredStationaryCount = x.expiredStationaryCount ?? 0,
@@ -196,32 +199,45 @@ namespace DtDc_Billing.Controllers
                              where d.Pfcode == PfCode
                                select new
                              {
-                                d.dateTime
+                                d.dateTime,
+                                d.paymentDate,
+                                d.subscriptionForInDays
                              }).FirstOrDefault();
 
-            string strdate = Convert.ToString(Date.dateTime);
+            //string strdate = Convert.ToString(Date.dateTime);
 
-            string[] strarr = strdate.Split(' '); 
-            string date = strarr[0];
-            DateTime date1 = Convert.ToDateTime(date);
-            DateTime After1Year=date1.AddYears(1);
-            DateTime before30days = After1Year.AddDays(-30);
-            DateTime NowDate = DateTime.Today;
-            //DateTime NowDate1 = NowDate.AddDays(8);
-            if (After1Year >= NowDate)
+            //string[] strarr = strdate.Split(' '); 
+            //string date = strarr[0];
+            //DateTime date1 = Convert.ToDateTime(date);
+            //DateTime After1Year=date1.AddYears(1);
+            //DateTime before30days = After1Year.AddDays(-30);
+            //DateTime NowDate = DateTime.Today;
+            ////DateTime NowDate1 = NowDate.AddDays(8);
+            //if (After1Year >= NowDate)
+            //{
+            //    String diff2 = (After1Year - NowDate).TotalDays.ToString();
+            //    ViewBag.ExpiryCompCount = diff2;
+            //}
+            //else
+            //{
+            //    ViewBag.ExpiryCompCount ="";
+            //}
+            //ViewBag.After1Year = After1Year;
+            //ViewBag.NowDate = NowDate;
+            //ViewBag.before30days = before30days;
+            DateTime currentDate = DateTime.Now;
+
+            System.DateTime newDate = Date.paymentDate.Value.AddDays(Date.subscriptionForInDays ?? 0);
+            TimeSpan date_difference = newDate - currentDate;
+            DateTime before10days=newDate.AddDays(-10);
+            //int totalDaysDifference = date_difference.Days;
+
+            if (currentDate<before10days)
             {
-                String diff2 = (After1Year - NowDate).TotalDays.ToString();
-                ViewBag.ExpiryCompCount = diff2;
+                ViewBag.ExpiryMessage = "Your subscription is expiring in 10 days. Please renew to continue enjoying our services.";
             }
-            else
-            {
-                ViewBag.ExpiryCompCount ="";
-            }
-            ViewBag.After1Year = After1Year;
-            ViewBag.NowDate = NowDate;
-            ViewBag.before30days = before30days;
             //Backup();
-            Session["EndDate"] = After1Year.ToString("dd/MM/yyyy");
+            //Session["EndDate"] = After1Year.ToString("dd/MM/yyyy");
             return View(obj);
         }
 
