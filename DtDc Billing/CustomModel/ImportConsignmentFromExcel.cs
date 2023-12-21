@@ -18,7 +18,7 @@ namespace DtDc_Billing.CustomModel
 {
     public class ImportConsignmentFromExcel
     {
-        public static db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        public static db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         public string Import1Async(HttpPostedFileBase httpPostedFileBase,string PfCode)
         {
@@ -58,8 +58,8 @@ namespace DtDc_Billing.CustomModel
                             //var custid= (workSheet?.Cells[rowIterator, 3]?.Value?.ToString());
 
                             tran.Consignment_no = (workSheet?.Cells[rowIterator, 2]?.Value?.ToString().Trim());
-                            tran.Customer_Id = (workSheet?.Cells[rowIterator, 3]?.Value?.ToString());
-
+                            tran.Customer_Id = (workSheet?.Cells[rowIterator, 3]?.Value?.ToString().Trim());
+                             
                             if (tran.Consignment_no != null || tran.Customer_Id != null)
                             {
 

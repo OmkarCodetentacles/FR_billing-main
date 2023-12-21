@@ -14,7 +14,7 @@ namespace DtDc_Billing.Controllers
     //[SessionUserModule]
     public class SendMessageController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: SendMessage
         public ActionResult Pickupmsg()
         {

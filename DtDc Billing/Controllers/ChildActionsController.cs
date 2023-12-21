@@ -12,7 +12,7 @@ namespace DtDc_Billing.Controllers
     {
         // GET: ChildActions
 
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
 
         public ActionResult Modaldata(string url)

@@ -19,12 +19,14 @@ using Microsoft.Reporting.WebForms;
 using System.Text.RegularExpressions;
 using static DtDc_Billing.Models.sendEmail;
 using Microsoft.SqlServer.Management.Sdk.Differencing;
+using Microsoft.Win32;
+
 namespace DtDc_Billing.Controllers
 {
     //[OutputCache(CacheProfile = "Cachefast")]
     public class AdminController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Adminsss
 
         //[SessionUserModule]
@@ -163,6 +165,10 @@ namespace DtDc_Billing.Controllers
                     {
                         ModelState.AddModelError("LoginAuth", "Your account is not activated. Please feel free to contact us at +91 9209764995..");
                         return View();
+                    }
+                    if (ObjData.isEmailConfirmed == false)
+                    {
+                        return RedirectToAction("VerifyEmail", "Admin", new { pfcode = ObjData.Pfcode });
                     }
 
                     //if (ObjData.Pfcode == "1")
@@ -2622,8 +2628,29 @@ namespace DtDc_Billing.Controllers
                     {
                         return View("Register", userDetails);
                     }
+                    if (Pfcheck== null)
+                    {
+                        registration register = new registration();
+                   
 
-                    var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referral);
+                       register.Pfcode = userDetails.Pfcode.ToString().ToUpper();
+                        register.franchiseName=userDetails.franchiseName; 
+                       register.emailId = userDetails.emailId;
+                        register.dateTime = DateTime.Now;
+                        register.ownerName= userDetails.ownerName;
+                        register.userName= userDetails.userName;
+                    register.password  = userDetails.password;
+                    register.mobileNo= userDetails.mobileNo;
+                    register.address= userDetails.address;
+                    register.referralCode =RandomString(10);
+                    register.referralby = userDetails.referral;
+                    register.isEmailConfirmed = false;
+                    register.emailOTP = "";
+                        db.registrations.Add(register);
+                        db.SaveChanges();
+                    }
+                 
+                //var save = db.registrationSave(userDetails.Pfcode.ToUpper(), userDetails.franchiseName, userDetails.emailId, DateTime.Now, userDetails.ownerName, userDetails.userName, userDetails.password, false, userDetails.mobileNo, userDetails.address, RandomString(10), userDetails.referral,userDetails.isEmailConfirmed=false);
 
 
                     if (saveSector)
@@ -3001,7 +3028,7 @@ namespace DtDc_Billing.Controllers
                         Session["Datacontact"] = user.mobileNo;
                         Session["Dataaddress"] = user.address;
 
-                        if (save > 0)
+                        if (Pfcheck.emailId!=null)
                         {
                             string FilePath = Server.MapPath("~/images/RegisterMailTemplete.html");
                             //"http://codetentacles-005-site1.htempurl.com/images/RegisterMailTemplete.html";// "D:\\MBK\\SendEmailByEmailTemplate\\EmailTemplates\\SignUp.html";
@@ -3051,6 +3078,8 @@ namespace DtDc_Billing.Controllers
                         }
                     }
                     TempData["succ"] = "1";
+                    
+                    return RedirectToAction("VerifyEmail", "Admin", new {pfcode=userDetails.Pfcode });
                 }
                 else
                 {
@@ -3070,6 +3099,128 @@ namespace DtDc_Billing.Controllers
 
         }
 
+        public ActionResult VerifyEmail(string pfcode)
+        {
+ 
+
+            var register=db.registrations.Where(x=>x.Pfcode==pfcode).FirstOrDefault();
+
+            var emailModal = new EmailVerification
+            {
+                Email = register.emailId,
+                PF_Code = register.Pfcode,
+                EmailOTP = ""
+            };
+            return View(emailModal);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult VerifyEmail(EmailVerification emailVerification)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (emailVerification != null)
+                    {
+                        var register = db.registrations.Where(x => x.Pfcode == emailVerification.PF_Code).FirstOrDefault();
+                        if (emailVerification.EmailOTP == register.emailOTP)
+                        {
+                            DateTime registerTime=register.dateTime.Value;
+                            DateTime currentTime = DateTime.Now;
+                            TimeSpan timeDifference = currentTime - registerTime;
+                            if (timeDifference.TotalMinutes <=3)
+                            {
+                                register.emailId = emailVerification.Email;
+                                register.isEmailConfirmed = true;
+                                db.Entry(register).State = EntityState.Modified;
+                                db.SaveChanges();
+                                TempData["otpverify"] = "Email Verify Successfully!!";
+                                
+                            }
+                            else
+                            {
+                                TempData["timeexpired"] = "Your Time Expired Try Again";
+                               
+                            }
+                        }
+                        else
+                        {
+                            TempData["invalidOTP"] = "Please Enter Valid OTP";
+                            
+
+                        }
+
+
+                        return View();
+
+                    }
+                    return View(emailVerification);
+                }
+
+                return View();
+            }
+            catch(Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something Went Wrong! Try Again!!";
+                return View();
+            }
+        }
+        [HttpPost]
+        public ActionResult SendOtp(string email,string pfcode)
+        {
+            
+            var otp = RandomString(6); // Implement this method to generate OTP
+                                       //  SendOtpEmail(email, otp); // Implement this method to send OTP via email
+            var register = db.registrations.Where(x => x.Pfcode == pfcode).FirstOrDefault();
+            if(register != null)
+            {
+                register.emailOTP=otp;
+                register.dateTime = DateTime.Now;
+                register.isEmailConfirmed = false;
+                db.Entry(register).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            SendOtpEmail(email, otp);
+
+            return Json(new { success = true });
+        }
+        private void SendOtpEmail(string email, string otp)
+        {
+            // Construct the email body with OTP
+            string emailBody = $@"
+        <html>
+        <body>
+            <p>Dear User,</p>
+
+            <p>Your verification code is: {otp}</p>
+
+            <p>Please use this code to complete the registration process.</p>
+
+            <p>If you have any questions or need assistance, feel free to contact our support team.<br /><strong> at +91 9209764995</strong></p>
+
+            <p>Best Regards,<br/>
+            Your Application Team</p>
+        </body>
+        </html>
+    ";
+
+            // Set up the email model
+            SendModel emailModel = new SendModel
+            {
+                toEmail = email,
+                subject = "Email Verification OTP",
+                body = emailBody
+            };
+
+            // Send the email using your email sending logic
+            SendEmailModel sm = new SendEmailModel();
+            var mailMessage = sm.MailSend(emailModel);
+
+            // Add any additional logic here (e.g., logging, error handling)
+        }
 
         public ActionResult ActivateUser(string Pfcode, int pid)
         {
@@ -3546,7 +3697,7 @@ namespace DtDc_Billing.Controllers
                             body = emailbody
                         };
                         SendEmailModel sm = new SendEmailModel();
-                        var mailmessage = sm.Main(emailModel);
+                        var mailmessage = sm.MailSend(emailModel);
 
                         // TempData["success"] = "Your registration has been successfully completed!";
                         //return RedirectToAction("makePaymentPartial", "Admin", user);
@@ -3581,7 +3732,7 @@ namespace DtDc_Billing.Controllers
 
         public static string RandomString(int length)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567899876543210";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567899876543210";
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }

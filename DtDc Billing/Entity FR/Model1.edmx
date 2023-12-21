@@ -667,6 +667,8 @@
           <Property Name="IsRenewalEmailDate" Type="datetime" />
           <Property Name="subscriptionForInDays" Type="int" />
           <Property Name="paymentDate" Type="datetime" />
+          <Property Name="isEmailConfirmed" Type="bit" />
+          <Property Name="emailOTP" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -3133,6 +3135,8 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
           <Property Name="subscriptionForInDays" Type="Int32" />
           <Property Name="paymentDate" Type="DateTime" Precision="3" />
+          <Property Name="isEmailConfirmed" Type="Boolean" />
+          <Property Name="emailOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -4266,7 +4270,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="db_a92afa_frbillingEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="db_a92afa_frbillingEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="addcodamounts" EntityType="Self.addcodamount" />
           <EntitySet Name="addtopayamounts" EntityType="Self.addtopayamount" />
           <EntitySet Name="Admins" EntityType="Self.Admin" />
@@ -5184,7 +5188,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="db_a92afa_frbillingModelStoreContainer" CdmEntityContainer="db_a92afa_frbillingEntities">
+        <EntityContainerMapping StorageEntityContainer="db_a92afa_frbillingModelStoreContainer" CdmEntityContainer="db_a92afa_frbillingEntities1">
           <EntitySetMapping Name="addcodamounts">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.addcodamount">
               <MappingFragment StoreEntitySet="addcodamount">
@@ -5887,6 +5891,8 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
                 <ScalarProperty Name="IsRenewalEmailDate" ColumnName="IsRenewalEmailDate" />
                 <ScalarProperty Name="subscriptionForInDays" ColumnName="subscriptionForInDays" />
                 <ScalarProperty Name="paymentDate" ColumnName="paymentDate" />
+                <ScalarProperty Name="isEmailConfirmed" ColumnName="isEmailConfirmed" />
+                <ScalarProperty Name="emailOTP" ColumnName="emailOTP" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

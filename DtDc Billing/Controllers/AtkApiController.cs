@@ -18,7 +18,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class AtkApiController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         // GET: AtkApi
 

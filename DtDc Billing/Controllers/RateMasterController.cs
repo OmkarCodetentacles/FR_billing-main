@@ -17,7 +17,7 @@ namespace DtDc_Billing.Controllers
     //[OutputCache(CacheProfile = "Cachefast")]
     public class RateMasterController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         // GET: RateMaster
         public ActionResult Index(string id)

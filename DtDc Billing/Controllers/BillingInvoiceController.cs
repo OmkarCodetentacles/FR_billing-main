@@ -16,7 +16,7 @@ namespace EmpBilling.Controllers
     [SessionUserModule]
     public class BillingInvoiceController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Invoice
 
         public ActionResult ViewInvoice(string Fromdatetime = null, string ToDatetime = null)

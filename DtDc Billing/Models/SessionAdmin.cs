@@ -12,7 +12,7 @@ namespace DtDc_Billing.Models
 {
     public class SessionAdmin : ActionFilterAttribute
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

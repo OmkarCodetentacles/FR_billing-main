@@ -42,6 +42,8 @@ namespace DtDc_Billing.Models
 
         public bool isUserNameExist { get; set; }
 
+        public Nullable<bool> isEmailConfirmed { get; set; }
+        public string emailOTP { get; set; }
 
     }
     

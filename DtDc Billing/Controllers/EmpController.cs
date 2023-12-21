@@ -19,7 +19,7 @@ namespace EmpBilling.Controllers
     [SessionUserModule]
     public class EmpController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Emp
 
         public ActionResult EmpLogin(string ReturnUrl)

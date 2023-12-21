@@ -13,7 +13,7 @@ namespace EmpBilling.Controllers
     [SessionUserModule]
     public class EmpReportsController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         public ActionResult CreditorsReport()
         {

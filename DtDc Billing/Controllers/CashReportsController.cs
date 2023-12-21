@@ -20,7 +20,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class CashReportsController : Controller
     {
-        db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Reports
         [SessionTimeout]
         public ActionResult ReceiptReports()

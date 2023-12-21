@@ -18,7 +18,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class CashBookingController : Controller
     {
-        db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         //Add_History add_History = new Add_History();
         // GET: Booking

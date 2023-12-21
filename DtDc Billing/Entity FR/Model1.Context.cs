@@ -15,10 +15,10 @@ namespace DtDc_Billing.Entity_FR
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class db_a92afa_frbillingEntities : DbContext
+    public partial class db_a92afa_frbillingEntities1 : DbContext
     {
-        public db_a92afa_frbillingEntities()
-            : base("name=db_a92afa_frbillingEntities")
+        public db_a92afa_frbillingEntities1()
+            : base("name=db_a92afa_frbillingEntities1")
         {
         }
     

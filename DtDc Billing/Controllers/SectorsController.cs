@@ -14,7 +14,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class SectorsController : Controller
     {
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
 
         // GET: Sectors
         public ActionResult Index()

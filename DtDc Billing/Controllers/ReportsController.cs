@@ -25,7 +25,7 @@ namespace DtDc_Billing.Controllers
    
     public class ReportsController : Controller
     {
-        db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Reports
 
         [SessionAdmin]
