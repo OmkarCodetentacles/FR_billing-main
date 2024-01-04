@@ -720,12 +720,12 @@ Select(e => new
                 ViewBag.invoiceno = invoice.invoiceno;
                 //}
 
-                //string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
 
-                //using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                //{
-                //    stream.Write(renderByte, 0, renderByte.Length);
-                //}
+                using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                {
+                    stream.Write(renderByte, 0, renderByte.Length);
+                }
                 if (submit == "Email")
                 {
 

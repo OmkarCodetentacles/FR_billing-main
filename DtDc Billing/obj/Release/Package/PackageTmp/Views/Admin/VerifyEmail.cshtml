@@ -1,0 +1,427 @@
+﻿@model DtDc_Billing.Models.EmailVerification
+@{
+    Layout = null;
+}
+<style>
+    #timer {
+        width: 120px;
+        height: 50px;
+        font-size:20px;
+        color: red;
+        font-style:normal;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+    #timer1 {
+        width: 120px;
+        height: 50px;
+        font-size: 20px;
+        color: red;
+        font-style: normal;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+</style>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>VerifyEmail</title>
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="~/admin-lte/plugins/fastclick/fastclick.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/admin-lte/js/adminlte.min.js"></script>
+    <script src="~/admin-lte/js/icheck.min.js"></script>
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    <script src="~/admin-lte/bower_components/select2/dist/css/select2.min.css"></script>
+    <link href="~/Content/ratemaster.css" rel="stylesheet" />
+    <script src="~/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+    <link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+    <script>
+        $(document).ready(function () {
+            var otpverified =@Html.Raw(Json.Encode(TempData["otpverify"]));
+                if(otpverified != null) {
+                    $('#registerModal').modal('show');
+                     }
+                else {
+                    $('#successModal').modal('show');
+                    $("#submitBtn").prop("disabled", true);
+
+                    $("#timer").hide();
+                      }
+            // Enable the submit button
+          
+
+
+        var errorMessage = @Html.Raw(Json.Encode(TempData["ErrorMessage"]));
+        var invalidOTP = @Html.Raw(Json.Encode(TempData["invalidOTP"]));
+        var timeExpired = @Html.Raw(Json.Encode(TempData["timeexpired"]));
+
+        if (errorMessage != null || invalidOTP != null || timeExpired) {
+
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide(); // Add # symbol for the ID selector
+
+            $("#resendbtn").show();
+            } else {
+
+            $("#resendbtn").hide();
+        }
+
+
+        });
+    </script>
+
+</head>
+<body>
+  
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Welcome, and enjoy your journey with us!</h5>
+                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                        <span aria-hidden="true" id="registerClose2">&times;</span>
+                    </button>*@
+                </div>
+                <div class="modal-body">
+                    <span>
+                        Thank you for successfully registering with us! Your account will be activated shortly. Our team will reach out to you within the next two working days. If you have any questions or concerns, <br /><strong>feel free to contact us at +91 9209764995</strong>.
+                    </span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="registerClose" >Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trigger the modal -->
+    <!-- Bootstrap Modal -->
+    <!--Email Model-->
+
+    <form action="/Admin/VerifyEmail" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+           
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Email Verification!!!</h5>
+                            <div id="messageContainer" class="alert alert-info" style="display: none;">
+                            </div>
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <script>
+                                    $("#verifyBtn").hide(); 
+                                    var errorMessage = '@Html.Raw(TempData["ErrorMessage"])';
+                                    showErrorAlert(errorMessage);
+                                    function showErrorAlert(message) {
+                                        
+                                        console.log(message)
+                                        
+                                            $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-danger").show();
+                                      
+                                       
+                                    }
+                                     </script>
+                            }
+                            @if (TempData["invalidOTP"] != null)
+                            {
+                                <script>
+                                $("#verifyBtn").hide();
+                                $("#resendbtn").show();
+                                var invalidOtpMessage = '@Html.Raw(TempData["invalidOTP"])';
+                                    showErrorAlert(invalidOtpMessage);
+                                    function showErrorAlert(message) {
+                                        console.log(message)
+                                       
+                                            $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-danger").show();
+                                           
+                                      
+                                    }
+                                  </script>
+
+                            }
+                            @if (TempData["timeexpired"] != null)
+                            {
+                                <script>
+
+                                    $("#verifyBtn").hide(); 
+                                var expiredMessage = '@Html.Raw(TempData["timeexpired"])';
+                                    showWarningAlert(expiredMessage);
+                                    function showWarningAlert(message) {
+                                        console.log(message)
+                                       
+                                            $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-warning").show();
+
+                                       
+                                        
+                                    }
+                                  </script>
+                                
+                                }
+
+
+
+
+
+
+                            <!-- Message will be displayed here -->
+                        </div>
+                      
+                        <div class="modal-body">
+                            
+                            <div id="timer"></div>
+                            
+
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <div class="form-group">
+
+                                        <h5 style="padding-left:20px">Is correct Email Address?</h5>
+
+                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-4" })
+
+                                        <div class="col-md-6">
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        @*@Html.LabelFor(model => model.PF_Code, htmlAttributes: new { @class = "col-md-4" })*@
+                                        <div class="col-md-6">
+                                            @Html.HiddenFor(model => model.PF_Code, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @*@Html.ValidationMessageFor(model => model.PF_Code, "", new { @class = "text-danger" })*@
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="button" value="Verify" class="btn btn-info" id="verifyBtn" />
+                                            <input type="button" value="Resend" class="btn btn-warning" id="resendbtn" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+
+
+                                    @Html.LabelFor(model => model.EmailOTP, htmlAttributes: new { @class = "col-md-4" })
+
+                                    <div class="col-md-6">
+                                        @Html.EditorFor(model => model.EmailOTP, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.EmailOTP, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col-md-offset-2 col-md-8">
+                                <input type="submit" value="Submit" class="btn btn-info" id="submitBtn" />
+                            </div>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModalBtn">Close</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </form>
+        <script>
+            var countdownTime = 2 * 60; // 3 minutes
+            var timerInterval;
+          
+            function updateTimer() {
+               
+                var minutes = Math.floor(countdownTime / 60);
+                var seconds = countdownTime % 60;
+
+                // Display the timer in the "timer" div
+                document.getElementById('timer').innerHTML = minutes + 'm ' + seconds + 's';
+
+                // Check if the countdown is over
+                if (countdownTime === 0) {
+                    clearInterval(timerInterval);
+                   
+                    ShowReset();
+
+                    var errorMessage = "Your Time is Expired!";
+                        $("#messageContainer").text("Your Time is Expired Resend Again!!").removeClass("alert-success").addClass("alert-danger").show();
+                   
+                    
+                    TimeOut();
+                    
+                }
+                else {
+                    countdownTime--;
+                }
+            } 
+            
+            function ShowReset() {
+                $("#resendbtn").show();
+            }
+            function ResetShowHideButton() {
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide(); 
+
+              
+                
+            }
+            function ShowHideButton(){
+              
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide(); // Add # symbol for the ID selector
+               
+                $("#timer").show();
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+            function TimeOut() {
+                setTimeout(function () {
+                    $("#messageContainer").hide();
+                }, 10000);
+            }
+            function resetTimer() {
+                clearInterval(timerInterval);
+                startCountdown();
+            }
+            function startCountdown() {
+               
+                countdownTime = 60; // Set the initial countdown time in seconds
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        $(document).on('click', '#verifyBtn', function () {
+
+
+                var email = $("input[name='Email']").val();
+
+                 var pfcode = $("input[name='PF_Code']").val();
+
+            $.ajax({
+                url: '@Url.Action("SendOtp", "Admin")',
+                type: 'POST',
+                data: { email: email, pfcode:pfcode },
+                success: function (result)
+                {
+
+                    if (result.success) {
+                      
+                        $("#messageContainer").text("OTP sent to your email successfully!").removeClass("alert-danger").addClass("alert-success").show();
+                        ShowHideButton();
+                        TimeOut();
+
+                        
+                    } else {
+                        // Show the error message
+                        $("#messageContainer").text("Failed to sent OTP. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                        TimeOut();
+
+                    }
+
+                },
+                error: function (result) {
+                    $("#messageContainer").text("Something went wrong. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                    TimeOut();
+                }
+            });
+        }); 
+       
+        </script>
+        <script>
+                    $(document).on('click', '#resendbtn', function () {
+
+
+        var email = $("input[name='Email']").val();
+
+         var pfcode = $("input[name='PF_Code']").val();
+
+    $.ajax({
+        url: '@Url.Action("SendOtp", "Admin")',
+        type: 'POST',
+        data: { email: email, pfcode:pfcode },
+        success: function (result)
+        {
+
+            if (result.success) {
+                resetTimer();
+                $("#messageContainer").text("OTP Resent to your email successfully!").removeClass("alert-danger").addClass("alert-success").show();
+             
+                ResetShowHideButton();
+                TimeOut();
+
+
+            } else {
+                // Show the error message
+                $("#messageContainer").text("Failed to sent OTP. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                TimeOut();
+
+            }
+
+        },
+        error: function (result) {
+            $("#messageContainer").text("Something went wrong. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+            TimeOut();
+        }
+    });
+});
+
+        </script>
+        <script>
+         
+            $(document).ready(function () {
+               
+                $("#closeModalBtn").click(function () {
+                    window.location.href = '/Admin/AdminLogin/';
+                });
+                $("#registerClose").click(function () {
+                    window.location.href = '/Admin/AdminLogin/'
+                })
+                $("registerClose2").click(function () {
+                    window.location.href = '/Admin/AdminLogin/';
+                })
+            })
+        </script>
+</body>
+</html>

@@ -40,7 +40,7 @@ namespace DtDc_Billing.Models
         public string referralCode { get; set; }
         public string referral { get; set; }
 
-        public bool isUserNameExist { get; set; }
+        public Nullable<bool> isUserNameExist { get; set; }
 
         public Nullable<bool> isEmailConfirmed { get; set; }
         public string emailOTP { get; set; }

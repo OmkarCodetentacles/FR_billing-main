@@ -166,10 +166,14 @@ namespace DtDc_Billing.Controllers
                         ModelState.AddModelError("LoginAuth", "Your account is not activated. Please feel free to contact us at +91 9209764995..");
                         return View();
                     }
-                    if (ObjData.isEmailConfirmed == false)
-                    {
-                        return RedirectToAction("VerifyEmail", "Admin", new { pfcode = ObjData.Pfcode });
-                    }
+                    //Emal Verification Code Before LOgin check email is confirmed
+
+                    //if (ObjData.isEmailConfirmed == false)
+                    //{
+                    //    return RedirectToAction("VerifyEmail", "Admin", new { pfcode = ObjData.Pfcode });
+                    //}
+
+
 
                     //if (ObjData.Pfcode == "1")
                     //{
@@ -2680,7 +2684,7 @@ namespace DtDc_Billing.Controllers
                                 sn.BillN = true;
 
 
-                                if (sn.Sector_Name == " Within city")
+                                if (sn.Sector_Name == "Within city")
                                 {
                                     sn.Priority = 1;
                                     sn.Pincode_values = "400001-400610,400615-400706,400710-401203,401205-402209";
@@ -2692,7 +2696,7 @@ namespace DtDc_Billing.Controllers
 
                                 }
 
-                                else if (sn.Sector_Name == " Within State")
+                                else if (sn.Sector_Name == "Within State")
                                 {
 
                                     sn.CashD = true;
@@ -3288,7 +3292,7 @@ namespace DtDc_Billing.Controllers
                             sn.BillN = true;
 
 
-                            if (sn.Sector_Name == " Within city")
+                            if (sn.Sector_Name == "Within city")
                             {
                                 sn.Priority = 1;
                                 sn.Pincode_values = "400001-400610,400615-400706,400710-401203,401205-402209";
@@ -3300,7 +3304,7 @@ namespace DtDc_Billing.Controllers
 
                             }
 
-                            else if (sn.Sector_Name == " Within State")
+                            else if (sn.Sector_Name == "Within State")
                             {
 
                                 sn.CashD = true;

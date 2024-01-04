@@ -227,7 +227,7 @@ namespace DtDc_Billing.Controllers
                 if (Employees == "")
                 {
 
-                    rc = db.Receipt_details.ToList();
+                    rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
                 }
                 else if (Employees == "")
                 {
@@ -247,7 +247,7 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                     var compdata = (from c in db.Companies
-                                    where c.Company_Name == Employees
+                                    where c.Company_Name == Employees && c.Pf_code==PfCode
                                     select new { c.Company_Name }).FirstOrDefault();
 
                     rc = (from m in db.Receipt_details
@@ -262,9 +262,7 @@ namespace DtDc_Billing.Controllers
                 if (PfCode == "" && Employees == "")
                 {
 
-                    rc = db.Receipt_details.
-
-                    ToList();
+                    rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
                 }
                 else if (PfCode != "" && Employees == "")
                 {
@@ -284,7 +282,7 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                     var compdata = (from c in db.Companies
-                                    where c.Company_Name == Employees
+                                    where c.Company_Name == Employees && c.Pf_code==PfCode
                                     select new { c.Company_Name }).FirstOrDefault();
 
                     rc = (from m in db.Receipt_details
@@ -315,7 +313,7 @@ namespace DtDc_Billing.Controllers
                 if (Employees == "")
                 {
 
-                    rc = db.Receipt_details.Where(m => m.Datetime_Cons != null && DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate)).ToList();
+                    rc = db.Receipt_details.Where(m => m.Datetime_Cons != null && DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) && m.Pf_Code== PfCode).ToList();
 
                     //.ToList()
                     //.Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
@@ -327,7 +325,7 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                     var compdata = (from c in db.Companies
-                                   where c.Company_Name == Employees
+                                   where c.Company_Name == Employees && c.Pf_code==PfCode
                                    select new { c.Company_Name }).FirstOrDefault(); 
 
                     rc = (from m in db.Receipt_details
@@ -336,7 +334,7 @@ namespace DtDc_Billing.Controllers
                           && compdata.Company_Name == Employees
                           && m.Datetime_Cons != null
                           select m).ToList()
-                           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
+                           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code==PfCode )
                               .ToList();
                 }
 
@@ -373,15 +371,12 @@ namespace DtDc_Billing.Controllers
 
         [SessionAdmin]
         [HttpPost]
-        public ActionResult UniqueReport(string PfCode, string ToDatetime, string Fromdatetime, string Submit)
+        public ActionResult UniqueReport( string ToDatetime, string Fromdatetime, string Submit)
         {
             List<Receipt_details> rc = new List<Receipt_details>();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            rc = db.Receipt_details.ToList();
-
-
-
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
 
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
@@ -403,23 +398,23 @@ namespace DtDc_Billing.Controllers
             DateTime todate = Convert.ToDateTime(bdateto);
 
 
-            if (PfCode == "")
+            if (rc!=null)
             {
 
 
                 rc = db.Receipt_details.Where(m => m.Datetime_Cons != null)
                           .ToList()
-                          .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
+                          .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code==PfCode)
                           .ToList();
             }
-            else
-            {
-                rc = (from m in db.Receipt_details
-                      where m.Pf_Code == PfCode && m.Datetime_Cons != null
-                      select m).ToList()
-                     .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
-                     .ToList();
-            }
+            //else
+            //{
+            //    rc = (from m in db.Receipt_details
+            //          where m.Pf_Code == PfCode && m.Datetime_Cons != null
+            //          select m).ToList()
+            //         .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code==PfCode)
+            //         .ToList();
+            //}
 
 
 
