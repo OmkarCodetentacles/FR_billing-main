@@ -1,5 +1,6 @@
 ﻿using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using Microsoft.Win32.SafeHandles;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,17 @@ namespace EmpBilling.Controllers
             {
                 if (obj != null)
                 {
-                    Session["PfID"] = obj.PF_Code.ToString();
-                    Session["EmpId"] = obj.User_Id;
-                    Session["UserName"] = obj.Name;
+                    //Session["PfID"] = obj.PF_Code.ToString();
+                    //Session["EmpId"] = obj.User_Id;
+                    //Session["UserName"] = obj.Name;
+                    HttpCookie cookie = new HttpCookie("Cookies");
+                    cookie["AdminValue"] = obj.PF_Code.ToString();
+                    cookie["EmpId"]=obj.User_Id.ToString(); 
+                    cookie["UserName"] = obj.Name.ToString();
+                    cookie["pfCode"] = obj.PF_Code.ToString();
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.Cookies.Add(cookie);
+
 
                     string decodedUrl = "";
                     if (!string.IsNullOrEmpty(ReturnUrl))
@@ -458,7 +467,8 @@ namespace EmpBilling.Controllers
 
 
                                         transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
-                                        transaction.AdminEmp = Convert.ToInt32(Session["EmpId"]);
+                                        //transaction.AdminEmp = Convert.ToInt32(Session["EmpId"]);
+                                        transaction.AdminEmp = Convert.ToInt32(Request.Cookies["Cookies"]["EmpId"].ToString());
                                     }
 
                                     transaction.Customer_Id = tran.Customer_Id;
@@ -579,8 +589,8 @@ namespace EmpBilling.Controllers
                                     }
 
 
-                                    transaction.AdminEmp = Convert.ToInt32(Session["EmpId"]);
-
+                                  //  transaction.AdminEmp = Convert.ToInt32(Session["EmpId"]);
+                                  transaction.AdminEmp=Convert.ToInt32(Request.Cookies["Cookies"]["EmpId"].ToString());
                                     db.Entry(transaction).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }

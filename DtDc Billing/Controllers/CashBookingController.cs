@@ -65,10 +65,11 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
 
-                reciept_Details.Pf_Code = Session["pfCode"].ToString();
-                reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
+               // reciept_Details.Pf_Code = Session["pfCode"].ToString();
+               reciept_Details.Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString();
+                //reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
 
-
+                reciept_Details.User_Id = (long?)Convert.ToUInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                 /////////////////////gettting current time
 
 
@@ -469,8 +470,8 @@ Select(e => new
         {
             double? DoxNonDoxAmt = 10;
 
-            string pfcode = Session["pfCode"].ToString();
-
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             List<JsonArrayCalc> jsonarray = new List<JsonArrayCalc>();
 
             List<Sector> sector = new List<Sector>();
@@ -1397,9 +1398,10 @@ Select(e => new
             }
             else if (ModelState.IsValid)
             {
-                reciept_Details.Pf_Code = Session["pfCode"].ToString();
-                reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
-
+               // reciept_Details.Pf_Code = Session["pfCode"].ToString();
+               reciept_Details.Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString();
+                //reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
+                reciept_Details.User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                 if (texens == "true")
                 {
                     
@@ -1479,7 +1481,8 @@ Select(e => new
 
         public ActionResult callapi(string phno, string consinmentno, float? amount, string Destination)
         {
-            string pfcode = Session["pfCode"].ToString();
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -1519,7 +1522,8 @@ Select(e => new
 
         public ActionResult MemberShip(string phno)
         {
-            string pfcode = Session["pfCode"].ToString();
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -1554,7 +1558,8 @@ Select(e => new
 
         public ActionResult PointsAdded(string phno, float? points, float? totalpoints)
         {
-            string pfcode = Session["pfCode"].ToString();
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -1720,10 +1725,12 @@ Select(e => new
             if (ModelState.IsValid)
             {
 
-                reciept_Details.Pf_Code = Session["pfCode"].ToString();
-                reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
+                //reciept_Details.Pf_Code = Session["pfCode"].ToString();
+                reciept_Details.Pf_Code = Request.Cookies["Cookies"]["pfCode"].ToString();
 
+                // reciept_Details.User_Id = Convert.ToInt64(Session["EmpId"]);
 
+                reciept_Details.User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                 /////////////////////gettting current time
 
 

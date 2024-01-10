@@ -21,7 +21,8 @@ namespace EmpBilling.Controllers
 
         public ActionResult ViewInvoice(string Fromdatetime = null, string ToDatetime = null)
         {
-            var pf = Session["pfCode"].ToString();
+           // var pf = Session["pfCode"].ToString();
+           var pf = Request.Cookies["pfCode"]["AdminValue"].ToString();
             //var pf = Session["PfID"].ToString();
             DateTime? fromdate = null;
             DateTime? todate = null;
@@ -66,8 +67,8 @@ namespace EmpBilling.Controllers
         public ActionResult ViewInvoice(string Fromdatetime, string ToDatetime, string Submit)
         {
             //var pf = Session["PfID"].ToString();
-            var pf = Session["pfCode"].ToString();
-
+           // var pf = Session["pfCode"].ToString();
+           var pf = Request.Cookies["pfCode"]["AdminValue"].ToString();
             DateTime? fromdate = null;
             DateTime? todate = null;
 

@@ -17,7 +17,7 @@
 </style>
 <div class="content-wrapper">
     <div class="box box-info" style="padding: 16px 16px">
-        <div class="box-header with-border" style="display:flex; justify-content:space-between "">
+        <div class="box-header with-border" style="display:flex; justify-content:space-between">
             <h4>
                 Edit Company RateMater
             </h4>
@@ -44,15 +44,16 @@
                         <table id="example2" class="table   edittable" style="overflow:auto;">
                             <thead>
                                 <tr>
-                                    <th style="display:none">
-                                        @Html.DisplayNameFor(model => model.Company_Id)
-                                    </th>
                                     <th style="width: 68px;">
                                         Sr No
                                     </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.Company_Id)*@Company Id
+                                    </th>
+
                                     <th> Option</th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Company_Name)
+                                        @*@Html.DisplayNameFor(model => model.Company_Name)*@ Company Name
                                     </th>
 
                                     <th>
@@ -62,7 +63,7 @@
                                         @Html.DisplayNameFor(model => model.Email)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.Company_Address)
+                                        @*@Html.DisplayNameFor(model => model.Company_Address)*@Company Address
                                     </th>
                                     <th>Print</th>
                                     <th>Action</th>
@@ -74,53 +75,54 @@
                                     foreach (var item in Model)
                                     {
                                         var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
-                                        <tr>
-                                            <td style="display:none">
-                                                @Html.DisplayFor(modelItem => item.Company_Id)
-                                            </td>
+                                                                <tr>
+                                                                    <td>
+                                                                        @srno
+                                                                    </td>
+                                                                    <td>
+                                                                        @*@Html.DisplayFor(modelItem => item.Company_Id)*@ @id
+                                                                    </td>
 
-                                            <td>
-                                                @srno
-                                            </td>
-                                            <td class="">
 
-                                                @Html.ActionLink("Edit", "EditCompanyRate", new { id = id }, new { @class = "edit-btn tableEdit" })
+                                                                    <td class="">
 
-                                            </td>
-                                            <td>
-                                                <div class="hideextra">
-                                                    @Html.DisplayFor(modelItem => item.Company_Name)
-                                                </div>
-                                            </td>
+                                                                        @Html.ActionLink("Edit", "EditCompanyRate", new { id = id }, new { @class = "edit-btn tableEdit" })
 
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Phone)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Email)
-                                            </td>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="hideextra">
+                                                                            @Html.DisplayFor(modelItem => item.Company_Name)
+                                                                        </div>
+                                                                    </td>
 
-                                            <td>
-                                                <div class="hideextra">
-                                                    @Html.DisplayFor(modelItem => item.Company_Address)
-                                                </div>
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success tableEdit", target = "_blank" })
-                                            </td>
-                                            <td>
-                                                @if (item.Company_Name == "BASIC_TS")
-                                                {
-                                                    <input type="button" value="Delete" class="btn btn-danger tableEdit" disabled>
-                                                }
-                                                else
-                                                {
-                                                    @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
-                                                      new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger tableEdit" })
-                                                }
-                                            </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Phone)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                                    </td>
 
-                                        </tr>
+                                                                    <td>
+                                                                        <div class="hideextra">
+                                                                            @Html.DisplayFor(modelItem => item.Company_Address)
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success tableEdit", target = "_blank" })
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.Company_Name == "BASIC_TS")
+                                                                        {
+                                                                            <input type="button" value="Delete" class="btn btn-danger tableEdit" disabled>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
+                                                                              new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger tableEdit" })
+                                                                        }
+                                                                    </td>
+
+                                                                </tr>
                                         srno++;
                                     }
                                 }

@@ -555,8 +555,8 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
         public JsonResult ThisMonth()
         {
-            string PfCode = Session["pfCode"].ToString();
-
+           // string PfCode = Session["pfCode"].ToString();
+           string PfCode =Request.Cookies["Cookies"]["pfCode"].ToString();
             List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
 
             DateTime? EnteredDate;

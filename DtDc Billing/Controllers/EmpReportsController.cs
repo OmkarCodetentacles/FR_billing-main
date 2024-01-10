@@ -151,9 +151,9 @@ namespace EmpBilling.Controllers
         public ActionResult InvalidConsignment()
         {
 
-            string pfcode = Session["pfCode"].ToString();
+           // string pfcode = Session["pfCode"].ToString();
 
-
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             string b = pfcode.Substring(2, pfcode.Length - 2);
             string prcode = "PR" + "" + b;
 
@@ -166,7 +166,8 @@ namespace EmpBilling.Controllers
 
         public ActionResult Destinations()
         {
-            string pfcode = Session["pfCode"].ToString();
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             if (TempData["ViewData"] != null)
             {
                 ViewData = (ViewDataDictionary)TempData["ViewData"];

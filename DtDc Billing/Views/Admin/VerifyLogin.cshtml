@@ -1,0 +1,320 @@
+﻿
+@model DtDc_Billing.Models.LoginVerification
+@{
+    Layout = null;
+}
+<style>
+    #timer {
+        width: 120px;
+        height: 50px;
+        font-size: 20px;
+        color: red;
+        font-style: normal;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+
+    #timer1 {
+        width: 120px;
+        height: 50px;
+        font-size: 20px;
+        color: red;
+        font-style: normal;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+    .btn-responsive {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+@@media (min-width: 576px) {
+ .btn-responsive {
+        display: inline-block;
+        width: auto;
+        margin-bottom: 0;
+    }
+}
+</style>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>VerifyEmail</title>
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="~/admin-lte/plugins/fastclick/fastclick.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/admin-lte/js/adminlte.min.js"></script>
+    <script src="~/admin-lte/js/icheck.min.js"></script>
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    <script src="~/admin-lte/bower_components/select2/dist/css/select2.min.css"></script>
+    <link href="~/Content/ratemaster.css" rel="stylesheet" />
+    <script src="~/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+    <link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-T1xn5ZHu2hIAAHO29KF8mND1sFq9auFb0LpZVw5RYYFQV5kxFKaAewtBKaDAKlzy" crossorigin="anonymous">
+
+
+    <script>
+        $(document).ready(function () {
+
+                    $('#successModal').modal('show');
+                    $("#submitBtn").prop("disabled", true);
+
+                    $("#timer").hide();
+
+
+
+
+        var errorMessage = @Html.Raw(Json.Encode(TempData["ErrorMessage"]));
+        var invalidOTP = @Html.Raw(Json.Encode(TempData["invalidOTP"]));
+        var timeExpired = @Html.Raw(Json.Encode(TempData["timeexpired"]));
+
+        if (errorMessage != null || invalidOTP != null || timeExpired) {
+
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide(); // Add # symbol for the ID selector
+
+            $("#resendbtn").show();
+            } else {
+
+            $("#resendbtn").hide();
+        }
+
+
+        });
+    </script>
+
+</head>
+<body>
+
+
+    <!--Login Model-->
+    <!--Login Model-->
+    <form action="/Admin/VerifyLogin" method="post">
+        @Html.AntiForgeryToken()
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!-- Increased the size to col-md-8 -->
+                    <div class="card" style="height: 400px;">
+                        <!-- Increased the height to 400px -->
+                        <div class="card-header text-center">
+                            <img src="your-image-url.jpg" alt="Your Logo" class="img-fluid" style="max-height: 100px;">
+                            <h5 class="card-title mt-3">Login Verification</h5>
+                        </div>
+
+                        <div class="card-body text-center">
+                            <!-- Centered the content -->
+                            <div id="timer"></div>
+                            <div class="box-body">
+                                <div class="mb-3">
+                                    @Html.HiddenFor(model => model.mobileNo, new { @class = "form-control input-sm" })
+                                </div>
+                                <div class="mb-3">
+                                    @Html.HiddenFor(model => model.PF_Code, new { @class = "form-control input-sm" })
+                                </div>
+
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-info btn-lg btn-responsive" id="verifyBtn">Verify</button>
+                                    <button type="button" class="btn btn-warning btn-lg btn-responsive" id="resendbtn">Resend</button>
+                                </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LoginOTP, htmlAttributes: new { @class = "col-md-4 control-label" })
+                                    <div>
+                                        @Html.EditorFor(model => model.LoginOTP, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.ValidationMessageFor(model => model.LoginOTP, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center" style="position: absolute; bottom: 0; width: 100%;">
+                            <input type="submit" value="Submit" class="btn btn-info btn-lg btn-responsive" id="submitBtn" />
+                            <button type="button" class="btn btn-danger btn-lg btn-responsive" data-bs-dismiss="modal" id="closeModalBtn">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+            var countdownTime = 2 * 60; // 3 minutes
+            var timerInterval;
+
+            function updateTimer() {
+
+                var minutes = Math.floor(countdownTime / 60);
+                var seconds = countdownTime % 60;
+
+                // Display the timer in the "timer" div
+                document.getElementById('timer').innerHTML = minutes + 'm ' + seconds + 's';
+
+                // Check if the countdown is over
+                if (countdownTime === 0) {
+                    clearInterval(timerInterval);
+
+                    ShowReset();
+
+                    var errorMessage = "Your Time is Expired!";
+                        $("#messageContainer").text("Your Time is Expired Resend Again!!").removeClass("alert-success").addClass("alert-danger").show();
+
+
+                    TimeOut();
+
+                }
+                else {
+                    countdownTime--;
+                }
+            }
+
+            function ShowReset() {
+                $("#resendbtn").show();
+            }
+            function ResetShowHideButton() {
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide();
+
+                $("#timer").show();
+                timerInterval = setInterval(updateTimer, 1000);
+
+            }
+            function ShowHideButton(){
+
+                $("#submitBtn").prop("disabled", false);
+                $("#verifyBtn").hide(); // Add # symbol for the ID selector
+
+                $("#timer").show();
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+            function TimeOut() {
+                setTimeout(function () {
+                    $("#messageContainer").hide();
+                }, 10000);
+            }
+            function resetTimer() {
+                clearInterval(timerInterval);
+                startCountdown();
+            }
+            function startCountdown() {
+
+                countdownTime = 120; // Set the initial countdown time in seconds
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        $(document).on('click', '#verifyBtn', function () {
+
+
+                 var mobileNo = $("input[name='mobileNo']").val();
+
+            var pfcode = $("input[name='PF_Code']").val();
+
+            $.ajax({
+                url: '@Url.Action("SendLoginOTPtoM", "Admin")',
+                type: 'POST',
+                data: { mobileNo: mobileNo, pfcode:pfcode },
+                success: function (result)
+                {
+
+                    if (result.success) {
+
+                        $("#messageContainer").text("OTP sent on your Mobile Number successfully!").removeClass("alert-danger").addClass("alert-success").show();
+                        ShowHideButton();
+                        TimeOut();
+
+
+                    } else {
+                        // Show the error message
+                        $("#messageContainer").text("Failed to sent OTP. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                        TimeOut();
+
+                    }
+
+                },
+                error: function (result) {
+                    $("#messageContainer").text("Something went wrong. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                    TimeOut();
+                }
+            });
+        });
+
+    </script>
+    <script>
+   $(document).on('click', '#resendbtn', function () {
+
+
+    var mobileNo = $("input[name='mobileNo']").val();
+
+   var pfcode = $("input[name='PF_Code']").val();
+
+    $.ajax({
+        url: '@Url.Action("SendLoginOTPtoM", "Admin")',
+        type: 'POST',
+        data: { mobileNo: mobileNo, pfcode: pfcode },
+        success: function (result)
+        {
+
+            if (result.success) {
+                resetTimer();
+                $("#messageContainer").text("OTP Resent on your Mobile Number successfully!").removeClass("alert-danger").addClass("alert-success").show();
+
+                ResetShowHideButton();
+                TimeOut();
+
+
+            } else {
+                // Show the error message
+                $("#messageContainer").text("Failed to sent OTP. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+                TimeOut();
+
+            }
+
+        },
+        error: function (result) {
+            $("#messageContainer").text("Something went wrong. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
+            TimeOut();
+        }
+    });
+});
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#closeModalBtn").click(function () {
+                window.location.href = '/Admin/AdminLogin/';
+            });
+
+        })
+    </script>
+</body>
+</html>
+

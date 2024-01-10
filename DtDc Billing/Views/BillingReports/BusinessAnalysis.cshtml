@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
 
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
@@ -14,9 +14,11 @@
     .box-body {
         overflow: auto;
     }
-    .BusinessAnalysis th{
-        width:13.5% !important;
+
+    .BusinessAnalysis th {
+        width: 13.5% !important;
     }
+
     table {
         max-height: 400px !important;
         display: list-item !important;
@@ -72,7 +74,7 @@
                                             {
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label>From Date <span style="color:red" >*</span>: </label>
+                                                        <label>From Date <span style="color:red">*</span>: </label>
 
                                                         <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" required>
                                                     </div>
@@ -105,15 +107,15 @@
                                                     </div>
                                                 </div>
                                             }
-                                    <div class="col-md-1" style="margin-top:23px;">
-                                        <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" style=" width: 100%" />
-                                    </div>
+                                            <div class="col-md-1" style="margin-top:23px;">
+                                                <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" style=" width: 100%" />
+                                            </div>
                                         }
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @Html.Partial("RangeLineChart")
+                       @Html.Partial("RangeLineChart")
                         <table id="check-booking-list" class="table BusinessAnalysis">
                             <thead>
                                 <tr>
@@ -182,7 +184,7 @@
                                     }
                                 }
                                 <tr>
-                                    <td colspan="8" >Data Not Found</td>
+                                    <td colspan="8">Data Not Found</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -191,7 +193,7 @@
 
                         <!-- /input-group -->
 
-                        <div class="col-md-3 col-sm-6 col-6" style="margin-top:10px" >
+                        <div class="col-md-3 col-sm-6 col-6" style="margin-top:10px">
                             <div class="input-group">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-primary total-label">Total</button>
@@ -245,7 +247,7 @@
 
 
 </div>
-    <script>
+<script>
     $(document).ready(function () {
 
      $(function () {
@@ -290,62 +292,62 @@
      })
 
     });
-    </script>
-    
-    <script>
-        $(document).ready(function () {
+</script>
 
-            $('#Show').click(function () {
-                var cutid = $('#custid').val();
-                var frmdate = $('#datepicker').val();
-                var todate = $('#datepicker1').val();
+<script>
+    $(document).ready(function () {
 
-
-                if (cutid == "") {
-                    alert("Please Enter Customer Id");
-                    return false;
-                }
-                else if (frmdate == "") {
-                    alert("Please Enter From Date");
-                    return false;
-                }
-                else if (todate == "") {
-                    alert("Please Enter To Date");
-                    return false;
-                }
-                else { return true; }
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
 
 
-            });
+            if (cutid == "") {
+                alert("Please Enter Customer Id");
+                return false;
+            }
+            else if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
         });
+    });
 
-    </script>
-
-
-
+</script>
 
 
-    <script>
-        $(document).ready(function () {
-
-            $('#Show').click(function () {
-                var cutid = $('#custid').val();
-                var frmdate = $('#datepicker').val();
-                var todate = $('#datepicker1').val();
 
 
-                if (frmdate == "") {
-                    alert("Please Enter From Date");
-                    return false;
-                }
-                else if (todate == "") {
-                    alert("Please Enter To Date");
-                    return false;
-                }
-                else { return true; }
+
+<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
 
 
-            });
+            if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
         });
+    });
 
-    </script>
+</script>

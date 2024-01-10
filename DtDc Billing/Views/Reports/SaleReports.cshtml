@@ -64,7 +64,7 @@
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Employee Id</label>
+                                    <label>Customer Id</label>
                                     <div class="emp-id">
                                         @*@Html.DropDownList("Employees", "-Please select-")*@
                                         <input type="text" name="Employees" value="@ViewBag.Employees" id="Employees" class="form-control">
@@ -82,11 +82,11 @@
                                         </div>
                                         @if (ViewBag.Fromdatetime != null)
                                         {
-                                            <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                                            <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text" placeholder="From Date">
                                         }
                                         else
                                         {
-                                            <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                                            <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text" placeholder="From Date">
                                         }
                                         @Html.ValidationMessage("Fromdateeror")
                                     </div>
@@ -102,11 +102,11 @@
                                         </div>
                                         @if (ViewBag.ToDatetime != null)
                                         {
-                                            <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                                            <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" placeholder="To Date" type="text">
                                         }
                                         else
                                         {
-                                            <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                                            <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text" placeholder="To Date">
                                         }
                                         @Html.ValidationMessage("Todateeror")
                                     </div>
@@ -132,14 +132,16 @@
                     <table id="example1" class="table Salereport">
                         <thead>
                             <tr>
+                                <th>Sr.No</th>
+                           
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Consignment_No)
+                                    @*@Html.DisplayNameFor(model => model.Consignment_No)*@Consignment No
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Destination)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.sender_phone)
+                                    @*@Html.DisplayNameFor(model => model.sender_phone)*@Sender Phone
                                 </th>
 
                                 @*<th>
@@ -164,11 +166,11 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.ReciepentsPincode)
                                 </th>
-                                <th>
+                                @*<th>
                                     @Html.DisplayNameFor(model => model.Pf_Code)
-                                </th>
+                                </th>*@
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Datetime_Cons)
+                                    @*@Html.DisplayNameFor(model => model.Datetime_Cons)*@DateTime
                                 </th>
 
                                 <th>
@@ -177,14 +179,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                         @{    int srno = 1;
+                            }
                             @foreach (var item in Model)
                             {
+
                                 var date = "No Date";
                                 if (item.Datetime_Cons != null)
                                 {
                                     date = item.Datetime_Cons.Value.ToString("dd/MM/yyyy");
                                 }
                                 <tr>
+                                    <td>@srno</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Consignment_No)
                                     </td>
@@ -196,8 +202,8 @@
                                     </td>
 
                                     @*<td>
-                                            @Html.DisplayFor(modelItem => item.Sender)
-                                        </td>*@
+                    @Html.DisplayFor(modelItem => item.Sender)
+                </td>*@
 
 
                                     <td>
@@ -221,9 +227,9 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ReciepentsPincode)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Pf_Code)
-                                    </td>
+                                    @*<td>
+                    @Html.DisplayFor(modelItem => item.Pf_Code)
+                </td>*@
                                     <td>
                                         @date
                                     </td>
@@ -233,11 +239,12 @@
                                     </td>
 
                                     @*<td>
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                                        </td>*@
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                </td>*@
                                 </tr>
+                                srno++;
                             }
                         </tbody>
 

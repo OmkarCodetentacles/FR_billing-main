@@ -28,7 +28,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Admin
-        [SessionUserModule]
+       [SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
 
@@ -56,7 +56,7 @@ namespace DtDc_Billing.Controllers
 
             var types = db.Users.Where(m => m.Email == emplogin.UserName).Select(m => m.Usertype).FirstOrDefault();
 
-           
+            HttpCookie cookie = new HttpCookie("Cookies");
             TempData["DataCheck"] = obj;
            
 
@@ -73,9 +73,21 @@ namespace DtDc_Billing.Controllers
             // var FirmDetail = new List<FirmDetail>();
             if (obj != null)
             {
-                Session["Admin"] = obj.registrationId.ToString();
-                Session["UserName"] = obj.userName.ToString();
-                Session["PFCode"] = obj.Pfcode.ToString();
+
+                //Adding Cookies in the for Security Reason
+             
+                cookie["AdminValue"] = obj.Pfcode.ToString();
+                cookie["UserValue"] = obj.userName.ToString();
+                cookie["Admin"] = obj.registrationId.ToString();
+                cookie["UserName"] = obj.userName.ToString();
+                cookie["pfCode"] = obj.Pfcode.ToString();
+             
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(cookie);
+
+                //Session["Admin"] = obj.registrationId.ToString();
+                //Session["UserName"] = obj.userName.ToString();
+                //Session["PFCode"] = obj.Pfcode.ToString();
                 //Session["firmlist"] = firmlist;
                 string decodedUrl = "";
                 if (!string.IsNullOrEmpty(ReturnUrl))
@@ -97,11 +109,15 @@ namespace DtDc_Billing.Controllers
 
             else if (objUser != null)
             {
-                Session["EmpId"] = objUser.User_Id.ToString();
-                Session["pfCode"] = objUser.PF_Code.ToString();
-                Session["EmpName"] = objUser.Name.ToString();
-
-
+                //Session["EmpId"] = objUser.User_Id.ToString();
+                //Session["pfCode"] = objUser.PF_Code.ToString();
+                //Session["EmpName"] = objUser.Name.ToString();
+                //Set all values in the cookies
+                cookie["EmpId"] = objUser.User_Id.ToString();
+                cookie["pfCode"] = objUser.PF_Code.ToString();
+                cookie["EmpName"] = objUser.Name.ToString();
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(cookie);
                 string decodedUrl = "";
                 if (!string.IsNullOrEmpty(ReturnUrl))
                     decodedUrl = Server.UrlDecode(ReturnUrl);
@@ -122,10 +138,14 @@ namespace DtDc_Billing.Controllers
             }
             else if (objBilling != null)
             {
-                Session["PfID"] = objBilling.PF_Code.ToString();
-                Session["EmpId"] = objBilling.User_Id;
-                Session["UserName"] = objBilling.Name;
-
+                //Session["PfID"] = objBilling.PF_Code.ToString();
+                //Session["EmpId"] = objBilling.User_Id;
+                //Session["UserName"] = objBilling.Name;
+                cookie["pfCode"] = objBilling.PF_Code.ToString();
+                cookie["EmpId"] = objBilling.User_Id.ToString();
+                cookie["UserName"] = objBilling.Name;
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(cookie);
                 string decodedUrl = "";
                 if (!string.IsNullOrEmpty(ReturnUrl))
                     decodedUrl = Server.UrlDecode(ReturnUrl);
@@ -147,10 +167,14 @@ namespace DtDc_Billing.Controllers
             {
                 if (Session["UserType"].ToString() == "CashCounter")
                 {
-                    Session["EmpId"] = objUser.User_Id.ToString();
-                    Session["pfCode"] = objUser.PF_Code.ToString();
-                    Session["EmpName"] = objUser.Name.ToString();
-
+                    //Session["EmpId"] = objUser.User_Id.ToString();
+                    //Session["pfCode"] = objUser.PF_Code.ToString();
+                    //Session["EmpName"] = objUser.Name.ToString();
+                    cookie["EmpId"] = objUser.User_Id.ToString();
+                    cookie["pfCode"] = objUser.PF_Code.ToString();
+                    cookie["EmpName"] = objUser.Name.ToString();
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.Cookies.Add(cookie);
 
                     string decodedUrl = "";
                     if (!string.IsNullOrEmpty(ReturnUrl))
@@ -170,9 +194,14 @@ namespace DtDc_Billing.Controllers
 
                 if (Session["UserType"].ToString() == "Billing")
                 {
-                    Session["PfID"] = objBilling.PF_Code.ToString();
-                    Session["EmpId"] = objBilling.User_Id;
-                    Session["UserName"] = objBilling.Name;
+                    //Session["PfID"] = objBilling.PF_Code.ToString();
+                    //Session["EmpId"] = objBilling.User_Id;
+                    //Session["UserName"] = objBilling.Name;
+                    cookie["pfCode"] = objBilling.PF_Code.ToString();
+                    cookie["EmpId"] = objBilling.User_Id.ToString();
+                    cookie["UserName"] = objBilling.Name;
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.Cookies.Add(cookie);
 
                     string decodedUrl = "";
                     if (!string.IsNullOrEmpty(ReturnUrl))
@@ -2320,8 +2349,8 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ExpensesList(string ToDatetime, string Fromdatetime)
         {
-            ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
-
+            //ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+            ViewBag.Pf_Code = Request.Cookies["pfCode"]["AdminValue"].ToString();
 
             var Cat = new List<SelectListItem>
     {
@@ -2371,7 +2400,8 @@ namespace DtDc_Billing.Controllers
         {
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
-            Pf_Code = Session["pfCode"].ToString();
+           // Pf_Code = Session["pfCode"].ToString();
+           Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString();
             ViewBag.Pf_Code = Pf_Code; //new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
 
@@ -2441,8 +2471,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult EditExpenses(long? id)
         {
 
-            ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
-
+          //  ViewBag.Pf_Code = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+          ViewBag.Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

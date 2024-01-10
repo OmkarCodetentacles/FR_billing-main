@@ -1,5 +1,6 @@
 ﻿using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,9 @@ namespace DtDc_Billing.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Pickupmsg(SendMsgModel sendmessage)
         {
-            string strpf = Session["pfCode"].ToString();
-
+            //string strpf = Session["pfCode"].ToString();
+            string strpf = Request.Cookies["Cookies"]["pfCode"].ToString();
+        
             //  string phone = db.Receipt_details.Where(m => m.Consignment_No == sendmessage.Consignment_No).Select(m => m.sender_phone).FirstOrDefault();
 
             if (ModelState.IsValid)
@@ -44,7 +46,8 @@ namespace DtDc_Billing.Controllers
 
                 sm.Consignment_No = sendmessage.Consignment_No;
                 sm.Mobile_No = sendmessage.Mobile_No;
-                sm.PF_Code = Session["pfCode"].ToString();
+               // sm.PF_Code = Session["pfCode"].ToString();
+               sm.PF_Code= Request.Cookies["Cookies"]["pfCode"].ToString();
                 sm.User_Id = 0;//Convert.ToInt64(Session["EmpId"]);
                 sm.datetime_msg = localTime;
 
@@ -65,10 +68,10 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult SendBulkmsg()
         {
-            string strpf = Session["pfCode"].ToString();
-
-            long User_Id = Convert.ToInt64(Session["EmpId"]);
-
+           // string strpf = Session["pfCode"].ToString();
+           string strpf= Request.Cookies["Cookies"]["pfCode"].ToString();
+            //  long User_Id = Convert.ToInt64(Session["EmpId"]);
+            long User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
             List<Receipt_details> list = db.Receipt_details.Where(m =>  m.User_Id == User_Id && m.Pf_Code== strpf).ToList();
 
             return View(list);
@@ -98,8 +101,8 @@ namespace DtDc_Billing.Controllers
                 DateTime? fromdate = Convert.ToDateTime(Fromdatetime,
         System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
-                long User_Id = Convert.ToInt64(Session["EmpId"]);
-
+                // long User_Id = Convert.ToInt64(Session["EmpId"]);
+                long User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                  list = db.Receipt_details.Where(m => m.Consignment_No.StartsWith(Consignname) && m.User_Id == User_Id
                 && m.Datetime_Cons.Value.Day >= fromdate.Value.Day
                 && m.Datetime_Cons.Value.Year >= fromdate.Value.Year
@@ -132,7 +135,8 @@ namespace DtDc_Billing.Controllers
 
         public void sendmsg(string phone,string Consignmentno )
         {
-            string pfcode = Session["pfCode"].ToString();
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode= Request.Cookies["Cookies"]["pfCode"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 
@@ -155,7 +159,8 @@ namespace DtDc_Billing.Controllers
         {
             string urmmsg = HttpUtility.UrlEncode(message);
 
-            string pfcode = Session["pfCode"].ToString();
+            //string pfcode = Session["pfCode"].ToString();
+           string pfcode= Request.Cookies["Cookies"]["pfCode"].ToString();
             Franchisee branchname = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
 
 

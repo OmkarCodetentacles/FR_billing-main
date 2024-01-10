@@ -27,7 +27,8 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
 
-                stationary.Pf_code = Session["PfID"].ToString();
+               // stationary.Pf_code = Session["PfID"].ToString();
+               stationary.Pf_code = Request.Cookies["Cookies"]["pfCode"].ToString();
                 db.Stationaries.Add(stationary);
                 db.SaveChanges();
 

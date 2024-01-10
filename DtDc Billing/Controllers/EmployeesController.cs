@@ -147,10 +147,16 @@ namespace DtDc_Billing.Controllers
 
             if (obj != null)
             {
-                Session["EmpId"] = obj.User_Id.ToString();
-                Session["pfCode"] = obj.PF_Code.ToString();
-                Session["EmpName"] = obj.Name.ToString();
-
+                //Session["EmpId"] = obj.User_Id.ToString();
+                //Session["pfCode"] = obj.PF_Code.ToString();
+                //Session["EmpName"] = obj.Name.ToString();
+                HttpCookie cookie = new HttpCookie("Cookies");
+                cookie["AdminValue"] = obj.PF_Code.ToString();
+                cookie["EmpId"] = obj.User_Id.ToString();
+                cookie["UserName"] = obj.Name.ToString();
+                cookie["pfCode"] = obj.PF_Code.ToString();
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(cookie);
 
                 string decodedUrl = "";
                 if (!string.IsNullOrEmpty(ReturnUrl))

@@ -21,4 +21,18 @@ namespace DtDc_Billing.Models
         [StringLength(6, MinimumLength = 6, ErrorMessage = "OTP must be 6 characters long")]
         public string EmailOTP { get; set; }
     }
+
+    public class LoginVerification
+    {
+
+      
+        public string mobileNo { get; set; }
+        [Required]
+
+        public string PF_Code { get; set; }
+        //  public Nullable<bool> isEmailConfirmed { get; set; }
+        [Required(ErrorMessage = "Enter Valid OTP")]
+        [StringLength(6, MinimumLength = 6, ErrorMessage = "OTP must be 6 characters long")]
+        public string LoginOTP { get; set; }
+    }
 }

@@ -37,8 +37,10 @@ namespace DtDc_Billing.Controllers
                 expense.Datetime_Exp  = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
 
-                expense.Pf_Code = Session["pfCode"].ToString();
-                expense.User_Id= Convert.ToInt64(Session["EmpId"]);
+              //  expense.Pf_Code = Session["pfCode"].ToString();
+              expense.Pf_Code = Request.Cookies["Cookies"]["pfCode"].ToString();
+                // expense.User_Id= Convert.ToInt64(Session["EmpId"]);
+                expense.User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                 db.Expenses.Add(expense);
                 db.SaveChanges();
 
@@ -72,8 +74,10 @@ namespace DtDc_Billing.Controllers
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
                 payment.Datetime_Pay = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-                payment.Pf_Code = Session["pfCode"].ToString();
-                payment.User_Id = Convert.ToInt64(Session["EmpId"]);
+                // payment.Pf_Code = Session["pfCode"].ToString();
+                payment.Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString(); ;
+                //  payment.User_Id = Convert.ToInt64(Session["EmpId"]);
+                payment.User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["EmpId"].ToString());
                 db.Payments.Add(payment);
                 db.SaveChanges();
                 //////////Alert Afte Success///
@@ -113,9 +117,10 @@ namespace DtDc_Billing.Controllers
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
                 saving.Datetime_Sav = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-                saving.Pf_Code = Session["pfCode"].ToString();
-                saving.User_Id = Convert.ToInt64(Session["EmpId"]);
-
+               // saving.Pf_Code = Session["pfCode"].ToString();
+               saving.Pf_Code =Request.Cookies["Cookies"]["pfCode"].ToString();
+                // saving.User_Id = Convert.ToInt64(Session["EmpId"]);
+                saving.User_Id = Convert.ToInt64(Request.Cookies["Cookies"]["pfCode"].ToString());
                 db.Savings.Add(saving);
                 db.SaveChanges();
                 //////////Alert Afte Success///
@@ -138,7 +143,8 @@ namespace DtDc_Billing.Controllers
         public JsonResult GetAllCreditReport()
         {
 
-            string pfcode = Session["pfCode"].ToString();
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
             var entity = db.Receipt_details.Where(m => m.Pf_Code == pfcode && m.Paid_Amount < m.Charges_Total).OrderByDescending(m => m.Datetime_Cons).
     Select(e => new

@@ -43,5 +43,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<System.DateTime> paymentDate { get; set; }
         public Nullable<bool> isEmailConfirmed { get; set; }
         public string emailOTP { get; set; }
+        public Nullable<bool> isLoginConfirmed { get; set; }
+        public string LoginOTP { get; set; }
     }
 }

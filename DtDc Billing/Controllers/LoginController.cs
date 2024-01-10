@@ -28,9 +28,21 @@ namespace DtDc_Billing.Controllers
             {
                 if (obj != null)
                 {
-                    Session["PfID"] = obj.PF_Code.ToString();
-                   // Session["firmlist"] = firmlist;
+
+
+                    //Session["PfID"] = obj.PF_Code.ToString();
+                    HttpCookie cookie = new HttpCookie("Cookies");
+                    cookie["AdminValue"] = obj.PF_Code.ToString();
+                    cookie["UserName"] = obj.Emp_Name.ToString();
+                    cookie["pfCode"] = obj.PF_Code.ToString();
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.Cookies.Add(cookie);
+
+                    cookie.Expires = DateTime.Now.AddDays(1);
+                    Response.Cookies.Add(cookie);
+                    // Session["firmlist"] = firmlist;
                     //Session["EmpId"]=
+
                     return RedirectToAction("Index", "Home");
                 }
             }

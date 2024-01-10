@@ -1185,8 +1185,8 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult InvalidConsignment()
         {
-            string pfcode = Session["pfCode"].ToString();
-
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             var list = (from user in db.Transactions
                         where !db.Companies.Any(f => f.Company_Id == user.Customer_Id) && user.Customer_Id != null
                         && user.Pf_Code== pfcode
@@ -1197,11 +1197,14 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ViewAllDestinationReport(string Fromdatetime, string ToDatetime, string PfCode="")
         {
-            PfCode=Session["pfCode"].ToString();
+           //PfCode=Session["pfCode"].ToString();
+           PfCode =   Request.Cookies["Cookies"]["pfCode"].ToString();
+
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
-            ViewBag.PfCode = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            //ViewBag.PfCode = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            ViewBag.PfCode =Request.Cookies["Cookies"]["pfCode"].ToString();
             if (Fromdatetime != null && ToDatetime != null)
             { 
 
@@ -1260,7 +1263,8 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ViewAllProductReport(string Fromdatetime, string ToDatetime,string PfCode = "")
         {
-            PfCode = Session["pfCode"].ToString();
+            //PfCode = Session["pfCode"].ToString();
+            PfCode =   Request.Cookies["Cookies"]["pfCode"].ToString();
 
             List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
 

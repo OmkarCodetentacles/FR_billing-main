@@ -106,7 +106,9 @@ namespace DtDc_Billing.Controllers
 
 
             /////////////////
-            if (Session["EmpId"] == null || Session["pfCode"] == null)
+            var empid = Request.Cookies["Cookies"]["EmpId"].ToString();
+            var pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
+            if (empid == null || pfcode == null)
             {
                 ViewBag.Session = "Your Session Time Out Please Login";
             }
@@ -219,8 +221,11 @@ namespace DtDc_Billing.Controllers
 
 
             /////////////////
+             var empid = Request.Cookies["Cookies"]["EmpId"].ToString();
+            var pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
-            if (Session["EmpId"] == null || Session["pfCode"] == null)
+           // if (Session["EmpId"] == null || Session["pfCode"] == null)
+           if(empid==null || pfcode==null)
             {
                 ViewBag.Session = "Your Session Time Out Please Login";
             }
@@ -368,7 +373,10 @@ namespace DtDc_Billing.Controllers
 
 
             /////////////////
-            if (Session["EmpId"] == null || Session["pfCode"] == null)
+            var empid = Request.Cookies["Cookies"]["EmpId"].ToString();
+            var pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
+           // if (Session["EmpId"] == null || Session["pfCode"] == null)
+            if(empid==null || pfcode==null)
             {
                 ViewBag.Session = "Your Session Time Out Please Login";
             }
@@ -466,8 +474,11 @@ namespace DtDc_Billing.Controllers
 
             /////////////////
             var compid = TempData.Peek("CompanyId").ToString();
+            var empid = Request.Cookies["Cookies"]["EmpId"].ToString();
+            var pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
-            if (Session["EmpId"] == null || Session["pfCode"] == null)
+          //  if (Session["EmpId"] == null || Session["pfCode"] == null)
+            if(empid==null || pfcode==null)
             {
                 ViewBag.Session = "Your Session Time Out Please Login";
             }
@@ -536,7 +547,10 @@ namespace DtDc_Billing.Controllers
 
 
             /////////////////
-            if (Session["EmpId"] == null || Session["pfCode"] == null)
+            var empid = Request.Cookies["Cookies"]["EmpId"].ToString();
+            var pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
+           // if (Session["EmpId"] == null || Session["pfCode"] == null)
+            if(empid==null || pfcode==null)
             {
                 ViewBag.Session = "Your Session Time Out Please Login";
             }

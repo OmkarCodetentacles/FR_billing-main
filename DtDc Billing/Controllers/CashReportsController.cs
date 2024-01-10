@@ -25,8 +25,8 @@ namespace DtDc_Billing.Controllers
         [SessionTimeout]
         public ActionResult ReceiptReports()
         {
-            string pfcode = Session["pfCode"].ToString();
-
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             //List<Receipt_details> rd = db.Receipt_details.Where(m => m.Pf_Code == pfcode).OrderByDescending(m => m.Receipt_Id).ToList();
             List<Receipt_details> rd = new List<Receipt_details>();
             ViewBag.totalAmt = (from emp in rd
@@ -43,8 +43,8 @@ namespace DtDc_Billing.Controllers
 
 
 
-            string pfcode = Session["pfCode"].ToString();
-
+          //  string pfcode = Session["pfCode"].ToString();
+          string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             List<Receipt_details> rd = db.Receipt_details.Where(m => m.Pf_Code == pfcode).OrderByDescending(m => m.Receipt_Id).ToList();
 
 
@@ -414,8 +414,8 @@ namespace DtDc_Billing.Controllers
         [SessionTimeout]
         public ActionResult DailyReport()
         {
-            string pfcode = Session["pfCode"].ToString();
-
+         //   string pfcode = Session["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
             DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
 
@@ -551,8 +551,8 @@ namespace DtDc_Billing.Controllers
                 ExportToExcel(dateTime);
             }
 
-            string pfcode = Session["pfCode"].ToString();
-
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             List<Receipt_details> rc = db.Receipt_details.Where(m => m.Datetime_Cons.Value.Day == dateTime.Value.Day
             && m.Datetime_Cons.Value.Month == dateTime.Value.Month
             && m.Datetime_Cons.Value.Year == dateTime.Value.Year
@@ -659,7 +659,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult AdminDailyReport()
         {
             //string pfcode = Session["pfCode"].ToString();
-
+            string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
             DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
 
@@ -669,7 +669,7 @@ namespace DtDc_Billing.Controllers
             List<Receipt_details> rc = db.Receipt_details.Where(m => m.Datetime_Cons.Value.Day == localTime.Day
             && m.Datetime_Cons.Value.Month == localTime.Month
             && m.Datetime_Cons.Value.Year == localTime.Year
-            //&& m.Pf_Code == pfcode
+            && m.Pf_Code == pfcode
             ).ToList();
 
 
@@ -1052,8 +1052,8 @@ namespace DtDc_Billing.Controllers
 
         public void ExportToExcel(DateTime? dateTime)
         {
-            string pfcode = Session["pfCode"].ToString();
-
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             var consignments = (from m in db.Receipt_details
                                 where m.Pf_Code == pfcode
                                && m.Datetime_Cons.Value.Day == dateTime.Value.Day

@@ -29,7 +29,7 @@ namespace DtDc_Billing.Controllers
         private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
         // GET: Adminsss
 
-        //[SessionUserModule]
+        [SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
 
@@ -166,7 +166,9 @@ namespace DtDc_Billing.Controllers
                         ModelState.AddModelError("LoginAuth", "Your account is not activated. Please feel free to contact us at +91 9209764995..");
                         return View();
                     }
-                    //Emal Verification Code Before LOgin check email is confirmed
+
+                  
+                    //Emal Verification Code Before Login check email is confirmed
 
                     //if (ObjData.isEmailConfirmed == false)
                     //{
@@ -212,7 +214,7 @@ namespace DtDc_Billing.Controllers
 
                         After1Year = date1.AddYears(1);
                         //DateTime edate=ObjData.subscriptionForInDays
-                        //ExpiryDate=
+                       
                     }
                     else
                     {
@@ -236,124 +238,109 @@ namespace DtDc_Billing.Controllers
 
                     if (ObjData != null)
                     {
-                        Session["Admin"] = ObjData.registrationId.ToString();
-                        Session["UserName"] = ObjData.userName.ToString();
-                        Session["PFCode"] = ObjData.Pfcode.ToString();
-                        // Session["firmlist"] = firmlist;
-                        string decodedUrl = "";
-
-                        HttpCookie cookie = new HttpCookie("Cookies");
-                        cookie["AdminValue"] = ObjData.Pfcode.ToString();
-                        cookie["UserValue"] = ObjData.userName.ToString();
-                        cookie.Expires = DateTime.Now.AddDays(1);
-                        Response.Cookies.Add(cookie);
-
-
-
-                        cookie["referalCode"] = ObjData.referralCode.ToString();
-                        cookie.Expires = DateTime.Now.AddDays(1);
-                        Response.Cookies.Add(cookie);
-
-
-
-                        int customTimeout = 30;
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                                          1,
-                         ObjData.registrationId.ToString(),
-                          DateTime.Now,
-                         DateTime.Now.AddMinutes(customTimeout),  // Expiration time
-                          false,
-                            ObjData.userName
-                        );
-                        string encryptedTicket = FormsAuthentication.Encrypt(ticket);
-                        HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                        authCookie.Expires = ticket.Expiration;
-                        Response.Cookies.Add(authCookie);
-
-                        var objaccessPAge = (from d in db.AdminAccessPages
-                                             where d.Pfcode == ObjData.Pfcode.ToString()
-                                             select new { d.Accesspage }).FirstOrDefault();
-
-                        var renewalstatus = (from d in db.paymentLogs
-                                             where d.Pfcode == ObjData.Pfcode.ToString()
-                                             select new { d.RenewalStatus }).FirstOrDefault();
-
-                        if (objaccessPAge != null)
+                        if (newDate <= DateTime.Now.Date)
                         {
-                            Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
+
+                            return RedirectToAction("ExpiredDate", "Admin");
                         }
+
                         else
                         {
-                            Session["AccessPage"] = "0";
-
-                        }
-                        if (!string.IsNullOrEmpty(ReturnUrl))
-                            decodedUrl = Server.UrlDecode(ReturnUrl);
-
-                        //Login logic...
-
-                        if (Url.IsLocalUrl(decodedUrl))
-                        {
-                            return Redirect(decodedUrl);
-                        }
-                        else
-                        {
-                            //if (currentDate > newDate)
-                            //{
-
-                            //    ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
-                            //    return View();
-                            //}
-                            //if (newDate <= DateTime.Now.Date)
-                            //{
-                            //    ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
-                            //    return RedirectToAction("Index", "Admin");
-                            //}
-                            if (newDate <= DateTime.Now.Date)
+                            if ((newDate - DateTime.Now).TotalDays < 30)
                             {
-
-                                return RedirectToAction("ExpiredDate", "Admin");
-                            }
-                            else if (renewalstatus.RenewalStatus == "1")
-                            {
-                                return RedirectToAction("Index", "Home");
-                            }
-                            else
-                            {
-                                if ((newDate - DateTime.Now).TotalDays < 30)
+                                if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
                                 {
-                                    if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
-                                    {
-                                        ObjData.IsRenewalEmail = "0";
-                                        db.Entry(ObjData).State = EntityState.Modified;
-                                        db.SaveChanges();
-                                    }
-
-                                    //if (ObjData.IsRenewalEmail != "1" || (ObjData.IsRenewalEmailDate == null && ObjData.IsRenewalEmailDate != DateTime.Now.Date))
-                                    //{
-
-                                    //    ObjData.IsRenewalEmailDate = DateTime.Now.Date;
-                                    //    ObjData.IsRenewalEmail = "1";
-                                    //    db.Entry(ObjData).State = EntityState.Modified;
-                                    //    db.SaveChanges();
-
-                                    //    ////////send mail//////////
-                                    //    mail mail = new mail();
-                                    //    mail.franchiseName = ObjData.franchiseName;
-                                    //    mail.emailId = ObjData.emailId;
-                                    //    mail.After1Year = After1Year;
-                                    //    sendEmail.send(mail);
-
-                                    //    ///////send mail//////////
-
-
-                                    //}
+                                    ObjData.IsRenewalEmail = "0";
+                                    db.Entry(ObjData).State = EntityState.Modified;
+                                    db.SaveChanges();
                                 }
-                                
-                                return RedirectToAction("Index", "Home");
+
 
                             }
+
                         }
+
+                        return RedirectToAction("VerifyLogin", new { pfcode=ObjData.Pfcode });
+                       // return RedirectToAction("AnotherAction");
+                        //Session["Admin"] = ObjData.registrationId.ToString();
+                        //Session["UserName"] = ObjData.userName.ToString();
+                        //Session["PFCode"] = ObjData.Pfcode.ToString();
+                        // Session["firmlist"] = firmlist;
+                        //string decodedUrl = "";
+
+                        //HttpCookie cookie = new HttpCookie("Cookies");
+                        //cookie["AdminValue"] = ObjData.Pfcode.ToString();
+                        //cookie["UserValue"] = ObjData.userName.ToString();
+                        //cookie["Admin"] = ObjData.registrationId.ToString();
+                        //cookie["UserName"] = ObjData.userName.ToString();
+                        //cookie["pfCode"] = ObjData.Pfcode.ToString();
+                        //cookie.Expires = DateTime.Now.AddDays(1);
+                        //Response.Cookies.Add(cookie);
+
+
+
+                        //cookie["referalCode"] = ObjData.referralCode.ToString();
+                        //cookie.Expires = DateTime.Now.AddDays(1);
+                        //Response.Cookies.Add(cookie);
+
+
+
+                        //int customTimeout = 1440;
+                        //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                        //                  1,
+                        // ObjData.registrationId.ToString(),
+                        //  DateTime.Now,
+                        // DateTime.Now.AddMinutes(customTimeout),  // Expiration time
+                        //  false,
+                        //    ObjData.userName
+                        //);
+                        //string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+                        //HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                        //authCookie.Expires = ticket.Expiration;
+                        //Response.Cookies.Add(authCookie);
+
+                        //var objaccessPAge = (from d in db.AdminAccessPages
+                        //                     where d.Pfcode == ObjData.Pfcode.ToString()
+                        //                     select new { d.Accesspage }).FirstOrDefault();
+
+                        //var renewalstatus = (from d in db.paymentLogs
+                        //                     where d.Pfcode == ObjData.Pfcode.ToString()
+                        //                     select new { d.RenewalStatus }).FirstOrDefault();
+
+                        //if (objaccessPAge != null)
+                        //{
+                        //    Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
+                        //}
+                        //else
+                        //{
+                        //    Session["AccessPage"] = "0";
+
+                        //}
+                        //if (!string.IsNullOrEmpty(ReturnUrl))
+                        //    decodedUrl = Server.UrlDecode(ReturnUrl);
+
+                        ////Login logic...
+
+                        //if (Url.IsLocalUrl(decodedUrl))
+                        //{
+                        //    return Redirect(decodedUrl);
+                        //}
+                        //else
+                        //{
+                        //    //if (currentDate > newDate)
+                        //    //{
+
+                        //    //    ModelState.AddModelError("freedome", "Free demo of 30 days is expired");
+                        //    //    return View();
+                        //    //}
+                        //    //if (newDate <= DateTime.Now.Date)
+                        //    //{
+                        //    //    ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
+                        //    //    return RedirectToAction("Index", "Admin");
+                        //    //}
+                          
+                        //    return RedirectToAction("Index", "Home");
+                        //}
                     }
 
                 }
@@ -371,7 +358,61 @@ namespace DtDc_Billing.Controllers
 
            
         }
+        public bool SetCookies(string pfcode)
+        {
+            var ObjData = db.registrations.Where(x=>x.Pfcode==pfcode).FirstOrDefault(); 
 
+
+            HttpCookie cookie = new HttpCookie("Cookies");
+            cookie["AdminValue"] = ObjData.Pfcode.ToString();
+            cookie["UserValue"] = ObjData.userName.ToString();
+            cookie["Admin"] = ObjData.registrationId.ToString();
+            cookie["UserName"] = ObjData.userName.ToString();
+            cookie["pfCode"] = ObjData.Pfcode.ToString();
+            cookie.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Add(cookie);
+
+
+
+            cookie["referalCode"] = ObjData.referralCode.ToString();
+            cookie.Expires = DateTime.Now.AddDays(1);
+            Response.Cookies.Add(cookie);
+
+
+
+            int customTimeout = 1440;
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                              1,
+             ObjData.registrationId.ToString(),
+              DateTime.Now,
+             DateTime.Now.AddMinutes(customTimeout),  // Expiration time
+              false,
+                ObjData.userName
+            );
+            string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+            HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            authCookie.Expires = ticket.Expiration;
+            Response.Cookies.Add(authCookie);
+
+            var objaccessPAge = (from d in db.AdminAccessPages
+                                 where d.Pfcode == ObjData.Pfcode.ToString()
+                                 select new { d.Accesspage }).FirstOrDefault();
+
+            var renewalstatus = (from d in db.paymentLogs
+                                 where d.Pfcode == ObjData.Pfcode.ToString()
+                                 select new { d.RenewalStatus }).FirstOrDefault();
+
+            if (objaccessPAge != null)
+            {
+                Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
+            }
+            else
+            {
+                Session["AccessPage"] = "0";
+
+            }
+            return true;
+        }
         public ActionResult ExpiredDate()
         {
             return View();
@@ -2455,6 +2496,7 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionAdminold]
+        //Not Giving access to User
         [SessionUserModule]
         public ActionResult LogOut()
         {
@@ -3026,11 +3068,11 @@ namespace DtDc_Billing.Controllers
                         user.email = userDetails.emailId;
                         user.mobileNo = userDetails.mobileNo;
                         user.address = userDetails.address;
-
-                        Session["DataName"] = user.name;
-                        Session["Dataemail"] = user.email;
-                        Session["Datacontact"] = user.mobileNo;
-                        Session["Dataaddress"] = user.address;
+                        //Because of set the Cokkies the code 
+                        //Session["DataName"] = user.name;
+                        //Session["Dataemail"] = user.email;
+                        //Session["Datacontact"] = user.mobileNo;
+                        //Session["Dataaddress"] = user.address;
 
                         if (Pfcheck.emailId!=null)
                         {
@@ -3102,7 +3144,72 @@ namespace DtDc_Billing.Controllers
 
 
         }
+        public ActionResult VerifyLogin(string pfcode)
+        {
+            var register = db.registrations.Where(x => x.Pfcode == pfcode).FirstOrDefault();
 
+            var loginmodel = new LoginVerification
+            {
+                mobileNo = register.mobileNo,
+                PF_Code = register.Pfcode,
+                LoginOTP = ""
+            };
+            return View(loginmodel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult VerifyLogin(LoginVerification loginVerification)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (loginVerification != null)
+                    {
+                        var register = db.registrations.Where(x => x.Pfcode == loginVerification.PF_Code).FirstOrDefault();
+                        if (loginVerification.LoginOTP == register.LoginOTP)
+                        {
+                            DateTime registerTime = register.dateTime.Value;
+                            DateTime currentTime = DateTime.Now;
+                            TimeSpan timeDifference = currentTime - registerTime;
+                            if (timeDifference.TotalMinutes <= 3)
+                            {
+                                register.mobileNo = loginVerification.mobileNo;
+                                register.isLoginConfirmed = true;
+                                db.Entry(register).State = EntityState.Modified;
+                                db.SaveChanges();
+                                TempData["otpverify"] = "Login OTP Verify Successfully!!";
+                                SetCookies(register.Pfcode);
+                                return RedirectToAction("Index","Home");
+                            }
+                            else
+                            {
+                                TempData["timeexpired"] = "Your Time Expired Try Again";
+
+                            }
+                        }
+                        else
+                        {
+                            TempData["invalidOTP"] = "Please Enter Valid OTP";
+
+
+                        }
+
+
+                        return View();
+
+                    }
+                    return View(loginVerification);
+                }
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Something Went Wrong! Try Again!!";
+                return View();
+            }
+        }
         public ActionResult VerifyEmail(string pfcode)
         {
  
@@ -3170,6 +3277,51 @@ namespace DtDc_Billing.Controllers
                 TempData["ErrorMessage"] = "Something Went Wrong! Try Again!!";
                 return View();
             }
+        }
+        [HttpPost]
+        public ActionResult SendLoginOTPtoM(string mobileNo,string pfcode)
+        {
+            var otp = RandomMobileOTP(6); // Implement this method to generate OTP
+                                       //  SendOtpEmail(email, otp); // Implement this method to send OTP via email
+            var register = db.registrations.Where(x => x.Pfcode == pfcode).FirstOrDefault();
+            if (register != null)
+            {
+                register.LoginOTP = otp;
+                register.dateTime = DateTime.Now;
+                register.isLoginConfirmed = false;
+                db.Entry(register).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            SendLoginOTPtoMobile(mobileNo, otp);
+
+            return Json(new { success = true });
+        }
+        private void SendLoginOTPtoMobile(string mobileNo, string otp)
+        {
+           
+            string message = $@"
+        <html>
+        <body>
+            <p>Dear User,</p>
+
+            <p>Your verification code is: {otp}</p>
+
+            <p>Please use this code to complete the Login process.</p>
+
+            <p>If you have any questions or need assistance, feel free to contact our support team.<br /><strong> at +91 9209764995</strong></p>
+
+            <p>Best Regards,<br/>
+            Your Application Team</p>
+        </body>
+        </html>
+    ";
+
+          SendWhatsappMessage sendWhatsappMessage = new SendWhatsappMessage();
+            var whatsappmessage = sendWhatsappMessage.sendWhatsappMessage(mobileNo,message);
+            
+          
+            // Add any additional logic here (e.g., logging, error handling)
         }
         [HttpPost]
         public ActionResult SendOtp(string email,string pfcode)
@@ -3733,6 +3885,12 @@ namespace DtDc_Billing.Controllers
         }
 
         private static Random random = new Random();
+        public static string RandomMobileOTP(int length)
+        {
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         public static string RandomString(int length)
         {
@@ -3981,6 +4139,15 @@ namespace DtDc_Billing.Controllers
         {
             string SubPath = "http://codetentacles-005-site1.htempurl.com/Admin/AdminLogin?isPaymentSuccess=1";
             return Redirect(SubPath);
+        }
+
+        public ActionResult RenewalNotification()
+        {
+            return View();  
+        }
+        public ActionResult ErrorPage()
+        {
+            return View();  
         }
     }
 }

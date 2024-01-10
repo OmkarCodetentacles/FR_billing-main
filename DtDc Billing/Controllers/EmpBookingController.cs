@@ -28,8 +28,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult CompanyList()
         {
 
-            string pfcode = Session["pfCode"].ToString();
-
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             return View(db.Companies.Where(m=>m.Pf_code==pfcode).ToList());
        }
 
@@ -94,9 +94,10 @@ namespace DtDc_Billing.Controllers
                 transaction.codtotalamount = 0;
             }
 
-            int EmpId = Convert.ToInt16(Session["EmpId"]);
-            string pfcode = Session["pfCode"].ToString();
-
+            // int EmpId = Convert.ToInt16(Session["EmpId"]);
+            int EmpId = Convert.ToInt16(Request.Cookies["Cookies"]["EmpId"].ToString());
+            //string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             if (ModelState.IsValid)
             {
                 Transaction tr = db.Transactions.Where(m => m.Consignment_no == transaction.Consignment_no).FirstOrDefault();
@@ -247,7 +248,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult CustomerIdAutocomplete()
         {
             //string Pfcode = Session["PfID"].ToString();
-            string Pfcode = Session["pfCode"].ToString();
+            //string Pfcode = Session["pfCode"].ToString();
+            string Pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             var entity = db.Companies.Where(m=>m.Pf_code == Pfcode).
 Select(e => new
 {
@@ -287,7 +289,8 @@ Select(e => new
         public string pfcodevalidation(string Consignment_no)
         {
             db.Configuration.ProxyCreationEnabled = false;
-            var pf = Session["pfCode"].ToString();
+           // var pf = Session["pfCode"].ToString();
+           var pf = Request.Cookies["Cookies"]["pfCode"].ToString();
             string b = pf.Substring(2, pf.Length - 2);
             string prcode = "PR" + "" + b;
             var pfval = db.Transactions.Where(m => m.Consignment_no == Consignment_no  && (m.Pf_Code == pf || m.Pf_Code == prcode)).FirstOrDefault();
@@ -500,8 +503,8 @@ Select(e => new
                 ViewBag.Custid = Custid;
             }
 
-            var PfCode = Session["pfCode"].ToString();
-
+           // var PfCode = Session["pfCode"].ToString();
+                var PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
             List<TransactionView> transactions =
                 db.TransactionViews.Where(m =>
 
@@ -605,8 +608,8 @@ Select(e => new
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
-            var PfCode = Session["pfCode"].ToString();
-
+           // var PfCode = Session["pfCode"].ToString();
+            var PfCode =Request.Cookies["Cookies"]["pfCode"].ToString();
             DateTime? fromdate;
             DateTime? todate;
 
@@ -660,9 +663,10 @@ Select(e => new
         public ActionResult MultipleBookingReceipt(long Employees, string ToDatetime, string Fromdatetime, string Customer_Id)
         {
 
-            int EmpId = Convert.ToInt16(Session["EmpId"]);
-            string pfcode = Session["pfCode"].ToString();
-
+            //  int EmpId = Convert.ToInt16(Session["EmpId"]);
+            int EmpId = Convert.ToInt32(Request.Cookies["Cookies"]["EmpId"].ToString());
+           // string pfcode = Session["pfCode"].ToString();
+            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
@@ -670,8 +674,8 @@ Select(e => new
             DateTime? fromdate;
             DateTime? todate;
 
-            string Pfcode = Session["pfCode"].ToString();
-
+           // string Pfcode = Session["pfCode"].ToString();
+                string Pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             if (Fromdatetime != "")
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -747,8 +751,8 @@ Select(e => new
         {
             db.Configuration.ProxyCreationEnabled = false;
 
-            string Pfcode = Session["pfCode"].ToString();
-
+         //   string Pfcode = Session["pfCode"].ToString();
+                string Pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
             List<User> lstuser = new List<User>();
 
@@ -772,9 +776,10 @@ Select(e => new
         [HttpPost]
         public ActionResult MultipleBooking(string StartingCons, string EndingCons, string Companyid)
         {
-            int EmpId = Convert.ToInt16(Session["EmpId"]);
-            string pfcode = Session["pfCode"].ToString();
-
+            //   int EmpId = Convert.ToInt16(Session["EmpId"]);
+            int EmpId = Convert.ToInt16(Request.Cookies["Cookies"]["EmpId"].ToString());
+           // string pfcode = Session["pfCode"].ToString();
+           string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             char stch = StartingCons[0];
             char Endch = EndingCons[0];
 

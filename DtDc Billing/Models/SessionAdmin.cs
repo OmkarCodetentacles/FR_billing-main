@@ -17,7 +17,7 @@ namespace DtDc_Billing.Models
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpContext ctx = HttpContext.Current;
-            if (HttpContext.Current.Session["Admin"] == null)
+            if (HttpContext.Current.Request.Cookies["Cookies"]["AdminValue"].ToString() == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
                       new RouteValueDictionary(
