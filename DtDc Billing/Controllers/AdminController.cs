@@ -3147,13 +3147,27 @@ namespace DtDc_Billing.Controllers
         public ActionResult VerifyLogin(string pfcode)
         {
             var register = db.registrations.Where(x => x.Pfcode == pfcode).FirstOrDefault();
-
+          
             var loginmodel = new LoginVerification
             {
                 mobileNo = register.mobileNo,
                 PF_Code = register.Pfcode,
                 LoginOTP = ""
             };
+            var otp = RandomMobileOTP(6); // Implement this method to generate OTP
+                                          //  SendOtpEmail(email, otp); // Implement this method to send OTP via email
+            TempData["otpSentMessage"] = "OTP has been sent to your mobile. Please check it.";
+            if (register != null)
+            {
+                register.LoginOTP = otp;
+                register.dateTime = DateTime.Now;
+                register.isLoginConfirmed = false;
+                db.Entry(register).State = EntityState.Modified;
+                db.SaveChanges();
+                SendLoginOTPtoMobile(register.mobileNo, otp);
+            }
+           
+
             return View(loginmodel);
         }
         [HttpPost]
@@ -3172,7 +3186,7 @@ namespace DtDc_Billing.Controllers
                             DateTime registerTime = register.dateTime.Value;
                             DateTime currentTime = DateTime.Now;
                             TimeSpan timeDifference = currentTime - registerTime;
-                            if (timeDifference.TotalMinutes <= 3)
+                            if (timeDifference.TotalMinutes <= 4)
                             {
                                 register.mobileNo = loginVerification.mobileNo;
                                 register.isLoginConfirmed = true;
@@ -3348,18 +3362,73 @@ namespace DtDc_Billing.Controllers
             // Construct the email body with OTP
             string emailBody = $@"
         <html>
-        <body>
-            <p>Dear User,</p>
+         <head>
+             <title>Action Required: Use OTP to Verify Your Account</title>
+       <style>
+         body {{
+           font-family: Arial, sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #F5E8E8;
+         }}
 
-            <p>Your verification code is: {otp}</p>
+         .container {{
+           max-width: 600px;
+           margin: 0 auto;
+           padding: 20px;
+           background-color: #FFFFFF;
+         }}
 
-            <p>Please use this code to complete the registration process.</p>
+         h2 {{
+           color: #333333;
+         }}
 
-            <p>If you have any questions or need assistance, feel free to contact our support team.<br /><strong> at +91 9209764995</strong></p>
+         p {{
+           color: #555555;
+         }}
 
-            <p>Best Regards,<br/>
-            Your Application Team</p>
-        </body>
+         table {{
+           width: 100%;
+         }}
+
+         th, td {{
+           padding: 10px;
+           text-align: left;
+           vertical-align: top;
+           border-bottom: 1px solid #dddddd;
+         }}
+
+         .logo {{
+           text-align: center;
+           margin-bottom: 20px;
+         }}
+
+         .logo img {{
+           max-width: 200px;
+         }}
+       </style>
+            </head>
+       <body>
+       <div class='container'>
+         <div class='logo'>
+           <img src='https://frbilling.com/assets/Home/assets/images/logo.png' alt='Logo'>
+         </div>
+         <h4>General query from user</h4>
+         <p><strong>Dear User,</strong></p>
+         <h2>One-Time Password (OTP) for Verification</h2>
+                <p>Your OTP is: <strong>{otp}</strong></p>
+                <p>Please use this OTP to verify your account.</p>
+                <p>If you didn't request this OTP, you can safely ignore this email.</p>
+                   <p>If you have any questions or need assistance, feel free to contact our support team.<br />
+                        <strong> at +91 9209764995</strong></p>
+
+         <hr>
+         <p>Thank you for your attention to this matter.</p>
+         <p>Best regards,</p>
+         <p><strong>Fr-Billing</strong></p>
+         
+       </div>
+     </body>
         </html>
     ";
 

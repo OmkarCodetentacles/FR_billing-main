@@ -2,24 +2,7 @@
 @{
     Layout = null;
 }
-<style>
-    #timer {
-        width: 120px;
-        height: 50px;
-        font-size:20px;
-        color: red;
-        font-style:normal;
-        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-    #timer1 {
-        width: 120px;
-        height: 50px;
-        font-size: 20px;
-        color: red;
-        font-style: normal;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-</style>
+
 <!DOCTYPE html>
 
 <html>
@@ -61,6 +44,8 @@
 
     <link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
     <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+
+
     <script>
         $(document).ready(function () {
             var otpverified =@Html.Raw(Json.Encode(TempData["otpverify"]));
@@ -74,7 +59,7 @@
                     $("#timer").hide();
                       }
             // Enable the submit button
-          
+
 
 
         var errorMessage = @Html.Raw(Json.Encode(TempData["ErrorMessage"]));
@@ -98,30 +83,138 @@
 
 </head>
 <body>
-  
+    <style>
+        #timer {
+            width: 120px;
+            height: 50px;
+            font-size: 20px;
+            color: red;
+            font-style: normal;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+
+        #timer1 {
+            width: 120px;
+            height: 50px;
+            font-size: 20px;
+            color: red;
+            font-style: normal;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        /* Modal styles */
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #eee;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .modal-title {
+            color: #007bff;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            border-top: 2px solid #eee;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        /* Button styles */
+        .btn-info,
+        .btn-warning {
+            border-radius: 5px;
+        }
+
+            .btn-info:hover,
+            .btn-warning:hover {
+                opacity: 0.8;
+            }
+
+        .btn-resend {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+            .btn-resend:hover {
+                background-color: #ffca2b;
+            }
+
+        .custom-input {
+            font-size:14px; /* Adjust the font size as needed */
+            padding: 20px; /* Adjust the padding as needed */
+            border-radius: 8px; /* Apply border-radius for rounded corners */
+            border: 2px solid #4cff00; /* Add border style */
+            transition: border-color 0.3s ease-in-out; /* Add transition effect for border color */
+            width:350px;
+            font-family:Arial;
+        }
+
+            /* Hover effect for the input field */
+            .custom-input:hover {
+                border-color: #2980b9; /* Change border color on hover */
+            }
+
+            /* Focus effect for the input field */
+            .custom-input:focus {
+                outline: none; /* Remove default focus outline */
+                border-color: #2c3e50; /* Change border color on focus */
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Add a subtle box shadow on focus */
+            }
+        h5 {
+            color: #fa1e0f;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .custom-label {
+            font-size: 14px; /* Adjust the font size as needed */
+            font-weight: bold; /* Make the text bold */
+            color: #333; /* Set the text color */
+            margin-bottom: 5px; /* Add space at the bottom */
+        }
+
+            /* Hover effect for the label */
+            .custom-label:hover {
+                color: #555; /* Change text color on hover */
+            }
+
+            /* Focus effect for the label */
+            .custom-label:focus-within {
+                color: #007bff; /* Change text color when the associated input is focused */
+            }
+    </style>
 
     <!-- Bootstrap Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+         aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Welcome, and enjoy your journey with us!</h5>
-                    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" >
-                        <span aria-hidden="true" id="registerClose2">&times;</span>
-                    </button>*@
+                    <h5 class="modal-title" id="registerModalLabel"><strong>Welcome, and enjoy your journey with us!</strong></h5>
                 </div>
                 <div class="modal-body">
                     <span>
-                        Thank you for successfully registering with us! Your account will be activated shortly. Our team will reach out to you within the next two working days. If you have any questions or concerns, <br /><strong>feel free to contact us at +91 9209764995</strong>.
+                        Thank you for successfully registering with us! Your account will be activated shortly. Our team
+                        will reach out to you within the next two working days. If you have any questions or concerns, <br />
+                        <strong>feel free to contact us at +91 9209764995</strong>.
                     </span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="registerClose" >Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="registerClose">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Trigger the modal -->
     <!-- Bootstrap Modal -->
@@ -130,32 +223,31 @@
     <form action="/Admin/VerifyEmail" method="post">
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
-           
-            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-backdrop="static">
+
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel"
+                 aria-hidden="true" data-backdrop="static">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
-
-
                         <div class="modal-header">
                             <h5 class="modal-title" id="successModalLabel">Email Verification!!!</h5>
-                            <div id="messageContainer" class="alert alert-info" style="display: none;">
-                            </div>
+                            <div id="messageContainer" class="alert alert-info" style="display: none;"></div>
+
                             @if (TempData["ErrorMessage"] != null)
                             {
                                 <script>
-                                    $("#verifyBtn").hide(); 
+                                    $("#verifyBtn").hide();
                                     var errorMessage = '@Html.Raw(TempData["ErrorMessage"])';
                                     showErrorAlert(errorMessage);
                                     function showErrorAlert(message) {
-                                        
+
                                         console.log(message)
-                                        
+
                                             $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-danger").show();
-                                      
-                                       
+
+
                                     }
-                                     </script>
+                                </script>
                             }
                             @if (TempData["invalidOTP"] != null)
                             {
@@ -166,32 +258,32 @@
                                     showErrorAlert(invalidOtpMessage);
                                     function showErrorAlert(message) {
                                         console.log(message)
-                                       
+
                                             $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-danger").show();
-                                           
-                                      
+
+
                                     }
-                                  </script>
+                                </script>
 
                             }
                             @if (TempData["timeexpired"] != null)
                             {
                                 <script>
 
-                                    $("#verifyBtn").hide(); 
+                                    $("#verifyBtn").hide();
                                 var expiredMessage = '@Html.Raw(TempData["timeexpired"])';
                                     showWarningAlert(expiredMessage);
                                     function showWarningAlert(message) {
                                         console.log(message)
-                                       
+
                                             $("#messageContainer").text(message).removeClass("alert-success").addClass("alert-warning").show();
 
-                                       
-                                        
+
+
                                     }
-                                  </script>
-                                
-                                }
+                                </script>
+
+                            }
 
 
 
@@ -200,82 +292,69 @@
 
                             <!-- Message will be displayed here -->
                         </div>
-                      
-                        <div class="modal-body">
-                            
-                            <div id="timer"></div>
-                            
+                        <div class="box-body">
+                            <div class="modal-body">
 
-                            <div class="box-body">
+                                <div id="timer"></div>
+
+
                                 <div class="form-group">
                                     <div class="form-group">
 
-                                        <h5 style="padding-left:20px">Is correct Email Address?</h5>
+                                        <h5 style="padding-left: 20px"><strong>Is the email address correct?</strong></h5>
 
-                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-4" })
+                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-4 custom-label" })
 
                                         <div class="col-md-6">
-                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-lg custom-input" } })
                                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="form-group">
-
-                                        @*@Html.LabelFor(model => model.PF_Code, htmlAttributes: new { @class = "col-md-4" })*@
                                         <div class="col-md-6">
                                             @Html.HiddenFor(model => model.PF_Code, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                            @*@Html.ValidationMessageFor(model => model.PF_Code, "", new { @class = "text-danger" })*@
-
                                         </div>
-
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-4">
-
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="button" value="Verify" class="btn btn-info" id="verifyBtn" />
-                                            <input type="button" value="Resend" class="btn btn-warning" id="resendbtn" />
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-info" id="verifyBtn">Verify</button>
+                                            <button type="button" class="btn btn-resend" id="resendbtn">Resend</button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-
-
-                                    @Html.LabelFor(model => model.EmailOTP, htmlAttributes: new { @class = "col-md-4" })
-
+                                    @Html.LabelFor(model => model.EmailOTP, htmlAttributes: new { @class = "col-md-4 custom-label" })
                                     <div class="col-md-6">
-                                        @Html.EditorFor(model => model.EmailOTP, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                        @Html.EditorFor(model => model.EmailOTP, new { htmlAttributes = new { @class = "form-control input-lg custom-input" } })
                                         @Html.ValidationMessageFor(model => model.EmailOTP, "", new { @class = "text-danger" })
-
                                     </div>
                                 </div>
-
-
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="col-md-offset-2 col-md-8">
-                                <input type="submit" value="Submit" class="btn btn-info" id="submitBtn" />
+                            <div class="modal-footer">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <input type="submit" value="Submit" class="btn btn-info" id="submitBtn" />
+                                </div>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModalBtn">Close</button>
                             </div>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModalBtn">Close</button>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
 
-
-
         </div>
+
+
+
+
     </form>
-        <script>
+    <script>
             var countdownTime = 2 * 60; // 3 minutes
             var timerInterval;
-          
+
             function updateTimer() {
-               
+
                 var minutes = Math.floor(countdownTime / 60);
                 var seconds = countdownTime % 60;
 
@@ -285,36 +364,36 @@
                 // Check if the countdown is over
                 if (countdownTime === 0) {
                     clearInterval(timerInterval);
-                   
+
                     ShowReset();
 
                     var errorMessage = "Your Time is Expired!";
                         $("#messageContainer").text("Your Time is Expired Resend Again!!").removeClass("alert-success").addClass("alert-danger").show();
-                   
-                    
+
+
                     TimeOut();
-                    
+
                 }
                 else {
                     countdownTime--;
                 }
-            } 
-            
+            }
+
             function ShowReset() {
                 $("#resendbtn").show();
             }
             function ResetShowHideButton() {
                 $("#submitBtn").prop("disabled", false);
-                $("#verifyBtn").hide(); 
+                $("#verifyBtn").hide();
 
-              
-                
+
+
             }
             function ShowHideButton(){
-              
+
                 $("#submitBtn").prop("disabled", false);
                 $("#verifyBtn").hide(); // Add # symbol for the ID selector
-               
+
                 $("#timer").show();
                 timerInterval = setInterval(updateTimer, 1000);
             }
@@ -328,7 +407,7 @@
                 startCountdown();
             }
             function startCountdown() {
-               
+
                 countdownTime = 60; // Set the initial countdown time in seconds
                 timerInterval = setInterval(updateTimer, 1000);
             }
@@ -347,12 +426,12 @@
                 {
 
                     if (result.success) {
-                      
+
                         $("#messageContainer").text("OTP sent to your email successfully!").removeClass("alert-danger").addClass("alert-success").show();
                         ShowHideButton();
                         TimeOut();
 
-                        
+
                     } else {
                         // Show the error message
                         $("#messageContainer").text("Failed to sent OTP. Please try again!").removeClass("alert-success").addClass("alert-danger").show();
@@ -366,10 +445,10 @@
                     TimeOut();
                 }
             });
-        }); 
-       
-        </script>
-        <script>
+        });
+
+    </script>
+    <script>
                     $(document).on('click', '#resendbtn', function () {
 
 
@@ -387,7 +466,7 @@
             if (result.success) {
                 resetTimer();
                 $("#messageContainer").text("OTP Resent to your email successfully!").removeClass("alert-danger").addClass("alert-success").show();
-             
+
                 ResetShowHideButton();
                 TimeOut();
 
@@ -407,21 +486,21 @@
     });
 });
 
-        </script>
-        <script>
-         
-            $(document).ready(function () {
-               
-                $("#closeModalBtn").click(function () {
-                    window.location.href = '/Admin/AdminLogin/';
-                });
-                $("#registerClose").click(function () {
-                    window.location.href = '/Admin/AdminLogin/'
-                })
-                $("registerClose2").click(function () {
-                    window.location.href = '/Admin/AdminLogin/';
-                })
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#closeModalBtn").click(function () {
+                window.location.href = '/Admin/AdminLogin/';
+            });
+            $("#registerClose").click(function () {
+                window.location.href = '/Admin/AdminLogin/'
             })
-        </script>
+            $("registerClose2").click(function () {
+                window.location.href = '/Admin/AdminLogin/';
+            })
+        })
+    </script>
 </body>
 </html>
