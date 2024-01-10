@@ -27,7 +27,7 @@
     margin-bottom: 10px;
 }
 
-@@media (min-width: 576px) {
+@@media (min-width: 276px) {
  .btn-responsive {
         display: inline-block;
         width: auto;
@@ -118,34 +118,32 @@
     <!--Login Model-->
     <form action="/Admin/VerifyLogin" method="post">
         @Html.AntiForgeryToken()
-        <div class="container mt-5">
+        <div class="container mt-7 justify-content-center">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <!-- Increased the size to col-md-8 -->
-                    <div class="card" style="height: 400px;">
-                        <!-- Increased the height to 400px -->
-                        <div class="card-header text-center">
-                            <img src="your-image-url.jpg" alt="Your Logo" class="img-fluid" style="max-height: 100px;">
-                            <h5 class="card-title mt-3">Login Verification</h5>
-                        </div>
+                    <div class="card" style="height:400px;width:300px">
+                        <div class="box-body">
+                            <!-- Increased the height to 400px -->
+                            <div class="card-header text-center">
 
-                        <div class="card-body text-center">
-                            <!-- Centered the content -->
-                            <div id="timer"></div>
-                            <div class="box-body">
+                                <img src="~/assets/images/register.png" alt="Your Logo" class="img-fluid" style="max-height:200px;max-width:200px" />
+                                <h5 class="card-title mt-3">Login Verification</h5>
+                            </div>
+
+                            <div class="card-body text-center">
+                                <!-- Centered the content -->
+                                <div id="timer"></div>
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-info btn-lg btn-responsive" id="verifyBtn">Verify</button>
+                                    <button type="button" class="btn btn-warning btn-lg btn-responsive" id="resendbtn">Resend</button>
+                                </div>
                                 <div class="mb-3">
                                     @Html.HiddenFor(model => model.mobileNo, new { @class = "form-control input-sm" })
                                 </div>
                                 <div class="mb-3">
                                     @Html.HiddenFor(model => model.PF_Code, new { @class = "form-control input-sm" })
                                 </div>
-
-                                <div class="mb-3">
-                                    <button type="button" class="btn btn-info btn-lg btn-responsive" id="verifyBtn">Verify</button>
-                                    <button type="button" class="btn btn-warning btn-lg btn-responsive" id="resendbtn">Resend</button>
-                                </div>
-                                </div>
-
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.LoginOTP, htmlAttributes: new { @class = "col-md-4 control-label" })
                                     <div>
@@ -153,17 +151,29 @@
                                         @Html.ValidationMessageFor(model => model.LoginOTP, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+
+
+
+
                             </div>
+
+                       
+                                <div class="card-footer text-center">
+                                    <input type="submit" value="Submit" class="btn btn-info btn-lg btn-responsive" id="submitBtn" />
+                                    <button type="button" class="btn btn-danger btn-lg btn-responsive" data-bs-dismiss="modal" id="closeModalBtn">Close</button>
+                                </div>
+
+                       
                         </div>
 
-                        <div class="card-footer text-center" style="position: absolute; bottom: 0; width: 100%;">
-                            <input type="submit" value="Submit" class="btn btn-info btn-lg btn-responsive" id="submitBtn" />
-                            <button type="button" class="btn btn-danger btn-lg btn-responsive" data-bs-dismiss="modal" id="closeModalBtn">Close</button>
-                        </div>
+                        
                     </div>
+
+                    </div>
+
                 </div>
             </div>
-        </div>
+      
     </form>
 
     <script>
