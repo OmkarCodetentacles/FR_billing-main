@@ -3414,8 +3414,8 @@ namespace DtDc_Billing.Controllers
            <img src='https://frbilling.com/assets/Home/assets/images/logo.png' alt='Logo'>
          </div>
          <h4>General query from user</h4>
-         <p><strong>Dear User,</strong></p>
-         <h2>One-Time Password (OTP) for Verification</h2>
+         <h3><strong>Dear User,</strong></h3>
+         <h4>One-Time Password (OTP) for Verification</h4>
                 <p>Your OTP is: <strong>{otp}</strong></p>
                 <p>Please use this OTP to verify your account.</p>
                 <p>If you didn't request this OTP, you can safely ignore this email.</p>

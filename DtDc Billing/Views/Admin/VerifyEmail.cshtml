@@ -17,7 +17,7 @@
     <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
     <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
@@ -49,6 +49,7 @@
     <script>
         $(document).ready(function () {
             var otpverified =@Html.Raw(Json.Encode(TempData["otpverify"]));
+            $("#loaderBtn").hide();
                 if(otpverified != null) {
                     $('#registerModal').modal('show');
                      }
@@ -85,21 +86,22 @@
 <body>
     <style>
         #timer {
-            width: 120px;
-            height: 50px;
-            font-size: 20px;
-            color: red;
+          
+            
+            font-size: 30px;
+            color: green;
             font-style: normal;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            
+            margin: auto;
+            text-align: center;
         }
-
-        #timer1 {
-            width: 120px;
-            height: 50px;
-            font-size: 20px;
-            color: red;
-            font-style: normal;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        .alert-danger {
+            background: red !important;
+            color: white !important;
+        }
+        .alert-warning {
+            background: #ffc107 !important;
+            margin-bottom:0;
         }
         /* Modal styles */
         .modal-content {
@@ -109,7 +111,7 @@
 
         .modal-header {
             border-bottom: 2px solid #eee;
-            background-color: #f8f9fa;
+           
             text-align: center;
         }
 
@@ -125,7 +127,7 @@
 
         .modal-footer {
             border-top: 2px solid #eee;
-            background-color: #f8f9fa;
+          
             text-align: center;
         }
 
@@ -133,6 +135,7 @@
         .btn-info,
         .btn-warning {
             border-radius: 5px;
+
         }
 
             .btn-info:hover,
@@ -190,12 +193,36 @@
             .custom-label:focus-within {
                 color: #007bff; /* Change text color when the associated input is focused */
             }
+        .blinktext{
+            position: relative;
+            
+        }
+
+            .blinktext{
+                font-size: 2rem;
+               
+                color: red;
+                text-align: center;
+                animation: animate 3s linear infinite;
+            }
+
+@@keyframes animate{
+   0%{
+     opacity: 0;
+   }
+   50%{
+     opacity: 0.7;
+   }
+   100%{
+     opacity: 0;
+   }
+ }
     </style>
 
     <!-- Bootstrap Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
          aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -230,7 +257,7 @@
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h5 class="modal-title" id="successModalLabel">Email Verification!!!</h5>
+                            <h5 class="modal-title " id="successModalLabel" style="margin-bottom:10px">Email Verification!!!</h5>
                             <div id="messageContainer" class="alert alert-info" style="display: none;"></div>
 
                             @if (TempData["ErrorMessage"] != null)
@@ -292,7 +319,7 @@
 
                             <!-- Message will be displayed here -->
                         </div>
-                        <div class="box-body">
+                        <div class="box-body" style="background:none" >
                             <div class="modal-body">
 
                                 <div id="timer"></div>
@@ -301,41 +328,49 @@
                                 <div class="form-group">
                                     <div class="form-group">
 
-                                        <h5 style="padding-left: 20px"><strong>Is the email address correct?</strong></h5>
+                                        <h5 class="blinktext"><strong>Is this email address correct?</strong></h5>
 
-                                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-md-4 custom-label" })
+                                        
 
-                                        <div class="col-md-6">
-                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-lg custom-input" } })
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = " custom-label" })
+                                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-lg custom-input", @style="width:100%" } })
                                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-md-6">
-                                            @Html.HiddenFor(model => model.PF_Code, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    <div class="form-group" style="margin:0">
+                                        <div class="col-md-12">
+                                            @Html.HiddenFor(model => model.PF_Code, htmlAttributes: new { @class = "custom-label" })
+                                            @Html.HiddenFor(model => model.PF_Code, new { htmlAttributes = new { @class = "form-control input-sm", @style = "width:100%" } })
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-info" id="verifyBtn">Verify</button>
-                                            <button type="button" class="btn btn-resend" id="resendbtn">Resend</button>
+                                        <div class="col-md-12 " style="text-align:end">
+                                            <input type="button" value="Verify" class="btn btn-info" id="verifyBtn" />
+                                            <button class="btn btn-info" style="border-radius:0" id="loaderBtn">
+                                                <i class="fa fa-spinner fa-spin" ></i>
+                                            Loading
+                                            </button>
+                                            <button type="button" class="btn btn-resend" style="border-radius:0" id="resendbtn">Resend</button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EmailOTP, htmlAttributes: new { @class = "col-md-4 custom-label" })
-                                    <div class="col-md-6">
-                                        @Html.EditorFor(model => model.EmailOTP, new { htmlAttributes = new { @class = "form-control input-lg custom-input" } })
+                                   
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(model => model.EmailOTP, htmlAttributes: new { @class = "custom-label" })
+                                        @Html.EditorFor(model => model.EmailOTP, new { htmlAttributes = new { @class = "form-control input-lg custom-input", @style = "width:100%", @PlaceHolder="******" } })
                                         @Html.ValidationMessageFor(model => model.EmailOTP, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <div class="col-md-offset-2 col-md-8">
+                            <div class="modal-footer ">
+                                <div class=" col-md-12 " style="text-align:end">
                                     <input type="submit" value="Submit" class="btn btn-info" id="submitBtn" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModalBtn">Close</button>
                                 </div>
-                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeModalBtn">Close</button>
+                                
                             </div>
                         </div>
                     </div>
@@ -408,12 +443,12 @@
             }
             function startCountdown() {
 
-                countdownTime = 60; // Set the initial countdown time in seconds
+                countdownTime = 120; // Set the initial countdown time in seconds
                 timerInterval = setInterval(updateTimer, 1000);
             }
         $(document).on('click', '#verifyBtn', function () {
-
-
+            $("#verifyBtn").hide();
+            $("#loaderBtn").show();
                 var email = $("input[name='Email']").val();
 
                  var pfcode = $("input[name='PF_Code']").val();
@@ -428,6 +463,7 @@
                     if (result.success) {
 
                         $("#messageContainer").text("OTP sent to your email successfully!").removeClass("alert-danger").addClass("alert-success").show();
+                        $("#loaderBtn").hide();
                         ShowHideButton();
                         TimeOut();
 
