@@ -18,13 +18,13 @@ namespace DtDc_Billing.Models
 
                 // Create a dictionary to hold your query parameters
                 var parameters = new Dictionary<string, string>
-        {
-            { "number",91+mobileno },
-            { "type", "text" },
-            { "message", message },
-            { "instance_id", "654A0CFB15D45" },
-            { "access_token", "64b920aa7b961" }
-        };
+                {
+                    { "number",91+mobileno },
+                    { "type", "text" },
+                    { "message", message },
+                    { "instance_id", "654A0CFB15D45" },
+                    { "access_token", "64b920aa7b961" }
+                };
 
                 // Use System.Web.HttpUtility to encode the parameters
                 var queryString = string.Join("&", parameters.Select(kvp => $"{kvp.Key}={System.Web.HttpUtility.UrlEncode(kvp.Value)}"));

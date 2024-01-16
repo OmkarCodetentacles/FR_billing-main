@@ -19,6 +19,14 @@ using Microsoft.SqlServer.Management.Common;
 using Razorpay.Api;
 using Microsoft.Reporting.WebForms;
 using System.Net;
+using DocumentFormat.OpenXml.Wordprocessing;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using System.Text.RegularExpressions;
+using System.Text;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using System.Threading.Tasks;
+using Microsoft.Ajax.Utilities;
 
 namespace DtDc_Billing.Controllers
 {
@@ -44,8 +52,8 @@ namespace DtDc_Billing.Controllers
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-            
-          
+
+
 
             var obj = db.dashboardData(localTime, PfCode).Select(x => new dashboardDataModel
             {
@@ -63,7 +71,7 @@ namespace DtDc_Billing.Controllers
                 monthexp = x.monthexp ?? 0
 
             }).FirstOrDefault();
-            
+
             //try
             //{
             //    int x = 0;
@@ -104,7 +112,7 @@ namespace DtDc_Billing.Controllers
 
 
             //  double avgsum = db.TransactionViews.Select(m => new { m.Customer_Id, m.Amount, m.Risksurcharge, m.loadingcharge, m.booking_date, m.Pf_Code, month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date) }).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null).GroupBy(m => m.month).Average(m => m.Sum(x => (x.Amount + (x.loadingcharge ?? 0) + (x.Risksurcharge ?? 0)))) ?? 0;
-            double ? data = db.TransactionViews.Select(m => new
+            double? data = db.TransactionViews.Select(m => new
             {
                 Customer_Id = m.Customer_Id,
                 Amount = m.Amount ?? 0,
@@ -123,13 +131,13 @@ namespace DtDc_Billing.Controllers
             {
                 ViewBag.avgofbillingcount = 0;
             }
-          
-          //  double sumofbillingcurrentmonthd = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Sum(m => (m.Amount + (m.loadingcharge ?? 0) + (m.Risksurcharge ?? 0))) ?? 0;
-          //  ViewBag.sumofbillingcurrentmonth = sumofbillingcurrentmonthd.ToString("##");
 
-          //  ViewBag.countofbillingcurrentmonth = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Count();
+            //  double sumofbillingcurrentmonthd = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Sum(m => (m.Amount + (m.loadingcharge ?? 0) + (m.Risksurcharge ?? 0))) ?? 0;
+            //  ViewBag.sumofbillingcurrentmonth = sumofbillingcurrentmonthd.ToString("##");
 
-          //  DateTime date = DateTime.Now;
+            //  ViewBag.countofbillingcurrentmonth = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Count();
+
+            //  DateTime date = DateTime.Now;
             ViewBag.firstDayOfMonth = new DateTime(serverTime.Year, serverTime.Month, 1).ToString("dd-MM-yyyy");
             ViewBag.currentday = DateTime.Now.ToString("dd-MM-yyyy");
 
@@ -189,20 +197,23 @@ namespace DtDc_Billing.Controllers
 
             var datacount = db.getNotification().Where(d => d.dateN >= DateTime.Now.Date).Count();
 
-            ViewBag.notificationCount = datacount;      
-    
+            ViewBag.notificationCount = datacount;
+
             DateTime After30days = serverTime.AddDays(30);
 
             //List<CompanyExpiryModel> CompanyExpiry = new List<CompanyExpiryModel>();
 
             var Date = (from d in db.registrations
-                             where d.Pfcode == PfCode
-                               select new
-                             {
-                                d.dateTime,
-                                d.paymentDate,
-                                d.subscriptionForInDays
-                             }).FirstOrDefault();
+                        where d.Pfcode == PfCode
+                        select new
+                        {
+                            d.dateTime,
+                            d.paymentDate,
+                            d.subscriptionForInDays,
+                            d.userName,
+                            d.mobileNo
+
+                        }).FirstOrDefault();
 
             //string strdate = Convert.ToString(Date.dateTime);
 
@@ -229,17 +240,68 @@ namespace DtDc_Billing.Controllers
 
             System.DateTime newDate = Date.paymentDate.Value.AddDays(Date.subscriptionForInDays ?? 0);
             TimeSpan date_difference = newDate - currentDate;
-            DateTime before10days=newDate.AddDays(-10);
+            DateTime before15days = newDate.AddDays(-15);
+            DateTime before1day = newDate.AddDays(-1);
+            DateTime  before30days= newDate.AddDays(-30);
+            DateTime before10days=newDate.AddDays(-10);  
             //int totalDaysDifference = date_difference.Days;
-
+            var mobileno = Date.mobileNo;
             if (currentDate >= before10days && currentDate < newDate)
             {
-                ViewBag.ExpiryMessage = "Your subscription is expiring in 10 days. Please renew to continue enjoying our services.";
+                ViewBag.ExpiryMessage = "Your subscription is expiring on " + newDate + ". Please Renew to continue enjoying our services.";
+
+
+            }
+            if (currentDate == before30days)
+            {
+
+                var message = "🔔 **Renewal Reminder * * 🔔\r\n\r\n" +
+                    "Hello[Recipient's Name],\r\n\r\n" +
+                    "I hope this message finds you well. 👋 Your subscription is expiring on Tomorrow. " +
+                    "📆 To continue enjoying our fantastic services, please consider Renewing your subscription." +
+                    "\r\n\r\n🔄 **Renew Now * * 🔄\r\n\r\n" +
+                    "We appreciate your continued support!" +
+                    " If you have any questions or need assistance, feel free to reach out." +
+                    " \'91+9209764995'\r\n\r\n" +
+                    "Thank you!\r\n\r\n[" + Date.userName + "]";
+                SendWhatsappMessage sw = new SendWhatsappMessage();
+                Task<string> whatsappmessage = sw.sendWhatsappMessage(mobileno, message);
+
+            }
+            else if(currentDate==before15days)
+            {
+                var message = "🔔 **Renewal Reminder * * 🔔\r\n\r\n" +
+                  "Hello[Recipient's Name],\r\n\r\n" +
+                  "I hope this message finds you well. 👋 Your subscription is expiring on Tomorrow. " +
+                  "📆 To continue enjoying our fantastic services, please consider Renewing your subscription." +
+                  "\r\n\r\n🔄 **Renew Now * * 🔄\r\n\r\n" +
+                  "We appreciate your continued support!" +
+                  " If you have any questions or need assistance, feel free to reach out." +
+                  " \'91+9209764995'\r\n\r\n" +
+                  "Thank you!\r\n\r\n[" + Date.userName + "]";
+                SendWhatsappMessage sw = new SendWhatsappMessage();
+                Task<string> whatsappmessage = sw.sendWhatsappMessage(mobileno, message);
+            }
+            else if (currentDate>=before10days && currentDate<=before1day)
+            {
+                var message = "🔔 **Renewal Reminder * * 🔔\r\n\r\n" +
+                "Hello[Recipient's Name],\r\n\r\n" +
+                "I hope this message finds you well. 👋 Your subscription is expiring on Tomorrow. " +
+                "📆 To continue enjoying our fantastic services, please consider Renewing your subscription." +
+                "\r\n\r\n🔄 **Renew Now * * 🔄\r\n\r\n" +
+                "We appreciate your continued support!" +
+                " If you have any questions or need assistance, feel free to reach out." +
+                " \'91+9209764995'\r\n\r\n" +
+                "Thank you!\r\n\r\n[" + Date.userName + "]";
+                SendWhatsappMessage sw = new SendWhatsappMessage();
+                Task<string> whatsappmessage = sw.sendWhatsappMessage(mobileno, message);
+
             }
             //Backup();
             //Session["EndDate"] = After1Year.ToString("dd/MM/yyyy");
             return View(obj);
         }
+        
 
 
         public PartialViewResult DestinationAndProductPartial()
@@ -425,7 +487,7 @@ namespace DtDc_Billing.Controllers
 
         
         [HttpPost]
-        public ActionResult CreateCompanyPartial(Company company)
+        public ActionResult CreateCompanyPartial(DtDc_Billing.Entity_FR.Company company)
         {
             if (!ModelState.IsValid)
             {
