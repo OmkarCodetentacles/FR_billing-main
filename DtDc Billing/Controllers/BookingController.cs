@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdminold]
-    [OutputCache(CacheProfile = "Cachefast")]
+    //[OutputCache(CacheProfile = "Cachefast")]
     public class BookingController : Controller
     {
         private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
@@ -47,7 +47,7 @@ namespace DtDc_Billing.Controllers
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
             return Json(suggestions, JsonRequestBehavior.AllowGet);
-        }
+                }
 
         [HttpPost]
         public ActionResult SaveEditConsignment(TransactionMetadata transaction)
@@ -251,13 +251,21 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult CustomerIdAutocomplete()
         {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var entity = db.Companies.
+                    Select(e => new
+                    {
+                       e.Company_Id,
+                       e.Pf_code
+                    }).Where(d => d.Pf_code == strpfcode).Distinct().OrderBy(d=>d.Company_Id).ToList();
 
-            string strpfcode = CommonFunctions.getSessionPfcode();
-            var entity = db.Companies.Select(e => new
-{
-    e.Company_Id,
-    e.Pf_code
-}).Distinct().Where(e=>e.Pf_code== strpfcode).OrderBy(e=>e.Company_Id).ToList();
+
+
+            //var entity = db.Companies.Select(e => new
+            //        {
+            //            e.Company_Id,
+            //            e.Pf_code
+            //        }).Distinct().Where(e=>e.Pf_code== strpfcode).OrderBy(e=>e.Company_Id).ToList();
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
@@ -618,33 +626,33 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult Checkbookinglist()
         {
-            //List<TransactionView> list = new List<TransactionView>();
+            List<TransactionView> list = new List<TransactionView>();
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString(); 
             
-            var obj = db.getCheckBookingListAll(strpf).Select(x => new TransactionView
-            {
+            //var obj = db.getCheckBookingListAll(strpf).Select(x => new TransactionView
+            //{
 
-              Consignment_no = x.Consignment_no,
-              chargable_weight  = x.chargable_weight,
-              Quanntity  = x.Quanntity,
-              Name  = x.Name,
-              Pincode  = x.Pincode,
-              compaddress  = x.compaddress,
-              Type_t = x.Type_t,
-              Mode  = x.Mode,
-              Amount  = x.Amount,
-              booking_date  = x.booking_date,
-              Insurance  = x.Insurance,
-              BillAmount= x.BillAmount,
-              Percentage  = x.Percentage,
-              Risksurcharge  = x.Risksurcharge,
-              loadingcharge  = x.loadingcharge
+            //  Consignment_no = x.Consignment_no,
+            //  chargable_weight  = x.chargable_weight,
+            //  Quanntity  = x.Quanntity,
+            //  Name  = x.Name,
+            //  Pincode  = x.Pincode,
+            //  compaddress  = x.compaddress,
+            //  Type_t = x.Type_t,
+            //  Mode  = x.Mode,
+            //  Amount  = x.Amount,
+            //  booking_date  = x.booking_date,
+            //  Insurance  = x.Insurance,
+            //  BillAmount= x.BillAmount,
+            //  Percentage  = x.Percentage,
+            //  Risksurcharge  = x.Risksurcharge,
+            //  loadingcharge  = x.loadingcharge
 
-            }).ToList();
+            //}).ToList();
 
-            ViewBag.totalamt = obj.Sum(b => b.Amount);
+            //ViewBag.totalamt = obj.Sum(b => b.Amount);
 
-            return View(obj);
+            return View(list);
         }
 
         [HttpPost]
@@ -905,9 +913,9 @@ namespace DtDc_Billing.Controllers
         public string Checkcompany(string Customerid)
         {
             db.Configuration.ProxyCreationEnabled = false;
-
+            string pfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
             var suggestions = (from s in db.Companies
-                               where s.Company_Id == Customerid
+                               where s.Company_Id == Customerid && s.Pf_code== pfCode
                                select s).FirstOrDefault();
 
             if (suggestions == null)
@@ -1109,7 +1117,6 @@ namespace DtDc_Billing.Controllers
             {
                 var obj = db.getCheckBookingListWithoutCompany(fromdate, todate, strpf).Select(x => new TransactionView
                 {
-
                     Consignment_no = x.Consignment_no,
                     chargable_weight = x.chargable_weight,
                     Quanntity = x.Quanntity,
@@ -1169,7 +1176,7 @@ namespace DtDc_Billing.Controllers
             {
                 var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
                 {
-
+                    Customer_Id=x.customer_id,
                     Consignment_no = x.Consignment_no,
                     chargable_weight = x.chargable_weight,
                     Quanntity = x.Quanntity,

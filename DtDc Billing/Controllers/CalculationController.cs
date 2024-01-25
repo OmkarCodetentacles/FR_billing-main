@@ -15,7 +15,7 @@ namespace DtDc_Billing.Controllers
         // GET: Calculation
         [HttpPost]
         public ActionResult CalulateAmt(string Consignment, string custid, string Pincode, string mode, string qty, double charweight, string type)
-        {
+       {
             double? DoxNonDoxAmt = 10;
 
 

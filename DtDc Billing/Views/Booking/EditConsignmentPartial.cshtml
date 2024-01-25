@@ -404,18 +404,14 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         $.ajax({
             type: 'GET',
-            /**/
-            /**/
-            /**/
-            url: '@Url.Action("CustomerIdAutocomplete")',
-    /**/
-    /**/
-    /**/
+          
+            url: '/Booking/CustomerIdAutocomplete',
     data: {},
     dataType: 'json',
     success: function (data) {
         $.each(data, function (i, item) {
             company_idarr.push(item.Company_Id);
+            console.log(item.Company_Id);
         });
 
     }
@@ -501,17 +497,17 @@ $.ajax({
     }
 });
 
-        $("#intpincode").autocomplete({
+            $("#Pincode").autocomplete({
     source: availableTutorials,
     select: function (event, ui) {
-        $("#intpincode").val(ui.item.value);
+        $("#Pincode").val(ui.item.value);
         setPincodeInt();
     }
 
     });
 
         function setPincodeInt() {
-            var consno = $("#intpincode").val();
+            var consno = $("#Pincode").val();
 
             $.ajax({
                 type: 'Get',
@@ -826,6 +822,7 @@ $.ajax({
                     url: '/Booking/CustomerDetails',
                     data: { CustomerId: customerid },
                     success: function (Data) {
+                        $('#compaddress').val(Data.Company_Address);
                         $('#Percentage').val(Data.Insurance);
                         $('#Topaycharges').val(Data.Topay_Charge);
                         $('#codcharges').val(Data.Cod_Charge);

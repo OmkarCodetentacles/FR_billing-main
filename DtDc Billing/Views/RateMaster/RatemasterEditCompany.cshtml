@@ -7,12 +7,18 @@
 </script>
 <!-- /.box-header -->
 @{
+
     var successMessage = ViewBag.Message as string;
 
 }
 
 @if (string.IsNullOrEmpty(successMessage))
 {
+    <script>
+        $(document).ready(function () {
+            document.getElementById('overlayBlock').style.display = 'none';
+        })
+    </script>
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
 }
 
@@ -398,11 +404,9 @@
 
 
 <!--Addding Loader After Submitting-->
-
-
-<div class="overlay" id="overlayBlock">
-    <div class="loader"></div>
-</div>
+@*<div class="overlay" id="overlayBlock">
+        <div class="loader"></div>
+    </div>*@
 
 
 

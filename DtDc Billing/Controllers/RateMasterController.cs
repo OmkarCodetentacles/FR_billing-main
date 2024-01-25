@@ -1195,7 +1195,7 @@ namespace DtDc_Billing.Controllers
                 var Sector_Idarayy = fc.GetValues("item.Sector_Id");
 
 
-                for (int i = 0; i < Exp_Idarray.Count(); i++)
+                for (int i = 0; i < Exslab1array.Count(); i++)
                 {
                     if (Exslab1array[i] == "")
                     {
@@ -1208,7 +1208,7 @@ namespace DtDc_Billing.Controllers
 
                 }
 
-                for (int i = 0; i < Exp_Idarray.Count(); i++)
+                for (int i = 0; i < Exslab1array.Count(); i++)
                 {
 
                     express_cargo rm = db.express_cargo.Find(Convert.ToInt16(Exp_Idarray[i]));

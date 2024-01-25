@@ -17,6 +17,30 @@
     <div class="box box-info" style="padding:16px 16px !important">
         <div class="">
             <div class="row">
+                @{
+                    var sucMessage = ViewBag.Message as string;
+                    var sMessage = TempData["Success"] as string;
+
+                }
+
+
+
+                @if (string.IsNullOrEmpty(sucMessage))
+                {
+                    <script>
+                        $("#overlayBlock").hide();
+                        document.getElementById('overlayBlock').style.display = 'none';
+                    </script>
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sucMessage))
+                }
+
+                @if (!string.IsNullOrEmpty(sMessage))
+                {
+                    <script>
+                        document.getElementById('overlayBlock').style.display = 'none';
+                    </script>
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage))
+                }
                 <div class="col-md-12">
 
 

@@ -19,7 +19,7 @@
             {
                 @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
             }
-            @using (Ajax.BeginForm("RateMasterPtp", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp4" }))
+            @using (Ajax.BeginForm("RateMasterPtp", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp4", OnSuccess = "scrollToTop()" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -159,7 +159,7 @@
                 @*<input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />*@
                 <div class="row" >
                     <div class="col-md-12" >
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"  onclick="scrollToTop()" />
                     </div>
                 </div>
                 

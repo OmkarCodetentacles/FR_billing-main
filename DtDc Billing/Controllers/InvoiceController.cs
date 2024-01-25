@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.Entity_FR;
+﻿using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Ionic.Zip;
 using Microsoft.Reporting.WebForms;
@@ -9,6 +10,7 @@ using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
@@ -411,7 +413,7 @@ Select(e => new
         }
 
        [HttpPost]
-        public ActionResult SaveInvoice(InvoiceModel invoice, string submit)
+        public  ActionResult SaveInvoice(InvoiceModel invoice, string submit)
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -714,12 +716,11 @@ Select(e => new
 
                 ViewBag.pdf = false;
 
-                //if (submit == "Generate")
-                //{
-                ViewBag.pdf = true;
-                ViewBag.invoiceno = invoice.invoiceno;
-                //}
-
+                if (submit == "Generate")
+                {
+                    ViewBag.pdf = true;
+                    ViewBag.invoiceno = invoice.invoiceno;
+                }
                 string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
 
                 using (FileStream stream = new FileStream(savePath, FileMode.Create))
@@ -728,43 +729,146 @@ Select(e => new
                 }
                 if (submit == "Email")
                 {
+                    string emailBody = $@"
+                        <html>
+                        <head>
+                            <title>Your Invoice has been Generated</title>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    margin: 0;
+                                    padding: 0;
+                                    background-color: #F5E8E8;
+                                }}
 
-                    MemoryStream memoryStream = new MemoryStream(renderByte);
+                                .container {{
+                                    max-width: 600px;
+                                    margin: 0 auto;
+                                    padding: 20px;
+                                    background-color: #FFFFFF;
+                                }}
+
+                                h2 {{
+                                    color: #333333;
+                                }}
+
+                                p {{
+                                    color: #555555;
+                                }}
+
+                                table {{
+                                    width: 100%;
+                                }}
+
+                                th, td {{
+                                    padding: 10px;
+                                    text-align: left;
+                                    vertical-align: top;
+                                    border-bottom: 1px solid #dddddd;
+                                }}
+
+                                .logo {{
+                                    text-align: center;
+                                    margin-bottom: 20px;
+                                }}
+
+                                .logo img {{
+                                    max-width: 200px;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <div class='container'>
+                                <div class='logo'>
+                                    <img src='https://frbilling.com/assets/Home/assets/images/logo.png' alt='Logo'>
+                                </div>
+                                <h4>Your Invoice has been Generated</h4>
+                                <h3><strong>Dear Customer,</strong></h3>
+                                <p>We are pleased to inform you that your invoice has been successfully generated.</p>
+                                <p>Please find the details below:</p>
+                                <!-- Include invoice details as a table or any other format you prefer -->
+
+                                <hr>
+                                <p>If you have any questions or concerns regarding your invoice, please contact our support team.<br />
+                                    <strong> at +91 9209764995</strong></p>
+
+                                <p>Thank you for choosing Fr-Billing.</p>
+                                <p>Best regards,</p>
+                                <p><strong>Fr-Billing</strong></p>
+                            </div>
+                        </body>
+                        </html>
+                        ";
+
+                    var path = "https://www.frbilling.com/PDF/"+ dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+                    //Set up the email model
+                   SendModel emailModel = new SendModel
+                   {
+
+                       toEmail = dataset4.FirstOrDefault().Email,
+                       subject = "Invoice",
+                       body = emailBody,
+                       filepath = savePath
+                   };
+
+                    // Send the email using your email sending logic
+                    
+                    
+                    
+                    
+                    
+                    SendEmailModel sm = new SendEmailModel();
+                    var mailMessage = sm.MailSend(emailModel);
+
+                    
+
+                    //    MemoryStream memoryStream = new MemoryStream(renderByte);
 
 
 
-                    using (MailMessage mm = new MailMessage("billingdtdc48@gmail.com", dataset4.FirstOrDefault().Email))
-                    {
-                        mm.Subject = "Invoice";
-
-                        string Bodytext = "<html><body>Please Find Attachment</body></html>";
-                        Attachment attachment = new Attachment(memoryStream, "Invoice.pdf");
-
-                        mm.IsBodyHtml = true;
+                    //    using (MailMessage mm = new MailMessage("billingdtdc48@gmail.com", dataset4.FirstOrDefault().Email))
+                    //    {
 
 
 
-                        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
 
-                        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
-                        // mm.Body = Bodytext;
-                        mm.Body = Bodytext;
 
-                        //Add Byte array as Attachment.
 
-                        mm.Attachments.Add(attachment);
 
-                        SmtpClient smtp = new SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
-                        smtp.EnableSsl = true;
-                        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                        credentials.UserName = "billingdtdc48@gmail.com";
-                        credentials.Password = "dtdcmf1339";
-                        smtp.UseDefaultCredentials = true;
-                        smtp.Credentials = credentials;
-                        smtp.Port = 587;
-                        smtp.Send(mm);
-                    }
+                    //        mm.Subject = "Invoice";
+
+                    //        string Bodytext = "<html><body>Please Find Attachment</body></html>";
+                    //        Attachment attachment = new Attachment(memoryStream, "Invoice.pdf");
+
+                    //        mm.IsBodyHtml = true;
+
+
+
+                    //        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+                    //        // Add plain text view
+                    //        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+                    //        mm.AlternateViews.Add(plainView);
+
+                    //        // Add HTML view
+                    //        AlternateView htmlView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(Bodytext, null, "text/html");
+                    //        mm.AlternateViews.Add(htmlView);
+
+                    //        // Add Byte array as Attachment.
+                    //        mm.Attachments.Add(attachment);
+                    //        SmtpClient smtp = new SmtpClient();
+                    //        smtp.Host = "smtp.gmail.com";
+                    //        smtp.EnableSsl = true;
+                    //        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+                    //        credentials.UserName = "frbillingsoftware@gmail.com";
+                    //        credentials.Password = "dtdcmf1339";
+                    //        smtp.UseDefaultCredentials = true;
+                    //        NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
+                    //        smtp.Credentials = _network;
+
+                    //        smtp.Credentials = credentials;
+                    //        smtp.Port = 587;
+                    //        smtp.Send(mm);
+                    //    }
 
                 }
 

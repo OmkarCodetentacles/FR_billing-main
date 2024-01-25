@@ -19,6 +19,8 @@ namespace DtDc_Billing.Models
             public DateTime After1Year { get;set; }
 
             public string emailId { get;set; }
+
+            public string filePath {get; }
             }
         public static void send(mail mailDetails)
         {
@@ -54,6 +56,7 @@ namespace DtDc_Billing.Models
 
             //Set Body Text of Email   
             _mailmsg.Body = MailText;
+            Attachment attachment = new Attachment("PathToYourAttachmentFile");
 
 
             //Now set your SMTP   

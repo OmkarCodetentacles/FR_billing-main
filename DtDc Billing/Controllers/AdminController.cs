@@ -167,7 +167,12 @@ namespace DtDc_Billing.Controllers
                         return View();
                     }
 
-                  
+                
+
+
+
+
+
                     //Emal Verification Code Before Login check email is confirmed
 
                     //if (ObjData.isEmailConfirmed == false)
@@ -260,8 +265,72 @@ namespace DtDc_Billing.Controllers
 
                         }
 
-                        return RedirectToAction("VerifyLogin", new { pfcode=ObjData.Pfcode });
-                       // return RedirectToAction("AnotherAction");
+                        //Set Cookies For Some Time
+
+
+                       // var ObjData = db.registrations.Where(x => x.Pfcode == pfcode).FirstOrDefault();
+
+
+                        HttpCookie cookie = new HttpCookie("Cookies");
+                        cookie["AdminValue"] = ObjData.Pfcode.ToString();
+                        cookie["UserValue"] = ObjData.userName.ToString();
+                        cookie["Admin"] = ObjData.registrationId.ToString();
+                        cookie["UserName"] = ObjData.userName.ToString();
+                        cookie["pfCode"] = ObjData.Pfcode.ToString();
+                        cookie.Expires = DateTime.Now.AddDays(1);
+                        Response.Cookies.Add(cookie);
+
+
+
+                        cookie["referalCode"] = ObjData.referralCode.ToString();
+                        cookie.Expires = DateTime.Now.AddDays(1);
+                        Response.Cookies.Add(cookie);
+
+
+
+                        int customTimeout = 1440;
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                                          1,
+                         ObjData.registrationId.ToString(),
+                          DateTime.Now,
+                         DateTime.Now.AddMinutes(customTimeout),  // Expiration time
+                          false,
+                            ObjData.userName
+                        );
+                        string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+                        HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                        authCookie.Expires = ticket.Expiration;
+                        Response.Cookies.Add(authCookie);
+
+                        var objaccessPAge = (from d in db.AdminAccessPages
+                                             where d.Pfcode == ObjData.Pfcode.ToString()
+                                             select new { d.Accesspage }).FirstOrDefault();
+
+                        var renewalstatus = (from d in db.paymentLogs
+                                             where d.Pfcode == ObjData.Pfcode.ToString()
+                                             select new { d.RenewalStatus }).FirstOrDefault();
+
+                        if (objaccessPAge != null)
+                        {
+                            Session["AccessPage"] = objaccessPAge.Accesspage.ToString();
+                        }
+                        else
+                        {
+                            Session["AccessPage"] = "0";
+
+                        }
+                        ///Set Cookies For Some Time
+                        return RedirectToAction("Index", "Home");
+
+
+
+                        //return RedirectToAction("VerifyLogin", new { pfcode=ObjData.Pfcode });
+
+
+
+
+
+                        // return RedirectToAction("AnotherAction");
                         //Session["Admin"] = ObjData.registrationId.ToString();
                         //Session["UserName"] = ObjData.userName.ToString();
                         //Session["PFCode"] = ObjData.Pfcode.ToString();
@@ -338,7 +407,7 @@ namespace DtDc_Billing.Controllers
                         //    //    ModelState.AddModelError("LoginAuth", "Your Subscription is Expired");
                         //    //    return RedirectToAction("Index", "Admin");
                         //    //}
-                          
+
                         //    return RedirectToAction("Index", "Home");
                         //}
                     }
@@ -1555,7 +1624,7 @@ namespace DtDc_Billing.Controllers
 
                                                   select u).ToList();
                             ViewBag.DataSector = secct;
-                            ViewBag.Message = "Pincode must be numeric";
+                            ViewBag.Message = "Pincode must be numeric & 6 Digit";
                             // return View("FranchiseeList", fc);
                             return PartialView("Add_SectorPin", secct);
                             //return View(fc);
@@ -2582,9 +2651,34 @@ namespace DtDc_Billing.Controllers
                 var c = new HttpCookie("Cookies");
                 c.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(c);
+
+                HttpCookie referalCodeCookie = new HttpCookie("referalCode");
+                referalCodeCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(referalCodeCookie);
+
+                HttpCookie Adminvalue = new HttpCookie("AdminValue");
+                Adminvalue.Expires = DateTime.Now.AddDays(-1);  
+                Response.Cookies.Add(Adminvalue);
+
+                HttpCookie UserValue = new HttpCookie("UserValue");
+                UserValue.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(UserValue);    
+
+                HttpCookie admin=new HttpCookie("Admin");
+                admin.Expires= DateTime.Now.AddDays(-1);    
+                Response.Cookies.Add(admin);
+
+
+                HttpCookie username =new  HttpCookie("UserName");
+                username.Expires = DateTime.Now.AddDays(-1);    
+                Response.Cookies.Add(username);
+
+                HttpCookie pfcode = new HttpCookie("pfCode");
+                pfcode.Expires= DateTime.Now.AddDays(-1);   
+                Response.Cookies.Add(pfcode);
             }
 
-
+            Session.Clear();
             FormsAuthentication.SignOut();
             Session.Abandon(); // it will clear the session at the end of request
                                //return RedirectToAction("Adminlogin", "Admin");

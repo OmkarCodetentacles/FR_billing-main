@@ -11,7 +11,8 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Sector
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -38,6 +39,7 @@ namespace DtDc_Billing.Entity_FR
         public int Sector_Id { get; set; }
         public string Sector_Name { get; set; }
         public string Pf_code { get; set; }
+        [Required]
         public string Pincode_values { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<bool> CashD { get; set; }
