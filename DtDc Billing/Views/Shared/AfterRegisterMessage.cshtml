@@ -1,0 +1,209 @@
+﻿<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+<link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/admin-lte/plugins/fastclick/fastclick.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+<script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/admin-lte/js/adminlte.min.js"></script>
+<script src="~/admin-lte/js/icheck.min.js"></script>
+<link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/select2/dist/css/select2.min.css"></script>
+<link href="~/Content/ratemaster.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+<link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+<style>
+    #timer {
+        font-size: 30px;
+        color: green;
+        font-style: normal;
+        margin: auto;
+        text-align: center;
+    }
+
+    .alert-danger {
+        background: red !important;
+        color: white !important;
+    }
+
+    .alert-warning {
+        background: #ffc107 !important;
+        margin-bottom: 0;
+    }
+    /* Modal styles */
+    .modal-content {
+        background-color: #fff;
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        border-bottom: 2px solid #eee;
+        text-align: center;
+    }
+
+    .modal-title {
+        color: #007bff;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        border-top: 2px solid #eee;
+        text-align: center;
+    }
+
+    /* Button styles */
+    .btn-info,
+    .btn-warning {
+        border-radius: 5px;
+    }
+
+        .btn-info:hover,
+        .btn-warning:hover {
+            opacity: 0.8;
+        }
+
+    .btn-resend {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-resend:hover {
+            background-color: #ffca2b;
+        }
+
+    .custom-input {
+        font-size: 14px; /* Adjust the font size as needed */
+        padding: 20px; /* Adjust the padding as needed */
+        border-radius: 8px; /* Apply border-radius for rounded corners */
+        border: 2px solid #4cff00; /* Add border style */
+        transition: border-color 0.3s ease-in-out; /* Add transition effect for border color */
+        width: 350px;
+        font-family: Arial;
+    }
+
+        /* Hover effect for the input field */
+        .custom-input:hover {
+            border-color: #2980b9; /* Change border color on hover */
+        }
+
+        /* Focus effect for the input field */
+        .custom-input:focus {
+            outline: none; /* Remove default focus outline */
+            border-color: #2c3e50; /* Change border color on focus */
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5); /* Add a subtle box shadow on focus */
+        }
+
+    h5 {
+        color: #fa1e0f;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-label {
+        font-size: 14px; /* Adjust the font size as needed */
+        font-weight: bold; /* Make the text bold */
+        color: #333; /* Set the text color */
+        margin-bottom: 5px; /* Add space at the bottom */
+    }
+
+        /* Hover effect for the label */
+        .custom-label:hover {
+            color: #555; /* Change text color on hover */
+        }
+
+        /* Focus effect for the label */
+        .custom-label:focus-within {
+            color: #007bff; /* Change text color when the associated input is focused */
+        }
+
+    .blinktext {
+        position: relative;
+    }
+
+    .blinktext {
+        font-size: 2rem;
+        color: red;
+        text-align: center;
+        animation: animate 3s linear infinite;
+    }
+
+    @@keyframes animate {
+        0% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 0.7;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#registerModal').modal('show');
+    })
+ 
+</script>
+
+
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+     aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel"><strong>Welcome, and enjoy your journey with us!</strong></h5>
+            </div>
+            <div class="modal-body">
+                <span>
+                    Thank you for successfully registering with us! Your account will be activated shortly. Our team
+                    will reach out to you within the next two working days. If you have any questions or concerns, <br />
+                    <strong>feel free to contact us at +91 9209764995</strong>.
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="afterregisterClose">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#afterregisterClose").click(function () {
+      //  window.location.href = '/Admin/Index/';
+
+       window.location.href = '/Admin/Index#portfolio';
+
+    })
+</script>
+<!-- Trigger the modal -->
+<!-- Bootstrap Modal -->

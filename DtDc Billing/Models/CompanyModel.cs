@@ -60,7 +60,7 @@ namespace DtDc_Billing.Models
 
 
         [Required(ErrorMessage = "Please Enter Company Id")]
-        [NoSpacesOrSpecialCharacters(". / < > @ #% * & - _ (  )", ErrorMessage = "Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&' '-','_', or spaces.")]
+        [NoSpacesOrSpecialCharacters(". / < > @ #% * & - (  )", ErrorMessage = "Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&' '-','_', or spaces.")]
         public string Company_Id { get; set; }
     
     public int c_id { get; set; }

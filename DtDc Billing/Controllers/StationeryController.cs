@@ -152,7 +152,7 @@ namespace DtDc_Billing.Controllers
                 return View(obj);
             }
             return View(list);
-            return View(list);
+          
         }
 
 
