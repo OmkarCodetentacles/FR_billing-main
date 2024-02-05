@@ -2729,14 +2729,19 @@ namespace DtDc_Billing.Controllers
                 {
                     var flag = false;
                     var saveSector = false;
+                    var username= db.registrations.Where(x => x.userName.ToUpper() == userDetails.userName.ToUpper()).FirstOrDefault();
                     var Pfcheck = db.registrations.Where(x => x.Pfcode == userDetails.Pfcode).FirstOrDefault();
-
+                    if (username!=null)
+                    {
+                        flag = true;
+                        ModelState.AddModelError("usernameerror", "User name already exist");
+                    }
 
                     if (Pfcheck != null)
                     {
                         flag = true;
                         ModelState.AddModelError("customError", "Pfcode already exist");
-
+                     
                     }
 
                     if (userDetails.isUserNameExist == false)
@@ -3551,17 +3556,31 @@ namespace DtDc_Billing.Controllers
 
             // Add any additional logic here (e.g., logging, error handling)
         }
+        [HttpGet]
+        public ActionResult ActivateUserBackendUrl()
+        {
+            return View();
+        }
 
-        public ActionResult ActivateUser(string Pfcode, int pid)
+       
+        [HttpPost]
+        public ActionResult ActivateUserBackendUrl(string Pfcode, int pid)
         {
             try
             {
+               
 
+                Pfcode= Pfcode.ToString().ToUpper();
                 var flag = false;
                 var saveSector = false;
                 var Pfcheck = db.registrations.Where(x => x.Pfcode == Pfcode).FirstOrDefault();
                 var package = db.Packages.Where(x => x.Pid == pid).FirstOrDefault();
+                if(Pfcheck==null)
+                {
+                    ViewBag.ErrorMessage = "User not registered. Please register before activating your account.";
 
+                    return View();
+                }
 
                 Pfcheck.subscriptionForInDays = package.Subcriptionforindays;
                 Pfcheck.isPaid = package.isPaid;
@@ -4061,6 +4080,7 @@ namespace DtDc_Billing.Controllers
                 var errors = ModelState.Select(x => x.Value.Errors)
 .Where(y => y.Count > 0)
 .ToList();
+                TempData["error"] = errors;
             }
 
             return RedirectToAction("AdminLogin");
