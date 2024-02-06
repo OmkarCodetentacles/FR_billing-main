@@ -1114,8 +1114,34 @@ namespace DtDc_Billing.Controllers
 
             return View();
         }
+        [HttpGet]
+        public ActionResult NewRegisterClient()
+        {
+            var register=db.registrations.Where(x=>x.isPaid!=true).ToList();
+
+            DateTime currentdate= DateTime.Now;
+
+            List<NewRegisterUser> rg = (from registration in register
+                                     where registration.isPaid != true
+                                     select new NewRegisterUser
+                                     {
+                                         registrationId = registration.registrationId,
+                                         Pfcode=registration.Pfcode,
+                                         franchiseName=registration.franchiseName,
+                                         emailId=registration.emailId,
+                                         mobileNo=registration.mobileNo,
+                                         dateTime=registration.dateTime,
+                                         userName=registration.userName,    
+                                         password=registration.password,
+                                         DaysSinceRegistration=(currentdate-registration.dateTime.Value).Days
+                                     })
+                                         .OrderByDescending(x => x.DaysSinceRegistration) // Sort in descending order
+
+                                     .ToList();
 
 
+            return View(rg);
+        }
         [SessionAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]

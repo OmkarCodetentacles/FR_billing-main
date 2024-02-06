@@ -1,0 +1,127 @@
+﻿@model IEnumerable<DtDc_Billing.Models.NewRegisterUser>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/admin-lte/js/adminlte.min.js"></script>
+<script src="~/admin-lte/js/icheck.min.js"></script>
+<link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/select2/dist/css/select2.min.css"></script>
+<link href="~/Content/ratemaster.css" rel="stylesheet" />
+
+
+<link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+<link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>View New Register User</h4>
+                </div>
+
+
+
+
+
+
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <table id="example2" class="table table-bordered table-responsive table-striped" style="overflow:auto;display:block">
+                            <thead>
+                                <tr>
+                                   
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Pfcode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.franchiseName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.emailId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.mobileNo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model=>model.dateTime)
+
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model=>model.DaysSinceRegistration)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model=>model.userName)
+                                    </th>
+                                    <th>@Html.DisplayNameFor(model=>model.password)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int srno = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                           
+
+                                            <td>
+                                                @srno
+                                            </td>
+                                       
+                                            <td>
+                                                <div class="hideextra" style="width:300px">
+                                                    @Html.DisplayFor(modelItem => item.Pfcode)
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.franchiseName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.emailId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem=>item.mobileNo)
+                                            </td>
+                                            <td>
+                                               @Html.DisplayFor(modelItem=>item.dateTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem=>item.DaysSinceRegistration)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem=>item.userName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem=>item.password)
+                                            </td>
+                                        </tr>
+                                        srno++;
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
