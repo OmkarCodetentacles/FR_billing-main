@@ -20,6 +20,8 @@ using System.Text.RegularExpressions;
 using static DtDc_Billing.Models.sendEmail;
 using Microsoft.SqlServer.Management.Sdk.Differencing;
 using Microsoft.Win32;
+using System.Net.Http;
+using Microsoft.Ajax.Utilities;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1130,7 +1132,7 @@ namespace DtDc_Billing.Controllers
                                          franchiseName=registration.franchiseName,
                                          emailId=registration.emailId,
                                          mobileNo=registration.mobileNo,
-                                         dateTime=registration.dateTime,
+                                         dateTime=registration.dateTime.Value.ToString("dd/MM/yyyy"),
                                          userName=registration.userName,    
                                          password=registration.password,
                                          DaysSinceRegistration=(currentdate-registration.dateTime.Value).Days
@@ -2094,11 +2096,13 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AddLogo(AddlogoModel logo)
         {
-            var r = new Regex(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$");
-            if (!r.IsMatch(logo.file.FileName))
+            // Get the file extension in lowercase
+            string extension = Path.GetExtension(logo.file.FileName)?.ToLower();
+           
+            if (extension != ".png" && extension != ".jpg" && extension!= ".jpeg")
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
-                TempData["Success1"] = "Only Image files allowed!";
+                TempData["Error"] = "Only Image files allowed!";
             }
             else
             {
@@ -2116,10 +2120,11 @@ namespace DtDc_Billing.Controllers
                 var lo = (from d in db.Franchisees
                           where d.PF_Code == strpf
                           select d).FirstOrDefault();
-             //var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName ;
+             var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName ;
 
 
-                lo.LogoFilePath =_path;
+               // lo.LogoFilePath =_path;
+               lo.LogoFilePath=LogoFilePath;
 
                 db.Entry(lo).State = EntityState.Modified;
                 db.SaveChanges();
@@ -3679,9 +3684,9 @@ namespace DtDc_Billing.Controllers
                             {
 
                                 sn.CashD = true;
-                                sn.CashN = false;
+                                sn.CashN = true;
                                 sn.BillD = true;
-                                sn.BillN = false;
+                                sn.BillN = true;
 
                                 sn.Priority = 2;
                                 sn.Pincode_values = "400000-403000,404000-450000";
@@ -3693,9 +3698,9 @@ namespace DtDc_Billing.Controllers
                                 sn.Priority = 3;
                                 sn.Pincode_values = "400000-450000,360000-400000,450000-490000";
 
-                                sn.CashD = false;
+                                sn.CashD = true;
                                 sn.CashN = true;
-                                sn.BillD = false;
+                                sn.BillD = true;
                                 sn.BillN = true;
 
                             }
@@ -4379,5 +4384,84 @@ namespace DtDc_Billing.Controllers
         {
             return View();  
         }
+
+        public async Task<ActionResult> GetConsignmentInfo()
+        {
+            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=P67294629";
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(apiurl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ViewBag.Consignmentno = "P67294629";
+                        string responsedata = await response.Content.ReadAsStringAsync();
+                        return View((object)responsedata);
+
+                        //  return View(responsedata);
+
+                       // return Content(responsedata,"text/html");
+                    }
+                    else
+                    {
+                        var error = response.StatusCode + "=" + response.ReasonPhrase;
+                       // return new HttpStatusCodeResult(response.StatusCode, error);
+                       return View(error);  
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return View(ex.Message);
+                    //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Internal Server Error: " + ex.Message);
+                }
+            }
+
+        }
+        [HttpPost]
+        public JsonResult GetConsignmentInfoInDeatils(string ConsignmnetNo)
+        {
+            if(ConsignmnetNo == null)
+            {
+                return Json(null);  
+            }
+            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=getLoadMovementDetails&cnNo="+ConsignmnetNo;
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response =client.GetAsync(apiurl).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responsedata = response.Content.ReadAsStringAsync().Result;
+                        return Json(responsedata);
+
+                        //  return View(responsedata);
+
+                        // return Content(responsedata,"text/html");
+                    }
+                    else
+                    {
+                        var error = response.StatusCode + "=" + response.ReasonPhrase;
+                        // return new HttpStatusCodeResult(response.StatusCode, error);
+                        return Json(error);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                    //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Internal Server Error: " + ex.Message);
+                }
+            }
+
+        }
+
+
     }
 }

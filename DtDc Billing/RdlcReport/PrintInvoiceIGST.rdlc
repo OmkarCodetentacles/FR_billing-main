@@ -2311,8 +2311,8 @@ within Seven days from the receipt of the invoice.</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox14</rd:DefaultName>
             <Top>0.01667in</Top>
-            <Height>0.18402in</Height>
-            <Width>0.88888in</Width>
+            <Height>0.83055in</Height>
+            <Width>3.81887in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2326,12 +2326,16 @@ within Seven days from the receipt of the invoice.</Value>
           <Image Name="Image4">
             <Source>External</Source>
             <Value>=First(Fields!StampFilePath.Value, "franchisee")</Value>
+            <MIMEType>image/png</MIMEType>
             <Sizing>Fit</Sizing>
             <Top>0.07083in</Top>
             <Left>1.09415in</Left>
             <Height>0.70833in</Height>
             <Width>1.37754in</Width>
             <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3479,14 +3483,14 @@ Received Date</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=first(Fields!loadingcharge.Value, "PrintInvoice")</Value>
+                              <Value>=IIF(Fields!loadingcharge.Value Is Nothing,"0",Fields!loadingcharge.Value)</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -3520,7 +3524,7 @@ Received Date</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Amount.Value+Fields!Risksurcharge.Value</Value>
+                              <Value>=Fields!Amount.Value+(iif(Fields!Risksurcharge.Value Is Nothing, "0",Fields!Risksurcharge.Value))+(IIf(Fields!loadingcharge.Value Is Nothing,"0",Fields!loadingcharge.Value))</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>0.00;(0.00)</Format>
@@ -3528,7 +3532,7 @@ Received Date</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -3548,6 +3552,7 @@ Received Date</Value>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -4040,10 +4045,11 @@ Received Date</Value>
         </Style>
       </Tablix>
       <Image Name="Image2">
-        <Source>Embedded</Source>
-        <Value>DTDC</Value>
+        <Source>External</Source>
+        <Value>=First(Fields!LogoFilePath.Value, "franchisee")</Value>
+        <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
-        <Top>0.25069in</Top>
+        <Top>0.13194in</Top>
         <Left>5.70282in</Left>
         <Height>0.59027in</Height>
         <Width>2.1884in</Width>
@@ -4720,10 +4726,22 @@ Received Date</Value>
           <DataField>N_Docket</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
+        <Field Name="Password">
+          <DataField>Password</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Username">
+          <DataField>Username</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="G_Docket">
+          <DataField>G_Docket</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>Comdataset</rd:DataSetName>
-        <rd:SchemaPath>\\BALA-PC1\OnGoing  Billing\DtDc Billing\DtDc Billing\Comdataset.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Fr-Billing\FR_billing\DtDc Billing\Comdataset.xsd</rd:SchemaPath>
         <rd:TableName>Company</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

@@ -11,7 +11,7 @@ namespace DtDc_Billing.Models
         public string Pfcode { get; set; }
         public string franchiseName { get; set; }
         public string emailId { get; set; }
-        public Nullable<System.DateTime> dateTime { get; set; }
+        public string dateTime { get; set; }
         public string ownerName { get; set; }
         public string userName { get; set; }
         public string password { get; set; }

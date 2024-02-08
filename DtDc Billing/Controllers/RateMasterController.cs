@@ -1463,10 +1463,11 @@ namespace DtDc_Billing.Controllers
 
                 string Pfcode = company.Pf_code;
 
-                var logo = db.Franchisees.Where(m => m.PF_Code == Pfcode).FirstOrDefault();
-
-
+               
                 var dataset = db.Franchisees.Where(m => m.PF_Code == Pfcode).ToList();
+
+                dataset.FirstOrDefault().LogoFilePath = (dataset.FirstOrDefault().LogoFilePath == null || dataset.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset.FirstOrDefault().LogoFilePath;
+
                 var dataset1 = db.Companies.Where(m => m.Company_Id == CompanyId).ToList();
 
                 string path = Path.Combine(Server.MapPath("~/RdlcReport"), "QuotationReport.rdlc");
@@ -1491,7 +1492,7 @@ namespace DtDc_Billing.Controllers
                 ReportDataSource rd8 = new ReportDataSource("DataSet8", DataSet8);
                 ReportDataSource rd9 = new ReportDataSource("DataSet9", DataSet9);
 
-                if (logo.LogoFilePath == null)
+                if (dataset.FirstOrDefault().LogoFilePath == null)
                 {
                     ReportParameter rp = new ReportParameter("img_logo", "file:///"+Server.MapPath("~/UploadedLogo/goeasy.png"));
                     lr.SetParameters(rp);
@@ -1501,7 +1502,7 @@ namespace DtDc_Billing.Controllers
 
                  // ReportParameter rp = new ReportParameter("img_logo", "file:///" + logo.LogoFilePath);
 
-                 ReportParameter rp= new ReportParameter("img_logo", "file:///" + logo.LogoFilePath);
+                 ReportParameter rp= new ReportParameter("img_logo", "file:///" + dataset.FirstOrDefault().LogoFilePath);
                     lr.SetParameters(rp);
                 }
                 

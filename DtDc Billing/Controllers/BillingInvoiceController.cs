@@ -120,6 +120,8 @@ namespace EmpBilling.Controllers
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno);
 

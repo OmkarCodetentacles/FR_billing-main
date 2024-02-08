@@ -238,6 +238,11 @@ namespace DtDc_Billing.Controllers
             //ViewBag.before30days = before30days;
             DateTime currentDate = DateTime.Now;
 
+            
+            
+            
+            
+            
             System.DateTime newDate = Date.paymentDate.Value.AddDays(Date.subscriptionForInDays ?? 0);
             TimeSpan date_difference = newDate - currentDate;
             DateTime before15days = newDate.AddDays(-15);

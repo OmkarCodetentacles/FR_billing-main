@@ -616,6 +616,7 @@ Select(e => new
                            .ToList();
 
                 var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno);
 
@@ -624,6 +625,7 @@ Select(e => new
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = franchisee.FirstOrDefault().GstNo;
 
+                franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
                 string discount = dataset3.FirstOrDefault().discount;
                 if (discount == "no")
                 {
@@ -993,6 +995,7 @@ Select(e => new
 
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = dataset2.FirstOrDefault().GstNo;
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
 
                 if (clientGst != null && clientGst.Length > 4)
@@ -1240,6 +1243,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -1361,6 +1365,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -1711,6 +1716,7 @@ Select(e => new
 
 
             var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+            dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
             var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
@@ -1870,6 +1876,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Pfcode == Pf_Code);
 
@@ -2014,6 +2021,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -2511,6 +2519,7 @@ Select(e => new
                 }
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
@@ -2598,18 +2607,17 @@ Select(e => new
               );
 
                
-                //if (submit == "Generate")
-                //{
+              
                 ViewBag.pdf = true;
                 ViewBag.invoiceno = invoice.invoiceno;
-                //string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id  + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
 
-                //using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                //{
-                //    stream.Write(renderByte, 0, renderByte.Length);
-                //}
-                //}
-                if (submit == "Email")
+                using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                {
+                    stream.Write(renderByte, 0, renderByte.Length);
+                }
+            
+            if (submit == "Email")
                 {
 
                     MemoryStream memoryStream = new MemoryStream(renderByte);
@@ -2721,6 +2729,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -2857,6 +2866,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Pfcode == Pf_Code);
 

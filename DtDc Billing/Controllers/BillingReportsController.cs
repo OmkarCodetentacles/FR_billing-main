@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.CustomModel;
+﻿using CustomerModel;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
@@ -681,6 +682,8 @@ namespace DtDc_Billing.Controllers
                     var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
                     var pfcode = DataSet2.FirstOrDefault().Pf_code;
                     var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode).ToList();
+                    DataSet3.FirstOrDefault().LogoFilePath = (DataSet3.FirstOrDefault().LogoFilePath == null || DataSet3.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : DataSet3.FirstOrDefault().LogoFilePath;
+
 
                     LocalReport lr = new LocalReport();
 

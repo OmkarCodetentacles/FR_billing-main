@@ -1492,6 +1492,8 @@ Select(e => new
                 string barcode = GenerateBarCode(myParameter);
 
                 var logo = db.Franchisees.Where(m => m.PF_Code == pfcode).FirstOrDefault();
+                logo.LogoFilePath = (logo.LogoFilePath == null || logo.LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : logo.LogoFilePath;
+
 
                 string path = Path.Combine(Server.MapPath("~/RdlcReport"), "P_N_Series_cashcounter.rdlc");
 
@@ -1512,6 +1514,7 @@ Select(e => new
                 ReportDataSource rd1 = new ReportDataSource("Recieptdetails", Recieptdetails1.Addition_Lable);
 
                 ReportDataSource rd2 = new ReportDataSource("DataSet1", CompanyData);
+          
 
                 //string pathimg = (Server.MapPath("~/BarcodeImages/P34638564.png"));
 
