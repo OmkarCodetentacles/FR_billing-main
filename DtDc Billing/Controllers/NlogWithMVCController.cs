@@ -12,8 +12,6 @@ namespace DtDc_Billing.Controllers
         public class HomeController : Controller
         {
             Logger logger = LogManager.GetCurrentClassLogger();
-
-           
             public ActionResult Index()
             {
 

@@ -28,13 +28,7 @@
     <div class="box" style="padding: 16px 15px">
         <!-- column -->
         <div class="box-header with-border">
-            <h4>
-                Add Stationary
-                <a href="https://www.youtube.com/watch?v=C04np8aEHDo&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=6" target="_blank" data-toggle="tooltip" title="Click to view more info">
-                    @*<i class="fa fa-eye"></i>*@
-                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
-                </a>
-            </h4>
+            <h4>Add Stationary</h4>
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="row">
@@ -51,6 +45,17 @@
                         }
 
                     }
+                    @if (TempData["duplicateError"] != null)
+                    {
+
+                      <div class="alert alert-danger">
+                         <span class="text-danger"> <strong>Error!</strong> @TempData["duplicateError"]</span>
+                      </div>
+
+                    }
+
+
+
                     @using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
@@ -142,8 +147,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <div class="box-footer">
-                                        <button type="submit" class="btn btn-success pull-right">Save</button>
+                                    <div class="box-footer pull-right">
+                                        <button type="submit" class="btn btn-primary" value="Save" name="Save">Save</button>
+                                        <button type="submit" class="btn btn-success" value="Print" name="Submit">Save & Print</button>
                                     </div>
                                 </div>
 

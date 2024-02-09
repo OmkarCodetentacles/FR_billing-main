@@ -11,13 +11,13 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Sector
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Sector()
         {
+            this.Dtdc_Ecommerce = new HashSet<Dtdc_Ecommerce>();
             this.Dtdc_Ptp = new HashSet<Dtdc_Ptp>();
             this.Dtdc_Ptp1 = new HashSet<Dtdc_Ptp>();
             this.Dtdc_Ptp2 = new HashSet<Dtdc_Ptp>();
@@ -39,14 +39,21 @@ namespace DtDc_Billing.Entity_FR
         public int Sector_Id { get; set; }
         public string Sector_Name { get; set; }
         public string Pf_code { get; set; }
-        [Required]
         public string Pincode_values { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<bool> CashD { get; set; }
         public Nullable<bool> CashN { get; set; }
         public Nullable<bool> BillD { get; set; }
         public Nullable<bool> BillN { get; set; }
+        public Nullable<bool> BillNonAir { get; set; }
+        public Nullable<bool> BillNonSur { get; set; }
+        public Nullable<bool> BillExpCargo { get; set; }
+        public Nullable<bool> BillPriority { get; set; }
+        public Nullable<bool> BillEcomPrio { get; set; }
+        public Nullable<bool> BillEcomGE { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dtdc_Ecommerce> Dtdc_Ecommerce { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dtdc_Ptp> Dtdc_Ptp { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

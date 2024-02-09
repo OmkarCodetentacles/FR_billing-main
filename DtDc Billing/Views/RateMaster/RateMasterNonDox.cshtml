@@ -5,40 +5,23 @@
 <!-- Content Wrapper. Contains page content -->
 <!-- Content Header (Page header) -->
 <!-- Main content -->
-<script>
-    $(document).ready(function () {
-        $("overlayBlock").hide();
-        document.getElementById('overlayBlock').style.display = 'none';
 
-    })
-</script>
 <section>
 
     <div class="" style="padding: 20px; border: 1px solid #dddddd;">
-        @{
-            var successMessage = ViewBag.Message as string;
-        }
-
-        @if (!string.IsNullOrEmpty(successMessage))
-
-        {
-
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-        }
         <div class="">
-            <a href="https://www.youtube.com/watch?v=dc8VX6igwns&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=9"
-               target="_blank"
-               data-placement="left"
-               data-toggle="tooltip"
-               class="pull-right"
-               title="Click to view more info">
-                <i class="fa fa-info-circle" style="font-size:25px;"></i>
-            </a>
             <div class="col-sm-12 text-center">
                 <h4>Air Rate Cargo</h4>
             </div>
+            @{
+                var successMessage = ViewBag.Message as string;
+            }
 
-            @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2", OnSuccess = "scrollToTop()" }))
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            }
+            @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2" }))
             {
 
                 <input type="hidden" value="@ViewBag.companyid" name="comppid">
@@ -123,7 +106,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Where(x => x.Sector.BillNonAir == true).ToList())
                         {
                             <tr>
                                 <td class="sectors">
@@ -233,7 +216,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.Where(x => x.Sector.BillNonSur == true).ToList())
                         {
                             <tr>
                                 <td class="sectors">
@@ -252,11 +235,11 @@
                                     @Html.EditorFor(modelItem => item.Sslab4)
                                 </td>
                                 @*<td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Non_ID)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Sector_Id)
-                            </td>*@
+                                        @Html.HiddenFor(modelItem => item.Non_ID)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>*@
                             </tr>
                         }
                     </tbody>
@@ -265,7 +248,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" onclick="scrollToTop()" />
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
                     </div>
 
                 </div>
@@ -281,16 +264,16 @@
     // Scroll to the top of the page
     function scrollToTop() {
         window.scrollTo(0, 0);
-        showLoader('overlayBlock');
     }
     function showLoader() {
+
+
         document.getElementById('overlayBlock').style.display = 'block';
 
     }
     $(document).ready(function () {
         $('#submitBtn').on('click', function () {
             scrollToTop();
-
             showLoader('overlayBlock');
             // Get the form element
             var form = $('#frmEmp');

@@ -730,8 +730,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox14</rd:DefaultName>
-            <Height>1.93964in</Height>
-            <Width>3.6975in</Width>
+            <Top>0.16466in</Top>
+            <Left>0.05556in</Left>
+            <Height>0.25694in</Height>
+            <Width>0.92013in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -744,17 +746,13 @@
           </Textbox>
           <Image Name="Image4">
             <Source>External</Source>
-            <Value>=First(Fields!StampFilePath.Value, "DataSet1")</Value>
-            <MIMEType>image/png</MIMEType>
+            <Value>=iif(First(Fields!Firm_Id.Value, "DataSet1") = 6 ,"http://admin.infantjesussolutions.in/Content/img/injustis.jpg",iif(First(Fields!Firm_Id.Value, "DataSet1") = 7 ,"http://admin.infantjesussolutions.in/Content/img/shreya.jpg","http://admin.infantjesussolutions.in/Content/img/atharv.jpg"))</Value>
             <Sizing>Fit</Sizing>
             <Top>0.16466in</Top>
             <Left>1.37044in</Left>
             <Height>0.70833in</Height>
             <Width>1.19644in</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "DataSet1")) Or First(Fields!StampFilePath.Value, "DataSet1") = "", True, False)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -805,9 +803,8 @@
         </Style>
       </Textbox>
       <Image Name="Image2">
-        <Source>External</Source>
-        <Value>=First(Fields!LogoFilePath.Value, "DataSet1")</Value>
-        <MIMEType>image/png</MIMEType>
+        <Source>Embedded</Source>
+        <Value>Dtdclogo</Value>
         <Sizing>Fit</Sizing>
         <Top>0.57708in</Top>
         <Left>5.65709in</Left>
@@ -1252,22 +1249,10 @@
           <DataField>Accounttype</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="InvoiceStart">
-          <DataField>InvoiceStart</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="LogoFilePath">
-          <DataField>LogoFilePath</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="StampFilePath">
-          <DataField>StampFilePath</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>FRdeatils</rd:DataSetName>
-        <rd:SchemaPath>C:\Fr-Billing\FR_billing\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\live projects\Infantjesussolutions\DtDc Billing\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
         <rd:TableName>Franchisee</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
@@ -1415,7 +1400,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>invo</rd:DataSetName>
-        <rd:SchemaPath>C:\Fr-Billing\FR_billing\DtDc Billing\invo.xsd</rd:SchemaPath>
+        <rd:SchemaPath>E:\live projects\Infantjesussolutions\DtDc Billing\DtDc Billing\invo.xsd</rd:SchemaPath>
         <rd:TableName>Invoice</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

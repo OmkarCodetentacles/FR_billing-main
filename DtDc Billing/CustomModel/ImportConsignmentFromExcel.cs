@@ -18,7 +18,7 @@ namespace DtDc_Billing.CustomModel
 {
     public class ImportConsignmentFromExcel
     {
-        public static db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        public static db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         public string Import1Async(HttpPostedFileBase httpPostedFileBase,string PfCode)
         {

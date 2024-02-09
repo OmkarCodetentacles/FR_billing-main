@@ -15,7 +15,7 @@ namespace DtDc_Billing.Controllers
     [SessionUserModule]
     public class DeliveryReportController : Controller
     {
-        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: DeliveryReport
         public ActionResult Dreport()
         {

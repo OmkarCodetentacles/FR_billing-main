@@ -41,6 +41,14 @@
     <Property Name="Accesspage" Type="varchar" MaxLength="50" />
     <Property Name="AcceessDate" Type="datetime" />
   </EntityType>
+  <EntityType Name="BarcodeAndPath">
+    <Key>
+      <PropertyRef Name="BarcodeAndPathId" />
+    </Key>
+    <Property Name="BarcodeAndPathId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConsignmentNo" Type="varchar" MaxLength="50" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="Cash">
     <Key>
       <PropertyRef Name="Cash_id" />
@@ -869,18 +877,6 @@
     <Property Name="Datetime_Wa" Type="datetime" />
   </EntityType>
   <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.invalidCon' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="invalidCon">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.openConCount' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="openConCount">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-  <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="TransactionView">
     <Key>
@@ -935,12 +931,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Property Name="remarks" Type="varchar" MaxLength="100" />
     <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="unSignPincode">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
   <Association Name="Emp_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
     <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -1978,6 +1968,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
     <EntitySet Name="addtopayamount" EntityType="Self.addtopayamount" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AdminAccessPage" EntityType="Self.AdminAccessPage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BarcodeAndPath" EntityType="Self.BarcodeAndPath" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cash" EntityType="Self.Cash" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cheque" EntityType="Self.Cheque" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />

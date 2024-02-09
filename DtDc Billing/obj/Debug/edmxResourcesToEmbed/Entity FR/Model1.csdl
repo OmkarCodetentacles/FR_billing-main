@@ -2431,6 +2431,7 @@
       <Parameter Name="FirmId" Mode="In" Type="Int64" />
       <Parameter Name="FirmName" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="BarcodeAndPaths" EntityType="db_a92afa_frbillingModel.BarcodeAndPath" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -2814,4 +2815,12 @@
     <Property Type="String" Name="Receiver" Nullable="true" />
     <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
   </ComplexType>
+  <EntityType Name="BarcodeAndPath">
+    <Key>
+      <PropertyRef Name="BarcodeAndPathId" />
+    </Key>
+    <Property Name="BarcodeAndPathId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ConsignmentNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

@@ -1,40 +1,59 @@
-﻿@model  IEnumerable<DtDc_Billing.Entity_FR.Sector>
-@using (Ajax.BeginForm("Add_SectorPin", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
+﻿@model  IEnumerable<DtDc_Billing.Models.SectorNewModel>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @*  @using (Ajax.BeginForm("AddNewSectorSingle", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "addnewsec", OnBegin = "onBegin", OnComplete = "onCompleteSingle" }))*@
+            @using (Html.BeginForm("AddNewSectorSingle", "Admin"))
+            {
+                <div class="modal-body" id="addnewsec">
+                    <input type="hidden" name="Prior" value="@Model.Count()" />
+                    <label>
+                        Sector Name
+                    </label>
+                    <input type="text" name="Sector_Name" id="Sector_Name" class="form-control input-sm" required>
+                    <label>
+                        Pincode
+                    </label>
+                    <textarea id="Pincode_values" name="Pincode_values" rows="4" cols="50" class="form-control input-sm" required></textarea>
+                    <i class="fa fa-info-circle" aria-hidden="true"></i><span class="text-maroon"> (Note: Please ensure that entered pincodes consist of 6 digits. When specifying a range, use the format "100000-200000". If adding two ranges, separate them with commas, such as "100000-200000, 400000-500000". For a range with a single value, format it as "100000-200000, 300000, 400000-500000".)</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@using (Ajax.BeginForm("Add_SectorPin", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1234", OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
-
-
-
-
-    
-
-
+    @Html.AntiForgeryToken()
     <div class="" style="padding: 0px 16px">
         <div class="col-sm-12 no-padding">
             <div class="box box-info" style="border: 1px solid #dbdbdb !important;background:white ">
                 <div class="box-header with-border" style="background:none; border:none">
                     <h4 class="box-title">Add Sector</h4>
+                    <small>(Note : Arrange the <b>Priority</b> based on the sequence you prefer for displaying sectors, and fill it in with care.)</small>
                 </div>
-                <div class="sector">
-                    <div class="mt-15">
-                        <div class="col-md-2">
-                            <input type="submit" value="Add Sector" class="btn btn-primary" />
-                        </div>
-                    </div>
 
-                </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        @Html.ValidationMessage("PinError")
-                        @{
-                            if (ViewBag.Message != null)
-                            {
-                                <div class="alert alert-danger" style="width:400px;color:red">
-                                                            <strong style="color:red"> @ViewBag.Message <button type="button" class="close" data-dismiss="alert">×</button> </strong>
-                                </div>
-                            }
-                        }
+
+
                         @{
                             var successMessage = TempData["Success"] as string;
+
                         }
 
                         @if (!string.IsNullOrEmpty(successMessage))
@@ -42,48 +61,163 @@
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                         }
 
+
+
                         <div class="form-horizontal">
                             <div class="" style="padding:0 20px;background:none">
                                 <table id="add-sector-pin" class="table table-responsive table-bordered" style="display:inline-table !important; width:100%; text-align:center;">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Sector_Name)
+                                                Priority
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Pincode_values)
+                                                Sector Name
                                             </th>
-
-
+                                            <th>
+                                                Pincode
+                                            </th>
+                                            <th>
+                                                DOX
+                                            </th>
+                                            <th>
+                                                NONDOX Air
+                                            </th>
+                                            <th>
+                                                NONDOX Sur
+                                            </th>
+                                            <th>
+                                                EXPRESS CARGO
+                                            </th>
+                                            <th>
+                                                PRIORITY
+                                            </th>
+                                            <th>
+                                                ECOM PRIORITY
+                                            </th>
+                                            <th>
+                                                ECOM GE
+                                            </th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
+                                        @{
+                                            int i = 1;
+                                            foreach (var item in Model)
+                                            {
+                                                <tr>
 
-                                                <td>
-                                                    <label>@Html.DisplayFor(modelItem => item.Sector_Name)</label>
-                                                </td>
-                                                <td>
-                                                    <label style="width:100%">
-                                                        @Html.TextAreaFor(modelItem => item.Pincode_values, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                    </label>
+                                                    <td>
+                                                        <label>
+                                                            @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
+                                                            @Html.EditorFor(modelItem => item.Priority, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+                                                            @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
+                                                            @Html.EditorFor(modelItem => item.Sector_Name, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label style="width:100%">
+                                                            @Html.TextAreaFor(modelItem => item.Pincode_values, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                        </label>
 
-                                                </td>
-                                                @Html.HiddenFor(modelItem => item.Sector_Id)
+                                                    </td>
+                                                    <td>
+                                                        <label>
 
-                                            </tr>
+                                                            @*@Html.CheckBoxFor(m => item.BillDNew)*@
+
+                                                            <input type="checkbox" name="BillD[@i]" value="true" @(item.BillD ? "checked" : "") />
+
+                                                            @* <input type="checkbox" name="BillD" value="@Html.Raw(BillD)" checked />*@
+
+                                                            @*  <input type="checkbox" name="Sectors[@i].DoxBillD" value="@Html.Raw(BillD)" checked />*@
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillNonAir[@i]" value="true" @(item.BillNonAir ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillNonSur[@i]" value="true" @(item.BillNonSur ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillExpCargo[@i]" value="true" @(item.BillExpCargo ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillPriority[@i]" value="true" @(item.BillPriority ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillEcomPrio[@i]" value="true" @(item.BillEcomPrio ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+
+                                                            @*@Html.CheckBoxFor(m => item.BillNnew)*@
+                                                            <input type="checkbox" name="BillEcomGE[@i]" value="true" @(item.BillEcomGE ? "checked" : "") />
+                                                        </label>
+                                                    </td>
+
+                                                    <td>
+                                                        <a href="@Url.Action("DeleteSingleSector", "admin", new { sectorId = item.Sector_Id })"
+                                                           class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this sector?');">
+                                                            Delete
+                                                        </a>
+                                                    </td>
+                                                    @Html.HiddenFor(modelItem => item.Sector_Id)
+
+                                                </tr>
+                                                i++;
+                                            }
                                         }
                                     </tbody>
                                 </table>
-                                <div class="mt-15">
-                                    <input type="hidden" name="pfcode" value="@ViewBag.pfcode" />
 
+                                @*<button class="btn btn-primary">Add New</button>*@
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Add New
+                                </button>
+
+                                <div class="mt-15">
+                                    <input type="hidden" name="Pf_code" value="@ViewBag.pfcode" />
+
+
+                                    @Html.ValidationMessage("PinError")
+                                    @{
+                                        if (ViewBag.Message != null)
+                                        {
+                                            <div class="alert-danger" style="width:400px;height:30px">
+                                                @ViewBag.Message
+                                            </div>
+                                        }
+                                    }
                                     <div class="col-md-12" style="text-align: right;">
                                         <div class="form-group">
                                             <div class="">
-                                                <input type="submit" value="Save" class="btn btn-success pull-right" id="scrolltotop"/>
+                                                <input type="submit" value="Save" class="btn btn-success pull-right" />
                                             </div>
                                         </div>
                                     </div>
@@ -121,17 +255,6 @@
     $(function () {
         $('#franchisee-list').addClass('active');
     });
-
-
-    function scrollToTop() {
-        window.scrollTo(0, 0);
-    }
-
-    $(document).on('click', '#scrolltotop', function () {
-
-        showLoader('overlayBlock');
-        scrollToTop();
-    });
 </script>
 
 
@@ -152,5 +275,38 @@ else
 
 
 
+<script type="text/javascript">
+    function onBegin() {
+        $("#js-preloader").show();
+        // Show the loader
+        // document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+
+        alert("Sector save successfully");
+        $("#js-preloader").hide();
+        // Hide the loader
+        // document.getElementById('overlayBlock').style.display = 'none';
+    }
+
+    function onCompleteSingle() {
+
+        alert("Sector save successfully");
+        // Set the active tab to 'menu1' before reloading
+
+
+        // Reload the page after showing the alert and setting the active tab
+        window.location.reload();
+
+    }
+
+    //function ActivateTab() {
+    //    alert("entering into");
+    //    // Activate the 'menu1' tab on page load
+    //    $('a[data-toggle="tab"][href="#menu1"]').tab('show');
+    //}
+
+</script>
 
 

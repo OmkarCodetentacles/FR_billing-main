@@ -28,7 +28,6 @@
                             <div class="col-md-12 ">
                                 @{
                                     var successMessage = TempData["Success1"] as string;
-                                    var errorMessage = TempData["Error"] as string;
                                 }
 
                                 @if (!string.IsNullOrEmpty(successMessage))
@@ -36,17 +35,13 @@
                                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                                 }
 
-                                @if (!string.IsNullOrEmpty(errorMessage))
-                                {
-                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
-                                }
+
                                 <div class="form-horizontal">
                                     <div class="box-body">
 
 
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">Upload logo<br/><small>(It will appear on invoice & Image must be .png or .jpg or .jpeg format)</small></label>
-
+                                            <label class="col-md-2 control-label">Upload logo</label>
                                             <div class="col-md-5">
                                                 <input type="file" name="file" id="file" class="form-control" />
                                                 @Html.ValidationMessage("fileerr")

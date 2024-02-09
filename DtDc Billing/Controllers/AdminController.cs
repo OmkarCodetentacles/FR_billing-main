@@ -20,15 +20,13 @@ using System.Text.RegularExpressions;
 using static DtDc_Billing.Models.sendEmail;
 using Microsoft.SqlServer.Management.Sdk.Differencing;
 using Microsoft.Win32;
-using System.Net.Http;
-using Microsoft.Ajax.Utilities;
 
 namespace DtDc_Billing.Controllers
 {
     //[OutputCache(CacheProfile = "Cachefast")]
     public class AdminController : Controller
     {
-        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Adminsss
 
         [SessionUserModule]
@@ -1132,7 +1130,7 @@ namespace DtDc_Billing.Controllers
                                          franchiseName=registration.franchiseName,
                                          emailId=registration.emailId,
                                          mobileNo=registration.mobileNo,
-                                         dateTime=registration.dateTime.Value.ToString("dd/MM/yyyy"),
+                                         dateTime=registration.dateTime,
                                          userName=registration.userName,    
                                          password=registration.password,
                                          DaysSinceRegistration=(currentdate-registration.dateTime.Value).Days
@@ -1587,17 +1585,149 @@ namespace DtDc_Billing.Controllers
             return View(franchisee);
 
         }
+        public ActionResult DeleteSingleSector(int sectorId)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+            List<Dtdc_Ptp> dtdc_Ptps = db.Dtdc_Ptp.Where(m => m.Sector_Id == sectorId).ToList();
+            List<dtdcPlu> dtdcPlu = db.dtdcPlus.Where(m => m.Sector_Id == sectorId).ToList();
+            List<express_cargo> express_cargo = db.express_cargo.Where(m => m.Sector_Id == sectorId).ToList();
+            List<Nondox> Nondox = db.Nondoxes.Where(m => m.Sector_Id == sectorId).ToList();
+            List<Ratem> Ratem = db.Ratems.Where(m => m.Sector_Id == sectorId).ToList();
+            List<Priority> pra = db.Priorities.Where(m => m.Sector_Id == sectorId).ToList();
+            List<Dtdc_Ecommerce> ecom = db.Dtdc_Ecommerce.Where(m => m.Sector_Id == sectorId).ToList();
+
+
+            foreach (var i in dtdc_Ptps)
+            {
+                db.Dtdc_Ptp.Remove(i);
+            }
+            foreach (var i in dtdcPlu)
+            {
+                db.dtdcPlus.Remove(i);
+            }
+            foreach (var i in express_cargo)
+            {
+                db.express_cargo.Remove(i);
+            }
+            foreach (var i in Nondox)
+            {
+                db.Nondoxes.Remove(i);
+            }
+            foreach (var i in Ratem)
+            {
+                db.Ratems.Remove(i);
+            }
+            foreach (var i in pra)
+            {
+                db.Priorities.Remove(i);
+            }
+            foreach (var i in ecom)
+            {
+                db.Dtdc_Ecommerce.Remove(i);
+            }
+
+            db.SaveChanges();
+
+            var getSector = db.Sectors.Where(x => x.Sector_Id == sectorId && x.Pf_code == pfcode).FirstOrDefault();
+
+            if (getSector != null)
+            {
+                db.Sectors.Remove(getSector);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("FranchiseeList", new { tab = "2" });
+        }
+
+        public ActionResult AddNewSectorSingle(string Sector_Name, string Pincode_values, int Prior)
+        {
+            string message = "";
+            var flag = 0;
+            if (Sector_Name == "")
+            {
+                message = "Sector name required";
+                flag = 1;
+            }
+
+            if (Pincode_values == "")
+            {
+                message = "Pincode required";
+                flag = 1;
+            }
+
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var checkExist = db.Sectors.Where(x => x.Sector_Name.ToUpper() == Sector_Name.ToUpper() && x.Pf_code == pfcode).FirstOrDefault();
+
+            if (checkExist != null)
+            {
+                message = "Sector already exist";
+                flag = 1;
+            }
+
+            if (flag == 1)
+            {
+                TempData["errormsg"] = message;
+                return RedirectToAction("FranchiseeList", new { tab = "2" });
+            }
+            Sector str = new Sector();
+            str.Priority = (Prior + 1);
+            str.Sector_Name = Sector_Name.ToUpper();
+            str.Pincode_values = Pincode_values;
+            str.BillD = false;
+            str.BillNonAir = false;
+            str.BillNonSur = false;
+
+            str.BillExpCargo = false;
+            str.BillPriority = false;
+
+            str.BillEcomPrio = false;
+            str.BillEcomGE = false;
+            str.Pf_code = pfcode;
+            try
+            {
+                db.Sectors.Add(str);
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+            message = "Added successfully";
+
+            return RedirectToAction("FranchiseeList", new { tab = "2" });
+        }
 
         [SessionAdmin]
         public ActionResult Add_SectorPin(string PfCode)
         {
             string Pf = PfCode; /*Session["PfID"].ToString();*/
 
+            List<SectorNewModel> st = new List<SectorNewModel>();
+
+            st = (from u in db.Sectors
+                  where u.Pf_code == Pf
+                  select new SectorNewModel
+                  {
+                      Sector_Id = u.Sector_Id,
+                      Sector_Name = u.Sector_Name,
+                      Pf_code = u.Pf_code,
+                      Pincode_values = u.Pincode_values,
+                      Priority = u.Priority,
+                      CashD = u.CashD,
+                      CashN = u.CashN,
+                      BillD = u.BillD ?? false,
+                      BillNonAir = u.BillNonAir ?? false,
+                      BillNonSur = u.BillNonSur ?? false,
+                      BillExpCargo = u.BillExpCargo ?? false,
+                      BillPriority = u.BillPriority ?? false,
+                      BillEcomPrio = u.BillEcomPrio ?? false,
+                      BillEcomGE = u.BillEcomGE ?? false
+                  }).OrderBy(x => x.Priority).ToList();
 
 
-            List<Sector> st = (from u in db.Sectors
-                               where u.Pf_code == Pf
-                               select u).ToList();
             ViewBag.pfcode = PfCode;//stored in hidden format on the view
 
 
@@ -1610,24 +1740,251 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult Add_SectorPin(registration franchisee, FormCollection fc)
         {
-            //Adding Eantries To the Sector Table
-            var sectornamelist = db.sectorNames.ToList();
-            // [RegularExpression("^[0-9]*$", ErrorMessage = "Pincode must be numeric")]
+            var sectorNamearray = fc.GetValues("item.Sector_Name");
 
+            var priorityarray = fc.GetValues("item.Priority");
+            // Retrieve the checkbox value from the FormCollection
+
+            // Assuming 'i' is the index you are using in the checkbox names
+            int numberOfCheckboxes = sectorNamearray.Count() /* Set the number based on your logic */;
+            List<bool> billDValues = new List<bool>();
+
+            List<bool> BillNonAirValues = new List<bool>();
+            List<bool> BillNonSurValues = new List<bool>();
+
+            List<bool> BillExpCargoValues = new List<bool>();
+            List<bool> BillPriorityValues = new List<bool>();
+
+            List<bool> BillEcomPrioValues = new List<bool>();
+            List<bool> BillEcomGEValues = new List<bool>();
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxName = $"BillD[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxName))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxName];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    billDValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    billDValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillNonAir[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillNonAirValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillNonAirValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillNonSur[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillNonSurValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillNonSurValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillExpCargo[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillExpCargoValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillExpCargoValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillPriority[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillPriorityValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillPriorityValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillEcomPrio[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillEcomPrioValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillEcomPrioValues.Add(false);
+                }
+            }
+
+
+            for (int i = 1; i <= numberOfCheckboxes; i++)
+            {
+                // Construct the dynamic name for the checkbox
+                string checkboxNameN = $"BillEcomGE[{i}]";
+
+                // Check if the checkbox with the dynamic name exists in the form collection
+                if (fc.AllKeys.Contains(checkboxNameN))
+                {
+                    // Retrieve the value (which is "true" or null if not checked)
+                    string value = fc[checkboxNameN];
+
+                    // Convert the string value to the desired data type if needed
+                    bool isChecked = !string.IsNullOrEmpty(value) && value.ToLower() == "true";
+
+                    // Add the boolean value to the list
+                    BillEcomGEValues.Add(isChecked);
+                }
+                else
+                {
+                    // If the checkbox doesn't exist in the form collection, you may want to handle this case
+                    // You can decide the default value or any other action
+                    BillEcomGEValues.Add(false);
+                }
+            }
 
             var code = (from u in db.registrations
                         where u.Pfcode == franchisee.Pfcode
                         select u).FirstOrDefault();
 
-            var datasector = (from d in db.Sectors
-                              where d.Pf_code == franchisee.Pfcode
-                              select d);
+            for (int i = 0; i < sectorNamearray.Count(); i++)
+            {
+                if (sectorNamearray[i] == null || sectorNamearray[i] == "")
+                {
+                    ViewBag.nameRequired = "You cant save null to sector name";
+                    return PartialView("Add_SectorPin", code);
+                }
+            }
+            //Adding Eantries To the Sector Table
+            var sectornamelist = db.sectorNames.ToList();
+            // [RegularExpression("^[0-9]*$", ErrorMessage = "Pincode must be numeric")]
+
+            List<SectorNewModel> datasector = new List<SectorNewModel>();
+
+            datasector = (from u in db.Sectors
+                          where u.Pf_code == franchisee.Pfcode
+                          select new SectorNewModel
+                          {
+                              Sector_Id = u.Sector_Id,
+                              Sector_Name = u.Sector_Name,
+                              Pf_code = u.Pf_code,
+                              Pincode_values = u.Pincode_values,
+                              Priority = u.Priority,
+                              BillD = u.BillD ?? false,
+                              BillNonAir = u.BillNonAir ?? false,
+                              BillNonSur = u.BillNonSur ?? false,
+                              BillExpCargo = u.BillExpCargo ?? false,
+                              BillPriority = u.BillPriority ?? false,
+                              BillEcomPrio = u.BillEcomPrio ?? false,
+                              BillEcomGE = u.BillEcomGE ?? false
+                          }).ToList();
 
             if (datasector != null)
             {
 
                 var sectoridarray = fc.GetValues("item.Sector_Id");
+
                 var pincodearayy = fc.GetValues("item.Pincode_values");
+
+                var BillDox = fc.GetValues("item.BillD");
+
+                var BillNonDox = fc.GetValues("item.BillN");
 
 
                 for (int i = 0; i < sectoridarray.Count(); i++)
@@ -1647,14 +2004,11 @@ namespace DtDc_Billing.Controllers
                                 franchisee.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
                             }
-                            List<Sector> secct = (from u in db.Sectors
-                                                  where u.Pf_code == franchisee.Pfcode
 
-                                                  select u).ToList();
-                            ViewBag.DataSector = secct;
-                            ViewBag.Message = "Pincode must be numeric & 6 Digit";
+                            ViewBag.DataSector = datasector;
+                            ViewBag.Message = "Pincode must be numeric";
                             // return View("FranchiseeList", fc);
-                            return PartialView("Add_SectorPin", secct);
+                            return PartialView("Add_SectorPin", datasector);
                             //return View(fc);
                         }
 
@@ -1668,8 +2022,18 @@ namespace DtDc_Billing.Controllers
                                 pincodearayy[i] = null;
                             }
 
-
+                            str.Priority = Convert.ToInt32(priorityarray[i]);
+                            str.Sector_Name = sectorNamearray[i].ToUpper();
                             str.Pincode_values = pincodearayy[i];
+                            str.BillD = billDValues[i];
+                            str.BillNonAir = BillNonAirValues[i];
+                            str.BillNonSur = BillNonSurValues[i];
+
+                            str.BillExpCargo = BillExpCargoValues[i];
+                            str.BillPriority = BillPriorityValues[i];
+
+                            str.BillEcomPrio = BillEcomPrioValues[i];
+                            str.BillEcomGE = BillEcomGEValues[i];
                             db.Entry(str).State = EntityState.Modified;
                         }
                     }
@@ -1681,10 +2045,7 @@ namespace DtDc_Billing.Controllers
                 {
                     ModelState.AddModelError("PinError", "All Fields Are Compulsary");
 
-                    List<Sector> stt = (from u in db.Sectors
-                                        where u.Pf_code == franchisee.Pfcode
-                                        && u.Pincode_values == null
-                                        select u).ToList();
+                    List<SectorNewModel> stt = datasector.Where(x => x.Pincode_values == null).ToList();
                     ViewBag.DataSector = stt;
                     return View(stt);
                 }
@@ -1696,10 +2057,25 @@ namespace DtDc_Billing.Controllers
 
 
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-                List<Sector> secct1 = (from u in db.Sectors
-                                       where u.Pf_code == pfcode//franchisee.Pfcode
+                List<SectorNewModel> secct1 = (from u in db.Sectors
+                                               where u.Pf_code == pfcode
+                                               select new SectorNewModel
+                                               {
+                                                   Sector_Id = u.Sector_Id,
+                                                   Sector_Name = u.Sector_Name,
+                                                   Pf_code = u.Pf_code,
+                                                   Pincode_values = u.Pincode_values,
+                                                   Priority = u.Priority,
+                                                   BillD = u.BillD ?? false,
+                                                   BillNonAir = u.BillNonAir ?? false,
+                                                   BillNonSur = u.BillNonSur ?? false,
+                                                   BillExpCargo = u.BillExpCargo ?? false,
+                                                   BillPriority = u.BillPriority ?? false,
+                                                   BillEcomPrio = u.BillEcomPrio ?? false,
+                                                   BillEcomGE = u.BillEcomGE ?? false
+                                               }).ToList();
 
-                                       select u).ToList();
+
                 ViewBag.DataSector = secct1;
                 return View("Add_SectorPin", secct1);
 
@@ -1813,13 +2189,11 @@ namespace DtDc_Billing.Controllers
                     }
                 }
             }
-            List<Sector> st = (from u in db.Sectors
-                               where u.Pf_code == franchisee.Pfcode
-                               select u).ToList();
-            ViewBag.pfcode = franchisee.Pfcode;//stored in hidden format on the view
-            ViewBag.DataSector = st;
 
-            return View(st);
+            ViewBag.pfcode = franchisee.Pfcode;//stored in hidden format on the view
+            ViewBag.DataSector = datasector;
+
+            return View(datasector);
             //return View();
 
             //////////////////////////////////////////////
@@ -2096,13 +2470,11 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AddLogo(AddlogoModel logo)
         {
-            // Get the file extension in lowercase
-            string extension = Path.GetExtension(logo.file.FileName)?.ToLower();
-           
-            if (extension != ".png" && extension != ".jpg" && extension!= ".jpeg")
+            var r = new Regex(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$");
+            if (!r.IsMatch(logo.file.FileName))
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
-                TempData["Error"] = "Only Image files allowed!";
+                TempData["Success1"] = "Only Image files allowed!";
             }
             else
             {
@@ -2120,11 +2492,10 @@ namespace DtDc_Billing.Controllers
                 var lo = (from d in db.Franchisees
                           where d.PF_Code == strpf
                           select d).FirstOrDefault();
-             var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName ;
+             //var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName ;
 
 
-               // lo.LogoFilePath =_path;
-               lo.LogoFilePath=LogoFilePath;
+                lo.LogoFilePath =_path;
 
                 db.Entry(lo).State = EntityState.Modified;
                 db.SaveChanges();
@@ -2146,10 +2517,12 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-        public ActionResult FranchiseeList()
+        public ActionResult FranchiseeList(string tab = "1")
         {
             //long stradmin = Convert.ToInt64(Session["Admin"]);
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.pfcode = strpf;
+            ViewBag.activateTab = tab;
             if (strpf == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -2179,7 +2552,7 @@ namespace DtDc_Billing.Controllers
             Fr.Accountno = data.Accountno;
             Fr.IFSCcode = data.IFSCcode;
             Fr.Branch = data.Branch;
-            Fr.Accounttype = data.Accounttype;
+            Fr.Accounttype = data.Accounttype;  
             Fr.InvoiceStart = data.InvoiceStart;
             Fr.StampFilePath = data.StampFilePath;
 
@@ -2192,12 +2565,26 @@ namespace DtDc_Billing.Controllers
 
 
 
-            List<Sector> st = (from u in db.Sectors
-                               where u.Pf_code == strpf
-                               orderby u.Priority
-                               select u).ToList();
+            List<SectorNewModel> st = (from u in db.Sectors
+                                       where u.Pf_code == strpf
+                                       select new SectorNewModel
+                                       {
+                                           Sector_Id = u.Sector_Id,
+                                           Sector_Name = u.Sector_Name,
+                                           Pf_code = u.Pf_code,
+                                           Pincode_values = u.Pincode_values,
+                                           Priority = u.Priority,
+                                           BillD = u.BillD ?? false,
+                                           BillNonAir = u.BillNonAir ?? false,
+                                           BillNonSur = u.BillNonSur ?? false,
+                                           BillExpCargo = u.BillExpCargo ?? false,
+                                           BillPriority = u.BillPriority ?? false,
+                                           BillEcomPrio = u.BillEcomPrio ?? false,
+                                           BillEcomGE = u.BillEcomGE ?? false
+                                       }).OrderBy(x => x.Priority).ToList();
             ViewBag.pfcode = strpf;//stored in hidden format on the view
             ViewBag.DataSector = st;
+
             ViewBag.Sectors = st;
 
             if (data.LogoFilePath != null)
@@ -3684,9 +4071,9 @@ namespace DtDc_Billing.Controllers
                             {
 
                                 sn.CashD = true;
-                                sn.CashN = true;
+                                sn.CashN = false;
                                 sn.BillD = true;
-                                sn.BillN = true;
+                                sn.BillN = false;
 
                                 sn.Priority = 2;
                                 sn.Pincode_values = "400000-403000,404000-450000";
@@ -3698,9 +4085,9 @@ namespace DtDc_Billing.Controllers
                                 sn.Priority = 3;
                                 sn.Pincode_values = "400000-450000,360000-400000,450000-490000";
 
-                                sn.CashD = true;
+                                sn.CashD = false;
                                 sn.CashN = true;
-                                sn.BillD = true;
+                                sn.BillD = false;
                                 sn.BillN = true;
 
                             }
@@ -4384,84 +4771,5 @@ namespace DtDc_Billing.Controllers
         {
             return View();  
         }
-
-        public async Task<ActionResult> GetConsignmentInfo()
-        {
-            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=P67294629";
-
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(apiurl);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        ViewBag.Consignmentno = "P67294629";
-                        string responsedata = await response.Content.ReadAsStringAsync();
-                        return View((object)responsedata);
-
-                        //  return View(responsedata);
-
-                       // return Content(responsedata,"text/html");
-                    }
-                    else
-                    {
-                        var error = response.StatusCode + "=" + response.ReasonPhrase;
-                       // return new HttpStatusCodeResult(response.StatusCode, error);
-                       return View(error);  
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return View(ex.Message);
-                    //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Internal Server Error: " + ex.Message);
-                }
-            }
-
-        }
-        [HttpPost]
-        public JsonResult GetConsignmentInfoInDeatils(string ConsignmnetNo)
-        {
-            if(ConsignmnetNo == null)
-            {
-                return Json(null);  
-            }
-            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=getLoadMovementDetails&cnNo="+ConsignmnetNo;
-
-            using (HttpClient client = new HttpClient())
-            {
-                try
-                {
-                    HttpResponseMessage response =client.GetAsync(apiurl).Result;
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responsedata = response.Content.ReadAsStringAsync().Result;
-                        return Json(responsedata);
-
-                        //  return View(responsedata);
-
-                        // return Content(responsedata,"text/html");
-                    }
-                    else
-                    {
-                        var error = response.StatusCode + "=" + response.ReasonPhrase;
-                        // return new HttpStatusCodeResult(response.StatusCode, error);
-                        return Json(error);
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return Json(ex.Message);
-                    //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Internal Server Error: " + ex.Message);
-                }
-            }
-
-        }
-
-
     }
 }

@@ -11,10 +11,12 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Receipt_details
     {
         public long Receipt_Id { get; set; }
+        [Required]
         public string Consignment_No { get; set; }
         public string Destination { get; set; }
         public string sender_phone { get; set; }
@@ -52,6 +54,7 @@ namespace DtDc_Billing.Entity_FR
         public string Insurance { get; set; }
         public Nullable<float> Insuance_Percentage { get; set; }
         public Nullable<float> Insuance_Amount { get; set; }
+        [Required]
         public float Charges_Amount { get; set; }
         public Nullable<float> Charges_Service { get; set; }
         public Nullable<float> Risk_Surcharge { get; set; }

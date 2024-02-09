@@ -8,25 +8,33 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using OfficeOpenXml;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Microsoft.Reporting.WebForms;
+using System.IO;
+using System.Drawing;
+using ZXing;
+using DocumentFormat.OpenXml;
+using System.Transactions;
 
 namespace DtDc_Billing.Controllers
 {
     [SessionAdmin]  
     public class StationeryController : Controller
     {
-        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
               
 
         // GET: Stationery
         public ActionResult Add()
         {
-
             return View();
         }
 
 
         [HttpPost]
-        public ActionResult Add(StationaryModel stationary)
+        public ActionResult Add(StationaryModel stationary, string Submit)
         {
             string[] formats = { "dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy" };
 
@@ -36,6 +44,12 @@ namespace DtDc_Billing.Controllers
 
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+                var checkDuplicate = db.Stationaries.Where(x => x.startno == stationary.startno && x.endno == stationary.endno).FirstOrDefault();
+                if(checkDuplicate != null)
+                {
+                    TempData["duplicateError"] = "This series already exist";
+                    return View(stationary);
+                }
                 var dataFid = (from d in db.Franchisees
                               where d.PF_Code == strpf
                                select d.F_Id).FirstOrDefault();
@@ -61,6 +75,146 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.Message = "Stationary Added SuccessFully";
                 ModelState.Clear();
+
+                if (Submit == "Print")
+                {
+                    List<string> series = GenerateSeries(stationary.startno, stationary.endno);
+
+                    var getRD = series.ToList();
+                    /////////generate barcode//////////////////
+
+                    foreach (var getsingle in getRD)
+                    {
+                        ////////////////test print reciept////////////////////
+
+                        string imageName = getsingle + "." + ImageType.Png;
+                        string imagePath = "/BarcodeImages/" + imageName;
+                        //string baseUrl = "https://frbilling.com/";
+
+                        string baseUrl = "https://frbilling.com/";
+
+                        //  Uri imageUri = new Uri(new Uri(baseUrl), imagePath);
+                        //  string imageServerPath = imageUri.AbsoluteUri;
+
+                        //string imageServerPath = Request.Url.GetLeftPart(UriPartial.Authority) + imagePath;
+                        // string imageServerPath = "http://frbilling.com/BarcodeImages/" + imagePath;
+
+                        string imageServerPath = Server.MapPath("~" + imagePath);
+
+
+                        // Usage 
+                        string data1 = getsingle; // Your barcode data
+                        Image barcodeImage = GenerateBarcode(data1);
+
+                        // Save the barcode image
+                        // string imageServerPath = Server.MapPath("~" + imagePath);
+                        barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
+
+                        // Dispose of the image
+                        barcodeImage.Dispose();
+
+                        var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getsingle).FirstOrDefault();
+                        if (getRecipt == null)
+                        {
+                            BarcodeAndPath addBarcode = new BarcodeAndPath();
+                            addBarcode.ConsignmentNo = getsingle;
+                            addBarcode.FilePath = baseUrl + imagePath;
+                            db.BarcodeAndPaths.Add(addBarcode);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            getRecipt.FilePath = baseUrl + imagePath;
+                            db.SaveChanges();
+                        }
+                        /////////generete barcode//////////////////
+                    }
+                    LocalReport lr = new LocalReport();
+
+                    var getFinalList = db.BarcodeAndPaths.Where(x => series.Contains(x.ConsignmentNo)).ToList();
+
+                    //  var getRD = db.Receipt_details.Where(x => x.Receipt_Id > 37509).ToList();
+
+                    ////////////////////////////logic of 16 barcode on one page///////////////////////////////////////////////
+
+                    // Example 1
+                    int total = getFinalList.Count();
+
+                    // Calculate the result and round up to the nearest integer
+                    int result1 = (int)Math.Ceiling((double)total / 16);
+
+                    // Multiply the rounded result by 8
+                    int getFirstList = result1 * 8;
+                    int secondList = (total - getFirstList);
+
+                    var Recieptdetails1 = getFinalList.Take(getFirstList).ToList();
+
+                    var Recieptdetails2 = getFinalList.Select(x => new { ConsignmentNo = x.ConsignmentNo, FilePath = x.FilePath }).Skip(getFirstList).Take(secondList).ToList();
+
+
+                    ////////////////////////////logic of 16 barcode on one page/////////////////////////////////////////////
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintBarCodeMultiple.rdlc");
+
+                    // Set the ReportPath property
+                    lr.ReportPath = path;
+
+                    ReportDataSource rd = new ReportDataSource("BarcodeMain", Recieptdetails1);
+
+                    ReportDataSource rd2 = new ReportDataSource("BarCode", Recieptdetails2);
+
+                    lr.DataSources.Add(rd);
+                    lr.DataSources.Add(rd2);
+
+                    lr.EnableExternalImages = true;
+
+                    string reportType = "PDF";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
+
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                        "<Margintop>0.1in</Margintop>" +
+                        "<Marginleft>0.1in</Marginleft>" +
+                        "<Marginright>0.1in</Marginright>" +
+                        "<Marginbottom>0.5in</Marginbottom>" +
+                        "</DeviceInfo>";
+
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+                    renderByte = lr.Render
+                    (
+                        reportType,
+                        deviceInfo,
+                        out mimeType,
+                        out encoding,
+                        out fileNameExte,
+                        out streams,
+                        out warnings
+                    );
+
+                    var namefile = "Barcode-" + stationary.startno.ToString() +"-"+ stationary.endno.ToString();
+
+                    string savePath = Server.MapPath("~/PrintMulConsignmentPDF/" + namefile + ".pdf");
+
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+                    }
+
+                    var pdfFileName = namefile + ".pdf";
+
+                    if (!string.IsNullOrEmpty(pdfFileName))
+                    {
+                        // Redirect to a new action that will open the PDF in a new tab
+                        return RedirectToAction("OpenPdfInNewTab", new { pdfFileName });
+                    }
+
+                }
                 return View();
 
             }
@@ -230,14 +384,8 @@ namespace DtDc_Billing.Controllers
         public JsonResult RemainingConsignments(string startno, string endno)
         {
 
-
-
-
-
+            List<BarcodeAndPath> Consignmentswithbarcode = new List<BarcodeAndPath>();
             List<string> Consignments = new List<string>();
-
-
-
 
             char stch = startno[0];
             char Endch = endno[0];
@@ -252,7 +400,7 @@ namespace DtDc_Billing.Controllers
                 string updateconsignment = stch + i.ToString();
 
 
-                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
 
 
 
@@ -261,16 +409,57 @@ namespace DtDc_Billing.Controllers
                     Consignments.Add(updateconsignment);
                 }
 
+            }
+
+            foreach(var getConsignement in Consignments)
+            {
+                //////if barcode is not generated/////////
+                string imageName = getConsignement + "." + ImageType.Png;
+                string imagePath = "/BarcodeImages/" + imageName;
+                //string baseUrl = "https://frbilling.com/";
+
+                string baseUrl = "https://frbilling.com/";
+
+                string imageServerPath = Server.MapPath("~" + imagePath);
+
+
+                // Usage 
+                string data1 = getConsignement; // Your barcode data
+                Image barcodeImage = GenerateBarcode(data1);
+
+                // Save the barcode image
+                // string imageServerPath = Server.MapPath("~" + imagePath);
+                barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
+
+                // Dispose of the image
+                barcodeImage.Dispose();
+
+                var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getConsignement).FirstOrDefault();
+                if (getRecipt == null)
+                {
+                    BarcodeAndPath addBarcode = new BarcodeAndPath();
+                    addBarcode.ConsignmentNo = getConsignement;
+                    addBarcode.FilePath = baseUrl + imagePath;
+                    db.BarcodeAndPaths.Add(addBarcode);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    getRecipt.FilePath = baseUrl + imagePath;
+                    db.SaveChanges();
+                }
+                //////if barcode is not generated end/////////
 
 
 
-
-
-
+                BarcodeAndPath addSingle = new BarcodeAndPath();
+                addSingle.ConsignmentNo = getConsignement;
+                addSingle.FilePath = baseUrl + imagePath;
+                Consignmentswithbarcode.Add(addSingle);
 
             }
 
-            return Json(Consignments, JsonRequestBehavior.AllowGet);
+            return Json(Consignmentswithbarcode, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -300,7 +489,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
@@ -426,11 +615,280 @@ Select(e => new
                
             }
             return RedirectToAction("Remaining", new { PfCode = strpf, RemainingType=type });
-           
-
         
         }
 
+        public ActionResult BulkBarcodePrint()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult BulkBarcodePrint(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase == null)
+            {
+                TempData["error"] = "Upload excel file first";
+                return View();
+            }
+
+            var pdfFileName = PrintMultipleBarCode(httpPostedFileBase);
+
+            if (!string.IsNullOrEmpty(pdfFileName))
+            {
+                // Redirect to a new action that will open the PDF in a new tab
+                return RedirectToAction("OpenPdfInNewTab", new { pdfFileName });
+            }
+
+            return View();
+        }
+
+
+        public string PrintMultipleBarCode(HttpPostedFileBase httpPostedFileBase)
+        {
+            // Initialize a list to store Consignment_no values
+            List<string> consignmentNumbers = new List<string>();
+
+            if (httpPostedFileBase != null)
+            {
+
+                HttpPostedFileBase file = httpPostedFileBase;
+                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                {
+                    // Set the LicenseContext property
+                   // ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // or LicenseContext.Commercial
+
+                    string fileName = file.FileName;
+                    string fileContentType = file.ContentType;
+                    byte[] fileBytes = new byte[file.ContentLength];
+                    var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+                    using (var package = new ExcelPackage(file.InputStream))
+                    {
+                        var currentSheet = package.Workbook.Worksheets;
+                        var workSheet = currentSheet.First();
+                        var noOfCol = workSheet.Dimension.End.Column;
+                        var noOfRow = workSheet.Dimension.End.Row;
+                        for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                        {
+
+                            var Consignment_no = (workSheet?.Cells[rowIterator, 1]?.Value?.ToString().Trim());
+                            if (!string.IsNullOrEmpty(Consignment_no))
+                            {
+                                // Add Consignment_no to the list
+                                consignmentNumbers.Add(Consignment_no);
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            // Use LINQ to retrieve data from the database based on the Consignment_no values
+            var getRD = consignmentNumbers.ToList();
+            /////////generate barcode//////////////////
+
+            foreach (var getsingle in getRD)
+            {
+                ////////////////test print reciept////////////////////
+
+                string imageName = getsingle + "." + ImageType.Png;
+                string imagePath = "/BarcodeImages/" + imageName;
+                //string baseUrl = "https://frbilling.com/";
+
+                string baseUrl = "https://frbilling.com/";
+
+                //  Uri imageUri = new Uri(new Uri(baseUrl), imagePath);
+                //  string imageServerPath = imageUri.AbsoluteUri;
+
+                //string imageServerPath = Request.Url.GetLeftPart(UriPartial.Authority) + imagePath;
+                // string imageServerPath = "http://frbilling.com/BarcodeImages/" + imagePath;
+
+                string imageServerPath = Server.MapPath("~" + imagePath);
+
+
+                // Usage 
+                string data1 = getsingle; // Your barcode data
+                Image barcodeImage = GenerateBarcode(data1);
+
+                // Save the barcode image
+                // string imageServerPath = Server.MapPath("~" + imagePath);
+                barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
+
+                // Dispose of the image
+                barcodeImage.Dispose();
+
+                var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getsingle).FirstOrDefault();
+                if (getRecipt == null)
+                {
+                    BarcodeAndPath addBarcode = new BarcodeAndPath();
+                    addBarcode.ConsignmentNo = getsingle;
+                    addBarcode.FilePath = baseUrl + imagePath;
+                    db.BarcodeAndPaths.Add(addBarcode);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    getRecipt.FilePath = baseUrl + imagePath;
+                    db.SaveChanges();
+                }
+                /////////generete barcode//////////////////
+            }
+            LocalReport lr = new LocalReport();
+
+            var getFinalList = db.BarcodeAndPaths.Where(x => consignmentNumbers.Contains(x.ConsignmentNo)).ToList();
+
+            //  var getRD = db.Receipt_details.Where(x => x.Receipt_Id > 37509).ToList();
+
+            ////////////////////////////logic of 16 barcode on one page///////////////////////////////////////////////
+
+            // Example 1
+            int total = getFinalList.Count();
+
+            // Calculate the result and round up to the nearest integer
+            int result1 = (int)Math.Ceiling((double)total / 16);
+
+            // Multiply the rounded result by 8
+            int getFirstList = result1 * 8;
+            int secondList = (total - getFirstList);
+
+            var Recieptdetails1 = getFinalList.Take(getFirstList).ToList();
+
+            var Recieptdetails2 = getFinalList.Select(x => new { ConsignmentNo = x.ConsignmentNo, FilePath = x.FilePath }).Skip(getFirstList).Take(secondList).ToList();
+
+
+            ////////////////////////////logic of 16 barcode on one page/////////////////////////////////////////////
+            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintBarCodeMultiple.rdlc");
+
+            // Set the ReportPath property
+            lr.ReportPath = path;
+
+            ReportDataSource rd = new ReportDataSource("BarcodeMain", Recieptdetails1);
+
+            ReportDataSource rd2 = new ReportDataSource("BarCode", Recieptdetails2);
+
+            lr.DataSources.Add(rd);
+            lr.DataSources.Add(rd2);
+
+            lr.EnableExternalImages = true;
+
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+            string fileNameExte;
+
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                "<PageHeight>11in</PageHeight>" +
+                "<Margintop>0.1in</Margintop>" +
+                "<Marginleft>0.1in</Marginleft>" +
+                "<Marginright>0.1in</Marginright>" +
+                "<Marginbottom>0.5in</Marginbottom>" +
+                "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderByte;
+
+            renderByte = lr.Render
+            (
+                reportType,
+                deviceInfo,
+                out mimeType,
+                out encoding,
+                out fileNameExte,
+                out streams,
+                out warnings
+            );
+
+            var namefile = "BulkBarcodes-" + DateTime.Now.Ticks;
+
+            string savePath = Server.MapPath("~/PrintMulConsignmentPDF/" + namefile + ".pdf");
+
+            using (FileStream stream = new FileStream(savePath, FileMode.Create))
+            {
+                stream.Write(renderByte, 0, renderByte.Length);
+            }
+
+            return namefile + ".pdf";
+
+        }
+
+
+        public Image GenerateBarcode(string data)
+        {
+            var writer = new BarcodeWriter
+            {
+                Format = BarcodeFormat.CODE_128,
+                Options = new ZXing.Common.EncodingOptions
+                {
+                    Height = 100,
+                    Width = 300,
+                    PureBarcode = true
+                }
+            };
+
+            return writer.Write(data);
+        }
+
+        public ActionResult OpenPdfInNewTab(string pdfFileName)
+        {
+            if (!string.IsNullOrEmpty(pdfFileName))
+            {
+                // Get the full path to the generated PDF file
+                string filePath = Server.MapPath("~/PrintMulConsignmentPDF/" + pdfFileName);
+
+                // Return the PDF file with the appropriate content type
+                return File(filePath, "application/pdf", pdfFileName);
+            }
+
+            // Handle the situation where the PDF file name is not provided
+            TempData["error"] = "PDF file not found";
+            return View();
+        }
+
+
+        static List<string> GenerateSeries(string startValue, string endValue)
+        {
+            List<string> series = new List<string>();
+
+            // Extract the prefix and numeric part from the start and end values
+            string prefix = "";
+            int startNumber = ExtractNumericPart(startValue, out prefix);
+            int endNumber = ExtractNumericPart(endValue, out _);
+
+            // Generate the series
+            for (int i = startNumber; i <= endNumber; i++)
+            {
+                series.Add(prefix + i.ToString());
+            }
+
+            return series;
+        }
+
+        static int ExtractNumericPart(string value, out string prefix)
+        {
+            int numericPartStartIndex = 0;
+
+            // Find the index where the numeric part starts
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (char.IsDigit(value[i]))
+                {
+                    numericPartStartIndex = i;
+                    break;
+                }
+            }
+
+            // Extract the prefix
+            prefix = value.Substring(0, numericPartStartIndex);
+
+            // Extract the numeric part and parse it
+            int numericPart = int.Parse(value.Substring(numericPartStartIndex));
+
+            return numericPart;
+        }
 
     }
 }

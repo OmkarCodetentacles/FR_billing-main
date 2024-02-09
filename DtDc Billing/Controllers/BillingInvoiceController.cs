@@ -16,7 +16,7 @@ namespace EmpBilling.Controllers
     [SessionUserModule]
     public class BillingInvoiceController : Controller
     {
-        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Invoice
 
         public ActionResult ViewInvoice(string Fromdatetime = null, string ToDatetime = null)
@@ -120,8 +120,6 @@ namespace EmpBilling.Controllers
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
-
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno);
 

@@ -22,8 +22,8 @@
             </Paragraphs>
             <rd:DefaultName>Textbox14</rd:DefaultName>
             <Top>0.01667in</Top>
-            <Height>0.76527in</Height>
-            <Width>3.83849in</Width>
+            <Height>0.18402in</Height>
+            <Width>0.88888in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -36,17 +36,13 @@
           </Textbox>
           <Image Name="Image4">
             <Source>External</Source>
-            <Value>=First(Fields!StampFilePath.Value, "franchisee")</Value>
-            <MIMEType>image/png</MIMEType>
+            <Value>=First(Fields!StampFilePath.Value, "franchisees")</Value>
             <Sizing>Fit</Sizing>
             <Top>0.07361in</Top>
             <Left>1.25261in</Left>
-            <Height>0.58333in</Height>
+            <Height>0.70833in</Height>
             <Width>1.37754in</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -57,7 +53,7 @@
         <KeepTogether>true</KeepTogether>
         <Top>8.57799in</Top>
         <Left>4.1123in</Left>
-        <Height>0.78194in</Height>
+        <Height>0.95549in</Height>
         <Width>3.83849in</Width>
         <Style>
           <Border>
@@ -1116,7 +1112,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Amount.Value+(iif(Fields!Risksurcharge.Value Is Nothing, "0",Fields!Risksurcharge.Value))+(IIf(Fields!loadingcharge.Value Is Nothing,"0",Fields!loadingcharge.Value))</Value>
+                              <Value>=Fields!Amount.Value+Fields!Risksurcharge.Value+Fields!loadingcharge.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <Format>0.00;(0.00)</Format>
@@ -1624,7 +1620,7 @@
         <PageBreak>
           <BreakLocation>Start</BreakLocation>
         </PageBreak>
-        <Top>9.4016in</Top>
+        <Top>9.62723in</Top>
         <Left>0.23655in</Left>
         <Height>0.75812in</Height>
         <Width>7.7144in</Width>
@@ -2561,7 +2557,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!Franchisee_Name.Value, "franchisee")</Value>
+                <Value>=First(Fields!Franchisee_Name.Value, "franchisees")</Value>
                 <Style>
                   <FontSize>9pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -2594,7 +2590,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!F_Address.Value, "franchisee")</Value>
+                <Value>=First(Fields!F_Address.Value, "franchisees")</Value>
                 <Style>
                   <FontSize>8pt</FontSize>
                 </Style>
@@ -2632,7 +2628,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>=First(Fields!GstNo.Value, "franchisee")</Value>
+                <Value>=First(Fields!GstNo.Value, "franchisees")</Value>
                 <Style>
                   <FontSize>8pt</FontSize>
                 </Style>
@@ -2703,7 +2699,7 @@
                         </Style>
                       </TextRun>
                       <TextRun>
-                        <Value>=First(Fields!Pan_No.Value, "franchisee")</Value>
+                        <Value>=First(Fields!Pan_No.Value, "franchisees")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
                         </Style>
@@ -2739,7 +2735,7 @@
                         </Style>
                       </TextRun>
                       <TextRun>
-                        <Value>=First(Fields!GstNo.Value, "franchisee")</Value>
+                        <Value>=First(Fields!GstNo.Value, "franchisees")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
                         </Style>
@@ -2953,7 +2949,7 @@ within Seven days from the receipt of the invoice.</Value>
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>="4 . 	Payment Should be made ONLY by crossed cheque or DD in favour  '"&amp; First(Fields!Franchisee_Name.Value, "franchisee") &amp;"' after obtaining money receipt positively"</Value>
+                        <Value>="4 . 	Payment Should be made ONLY by crossed cheque or DD in favour  '"&amp; First(Fields!Franchisee_Name.Value, "franchisees") &amp;"' after obtaining money receipt positively"</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
                         </Style>
@@ -3066,7 +3062,7 @@ within Seven days from the receipt of the invoice.</Value>
                     <Style />
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!AccountName.Value, "franchisee")</Value>
+                    <Value>=First(Fields!AccountName.Value, "franchisees")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3087,7 +3083,7 @@ within Seven days from the receipt of the invoice.</Value>
                     <Style />
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!Bankname.Value, "franchisee")</Value>
+                    <Value>=First(Fields!Bankname.Value, "franchisees")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3108,7 +3104,7 @@ within Seven days from the receipt of the invoice.</Value>
                     <Style />
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!Accountno.Value, "franchisee")</Value>
+                    <Value>=First(Fields!Accountno.Value, "franchisees")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3129,7 +3125,7 @@ within Seven days from the receipt of the invoice.</Value>
                     <Style />
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!IFSCcode.Value, "franchisee")</Value>
+                    <Value>=First(Fields!IFSCcode.Value, "franchisees")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3150,7 +3146,7 @@ within Seven days from the receipt of the invoice.</Value>
                     <Style />
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!Branch.Value, "franchisee")</Value>
+                    <Value>=First(Fields!Branch.Value, "franchisees")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3245,7 +3241,7 @@ within Seven days from the receipt of the invoice.</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!Franchisee_Name.Value, "franchisee")</Value>
+                <Value>=First(Fields!Franchisee_Name.Value, "franchisees")</Value>
                 <Style>
                   <Color>White</Color>
                 </Style>
@@ -3377,7 +3373,7 @@ within Seven days from the receipt of the invoice.</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!Branch_Area.Value, "franchisee")</Value>
+                <Value>=First(Fields!Branch_Area.Value, "franchisees")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -3903,7 +3899,7 @@ within Seven days from the receipt of the invoice.</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!Franchisee_Name.Value, "franchisee")</Value>
+                <Value>=First(Fields!Franchisee_Name.Value, "franchisees")</Value>
                 <Style>
                   <Color>White</Color>
                 </Style>
@@ -4027,7 +4023,7 @@ Received Date</Value>
         <rd:DefaultName>Textbox14</rd:DefaultName>
         <Top>8.57799in</Top>
         <Left>0.2459in</Left>
-        <Height>0.78194in</Height>
+        <Height>0.95549in</Height>
         <Width>3.86803in</Width>
         <ZIndex>31</ZIndex>
         <Style>
@@ -4114,6 +4110,21 @@ Received Date</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Image Name="Image2">
+        <Source>Embedded</Source>
+        <Value>DTDC</Value>
+        <Sizing>Fit</Sizing>
+        <Top>0.26458in</Top>
+        <Left>5.75303in</Left>
+        <Height>0.59027in</Height>
+        <Width>2.1884in</Width>
+        <ZIndex>34</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
       <Textbox Name="Textbox23">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -4138,7 +4149,7 @@ Received Date</Value>
         <Left>3.46441in</Left>
         <Height>0.41667in</Height>
         <Width>1.53677in</Width>
-        <ZIndex>34</ZIndex>
+        <ZIndex>35</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -4149,30 +4160,14 @@ Received Date</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Image Name="Image2">
-        <Source>External</Source>
-        <Value>=First(Fields!LogoFilePath.Value, "franchisee")</Value>
-        <MIMEType>image/png</MIMEType>
-        <Sizing>Fit</Sizing>
-        <Top>0.26458in</Top>
-        <Left>5.86656in</Left>
-        <Height>0.50693in</Height>
-        <Width>2.08423in</Width>
-        <ZIndex>35</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-        </Style>
-      </Image>
     </ReportItems>
-    <Height>10.45827in</Height>
+    <Height>10.95827in</Height>
     <Style />
   </Body>
   <Width>8.12785in</Width>
   <Page>
     <PageFooter>
-      <Height>0.49881in</Height>
+      <Height>0.81131in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -4532,7 +4527,7 @@ Received Date</Value>
         <rd:TableAdapterName>TransactionViewTableAdapter</rd:TableAdapterName>
       </rd:DataSetInfo>
     </DataSet>
-    <DataSet Name="franchisee">
+    <DataSet Name="franchisees">
       <Query>
         <DataSourceName>FRdeatils</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
@@ -5054,21 +5049,6 @@ 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</ImageData>
-    </EmbeddedImage>
-    <EmbeddedImage Name="Dtdclogo">
-      <MIMEType>image/png</MIMEType>
-      <ImageData>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</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>

@@ -11,12 +11,15 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Company
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Company()
         {
+            this.Dtdc_Ecommerce = new HashSet<Dtdc_Ecommerce>();
+            this.Dtdc_Ecommerce1 = new HashSet<Dtdc_Ecommerce>();
             this.Nondoxes = new HashSet<Nondox>();
             this.Nondoxes1 = new HashSet<Nondox>();
             this.Nondoxes2 = new HashSet<Nondox>();
@@ -32,10 +35,13 @@ namespace DtDc_Billing.Entity_FR
             this.express_cargo = new HashSet<express_cargo>();
             this.Transactions = new HashSet<Transaction>();
         }
-    
+
+        [Required]
         public string Company_Id { get; set; }
         public int c_id { get; set; }
+        [Required]
         public Nullable<long> Phone { get; set; }
+        [Required]
         public string Email { get; set; }
         public Nullable<double> Insurance { get; set; }
         public Nullable<double> Minimum_Risk_Charge { get; set; }
@@ -45,7 +51,9 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> Cod_Charge { get; set; }
         public Nullable<double> Gec_Fuel_Sur_Charge { get; set; }
         public string Pf_code { get; set; }
+        [Required]
         public string Company_Address { get; set; }
+        [Required]
         public string Company_Name { get; set; }
         public Nullable<System.DateTime> Datetime_Comp { get; set; }
         public string Gst_No { get; set; }
@@ -61,6 +69,10 @@ namespace DtDc_Billing.Entity_FR
         public string Username { get; set; }
         public Nullable<double> G_Docket { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dtdc_Ecommerce> Dtdc_Ecommerce { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dtdc_Ecommerce> Dtdc_Ecommerce1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nondox> Nondoxes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

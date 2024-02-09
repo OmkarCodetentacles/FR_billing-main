@@ -10,7 +10,7 @@ namespace DtDc_Billing.Controllers
 {
     public class LoginController : Controller
     {
-        private db_a92afa_frbillingEntities1 db = new db_a92afa_frbillingEntities1();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Login
         public ActionResult Login()
         {            
