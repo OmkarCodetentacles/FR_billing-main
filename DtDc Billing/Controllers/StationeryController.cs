@@ -637,7 +637,7 @@ Select(e => new
             if (!string.IsNullOrEmpty(pdfFileName))
             {
                 // Redirect to a new action that will open the PDF in a new tab
-                return RedirectToAction("OpenPdfInNewTab", new { pdfFileName });
+                return RedirectToAction("OpenPdfInNewTab", "AdminCashBooking", new { pdfFileName });
             }
 
             return View();

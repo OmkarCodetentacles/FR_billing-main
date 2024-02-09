@@ -35,7 +35,7 @@
                     <div class="col-sm-12">
                         @if (ViewBag.success != null)
                         {
-                            successMessage = "Invoice Added SuccessFully";
+                            successMessage =ViewBag.success as string;
                         }
 
 
@@ -1076,13 +1076,24 @@ $("#Customer_Id").autocomplete({
 {
     <script>
         var print = '@ViewBag.pdf';
-        $("#overlayBlock").show();
+        $("#overlayBlock").hide();
 
-    if (print == "True") {
-        console.log("print value:", print);
+        if (print == true) {
+            var filePath = '@ViewBag.savePath';
+            alert(filePath)
+            var link = document.createElement('a');
+            link.href = filePath;
+            link.target = '_blank';
+            link.download = filePath;
+
+            // Trigger a click on the anchor element
+            link.click();
+        }
+     
         var myParamether = '@ViewBag.invoiceno';
-        $.get("/Invoice/SavepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
+            $.get("/Invoice/DownloadByInvNo", { invoiceno: myParamether }, function (data) {
+                alert(data)
+            $('#saveinv').attr('href',  data);
 
             document.getElementById('saveinv').click();
             $("#overlayBlock").hide();
@@ -1090,7 +1101,7 @@ $("#Customer_Id").autocomplete({
 
 
         });
-}
+
     </script>
 }
 <a id="saveinv" style="" href="" download>

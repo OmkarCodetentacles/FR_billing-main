@@ -1,0 +1,207 @@
+﻿@model string
+@{
+    ViewBag.Title = "GetConsignmentInfo";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<!-- jQuery 3.x -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+
+    #viewDRSImage, #podImgLink, #viewPOD, #viewSignature, #linkId, #viewImage, #mailIDput {
+        display: none;
+    }
+
+    .main-footer {
+        display: none;
+    }
+
+    img {
+        display: none;
+    }
+
+    .widget-header_new {
+        background: #808080 repeat scroll 0 0 !important;
+        border-top: 4px solid #dde2e6 !important;
+    }
+
+    .h3 {
+        background-color: gray;
+        color: blueviolet;
+    }
+    /* .white_style{
+        display:none
+    }*/
+</style>
+
+@*@Html.Partial("GetConsignmentDetails", Model)*@
+
+<div class="content-wrapper">
+    <div class="box" style="padding: 16px 15px">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.Raw(Model)
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
+    </div>
+</div>
+
+<table id="consignmentTable">
+    <thead>
+        <tr id="tableHeaders">
+            <th>Sr No</th>
+            <th>Date</th>
+            <th>Delivery Status</th>
+            <th>Activity Type</th>
+            <th>From</th>
+            <th>Origin</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tbody>
+        <!-- Table body will be populated dynamically -->
+    </tbody>
+</table>
+
+
+<script>
+    function removeDuplicateScriptsAndStyles() {
+        // Create arrays to store unique script and link sources
+        var scriptSources = [];
+        var linkSources = [];
+
+        // Iterate through all script elements
+        var scriptElements = document.getElementsByTagName('script');
+        for (var i = 0; i < scriptElements.length; i++) {
+            var src = scriptElements[i].getAttribute('src');
+            if (src && scriptSources.indexOf(src) === -1) {
+                // Script source is unique
+                scriptSources.push(src);
+            } else {
+                // Duplicate script found, remove it
+                  var consignmentno = '@ViewBag.Consignmentno';
+                console.log("Duplicate ===removeDuplicateScriptsAndStyles==consignmentno==" + consignmentno);
+                scriptElements[i].parentNode.removeChild(scriptElements[i]);
+            }
+        }
+
+        // Iterate through all link elements
+        var linkElements = document.getElementsByTagName('link');
+        for (var j = 0; j < linkElements.length; j++) {
+            var href = linkElements[j].getAttribute('href');
+            if (href && linkSources.indexOf(href) === -1) {
+                // Link source is unique
+                linkSources.push(href);
+            } else {
+                // Duplicate link found, remove it
+                linkElements[j].parentNode.removeChild(linkElements[j]);
+            }
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        $("#consignmentTable").hide();
+        removeDuplicateScriptsAndStyles();
+
+        changeStylesOnLoad();
+        //$("#podImgLink").hide();
+        //$("#viewPOD").hide();
+        //$("#viewSignature").hide();
+        //$("#viewImage").hide();
+        //$("#linkId").hide();
+
+    });
+
+    function changeStylesOnLoad() {
+
+        var widgetHeader = document.querySelector('.widget-header_new');
+        var white_style = document.querySelector('.white_style');
+        var colMd12Elements = document.querySelector('.main-inner');
+        var colmain = document.querySelector('.main');
+        var topValignTds = document.querySelectorAll('td[valign="top"]');
+
+        topValignTds.forEach(function (td) {
+            td.style.textAlign = "center"; // You can set other values like "left", "right", or "justify"
+        });
+
+        if (widgetHeader) {
+
+            widgetHeader.style.background = '#808080 none repeat scroll 0 0 !important';
+            widgetHeader.style.borderTop = '0px solid #dde2e6 !important';
+
+
+        }
+    }
+
+</script>
+<script>
+    var jsonData = [];
+        function GetConsignmentDetails() {
+            var consignmentno = '@ViewBag.Consignmentno';
+            console.log("consignmentno==" + consignmentno);
+
+            jQuery.noConflict();
+
+            // Use jQuery instead of $
+            jQuery.ajax({
+                type: 'post',
+                dataType: 'json',
+                url:'/Admin/GetConsignmentInfoInDeatils',
+                data: { ConsignmnetNo:consignmentno },
+                success: function (data) {
+                    // Handle the success response
+                    alert("Done")
+
+                    debugger;
+                    jsonData = data;
+                    renderTable();
+                },
+                error: function (xhr, status, error) {
+                    alert(error)
+                }
+            });
+    }
+
+    function renderTable() {
+        var tableBody = $("#consignmentTable tbody");
+
+        v
+        $('#consignmentTable tbody').empty();
+        var rows = "";
+
+        $.each(filteredData, function (i, item) {
+            rows += "<tr>"
+                + "<td>" + (i + 1) + "</td>"
+                + "<td>" + item.date + "</td>"
+
+                + "<td>" + item.activityType + "</td>"
+                + "<td>" + item.deliveryStatus + "</td>"
+
+                + "</tr>";
+        });
+        $('#consignmentTable tbody').append(rows);
+
+            //debugger;
+            //$.forEach(jsonData, function (index, item) {
+            //    var row = '<tr>';
+            //    $.forEach(item, function (key, value) {
+            //        row += '<td>' + value + '</td>';
+            //    });
+            //    row += '</tr>';
+            //    tableBody.append(row);
+            //})
+
+        }
+    }
+
+</script>

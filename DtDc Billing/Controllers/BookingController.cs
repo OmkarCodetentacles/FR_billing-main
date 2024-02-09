@@ -655,8 +655,9 @@ namespace DtDc_Billing.Controllers
             return View(list);
         }
 
+
         [HttpPost]
-        public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid,string Submit)
+        public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid, string Submit)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -716,15 +717,17 @@ namespace DtDc_Billing.Controllers
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge
 
-                }).OrderBy(d => d.Consignment_no).ToList();
+                }).OrderByDescending(d => d.booking_date).ToList();
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
                 if (Submit == "Export to Excel")
                 {
-                    var import = db.TransactionViews.ToList().Where(m=>m.Pf_Code==strpf).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).ToList();
+                    //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                    //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
+                    //    .OrderByDescending(m=>m.BookingDate).ToList();
 
-                    ExportToExcelAll.ExportToExcelAdmin(import);
+                    ExportToExcelAll.ExportToExcelAdmin(obj);
                 }
 
 
@@ -752,29 +755,29 @@ namespace DtDc_Billing.Controllers
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge
 
-                }).OrderBy(d => d.Consignment_no).ToList();
+                }).OrderByDescending(d => d.booking_date).ToList();
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
                 if (Submit == "Export to Excel")
                 {
-                    var import = db.TransactionViews.Where(m =>
-                    (m.Customer_Id == Custid)
-                        ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).ToList();
+                    //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
+                    //(m.Customer_Id == null || m.Customer_Id == Custid)
+                    //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
 
 
-                    ExportToExcelAll.ExportToExcelAdmin(import);
+                    ExportToExcelAll.ExportToExcelAdmin(obj);
                 }
 
                 return View(obj);
             }
 
-           
-
-            
 
 
-          
+
+
+
+
         }
 
 
@@ -786,9 +789,9 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        public ActionResult Nobookinglist(string Fromdatetime, string ToDatetime, string PfCode,string Submit)
+        public ActionResult Nobookinglist(string Fromdatetime, string ToDatetime, string PfCode, string Submit)
         {
-            PfCode=Request.Cookies["Cookies"]["AdminValue"].ToString();
+            PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -822,26 +825,25 @@ namespace DtDc_Billing.Controllers
             }
 
 
-         
+
 
             List<Transaction> transactions =
                 db.Transactions.Where(m =>
-               (m.Pf_Code == PfCode  || PfCode == "") 
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
+               (m.Pf_Code == PfCode) && (m.Customer_Id == null || m.Customer_Id == "")
+                    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
-            
+
             if (Submit == "Export to Excel")
             {
-                var import = db.Transactions.Where(m =>
-                (m.Pf_Code == PfCode || PfCode == "")
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight=x.Actual_weight, x.Pincode, x.Amount,BookingDate= x.tembookingdate }).ToList();
-                ExportToExcelAll.ExportToExcelAdmin(import);
+                //var import = db.Transactions.Where(m =>
+                //(m.Pf_Code == PfCode)&& (m.Customer_Id == null || m.Customer_Id == "")
+                //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight=x.Actual_weight, x.Pincode, x.Amount,BookingDate= x.tembookingdate }).ToList();
+                ExportToExcelAll.ExportToExcelAdmin(transactions);
             }
 
 
             return View(transactions);
         }
-
         public ActionResult weightdiff_Partial()
         {
             

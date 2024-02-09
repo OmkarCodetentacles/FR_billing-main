@@ -40,7 +40,7 @@
             }
         }, 10000); // Use 5000 milliseconds (5 seconds) instead of 10000
 
-          @*var alertColor = '@((Model.Item1.ToLower() != "success") ? "red" : "")';*@
+          var alertColor = '@((Model.Item1.ToLower() != "success") ? "red" : "")';
         $('strong').css('color', alertColor);
 
         // Output the color applied to the alert for debugging
@@ -50,16 +50,3 @@
   
 }
 
-@*@{
-        var successMessage = TempData["Success1"] as string;
-        var errorMessage = TempData["Error1"] as string;
-    }
-
-    @if (!string.IsNullOrEmpty(successMessage))
-    {
-        @Html.Partial("_AlertPartial", new Tuple<string, string>("success", successMessage))
-    }
-    else if (!string.IsNullOrEmpty(errorMessage))
-    {
-        @Html.Partial("_AlertPartial", new Tuple<string, string>("danger", errorMessage))
-    }*@

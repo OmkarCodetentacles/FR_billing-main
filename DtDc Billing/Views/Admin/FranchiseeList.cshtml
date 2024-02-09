@@ -25,6 +25,20 @@
 
     <div class="row">
         <div class="col-md-12 ">
+            @{
+                var successMessage = TempData["Success1"] as string;
+                var errorMessage = TempData["Error"] as string;
+            }
+
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            }
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+            }
             @if (TempData["errormsg"] != null && TempData["errormsg"] != "")
             {
                 <div class="alert alert-danger">
