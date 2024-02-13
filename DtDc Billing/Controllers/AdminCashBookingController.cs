@@ -143,7 +143,7 @@ namespace DtDc_Billing.Controllers
                
                 db.Receipt_details.Add(Recp_De);
                 db.SaveChanges();
-
+                ViewBag.success = "Consignment Booked SuccessFully!!!";
                 if (Submit == "Sms")
                 {
 
@@ -155,11 +155,17 @@ namespace DtDc_Billing.Controllers
                 if (Submit == "Print")
                 {
                     var pdfFileName = PrintMethod(reciept_Details.Consignment_No);
-
+                    ViewBag.Consignmetno = reciept_Details.Consignment_No;
+              
                     if (!string.IsNullOrEmpty(pdfFileName))
                     {
+                        ViewBag.pdf = true;
+
+                        ViewBag.PdfFileName = pdfFileName.Replace("/","-");
+                        ViewBag.filePath = Server.MapPath("~/ConsignmentPDF/" + pdfFileName);
+
                         // Redirect to a new action that will open the PDF in a new tab
-                        return RedirectToAction("OpenPdfInNewTab", new { pdfFileName });
+                        //return RedirectToAction("OpenPdfInNewTab", new { pdfFileName });
                     }
                 }
 
@@ -271,12 +277,28 @@ namespace DtDc_Billing.Controllers
                 string filePath = Server.MapPath("~/ConsignmentPDF/" + pdfFileName);
 
                 // Return the PDF file with the appropriate content type
-                return File(filePath, "application/pdf", pdfFileName);
+                // return File(filePath, "application/pdf", pdfFileName);
+                // string savePath = Server.MapPath("~/PDF/" + pdffileName);
+             
+
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    // Return the file path instead of FileResult
+                   // return "Recieptdetails-" + Recieptdetails.FirstOrDefault().Consignment_No + ".pdf";
+                    return Content(filePath);
+                }
+                else
+                {
+                    return Content(""); // or return HttpNotFound();
+                }
+
+
             }
 
             // Handle the situation where the PDF file name is not provided
-            TempData["error"] = "PDF file not found";
-            return View();
+
+            return RedirectToAction("Printreceipt");
         }
 
         public string Printcashcounter(string myParameter)
@@ -413,7 +435,23 @@ namespace DtDc_Billing.Controllers
             return Redirect(savePath);
 
         }
+        public ActionResult DownloadReceipts(string consignmentno)
+        {
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            var Receipts = db.Receipt_details.Where(m => m.Consignment_No == consignmentno && m.Pf_Code == PfCode).FirstOrDefault();
+            if (Receipts != null)
+            {
+                
+                string savePath = "https://frbilling.com/ConsignmentPDF/Recieptdetails-" + Receipts.Consignment_No.Replace("/", "-") + ".pdf";
+
+                return Redirect(savePath);
+            }
+
+            return RedirectToAction("creditorsreport");
+            
+
+        }
 
         public ActionResult SenderPhoneAutocomplete(string enterValue)
 

@@ -35,7 +35,7 @@
                     <div class="col-sm-12">
                         @if (ViewBag.success != null)
                         {
-                            successMessage = "Invoice Added SuccessFully";
+                            successMessage =ViewBag.success as string;
                         }
 
 
@@ -418,7 +418,7 @@
 
                                         <!-- /.box-body -->
                                         <div style="padding:25px">
-                                            <button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>
+                                            @*<button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>*@
                                             <button type="submit" name="submit" value="Email" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From Email</button>
                                             @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
                                             <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary" style="margin-top:10px">Generate</button>
@@ -1076,23 +1076,36 @@ $("#Customer_Id").autocomplete({
 {
     <script>
         var print = '@ViewBag.pdf';
-        $("#overlayBlock").show();
+        $("#overlayBlock").hide();
 
-    if (print == "True") {
-        console.log("print value:", print);
+        @*if (print == true) {
+            var filePath = '@ViewBag.savePath';
+     
+            window.location.href = filePath;
+        }*@
+     
         var myParamether = '@ViewBag.invoiceno';
-        $.get("/Invoice/SavepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
-
-            document.getElementById('saveinv').click();
-            $("#overlayBlock").hide();
-
-
+        $.get("/Invoice/DownloadByInvNo", { invoiceno: myParamether }, function (data) {
+            console.log(data)
+            if (data!=null) {
+                // Create a hidden link and trigger a click to initiate download
+                var link = document.createElement('a');
+                link.href = data;
+                link.target = '_blank';
+                link.download = myParamether + ".pdf";
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                // Handle the case where the file is not found
+                console.log("File not found.");
+            }
 
         });
-}
+
     </script>
 }
-<a id="saveinv" style="" href="" download>
+<a id="saveinv" style="" href=""  target="_blank"  download>
 </a>
 

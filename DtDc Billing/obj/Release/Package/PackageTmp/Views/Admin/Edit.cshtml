@@ -12,7 +12,7 @@
 </script>
 
 
-@using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }, new { enctype = "multipart/form-data" }))
+@using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp", OnBegin = "onBegin", OnComplete = "onComplete" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <input type="hidden" name="StampFilePath" value="@Model.StampFilePath">
@@ -21,7 +21,13 @@
         <div class="" style="padding: 0px 15px">
             <div class="box box-info" style="border:1px solid #dbdbdb !important;background:white ">
                 <div class="box-header with-border" style="background:none; border:none">
-                    <h4>Edit Franchisee</h4>
+                    <h4>
+                        Edit Franchisee
+                        <a href="https://www.youtube.com/watch?v=VHgLZha2hOs&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=2" target="_blank" data-toggle="tooltip" title="Click to view more info">
+                            @*<i class="fa fa-eye"></i>*@
+                            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                        </a>
+                    </h4>
                 </div>
                 <div class="" style="padding:20px">
                     <div class="row">
@@ -410,7 +416,32 @@
 
 }
 
+
+
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
+
 <script>
+
+
+
+
      // Show loader if TempData flag is set
 
     function showLoader() {

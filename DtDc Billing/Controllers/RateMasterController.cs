@@ -373,7 +373,43 @@ namespace DtDc_Billing.Controllers
 
             TempData["CompanyId"] = Id;
             var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
-            
+
+            var prio = db.Priorities.Where(m => m.Company_id == Id).ToList();
+
+            if(prio.Count() == 0)
+            {
+                foreach (var i in secotrs)
+                {
+                    Priority pr = new Priority();
+                    pr.prislab1 = 1;
+                    pr.prislab2 = 1;
+                    pr.prislab3 = 1;
+                    pr.prislab4  = 1;
+
+                    pr.priupto1 = 1;
+                    pr.priupto2 = 1;
+                    pr.priupto3 = 1;
+                    pr.priupto4 = 1;
+
+                    pr.prinoofslab = 2;
+
+                    pr.Company_id = Id;
+                    pr.Sector_Id = i.Sector_Id;
+                    db.Priorities.Add(pr);
+                    db.SaveChanges();
+
+
+                    i.BillPriority = true;
+                    i.BillNonAir = true;
+                    i.BillNonSur = true;
+                    i.BillEcomPrio = true;
+                    i.BillEcomGE = true;
+                    db.Entry(i).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
+            }
+
             var ecom = db.Dtdc_Ecommerce.Where(m => m.Company_id == Id).ToList();
 
             if (ecom.Count == 0)
@@ -502,10 +538,10 @@ namespace DtDc_Billing.Controllers
 
                
 
-                var basicdox = db.Ratems.Where(m => m.Company_id == "BASIC_TS").ToArray();
-                var basicnon = db.Nondoxes.Where(m => m.Company_id == "BASIC_TS").ToArray();
-                var express = db.express_cargo.Where(m => m.Company_id == "BASIC_TS").ToArray();
-                var prio = db.Priorities.Where(m => m.Company_id == "BASIC_TS").ToArray();
+                //var basicdox = db.Ratems.Where(m => m.Company_id == "BASIC_TS").ToArray();
+                //var basicnon = db.Nondoxes.Where(m => m.Company_id == "BASIC_TS").ToArray();
+                //var express = db.express_cargo.Where(m => m.Company_id == "BASIC_TS").ToArray();
+                //var prio = db.Priorities.Where(m => m.Company_id == "BASIC_TS").ToArray();
                 int j = 0;
 
                 foreach (var i in secotrs)
@@ -520,61 +556,61 @@ namespace DtDc_Billing.Controllers
                     dox.Sector_Id = i.Sector_Id;
                     dox.NoOfSlab = 2;
 
-                    dox.slab1 = basicdox[j].slab1;
-                    dox.slab2 = basicdox[j].slab2;
-                    dox.slab3 = basicdox[j].slab3;
-                    dox.slab4 = basicdox[j].slab4;
+                    dox.slab1 = 1;
+                    dox.slab2 = 1;
+                    dox.slab3 = 1;
+                    dox.slab4 = 1;
 
-                    dox.Uptosl1 = basicdox[j].Uptosl1;
-                    dox.Uptosl2 = basicdox[j].Uptosl2;
-                    dox.Uptosl3 = basicdox[j].Uptosl3;
-                    dox.Uptosl4 = basicdox[j].Uptosl4;
+                    dox.Uptosl1 =1;
+                    dox.Uptosl2 = 1;
+                    dox.Uptosl3 =1;
+                    dox.Uptosl4 = 1;
 
                     ndox.Company_id = empmodel.Company_Id;
                     ndox.Sector_Id = i.Sector_Id;
                     ndox.NoOfSlabN = 2;
                     ndox.NoOfSlabS = 2;
 
-                    ndox.Aslab1 = basicnon[j].Aslab1;
-                    ndox.Aslab2 = basicnon[j].Aslab2;
-                    ndox.Aslab3 = basicnon[j].Aslab3;
-                    ndox.Aslab4 = basicnon[j].Aslab4;
+                    ndox.Aslab1 = 1;
+                    ndox.Aslab2 =1;
+                    ndox.Aslab3 = 1;
+                    ndox.Aslab4 = 1;
 
 
-                    ndox.Sslab1 = basicnon[j].Sslab1;
-                    ndox.Sslab2 = basicnon[j].Sslab2;
-                    ndox.Sslab3 = basicnon[j].Sslab3;
-                    ndox.Sslab4 = basicnon[j].Sslab4;
+                    ndox.Sslab1 = 1;
+                    ndox.Sslab2 = 1;
+                    ndox.Sslab3 = 1;
+                    ndox.Sslab4 =1;
 
-                    ndox.AUptosl1 = basicnon[j].AUptosl1;
-                    ndox.AUptosl2 = basicnon[j].AUptosl2;
-                    ndox.AUptosl3 = basicnon[j].AUptosl3;
-                    ndox.AUptosl4 = basicnon[j].AUptosl4;
+                    ndox.AUptosl1 = 1;
+                    ndox.AUptosl2 = 1;
+                    ndox.AUptosl3 = 1;
+                    ndox.AUptosl4 =1;
 
-                    ndox.SUptosl1 = basicnon[j].SUptosl1;
-                    ndox.SUptosl2 = basicnon[j].SUptosl2;
-                    ndox.SUptosl3 = basicnon[j].SUptosl3;
-                    ndox.SUptosl4 = basicnon[j].SUptosl4;
+                    ndox.SUptosl1 =1;
+                    ndox.SUptosl2 =1;
+                    ndox.SUptosl3 = 1;
+                    ndox.SUptosl4 =1;
 
                     pri.Company_id = empmodel.Company_Id;
                     pri.Sector_Id = i.Sector_Id;
                     pri.prinoofslab = 2;
 
-                   pri.prislab1 = prio[j].prislab1;
-                   pri.prislab2 = prio[j].prislab2;
-                   pri.prislab3 = prio[j].prislab3;
-                  pri.prislab4 = prio[j].prislab4;
+                   pri.prislab1 = 1;
+                   pri.prislab2 =1;
+                   pri.prislab3 =1;
+                  pri.prislab4 = 1;
 
-                  pri.priupto1 = prio[j].priupto1;
-                  pri.priupto2 = prio[j].priupto2;
-                 pri.priupto3 = prio[j].priupto3;
-                 pri.priupto4 = prio[j].priupto4;
+                  pri.priupto1 =1;
+                  pri.priupto2 = 1;
+                 pri.priupto3 = 1;
+                 pri.priupto4 = 1;
 
                     cs.Company_id = empmodel.Company_Id;
                     cs.Sector_Id = i.Sector_Id;
 
-                    cs.Exslab1 = express[j].Exslab1;
-                    cs.Exslab2 = express[j].Exslab2;
+                    cs.Exslab1 = 1;
+                    cs.Exslab2 = 1;
 
                     db.Ratems.Add(dox);
                     db.Nondoxes.Add(ndox);

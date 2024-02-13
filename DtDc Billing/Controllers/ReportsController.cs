@@ -181,7 +181,7 @@ namespace DtDc_Billing.Controllers
                 Pf_Code = x.Pf_Code,
                 Datetime_Cons = x.Datetime_Cons,
                 Charges_Total = x.Charges_Total,         
-            }).ToList();
+            }).OrderByDescending(x=>x.Datetime_Cons).ToList();
 
             // ViewBag.Employees = new SelectList(db.Users.Take(0), "Name", "Name");
 
@@ -210,7 +210,7 @@ namespace DtDc_Billing.Controllers
 
             List<Receipt_details> rc = new List<Receipt_details>();
 
-            rc = db.Receipt_details.ToList();
+            rc = db.Receipt_details.OrderByDescending(x=>x.Datetime_Cons).ToList();
 
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
 
@@ -464,7 +464,7 @@ namespace DtDc_Billing.Controllers
             && m.Datetime_Cons.Value.Month == localTime.Month
             && m.Datetime_Cons.Value.Year == localTime.Year
             && m.Pf_Code == pfcode
-            ).ToList();
+            ).OrderByDescending(x=>x.Datetime_Cons).ToList();
 
 
 
@@ -2391,7 +2391,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                 Datetime_Cons = x.Datetime_Cons,
                 Charges_Total = x.Charges_Total,
                 Paid_Amount=x.Paid_Amount
-            }).ToList();
+            }).OrderByDescending(x=>x.Datetime_Cons).ToList();
 
            // List<Receipt_details> rc = new List<Receipt_details>();
 
@@ -2496,7 +2496,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                 ViewBag.sum = (from emp in rc
 
                                select emp.Charges_Total).Sum();
-                rc = rc.OrderBy(m => m.Datetime_Cons).ToList();
+                rc = rc.OrderByDescending(m => m.Datetime_Cons).ToList();
 
             }
 

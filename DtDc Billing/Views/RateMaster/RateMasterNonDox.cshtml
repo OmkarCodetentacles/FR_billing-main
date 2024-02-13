@@ -9,6 +9,14 @@
 <section>
 
     <div class="" style="padding: 20px; border: 1px solid #dddddd;">
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
         <div class="">
             <a href="https://www.youtube.com/watch?v=dc8VX6igwns&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=9"
                target="_blank"
@@ -21,14 +29,7 @@
             <div class="col-sm-12 text-center">
                 <h4>Air Rate Cargo</h4>
             </div>
-            @{
-                var successMessage = ViewBag.Message as string;
-            }
 
-            @if (!string.IsNullOrEmpty(successMessage))
-            {
-                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-            }
             @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2" }))
             {
 
@@ -243,20 +244,47 @@
                                     @Html.EditorFor(modelItem => item.Sslab4)
                                 </td>
                                 @*<td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Non_ID)
-                            </td>
-                            <td class="hidden">
-                                @Html.HiddenFor(modelItem => item.Sector_Id)
-                            </td>*@
+                    @Html.HiddenFor(modelItem => item.Non_ID)
+                </td>
+                <td class="hidden">
+                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                </td>*@
                             </tr>
                         }
+                        @foreach (var item in Model.Where(x => x.Sector.BillNonSur == false).ToList())
+                        {
+                            <tr>
+                                <td class="sectors">
+                                    @Html.HiddenFor(modelItem => item.Sector.Sector_Name)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelItem => item.Sslab1)
+                                </td>
+                                <td class="slab2Sirf">
+                                    @Html.HiddenFor(modelItem => item.Sslab2)
+                                </td>
+                                <td class="slab3Sirf">
+                                    @Html.HiddenFor(modelItem => item.Sslab3)
+                                </td>
+                                <td>
+                                    @Html.HiddenFor(modelItem => item.Sslab4)
+                                </td>
+                                @*<td class="hidden">
+                    @Html.HiddenFor(modelItem => item.Non_ID)
+                </td>
+                <td class="hidden">
+                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                </td>*@
+                            </tr>
+                        }
+
                     </tbody>
 
                 </table>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" />
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"  onclick="scrollToTop()"/>
                     </div>
 
                 </div>

@@ -55,7 +55,7 @@ namespace DtDc_Billing.Metadata_Classes
         public string Insurance { get; set; }
         [Display(Name = "Claimamount")]
         public string Claimamount { get; set; }
-        
+        public string Receiver { get; set; }
         public string Percentage { get; set; }
         public string calinsuranceamount { get; set; }
         public string remark { get; set; }

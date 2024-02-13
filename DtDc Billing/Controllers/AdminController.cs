@@ -162,7 +162,7 @@ namespace DtDc_Billing.Controllers
 
                 if (ObjData != null)
                 {
-                    if (ObjData.isPaid!=true)
+                    if (!ObjData.isPaid ?? false)
                     {
                         ModelState.AddModelError("LoginAuth", "Your account is not activated. Please feel free to contact us at +91 9209764995..");
                         return View();
@@ -257,6 +257,7 @@ namespace DtDc_Billing.Controllers
                                 if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
                                 {
                                     ObjData.IsRenewalEmail = "0";
+                                    ObjData.password = login.Password;
                                     db.Entry(ObjData).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }
@@ -2400,7 +2401,6 @@ namespace DtDc_Billing.Controllers
                 Reg.InvoiceStart = franchisee.InvoiceStart;
 
 
-
                 db.Entry(Reg).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -2534,6 +2534,10 @@ namespace DtDc_Billing.Controllers
             var data = (from d in db.Franchisees
                         where d.PF_Code == strpf
                         select d).FirstOrDefault();
+
+            ViewBag.logoImage = data.LogoFilePath;
+
+            ViewBag.stampImage = data.StampFilePath;
 
             FranchiseeModel Fr = new FranchiseeModel();
 
@@ -3211,6 +3215,9 @@ namespace DtDc_Billing.Controllers
                     register.referralby = userDetails.referral;
                     register.isEmailConfirmed = false;
                     register.emailOTP = "";
+                        register.isPaid=false;
+                        register.isEmailConfirmed = false;  
+                        register.isLoginConfirmed = false;
                         db.registrations.Add(register);
                         db.SaveChanges();
                         //Currenlty Return from Here Because of Mail Sending Problem
@@ -3720,6 +3727,7 @@ namespace DtDc_Billing.Controllers
                             {
                                 register.mobileNo = loginVerification.mobileNo;
                                 register.isLoginConfirmed = true;
+                                register.password = register.password;
                                 db.Entry(register).State = EntityState.Modified;
                                 db.SaveChanges();
                                 TempData["otpverify"] = "Login OTP Verify Successfully!!";

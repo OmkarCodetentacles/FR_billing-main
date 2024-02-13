@@ -35,7 +35,7 @@
                     <div class="col-sm-12">
                         @if (ViewBag.success != null)
                         {
-                            successMessage =ViewBag.success as string;
+                            successMessage = ViewBag.success as string;
                         }
 
 
@@ -418,7 +418,7 @@
 
                                         <!-- /.box-body -->
                                         <div style="padding:25px">
-                                            <button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>
+                                            @*<button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>*@
                                             <button type="submit" name="submit" value="Email" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From Email</button>
                                             @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
                                             <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary" style="margin-top:10px">Generate</button>
@@ -512,7 +512,7 @@
     }
 </style>
 <script>
-   //Add Loader
+    //Add Loader
     function showLoader() {
 
 
@@ -525,7 +525,7 @@
     }
 
     $(document).on('click', '#Generate', function () {
-      
+
         scrollToTop();
         showLoader('overlayBlock');
         var form = $('#frmEmp');
@@ -884,7 +884,6 @@ if ('@ViewBag.disc' == "yes") {
         var rows;
 
         $.each(data, function (i, item) {
-            console.log(item.Consignment_no);
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
                 + "<td>" + item.Consignment_no + "</td>"
@@ -1071,6 +1070,8 @@ $("#Customer_Id").autocomplete({
 
 </script>
 
+<a id="saveinv" style="" href="" target="_blank" download>
+</a>
 
 @if (ViewBag.invoiceno != null)
 {
@@ -1078,32 +1079,25 @@ $("#Customer_Id").autocomplete({
         var print = '@ViewBag.pdf';
         $("#overlayBlock").hide();
 
-        if (print == true) {
+        @*if (print == true) {
             var filePath = '@ViewBag.savePath';
-            alert(filePath)
-            var link = document.createElement('a');
-            link.href = filePath;
-            link.target = '_blank';
-            link.download = filePath;
 
-            // Trigger a click on the anchor element
-            link.click();
-        }
-     
+            window.location.href = filePath;
+        }*@
+
         var myParamether = '@ViewBag.invoiceno';
-            $.get("/Invoice/DownloadByInvNo", { invoiceno: myParamether }, function (data) {
-                alert(data)
-            $('#saveinv').attr('href',  data);
+        var data = myParamether+ ".pdf";
+        console.log(data);
+        $("#overlayBlock").hide();
 
-            document.getElementById('saveinv').click();
-            $("#overlayBlock").hide();
-
-
-
-        });
+                $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
+             
+                document.getElementById('saveinv').click();
+  
+             
+            
+       
 
     </script>
 }
-<a id="saveinv" style="" href="" download>
-</a>
 

@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.CustomModel;
+﻿using CustomerModel;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Ionic.Zip;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using static System.Net.WebRequestMethods;
 
 namespace DtDc_Billing.Controllers
 {
@@ -37,16 +39,30 @@ namespace DtDc_Billing.Controllers
 
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var franchisee=db.Franchisees.Where(x=>x.PF_Code == strpfcode).FirstOrDefault(); 
             //if (Firm_Id == 1)
             //{
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
+           
+            // INV/1411/2024-25/001
+            // PF2214
+
 
             string invstart1 = dataInvStart + "/2023-24/";
             string no = "";
             string finalstring = "";
+            if (strpfcode == "PF2214")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                    where d.PF_Code == strpfcode
+                                    select d.InvoiceStart).FirstOrDefault();
 
+              invstart1 = dataInvStart + "/2024-25/";
+
+
+            }
 
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
@@ -55,7 +71,16 @@ namespace DtDc_Billing.Controllers
             {
                 string[] strarrinvno = lastInvoiceno1.Split('/');
 
-                ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                if(franchisee.PF_Code =="PF2214")
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+
+                }
+                else
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+
+                }
             }
 
             else
@@ -65,7 +90,18 @@ namespace DtDc_Billing.Controllers
                 //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
                 int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
                 finalstring = newnumber.ToString("000");
-                ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+                if(franchisee.PF_Code== "PF2214")
+                {
+                    finalstring = newnumber.ToString("000");
+
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+
+                }
+                else
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+
+                }
             }
 
 
@@ -721,7 +757,7 @@ Select(e => new
                 if (submit == "Generate")
                 {
                     ViewBag.pdf = true;
-                    ViewBag.invoiceno = invoice.invoiceno;
+                    ViewBag.invoiceno = invoice.invoiceno.Replace("/","-");
                 }
                 string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
                 ViewBag.savePath = savePath;
@@ -2975,6 +3011,7 @@ Select(e => new
 
 
 
+
                 string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
 
                 using (FileStream stream = new FileStream(savePath, FileMode.Create))
@@ -3067,20 +3104,24 @@ Select(e => new
 
         }
         [HttpGet]
-        public ActionResult DownloadByInvNo(string invoiceno)
+        public string DownloadByInvNo(string invoiceno)
         {
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             var invoice = db.Invoices.Where(m => m.invoiceno == invoiceno && m.Pfcode == PfCode).FirstOrDefault();
 
             string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
-            //string fileName = invoice.invoiceno.Replace("/", "-") + ".pdf";
-            //string savePath = Server.MapPath("~/PDF/" + fileName);
 
-            string savePath = "https://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+            var pdffileName = invoice.invoiceno.Replace("/", "-") + ".pdf";
+            //https://frbilling.com/PDF/DFRB-2023-24-144.pdf
+            string savePath = "https://frbilling.com/PDF/" + pdffileName;
+
+            return savePath;
+          
 
 
-            return Redirect(savePath);
+           
+
 
         }
 

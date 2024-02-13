@@ -285,6 +285,8 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnbooking_date;
             
+            private global::System.Data.DataColumn columncompaddress;
+            
             private global::System.Data.DataColumn columnConsignment_no;
             
             private global::System.Data.DataColumn columnMode;
@@ -359,6 +361,10 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columndiff_weight;
             
+            private global::System.Data.DataColumn columnSender;
+            
+            private global::System.Data.DataColumn columnreceiver;
+            
             private global::System.Data.DataColumn columnName;
             
             private global::System.Data.DataColumn columntempdelivereddate;
@@ -423,6 +429,14 @@ namespace DtDc_Billing {
             public global::System.Data.DataColumn booking_dateColumn {
                 get {
                     return this.columnbooking_date;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn compaddressColumn {
+                get {
+                    return this.columncompaddress;
                 }
             }
             
@@ -724,6 +738,22 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SenderColumn {
+                get {
+                    return this.columnSender;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn receiverColumn {
+                get {
+                    return this.columnreceiver;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn NameColumn {
                 get {
                     return this.columnName;
@@ -803,6 +833,7 @@ namespace DtDc_Billing {
                         long T_id, 
                         string Customer_Id, 
                         System.DateTime booking_date, 
+                        string compaddress, 
                         string Consignment_no, 
                         string Mode, 
                         string Weight_t, 
@@ -840,6 +871,8 @@ namespace DtDc_Billing {
                         double chargable_weight, 
                         int AdminEmp, 
                         double diff_weight, 
+                        string Sender, 
+                        string receiver, 
                         string Name, 
                         string tempdelivereddate, 
                         string receivedby, 
@@ -850,6 +883,7 @@ namespace DtDc_Billing {
                         T_id,
                         Customer_Id,
                         booking_date,
+                        compaddress,
                         Consignment_no,
                         Mode,
                         Weight_t,
@@ -887,6 +921,8 @@ namespace DtDc_Billing {
                         chargable_weight,
                         AdminEmp,
                         diff_weight,
+                        Sender,
+                        receiver,
                         Name,
                         tempdelivereddate,
                         receivedby,
@@ -924,6 +960,7 @@ namespace DtDc_Billing {
                 this.columnT_id = base.Columns["T_id"];
                 this.columnCustomer_Id = base.Columns["Customer_Id"];
                 this.columnbooking_date = base.Columns["booking_date"];
+                this.columncompaddress = base.Columns["compaddress"];
                 this.columnConsignment_no = base.Columns["Consignment_no"];
                 this.columnMode = base.Columns["Mode"];
                 this.columnWeight_t = base.Columns["Weight_t"];
@@ -961,6 +998,8 @@ namespace DtDc_Billing {
                 this.columnchargable_weight = base.Columns["chargable_weight"];
                 this.columnAdminEmp = base.Columns["AdminEmp"];
                 this.columndiff_weight = base.Columns["diff_weight"];
+                this.columnSender = base.Columns["Sender"];
+                this.columnreceiver = base.Columns["receiver"];
                 this.columnName = base.Columns["Name"];
                 this.columntempdelivereddate = base.Columns["tempdelivereddate"];
                 this.columnreceivedby = base.Columns["receivedby"];
@@ -977,6 +1016,8 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnCustomer_Id);
                 this.columnbooking_date = new global::System.Data.DataColumn("booking_date", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnbooking_date);
+                this.columncompaddress = new global::System.Data.DataColumn("compaddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncompaddress);
                 this.columnConsignment_no = new global::System.Data.DataColumn("Consignment_no", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnConsignment_no);
                 this.columnMode = new global::System.Data.DataColumn("Mode", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1051,6 +1092,10 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnAdminEmp);
                 this.columndiff_weight = new global::System.Data.DataColumn("diff_weight", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndiff_weight);
+                this.columnSender = new global::System.Data.DataColumn("Sender", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSender);
+                this.columnreceiver = new global::System.Data.DataColumn("receiver", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreceiver);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
                 this.columntempdelivereddate = new global::System.Data.DataColumn("tempdelivereddate", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1066,6 +1111,7 @@ namespace DtDc_Billing {
                 this.columnT_id.AllowDBNull = false;
                 this.columnT_id.Unique = true;
                 this.columnCustomer_Id.MaxLength = 50;
+                this.columncompaddress.MaxLength = 200;
                 this.columnConsignment_no.MaxLength = 100;
                 this.columnMode.MaxLength = 20;
                 this.columnWeight_t.MaxLength = 20;
@@ -1083,6 +1129,8 @@ namespace DtDc_Billing {
                 this.columncod.MaxLength = 100;
                 this.columnstatus_t.MaxLength = 100;
                 this.columntembookingdate.MaxLength = 50;
+                this.columnSender.MaxLength = 2147483647;
+                this.columnreceiver.MaxLength = 2147483647;
                 this.columnName.MaxLength = 100;
                 this.columntempdelivereddate.MaxLength = 100;
                 this.columnreceivedby.MaxLength = 100;
@@ -1268,6 +1316,22 @@ namespace DtDc_Billing {
                 }
                 set {
                     this[this.tableTransactionView.booking_dateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string compaddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactionView.compaddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'compaddress\' in table \'TransactionView\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactionView.compaddressColumn] = value;
                 }
             }
             
@@ -1865,6 +1929,38 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Sender {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactionView.SenderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sender\' in table \'TransactionView\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactionView.SenderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string receiver {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactionView.receiverColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'receiver\' in table \'TransactionView\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactionView.receiverColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string Name {
                 get {
                     try {
@@ -1965,6 +2061,18 @@ namespace DtDc_Billing {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void Setbooking_dateNull() {
                 this[this.tableTransactionView.booking_dateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IscompaddressNull() {
+                return this.IsNull(this.tableTransactionView.compaddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetcompaddressNull() {
+                this[this.tableTransactionView.compaddressColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2413,6 +2521,30 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSenderNull() {
+                return this.IsNull(this.tableTransactionView.SenderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSenderNull() {
+                this[this.tableTransactionView.SenderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsreceiverNull() {
+                return this.IsNull(this.tableTransactionView.receiverColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetreceiverNull() {
+                this[this.tableTransactionView.receiverColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsNameNull() {
                 return this.IsNull(this.tableTransactionView.NameColumn);
             }
@@ -2634,6 +2766,7 @@ namespace DtDc_Billing.PrintInvoiceTableAdapters {
             tableMapping.ColumnMappings.Add("T_id", "T_id");
             tableMapping.ColumnMappings.Add("Customer_Id", "Customer_Id");
             tableMapping.ColumnMappings.Add("booking_date", "booking_date");
+            tableMapping.ColumnMappings.Add("compaddress", "compaddress");
             tableMapping.ColumnMappings.Add("Consignment_no", "Consignment_no");
             tableMapping.ColumnMappings.Add("Mode", "Mode");
             tableMapping.ColumnMappings.Add("Weight_t", "Weight_t");
@@ -2671,6 +2804,8 @@ namespace DtDc_Billing.PrintInvoiceTableAdapters {
             tableMapping.ColumnMappings.Add("chargable_weight", "chargable_weight");
             tableMapping.ColumnMappings.Add("AdminEmp", "AdminEmp");
             tableMapping.ColumnMappings.Add("diff_weight", "diff_weight");
+            tableMapping.ColumnMappings.Add("Sender", "Sender");
+            tableMapping.ColumnMappings.Add("receiver", "receiver");
             tableMapping.ColumnMappings.Add("Name", "Name");
             tableMapping.ColumnMappings.Add("tempdelivereddate", "tempdelivereddate");
             tableMapping.ColumnMappings.Add("receivedby", "receivedby");
@@ -2683,7 +2818,7 @@ namespace DtDc_Billing.PrintInvoiceTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DtdcBillingConnectionString"].ConnectionString;
+            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["db_a92afa_frbillingConnectionString"].ConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2692,7 +2827,7 @@ namespace DtDc_Billing.PrintInvoiceTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT T_id, Customer_Id, booking_date, Consignment_no, Mode, Weight_t, Amount, Company_id, Pincode, Pf_Code, Quanntity, Type_t, Insurance, Claimamount, Percentage, calinsuranceamount, topay, codAmount, consignee, consigner, cod, TopayAmount, Topaycharges, codcharges, codtotalamount, dtdcamount, status_t, rateperkg, docketcharege, fovcharge, loadingcharge, odocharge, Risksurcharge, Invoice_No, BillAmount, tembookingdate, Actual_weight, chargable_weight, AdminEmp, diff_weight, Name, tempdelivereddate, receivedby, remarks, tempdeliveredtime FROM DtdcBilling.TransactionView";
+            this._commandCollection[0].CommandText = "SELECT        TransactionView.*\r\nFROM            TransactionView";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

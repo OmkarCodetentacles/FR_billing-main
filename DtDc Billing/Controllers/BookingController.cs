@@ -136,7 +136,7 @@ namespace DtDc_Billing.Controllers
                     tran.compaddress = transaction.compaddress;
                     tran.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran.AdminEmp = 000;
-
+                    tran.Receiver=transaction.Receiver; 
                     /////////////////////////////
 
                     tran.T_id = tr.T_id;
@@ -412,7 +412,7 @@ namespace DtDc_Billing.Controllers
                     tran.compaddress = transaction.compaddress;
                     tran.codtotalamount = transaction.codtotalamount;
                     tran.consigner = transaction.consigner;
-
+                    tran.Receiver=transaction.Receiver; 
                     db.Entry(tran).State = EntityState.Modified;
 
                     db.SaveChanges();

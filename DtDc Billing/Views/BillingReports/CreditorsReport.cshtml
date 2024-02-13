@@ -132,7 +132,7 @@
 
                                 </div>
                                 <div class="col-lg-1 col-md-2 col-sm-4 col-xs-12 " style="margin-top:22px">
-                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" />
+                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" formtarget="_blank" />
 
                                 </div>
                                 <div class="col-lg-1 col-md-2 col-sm-4 col-xs-12" style="margin-top:22px">
@@ -150,7 +150,7 @@
 
                         <table id="table_display_block" class="table Creditorsreport">
                             <thead>
-                                <tr>
+                                <tr><th>Sr.No</th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.invoiceno)
                                     </th>
@@ -197,10 +197,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @{ var i = 1;}
                                 @foreach (var item in Model)
                                 {
                                     <tr class="@(item.discountamount==0 ? "paid-party" : "unpaid-party")">
+                                        <td>
+                                            @i
+                                        </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.invoiceno)
                                         </td>
@@ -245,6 +248,7 @@
                                             @Html.DisplayFor(modelItem => item.discountamount)
                                         </td>
                                     </tr>
+                                    i++;
                                 }
                             </tbody>
                         </table>

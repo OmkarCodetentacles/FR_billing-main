@@ -74,11 +74,24 @@
             <div class="row">
                 @{
                     var successMessage = ViewBag.success as string;
+                    var tempmessage = TempData["Success"] as string;
                 }
 
                 @if (!string.IsNullOrEmpty(successMessage))
                 {
+                    <script>
+                        document.getElementById('overlayBlock').style.display = 'none';
+                    </script>
+
                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                }
+                @if (!string.IsNullOrEmpty(tempmessage))
+                {
+                    <script>
+                        document.getElementById('overlayBlock').style.display = 'none';
+                    </script>
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", tempmessage))
+
                 }
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -497,11 +510,11 @@
                             <h4 class="box-title">Charges </h4>
 
                             @*<div class="box-tools pull-right">
-                                <div class="form-group">
-                                    <label for="" class=" btn btn-info" style="width: auto; padding-left: 20px; padding-right: 20px;" data-toggle="tooltip" title="Tick if you dont want to add point to wallet on this booking">@Html.CheckBox("DisableDisc") Disable Wallet</label>
+                                    <div class="form-group">
+                                        <label for="" class=" btn btn-info" style="width: auto; padding-left: 20px; padding-right: 20px;" data-toggle="tooltip" title="Tick if you dont want to add point to wallet on this booking">@Html.CheckBox("DisableDisc") Disable Wallet</label>
 
-                                </div>
-                            </div>*@
+                                    </div>
+                                </div>*@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
@@ -899,13 +912,13 @@
                                     <div class="row">
                                         <div class="col-md-12 text-right">
 
-                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="submit">Save and Print</button>
-                                            <button type="submit" value="Save" class="btn btn-info btn-sm"  id="submit">Save</button>
+                                            <button type="submit" value="Print" name="Submit" class="btn btn-info" id="submit" onclick="scrollToTop()">Save and Print</button>
+                                            <button type="submit" value="Save" class="btn btn-info btn-sm" id="submit" onclick="scrollToTop()">Save</button>
 
                                             @*<a href="@Url.Action("Printcashcounter","Booking")"  class="btn btn-default btn-flat">Print</a>*@
 
-                                            <button type="submit" value="Sms" name="Submit" class="btn btn-success btn-sm" id="submit">Save With SMS</button>
-                                            <button type="submit" value="Clear" name="Submit" class="btn btn-danger btn-sm" id="submit">Clear</button>
+                                            @*<button type="submit" value="Sms" name="Submit" class="btn btn-success btn-sm" id="submit">Save With SMS</button>*@
+                                            <button type="submit" value="Clear" name="Submit" class="btn btn-danger btn-sm" id="submit" onclick="scrollToTop()">Clear</button>
                                         </div>
 
                                     </div>
@@ -927,26 +940,26 @@
 
 
 @*<script>
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-    $('#uploadBtn').on('click', function () {
+        $('#uploadBtn').on('click', function () {
 
 
-        showLoader('overlayBlock');
+            showLoader('overlayBlock');
+        });
+        var data = '@TempData["Success"]';
+
+        if (data != null && data!="")
+        {
+            alert(data);
+
+        }
+
+
     });
-    var data = '@TempData["Success"]';
-
-    if (data != null && data!="")
-    {
-        alert(data);
-
-    }
 
 
-});
-
-
-</script>*@
+    </script>*@
 
 <!-- Modal -->
 <div class="example-modal">
@@ -1030,6 +1043,7 @@
         left: 50%;
         right: 50%;
     }
+
     @@-webkit-keyframes spin {
         0% {
             -webkit-transform: rotate(0deg);
@@ -2319,10 +2333,31 @@ $(document).ready(function () {
 </script>
 
 
+<script>
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+</script>
 
 
 <script>
+
+
     $(document).ready(function () {
         var consno = $("#sender_phone").val();
         $.ajax({
@@ -2384,19 +2419,19 @@ $(document).ready(function () {
 }
 
 @*if (ViewBag.Success != null)
-{
-    <script>
+    {
+        <script>
 
-       // $(document).ready(function () {
+           // $(document).ready(function () {
 
-            alert('Consignment Added SuccessFully');
-            //document.getElementById('overlayBlock').style.display = 'none';
+                alert('Consignment Added SuccessFully');
+                //document.getElementById('overlayBlock').style.display = 'none';
 
-        });
+            });
 
-    </script>
+        </script>
 
-}*@
+    }*@
 
 @if (ViewBag.Discount != null && ViewBag.Discount != 0)
 {
@@ -2590,34 +2625,84 @@ $(document).ready(function () {
 </style>
 
 @if (ViewBag.Consignmetno != null)
-{
-    <script>
-        $("#overlayBlock").show();
-    /**/
-    var print = '@ViewBag.pdf';
-    /**/
-
-    if (print == "True") {
+    {
+        <script>
+           $("#overlayBlock").show();
         /**/
-        var myParamether = '@ViewBag.Consignmetno';
+        var print = '@ViewBag.pdf';
+        /**/
+
+        if (print == "True") {
+            /**/
+            var myParamether = '@ViewBag.Consignmetno';
 
 
-    /**/
+        /**/
 
-    //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
-        $.get("/AdminCashBooking/Printcashcounter", { myParameter: myParamether}, function (data) {
-            $('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
-            //$('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
+        //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
+            $.get("/AdminCashBooking/Printcashcounter", { myParameter: myParamether }, function (data) {
+                $("#overlayBlock").hide();
 
-            document.getElementById('savecon').click();
-            $("#overlayBlock").hide();
+                $('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
+                //$('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
+
+                document.getElementById('savecon').click();
+                $("#overlayBlock").hide();
 
 
-        });
-}
-    </script>
-}
+            });
+    }
+        </script>
+    }
 
-<a id="savecon" style="" href="" download>
+<a id="savecon" style="" href="" target="_blank" download>
 </a>
 
+@*@if (ViewBag.PdfFileName != null)
+{
+    <script>
+        $(document).ready(function () {
+            $("#overlayBlock").hide();
+                            var pdfFileName = '@ViewBag.PdfFileName';
+
+            var print = '@ViewBag.pdf';
+
+            $.get("/AdminCashBooking/OpenPdfInNewTab", { pdfFileName: pdfFileName },
+                function (data) {
+                console.log(data)
+                if (data != null) {
+                    // Create a hidden link and trigger a click to initiate download
+                    var link = document.createElement('a');
+                    link.href = data;
+                    link.target = '_blank';
+                    link.download = myParamether + ".pdf";
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    // Handle the case where the file is not found
+                    console.log("File not found.");
+                }
+
+            });
+
+
+            /*if (print == true) {
+                $("#overlayBlock").hide();
+              //  var filePath = '@ViewBag.filePath';
+              //  alert(filePath);
+                //console.log(filePath);
+
+            //    var link = document.createElement('a');
+            //    link.href = filePath;
+            //    link.target = '_blank';
+            //    link.download = pdfFileName;
+            //    link.style.display = 'none';
+            //    document.body.appendChild(link);
+            //    link.click();
+            //    document.body.removeChild(link);
+            //}
+        //})
+    </script>
+}*@
