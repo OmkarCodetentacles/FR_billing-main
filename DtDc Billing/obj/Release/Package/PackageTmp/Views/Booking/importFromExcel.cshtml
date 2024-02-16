@@ -50,37 +50,38 @@
                         </div>
                     }*@
 
-                    <div class="form-horizontal col-sm-6">
+                    <div class="form-horizontal">
+                        <div class="box-body">
 
-                        @*<div class="row">
-            <div class="col-md-12">*@
-                        <div class="form-group">
-                            @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-                                <div class="col-md-12 no-padding">
-                                    <label for="file"><strong id="up-txt"> Upload for Document </strong></label>
-                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
-                                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                        <input type="submit" value="Upload" class="btn btn-primary" />
-                                        <a href="http://frbilling.com/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-12 no-padding">
+                                                <label for="file"><strong id="up-txt"> Upload for Document </strong></label>
+                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn"/>
+                                                    <a href="http://frbilling.com/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                                </div>
+                                            </div>
+
+
+                                        }
                                     </div>
                                 </div>
-
-
-                            }
+                            </div>
+                            <hr />
                         </div>
-                        @*</div>
-            </div>*@
-                        <hr />
-
                     </div>
 
 
 
-                    <div class="form-horizontal col-sm-6">
-                        @*<div class="box-body">
-            <div class="row">
-                <div class="col-md-12">*@
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                     <div class="row">
+                          <div class="col-md-12">
                         <div class="form-group">
                             @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
@@ -88,15 +89,15 @@
                                     <label for="file"><strong id="up-txt"> Upload for Non-Document </strong></label>
                                     <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
                                     <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                        <input type="submit" value="Upload" class="btn btn-primary" />
-                                        <a href="http://frbilling.com/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn"/>
+                                        <a href="http://frbilling.com/excelformat/UploadforNonDocument.xlsx" class="btn btn-success" > Export Excel</a>
                                     </div>
                                 </div>
 
                             }
                         </div>
-                        @*</div>
-            </div>*@
+                        </div>
+                     </div>
                         <hr />
 
                     </div>
@@ -104,29 +105,26 @@
 
 
                     <div class="form-horizontal">
-                        @*<div class="box-body">
+                        <div class="box-body">
             <div class="row">
-                <div class="col-md-12">*@
-                        <!--<div class="form-group">
+                <div class="col-md-12">
+                        <div class="form-group">
             @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <div class="col-md-3 no-padding">
+                <div class="col-md-12 no-padding">
                     <label for="file"><strong id="up-txt"> Upload New </strong></label>
-                </div>
-                <div class="col-md-6">
                     <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                        <a href="http://frbilling.com/excelformat/UploadNew.xlsx" class="btn btn-success" > Export Excel</a>
+                    </div>
                 </div>
-                <div class="col-md-1">
-                    <input type="submit" value="Upload" class="btn btn-primary" />
-                </div>
-
-                <div class="col-md-1">
-                    <a href="http://frbilling.com/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a>
-                </div>
+              
+                  
             }
-        </div>-->
-                        @*</div>
-            </div>*@
+        </div>
+                        </div>
+            </div>
                         <hr />
 
                     </div>
@@ -139,4 +137,24 @@
     </div>
 
 </div>
+        </div>
+    </div>
 
+        <script>
+            // Scroll to the top of the page
+            function scrollToTop() {
+                window.scrollTo(0, 0);
+            }
+            $(document).ready(function () {
+                $('#submitBtn').on('click', function () {
+                    scrollToTop();
+                  
+                    showLoader('overlayBlock');
+                    // Get the form element
+                    var form = $('#frmEmp');
+                    // Submit the form
+                    form.submit();
+
+                });
+
+        </script>

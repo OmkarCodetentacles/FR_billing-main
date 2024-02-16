@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.Controllers;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DtDc_Billing.Controllers;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.SqlServer.Management.Sdk.Sfc;
@@ -6,6 +7,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -13,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Util;
 
 namespace DtDc_Billing.CustomModel
 {
@@ -259,71 +262,100 @@ namespace DtDc_Billing.CustomModel
                             var tran = new Transaction();
 
 
+                            if (workSheet.Cells[rowIterator, 8]?.Value?.ToString()!=null)
+                            {
+                                tran.Consignment_no = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
 
-                            tran.Consignment_no = workSheet.Cells[rowIterator, 2].Value.ToString().Trim();
+                                tran.chargable_weight = Convert.ToDouble(workSheet.Cells[rowIterator, 3]?.Value);
+                                tran.Mode = workSheet.Cells[rowIterator, 4]?.Value?.ToString().ToUpper();
+                                tran.compaddress = (workSheet?.Cells[rowIterator, 5]?.Value?.ToString());
+                                tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value);
+                                tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
 
-                            tran.chargable_weight = Convert.ToDouble(workSheet.Cells[rowIterator, 3].Value);
-                            tran.Mode = workSheet.Cells[rowIterator, 4].Value.ToString();
-                            tran.compaddress = (workSheet?.Cells[rowIterator, 5]?.Value?.ToString());
-                            tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6].Value);
-                            tran.Pincode = workSheet.Cells[rowIterator, 7].Value.ToString();
-                            DateTime abc = Convert.ToDateTime(workSheet.Cells[rowIterator, 8].Value.ToString());
+                               // string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
+                                //string bookingDate = DateTime.ParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                                //   tran.booking_date = Convert.ToDateTime( bookingDate);
 
+
+                                //  tran.tembookingdate = tran.booking_date.Value.ToString("dd-MM-yyyy");
+                                object cellValue = workSheet.Cells[rowIterator, 8]?.Value; // Assuming the date is in the 8th column (column H)
+                                string dateString = cellValue.ToString();
+
+                                double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
+                                DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
+                                string formattedDate = dateTime.ToString("MM/dd/yyyy");
+
+                                Console.WriteLine(formattedDate); // Output: 11/17/2022
+
+                                DateTime parsedDate;
+
+                                parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+
+
+                                tran.booking_date = parsedDate;
+
+
+
+                                var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
+
+                                tran.tembookingdate = formattedDatetemp;
+
+                                tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
+                                tran.Customer_Id = workSheet.Cells[rowIterator, 10]?.Value?.ToString();
+                                double? loadingChargeValue = workSheet?.Cells[rowIterator, 11]?.Value as double?;
+                                tran.loadingcharge = loadingChargeValue ?? 0.0;
+                                tran.Receiver = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
+
+
+                                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
+
+                                if (transaction != null)
+                                {
+
+                                    CalculateAmount ca = new CalculateAmount();
+
+                                    double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+
+                                    transaction.Amount = amt;
+                                    transaction.Customer_Id = tran.Customer_Id;
+
+                                    transaction.Consignment_no = tran.Consignment_no.Trim();
+                                    transaction.chargable_weight = tran.chargable_weight;
+                                    transaction.Mode = tran.Mode;
+                                    transaction.compaddress = tran.compaddress;
+                                    transaction.Quanntity = tran.Quanntity;
+                                    transaction.Pincode = tran.Pincode;
+                                    transaction.booking_date = tran.booking_date;
+                                    transaction.Type_t = tran.Type_t;
+                                    transaction.tembookingdate = tran.tembookingdate;
+                                    transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+                                    transaction.AdminEmp = 000;
+
+
+
+                                    db.Entry(transaction).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    CalculateAmount ca = new CalculateAmount();
+
+                                    double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+
+                                    tran.Amount = amt;
+                                    tran.Customer_Id = tran.Customer_Id;
+
+                                    tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+                                    tran.AdminEmp = 000;
+
+
+
+                                    db.Transactions.Add(tran);
+                                    db.SaveChanges();
+                                }
+                            }
+                           
                             
-                            tran.booking_date = Convert.ToDateTime(abc);
-                            tran.tembookingdate = abc.ToString();
-
-                            tran.Type_t = workSheet.Cells[rowIterator, 9].Value.ToString();
-                            tran.Customer_Id = workSheet.Cells[rowIterator, 10].Value.ToString();
-
-
-                            Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
-
-                            if (transaction != null)
-                            {
-
-                                CalculateAmount ca = new CalculateAmount();
-
-                                double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
-
-                                transaction.Amount = amt;
-                                transaction.Customer_Id = tran.Customer_Id;
-
-                                transaction.Consignment_no = tran.Consignment_no.Trim();
-                                transaction.chargable_weight = tran.chargable_weight;
-                                transaction.Mode = tran.Mode;
-                                transaction.compaddress = tran.compaddress;
-                                transaction.Quanntity = tran.Quanntity;
-                                transaction.Pincode = tran.Pincode;
-                                transaction.booking_date = tran.booking_date;
-                                transaction.Type_t = tran.Type_t;
-                                transaction.tembookingdate = tran.tembookingdate;
-                                transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
-                                transaction.AdminEmp = 000;
-
-
-
-                                db.Entry(transaction).State = EntityState.Modified;
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                CalculateAmount ca = new CalculateAmount();
-
-                                double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
-
-                                tran.Amount = amt;
-                                tran.Customer_Id = tran.Customer_Id;
-
-                                tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
-                                tran.AdminEmp = 000;
-
-
-
-                                db.Transactions.Add(tran);
-                                db.SaveChanges();
-                            }
-
                         }
                     }
 

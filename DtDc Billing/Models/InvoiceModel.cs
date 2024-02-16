@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -9,8 +10,11 @@ namespace DtDc_Billing.Models
     {
         public int IN_Id { get; set; }
         public string invoiceno { get; set; }
+        
         public Nullable<System.DateTime> invoicedate { get; set; }
+      
         public Nullable<System.DateTime> periodfrom { get; set; }
+
         public Nullable<System.DateTime> periodto { get; set; }
         public Nullable<double> total { get; set; }
         public Nullable<double> fullsurchargetax { get; set; }
@@ -18,7 +22,10 @@ namespace DtDc_Billing.Models
         public Nullable<double> servicetax { get; set; }
         public Nullable<double> servicetaxtotal { get; set; }
         public Nullable<double> othercharge { get; set; }
+        [Range(0.01, double.MaxValue, ErrorMessage = "Net amount must be greater than 0.")]
+
         public Nullable<double> netamount { get; set; }
+        [Required]
         public string Customer_Id { get; set; }
         public Nullable<int> fid { get; set; }
         public string annyear { get; set; }
@@ -30,8 +37,11 @@ namespace DtDc_Billing.Models
         public Nullable<double> servicecharges { get; set; }
         public Nullable<double> Royalty_charges { get; set; }
         public Nullable<double> Docket_charges { get; set; }
+        [Required(ErrorMessage = "Date Required")]
         public string Tempdatefrom { get; set; }
+        [Required(ErrorMessage ="Date Required")]
         public string TempdateTo { get; set; }
+        [Required(ErrorMessage = "Date Required")]
         public string tempInvoicedate { get; set; }
         public string Address { get; set; }
         public string Invoice_Lable { get; set; }

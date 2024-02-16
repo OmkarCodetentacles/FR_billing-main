@@ -124,6 +124,18 @@
 
                     </div>
                 </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <a href="https://www.youtube.com/watch?v=QG9kH-6V3Gg&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=31"
+                           target="_blank"
+                           data-toggle="tooltip"
+                           class="pull-right"
+                           style="padding-top:20px"
+                           title="Click to view more info">
+                            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
             @*<a href="~/Views/AdminCashBooking/Printreceipt.cshtml">~/Views/AdminCashBooking/Printreceipt.cshtml</a>*@
         </div>
@@ -2624,9 +2636,11 @@ $(document).ready(function () {
     }
 </style>
 
+<a id="savecon" style="" href="" target="_blank" download>
+</a>
 @if (ViewBag.Consignmetno != null)
-    {
-        <script>
+{
+    <script>
            $("#overlayBlock").show();
         /**/
         var print = '@ViewBag.pdf';
@@ -2634,75 +2648,67 @@ $(document).ready(function () {
 
         if (print == "True") {
             /**/
+            debugger;
+
             var myParamether = '@ViewBag.Consignmetno';
+            var filename = '@ViewBag.PdfFileName';
+            console.log(filename);
+            $("#overlayBlock").hide();
 
+            $('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + filename);
 
-        /**/
-
-        //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
-            $.get("/AdminCashBooking/Printcashcounter", { myParameter: myParamether }, function (data) {
-                $("#overlayBlock").hide();
-
-                $('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
-                //$('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + data);
-
-                document.getElementById('savecon').click();
-                $("#overlayBlock").hide();
-
-
-            });
+            document.getElementById('savecon').click();
+    
     }
-        </script>
-    }
+    </script>
+}
 
-<a id="savecon" style="" href="" target="_blank" download>
-</a>
 
 @*@if (ViewBag.PdfFileName != null)
-{
-    <script>
-        $(document).ready(function () {
-            $("#overlayBlock").hide();
-                            var pdfFileName = '@ViewBag.PdfFileName';
-
-            var print = '@ViewBag.pdf';
-
-            $.get("/AdminCashBooking/OpenPdfInNewTab", { pdfFileName: pdfFileName },
-                function (data) {
-                console.log(data)
-                if (data != null) {
-                    // Create a hidden link and trigger a click to initiate download
-                    var link = document.createElement('a');
-                    link.href = data;
-                    link.target = '_blank';
-                    link.download = myParamether + ".pdf";
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } else {
-                    // Handle the case where the file is not found
-                    console.log("File not found.");
-                }
-
-            });
-
-
-            /*if (print == true) {
+    {
+        <script>
+            $(document).ready(function () {
                 $("#overlayBlock").hide();
-              //  var filePath = '@ViewBag.filePath';
-              //  alert(filePath);
-                //console.log(filePath);
+                                var pdfFileName = '@ViewBag.PdfFileName';
 
-            //    var link = document.createElement('a');
-            //    link.href = filePath;
-            //    link.target = '_blank';
-            //    link.download = pdfFileName;
-            //    link.style.display = 'none';
-            //    document.body.appendChild(link);
-            //    link.click();
-            //    document.body.removeChild(link);
-            //}
-        //})
-    </script>
-}*@
+                var print = '@ViewBag.pdf';
+
+                $.get("/AdminCashBooking/OpenPdfInNewTab", { pdfFileName: pdfFileName },
+                    function (data) {
+                    console.log(data)
+                    if (data != null) {
+                        // Create a hidden link and trigger a click to initiate download
+                        var link = document.createElement('a');
+                        link.href = data;
+                        link.target = '_blank';
+                        link.download = myParamether + ".pdf";
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        // Handle the case where the file is not found
+                        console.log("File not found.");
+                    }
+
+                });
+
+
+                /*if (print == true) {
+                    $("#overlayBlock").hide();
+                  //  var filePath = '@ViewBag.filePath';
+                  //  alert(filePath);
+                    //console.log(filePath);
+
+                //    var link = document.createElement('a');
+                //    link.href = filePath;
+                //    link.target = '_blank';
+                //    link.download = pdfFileName;
+                //    link.style.display = 'none';
+                //    document.body.appendChild(link);
+                //    link.click();
+                //    document.body.removeChild(link);
+                //}
+            //})
+        </script>
+    }*@

@@ -42,11 +42,11 @@ namespace DtDc_Billing.Controllers
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             db.Configuration.ProxyCreationEnabled = false;
-
+             
            
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
-            return Json(suggestions, JsonRequestBehavior.AllowGet);
+          return Json(suggestions, JsonRequestBehavior.AllowGet);
                 }
 
         [HttpPost]

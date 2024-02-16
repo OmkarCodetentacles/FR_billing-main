@@ -11,8 +11,7 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Company
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -35,13 +34,10 @@ namespace DtDc_Billing.Entity_FR
             this.express_cargo = new HashSet<express_cargo>();
             this.Transactions = new HashSet<Transaction>();
         }
-
-        [Required]
+    
         public string Company_Id { get; set; }
         public int c_id { get; set; }
-        [Required]
         public Nullable<long> Phone { get; set; }
-        [Required]
         public string Email { get; set; }
         public Nullable<double> Insurance { get; set; }
         public Nullable<double> Minimum_Risk_Charge { get; set; }
@@ -51,9 +47,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> Cod_Charge { get; set; }
         public Nullable<double> Gec_Fuel_Sur_Charge { get; set; }
         public string Pf_code { get; set; }
-        [Required]
         public string Company_Address { get; set; }
-        [Required]
         public string Company_Name { get; set; }
         public Nullable<System.DateTime> Datetime_Comp { get; set; }
         public string Gst_No { get; set; }

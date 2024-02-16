@@ -8,7 +8,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
     #viewDRSImage, #podImgLink, #viewPOD, #viewSignature, #linkId, #viewImage, #mailIDput {
         display: none;
     }
@@ -63,11 +75,12 @@
             <th>Date</th>
             <th>Delivery Status</th>
             <th>Activity Type</th>
-            <th>From</th>
+            @*<th>From</th>*@
             <th>Origin</th>
+            <th>To</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="consdata">
     </tbody>
     <tbody>
         <!-- Table body will be populated dynamically -->
@@ -162,7 +175,7 @@
                     // Handle the success response
                     alert("Done")
 
-                    debugger;
+
                     jsonData = data;
                     renderTable();
                 },
@@ -174,34 +187,69 @@
 
     function renderTable() {
         var tableBody = $("#consignmentTable tbody");
+      //  $("#consignmentTable tbody").empty();
 
-        v
-        $('#consignmentTable tbody').empty();
-        var rows = "";
+        var parsedData = JSON.parse(jsonData);
+        var tableBody = document.getElementById('consdata');
+        console.log(parsedData)
+        //var rows='';
 
-        $.each(filteredData, function (i, item) {
-            rows += "<tr>"
-                + "<td>" + (i + 1) + "</td>"
-                + "<td>" + item.date + "</td>"
+        //parsedData.forEach(function (item, i) {
 
-                + "<td>" + item.activityType + "</td>"
-                + "<td>" + item.deliveryStatus + "</td>"
+        //    rows += "<tr>"
+        //        + "<td>" + (i + 1) + "</td>"
+        //        + "<td>" + item.date + "</td>"
+        //        + "<td>" + item.deliveryStatus + "</td>"
+        //        + "<td>" + item.activityType + "</td>"
+        //       // + "<td>" + (item.from ? item.from : '') + "</td>"
+        //        + "<td>" + (item.origin ? item.origin : '') + "</td>"
 
-                + "</tr>";
+
+        //        + "</tr>";
+
+        //});
+
+        parsedData.forEach(function (item, i) {
+            var row = tableBody.insertRow(i);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5)
+            cell1.innerHTML = i + 1;
+            cell2.innerHTML = item.date;
+            cell3.innerHTML = item.deliveryStatus;
+            cell4.innerHTML = item.activityType;
+            cell5.innerHTML = item.origin;
+            cell6.innerHTML = item.dest;
         });
-        $('#consignmentTable tbody').append(rows);
 
-            //debugger;
-            //$.forEach(jsonData, function (index, item) {
-            //    var row = '<tr>';
-            //    $.forEach(item, function (key, value) {
-            //        row += '<td>' + value + '</td>';
-            //    });
-            //    row += '</tr>';
-            //    tableBody.append(row);
-            //})
 
-        }
+
+        //alert(rows)
+        //console.log("Append Row===" + rows)
+        //tableBody.append(rows);
+        //$.each(parsedData, function (i, item) {
+        //    debugger;
+        //    rows += "<tr>"
+        //        + "<td>" + (i + 1) + "</td>"
+        //        + "<td>" + item.date + "</td>"
+        //        + "<td>" + item.activityType + "</td>"
+        //        + "<td>" + item.deliveryStatus + "</td>"
+        //        + "</tr>";
+        //});
+
+        // Append rows to the table body
+
     }
 
+    renderTable();
 </script>
+
+
+@*<script>
+    $(document).ready(function () {
+        renderTable();
+    });
+    </script>*@

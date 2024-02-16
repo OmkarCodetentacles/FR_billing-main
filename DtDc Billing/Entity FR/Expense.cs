@@ -11,14 +11,11 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Expense
     {
         public long Exp_ID { get; set; }
-        [Required]
         public Nullable<float> Amount { get; set; }
-        [Required]
         public string Rason { get; set; }
         public string Category { get; set; }
         public string Pf_Code { get; set; }

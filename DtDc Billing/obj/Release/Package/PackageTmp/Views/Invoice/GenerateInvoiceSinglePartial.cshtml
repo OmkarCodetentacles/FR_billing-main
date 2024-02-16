@@ -15,7 +15,7 @@
 
 
 
-@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
     <style>
         .padding-left-0 {
@@ -41,7 +41,15 @@
     <div class="content-wrapper">
         <div class="box box-info" style="padding: 16px 16px !important">
             <div class="box-header with-border">
-                <h4>Generate SINGLE Invoice</h4>
+                <h4>
+                    Generate SINGLE Invoice
+                    <a href="https://www.youtube.com/watch?v=_5jj1ozy0I0&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=27"
+                       target="_blank"
+                       data-toggle="tooltip"
+                       title="Click to view more info">
+                        <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                    </a>
+                </h4>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -52,8 +60,22 @@
 
                         @if (!string.IsNullOrEmpty(successMessage))
                         {
-
+                            
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                            <script>
+                                function onComplete(xhr, status) {
+                                    if (status === "success") {
+                                     
+                                        alert("Success")
+                                        
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1000); 
+                                    } else {
+                                        
+                                    }
+                                }
+                            </script>
                         }
                         <!-- /.box-header -->
 
@@ -102,6 +124,17 @@
 
                                     </div>
                                 </div>
+                                <div class="col-sm-4 padding-left-0">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label for="email">Invoice Date:</label>
+                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                        </div>
+
+
+                                    </div>
+                                </div>
                                 <div class="col-md-4 padding-left-0">
                                     <div class="form-group">
 
@@ -123,17 +156,7 @@
                                     @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
-                                <div class="col-sm-4 padding-left-0">
-                                    <div class="form-group">
 
-                                        <div class="col-md-12">
-                                            <label for="email">Invoice Date:</label>
-                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
-                                        </div>
-
-
-                                    </div>
-                                </div>
                                 <div class="col-sm-4 padding-left-0">
                                     <div class="form-group">
 
@@ -435,7 +458,7 @@
 
                                 <!-- /.box-body -->
                                 <div style="padding:20px">
-                                    <button type="submit" name="submit" value="Sms" class="btn btn-primary" id="Generate">Send Invoice From SMS</button>
+                                    @*<button type="submit" name="submit" value="Sms" class="btn btn-primary" id="Generate">Send Invoice From SMS</button>*@
                                     <button type="submit" name="submit" value="Email" class="btn btn-primary" id="Generate">Send Invoice From Email</button>
                                     @*<button type="submit" name="submit" value="Export" class="btn btn-primary">Export To D://ExportedInvoice</button>*@
                                     <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary">Generate</button>
@@ -462,6 +485,25 @@
     </div>
 
 }
+
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
 <style>
 
     .radio {
@@ -1169,7 +1211,7 @@ $("#Customer_Id").autocomplete({
             $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
 
           document.getElementById('saveinv').click();
-      
+
 
 
 
@@ -1179,11 +1221,11 @@ $("#Customer_Id").autocomplete({
     </script>
 }
 else
-            {
-                <script>
-                    $("#overlayBlock").hide();
-                </script>
-            }
+{
+    <script>
+        $("#overlayBlock").hide();
+    </script>
+}
 
 <a id="savecon" style="" href="" download>
 </a>

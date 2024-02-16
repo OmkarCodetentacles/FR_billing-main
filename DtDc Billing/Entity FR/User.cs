@@ -11,8 +11,7 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -30,13 +29,10 @@ namespace DtDc_Billing.Entity_FR
         }
     
         public long User_Id { get; set; }
-        [Required]
         public string Name { get; set; }
-        [Required]
         public string Email { get; set; }
         public string Contact_no { get; set; }
         public string PF_Code { get; set; }
-        [Required]
         public string Password_U { get; set; }
         public string Usertype { get; set; }
         public Nullable<System.DateTime> Datetime_User { get; set; }

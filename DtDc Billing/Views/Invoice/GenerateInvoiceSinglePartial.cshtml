@@ -15,7 +15,7 @@
 
 
 
-@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, OnBegin = "onBegin", OnComplete = "onComplete" ,LoadingElementId= "myForm" }))
 {
     <style>
         .padding-left-0 {
@@ -41,7 +41,15 @@
     <div class="content-wrapper">
         <div class="box box-info" style="padding: 16px 16px !important">
             <div class="box-header with-border">
-                <h4>Generate SINGLE Invoice</h4>
+                <h4>
+                    Generate SINGLE Invoice
+                    <a href="https://www.youtube.com/watch?v=_5jj1ozy0I0&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=27"
+                       target="_blank"
+                       data-toggle="tooltip"
+                       title="Click to view more info">
+                        <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                    </a>
+                </h4>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -52,8 +60,22 @@
 
                         @if (!string.IsNullOrEmpty(successMessage))
                         {
-
+                            
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                            <script>
+                                function onComplete(xhr, status) {
+                                    if (status === "success") {
+                                     
+                                        alert("Success")
+                                        
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1000); 
+                                    } else {
+                                        
+                                    }
+                                }
+                            </script>
                         }
                         <!-- /.box-header -->
 
@@ -68,6 +90,8 @@
                                         <div class="col-md-12 padding-left-0">
                                             <label for="email">Customer Id:</label>
                                             @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Customer_Id, "", new { @class = "text-danger" })
+
                                         </div>
 
 
@@ -102,6 +126,19 @@
 
                                     </div>
                                 </div>
+                                <div class="col-sm-4 padding-left-0">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label for="email">Invoice Date:</label>
+                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.tempInvoicedate, "", new { @class = "text-danger" })
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
                                 <div class="col-md-4 padding-left-0">
                                     <div class="form-group">
 
@@ -109,6 +146,7 @@
                                         <div class="col-md-12">
                                             <label for="email">Period From:</label>
                                             @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Tempdatefrom,"", new { @class = "text-danger"  })
                                         </div>
 
 
@@ -123,23 +161,15 @@
                                     @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
-                                <div class="col-sm-4 padding-left-0">
-                                    <div class="form-group">
 
-                                        <div class="col-md-12">
-                                            <label for="email">Invoice Date:</label>
-                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
-                                        </div>
-
-
-                                    </div>
-                                </div>
                                 <div class="col-sm-4 padding-left-0">
                                     <div class="form-group">
 
                                         <div class="col-md-12">
                                             <label for="email">Period To:</label>
                                             @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.TempdateTo, "", new { @class = "text-danger" })
+
                                         </div>
 
 
@@ -154,7 +184,7 @@
 
                                         <div class="col-md-12">
                                             <label for="email">Consignment No:</label>
-                                            <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" style="width:100%" />
+                                            <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" style="width:100%" required/>
                                         </div>
 
 
@@ -462,6 +492,47 @@
     </div>
 
 }
+
+<script type="text/javascript">
+  
+  
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+        scrollToTop();
+        
+        var consignmentNumber = $("#consiaddno").val(); 
+        var invdate = $("#tempInvoicedate").val();
+        var TempFrom = $("#Tempdatefrom").val();
+        var TempTo = $("#TempdateTo").val();
+        
+        if (consignmentNumber === null || consignmentNumber === "") {
+
+            alert("Consignment number cannot be null.");
+
+
+            return false;
+        }
+        else if (invdate == null || TempFrom == null || TempTo == null) {
+            // If validation fails, prevent form submission
+            alert("Validation failed. Please check your inputs.");
+            return false;
+        }
+        else {
+            // Show the loader
+            document.getElementById('overlayBlock').style.display = 'block';
+        }
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
 <style>
 
     .radio {
@@ -489,16 +560,16 @@
         document.getElementById('overlayBlock').style.display = 'block';
 
     }
-    $(document).on('click', '#Generate', function () {
+    //$(document).on('click', '#Generate', function () {
 
 
-        scrollToTop();
-        showLoader('overlayBlock');
-        // Get the form element
-        var form = $('#frmEmp');
-        // Submit the form
-        form.submit();
-    });
+    //    scrollToTop();
+    //    showLoader('overlayBlock');
+    //    // Get the form element
+    //    var form = $('#frmEmp');
+    //    // Submit the form
+    //    form.submit();
+    //});
 </script>
 @*@if (ViewBag.success != null)
     {
@@ -613,6 +684,16 @@
 
 
         $('#AddCons').click(function () {
+            var consignmentNumber = $("#consiaddno").val();
+
+
+            if (consignmentNumber === null || consignmentNumber === "") {
+
+                alert("Consignment number cannot be null.");
+
+
+                return false;
+            }
 
             array.push($('#consiaddno').val().trim());
 
@@ -666,8 +747,7 @@
 
         function showtable () {
 
-
-
+           
             var Customerid = $('#Customer_Id').val();
 
 
@@ -1169,7 +1249,7 @@ $("#Customer_Id").autocomplete({
             $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
 
           document.getElementById('saveinv').click();
-      
+
 
 
 
@@ -1179,11 +1259,11 @@ $("#Customer_Id").autocomplete({
     </script>
 }
 else
-            {
-                <script>
-                    $("#overlayBlock").hide();
-                </script>
-            }
+{
+    <script>
+        $("#overlayBlock").hide();
+    </script>
+}
 
 <a id="savecon" style="" href="" download>
 </a>

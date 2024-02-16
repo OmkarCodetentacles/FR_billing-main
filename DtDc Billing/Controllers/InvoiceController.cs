@@ -67,13 +67,13 @@ namespace DtDc_Billing.Controllers
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
+           
             if (lastInvoiceno == null)
             {
                 string[] strarrinvno = lastInvoiceno1.Split('/');
-
-                if(franchisee.PF_Code =="PF2214")
+                if(franchisee.PF_Code== "PF2214")
                 {
-                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
                 else
@@ -88,23 +88,19 @@ namespace DtDc_Billing.Controllers
 
                 string[] strarrinvno = lastInvoiceno1.Split('/');
                 //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
-                int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
-                finalstring = newnumber.ToString("000");
-                if(franchisee.PF_Code== "PF2214")
+                int newnumber=0;
+                if (franchisee.PF_Code == "PF2214")
                 {
-                    finalstring = newnumber.ToString("000");
-
-                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
-
+                    newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
                 }
                 else
                 {
-                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
-
+                    newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
                 }
+
+                finalstring = newnumber.ToString("000");
+                ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
             }
-
-
 
             var data = (from d in db.Invoices
                         where d.Pfcode == strpfcode

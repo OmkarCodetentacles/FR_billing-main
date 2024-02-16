@@ -166,7 +166,7 @@ namespace DtDc_Billing.Controllers
             // Find sector IDs present in secotrs but not in getDoxList
             var sectorsToAdd = secotrs.Where(x => x.BillD == true).Select(s => s.Sector_Id).Where(sectorId => !getDoxList.Select(d => d.Sector_Id).Contains(sectorId));
 
-            var noOfSlab = getDoxList.FirstOrDefault().NoOfSlab;
+            var noOfSlab = getDoxList.Count() == 0 ? 2: getDoxList.FirstOrDefault().NoOfSlab;
             // Add new entries to Ratems table
             foreach (var sectorId in sectorsToAdd)
             {
@@ -216,8 +216,8 @@ namespace DtDc_Billing.Controllers
 
             var sectorsToAddNonDox = secotrs.Select(s => s.Sector_Id).Where(sectorId => !getNonDoxList.Select(d => d.Sector_Id).Contains(sectorId));
 
-            var noOfSlabNonDoxN = getNonDoxList.FirstOrDefault().NoOfSlabN;
-            var noOfSlabNonDoxS = getNonDoxList.FirstOrDefault().NoOfSlabS;
+            var noOfSlabNonDoxN = getNonDoxList.Count()== 0 ? 2 : getNonDoxList.FirstOrDefault().NoOfSlabN;
+            var noOfSlabNonDoxS = getNonDoxList.Count() == 0 ? 2 :getNonDoxList.FirstOrDefault().NoOfSlabS;
 
             foreach (var sectorId in sectorsToAddNonDox)
             {
@@ -328,8 +328,8 @@ namespace DtDc_Billing.Controllers
 
             var sectorsToAddECom = secotrs.Select(s => s.Sector_Id).Where(sectorId => !getExpress_cargoList.Select(d => d.Sector_Id).Contains(sectorId));
 
-            var noOfSlabEcomN = getDtdc_EcommerceList.FirstOrDefault().NoOfSlabN;
-            var noOfSlabEcomS = getDtdc_EcommerceList.FirstOrDefault().NoOfSlabS;
+            var noOfSlabEcomN = getDtdc_EcommerceList.Count() == 0 ? 2 : getDtdc_EcommerceList.FirstOrDefault().NoOfSlabN;
+            var noOfSlabEcomS = getDtdc_EcommerceList.Count() == 0 ? 2 : getDtdc_EcommerceList.FirstOrDefault().NoOfSlabS;
 
             foreach (var sectorId in sectorsToAddECom)
             {
@@ -1231,9 +1231,11 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
 
-             
+                var Nondox = db.Nondoxes.Where(m => m.Company_id == compid ).OrderBy(m => m.Sector.Priority).ToList();
 
-                return PartialView("RatemasterNonDox", db.Nondoxes.Where(m => m.Company_id == compid && m.Sector.BillN == true).OrderBy(m => m.Sector.Priority).ToList());
+                //&& m.Sector.BillN == true
+
+                return PartialView("RatemasterNonDox",Nondox);
 
             }
             return PartialView("RatemasterNonDox", fc);

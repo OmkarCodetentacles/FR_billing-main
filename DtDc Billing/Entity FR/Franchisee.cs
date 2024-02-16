@@ -11,8 +11,7 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Franchisee
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -32,15 +31,11 @@ namespace DtDc_Billing.Entity_FR
         }
     
         public int F_Id { get; set; }
-        [Required]
         public string PF_Code { get; set; }
-        [Required]
         public string F_Address { get; set; }
-      
         public string OwnerName { get; set; }
         public string BranchName { get; set; }
         public string GstNo { get; set; }
-        [Required]
         public string Franchisee_Name { get; set; }
         public string ContactNo { get; set; }
         public string Branch_Area { get; set; }

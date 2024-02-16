@@ -122,6 +122,8 @@
                     <table id="example1" class="table creditorsreport">
                         <thead>
                             <tr>
+                                <th>Sr.No</th>
+                                <th></th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Consignment_No)
                                 </th>
@@ -173,6 +175,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @{ 
+                                var i = 1;
+                            }
                             @foreach (var item in Model)
                             {
                                 var date = "No Date";
@@ -181,6 +186,13 @@
                                     date = item.Datetime_Cons.Value.ToString("dd/MM/yyyy");
                                 }
                                 <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("DownloadReceipts", "AdminCashBooking", new { consignmentno = item.Consignment_No })" target="_blank" class="view-btn">View</a>
+
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Consignment_No)
                                     </td>
@@ -241,6 +253,7 @@
                                             @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
                                         </td>*@
                                 </tr>
+                                i++;
                             }
                         </tbody>
 

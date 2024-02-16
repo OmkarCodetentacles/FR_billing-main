@@ -11,14 +11,11 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Payment
     {
         public long Pay_ID { get; set; }
-        [Required]
         public string Consignment_No { get; set; }
-        [Required]
         public Nullable<float> amount { get; set; }
         public string Pf_Code { get; set; }
         public string Description_ { get; set; }

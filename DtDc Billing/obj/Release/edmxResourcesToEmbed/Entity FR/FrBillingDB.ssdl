@@ -41,6 +41,14 @@
     <Property Name="Accesspage" Type="varchar" MaxLength="50" />
     <Property Name="AcceessDate" Type="datetime" />
   </EntityType>
+  <EntityType Name="BarcodeAndPath">
+    <Key>
+      <PropertyRef Name="BarcodeAndPathId" />
+    </Key>
+    <Property Name="BarcodeAndPathId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConsignmentNo" Type="varchar" MaxLength="50" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="Cash">
     <Key>
       <PropertyRef Name="Cash_id" />
@@ -166,6 +174,32 @@
     <Property Name="Name" Type="varchar" MaxLength="100" />
     <Property Name="State_" Type="varchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="Dtdc_Ecommerce">
+    <Key>
+      <PropertyRef Name="Ecom_id" />
+    </Key>
+    <Property Name="Ecom_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EcomPslab1" Type="float" />
+    <Property Name="EcomPslab2" Type="float" />
+    <Property Name="EcomPslab3" Type="float" />
+    <Property Name="EcomPslab4" Type="float" />
+    <Property Name="EcomGEslab1" Type="float" />
+    <Property Name="EcomGEslab2" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="EcomGEslab3" Type="float" />
+    <Property Name="EcomGEslab4" Type="float" />
+    <Property Name="EcomPupto1" Type="float" />
+    <Property Name="EcomPupto2" Type="float" />
+    <Property Name="EcomPupto3" Type="float" />
+    <Property Name="EcomPupto4" Type="float" />
+    <Property Name="EcomGEupto1" Type="float" />
+    <Property Name="EcomGEupto2" Type="float" />
+    <Property Name="EcomGEupto3" Type="float" />
+    <Property Name="EcomGEupto4" Type="float" />
+    <Property Name="NoOfSlabN" Type="int" />
+    <Property Name="NoOfSlabS" Type="int" />
+  </EntityType>
   <EntityType Name="Dtdc_Ptp">
     <Key>
       <PropertyRef Name="ptp_id" />
@@ -282,7 +316,7 @@
     <Property Name="IFSCcode" Type="varchar" MaxLength="200" />
     <Property Name="Branch" Type="varchar" MaxLength="200" />
     <Property Name="Accounttype" Type="varchar" MaxLength="200" />
-    <Property Name="InvoiceStart" Type="varchar" MaxLength="5" />
+    <Property Name="InvoiceStart" Type="varchar" MaxLength="10" />
     <Property Name="LogoFilePath" Type="varchar" MaxLength="500" />
     <Property Name="StampFilePath" Type="varchar(max)" />
   </EntityType>
@@ -443,6 +477,16 @@
     <Property Name="Pincode_Other" Type="bigint" />
     <Property Name="Service_Other" Type="varchar" MaxLength="500" />
     <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Package">
+    <Key>
+      <PropertyRef Name="Pid" />
+    </Key>
+    <Property Name="Pid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="float" />
+    <Property Name="Despription" Type="varchar" MaxLength="200" />
+    <Property Name="Subcriptionforindays" Type="int" />
+    <Property Name="isPaid" Type="bit" />
   </EntityType>
   <EntityType Name="Payment">
     <Key>
@@ -608,6 +652,7 @@
     <Property Name="User_Id" Type="bigint" />
     <Property Name="Datetime_Cons" Type="datetime" />
     <Property Name="Paid_Amount" Type="real" />
+    <Property Name="BarcodeImage" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="RedeemOtp">
     <Key>
@@ -649,6 +694,12 @@
     <Property Name="IsRenewal" Type="varchar" MaxLength="20" />
     <Property Name="IsRenewalEmail" Type="varchar" MaxLength="20" />
     <Property Name="IsRenewalEmailDate" Type="datetime" />
+    <Property Name="subscriptionForInDays" Type="int" />
+    <Property Name="paymentDate" Type="datetime" />
+    <Property Name="isEmailConfirmed" Type="bit" />
+    <Property Name="emailOTP" Type="varchar" MaxLength="100" />
+    <Property Name="isLoginConfirmed" Type="bit" />
+    <Property Name="LoginOTP" Type="varchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
@@ -691,6 +742,12 @@
     <Property Name="CashN" Type="bit" />
     <Property Name="BillD" Type="bit" />
     <Property Name="BillN" Type="bit" />
+    <Property Name="BillNonAir" Type="bit" />
+    <Property Name="BillNonSur" Type="bit" />
+    <Property Name="BillExpCargo" Type="bit" />
+    <Property Name="BillPriority" Type="bit" />
+    <Property Name="BillEcomPrio" Type="bit" />
+    <Property Name="BillEcomGE" Type="bit" />
   </EntityType>
   <EntityType Name="Sendmessage">
     <Key>
@@ -987,6 +1044,32 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
       </Principal>
       <Dependent Role="CreditNote">
         <PropertyRef Name="Firm_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ecom__Compa__7CD98669">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Dtdc_Ecommerce" Type="Self.Dtdc_Ecommerce" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ecommerce">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ecommerce__Company___0A9D95DB">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Dtdc_Ecommerce" Type="Self.Dtdc_Ecommerce" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ecommerce">
+        <PropertyRef Name="Company_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1506,6 +1589,18 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_Ecom">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Dtdc_Ecommerce" Type="Self.Dtdc_Ecommerce" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ecommerce">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_emeall">
     <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
     <End Role="wallet_History" Type="Self.wallet_History" Multiplicity="*" />
@@ -1943,6 +2038,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="addtopayamount" EntityType="Self.addtopayamount" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AdminAccessPage" EntityType="Self.AdminAccessPage" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BarcodeAndPath" EntityType="Self.BarcodeAndPath" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cash" EntityType="Self.Cash" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cheque" EntityType="Self.Cheque" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
@@ -1952,6 +2048,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="DemoTest" EntityType="Self.DemoTest" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DemoTest1" EntityType="Self.DemoTest1" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Destination" EntityType="Self.Destination" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Dtdc_Ecommerce" EntityType="Self.Dtdc_Ecommerce" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Dtdc_Ptp" EntityType="Self.Dtdc_Ptp" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="dtdcPlus" EntityType="Self.dtdcPlus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
@@ -1970,6 +2067,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
@@ -2073,6 +2171,14 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <AssociationSet Name="FK__CreditNot__Firm___251C81ED" Association="Self.FK__CreditNot__Firm___251C81ED">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="CreditNote" EntitySet="CreditNote" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ecom__Compa__7CD98669" Association="Self.FK__Dtdc_Ecom__Compa__7CD98669">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Dtdc_Ecommerce" EntitySet="Dtdc_Ecommerce" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ecommerce__Company___0A9D95DB" Association="Self.FK__Dtdc_Ecommerce__Company___0A9D95DB">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Dtdc_Ecommerce" EntitySet="Dtdc_Ecommerce" />
     </AssociationSet>
     <AssociationSet Name="FK__Dtdc_Ptp__Sector__25518C17" Association="Self.FK__Dtdc_Ptp__Sector__25518C17">
       <End Role="Sectors" EntitySet="Sectors" />
@@ -2245,6 +2351,10 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <AssociationSet Name="fk_company" Association="Self.fk_company">
       <End Role="Franchisee" EntitySet="Franchisee" />
       <End Role="Company" EntitySet="Company" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Ecom" Association="Self.fk_Ecom">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ecommerce" EntitySet="Dtdc_Ecommerce" />
     </AssociationSet>
     <AssociationSet Name="fk_emeall" Association="Self.fk_emeall">
       <End Role="Users" EntitySet="Users" />
