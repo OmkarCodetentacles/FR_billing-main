@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "GetConsignmentInfo";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
-}
 
+}
 <!-- jQuery 3.x -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -21,6 +21,7 @@
         padding: 10px;
         text-align: left;
     }
+
     #viewDRSImage, #podImgLink, #viewPOD, #viewSignature, #linkId, #viewImage, #mailIDput {
         display: none;
     }
@@ -43,49 +44,122 @@
         color: blueviolet;
     }
     /* .white_style{
-        display:none
-    }*/
+            display:none
+        }*/
 </style>
+<script>
+    $(document).ready(function () {
+        $("#consignmentdetails").hide();
+    })
+</script>
+<section class="content-wrapper" style="background: rgb(245 245 245)">
 
-@*@Html.Partial("GetConsignmentDetails", Model)*@
+    <div class="row">
+        <div class="col-md-12 ">
+            @using (Html.BeginForm())
+            {
 
-<div class="content-wrapper">
-    <div class="box" style="padding: 16px 15px">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    @Html.Raw(Model)
+
+                  <div class="container">
+                    <div class="row">
+                        <div class="box box-info" style="background: none; border: 1px solid #dbdbdb !important; background: white; padding: 15px; height:100%">
+
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Enter Consignment Number<br /></label>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        @if (ViewBag.Consignmentno == null)
+                                                        {
+                                                            <input type="text" name="consignmetno" id="consignmetno" class="form-control" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" name="consignmetno" id="consignmetno" class="form-control" value="@ViewBag.Consignmentno"/>
+
+                                                        }
+
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                                </div>
+                                            </div>*@
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
+
+
+            }
+
+
+
+            @*@Html.Partial("GetConsignmentDetails", Model)*@
+            @if (Model != null)
+            {
+                <div class="content-wrapper pull-left" id="consignmentdetails" style="padding-top:50px;padding-right:140px" >
+                    <div class="box" style="padding: 16px 15px">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @Html.Raw(Model)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
+                    </div>
+                </div>
+
+
+                <table id="consignmentTable">
+                    <thead>
+                        <tr id="tableHeaders">
+                            <th>Sr No</th>
+                            <th>Date</th>
+                            <th>Delivery Status</th>
+                            <th>Activity Type</th>
+                            @*<th>From</th>*@
+                            <th>Origin</th>
+                            <th>To</th>
+                        </tr>
+                    </thead>
+                    <tbody id="consdata">
+                    </tbody>
+                    <tbody>
+                        <!-- Table body will be populated dynamically -->
+                    </tbody>
+                </table>
+
+            }
 
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
-    </div>
-</div>
-
-<table id="consignmentTable">
-    <thead>
-        <tr id="tableHeaders">
-            <th>Sr No</th>
-            <th>Date</th>
-            <th>Delivery Status</th>
-            <th>Activity Type</th>
-            @*<th>From</th>*@
-            <th>Origin</th>
-            <th>To</th>
-        </tr>
-    </thead>
-    <tbody id="consdata">
-    </tbody>
-    <tbody>
-        <!-- Table body will be populated dynamically -->
-    </tbody>
-</table>
+</section>
 
 
 <script>
@@ -216,7 +290,7 @@
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
-            var cell6 = row.insertCell(5)
+            var cell6 = row.insertCell(5);
             cell1.innerHTML = i + 1;
             cell2.innerHTML = item.date;
             cell3.innerHTML = item.deliveryStatus;

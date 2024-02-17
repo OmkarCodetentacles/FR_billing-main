@@ -739,6 +739,157 @@ namespace DtDc_Billing.Models
                     Amount = Amountsurf;
                 }
 
+                else if (mode == "D71" || mode == "P7X")
+                {
+
+                    Dtdc_Ecommerce dtdc_ecom = db.Dtdc_Ecommerce.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
+
+                    if (mode == "P7X")
+                    {
+                        double? amount1 = 0.0;
+                        if (dtdc_ecom.NoOfSlabN == 2)
+                        {
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab1) * dtdc_ecom.EcomPupto1;
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomPslab1)) / Convert.ToDouble(dtdc_ecom.EcomPupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomPslab1 * dtdc_ecom.EcomPupto1) + (dtdc_ecom.EcomPslab4 * weightmod));
+                            }
+                        }
+                        else if (dtdc_ecom.NoOfSlabN == 3)
+                        {
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab1) * dtdc_ecom.EcomPupto1;
+                            }
+                            else if (highwaight <= dtdc_ecom.EcomPupto2)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab2) * Math.Ceiling(highwaight);
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomPupto2)) / Convert.ToDouble(dtdc_ecom.EcomPupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab2 + (dtdc_ecom.EcomPslab4 * weightmod));
+                            }
+
+
+
+                        }
+                        else if (dtdc_ecom.NoOfSlabN == 4)
+                        {
+
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab1) * dtdc_ecom.EcomPupto1;
+                            }
+
+                            else if (highwaight <= dtdc_ecom.EcomPupto2)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab2) * Math.Ceiling(highwaight);
+                            }
+                            else if (highwaight <= dtdc_ecom.EcomPupto3)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomPslab3) * Math.Ceiling(highwaight);
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomPupto3)) / Convert.ToDouble(dtdc_ecom.EcomPupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+                                // AirAmount = Convert.ToDouble(nondox.Aslab3 + (nondox.Aslab4 * weightmod));
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomPslab3 * dtdc_ecom.EcomPupto3) + (dtdc_ecom.EcomPslab4 * weightmod));
+                            }
+
+                        }
+
+                        Amount = amount1;
+                    }
+                    else if (mode == "D71")
+                    {
+                        double? amount1 = 0.0;
+                        if (dtdc_ecom.NoOfSlabS == 2)
+                        {
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab1) * dtdc_ecom.EcomGEupto1;
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomGEupto1)) / Convert.ToDouble(dtdc_ecom.EcomGEupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomGEslab1 * dtdc_ecom.EcomGEupto1) + (dtdc_ecom.EcomGEslab4 * weightmod));
+                            }
+                        }
+                        else if (dtdc_ecom.NoOfSlabS == 3)
+                        {
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                //Amountsurf = Convert.ToDouble(dtdc_ecom.EcomGEslab1);
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab1) * dtdc_ecom.EcomGEupto1;
+                            }
+                            else if (highwaight <= dtdc_ecom.EcomGEupto2)
+                            {
+                                // Amountsurf = Convert.ToDouble(dtdc_ecom.EcomGEslab2);
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab2) * Math.Ceiling(highwaight);
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomGEupto2)) / Convert.ToDouble(dtdc_ecom.EcomGEupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomGEslab2 * dtdc_ecom.EcomGEupto2) + (dtdc_ecom.EcomGEslab4 * weightmod));
+                            }
+
+
+                        }
+                        else if (dtdc_ecom.NoOfSlabS == 4)
+                        {
+
+                            if (highwaight <= dtdc_ecom.EcomPupto1)
+                            {
+                                //Amountsurf = Convert.ToDouble(dtdc_ecom.EcomGEslab1);
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab1) * dtdc_ecom.EcomGEupto1;
+
+                            }
+
+                            else if (highwaight <= dtdc_ecom.EcomGEupto2)
+                            {
+                                // Amountsurf = Convert.ToDouble(dtdc_ecom.EcomGEslab2);
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab2) * Math.Ceiling(highwaight);
+                            }
+                            else if (highwaight <= dtdc_ecom.EcomGEupto3)
+                            {
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab3);
+                                amount1 = Convert.ToDouble(dtdc_ecom.EcomGEslab3) * Math.Ceiling(highwaight);
+                            }
+                            else
+                            {
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomGEupto3)) / Convert.ToDouble(dtdc_ecom.EcomGEupto4);
+
+                                weightmod = Math.Ceiling(weightmod);
+
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomGEslab3 * dtdc_ecom.EcomGEupto3) + (dtdc_ecom.EcomGEslab4 * weightmod));
+                            }
+
+                        }
+
+                        Amount = amount1;
+                    }
+                }
 
                 //return Json(new { nonAisr = Amount, nonsurf = Amountsurf });
 

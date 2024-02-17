@@ -232,15 +232,52 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.success = true;
 
-                char ch = transaction.Consignment_no[0];
+                //char ch = transaction.Consignment_no[0];
 
-                long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(1));
+                //long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(1));
 
-                consignnumber = consignnumber + 1;
+                //consignnumber = consignnumber + 1;
 
-                var lenght = transaction.Consignment_no.Substring(1).Length;
+                //var lenght = transaction.Consignment_no.Substring(1).Length;
 
-                ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght,'0'));
+                //ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght,'0'));
+
+
+                //old logic before ecom end
+
+                if (transaction.Consignment_no.ToLower().StartsWith("7d"))
+                {
+                    string ch = transaction.Consignment_no.Substring(0, 2);
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(2));
+                    long consignnumberadd = consignnumber + 1;
+                    var lenght = transaction.Consignment_no.Substring(2).Length;
+
+                    ViewBag.nextconsignment = ch + "" + (consignnumberadd.ToString().PadLeft(lenght, '1'));
+                }
+
+                else if (transaction.Consignment_no.ToLower().StartsWith("7x"))
+                {
+                    string ch = transaction.Consignment_no.Substring(0, 2);
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(2));
+                    consignnumber = consignnumber + 1;
+                    var lenght = transaction.Consignment_no.Substring(2).Length;
+
+                    ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght, '1'));
+                }
+
+                else
+                {
+                    char ch = transaction.Consignment_no[0];
+
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(1));
+
+                    consignnumber = consignnumber + 1;
+
+                    var lenght = transaction.Consignment_no.Substring(1).Length;
+
+                    ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght, '0'));
+
+                }
 
 
                 return PartialView("ConsignmentPartial");
@@ -571,11 +608,46 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult MultipleBooking(string StartingCons, string EndingCons, string Companyid)
         {
-            char stch = StartingCons[0];
-            char Endch = EndingCons[0];
 
-            long startConsignment = Convert.ToInt64(StartingCons.Substring(1));
-            long EndConsignment = Convert.ToInt64(EndingCons.Substring(1));
+            string input1 = "";
+            string input2 = "";
+            string stch = "";
+            string Endch = "";
+
+            // Check if the first character is a digit
+            if (char.IsDigit(StartingCons[0]))
+            {
+                // If it's a digit, remove the first two characters
+                stch = StartingCons.Substring(0, 2);
+                input1 = StartingCons.Substring(2);
+            }
+            else
+            {
+                // If it's not a digit, remove the first character
+                stch = StartingCons.Substring(0, 1);
+                input1 = StartingCons.Substring(1);
+            }
+
+
+            // Check if the first character is a digit
+            if (char.IsDigit(EndingCons[0]))
+            {
+                // If it's a digit, remove the first two characters
+                Endch = EndingCons.Substring(0, 2);
+                input2 = EndingCons.Substring(2);
+            }
+            else
+            {
+                // If it's not a digit, remove the first character
+                Endch = EndingCons.Substring(0, 1);
+                input2 = EndingCons.Substring(1);
+            }
+
+
+            long startConsignment = Convert.ToInt64(input1);
+            long EndConsignment = Convert.ToInt64(input2);
+
+
 
             int countconsigmnets = 0;
             var pfcode = db.Companies.Where(m => m.Company_Id == Companyid).Select(m => m.Pf_code).FirstOrDefault();
@@ -608,11 +680,11 @@ namespace DtDc_Billing.Controllers
 
                     countconsigmnets++;
 
-                    if(countconsigmnets >= 100) 
+                    if (countconsigmnets >= 100)
                     {
                         break;
                     }
-                    
+
                 }
             }
 
@@ -622,7 +694,6 @@ namespace DtDc_Billing.Controllers
 
             return View();
         }
-
 
         public ActionResult Checkbookinglist()
         {

@@ -3214,8 +3214,8 @@ namespace DtDc_Billing.Controllers
                        register.emailId = userDetails.emailId;
                         register.dateTime = DateTime.Now;
                         register.ownerName= userDetails.ownerName;
-                        register.userName= userDetails.userName;
-                    register.password  = userDetails.password;
+                        register.userName= userDetails.userName.Trim();
+                    register.password  = userDetails.password.Trim();
                     register.mobileNo= userDetails.mobileNo;
                     register.address= userDetails.address;
                     register.referralCode =RandomString(10);
@@ -4339,6 +4339,9 @@ namespace DtDc_Billing.Controllers
                         Ratem dox = new Ratem();
                         Nondox ndox = new Nondox();
                         express_cargo cs = new express_cargo();
+                        Priority pri = new Priority();
+                        Dtdc_Ecommerce dtdc_Ecommerce = new Dtdc_Ecommerce();
+
 
                         dox.Company_id = Companyid;
                         dox.Sector_Id = i.Sector_Id;
@@ -4354,12 +4357,51 @@ namespace DtDc_Billing.Controllers
 
                         cs.Company_id = Companyid;
                         cs.Sector_Id = i.Sector_Id;
-
+                        cs.Exslab1 = 1;
+                        cs.Exslab2 = 1;
                         // cs.CashCounterExpr = true;
+
+                        pri.Company_id = basiccompid;
+                        pri.Sector_Id = i.Sector_Id;
+                        pri.prinoofslab = 2;
+
+                        pri.prislab1 = 1;
+                        pri.prislab2 = 1;
+                        pri.prislab3 = 1;
+                        pri.prislab4 = 1;
+
+                        pri.priupto1 = 1;
+                        pri.priupto2 = 1;
+                        pri.priupto3 = 1;
+                        pri.priupto4 = 1;
+
+                        dtdc_Ecommerce.Company_id = basiccompid;
+                        dtdc_Ecommerce.Sector_Id = i.Sector_Id;
+                        dtdc_Ecommerce.EcomPslab1 = 1;
+                        dtdc_Ecommerce.EcomPslab2 = 1;
+                        dtdc_Ecommerce.EcomPslab3 = 1;
+                        dtdc_Ecommerce.EcomPslab4 = 1;
+                        dtdc_Ecommerce.EcomGEslab1 = 1;
+                        dtdc_Ecommerce.EcomGEslab2 = 1;
+                        dtdc_Ecommerce.EcomGEslab3 = 1;
+                        dtdc_Ecommerce.EcomGEslab4 = 1;
+                        dtdc_Ecommerce.EcomPupto1 = 1;
+                        dtdc_Ecommerce.EcomPupto2 = 1;
+                        dtdc_Ecommerce.EcomPupto3 = 1;
+                        dtdc_Ecommerce.EcomPupto4 = 1;
+                        dtdc_Ecommerce.EcomGEupto1 = 1;
+                        dtdc_Ecommerce.EcomGEupto2 = 1;
+                        dtdc_Ecommerce.EcomGEupto3 = 1;
+                        dtdc_Ecommerce.EcomGEupto4 = 1;
+                        dtdc_Ecommerce.NoOfSlabN = 2;
+                        dtdc_Ecommerce.NoOfSlabS = 2;
+
 
                         db.Ratems.Add(dox);
                         db.Nondoxes.Add(ndox);
                         db.express_cargo.Add(cs);
+                        db.Priorities.Add(pri);
+                        db.Dtdc_Ecommerce.Add(dtdc_Ecommerce);
 
 
                     }
@@ -4788,11 +4830,14 @@ namespace DtDc_Billing.Controllers
         {
             return View();  
         }
-
-
-        public async Task<ActionResult> GetConsignmentInfo()
+        public ActionResult GetConsignmentInfo()
         {
-            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=P67294629";
+            return View();
+        }
+        [HttpPost]
+        public async  Task<ActionResult> GetConsignmentInfo(string consignmetno)
+        {
+            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=" + consignmetno;
 
             using (HttpClient client = new HttpClient())
             {
@@ -4802,7 +4847,7 @@ namespace DtDc_Billing.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        ViewBag.Consignmentno = "P67294629";
+                        ViewBag.Consignmentno = consignmetno;
                         string responsedata = await response.Content.ReadAsStringAsync();
                         return View((object)responsedata);
 
@@ -4824,6 +4869,8 @@ namespace DtDc_Billing.Controllers
                     //return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Internal Server Error: " + ex.Message);
                 }
             }
+
+
 
         }
         [HttpPost]

@@ -133,7 +133,7 @@
                         <thead>
                             <tr>
                                 <th>Sr.No</th>
-                           
+                           <th>View</th>
                                 <th>
                                     @*@Html.DisplayNameFor(model => model.Consignment_No)*@Consignment No
                                 </th>
@@ -192,6 +192,10 @@
                                 <tr>
                                     <td>@srno</td>
                                     <td>
+                                        <a href="@Url.Action("DownloadReceipts", "AdminCashBooking", new { consignmentno = item.Consignment_No })" target="_blank" class="view-btn">View</a>
+
+                                    </td>
+                                    <td>
                                         @Html.DisplayFor(modelItem => item.Consignment_No)
                                     </td>
                                     <td>
@@ -202,8 +206,8 @@
                                     </td>
 
                                     @*<td>
-                    @Html.DisplayFor(modelItem => item.Sender)
-                </td>*@
+            @Html.DisplayFor(modelItem => item.Sender)
+        </td>*@
 
 
                                     <td>
@@ -228,8 +232,8 @@
                                         @Html.DisplayFor(modelItem => item.ReciepentsPincode)
                                     </td>
                                     @*<td>
-                    @Html.DisplayFor(modelItem => item.Pf_Code)
-                </td>*@
+            @Html.DisplayFor(modelItem => item.Pf_Code)
+        </td>*@
                                     <td>
                                         @date
                                     </td>
@@ -239,10 +243,10 @@
                                     </td>
 
                                     @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                </td>*@
+            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+        </td>*@
                                 </tr>
                                 srno++;
                             }

@@ -369,15 +369,15 @@ namespace DtDc_Billing.Controllers
         {
             //  Id = Id.Replace("__", "&").Replace("xdotx", "."); ;
             var Idd = Id.Replace("__", "&").Replace("xdotx", "."); ;
-            var pfcode = db.Companies.Where(m => m.Company_Id == Idd).FirstOrDefault();
-
+           
             TempData["CompanyId"] = Id;
-            var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
 
+            var pfcode = db.Companies.Where(m => m.Company_Id == Idd).FirstOrDefault();
             var prio = db.Priorities.Where(m => m.Company_id == Id).ToList();
 
             if(prio.Count() == 0)
             {
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
                 foreach (var i in secotrs)
                 {
                     Priority pr = new Priority();
@@ -414,6 +414,7 @@ namespace DtDc_Billing.Controllers
 
             if (ecom.Count == 0)
             {
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
                 foreach (var i in secotrs)
                 {
                     Dtdc_Ecommerce rm = new Dtdc_Ecommerce();
@@ -550,7 +551,7 @@ namespace DtDc_Billing.Controllers
                     Nondox ndox = new Nondox();
                     express_cargo cs = new express_cargo();
                     Priority pri = new Priority();
-
+                    Dtdc_Ecommerce dtdc_Ecommerce = new Dtdc_Ecommerce();
 
                     dox.Company_id = empmodel.Company_Id;
                     dox.Sector_Id = i.Sector_Id;
@@ -612,10 +613,33 @@ namespace DtDc_Billing.Controllers
                     cs.Exslab1 = 1;
                     cs.Exslab2 = 1;
 
+                    dtdc_Ecommerce.Company_id = empmodel.Company_Id;
+                    dtdc_Ecommerce.Sector_Id = i.Sector_Id;
+                    dtdc_Ecommerce.EcomPslab1 = 1;
+                    dtdc_Ecommerce.EcomPslab2 = 1;
+                    dtdc_Ecommerce.EcomPslab3 = 1;
+                    dtdc_Ecommerce.EcomPslab4 = 1;
+                    dtdc_Ecommerce.EcomGEslab1 = 1;
+                    dtdc_Ecommerce.EcomGEslab2 = 1;
+                    dtdc_Ecommerce.EcomGEslab3 = 1;
+                    dtdc_Ecommerce.EcomGEslab4 = 1;
+                    dtdc_Ecommerce.EcomPupto1 = 1;
+                    dtdc_Ecommerce.EcomPupto2 = 1;
+                    dtdc_Ecommerce.EcomPupto3 = 1;
+                    dtdc_Ecommerce.EcomPupto4 = 1;
+                    dtdc_Ecommerce.EcomGEupto1 = 1;
+                    dtdc_Ecommerce.EcomGEupto2 = 1;
+                    dtdc_Ecommerce.EcomGEupto3 = 1;
+                    dtdc_Ecommerce.EcomGEupto4 = 1;
+                    dtdc_Ecommerce.NoOfSlabN = 2;
+                    dtdc_Ecommerce.NoOfSlabS = 2;
+
+
                     db.Ratems.Add(dox);
                     db.Nondoxes.Add(ndox);
                     db.express_cargo.Add(cs);
                     db.Priorities.Add(pri);
+                    db.Dtdc_Ecommerce.Add(dtdc_Ecommerce);
 
                     j++;
 
@@ -995,6 +1019,150 @@ namespace DtDc_Billing.Controllers
             ViewBag.Pf_code = new SelectList(db.Franchisees, "PF_Code", "PF_Code", empmodel.Pf_code);
 
             return PartialView("RatemasterEditCompany", empmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [HandleError]
+        public ActionResult RateMasterEcommerce(FormCollection fc, string comppid)
+        {
+
+            comppid = comppid.Replace("__", "&").Replace("xdotx", "."); ;
+            var CompanyId = comppid;
+            ViewBag.companyid = comppid;
+            if (ModelState.IsValid)
+            {
+
+                var ecom_idarray = fc.GetValues("item.Ecom_id");
+                var EcomPslab1 = fc.GetValues("item.EcomPslab1");
+                var EcomPslab2 = fc.GetValues("item.EcomPslab2");
+                var EcomPslab3 = fc.GetValues("item.EcomPslab3");
+                var EcomPslab4 = fc.GetValues("item.EcomPslab4");
+
+                var EcomGEslab1 = fc.GetValues("item.EcomGEslab1");
+                var EcomGEslab2 = fc.GetValues("item.EcomGEslab2");
+                var EcomGEslab3 = fc.GetValues("item.EcomGEslab3");
+                var EcomGEslab4 = fc.GetValues("item.EcomGEslab4");
+
+                //var EcomPupto1 = fc.GetValues("item.EcomPupto1");
+                //var EcomPupto2 = fc.GetValues("item.EcomPupto2");
+                //var EcomPupto3 = fc.GetValues("item.EcomPupto3");
+                //var EcomPupto4 = fc.GetValues("item.EcomPupto4");
+
+                //var EcomGEupto1 = fc.GetValues("item.EcomGEupto1");
+                //var EcomGEupto2 = fc.GetValues("item.EcomGEupto2");
+                //var EcomGEupto3 = fc.GetValues("item.EcomGEupto3");
+                //var EcomGEupto4 = fc.GetValues("item.EcomGEupto4");
+
+                var Auptoarray = fc.GetValues("AUpto");
+                var Suptoarray = fc.GetValues("SUpto");
+
+                var NoOfSlabN = fc.GetValues("item.NoOfSlabN");
+                var NoOfSlabS = fc.GetValues("item.NoOfSlabS");
+
+
+                for (int i = 0; i < ecom_idarray.Count(); i++)
+                {
+                    if (EcomPslab1[i] == "")
+                    {
+                        EcomPslab1[i] = "0";
+                    }
+                    if (EcomPslab2[i] == "")
+                    {
+                        EcomPslab2[i] = "0";
+                    }
+                    if (EcomPslab3[i] == "")
+                    {
+                        EcomPslab3[i] = "0";
+                    }
+                    if (EcomPslab4[i] == "")
+                    {
+                        EcomPslab4[i] = "0";
+                    }
+                    if (EcomGEslab1[i] == "")
+                    {
+                        EcomGEslab1[i] = "0";
+                    }
+                    if (EcomGEslab2[i] == "")
+                    {
+                        EcomGEslab2[i] = "0";
+                    }
+                    if (EcomGEslab3[i] == "")
+                    {
+                        EcomGEslab3[i] = "0";
+                    }
+                    if (EcomGEslab4[i] == "")
+                    {
+                        EcomGEslab4[i] = "0";
+                    }
+
+                }
+
+                for (int i = 0; i < Auptoarray.Count(); i++)
+                {
+                    if (Auptoarray[i] == "")
+                    {
+                        Auptoarray[i] = "0";
+                    }
+                    if (Suptoarray[i] == "")
+                    {
+                        Suptoarray[i] = "0";
+                    }
+                }
+
+
+                for (int i = 0; i < ecom_idarray.Count(); i++)
+                {
+
+
+                    Dtdc_Ecommerce rm = db.Dtdc_Ecommerce.Find(Convert.ToInt16(ecom_idarray[i]));
+
+
+                    rm.EcomPslab1 = Convert.ToDouble(EcomPslab1[i]);
+                    rm.EcomPslab2 = Convert.ToDouble(EcomPslab2[i]);
+                    rm.EcomPslab3 = Convert.ToDouble(EcomPslab3[i]);
+                    rm.EcomPslab4 = Convert.ToDouble(EcomPslab4[i]);
+
+                    rm.EcomGEslab1 = Convert.ToDouble(EcomGEslab1[i]);
+                    rm.EcomGEslab2 = Convert.ToDouble(EcomGEslab2[i]);
+                    rm.EcomGEslab3 = Convert.ToDouble(EcomGEslab3[i]);
+                    rm.EcomGEslab4 = Convert.ToDouble(EcomGEslab4[i]);
+
+                    rm.EcomPupto1 = Convert.ToDouble(Auptoarray[0]);
+                    rm.EcomPupto2 = Convert.ToDouble(Auptoarray[1]);
+                    rm.EcomPupto3 = Convert.ToDouble(Auptoarray[2]);
+                    rm.EcomPupto4 = Convert.ToDouble(Auptoarray[3]);
+
+                    rm.EcomGEupto1 = Convert.ToDouble(Suptoarray[0]);
+                    rm.EcomGEupto2 = Convert.ToDouble(Suptoarray[1]);
+                    rm.EcomGEupto3 = Convert.ToDouble(Suptoarray[2]);
+                    rm.EcomGEupto4 = Convert.ToDouble(Suptoarray[3]);
+
+                    rm.NoOfSlabN = Convert.ToInt16(NoOfSlabN[0]);
+                    rm.NoOfSlabS = Convert.ToInt16(NoOfSlabS[0]);
+
+                    db.Entry(rm).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                }
+
+                var compid = comppid;
+
+                ViewBag.Message = "E-commerce Updated SuccessFully";
+
+
+
+                var getData = db.Dtdc_Ecommerce.Where(m => m.Company_id == compid).ToList();
+
+                ViewBag.com = getData.FirstOrDefault();
+                ViewBag.Ecommerce = getData;
+
+                return PartialView("RateMasterEcommerce", getData);
+
+            }
+
+            return PartialView("RateMasterEcommerce", fc);
+
         }
 
         [HttpPost]
