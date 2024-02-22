@@ -2,336 +2,381 @@
 @model IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ecommerce>
 
 
-@using (Ajax.BeginForm("RateMasterEcommerce", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp6", OnBegin = "onBegin", OnComplete = "onComplete" }))
+@using (Ajax.BeginForm("RateMasterEcommerce", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp7", OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <input type="hidden" value="@ViewBag.companyid" name="comppid">
+    var successMessage = ViewBag.Message as string;
+
+
+    if (!string.IsNullOrEmpty(successMessage))
+    {
+        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+    }
+
+
     <div class="col-sm-12 text-center">
         <h4>Ecommerce Priority - 7X</h4>
     </div>
 
-    foreach (var item in Model)
+
+
+    if (ViewBag.EcomPCount > 0)
     {
-        if (item.NoOfSlabN != null)
+        foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
         {
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="box-header">
-                    <div class="col-sm-4">
-                        <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+            var Ecommerce_NoOfSlabN = item.NoOfSlabN;
+            if (item.NoOfSlabN != null)
+            {
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="box-header">
+                        <div class="col-sm-4">
+                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            break;
+                break;
+            }
+            else
+            {
+                <div class="col-sm-6">
+                    <div class="box-header">
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                        </div>
+
+                    </div>
+                </div>
+                break;
+
+
+            }
         }
-        else
-        {
-            <div class="col-sm-6">
-                <div class="box-header">
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                    </div>
 
-                </div>
+    }
+    else if (ViewBag.EcomPCount == 0)
+    {
+
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="box-header">
+
+                <h4> No Data Found</h4>
+
             </div>
-            break;
+        </div>
+    }
+    if (ViewBag.EcomPCount != null && ViewBag.EcomPCount > 0)
+    {
+        var hasTrueValue = Model.Any(x => x != null && x.Sector != null && x.Sector.BillEcomPrio == true);
 
+        if (hasTrueValue)
+        {
+            foreach (var item in Model.Where(x => x != null && x.Sector != null))
+            {
+                if (item != null && item.NoOfSlabN != null)
+                {
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>
+                                    @*@Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2*@
 
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2
+
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    @* @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3*@
+
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 3, new { @checked = "checked" })  Slab 3
+
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    @*@Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4*@
+
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 4, new { @checked = "checked" })  Slab 4
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+                else
+                {
+                    <div class="col-sm-6">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>
+                                    @*@Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2*@
+
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2
+
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    @*@Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3*@
+
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 3, new { @checked = "checked" })  Slab 3
+
+                                </label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>
+                                    @*@Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4*@
+
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 4, new { @checked = "checked" })  Slab 4
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+            }
         }
 
     }
 
-    @*@Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
-
-    <table class="table table-bordered table-striped" id="dtdc_ptp">
-        <thead>
-            <tr class="upto-input">
-                <th>
-                    @*<h4>Sectors</h4>*@
-                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                </th>
-                <th>
-                    <label>Upto</label>
-                    <input type="text" name="AUpto" value="@ViewBag.com.EcomPupto1" />
-                    <label>Kg</label>
-                </th>
-                <th class="slab2Air">
-                    <label>Upto</label>
-                    <input type="text" name="AUpto" value="@ViewBag.com.EcomPupto2" />
-                    <label>Kg</label>
-                </th>
-                <th class="slab3Air">
-                    <label>Upto</label>
-                    <input type="text" name="AUpto" value="@ViewBag.com.EcomPupto3" />
-                    <label>Kg</label>
-                </th>
-                <th>
-                    <label>Addtional</label>
-                    <input type="text" name="AUpto" value="@ViewBag.com.EcomPupto4" />
-                    <label>Kg</label>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="sectors">
-                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.EcomPslab1)
-                    </td>
-                    <td class="slab2Air">
-                        @Html.EditorFor(modelItem => item.EcomPslab2)
-                    </td>
-                    <td class="slab3Air">
-                        @Html.EditorFor(modelItem => item.EcomPslab3)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.EcomPslab4)
-                    </td>
-                    <td class="hidden">
-                        @Html.HiddenFor(modelItem => item.Ecom_id)
-                    </td>
-                    <td class="hidden">
-                        @Html.HiddenFor(modelItem => item.Sector_Id)
-                    </td>
 
 
+    if (ViewBag.EcomPCount > 0)
+    {
+        <table class="table table-bordered table-striped" id="dtdc_ptp">
+            <thead>
+                <tr class="upto-input">
+                    <th>
+                        @*<h4>Sectors</h4>*@
+                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                    </th>
+                    <th>
+                        <label>Upto</label>
+                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto1" />
+                        <label>Kg</label>
+                    </th>
+                    <th class="slab2Air">
+                        <label>Upto</label>
+                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto2" />
+                        <label>Kg</label>
+                    </th>
+                    <th class="slab3Air">
+                        <label>Upto</label>
+                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto3" />
+                        <label>Kg</label>
+                    </th>
+                    <th>
+                        <label>Addtional</label>
+                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto4" />
+                        <label>Kg</label>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true).ToList())
+                {
+                    <tr>
+                        <td class="sectors">
+                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.EcomPslab1)
+                        </td>
+                        <td class="slab2Air">
+                            @Html.EditorFor(modelItem => item.EcomPslab2)
+                        </td>
+                        <td class="slab3Air">
+                            @Html.EditorFor(modelItem => item.EcomPslab3)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.EcomPslab4)
+                        </td>
+                        <td class="hidden">
+                            @Html.HiddenFor(modelItem => item.Ecom_id)
+                        </td>
+                        <td class="hidden">
+                            @Html.HiddenFor(modelItem => item.Sector_Id)
+                        </td>
+
+
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    }
 
     <div class="col-sm-12 text-center">
         <h4>Ecommerce Ground Express - 7D</h4>
     </div>
-    foreach (var item in Model)
+    if (ViewBag.EcomGECount != null && ViewBag.EcomGECount != 0)
     {
-        if (item.NoOfSlabS != null)
+        foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomGE == true))
         {
-            <div class="col-sm-6 col-sm-offset-3">
-                <div class="box-header">
-                    <div class="col-sm-4">
-                        <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
+            if (item.NoOfSlabS != null)
+            {
+                var Ecommerce_NoOfSlabS = item.NoOfSlabS;
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="box-header">
+                        <div class="col-sm-4">
+                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            break;
-        }
-        else
-        {
+                break;
+            }
+            else
+            {
 
-            <div class="col-sm-6">
-                <div class="box-header">
-                    <div class="col-sm-4">
-                        <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
+                <div class="col-sm-6">
+                    <div class="box-header">
+                        <div class="col-sm-4">
+                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-            break;
+                break;
+
+            }
 
         }
+    }
+    else if (ViewBag.EcomGECount == 0)
+    {
 
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="box-header">
+
+                <h4> No Data Found</h4>
+
+            </div>
+        </div>
     }
 
-    <table class="table table-bordered table-striped" id="dtdc_ptp">
-        <thead>
-            <tr class="upto-input">
-                <th>
-                    @*<h4>Sectors</h4>*@
-                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                </th>
-                <th>
-                    <label>Upto</label>
-                    <input type="text" name="SUpto" value="@ViewBag.com.EcomGEupto1" />
-                    <label>Kg</label>
-                </th>
-                <th class="slab2Sirf">
-                    <label>Upto</label>
-                    <input type="text" name="SUpto" value="@ViewBag.com.EcomGEupto2" />
-                    <label>Kg</label>
-                </th>
-                <th class="slab3Sirf">
-                    <label>Upto</label>
-                    <input type="text" name="SUpto" value="@ViewBag.com.EcomGEupto3" />
-                    <label>Kg</label>
-                </th>
-                <th>
-                    <label>
-                        Addtional
-                    </label>
-                    <input type="text" name="SUpto" value="@ViewBag.com.EcomGEupto4" />
-                    <label>Kg</label>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="sectors">
-                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.EcomGEslab1)
-                    </td>
-                    <td class="slab2Sirf">
-                        @Html.EditorFor(modelItem => item.EcomGEslab2)
-                    </td>
-                    <td class="slab3Sirf">
-                        @Html.EditorFor(modelItem => item.EcomGEslab3)
-                    </td>
-                    <td>
-                        @Html.EditorFor(modelItem => item.EcomGEslab4)
-                    </td>
-                    @*<td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Non_ID)
+    if (ViewBag.EcomGECount != 0)
+    {
+        <table class="table table-bordered table-striped" id="dtdc_ptp">
+            <thead>
+                <tr class="upto-input">
+                    <th>
+                        @*<h4>Sectors</h4>*@
+                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                    </th>
+                    <th>
+                        <label>Upto</label>
+                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto1" />
+                        <label>Kg</label>
+                    </th>
+                    <th class="slab2Sirf">
+                        <label>Upto</label>
+                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto2" />
+                        <label>Kg</label>
+                    </th>
+                    <th class="slab3Sirf">
+                        <label>Upto</label>
+                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto3" />
+                        <label>Kg</label>
+                    </th>
+                    <th>
+                        <label>
+                            Addtional
+                        </label>
+                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto4" />
+                        <label>Kg</label>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomGE == true).ToList())
+                {
+                    <tr>
+                        <td class="sectors">
+                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.EcomGEslab1)
+                        </td>
+                        <td class="slab2Sirf">
+                            @Html.EditorFor(modelItem => item.EcomGEslab2)
+                        </td>
+                        <td class="slab3Sirf">
+                            @Html.EditorFor(modelItem => item.EcomGEslab3)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.EcomGEslab4)
+                        </td>
+                        <td class="hidden">
+
+                            <input type="hidden" name="Non_ID_GC" value="@item.Ecom_id">
                         </td>
                         <td class="hidden">
                             @Html.HiddenFor(modelItem => item.Sector_Id)
-                        </td>*@
-                </tr>
-            }
-        </tbody>
-    </table>
+                        </td>
+                    </tr>
+                }
 
 
-    <input class="btn bg-maroon pull-right" type="submit" name="submit" value="Save" />
-}
+            </tbody>
+        </table>
+    }
 
-@if (ViewBag.Message != null)
-{
-    <script>
+    if (ViewBag.EcomPCount > 0 || ViewBag.EcomPCount > 0)
+    {
+        <input class="btn bg-maroon pull-right" type="submit" name="submit" value="Save" />
+    }
 
-$(document).ready(function(){
-
-alert('@ViewBag.Message');
-
-});
-
-    </script>
 
 }
 
-
-
+@{
+    var EStest = 0;
+    if (ViewBag.EcomPCount > 0)
+    {
+        EStest = ViewBag.comGc.NoOfSlabS;
+    }
+}
 
 <script>
     $(document).ready(function () {
 
 
-        var test ="@ViewBag.Ecommerce[0].NoOfSlabN";
-
-      //  alert(test);
-
-        if (test == 3) {
+              EStest = '@EStest';
 
 
-            $('.slab2Air').show();
-
-            $('.slab3Air').hide();
-
-
-            $('#only').val(test);
-        }
-        else if (test == 4) {
-            $('.slab2Air').show();
-            $('.slab3Air').show();
-
-
-
-            $('#only').val(test);
-        }
-        else if (test == 2) {
-            $('.slab2Air').hide();
-            $('.slab3Air').hide();
-
-
-
-            $('#only').val(2);
-
-        }
-
-
-
-
-
-        $("input[name$='NoOfSlabN']").change(function () {
-
-            var test =$(this).val();
-
-            //alert(test);
-
-            if (test == 3) {
-
-
-                $('.slab2Air').show();
-
-                $('.slab3Air').hide();
-
-
-                $('#only').val(test);
-            }
-            else if (test == 4) {
-                $('.slab2Air').show();
-                $('.slab3Air').show();
-
-
-
-                $('#only').val(test);
-            }
-            else if (test == 2) {
-                $('.slab2Air').hide();
-                $('.slab3Air').hide();
-
-
-
-                $('#only').val(2);
-
-            }
-
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-
-
-        var test =@ViewBag.Ecommerce[0].NoOfSlabS;
-
-        //alert(test);
-
-        if (test == 3) {
+        if (EStest == 3) {
 
 
             $('.slab2Sirf').show();
@@ -339,17 +384,17 @@ alert('@ViewBag.Message');
             $('.slab3Sirf').hide();
 
 
-            $('#only').val(test);
+            $('#only').val(EStest);
         }
-        else if (test == 4) {
+        else if (EStest == 4) {
             $('.slab2Sirf').show();
             $('.slab3Sirf').show();
 
 
 
-            $('#only').val(test);
+            $('#only').val(EStest);
         }
-        else if (test == 2) {
+        else if (EStest == 2) {
             $('.slab2Sirf').hide();
             $('.slab3Sirf').hide();
 
@@ -363,11 +408,12 @@ alert('@ViewBag.Message');
 
         $("input[name$='NoOfSlabS']").change(function () {
 
-            var test = $(this).val();
+            var EStest = $(this).val();
 
-            //alert(test);
+           // alert(EStest);
 
-            if (test == 3) {
+
+            if (EStest == 3) {
 
 
                 $('.slab2Sirf').show();
@@ -375,17 +421,17 @@ alert('@ViewBag.Message');
                 $('.slab3Sirf').hide();
 
 
-                $('#only').val(test);
+                $('#only').val(EStest);
             }
-            else if (test == 4) {
+            else if (EStest == 4) {
                 $('.slab2Sirf').show();
                 $('.slab3Sirf').show();
 
 
 
-                $('#only').val(test);
+                $('#only').val(EStest);
             }
-            else if (test == 2) {
+            else if (EStest == 2) {
                 $('.slab2Sirf').hide();
                 $('.slab3Sirf').hide();
 
@@ -399,7 +445,91 @@ alert('@ViewBag.Message');
     });
 </script>
 
+@{
+    var ENtest = 0;
+    if (ViewBag.EcomPCount > 0)
+    {
+        ENtest = ViewBag.comP.NoOfSlabN;
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        var ENtest ='@ENtest';
+
+        if (ENtest == 3) {
+
+
+            $('.slab2Air').show();
+
+            $('.slab3Air').hide();
+
+
+            $('#only').val(ENtest);
+        }
+        else if (ENtest == 4) {
+            $('.slab2Air').show();
+            $('.slab3Air').show();
+
+
+
+            $('#only').val(ENtest);
+        }
+        else if (ENtest == 2) {
+            $('.slab2Air').hide();
+            $('.slab3Air').hide();
+
+
+
+            $('#only').val(2);
+
+        }
+
+
+
+        $("input[name$='NoOfSlabN']").change(function () {
+
+            var ENtest = $(this).val();
+
+           // alert(ENtest);
+
+            if (ENtest == 3) {
+
+
+                $('.slab2Air').show();
+
+                $('.slab3Air').hide();
+
+
+                $('#only').val(ENtest);
+            }
+            else if (ENtest == 4) {
+                $('.slab3Air').show();
+                $('.slab3Air').show();
+
+
+
+                $('#only').val(ENtest);
+            }
+            else if (ENtest == 2) {
+                $('.slab2Air').hide();
+                $('.slab3Air').hide();
+
+
+
+                $('#only').val(2);
+
+            }
+
+        });
+    });
+</script>
 <script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
     function onBegin() {
 
         // Show the loader
@@ -408,6 +538,7 @@ alert('@ViewBag.Message');
 
     function onComplete() {
         // Hide the loader
+        scrollToTop();
         document.getElementById('overlayBlock').style.display = 'none';
     }
 </script>

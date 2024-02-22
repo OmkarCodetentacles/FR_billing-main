@@ -8,8 +8,19 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
+    .table {
+        width: 100%;
+        border-collapse: collapse; /* Optional: To collapse table borders */
+    }
+    .widget {
+        margin: 0 auto;
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+    body {
+        overflow-y: hidden; /* Hide vertical scrollbar */
+    }
     table {
-        border-collapse: collapse;
         width: 100%;
     }
 
@@ -53,112 +64,122 @@
     })
 </script>
 <section class="content-wrapper" style="background: rgb(245 245 245)">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ">
+            
 
-    <div class="row">
-        <div class="col-md-12 ">
-            @using (Html.BeginForm())
-            {
+                    <div class="container">
+                        <div class="row">
+                            <div class="box box-info" style="background: none; border: 1px solid #dbdbdb !important; background: white; padding: 15px; height:100%">
 
-
-                  <div class="container">
-                    <div class="row">
-                        <div class="box box-info" style="background: none; border: 1px solid #dbdbdb !important; background: white; padding: 15px; height:100%">
-
-                            <div class="form-horizontal">
-                                <div class="row">
-                                    <div class="col-md-12">
+                                <div class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-md-12">
 
 
-                                        <div class="form-group">
-                                            <label class="col-md-3 control-label">Enter Consignment Number<br /></label>
-                                            <div class="col-md-12">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        @if (ViewBag.Consignmentno == null)
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">Enter Consignment Number<br /></label>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        @using (Html.BeginForm())
                                                         {
-                                                            <input type="text" name="consignmetno" id="consignmetno" class="form-control" />
+                                                            <div class="col-md-6">
+
+
+                                                                @if (ViewBag.Consignmentno == null)
+                                                                {
+                                                                    <input type="text" name="consignmetno" id="consignmetno" class="form-control" required />
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" name="consignmetno" id="consignmetno" class="form-control" value="@ViewBag.Consignmentno" required />
+
+                                                                }
+
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="submit" value="View" class="btn btn-primary" />
+                                                            </div>
+                                                        }
+
+
+                                                        @if (Model != null)
+                                                        {
+                                                            <br /><br />
+                                                                  <div class="pull-left" id="consignmentdetails" style="padding-top:50px;">
+                                                                      @*padding-right:140px*@
+
+                                                                                                                              <div class="col-md-12">
+                                                                                                                                  @Html.Raw(Model)
+
+                                                                                                                              </div>
+                                                                                                                          </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
+                                                                </div>
+                                                            </div>
+
+
+                                                            <table id="consignmentTable">
+                                                                <thead>
+                                                                    <tr id="tableHeaders">
+                                                                        <th>Sr No</th>
+                                                                        <th>Date</th>
+                                                                        <th>Delivery Status</th>
+                                                                        <th>Activity Type</th>
+                                                                        @*<th>From</th>*@
+                                                                        <th>Origin</th>
+                                                                        <th>To</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="consdata">
+                                                                </tbody>
+                                                                <tbody>
+                                                                    <!-- Table body will be populated dynamically -->
+                                                                </tbody>
+                                                            </table>
 
                                                         }
-                                                        else
-                                                        {
-                                                            <input type="text" name="consignmetno" id="consignmetno" class="form-control" value="@ViewBag.Consignmentno"/>
 
-                                                        }
 
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <input type="submit" value="Save" class="btn btn-primary" />
-                                                    </div>
-
                                                 </div>
                                             </div>
+
+                                            @*<div class="form-group">
+                                                    <div class="col-md-offset-2 col-md-10">
+                                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                                    </div>
+                                                </div>*@
+
                                         </div>
-
-                                        @*<div class="form-group">
-                                                <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" value="Save" class="btn btn-primary" />
-                                                </div>
-                                            </div>*@
-
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            }
-
-
-
-            @*@Html.Partial("GetConsignmentDetails", Model)*@
-            @if (Model != null)
-            {
-                <div class="content-wrapper pull-left" id="consignmentdetails" style="padding-top:50px;padding-right:140px" >
-                    <div class="box" style="padding: 16px 15px">
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    @Html.Raw(Model)
-                                </div>
-                            </div>
 
                         </div>
+
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
-                    </div>
-                </div>
 
 
-                <table id="consignmentTable">
-                    <thead>
-                        <tr id="tableHeaders">
-                            <th>Sr No</th>
-                            <th>Date</th>
-                            <th>Delivery Status</th>
-                            <th>Activity Type</th>
-                            @*<th>From</th>*@
-                            <th>Origin</th>
-                            <th>To</th>
-                        </tr>
-                    </thead>
-                    <tbody id="consdata">
-                    </tbody>
-                    <tbody>
-                        <!-- Table body will be populated dynamically -->
-                    </tbody>
-                </table>
+                
+               
+                <script>
+                    var form = $('#frmEmp');
+                    // Submit the form
+                    form.submit();
 
-            }
+                </script>
 
+
+                @*@Html.Partial("GetConsignmentDetails", Model)*@
+
+            </div>
         </div>
-    </div>
+        </div>
 </section>
 
 
@@ -217,8 +238,12 @@
         var colmain = document.querySelector('.main');
         var topValignTds = document.querySelectorAll('td[valign="top"]');
 
+        //topValignTds.forEach(function (td) {
+        //    td.style.textAlign = "center"; // You can set other values like "left", "right", or "justify"
+        //});
         topValignTds.forEach(function (td) {
             td.style.textAlign = "center"; // You can set other values like "left", "right", or "justify"
+            td.style.width = "1000px"; // Set the desired width here
         });
 
         if (widgetHeader) {
@@ -235,28 +260,33 @@
     var jsonData = [];
         function GetConsignmentDetails() {
             var consignmentno = '@ViewBag.Consignmentno';
-            console.log("consignmentno==" + consignmentno);
+            if (consignmentno != null) {
+                console.log("consignmentno==" + consignmentno);
 
-            jQuery.noConflict();
+                jQuery.noConflict();
 
-            // Use jQuery instead of $
-            jQuery.ajax({
-                type: 'post',
-                dataType: 'json',
-                url:'/Admin/GetConsignmentInfoInDeatils',
-                data: { ConsignmnetNo:consignmentno },
-                success: function (data) {
-                    // Handle the success response
-                    alert("Done")
+                // Use jQuery instead of $
+                jQuery.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    url: '/Admin/GetConsignmentInfoInDeatils',
+                    data: { ConsignmnetNo: consignmentno },
+                    success: function (data) {
+                        // Handle the success response
 
 
-                    jsonData = data;
-                    renderTable();
-                },
-                error: function (xhr, status, error) {
-                    alert(error)
-                }
-            });
+
+                        jsonData = data;
+                        renderTable();
+                    },
+                    error: function (xhr, status, error) {
+                        alert(error)
+                    }
+                });
+            } else {
+                alert("Enter Consingment Number!!")
+            }
+          
     }
 
     function renderTable() {
@@ -282,6 +312,7 @@
         //        + "</tr>";
 
         //});
+        tableBody.innerHTML = '';
 
         parsedData.forEach(function (item, i) {
             var row = tableBody.insertRow(i);
@@ -291,6 +322,28 @@
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
+            // Set height and width for the cells
+            var cellHeight = "30px"; // Set your desired height
+            var cellWidth = "200px"; // Set your desired width
+
+            cell1.style.height = cellHeight;
+            cell1.style.width = cellWidth;
+
+            cell2.style.height = cellHeight;
+            cell2.style.width = cellWidth;
+
+            cell3.style.height = cellHeight;
+            cell3.style.width = cellWidth;
+
+            cell4.style.height = cellHeight;
+            cell4.style.width = cellWidth;
+
+            cell5.style.height = cellHeight;
+            cell5.style.width = cellWidth;
+
+            cell6.style.height = cellHeight;
+            cell6.style.width = cellWidth;
+
             cell1.innerHTML = i + 1;
             cell2.innerHTML = item.date;
             cell3.innerHTML = item.deliveryStatus;

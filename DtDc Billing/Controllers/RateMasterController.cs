@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Web;
 using System.Web.Mvc;
 
@@ -73,6 +74,11 @@ namespace DtDc_Billing.Controllers
 
 
             var getNonDox = db.Nondoxes.Where(m => m.Company_id == CompanyId).OrderBy(m => m.Sector.Priority).ToList();
+            ViewBag.NonDoxAir = getNonDox.Where(m => m.Sector.BillNonAir == true).FirstOrDefault();
+            ViewBag.NonDoxSur=getNonDox.Where(m=>m.Sector.BillNonSur == true).FirstOrDefault();
+            ViewBag.nonDoxAirCount = getNonDox.Where(x => x.Sector.BillNonAir == true).Count();
+            ViewBag.nonDoxSurCount = getNonDox.Where(x => x.Sector.BillNonSur == true).Count();
+
             ViewBag.NonDox = getNonDox;
 
             @ViewBag.Slabs1 = getNonDox.FirstOrDefault();
@@ -93,9 +99,13 @@ namespace DtDc_Billing.Controllers
 
 
 
-            var getEcom = db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).OrderBy(m => m.Sector.Priority).ToList();
-            ViewBag.com = getEcom.FirstOrDefault();
+            var getEcom = db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).Include(e => e.Sector).OrderBy(m => m.Sector.Priority).ToList();
+            ViewBag.comP = getEcom.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
+            ViewBag.comGC = getEcom.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
             ViewBag.Dtdc_Ecommerce = getEcom;
+            ViewBag.EcomPCount=getEcom.Where(x => x.Sector.BillEcomPrio == true).Count(); 
+            ViewBag.EcomGECount=getEcom.Where(x=>x.Sector.BillEcomGE== true).Count();
+
 
             //<-------------risk surch charge dropdown--------------->
             double? selectedval = db.Companies.Where(m => m.Company_Id == CompanyId).Select(m => m.Minimum_Risk_Charge).FirstOrDefault();
@@ -304,13 +314,15 @@ namespace DtDc_Billing.Controllers
                 db.Priorities.Add(newPrioEntry);
             }
 
+            var getSector = secotrs.Where(x => x.BillPriority == true).ToList();
+
             var sectorsToRemovePrio = getPrioritiesList
      .Select(d => d.Sector_Id)
-     .Where(sectorId => sectorId.HasValue && !secotrs.Where(x => x.BillExpCargo == true).Select(s => s.Sector_Id).Contains(sectorId.Value))
+     .Where(sectorId => sectorId.HasValue && !getSector.Select(s => s.Sector_Id).Contains(sectorId.Value))
      .ToList();
 
 
-            foreach (var sectorId in sectorsToRemovePrio)
+             foreach (var sectorId in sectorsToRemovePrio)
             {
                 var ratemToRemovePrio = db.Priorities.FirstOrDefault(x => x.Sector_Id == sectorId);
                 if (ratemToRemovePrio != null)
@@ -326,7 +338,7 @@ namespace DtDc_Billing.Controllers
 
             //Ecommerce table start
 
-            var sectorsToAddECom = secotrs.Select(s => s.Sector_Id).Where(sectorId => !getExpress_cargoList.Select(d => d.Sector_Id).Contains(sectorId));
+            var sectorsToAddECom = secotrs.Select(s => s.Sector_Id).Where(sectorId => !getDtdc_EcommerceList.Select(d => d.Sector_Id).Contains(sectorId));
 
             var noOfSlabEcomN = getDtdc_EcommerceList.Count() == 0 ? 2 : getDtdc_EcommerceList.FirstOrDefault().NoOfSlabN;
             var noOfSlabEcomS = getDtdc_EcommerceList.Count() == 0 ? 2 : getDtdc_EcommerceList.FirstOrDefault().NoOfSlabS;
@@ -346,7 +358,7 @@ namespace DtDc_Billing.Controllers
 
             var sectorsToRemoveEcom = getDtdc_EcommerceList
      .Select(d => d.Sector_Id)
-     .Where(sectorId => sectorId.HasValue && !secotrs.Where(x => x.BillExpCargo == true).Select(s => s.Sector_Id).Contains(sectorId.Value))
+     .Where(sectorId => sectorId.HasValue && !secotrs.Where(x => (x.BillEcomGE == true || x.BillEcomPrio == true)).Select(s => s.Sector_Id).Contains(sectorId.Value))
      .ToList();
 
 
@@ -373,11 +385,11 @@ namespace DtDc_Billing.Controllers
             TempData["CompanyId"] = Id;
 
             var pfcode = db.Companies.Where(m => m.Company_Id == Idd).FirstOrDefault();
-            var prio = db.Priorities.Where(m => m.Company_id == Id).ToList();
+            var prio = db.Priorities.Where(m => m.Company_id == Idd && m.Sector.BillPriority == true).ToList();
 
-            if(prio.Count() == 0)
+            if (prio.Count() == 0)
             {
-                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && m.BillPriority == true).ToList();
                 foreach (var i in secotrs)
                 {
                     Priority pr = new Priority();
@@ -414,7 +426,7 @@ namespace DtDc_Billing.Controllers
 
             if (ecom.Count == 0)
             {
-                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code).ToList();
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && (m.BillEcomGE == true || m.BillEcomPrio == true)).ToList();
                 foreach (var i in secotrs)
                 {
                     Dtdc_Ecommerce rm = new Dtdc_Ecommerce();
@@ -866,7 +878,7 @@ namespace DtDc_Billing.Controllers
                 //comp.Username = empmodel.Username;
                 comp.G_Docket = empmodel.G_Docket;
 
-                ViewBag.Message = "Sucess or Failure Message";
+            
                 ModelState.Clear();
                 TempData["CompanyId"] = empmodel.Company_Id;
 
@@ -880,7 +892,7 @@ namespace DtDc_Billing.Controllers
 
                 db.Entry(comp).State = EntityState.Modified;
                 db.SaveChanges();
-
+             
                 //<-------------risk surch charge dropdown--------------->
 
                 double? selectedval = db.Companies.Where(m => m.Company_Id == empmodel.Company_Id).Select(m => m.Minimum_Risk_Charge).FirstOrDefault();
@@ -915,47 +927,77 @@ namespace DtDc_Billing.Controllers
                 //<-------------risk surch charge dropdown--------------->
                 //updating all tables pf code
 
-                int[] secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code).Select(m=>m.Sector_Id).ToArray();
+                //int[] secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code).Select(m=>m.Sector_Id).ToArray();
 
 
-                int [] doxlist = db.Ratems.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Rete_Id).ToArray();
-                int [] nonlist = db.Nondoxes.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Non_ID).ToArray();
-                int [] cslist = db.express_cargo.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Exp_Id).ToArray();
+                //int [] doxlist = db.Ratems.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Rete_Id).ToArray();
+                //int [] nonlist = db.Nondoxes.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Non_ID).ToArray();
+                //int [] cslist = db.express_cargo.Where(m => m.Company_id == empmodel.Company_Id).Select(m => m.Exp_Id).ToArray();
 
 
-                int j = 0;
+                //int j = 0;
 
-                int cnt = doxlist.Count();
+                //int doxcnt= doxlist.Count();
+                //int nondoxcnt=nonlist.Count();
+                //int escnt=cslist.Count();  
 
-                for(int i=0;i < cnt;i++)
-                {                 
+                //for(int i = 0; i < doxcnt; i++)
+                //{
+                //    Ratem dox = new Ratem();
+                //    int d = doxlist[i];
+                //    dox=db.Ratems.Where(m=>m.Rete_Id==d).FirstOrDefault();
+                //    dox.Sector_Id = secotrs[i];
+                //    db.Entry(dox).State=EntityState.Modified;
+                //    db.SaveChanges();
 
-                    Ratem dox = new Ratem();
-                    Nondox ndox = new Nondox();
-                    express_cargo cs = new express_cargo();
+                //}
+                //for(int k = 0; k < nondoxcnt; k++)
+                //{
+                //    Nondox ndox = new Nondox();
+                //    int d = nonlist[k];
+                //    ndox = db.Nondoxes.Where(m => m.Non_ID == d).FirstOrDefault();
+                //    ndox.Sector_Id = secotrs[k];
+                //    db.Entry(ndox).State = EntityState.Modified;
+                //    db.SaveChanges();
+                //}
+                //for(int l = 0; l < escnt; l++)
+                //{
+                //    express_cargo cs = new express_cargo();
+                //    int d= cslist[l];
+                //    cs = db.express_cargo.Where(m => m.Exp_Id == d).FirstOrDefault();
+                //    cs.Sector_Id= secotrs[l];
+                //    db.Entry(cs).State = EntityState.Modified;  
+                //    db.SaveChanges();   
+                //}
+                //for(int i=0;i < cnt;i++)
+                //{                 
 
-                    int d = doxlist[i], n = nonlist[i], ex=cslist[i];
+                //    Ratem dox = new Ratem();
+                //    Nondox ndox = new Nondox();
+                //    express_cargo cs = new express_cargo();
 
-                    dox = db.Ratems.Where(m => m.Rete_Id == d).FirstOrDefault();
-                    ndox = db.Nondoxes.Where(m => m.Non_ID ==n).FirstOrDefault();
-                    cs = db.express_cargo.Where(m => m.Exp_Id == ex).FirstOrDefault();
+                //    int d = doxlist[i], n = nonlist[i], ex=cslist[i];
 
-                    dox.Sector_Id = secotrs[i];
-                    ndox.Sector_Id = secotrs[i];
-                    cs.Sector_Id = secotrs[i];
+                //    dox = db.Ratems.Where(m => m.Rete_Id == d).FirstOrDefault();
+                //    ndox = db.Nondoxes.Where(m => m.Non_ID ==n).FirstOrDefault();
+                //    cs = db.express_cargo.Where(m => m.Exp_Id == ex).FirstOrDefault();
 
-
-                    db.Entry(dox).State = EntityState.Modified;
-                    db.Entry(ndox).State = EntityState.Modified;
-                    db.Entry(cs).State = EntityState.Modified;
-
+                //    dox.Sector_Id = secotrs[i];
+                //    ndox.Sector_Id = secotrs[i];
+                //    cs.Sector_Id = secotrs[i];
 
 
-                    db.SaveChanges();
+                //    db.Entry(dox).State = EntityState.Modified;
+                //    db.Entry(ndox).State = EntityState.Modified;
+                //    db.Entry(cs).State = EntityState.Modified;
 
-                    j++;
 
-                }
+
+                //    db.SaveChanges();
+
+                //    j++;
+
+                //}
 
 
               
@@ -1022,8 +1064,6 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [HandleError]
         public ActionResult RateMasterEcommerce(FormCollection fc, string comppid)
         {
 
@@ -1034,6 +1074,9 @@ namespace DtDc_Billing.Controllers
             {
 
                 var ecom_idarray = fc.GetValues("item.Ecom_id");
+                var ecom_idarray_Non_ID_GC = fc.GetValues("Non_ID_GC");
+                
+
                 var EcomPslab1 = fc.GetValues("item.EcomPslab1");
                 var EcomPslab2 = fc.GetValues("item.EcomPslab2");
                 var EcomPslab3 = fc.GetValues("item.EcomPslab3");
@@ -1079,23 +1122,27 @@ namespace DtDc_Billing.Controllers
                     {
                         EcomPslab4[i] = "0";
                     }
-                    if (EcomGEslab1[i] == "")
-                    {
-                        EcomGEslab1[i] = "0";
-                    }
-                    if (EcomGEslab2[i] == "")
-                    {
-                        EcomGEslab2[i] = "0";
-                    }
-                    if (EcomGEslab3[i] == "")
-                    {
-                        EcomGEslab3[i] = "0";
-                    }
-                    if (EcomGEslab4[i] == "")
-                    {
-                        EcomGEslab4[i] = "0";
-                    }
+                    
+                }
 
+                for(int k = 0; k < ecom_idarray_Non_ID_GC.Count(); k++)
+                {
+                    if (EcomGEslab1[k] == "")
+                    {
+                        EcomGEslab1[k] = "0";
+                    }
+                    if (EcomGEslab2[k] == "")
+                    {
+                        EcomGEslab2[k] = "0";
+                    }
+                    if (EcomGEslab3[k] == "")
+                    {
+                        EcomGEslab3[k] = "0";
+                    }
+                    if (EcomGEslab4[k] == "")
+                    {
+                        EcomGEslab4[k] = "0";
+                    }
                 }
 
                 for (int i = 0; i < Auptoarray.Count(); i++)
@@ -1110,12 +1157,13 @@ namespace DtDc_Billing.Controllers
                     }
                 }
 
+                Dtdc_Ecommerce rm = new Dtdc_Ecommerce();
 
                 for (int i = 0; i < ecom_idarray.Count(); i++)
                 {
 
 
-                    Dtdc_Ecommerce rm = db.Dtdc_Ecommerce.Find(Convert.ToInt16(ecom_idarray[i]));
+                     rm = db.Dtdc_Ecommerce.Find(Convert.ToInt16(ecom_idarray[i]));
 
 
                     rm.EcomPslab1 = Convert.ToDouble(EcomPslab1[i]);
@@ -1123,39 +1171,50 @@ namespace DtDc_Billing.Controllers
                     rm.EcomPslab3 = Convert.ToDouble(EcomPslab3[i]);
                     rm.EcomPslab4 = Convert.ToDouble(EcomPslab4[i]);
 
-                    rm.EcomGEslab1 = Convert.ToDouble(EcomGEslab1[i]);
-                    rm.EcomGEslab2 = Convert.ToDouble(EcomGEslab2[i]);
-                    rm.EcomGEslab3 = Convert.ToDouble(EcomGEslab3[i]);
-                    rm.EcomGEslab4 = Convert.ToDouble(EcomGEslab4[i]);
-
                     rm.EcomPupto1 = Convert.ToDouble(Auptoarray[0]);
                     rm.EcomPupto2 = Convert.ToDouble(Auptoarray[1]);
                     rm.EcomPupto3 = Convert.ToDouble(Auptoarray[2]);
                     rm.EcomPupto4 = Convert.ToDouble(Auptoarray[3]);
 
+                    rm.NoOfSlabN = Convert.ToInt16(NoOfSlabN[0]);
+                   
+                   
+
+                }
+
+                for (int i = 0; i < ecom_idarray_Non_ID_GC.Count(); i++)
+                {
+
+                    rm = db.Dtdc_Ecommerce.Find(Convert.ToInt16(ecom_idarray_Non_ID_GC[i]));
+                    rm.EcomGEslab1 = Convert.ToDouble(EcomGEslab1[i]);
+                    rm.EcomGEslab2 = Convert.ToDouble(EcomGEslab2[i]);
+                    rm.EcomGEslab3 = Convert.ToDouble(EcomGEslab3[i]);
+                    rm.EcomGEslab4 = Convert.ToDouble(EcomGEslab4[i]);
                     rm.EcomGEupto1 = Convert.ToDouble(Suptoarray[0]);
                     rm.EcomGEupto2 = Convert.ToDouble(Suptoarray[1]);
                     rm.EcomGEupto3 = Convert.ToDouble(Suptoarray[2]);
                     rm.EcomGEupto4 = Convert.ToDouble(Suptoarray[3]);
-
-                    rm.NoOfSlabN = Convert.ToInt16(NoOfSlabN[0]);
                     rm.NoOfSlabS = Convert.ToInt16(NoOfSlabS[0]);
 
+                   
+                }
                     db.Entry(rm).State = EntityState.Modified;
                     db.SaveChanges();
 
-                }
-
-                var compid = comppid;
+                    var compid = comppid;
 
                 ViewBag.Message = "E-commerce Updated SuccessFully";
 
-
+                var getNonDox = db.Nondoxes.Where(m => m.Company_id == compid).OrderBy(m => m.Sector.Priority).ToList();
+                ViewBag.NonDoxAir =getNonDox.Where(m => m.Sector.BillNonAir == true).FirstOrDefault();
+                ViewBag.NonDoxSur = getNonDox.Where(m => m.Sector.BillNonSur == true).FirstOrDefault();
+                ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
 
                 var getData = db.Dtdc_Ecommerce.Where(m => m.Company_id == compid).ToList();
 
-                ViewBag.com = getData.FirstOrDefault();
-                ViewBag.Ecommerce = getData;
+                ViewBag.comP = getData.Where(x=>x.Sector.BillEcomPrio == true).FirstOrDefault();
+                ViewBag.comGC = getData.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
+                ViewBag.Dtdc_Ecommerce = getData;
 
                 return PartialView("RateMasterEcommerce", getData);
 
@@ -1278,6 +1337,7 @@ namespace DtDc_Billing.Controllers
             comppid = comppid.Replace("__", "&").Replace("xdotx", "."); ;
             var CompanyId = comppid;
             ViewBag.companyid = comppid;
+         
             //if (only == 2)
             //{
             //    //tO clear array//Array.Clear(slab3arr, 0, slab3arr.Length);
@@ -1305,8 +1365,9 @@ namespace DtDc_Billing.Controllers
                 var Auptoarray = fc.GetValues("AUpto");
                 var Suptoarray = fc.GetValues("SUpto");
                 var sectoridarray = fc.GetValues("item.Sector_Id");
-                var NoofslabN= fc.GetValues("item.NoOfSlabN");
-                var NoofslabS = fc.GetValues("item.NoOfSlabS");
+                var NoofslabN= fc.GetValues("NonNoOfSlabN");
+                //var NoofslabS = fc.GetValues("item.NoOfSlabS");
+                  var NoofslabS = fc.GetValues("NonNoOfSlabS");
 
 
 
@@ -1396,9 +1457,15 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Message = "NonDox Updated SuccessFully";
                 TempData["ShowLoader"] = false;
                 @ViewBag.Slabs1 = db.Nondoxes.Where(m => m.Company_id == compid).FirstOrDefault();
-
+                var getNonDox = db.Nondoxes.Where(m => m.Company_id == compid).OrderBy(m => m.Sector.Priority).ToList();
+                ViewBag.NonDoxAir = getNonDox.Where(m => m.Sector.BillNonAir == true ).FirstOrDefault();
+                ViewBag.NonDoxSur = getNonDox.Where(m => m.Sector.BillNonSur == true).FirstOrDefault();
                 ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
 
+                var getData = db.Dtdc_Ecommerce.Where(m => m.Company_id == compid).ToList();
+                ViewBag.comP = getData.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
+                ViewBag.comGC = getData.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
+                ViewBag.Dtdc_Ecommerce = getData;
                 var Nondox = db.Nondoxes.Where(m => m.Company_id == compid ).OrderBy(m => m.Sector.Priority).ToList();
 
                 //&& m.Sector.BillN == true
@@ -1747,9 +1814,10 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.Message = "Priority Updated SuccessFully";
 
-                @ViewBag.Slabspri = db.Priorities.Where(m => m.Company_id == compid).FirstOrDefault();
+                var getPrio = db.Priorities.Where(m => m.Company_id == compid && m.Sector.BillPriority == true).OrderBy(m => m.Sector.Priority).ToList();
+                @ViewBag.Slabspri = getPrio.FirstOrDefault();
 
-                return PartialView("Priority", db.Priorities.Where(m => m.Company_id == compid && m.Sector.BillD == true).OrderBy(m => m.Sector.Priority).ToList());
+                return PartialView("Priority", getPrio);
             }
             return PartialView("Priority", fc);
         }
@@ -1812,9 +1880,9 @@ namespace DtDc_Billing.Controllers
 
                 Company company = db.Companies.Where(m => m.Company_Id == CompanyId).FirstOrDefault();
 
-                var dataset2 = db.Ratems.Where(m => m.Company_id == CompanyId).ToList();
+                var dataset2 = db.Ratems.Where(m => m.Company_id == CompanyId && m.Sector.BillD==true).OrderBy(x=>x.Sector.Priority).ToList();
 
-                var dataset3 = db.Nondoxes.Where(m => m.Company_id == CompanyId).ToList();
+                var dataset3 = db.Nondoxes.Where(m => m.Company_id == CompanyId).OrderBy(m=>m.Sector.Priority).ToList();
 
                 var dataset4 = (from a in db.Sectors
                                 join ab in db.Ratems on a.Sector_Id equals ab.Sector_Id
@@ -1822,6 +1890,10 @@ namespace DtDc_Billing.Controllers
                                 orderby a.Priority
                                 select new
                                 {
+                                    a.BillD,
+                                    a.BillN,
+                                    a.CashD,
+                                    a.CashN,
                                     a.Sector_Name,
                                     ab.slab1,
                                     ab.slab2,
@@ -1836,10 +1908,14 @@ namespace DtDc_Billing.Controllers
 
                 var dataset5 = (from a in db.Sectors
                                 join ab in db.Nondoxes on a.Sector_Id equals ab.Sector_Id
-                                where ab.Company_id == CompanyId && a.BillN == true
+                                where ab.Company_id == CompanyId /*&& a.BillN == true*/
                                 orderby a.Priority
                                 select new
+
                                 {
+                                    a.BillNonAir,
+                                    a.BillNonSur,
+
                                     a.Sector_Name,
                                     ab.Aslab1,
                                     ab.Aslab2,
@@ -1867,10 +1943,11 @@ namespace DtDc_Billing.Controllers
 
                 var DataSet8 =(from a in db.Sectors
                  join ab in db.Priorities on a.Sector_Id equals ab.Sector_Id
-                 where ab.Company_id == CompanyId && a.BillN == true
+                 where ab.Company_id == CompanyId/* && a.BillN == true*/ && a.BillPriority== true
                  orderby a.Priority
                  select new
                  {
+                     a.BillPriority,
                      a.Sector_Name,
                      ab.priupto1,
                      ab.priupto2,
@@ -1885,16 +1962,55 @@ namespace DtDc_Billing.Controllers
 
                 var DataSet9 =(from a in db.Sectors
                  join ab in db.express_cargo on a.Sector_Id equals ab.Sector_Id
-                 where ab.Company_id == CompanyId && a.BillN == true
+                 where ab.Company_id == CompanyId/* && a.BillN == true */&& a.BillExpCargo== true   
                  orderby a.Priority
                  select new
                  {
+
                      a.Sector_Name,
                      ab.Exslab1,
                      ab.Exslab2,
                    
                  }).ToList();
 
+              // var DataSet10= db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).Include(e => e.Sector).OrderBy(m => m.Sector.Priority).ToList();
+
+                var DataSet10= (from a in db.Sectors
+                                join ab in db.Dtdc_Ecommerce on a.Sector_Id equals ab.Sector_Id
+                                where ab.Company_id==CompanyId orderby a.Priority
+                                select new
+                                {
+                                   a.Sector_Name,
+                                   a.Pf_code,
+                                   a.BillEcomPrio,
+                                   a.BillEcomGE,
+                                   ab.Sector_Id,
+                                   ab.Ecom_id,
+                                   ab.EcomPslab1,
+                                   ab.EcomPslab2,
+                                   ab.EcomPslab3,
+                                   ab.EcomPslab4,
+                                   ab.EcomGEslab1,
+                                   ab.EcomGEslab2,
+                                   ab.EcomGEslab3,
+                                   ab.EcomGEslab4,
+                                   ab.Company_id,
+                                   ab.EcomPupto1,
+                                   ab.EcomPupto2,
+                                   ab.EcomPupto3,
+                                   ab.EcomPupto4,
+                                   ab.EcomGEupto1,
+                                   ab.EcomGEupto2,
+                                   ab.EcomGEupto3,
+                                   ab.EcomGEupto4,
+                                   ab.NoOfSlabN,
+                                   ab.NoOfSlabS,
+                                
+                                }
+                                
+                                ).ToList();
+               
+               
                 string Pfcode = company.Pf_code;
 
                 //var logo = db.Franchisees.Where(m => m.PF_Code == Pfcode).FirstOrDefault();
@@ -1927,6 +2043,7 @@ namespace DtDc_Billing.Controllers
                 ReportDataSource rd7 = new ReportDataSource("DataSet7", dataset7);
                 ReportDataSource rd8 = new ReportDataSource("DataSet8", DataSet8);
                 ReportDataSource rd9 = new ReportDataSource("DataSet9", DataSet9);
+                ReportDataSource rd10 = new ReportDataSource("DataSet10", DataSet10);
 
                 //if (logo.LogoFilePath == null)
                 //{
@@ -1955,7 +2072,7 @@ namespace DtDc_Billing.Controllers
                 lr.DataSources.Add(rd7);
                 lr.DataSources.Add(rd8);
                 lr.DataSources.Add(rd9);
-
+                lr.DataSources.Add(rd10);
 
                 string reportType = "PDF";
                 string mimeType;
@@ -1975,19 +2092,27 @@ namespace DtDc_Billing.Controllers
                 Warning[] warnings;
                 string[] streams;
                 byte[] renderByte;
+                //try
+                //{
+                    renderByte = lr.Render
+            (reportType,
+            deviceInfo,
+            out mimeType,
+            out encoding,
+            out fileNameExte,
+            out streams,
+            out warnings
+            );
 
+                    return File(renderByte, mimeType);
+                //}
+                //catch(Exception ex ) {
 
-                renderByte = lr.Render
-              (reportType,
-              deviceInfo,
-              out mimeType,
-              out encoding,
-              out fileNameExte,
-              out streams,
-              out warnings
-              );
+                //    return RedirectToAction("Index", new { id=id});
+                
+                //}
 
-                return File(renderByte, mimeType);
+              
             }
         }
     }

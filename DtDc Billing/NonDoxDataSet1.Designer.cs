@@ -24,7 +24,7 @@ namespace DtDc_Billing {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class NonDoxDataSet : global::System.Data.DataSet {
         
-        private NondoxDataTable tableNondox;
+        private NonDoxDataTable tableNonDox;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace DtDc_Billing {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["Nondox"] != null)) {
-                    base.Tables.Add(new NondoxDataTable(ds.Tables["Nondox"]));
+                if ((ds.Tables["NonDox"] != null)) {
+                    base.Tables.Add(new NonDoxDataTable(ds.Tables["NonDox"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace DtDc_Billing {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public NondoxDataTable Nondox {
+        public NonDoxDataTable NonDox {
             get {
-                return this.tableNondox;
+                return this.tableNonDox;
             }
         }
         
@@ -152,8 +152,8 @@ namespace DtDc_Billing {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["Nondox"] != null)) {
-                    base.Tables.Add(new NondoxDataTable(ds.Tables["Nondox"]));
+                if ((ds.Tables["NonDox"] != null)) {
+                    base.Tables.Add(new NonDoxDataTable(ds.Tables["NonDox"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace DtDc_Billing {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableNondox = ((NondoxDataTable)(base.Tables["Nondox"]));
+            this.tableNonDox = ((NonDoxDataTable)(base.Tables["NonDox"]));
             if ((initTable == true)) {
-                if ((this.tableNondox != null)) {
-                    this.tableNondox.InitVars();
+                if ((this.tableNonDox != null)) {
+                    this.tableNonDox.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace DtDc_Billing {
             this.Namespace = "http://tempuri.org/NonDoxDataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableNondox = new NondoxDataTable();
-            base.Tables.Add(this.tableNondox);
+            this.tableNonDox = new NonDoxDataTable();
+            base.Tables.Add(this.tableNonDox);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializeNondox() {
+        private bool ShouldSerializeNonDox() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace DtDc_Billing {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void NondoxRowChangeEventHandler(object sender, NondoxRowChangeEvent e);
+        public delegate void NonDoxRowChangeEventHandler(object sender, NonDoxRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class NondoxDataTable : global::System.Data.TypedTableBase<NondoxRow> {
+        public partial class NonDoxDataTable : global::System.Data.TypedTableBase<NonDoxRow> {
             
             private global::System.Data.DataColumn columnNon_ID;
             
@@ -325,10 +325,14 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnSector_Name;
             
+            private global::System.Data.DataColumn columnBillNonSur;
+            
+            private global::System.Data.DataColumn columnBillNonAir;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxDataTable() {
-                this.TableName = "Nondox";
+            public NonDoxDataTable() {
+                this.TableName = "NonDox";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -336,7 +340,7 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal NondoxDataTable(global::System.Data.DataTable table) {
+            internal NonDoxDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -353,7 +357,7 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected NondoxDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected NonDoxDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -544,6 +548,22 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BillNonSurColumn {
+                get {
+                    return this.columnBillNonSur;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BillNonAirColumn {
+                get {
+                    return this.columnBillNonAir;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -553,33 +573,33 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRow this[int index] {
+            public NonDoxRow this[int index] {
                 get {
-                    return ((NondoxRow)(this.Rows[index]));
+                    return ((NonDoxRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event NondoxRowChangeEventHandler NondoxRowChanging;
+            public event NonDoxRowChangeEventHandler NonDoxRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event NondoxRowChangeEventHandler NondoxRowChanged;
+            public event NonDoxRowChangeEventHandler NonDoxRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event NondoxRowChangeEventHandler NondoxRowDeleting;
+            public event NonDoxRowChangeEventHandler NonDoxRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event NondoxRowChangeEventHandler NondoxRowDeleted;
+            public event NonDoxRowChangeEventHandler NonDoxRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddNondoxRow(NondoxRow row) {
+            public void AddNonDoxRow(NonDoxRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRow AddNondoxRow(
+            public NonDoxRow AddNonDoxRow(
                         double Aslab1, 
                         double Aslab2, 
                         double Aslab3, 
@@ -601,8 +621,10 @@ namespace DtDc_Billing {
                         int NoOfSlabN, 
                         int NoOfSlabS, 
                         bool CashCounterNon, 
-                        string Sector_Name) {
-                NondoxRow rowNondoxRow = ((NondoxRow)(this.NewRow()));
+                        string Sector_Name, 
+                        bool BillNonSur, 
+                        bool BillNonAir) {
+                NonDoxRow rowNonDoxRow = ((NonDoxRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         Aslab1,
@@ -626,23 +648,25 @@ namespace DtDc_Billing {
                         NoOfSlabN,
                         NoOfSlabS,
                         CashCounterNon,
-                        Sector_Name};
-                rowNondoxRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowNondoxRow);
-                return rowNondoxRow;
+                        Sector_Name,
+                        BillNonSur,
+                        BillNonAir};
+                rowNonDoxRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowNonDoxRow);
+                return rowNonDoxRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRow FindByNon_ID(int Non_ID) {
-                return ((NondoxRow)(this.Rows.Find(new object[] {
+            public NonDoxRow FindByNon_ID(int Non_ID) {
+                return ((NonDoxRow)(this.Rows.Find(new object[] {
                             Non_ID})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                NondoxDataTable cln = ((NondoxDataTable)(base.Clone()));
+                NonDoxDataTable cln = ((NonDoxDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -650,7 +674,7 @@ namespace DtDc_Billing {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new NondoxDataTable();
+                return new NonDoxDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -679,6 +703,8 @@ namespace DtDc_Billing {
                 this.columnNoOfSlabS = base.Columns["NoOfSlabS"];
                 this.columnCashCounterNon = base.Columns["CashCounterNon"];
                 this.columnSector_Name = base.Columns["Sector_Name"];
+                this.columnBillNonSur = base.Columns["BillNonSur"];
+                this.columnBillNonAir = base.Columns["BillNonAir"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -730,6 +756,10 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnCashCounterNon);
                 this.columnSector_Name = new global::System.Data.DataColumn("Sector_Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSector_Name);
+                this.columnBillNonSur = new global::System.Data.DataColumn("BillNonSur", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillNonSur);
+                this.columnBillNonAir = new global::System.Data.DataColumn("BillNonAir", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillNonAir);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnNon_ID}, true));
                 this.columnNon_ID.AutoIncrement = true;
@@ -739,32 +769,33 @@ namespace DtDc_Billing {
                 this.columnNon_ID.ReadOnly = true;
                 this.columnNon_ID.Unique = true;
                 this.columnCompany_id.MaxLength = 100;
+                this.columnSector_Name.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRow NewNondoxRow() {
-                return ((NondoxRow)(this.NewRow()));
+            public NonDoxRow NewNonDoxRow() {
+                return ((NonDoxRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new NondoxRow(builder);
+                return new NonDoxRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(NondoxRow);
+                return typeof(NonDoxRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.NondoxRowChanged != null)) {
-                    this.NondoxRowChanged(this, new NondoxRowChangeEvent(((NondoxRow)(e.Row)), e.Action));
+                if ((this.NonDoxRowChanged != null)) {
+                    this.NonDoxRowChanged(this, new NonDoxRowChangeEvent(((NonDoxRow)(e.Row)), e.Action));
                 }
             }
             
@@ -772,8 +803,8 @@ namespace DtDc_Billing {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.NondoxRowChanging != null)) {
-                    this.NondoxRowChanging(this, new NondoxRowChangeEvent(((NondoxRow)(e.Row)), e.Action));
+                if ((this.NonDoxRowChanging != null)) {
+                    this.NonDoxRowChanging(this, new NonDoxRowChangeEvent(((NonDoxRow)(e.Row)), e.Action));
                 }
             }
             
@@ -781,8 +812,8 @@ namespace DtDc_Billing {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.NondoxRowDeleted != null)) {
-                    this.NondoxRowDeleted(this, new NondoxRowChangeEvent(((NondoxRow)(e.Row)), e.Action));
+                if ((this.NonDoxRowDeleted != null)) {
+                    this.NonDoxRowDeleted(this, new NonDoxRowChangeEvent(((NonDoxRow)(e.Row)), e.Action));
                 }
             }
             
@@ -790,14 +821,14 @@ namespace DtDc_Billing {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.NondoxRowDeleting != null)) {
-                    this.NondoxRowDeleting(this, new NondoxRowChangeEvent(((NondoxRow)(e.Row)), e.Action));
+                if ((this.NonDoxRowDeleting != null)) {
+                    this.NonDoxRowDeleting(this, new NonDoxRowChangeEvent(((NonDoxRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemoveNondoxRow(NondoxRow row) {
+            public void RemoveNonDoxRow(NonDoxRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -824,7 +855,7 @@ namespace DtDc_Billing {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "NondoxDataTable";
+                attribute2.FixedValue = "NonDoxDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -868,25 +899,25 @@ namespace DtDc_Billing {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class NondoxRow : global::System.Data.DataRow {
+        public partial class NonDoxRow : global::System.Data.DataRow {
             
-            private NondoxDataTable tableNondox;
+            private NonDoxDataTable tableNonDox;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal NondoxRow(global::System.Data.DataRowBuilder rb) : 
+            internal NonDoxRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableNondox = ((NondoxDataTable)(this.Table));
+                this.tableNonDox = ((NonDoxDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public int Non_ID {
                 get {
-                    return ((int)(this[this.tableNondox.Non_IDColumn]));
+                    return ((int)(this[this.tableNonDox.Non_IDColumn]));
                 }
                 set {
-                    this[this.tableNondox.Non_IDColumn] = value;
+                    this[this.tableNonDox.Non_IDColumn] = value;
                 }
             }
             
@@ -895,14 +926,14 @@ namespace DtDc_Billing {
             public double Aslab1 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Aslab1Column]));
+                        return ((double)(this[this.tableNonDox.Aslab1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab1\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab1\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Aslab1Column] = value;
+                    this[this.tableNonDox.Aslab1Column] = value;
                 }
             }
             
@@ -911,14 +942,14 @@ namespace DtDc_Billing {
             public double Aslab2 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Aslab2Column]));
+                        return ((double)(this[this.tableNonDox.Aslab2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab2\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab2\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Aslab2Column] = value;
+                    this[this.tableNonDox.Aslab2Column] = value;
                 }
             }
             
@@ -927,14 +958,14 @@ namespace DtDc_Billing {
             public double Aslab3 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Aslab3Column]));
+                        return ((double)(this[this.tableNonDox.Aslab3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab3\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab3\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Aslab3Column] = value;
+                    this[this.tableNonDox.Aslab3Column] = value;
                 }
             }
             
@@ -943,14 +974,14 @@ namespace DtDc_Billing {
             public double Aslab4 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Aslab4Column]));
+                        return ((double)(this[this.tableNonDox.Aslab4Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab4\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Aslab4\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Aslab4Column] = value;
+                    this[this.tableNonDox.Aslab4Column] = value;
                 }
             }
             
@@ -959,14 +990,14 @@ namespace DtDc_Billing {
             public double Sslab1 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Sslab1Column]));
+                        return ((double)(this[this.tableNonDox.Sslab1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab1\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab1\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sslab1Column] = value;
+                    this[this.tableNonDox.Sslab1Column] = value;
                 }
             }
             
@@ -975,14 +1006,14 @@ namespace DtDc_Billing {
             public double Sslab2 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Sslab2Column]));
+                        return ((double)(this[this.tableNonDox.Sslab2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab2\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab2\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sslab2Column] = value;
+                    this[this.tableNonDox.Sslab2Column] = value;
                 }
             }
             
@@ -991,14 +1022,14 @@ namespace DtDc_Billing {
             public double Sslab3 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Sslab3Column]));
+                        return ((double)(this[this.tableNonDox.Sslab3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab3\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab3\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sslab3Column] = value;
+                    this[this.tableNonDox.Sslab3Column] = value;
                 }
             }
             
@@ -1007,14 +1038,14 @@ namespace DtDc_Billing {
             public double Sslab4 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.Sslab4Column]));
+                        return ((double)(this[this.tableNonDox.Sslab4Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab4\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sslab4\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sslab4Column] = value;
+                    this[this.tableNonDox.Sslab4Column] = value;
                 }
             }
             
@@ -1023,14 +1054,14 @@ namespace DtDc_Billing {
             public double AUptosl1 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.AUptosl1Column]));
+                        return ((double)(this[this.tableNonDox.AUptosl1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl1\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl1\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.AUptosl1Column] = value;
+                    this[this.tableNonDox.AUptosl1Column] = value;
                 }
             }
             
@@ -1039,14 +1070,14 @@ namespace DtDc_Billing {
             public double AUptosl2 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.AUptosl2Column]));
+                        return ((double)(this[this.tableNonDox.AUptosl2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl2\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl2\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.AUptosl2Column] = value;
+                    this[this.tableNonDox.AUptosl2Column] = value;
                 }
             }
             
@@ -1055,14 +1086,14 @@ namespace DtDc_Billing {
             public double AUptosl3 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.AUptosl3Column]));
+                        return ((double)(this[this.tableNonDox.AUptosl3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl3\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl3\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.AUptosl3Column] = value;
+                    this[this.tableNonDox.AUptosl3Column] = value;
                 }
             }
             
@@ -1071,14 +1102,14 @@ namespace DtDc_Billing {
             public double AUptosl4 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.AUptosl4Column]));
+                        return ((double)(this[this.tableNonDox.AUptosl4Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl4\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'AUptosl4\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.AUptosl4Column] = value;
+                    this[this.tableNonDox.AUptosl4Column] = value;
                 }
             }
             
@@ -1087,14 +1118,14 @@ namespace DtDc_Billing {
             public double SUptosl1 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.SUptosl1Column]));
+                        return ((double)(this[this.tableNonDox.SUptosl1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl1\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl1\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.SUptosl1Column] = value;
+                    this[this.tableNonDox.SUptosl1Column] = value;
                 }
             }
             
@@ -1103,14 +1134,14 @@ namespace DtDc_Billing {
             public double SUptosl2 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.SUptosl2Column]));
+                        return ((double)(this[this.tableNonDox.SUptosl2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl2\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl2\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.SUptosl2Column] = value;
+                    this[this.tableNonDox.SUptosl2Column] = value;
                 }
             }
             
@@ -1119,14 +1150,14 @@ namespace DtDc_Billing {
             public double SUptosl3 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.SUptosl3Column]));
+                        return ((double)(this[this.tableNonDox.SUptosl3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl3\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl3\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.SUptosl3Column] = value;
+                    this[this.tableNonDox.SUptosl3Column] = value;
                 }
             }
             
@@ -1135,14 +1166,14 @@ namespace DtDc_Billing {
             public double SUptosl4 {
                 get {
                     try {
-                        return ((double)(this[this.tableNondox.SUptosl4Column]));
+                        return ((double)(this[this.tableNonDox.SUptosl4Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl4\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SUptosl4\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.SUptosl4Column] = value;
+                    this[this.tableNonDox.SUptosl4Column] = value;
                 }
             }
             
@@ -1151,14 +1182,14 @@ namespace DtDc_Billing {
             public int Sector_Id {
                 get {
                     try {
-                        return ((int)(this[this.tableNondox.Sector_IdColumn]));
+                        return ((int)(this[this.tableNonDox.Sector_IdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sector_Id\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sector_Id\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sector_IdColumn] = value;
+                    this[this.tableNonDox.Sector_IdColumn] = value;
                 }
             }
             
@@ -1167,14 +1198,14 @@ namespace DtDc_Billing {
             public string Company_id {
                 get {
                     try {
-                        return ((string)(this[this.tableNondox.Company_idColumn]));
+                        return ((string)(this[this.tableNonDox.Company_idColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Company_id\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Company_id\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Company_idColumn] = value;
+                    this[this.tableNonDox.Company_idColumn] = value;
                 }
             }
             
@@ -1183,14 +1214,14 @@ namespace DtDc_Billing {
             public int NoOfSlabN {
                 get {
                     try {
-                        return ((int)(this[this.tableNondox.NoOfSlabNColumn]));
+                        return ((int)(this[this.tableNonDox.NoOfSlabNColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfSlabN\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfSlabN\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.NoOfSlabNColumn] = value;
+                    this[this.tableNonDox.NoOfSlabNColumn] = value;
                 }
             }
             
@@ -1199,14 +1230,14 @@ namespace DtDc_Billing {
             public int NoOfSlabS {
                 get {
                     try {
-                        return ((int)(this[this.tableNondox.NoOfSlabSColumn]));
+                        return ((int)(this[this.tableNonDox.NoOfSlabSColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfSlabS\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfSlabS\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.NoOfSlabSColumn] = value;
+                    this[this.tableNonDox.NoOfSlabSColumn] = value;
                 }
             }
             
@@ -1215,14 +1246,14 @@ namespace DtDc_Billing {
             public bool CashCounterNon {
                 get {
                     try {
-                        return ((bool)(this[this.tableNondox.CashCounterNonColumn]));
+                        return ((bool)(this[this.tableNonDox.CashCounterNonColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CashCounterNon\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashCounterNon\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.CashCounterNonColumn] = value;
+                    this[this.tableNonDox.CashCounterNonColumn] = value;
                 }
             }
             
@@ -1231,279 +1262,335 @@ namespace DtDc_Billing {
             public string Sector_Name {
                 get {
                     try {
-                        return ((string)(this[this.tableNondox.Sector_NameColumn]));
+                        return ((string)(this[this.tableNonDox.Sector_NameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Sector_Name\' in table \'Nondox\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sector_Name\' in table \'NonDox\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableNondox.Sector_NameColumn] = value;
+                    this[this.tableNonDox.Sector_NameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool BillNonSur {
+                get {
+                    try {
+                        return ((bool)(this[this.tableNonDox.BillNonSurColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillNonSur\' in table \'NonDox\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableNonDox.BillNonSurColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool BillNonAir {
+                get {
+                    try {
+                        return ((bool)(this[this.tableNonDox.BillNonAirColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillNonAir\' in table \'NonDox\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableNonDox.BillNonAirColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAslab1Null() {
-                return this.IsNull(this.tableNondox.Aslab1Column);
+                return this.IsNull(this.tableNonDox.Aslab1Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAslab1Null() {
-                this[this.tableNondox.Aslab1Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Aslab1Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAslab2Null() {
-                return this.IsNull(this.tableNondox.Aslab2Column);
+                return this.IsNull(this.tableNonDox.Aslab2Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAslab2Null() {
-                this[this.tableNondox.Aslab2Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Aslab2Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAslab3Null() {
-                return this.IsNull(this.tableNondox.Aslab3Column);
+                return this.IsNull(this.tableNonDox.Aslab3Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAslab3Null() {
-                this[this.tableNondox.Aslab3Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Aslab3Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAslab4Null() {
-                return this.IsNull(this.tableNondox.Aslab4Column);
+                return this.IsNull(this.tableNonDox.Aslab4Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAslab4Null() {
-                this[this.tableNondox.Aslab4Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Aslab4Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSslab1Null() {
-                return this.IsNull(this.tableNondox.Sslab1Column);
+                return this.IsNull(this.tableNonDox.Sslab1Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSslab1Null() {
-                this[this.tableNondox.Sslab1Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sslab1Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSslab2Null() {
-                return this.IsNull(this.tableNondox.Sslab2Column);
+                return this.IsNull(this.tableNonDox.Sslab2Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSslab2Null() {
-                this[this.tableNondox.Sslab2Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sslab2Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSslab3Null() {
-                return this.IsNull(this.tableNondox.Sslab3Column);
+                return this.IsNull(this.tableNonDox.Sslab3Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSslab3Null() {
-                this[this.tableNondox.Sslab3Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sslab3Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSslab4Null() {
-                return this.IsNull(this.tableNondox.Sslab4Column);
+                return this.IsNull(this.tableNonDox.Sslab4Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSslab4Null() {
-                this[this.tableNondox.Sslab4Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sslab4Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAUptosl1Null() {
-                return this.IsNull(this.tableNondox.AUptosl1Column);
+                return this.IsNull(this.tableNonDox.AUptosl1Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAUptosl1Null() {
-                this[this.tableNondox.AUptosl1Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.AUptosl1Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAUptosl2Null() {
-                return this.IsNull(this.tableNondox.AUptosl2Column);
+                return this.IsNull(this.tableNonDox.AUptosl2Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAUptosl2Null() {
-                this[this.tableNondox.AUptosl2Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.AUptosl2Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAUptosl3Null() {
-                return this.IsNull(this.tableNondox.AUptosl3Column);
+                return this.IsNull(this.tableNonDox.AUptosl3Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAUptosl3Null() {
-                this[this.tableNondox.AUptosl3Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.AUptosl3Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsAUptosl4Null() {
-                return this.IsNull(this.tableNondox.AUptosl4Column);
+                return this.IsNull(this.tableNonDox.AUptosl4Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetAUptosl4Null() {
-                this[this.tableNondox.AUptosl4Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.AUptosl4Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSUptosl1Null() {
-                return this.IsNull(this.tableNondox.SUptosl1Column);
+                return this.IsNull(this.tableNonDox.SUptosl1Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSUptosl1Null() {
-                this[this.tableNondox.SUptosl1Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.SUptosl1Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSUptosl2Null() {
-                return this.IsNull(this.tableNondox.SUptosl2Column);
+                return this.IsNull(this.tableNonDox.SUptosl2Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSUptosl2Null() {
-                this[this.tableNondox.SUptosl2Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.SUptosl2Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSUptosl3Null() {
-                return this.IsNull(this.tableNondox.SUptosl3Column);
+                return this.IsNull(this.tableNonDox.SUptosl3Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSUptosl3Null() {
-                this[this.tableNondox.SUptosl3Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.SUptosl3Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSUptosl4Null() {
-                return this.IsNull(this.tableNondox.SUptosl4Column);
+                return this.IsNull(this.tableNonDox.SUptosl4Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSUptosl4Null() {
-                this[this.tableNondox.SUptosl4Column] = global::System.Convert.DBNull;
+                this[this.tableNonDox.SUptosl4Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSector_IdNull() {
-                return this.IsNull(this.tableNondox.Sector_IdColumn);
+                return this.IsNull(this.tableNonDox.Sector_IdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSector_IdNull() {
-                this[this.tableNondox.Sector_IdColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sector_IdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsCompany_idNull() {
-                return this.IsNull(this.tableNondox.Company_idColumn);
+                return this.IsNull(this.tableNonDox.Company_idColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCompany_idNull() {
-                this[this.tableNondox.Company_idColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Company_idColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsNoOfSlabNNull() {
-                return this.IsNull(this.tableNondox.NoOfSlabNColumn);
+                return this.IsNull(this.tableNonDox.NoOfSlabNColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetNoOfSlabNNull() {
-                this[this.tableNondox.NoOfSlabNColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.NoOfSlabNColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsNoOfSlabSNull() {
-                return this.IsNull(this.tableNondox.NoOfSlabSColumn);
+                return this.IsNull(this.tableNonDox.NoOfSlabSColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetNoOfSlabSNull() {
-                this[this.tableNondox.NoOfSlabSColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.NoOfSlabSColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsCashCounterNonNull() {
-                return this.IsNull(this.tableNondox.CashCounterNonColumn);
+                return this.IsNull(this.tableNonDox.CashCounterNonColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetCashCounterNonNull() {
-                this[this.tableNondox.CashCounterNonColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.CashCounterNonColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsSector_NameNull() {
-                return this.IsNull(this.tableNondox.Sector_NameColumn);
+                return this.IsNull(this.tableNonDox.Sector_NameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetSector_NameNull() {
-                this[this.tableNondox.Sector_NameColumn] = global::System.Convert.DBNull;
+                this[this.tableNonDox.Sector_NameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBillNonSurNull() {
+                return this.IsNull(this.tableNonDox.BillNonSurColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBillNonSurNull() {
+                this[this.tableNonDox.BillNonSurColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBillNonAirNull() {
+                return this.IsNull(this.tableNonDox.BillNonAirColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBillNonAirNull() {
+                this[this.tableNonDox.BillNonAirColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1511,22 +1598,22 @@ namespace DtDc_Billing {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class NondoxRowChangeEvent : global::System.EventArgs {
+        public class NonDoxRowChangeEvent : global::System.EventArgs {
             
-            private NondoxRow eventRow;
+            private NonDoxRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRowChangeEvent(NondoxRow row, global::System.Data.DataRowAction action) {
+            public NonDoxRowChangeEvent(NonDoxRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public NondoxRow Row {
+            public NonDoxRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1554,27 +1641,27 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class NondoxTableAdapter : global::System.ComponentModel.Component {
+    public partial class NonDoxTableAdapter : global::System.ComponentModel.Component {
         
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        private global::Microsoft.Data.SqlClient.SqlDataAdapter _adapter;
         
-        private global::System.Data.SqlClient.SqlConnection _connection;
+        private global::Microsoft.Data.SqlClient.SqlConnection _connection;
         
-        private global::System.Data.SqlClient.SqlTransaction _transaction;
+        private global::Microsoft.Data.SqlClient.SqlTransaction _transaction;
         
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        private global::Microsoft.Data.SqlClient.SqlCommand[] _commandCollection;
         
         private bool _clearBeforeFill;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public NondoxTableAdapter() {
+        public NonDoxTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected internal global::System.Data.SqlClient.SqlDataAdapter Adapter {
+        protected internal global::Microsoft.Data.SqlClient.SqlDataAdapter Adapter {
             get {
                 if ((this._adapter == null)) {
                     this.InitAdapter();
@@ -1585,7 +1672,7 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
+        internal global::Microsoft.Data.SqlClient.SqlConnection Connection {
             get {
                 if ((this._connection == null)) {
                     this.InitConnection();
@@ -1605,7 +1692,7 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
                 }
                 for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
                     if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                        ((global::Microsoft.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
                     }
                 }
             }
@@ -1613,7 +1700,7 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        internal global::System.Data.SqlClient.SqlTransaction Transaction {
+        internal global::Microsoft.Data.SqlClient.SqlTransaction Transaction {
             get {
                 return this._transaction;
             }
@@ -1639,7 +1726,7 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+        protected global::Microsoft.Data.SqlClient.SqlCommand[] CommandCollection {
             get {
                 if ((this._commandCollection == null)) {
                     this.InitCommandCollection();
@@ -1662,10 +1749,10 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            this._adapter = new global::Microsoft.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "Nondox";
+            tableMapping.DataSetTable = "NonDox";
             tableMapping.ColumnMappings.Add("Non_ID", "Non_ID");
             tableMapping.ColumnMappings.Add("Aslab1", "Aslab1");
             tableMapping.ColumnMappings.Add("Aslab2", "Aslab2");
@@ -1688,81 +1775,28 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("NoOfSlabN", "NoOfSlabN");
             tableMapping.ColumnMappings.Add("NoOfSlabS", "NoOfSlabS");
             tableMapping.ColumnMappings.Add("CashCounterNon", "CashCounterNon");
+            tableMapping.ColumnMappings.Add("Sector_Name", "Sector_Name");
+            tableMapping.ColumnMappings.Add("BillNonSur", "BillNonSur");
+            tableMapping.ColumnMappings.Add("BillNonAir", "BillNonAir");
             this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Nondox] WHERE (([Non_ID] = @Original_Non_ID))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Non_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Non_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Nondox] ([Aslab1], [Aslab2], [Aslab3], [Aslab4], [Sslab1], [Sslab2], [Sslab3], [Sslab4], [AUptosl1], [AUptosl2], [AUptosl3], [AUptosl4], [SUptosl1], [SUptosl2], [SUptosl3], [SUptosl4], [Sector_Id], [Company_id], [NoOfSlabN], [NoOfSlabS], [CashCounterNon]) VALUES (@Aslab1, @Aslab2, @Aslab3, @Aslab4, @Sslab1, @Sslab2, @Sslab3, @Sslab4, @AUptosl1, @AUptosl2, @AUptosl3, @AUptosl4, @SUptosl1, @SUptosl2, @SUptosl3, @SUptosl4, @Sector_Id, @Company_id, @NoOfSlabN, @NoOfSlabS, @CashCounterNon)";
-            this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sector_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sector_Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Company_id", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Company_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NoOfSlabN", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NoOfSlabN", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NoOfSlabS", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NoOfSlabS", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CashCounterNon", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CashCounterNon", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Nondox] SET [Aslab1] = @Aslab1, [Aslab2] = @Aslab2, [Aslab3] = @Aslab3, [Aslab4] = @Aslab4, [Sslab1] = @Sslab1, [Sslab2] = @Sslab2, [Sslab3] = @Sslab3, [Sslab4] = @Sslab4, [AUptosl1] = @AUptosl1, [AUptosl2] = @AUptosl2, [AUptosl3] = @AUptosl3, [AUptosl4] = @AUptosl4, [SUptosl1] = @SUptosl1, [SUptosl2] = @SUptosl2, [SUptosl3] = @SUptosl3, [SUptosl4] = @SUptosl4, [Sector_Id] = @Sector_Id, [Company_id] = @Company_id, [NoOfSlabN] = @NoOfSlabN, [NoOfSlabS] = @NoOfSlabS, [CashCounterNon] = @CashCounterNon WHERE (([Non_ID] = @Original_Non_ID))";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Aslab4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Aslab4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sslab4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sslab4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AUptosl4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AUptosl4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl1", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl1", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl2", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl2", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl3", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl3", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SUptosl4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SUptosl4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Sector_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Sector_Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Company_id", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Company_id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NoOfSlabN", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NoOfSlabN", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@NoOfSlabS", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "NoOfSlabS", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CashCounterNon", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CashCounterNon", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Non_ID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Non_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DtdcBillingConnectionString"].ConnectionString;
+            this._connection = new global::Microsoft.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["db_a92afa_frbillingConnectionString"].ConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection = new global::Microsoft.Data.SqlClient.SqlCommand[1];
+            this._commandCollection[0] = new global::Microsoft.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Non_ID, Aslab1, Aslab2, Aslab3, Aslab4, Sslab1, Sslab2, Sslab3, Sslab4, AU" +
-                "ptosl1, AUptosl2, AUptosl3, AUptosl4, SUptosl1, SUptosl2, SUptosl3, SUptosl4, Se" +
-                "ctor_Id, Company_id, NoOfSlabN, NoOfSlabS, CashCounterNon FROM dbo.Nondox";
+            this._commandCollection[0].CommandText = "SELECT        Nondox.*, Sectors.Sector_Name, Sectors.BillNonSur, Sectors.BillNonA" +
+                "ir\r\nFROM            Nondox INNER JOIN\r\n                         Sectors ON Nondo" +
+                "x.Sector_Id = Sectors.Sector_Id";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1770,7 +1804,7 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(NonDoxDataSet.NondoxDataTable dataTable) {
+        public virtual int Fill(NonDoxDataSet.NonDoxDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1783,400 +1817,11 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual NonDoxDataSet.NondoxDataTable GetData() {
+        public virtual NonDoxDataSet.NonDoxDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            NonDoxDataSet.NondoxDataTable dataTable = new NonDoxDataSet.NondoxDataTable();
+            NonDoxDataSet.NonDoxDataTable dataTable = new NonDoxDataSet.NonDoxDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(NonDoxDataSet.NondoxDataTable dataTable) {
-            return this.Adapter.Update(dataTable);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(NonDoxDataSet dataSet) {
-            return this.Adapter.Update(dataSet, "Nondox");
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow dataRow) {
-            return this.Adapter.Update(new global::System.Data.DataRow[] {
-                        dataRow});
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(global::System.Data.DataRow[] dataRows) {
-            return this.Adapter.Update(dataRows);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Non_ID) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Non_ID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(
-                    global::System.Nullable<double> Aslab1, 
-                    global::System.Nullable<double> Aslab2, 
-                    global::System.Nullable<double> Aslab3, 
-                    global::System.Nullable<double> Aslab4, 
-                    global::System.Nullable<double> Sslab1, 
-                    global::System.Nullable<double> Sslab2, 
-                    global::System.Nullable<double> Sslab3, 
-                    global::System.Nullable<double> Sslab4, 
-                    global::System.Nullable<double> AUptosl1, 
-                    global::System.Nullable<double> AUptosl2, 
-                    global::System.Nullable<double> AUptosl3, 
-                    global::System.Nullable<double> AUptosl4, 
-                    global::System.Nullable<double> SUptosl1, 
-                    global::System.Nullable<double> SUptosl2, 
-                    global::System.Nullable<double> SUptosl3, 
-                    global::System.Nullable<double> SUptosl4, 
-                    global::System.Nullable<int> Sector_Id, 
-                    string Company_id, 
-                    global::System.Nullable<int> NoOfSlabN, 
-                    global::System.Nullable<int> NoOfSlabS, 
-                    global::System.Nullable<bool> CashCounterNon) {
-            if ((Aslab1.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[0].Value = ((double)(Aslab1.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab2.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((double)(Aslab2.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab3.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((double)(Aslab3.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab4.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((double)(Aslab4.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab1.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((double)(Sslab1.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab2.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[5].Value = ((double)(Sslab2.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab3.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[6].Value = ((double)(Sslab3.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab4.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[7].Value = ((double)(Sslab4.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl1.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[8].Value = ((double)(AUptosl1.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl2.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((double)(AUptosl2.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl3.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[10].Value = ((double)(AUptosl3.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl4.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[11].Value = ((double)(AUptosl4.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl1.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[12].Value = ((double)(SUptosl1.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl2.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[13].Value = ((double)(SUptosl2.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl3.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[14].Value = ((double)(SUptosl3.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl4.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[15].Value = ((double)(SUptosl4.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
-            if ((Sector_Id.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[16].Value = ((int)(Sector_Id.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
-            }
-            if ((Company_id == null)) {
-                this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[17].Value = ((string)(Company_id));
-            }
-            if ((NoOfSlabN.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[18].Value = ((int)(NoOfSlabN.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[18].Value = global::System.DBNull.Value;
-            }
-            if ((NoOfSlabS.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[19].Value = ((int)(NoOfSlabS.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[19].Value = global::System.DBNull.Value;
-            }
-            if ((CashCounterNon.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[20].Value = ((bool)(CashCounterNon.Value));
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[20].Value = global::System.DBNull.Value;
-            }
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
-            if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.InsertCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.InsertCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(
-                    global::System.Nullable<double> Aslab1, 
-                    global::System.Nullable<double> Aslab2, 
-                    global::System.Nullable<double> Aslab3, 
-                    global::System.Nullable<double> Aslab4, 
-                    global::System.Nullable<double> Sslab1, 
-                    global::System.Nullable<double> Sslab2, 
-                    global::System.Nullable<double> Sslab3, 
-                    global::System.Nullable<double> Sslab4, 
-                    global::System.Nullable<double> AUptosl1, 
-                    global::System.Nullable<double> AUptosl2, 
-                    global::System.Nullable<double> AUptosl3, 
-                    global::System.Nullable<double> AUptosl4, 
-                    global::System.Nullable<double> SUptosl1, 
-                    global::System.Nullable<double> SUptosl2, 
-                    global::System.Nullable<double> SUptosl3, 
-                    global::System.Nullable<double> SUptosl4, 
-                    global::System.Nullable<int> Sector_Id, 
-                    string Company_id, 
-                    global::System.Nullable<int> NoOfSlabN, 
-                    global::System.Nullable<int> NoOfSlabS, 
-                    global::System.Nullable<bool> CashCounterNon, 
-                    int Original_Non_ID) {
-            if ((Aslab1.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[0].Value = ((double)(Aslab1.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[0].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab2.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((double)(Aslab2.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab3.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((double)(Aslab3.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            if ((Aslab4.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((double)(Aslab4.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab1.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((double)(Sslab1.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab2.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[5].Value = ((double)(Sslab2.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab3.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[6].Value = ((double)(Sslab3.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
-            }
-            if ((Sslab4.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((double)(Sslab4.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[7].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl1.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((double)(AUptosl1.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl2.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((double)(AUptosl2.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[9].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl3.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((double)(AUptosl3.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
-            }
-            if ((AUptosl4.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((double)(AUptosl4.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl1.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((double)(SUptosl1.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl2.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((double)(SUptosl2.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl3.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[14].Value = ((double)(SUptosl3.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
-            }
-            if ((SUptosl4.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((double)(SUptosl4.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
-            }
-            if ((Sector_Id.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((int)(Sector_Id.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
-            }
-            if ((Company_id == null)) {
-                this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((string)(Company_id));
-            }
-            if ((NoOfSlabN.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((int)(NoOfSlabN.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
-            }
-            if ((NoOfSlabS.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(NoOfSlabS.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
-            }
-            if ((CashCounterNon.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[20].Value = ((bool)(CashCounterNon.Value));
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[20].Value = global::System.DBNull.Value;
-            }
-            this.Adapter.UpdateCommand.Parameters[21].Value = ((int)(Original_Non_ID));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
-                }
-            }
         }
     }
     
@@ -2192,8 +1837,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private NondoxTableAdapter _nondoxTableAdapter;
-        
         private bool _backupDataSetBeforeUpdate;
         
         private global::System.Data.IDbConnection _connection;
@@ -2206,20 +1849,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
             }
             set {
                 this._updateOrder = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
-            "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
-            "a", "System.Drawing.Design.UITypeEditor")]
-        public NondoxTableAdapter NondoxTableAdapter {
-            get {
-                return this._nondoxTableAdapter;
-            }
-            set {
-                this._nondoxTableAdapter = value;
             }
         }
         
@@ -2242,10 +1871,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._nondoxTableAdapter != null) 
-                            && (this._nondoxTableAdapter.Connection != null))) {
-                    return this._nondoxTableAdapter.Connection;
-                }
                 return null;
             }
             set {
@@ -2259,9 +1884,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._nondoxTableAdapter != null)) {
-                    count = (count + 1);
-                }
                 return count;
             }
         }
@@ -2273,15 +1895,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private int UpdateUpdatedRows(NonDoxDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._nondoxTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.Nondox.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
-                updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
-                if (((updatedRows != null) 
-                            && (0 < updatedRows.Length))) {
-                    result = (result + this._nondoxTableAdapter.Update(updatedRows));
-                    allChangedRows.AddRange(updatedRows);
-                }
-            }
             return result;
         }
         
@@ -2292,14 +1905,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private int UpdateInsertedRows(NonDoxDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._nondoxTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.Nondox.Select(null, null, global::System.Data.DataViewRowState.Added);
-                if (((addedRows != null) 
-                            && (0 < addedRows.Length))) {
-                    result = (result + this._nondoxTableAdapter.Update(addedRows));
-                    allAddedRows.AddRange(addedRows);
-                }
-            }
             return result;
         }
         
@@ -2310,14 +1915,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private int UpdateDeletedRows(NonDoxDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._nondoxTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.Nondox.Select(null, null, global::System.Data.DataViewRowState.Deleted);
-                if (((deletedRows != null) 
-                            && (0 < deletedRows.Length))) {
-                    result = (result + this._nondoxTableAdapter.Update(deletedRows));
-                    allChangedRows.AddRange(deletedRows);
-                }
-            }
             return result;
         }
         
@@ -2357,11 +1954,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._nondoxTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._nondoxTableAdapter.Connection) == false))) {
-                throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
-                        "tring.");
-            }
             global::System.Data.IDbConnection workConnection = this.Connection;
             if ((workConnection == null)) {
                 throw new global::System.ApplicationException("TableAdapterManager contains no connection information. Set each TableAdapterMana" +
@@ -2394,15 +1986,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._nondoxTableAdapter != null)) {
-                    revertConnections.Add(this._nondoxTableAdapter, this._nondoxTableAdapter.Connection);
-                    this._nondoxTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._nondoxTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._nondoxTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._nondoxTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._nondoxTableAdapter.Adapter);
-                    }
-                }
                 // 
                 //---- Perform updates -----------
                 //
@@ -2460,10 +2043,6 @@ namespace DtDc_Billing.NonDoxDataSetTableAdapters {
             finally {
                 if (workConnOpened) {
                     workConnection.Close();
-                }
-                if ((this._nondoxTableAdapter != null)) {
-                    this._nondoxTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._nondoxTableAdapter]));
-                    this._nondoxTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

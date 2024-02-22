@@ -30,264 +30,395 @@
                 <h4>Air Rate Cargo</h4>
             </div>
 
-            @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2" }))
+            @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2", OnBegin = "onBegin", OnComplete = "onComplete" }))
             {
 
                 <input type="hidden" value="@ViewBag.companyid" name="comppid">
-
-
-                foreach (var item in Model)
+                var company = ViewBag.companyid;
+                if (ViewBag.nonDoxAirCount > 0)
                 {
-                    if (item.NoOfSlabN != null)
+                    foreach (var item in Model.Where(m => m.Sector.BillNonAir == true))
                     {
-                        <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
-                            <div class="box-header" style="padding:0">
-                                <div class="col-sm-4">
-                                    <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                        var NonDox_NoOfSlabN = item.NoOfSlabN;
+                        if (item.NoOfSlabN != null)
+                        {
+                            <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
+                                <div class="box-header" style="padding:0">
+                                    <div class="col-sm-4">
+                                        <label>
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="2" checked="@(item.NoOfSlabN == 2)">
+
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @name = "NonNoOfSlabN" })*@ Slab 2
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="3" checked="@(item.NoOfSlabN == 3)">
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 3, new { @name = "NonNoOfSlabN" })*@
+                                            Slab 3
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="4" checked="@(item.NoOfSlabN == 4)">
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 4, new { @name = "NonNoOfSlabN" })*@
+                                            Slab 4
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        break;
-                    }
-                    else
-                    {
-                        <div class="col-sm-6" style="padding:10px 0">
-                            <div class="box-header" style="padding: 0">
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                                </div>
+                            break;
+                        }
+                        else
+                        {
+                            <div class="col-sm-6" style="padding:10px 0">
+                                <div class="box-header" style="padding: 0">
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" , @name = "NonNoOfSlabN" })*@
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="2" checked="@(item.NoOfSlabN == 2)">
+                                            Slab 2
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 3, new { @name = "NonNoOfSlabN" })*@
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="3" checked="@(item.NoOfSlabN == 3)">
+                                            Slab 3
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabN, 4, new { @name = "NonNoOfSlabN" })*@
+                                            <input type="radio" name="NonNoOfSlabN" id="NonNoOfSlabN" value="4" checked="@(item.NoOfSlabN == 4)">
+                                            Slab 4
+                                        </label>
+                                    </div>
 
+                                </div>
                             </div>
-                        </div>
-                        break;
+                            break;
 
+
+                        }
 
                     }
 
                 }
+                else if (ViewBag.nonDoxAirCount == 0)
+                {
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
+
+                            <h4> No Data Found</h4>
+
+                        </div>
+                    </div>
+                }
 
 
 
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
-
-                <table class="table table-bordered table-striped" id="NonDoxTableAir">
-                    <thead>
-                        <tr class="upto-input">
-                            <th>
-                                @*<h4>Sectors</h4>*@
-                                @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                            </th>
-                            <th>
-                                <label>Upto</label>
-                                <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl1" />
-                                <label>Kg</label>
-                            </th>
-                            <th class="slab2Air">
-                                <label>Upto</label>
-                                <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl2" />
-                                <label>Kg</label>
-                            </th>
-                            <th class="slab3Air">
-                                <label>Upto</label>
-                                <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl3" />
-                                <label>Kg</label>
-                            </th>
-                            <th>
-                                <label>Addtional</label>
-                                <input type="text" name="AUpto" value="@ViewBag.Slabs1.AUptosl4" />
-                                <label>Kg</label>
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var item in Model.Where(x => x.Sector.BillNonAir == true).ToList())
-                        {
-                            <tr>
-                                <td class="sectors">
-                                    @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                                </td>
-                                <td>
-                                    @Html.EditorFor(modelItem => item.Aslab1)
-                                </td>
-                                <td class="slab2Air">
-                                    @Html.EditorFor(modelItem => item.Aslab2)
-                                </td>
-                                <td class="slab3Air">
-                                    @Html.EditorFor(modelItem => item.Aslab3)
-                                </td>
-                                <td>
-                                    @Html.EditorFor(modelItem => item.Aslab4)
-                                </td>
-                                <td class="hidden">
-                                    @Html.HiddenFor(modelItem => item.Non_ID)
-                                </td>
-                                <td class="hidden">
-                                    @Html.HiddenFor(modelItem => item.Sector_Id)
-                                </td>
-
-
+                if (ViewBag.nonDoxAirCount > 0)
+                {
+                    <table class="table table-bordered table-striped" id="NonDoxTableAir">
+                        <thead>
+                            <tr class="upto-input">
+                                <th>
+                                    @*<h4>Sectors</h4>*@
+                                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                                </th>
+                                <th>
+                                    <label>Upto</label>
+                                    <input type="text" name="AUpto" value="@ViewBag.NonDoxAir.AUptosl1" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab2AirND">
+                                    <label>Upto</label>
+                                    <input type="text" name="AUpto" value="@ViewBag.NonDoxAir.AUptosl2" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab3AirND">
+                                    <label>Upto</label>
+                                    <input type="text" name="AUpto" value="@ViewBag.NonDoxAir.AUptosl3" />
+                                    <label>Kg</label>
+                                </th>
+                                <th>
+                                    <label>Addtional</label>
+                                    <input type="text" name="AUpto" value="@ViewBag.NonDoxAir.AUptosl4" />
+                                    <label>Kg</label>
+                                </th>
                             </tr>
-                        }
-                    </tbody>
+                        </thead>
 
-                </table>
+                        <tbody>
+                            @foreach (var item in Model.Where(x => x.Sector.BillNonAir == true).ToList())
+                            {
+                                <tr>
+                                    <td class="sectors">
+                                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.Aslab1)
+                                    </td>
+                                    <td class="slab2AirND">
+                                        @Html.EditorFor(modelItem => item.Aslab2)
+                                    </td>
+                                    <td class="slab3AirND">
+                                        @Html.EditorFor(modelItem => item.Aslab3)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.Aslab4)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Non_ID)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>
 
+
+                                </tr>
+
+
+                            }
+
+                            @foreach (var item in Model.Where(x => x.Sector.BillNonAir == false).ToList())
+                            {
+                                <tr>
+                                    <td class="sectors">
+                                        @Html.HiddenFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.Aslab1)
+                                    </td>
+                                    <td class="slab2AirND">
+                                        @Html.HiddenFor(modelItem => item.Aslab2)
+                                    </td>
+                                    <td class="slab3AirND">
+                                        @Html.HiddenFor(modelItem => item.Aslab3)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.Aslab4)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Non_ID)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+                }
                 <div class="col-sm-12 text-center">
                     <h4>Rate Surface Cargo</h4>
                 </div>
 
-
-                foreach (var item in Model)
+                if (ViewBag.nonDoxSurCount > 0)
                 {
-                    if (item.NoOfSlabS != null)
+                    foreach (var item in Model.Where(m => m.Sector.BillNonSur == true))
                     {
-                        <div class="col-sm-6 col-sm-offset-3">
-                            <div class="box-header">
-                                <div class="col-sm-4">
-                                    <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
+                        var NonDox_NoOfSlabS = item.NoOfSlabS;
+                        if (item.NoOfSlabS != null)
+                        {
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <div class="box-header">
+                                    <div class="col-sm-4">
+                                        <label>
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="2" checked="@(item.NoOfSlabS == 2)">
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @name = "NonNoOfSlabS" })*@ Slab 2
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 3, new { @name = "NonNoOfSlabS" }))*@
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="3" checked="@(item.NoOfSlabS == 3)">
+
+                                            Slab 3
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 4, new { @name = "NonNoOfSlabS" }))*@
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="4" checked="@(item.NoOfSlabS == 4)">
+
+                                            Slab 4
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        break;
-                    }
-                    else
-                    {
+                            break;
+                        }
+                        else
+                        {
 
-                        <div class="col-sm-6">
-                            <div class="box-header">
-                                <div class="col-sm-4">
-                                    <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
+                            <div class="col-sm-6">
+                                <div class="box-header">
+                                    <div class="col-sm-4">
+                                        <label>
+
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked", @name = "NonNoOfSlabS" }))*@
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="2" checked="@(item.NoOfSlabS == 2)">
+
+                                            Slab 2
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 3, new { @name = "NonNoOfSlabS" }))*@
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="3" checked="@(item.NoOfSlabS == 3)">
+
+
+                                            Slab 3
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>
+                                            @*@Html.RadioButtonFor(m => item.NoOfSlabS, 4, new { @name = "NonNoOfSlabS" }))*@
+                                            <input type="radio" name="NonNoOfSlabS" id="NonNoOfSlabS" value="4" checked="@(item.NoOfSlabS == 4)">
+
+                                            Slab 4
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        break;
+                            break;
+
+                        }
 
                     }
+                }
+                else if (ViewBag.nonDoxSurCount == 0)
+                {
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
+
+                            <h4> No Data Found</h4>
+
+                        </div>
+                    </div>
 
                 }
 
-                <table class="table table-bordered table-striped" id="NonDoxTableSirf">
-                    <thead>
-                        <tr class="upto-input">
-                            <th>
-                                @*<h4>Sectors</h4>*@
-                                @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                            </th>
-                            <th>
-                                <label>Upto</label>
-                                <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl1" />
-                                <label>Kg</label>
-                            </th>
-                            <th class="slab2Sirf">
-                                <label>Upto</label>
-                                <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl2" />
-                                <label>Kg</label>
-                            </th>
-                            <th class="slab3Sirf">
-                                <label>Upto</label>
-                                <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl3" />
-                                <label>Kg</label>
-                            </th>
-                            <th>
-                                <label>
-                                    Addtional
-                                </label>
-                                <input type="text" name="SUpto" value="@ViewBag.Slabs1.SUptosl4" />
-                                <label>Kg</label>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Where(x => x.Sector.BillNonSur == true).ToList())
-                        {
-                            <tr>
-                                <td class="sectors">
-                                    @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                                </td>
-                                <td>
-                                    @Html.EditorFor(modelItem => item.Sslab1)
-                                </td>
-                                <td class="slab2Sirf">
-                                    @Html.EditorFor(modelItem => item.Sslab2)
-                                </td>
-                                <td class="slab3Sirf">
-                                    @Html.EditorFor(modelItem => item.Sslab3)
-                                </td>
-                                <td>
-                                    @Html.EditorFor(modelItem => item.Sslab4)
-                                </td>
-                                @*<td class="hidden">
-                    @Html.HiddenFor(modelItem => item.Non_ID)
-                </td>
-                <td class="hidden">
-                    @Html.HiddenFor(modelItem => item.Sector_Id)
-                </td>*@
+
+                if (ViewBag.nonDoxSurCount > 0)
+                {
+                    <table class="table table-bordered table-striped" id="NonDoxTableSirf">
+
+                        <thead>
+
+                            <tr class="upto-input">
+                                <th>
+                                    @*<h4>Sectors</h4>*@
+                                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                                </th>
+                                <th>
+                                    <label>Upto</label>
+                                    <input type="text" name="SUpto" value="@ViewBag.NonDoxSur.SUptosl1" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab2SirfND">
+                                    <label>Upto</label>
+                                    <input type="text" name="SUpto" value="@ViewBag.NonDoxSur.SUptosl2" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab3SirfND">
+                                    <label>Upto</label>
+                                    <input type="text" name="SUpto" value="@ViewBag.NonDoxSur.SUptosl3" />
+                                    <label>Kg</label>
+                                </th>
+                                <th>
+                                    <label>
+                                        Addtional
+                                    </label>
+                                    <input type="text" name="SUpto" value="@ViewBag.NonDoxSur.SUptosl4" />
+                                    <label>Kg</label>
+                                </th>
                             </tr>
-                        }
-                        @foreach (var item in Model.Where(x => x.Sector.BillNonSur == false).ToList())
-                        {
-                            <tr>
-                                <td class="sectors">
-                                    @Html.HiddenFor(modelItem => item.Sector.Sector_Name)
-                                </td>
-                                <td>
-                                    @Html.HiddenFor(modelItem => item.Sslab1)
-                                </td>
-                                <td class="slab2Sirf">
-                                    @Html.HiddenFor(modelItem => item.Sslab2)
-                                </td>
-                                <td class="slab3Sirf">
-                                    @Html.HiddenFor(modelItem => item.Sslab3)
-                                </td>
-                                <td>
-                                    @Html.HiddenFor(modelItem => item.Sslab4)
-                                </td>
-                                @*<td class="hidden">
-                    @Html.HiddenFor(modelItem => item.Non_ID)
-                </td>
-                <td class="hidden">
-                    @Html.HiddenFor(modelItem => item.Sector_Id)
-                </td>*@
-                            </tr>
-                        }
+                        </thead>
 
-                    </tbody>
+                        <tbody>
 
-                </table>
+                            @foreach (var item in Model.Where(x => x.Sector.BillNonSur == true).ToList())
+                            {
+                                <tr>
+                                    <td class="sectors">
+                                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.Sslab1)
+                                    </td>
+                                    <td class="slab2SirfND">
+                                        @Html.EditorFor(modelItem => item.Sslab2)
+                                    </td>
+                                    <td class="slab3SirfND">
+                                        @Html.EditorFor(modelItem => item.Sslab3)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.Sslab4)
+                                    </td>
+                                    @*<td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Non_ID)
+                                </td>
+                                <td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                                </td>*@
+                                </tr>
+                            }
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"  onclick="scrollToTop()"/>
+
+                            @foreach (var item in Model.Where(x => x.Sector.BillNonSur == false).ToList())
+                            {
+                                <tr class="hidden">
+                                    <td class="sectors">
+                                        @Html.HiddenFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.Sslab1)
+                                    </td>
+                                    <td class="slab2SirfND">
+                                        @Html.HiddenFor(modelItem => item.Sslab2)
+                                    </td>
+                                    <td class="slab3SirfND">
+                                        @Html.HiddenFor(modelItem => item.Sslab3)
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(modelItem => item.Sslab4)
+                                    </td>
+                                    @*<td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Non_ID)
+                                </td>
+                                <td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                                </td>*@
+                                </tr>
+                            }
+
+
+
+                        </tbody>
+
+                    </table>
+                }
+                if (ViewBag.nonDoxSurCount > 0 || ViewBag.nonDoxAirCount > 0)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" onclick="scrollToTop()" />
+                        </div>
+
                     </div>
+                }
 
-                </div>
             }
 
 
@@ -295,34 +426,7 @@
 
     </div>
 </section>
-<script>
 
-    // Scroll to the top of the page
-    function scrollToTop() {
-        window.scrollTo(0, 0);
-    }
-    function showLoader() {
-
-
-        document.getElementById('overlayBlock').style.display = 'block';
-
-    }
-    $(document).ready(function () {
-        $('#submitBtn').on('click', function () {
-            scrollToTop();
-            showLoader('overlayBlock');
-            // Get the form element
-            var form = $('#frmEmp');
-            // Submit the form
-            form.submit();
-
-        });
-
-
-
-    });
-
-</script>.
 
 <style>
     #royalty-per {
@@ -345,165 +449,149 @@
 <!--Adding Loader after submit
     -->
 <!-- /.box-body -->
-@if (ViewBag.Message != null)
-{
-    <script>
 
-        $(document).ready(function () {
-
-          //  alert('@ViewBag.Message');
-          //  $(this).prop('disabled', false);
-
-        });
-
-
-    </script>
-
+@{
+    var testAir=0;
+    if (ViewBag.nonDoxAirCount > 0)
+    {
+         testAir = ViewBag.NonDoxAir.NoOfSlabN;
+    }
 }
-
 <script>
     $(document).ready(function () {
+       
+               testAir = '@testAir'
+      
 
 
-        var test ="@ViewBag.NonDox[0].NoOfSlabN";
+          //  var testAir = '@*@Model.Where(x=>x.Sector.BillNonSur==true).Select(x=>x.NoOfSlabN).FirstOrDefault()*@';
 
-      //  alert(test);
+            if (testAir == 3) {
 
-        if (test == 3) {
+                console.log("testAir=" + testAir)
+                $('.slab2AirND').show();
 
-
-            $('.slab2Air').show();
-
-            $('.slab3Air').hide();
+                $('.slab3AirND').hide();
 
 
-            $('#only').val(test);
-        }
-        else if (test == 4) {
-            $('.slab2Air').show();
-            $('.slab3Air').show();
-
-
-
-            $('#only').val(test);
-        }
-        else if (test == 2) {
-            $('.slab2Air').hide();
-            $('.slab3Air').hide();
-
-
-
-            $('#only').val(2);
-
-        }
-
-
-
-
-
-        $("input[name$='NoOfSlabN']").change(function () {
-
-            var test =$(this).val();
-
-            //alert(test);
-
-            if (test == 3) {
-
-
-                $('.slab2Air').show();
-
-                $('.slab3Air').hide();
-
-
-                $('#only').val(test);
+                $('#only').val(testAir);
             }
-            else if (test == 4) {
-                $('.slab2Air').show();
-                $('.slab3Air').show();
+            else if (testAir == 4) {
+                $('.slab2AirND').show();
+                $('.slab3AirND').show();
+                console.log("testAir=" + testAir)
 
 
-
-                $('#only').val(test);
+                $('#only').val(testAir);
             }
-            else if (test == 2) {
-                $('.slab2Air').hide();
-                $('.slab3Air').hide();
-
+            else if (testAir == 2) {
+                $('.slab2AirND').hide();
+                $('.slab3AirND').hide();
+                console.log("testAir=" + testAir)
 
 
                 $('#only').val(2);
 
             }
 
+
+
+
+
+            $("input[name$='NonNoOfSlabN']").change(function () {
+
+                var testAir =$(this).val();
+
+
+                if (testAir == 3) {
+
+
+                    $('.slab2AirND').show();
+
+                    $('.slab3AirND').hide();
+
+
+                    $('#onlyND').val(testAir);
+                }
+                else if (testAir == 4) {
+                    $('.slab2AirND').show();
+                    $('.slab3AirND').show();
+
+
+
+                    $('#only').val(testAir);
+                }
+                else if (testAir == 2) {
+                    $('.slab2AirND').hide();
+                    $('.slab3AirND').hide();
+
+
+
+                    $('#only').val(2);
+
+                }
+
+            });
         });
-    });
 </script>
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
+
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
+@{
+    var testSur = 0;
+    if (ViewBag.nonDoxSurCount > 0)
+    {
+        testSur =ViewBag.NonDoxSur.NoOfSlabS;
+    }
+}
 <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
+            var testSur='@testSur';
+          
+                
+           
 
 
-        var test =@ViewBag.NonDox[0].NoOfSlabS;
+          //  var testSur='@*@ViewBag.NonDoxSur.NoOfSlabS*@';
+           // var testSur = '@@*Model.Where(x=>x.Sector.BillNonSur==true).Select(x=>x.NoOfSlabS).FirstOrDefault()';
 
-        //alert(test);
+            if (testSur == 3) {
+                console.log("testSur=" + testSur)
 
-        if (test == 3) {
+                $('.slab2SirfND').show();
 
-
-            $('.slab2Sirf').show();
-
-            $('.slab3Sirf').hide();
-
-
-            $('#only').val(test);
-        }
-        else if (test == 4) {
-            $('.slab2Sirf').show();
-            $('.slab3Sirf').show();
+                $('.slab3SirfND').hide();
 
 
-
-            $('#only').val(test);
-        }
-        else if (test == 2) {
-            $('.slab2Sirf').hide();
-            $('.slab3Sirf').hide();
-
-
-
-            $('#only').val(2);
-
-        }
-
-
-
-        $("input[name$='NoOfSlabS']").change(function () {
-
-            var test = $(this).val();
-
-            //alert(test);
-
-            if (test == 3) {
-
-
-                $('.slab2Sirf').show();
-
-                $('.slab3Sirf').hide();
-
-
-                $('#only').val(test);
+                $('#only').val(testSur);
             }
-            else if (test == 4) {
-                $('.slab2Sirf').show();
-                $('.slab3Sirf').show();
+            else if (testSur == 4) {
+                $('.slab2SirfND').show();
+                $('.slab3SirfND').show();
 
 
-
-                $('#only').val(test);
+                console.log("testSur=" + testSur)
+                $('#only').val(testSur);
             }
-            else if (test == 2) {
-                $('.slab2Sirf').hide();
-                $('.slab3Sirf').hide();
+            else if (testSur == 2) {
+                console.log("testSur=" + testSur)
+                $('.slab2SirfND').hide();
+                $('.slab3SirfND').hide();
 
 
 
@@ -511,8 +599,43 @@
 
             }
 
+
+
+            $("input[name$='NonNoOfSlabS']").change(function () {
+
+                var testSur = $(this).val();
+
+
+                if (testSur == 3) {
+
+
+                    $('.slab2SirfND').show();
+
+                    $('.slab3SirfND').hide();
+
+
+                    $('#only').val(testSur);
+                }
+                else if (testSur == 4) {
+                    $('.slab2SirfND').show();
+                    $('.slab3SirfND').show();
+
+
+
+                    $('#only').val(testSur);
+                }
+                else if (testSur == 2) {
+                    $('.slab2SirfND').hide();
+                    $('.slab3SirfND').hide();
+
+
+
+                    $('#only').val(2);
+
+                }
+
+            });
         });
-    });
 </script>
 
 
