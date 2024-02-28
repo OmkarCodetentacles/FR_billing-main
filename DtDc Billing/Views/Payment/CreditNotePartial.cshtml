@@ -1,11 +1,11 @@
 ﻿@model DtDc_Billing.Entity_FR.CreditNote
 
 @*@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success" id="successmsg">
-        <strong>Success! </strong>@TempData["Message"]
-    </div>
-}*@
+    {
+        <div class="alert alert-success" id="successmsg">
+            <strong>Success! </strong>@TempData["Message"]
+        </div>
+    }*@
 
 @{
     var successMessage = TempData["Message"] as string;
@@ -14,10 +14,15 @@
 @if (!string.IsNullOrEmpty(successMessage))
 {
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+    <script>
+        setTimeout(function () {
+            window.location.reload();
+
+        }, 2000); // 3000 milliseconds = 3 seconds    </script>
 }
 
 
-@using (Ajax.BeginForm("CreditNote", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CreditP", OnSuccess = "createsuccess" }))
+@using (Ajax.BeginForm("CreditNote", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CreditP", OnSuccess = "createsuccess", OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
     @Html.AntiForgeryToken()
 
@@ -78,15 +83,31 @@
 
 <script>
 
-    $("#CreditP").submit(function (event) {
+    //$("#CreditP").submit(function (event) {
 
-        event.preventDefault();
+    //    event.preventDefault();
 
-        $("#overlayBlock").show();
-    });
+
+    //});
 
 
 </script>
+<script type="text/javascript">
+
+
+
+    function onBegin() {
+
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
+
 
 @if (TempData["success"] != null)
 {

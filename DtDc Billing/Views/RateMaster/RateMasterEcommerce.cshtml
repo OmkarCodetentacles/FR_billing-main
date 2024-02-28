@@ -23,7 +23,7 @@
 
 
 
-    if (ViewBag.EcomPCount > 0)
+    @*if (ViewBag.EcomPCount > 0)
     {
         foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
         {
@@ -78,14 +78,11 @@
 
             </div>
         </div>
-    }
+    }*@
     if (ViewBag.EcomPCount != null && ViewBag.EcomPCount > 0)
     {
-        var hasTrueValue = Model.Any(x => x != null && x.Sector != null && x.Sector.BillEcomPrio == true);
-
-        if (hasTrueValue)
-        {
-            foreach (var item in Model.Where(x => x != null && x.Sector != null))
+        
+            foreach (var item in Model.Where(x=>x.Sector.BillEcomPrio == true))
             {
                 if (item != null && item.NoOfSlabN != null)
                 {
@@ -95,7 +92,7 @@
                                 <label>
                                     @*@Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2*@
 
-                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2
 
                                 </label>
                             </div>
@@ -103,7 +100,7 @@
                                 <label>
                                     @* @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3*@
 
-                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 3, new { @checked = "checked" })  Slab 3
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3
 
                                 </label>
                             </div>
@@ -111,7 +108,7 @@
                                 <label>
                                     @*@Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4*@
 
-                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 4, new { @checked = "checked" })  Slab 4
+                                    @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4
 
                                 </label>
                             </div>
@@ -152,8 +149,7 @@
                     break;
                 }
             }
-        }
-
+    
     }
 
 
@@ -230,7 +226,7 @@
     </div>
     if (ViewBag.EcomGECount != null && ViewBag.EcomGECount != 0)
     {
-        foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomGE == true))
+        foreach (var item in Model.Where(x => x.Sector.BillEcomGE == true))
         {
             if (item.NoOfSlabS != null)
             {
@@ -363,7 +359,9 @@
 
 @{
     var EStest = 0;
-    if (ViewBag.EcomPCount > 0)
+
+   
+    if (ViewBag.EcomGECount > 0 && ViewBag.comGC != null )
     {
         EStest = ViewBag.comGc.NoOfSlabS;
     }
@@ -447,7 +445,7 @@
 
 @{
     var ENtest = 0;
-    if (ViewBag.EcomPCount > 0)
+    if (ViewBag.EcomPCount > 0 && ViewBag.comP != null)
     {
         ENtest = ViewBag.comP.NoOfSlabN;
     }
@@ -455,8 +453,8 @@
 
 <script>
     $(document).ready(function () {
-        var ENtest ='@ENtest';
-
+        var ENtest = '@ENtest';
+        
         if (ENtest == 3) {
 
 

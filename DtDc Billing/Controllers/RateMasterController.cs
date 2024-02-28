@@ -98,13 +98,31 @@ namespace DtDc_Billing.Controllers
 
 
 
-
+            
             var getEcom = db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).Include(e => e.Sector).OrderBy(m => m.Sector.Priority).ToList();
-            ViewBag.comP = getEcom.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
-            ViewBag.comGC = getEcom.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
+
+
+             var getEcomCount = getEcom.Where(x => x.Sector.BillEcomPrio == true).Count();
+            ViewBag.EcomPCount = getEcomCount;
+
+            if (getEcomCount > 0)
+            {
+                ViewBag.comP = getEcom.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
+            }
+
+
+
+            var EcomGECount = getEcom.Where(x => x.Sector.BillEcomGE == true).Count();
+            ViewBag.EcomGECount = EcomGECount;
+
+            if (EcomGECount > 0)
+            {
+                ViewBag.comGC = getEcom.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
+            }
+
+
             ViewBag.Dtdc_Ecommerce = getEcom;
-            ViewBag.EcomPCount=getEcom.Where(x => x.Sector.BillEcomPrio == true).Count(); 
-            ViewBag.EcomGECount=getEcom.Where(x=>x.Sector.BillEcomGE== true).Count();
+            
 
 
             //<-------------risk surch charge dropdown--------------->
@@ -1205,18 +1223,32 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.Message = "E-commerce Updated SuccessFully";
 
-                var getNonDox = db.Nondoxes.Where(m => m.Company_id == compid).OrderBy(m => m.Sector.Priority).ToList();
-                ViewBag.NonDoxAir =getNonDox.Where(m => m.Sector.BillNonAir == true).FirstOrDefault();
-                ViewBag.NonDoxSur = getNonDox.Where(m => m.Sector.BillNonSur == true).FirstOrDefault();
-                ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
 
-                var getData = db.Dtdc_Ecommerce.Where(m => m.Company_id == compid).ToList();
+                var getEcom = db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).Include(e => e.Sector).OrderBy(m => m.Sector.Priority).ToList();
 
-                ViewBag.comP = getData.Where(x=>x.Sector.BillEcomPrio == true).FirstOrDefault();
-                ViewBag.comGC = getData.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
-                ViewBag.Dtdc_Ecommerce = getData;
 
-                return PartialView("RateMasterEcommerce", getData);
+                var getEcomCount = getEcom.Where(x => x.Sector.BillEcomPrio == true).Count();
+                ViewBag.EcomPCount = getEcomCount;
+
+                if (getEcomCount > 0)
+                {
+                    ViewBag.comP = getEcom.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
+                }
+
+
+
+                var EcomGECount = getEcom.Where(x => x.Sector.BillEcomGE == true).Count();
+                ViewBag.EcomGECount = EcomGECount;
+
+                if (EcomGECount > 0)
+                {
+                    ViewBag.comGC = getEcom.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
+                }
+
+
+                ViewBag.Dtdc_Ecommerce = getEcom;
+
+                return PartialView("RateMasterEcommerce", getEcom);
 
             }
 
@@ -1456,21 +1488,18 @@ namespace DtDc_Billing.Controllers
 
                 ViewBag.Message = "NonDox Updated SuccessFully";
                 TempData["ShowLoader"] = false;
-                @ViewBag.Slabs1 = db.Nondoxes.Where(m => m.Company_id == compid).FirstOrDefault();
-                var getNonDox = db.Nondoxes.Where(m => m.Company_id == compid).OrderBy(m => m.Sector.Priority).ToList();
-                ViewBag.NonDoxAir = getNonDox.Where(m => m.Sector.BillNonAir == true ).FirstOrDefault();
+             
+                var getNonDox = db.Nondoxes.Where(m => m.Company_id == CompanyId).OrderBy(m => m.Sector.Priority).ToList();
+                ViewBag.NonDoxAir = getNonDox.Where(m => m.Sector.BillNonAir == true).FirstOrDefault();
                 ViewBag.NonDoxSur = getNonDox.Where(m => m.Sector.BillNonSur == true).FirstOrDefault();
-                ViewBag.NonDox = db.Nondoxes.Where(m => m.Company_id == compid).ToList();
+                ViewBag.nonDoxAirCount = getNonDox.Where(x => x.Sector.BillNonAir == true).Count();
+                ViewBag.nonDoxSurCount = getNonDox.Where(x => x.Sector.BillNonSur == true).Count();
 
-                var getData = db.Dtdc_Ecommerce.Where(m => m.Company_id == compid).ToList();
-                ViewBag.comP = getData.Where(x => x.Sector.BillEcomPrio == true).FirstOrDefault();
-                ViewBag.comGC = getData.Where(x => x.Sector.BillEcomGE == true).FirstOrDefault();
-                ViewBag.Dtdc_Ecommerce = getData;
-                var Nondox = db.Nondoxes.Where(m => m.Company_id == compid ).OrderBy(m => m.Sector.Priority).ToList();
-
+                ViewBag.NonDox = getNonDox;
+                @ViewBag.Slabs1 = getNonDox.FirstOrDefault();
                 //&& m.Sector.BillN == true
 
-                return PartialView("RatemasterNonDox",Nondox);
+                return PartialView("RatemasterNonDox", getNonDox);
 
             }
             return PartialView("RatemasterNonDox", fc);
@@ -1943,7 +1972,7 @@ namespace DtDc_Billing.Controllers
 
                 var DataSet8 =(from a in db.Sectors
                  join ab in db.Priorities on a.Sector_Id equals ab.Sector_Id
-                 where ab.Company_id == CompanyId/* && a.BillN == true*/ && a.BillPriority== true
+                 where ab.Company_id == CompanyId && a.BillPriority== true
                  orderby a.Priority
                  select new
                  {

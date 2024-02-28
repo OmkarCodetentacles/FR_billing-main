@@ -1116,35 +1116,73 @@ namespace DtDc_Billing.Controllers
 
             return View();
         }
+
+        //public ActionResult NewRegisterClient()
+        //{
+        //    var register=db.registrations.ToList();
+        //    DateTime currentdate = DateTime.Now;
+
+        //    //System.DateTime newDate = register.Value.AddDays(ObjData.subscriptionForInDays ?? 0);
+
+
+
+
+        //    List<NewRegisterUser> rg = (from registration in register
+        //                               let expirationDate = registration.paymentDate.HasValue ? registration.paymentDate.Value.AddDays(registration.subscriptionForInDays ?? 0) : (DateTime?)null
+
+        //                                select new NewRegisterUser
+        //                             {
+        //                                 registrationId = registration.registrationId,
+        //                                 Pfcode=registration.Pfcode,
+        //                                 franchiseName=registration.franchiseName,
+        //                                 emailId=registration.emailId,
+        //                                 mobileNo=registration.mobileNo,
+        //                                 dateTime=registration.dateTime.Value.ToString("dd/MM/yyyy"),
+        //                                 userName=registration.userName,    
+        //                                 password=registration.password,
+        //                                 DaysSinceRegistration=(currentdate-registration.dateTime.Value).Days,
+        //                                 subscriptionfordays=register.Select(x=>x.subscriptionForInDays).FirstOrDefault(),
+        //                                    ExpireDate = expirationDate.HasValue ? expirationDate.Value: null,
+        //                                   // ExpiredDays = expirationDate.HasValue ? (int?)(expirationDate.Value - currentdate).Days : (int?)null,
+
+        //                                })
+        //                                 .OrderByDescending(x => x.DaysSinceRegistration) // Sort in descending order
+
+        //                             .ToList();
+
+
+        //    return View(rg);
+        //}
         [HttpGet]
         public ActionResult NewRegisterClient()
+    {
+    var register = db.registrations.ToList();
+        DateTime currentdate = DateTime.Now;
+
+        List<NewRegisterUser> rg = register.Select(registration => new NewRegisterUser
         {
-            var register=db.registrations.Where(x=>x.isPaid!=true).ToList();
+            registrationId = registration.registrationId,
+            Pfcode = registration.Pfcode,
+            franchiseName = registration.franchiseName,
+            emailId = registration.emailId,
+            mobileNo = registration.mobileNo,
+            dateTime = registration.dateTime.Value.ToString("dd/MM/yyyy"),
+            userName = registration.userName,
+            password = registration.password,
+            DaysSinceRegistration = (currentdate - registration.dateTime.Value).Days,
+            
+            subscriptionfordays = registration.subscriptionForInDays ?? 0,
+            ExpireDate = registration.paymentDate.HasValue ? registration.paymentDate.Value.AddDays(registration.subscriptionForInDays ?? 0).ToString("dd/MM/yyyy"):null ,
+            ExpiredDays = registration.paymentDate.HasValue ? (registration.paymentDate.Value.AddDays(registration.subscriptionForInDays ?? 0)-currentdate).Days:0
 
-            DateTime currentdate= DateTime.Now;
+        })
+        .OrderByDescending(x => x.DaysSinceRegistration)
+        .ToList();
 
-            List<NewRegisterUser> rg = (from registration in register
-                                     where registration.isPaid != true
-                                     select new NewRegisterUser
-                                     {
-                                         registrationId = registration.registrationId,
-                                         Pfcode=registration.Pfcode,
-                                         franchiseName=registration.franchiseName,
-                                         emailId=registration.emailId,
-                                         mobileNo=registration.mobileNo,
-                                         dateTime=registration.dateTime,
-                                         userName=registration.userName,    
-                                         password=registration.password,
-                                         DaysSinceRegistration=(currentdate-registration.dateTime.Value).Days
-                                     })
-                                         .OrderByDescending(x => x.DaysSinceRegistration) // Sort in descending order
+    return View(rg);
+    }
 
-                                     .ToList();
-
-
-            return View(rg);
-        }
-        [SessionAdmin]
+    [SessionAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddFranchisee(Franchisee franchisee)
@@ -1742,6 +1780,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult Add_SectorPin(registration franchisee, FormCollection fc)
         {
+            franchisee.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             var sectorNamearray = fc.GetValues("item.Sector_Name");
 
             var priorityarray = fc.GetValues("item.Priority");
@@ -1991,10 +2030,13 @@ namespace DtDc_Billing.Controllers
 
                 for (int i = 0; i < sectoridarray.Count(); i++)
                 {
-                    string[] strarr = pincodearayy[i].Split(',', '-');
+                 
+
+                    string[] strarr = pincodearayy[i].Trim().Split(',', '-');
 
                     for (int j = 0; j < strarr.Count(); j++)
                     {
+                        strarr[j] = strarr[j].Trim();
 
                         if (!Regex.Match(strarr[j], @"^(\d{6})?$").Success)
                         {
@@ -2008,7 +2050,7 @@ namespace DtDc_Billing.Controllers
                             }
 
                             ViewBag.DataSector = datasector;
-                            ViewBag.Message = "Pincode must be numeric";
+                            ViewBag.Message = "Ensure the Pincode is numeric and free from spaces or special characters.";
                             // return View("FranchiseeList", fc);
                             return PartialView("Add_SectorPin", datasector);
                             //return View(fc);
@@ -2026,7 +2068,7 @@ namespace DtDc_Billing.Controllers
 
                             str.Priority = Convert.ToInt32(priorityarray[i]);
                             str.Sector_Name = sectorNamearray[i].ToUpper();
-                            str.Pincode_values = pincodearayy[i];
+                            str.Pincode_values = pincodearayy[i]?.Trim();
                             str.BillD = billDValues[i];
                             str.BillNonAir = BillNonAirValues[i];
                             str.BillNonSur = BillNonSurValues[i];

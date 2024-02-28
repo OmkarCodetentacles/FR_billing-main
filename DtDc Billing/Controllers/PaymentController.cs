@@ -156,9 +156,10 @@ namespace DtDc_Billing.Controllers
                 }
                 //var het =  Convert.ToDouble(cashb.ba) - Convert.ToDouble(cash.C_Total_Amount);
                 TempData["remainingAmount"] = balance - Convert.ToDouble(cash.C_Total_Amount);
+                TempData["Message"] = "Payment added successfully";
             }
 
-            TempData["Message"] = "Payment added successfully";
+          
             
             return PartialView("CashPartial", cash);
         }
@@ -191,8 +192,9 @@ namespace DtDc_Billing.Controllers
                     //  return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
                     TempData["remainingAmount"] = balance - Convert.ToDouble(cheque.totalAmount);
                 }
+                TempData["Message"] = "Payment added successfully";
             }
-            TempData["Message"] = "Payment added successfully";
+           
             return PartialView("ChequePartial", cheque);
         }
 
@@ -223,8 +225,9 @@ namespace DtDc_Billing.Controllers
                     TempData["remainingAmount"] = balance - Convert.ToDouble(nEFT.N_Total_Amount);
                     //return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
                 }
+                TempData["Message"] = "Payment added successfully";
             }
-            TempData["Message"] = "Payment added successfully";
+
             return PartialView("NeftPartial", nEFT);
         }
 
@@ -727,7 +730,7 @@ Select(e => new
             var obj = db.Cashes.Where(m => m.Cash_id == id).FirstOrDefault();
             var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
             ViewBag.netamount = inv.netamount;
-            ViewBag.existingvalue = obj.C_Total_Amount;
+            ViewBag.existingvalue = obj.C_Total_Amount ?? 0;
             ViewBag.paidamt = inv.paid;
             ViewBag.ctotalamt = obj.C_Total_Amount;
             //ViewBag.firmid = Firm_Id;
@@ -779,7 +782,7 @@ Select(e => new
             var obj = db.Cheques.Where(m => m.Cheque_id == id).FirstOrDefault();
             var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode==obj.Pfcode).FirstOrDefault();
             ViewBag.netamount = inv.netamount;
-            ViewBag.existingvalue = obj.totalAmount;
+            ViewBag.existingvalue = obj.totalAmount??0;
             ViewBag.paidamt = inv.paid;
             ViewBag.ctotalamt = obj.totalAmount;
             //ViewBag.firmid = Firm_Id;
@@ -830,7 +833,7 @@ Select(e => new
             var obj = db.NEFTs.Where(m => m.Neft_id == id).FirstOrDefault();
             var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
             ViewBag.netamount = inv.netamount;
-            ViewBag.existingvalue = obj.N_Total_Amount;
+            ViewBag.existingvalue = obj.N_Total_Amount??0;
             ViewBag.paidamt = inv.paid;
             ViewBag.ctotalamt = obj.N_Total_Amount;
             //ViewBag.firmid = Firm_Id;
@@ -881,7 +884,7 @@ Select(e => new
             var obj = db.CreditNotes.Where(m => m.Cr_id == id).FirstOrDefault();
             var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode==obj.Pfcode).FirstOrDefault();
             ViewBag.netamount = inv.netamount;
-            ViewBag.existingvalue = obj.Cr_Amount;
+            ViewBag.existingvalue = obj.Cr_Amount??0;
             ViewBag.paidamt = inv.paid;
             ViewBag.ctotalamt = obj.Cr_Amount;
             //ViewBag.firmid = Firm_Id;

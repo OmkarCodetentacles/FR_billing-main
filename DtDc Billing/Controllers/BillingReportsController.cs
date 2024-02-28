@@ -856,14 +856,9 @@ namespace DtDc_Billing.Controllers
 
             List<TransactionView> transactions =
                 db.TransactionViews.Where(m =>
-               (m.Customer_Id == Custid)
+               (m.Customer_Id==null ||    m.Customer_Id == Custid)
                     ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                            .ToList();
-
-
-
-
-
             ViewBag.totalamt = transactions.Sum(b => b.Amount);
 
             return View(transactions);

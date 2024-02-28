@@ -24,7 +24,7 @@ namespace DtDc_Billing.CustomModel
         public Nullable<System.DateTime> tempinserteddate { get; set; }
         public Nullable<long> FirmId { get; set; }
         public string PfCode { get; set; }
-
+        [Required(ErrorMessage ="Company name must be Required")]
         public string CompanyName { get; set; }
 
 

@@ -11,19 +11,26 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Cheque
     {
         public int Cheque_id { get; set; }
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero")]
+
         public Nullable<double> C_Amount { get; set; }
+       
         public Nullable<System.DateTime> ch_date { get; set; }
         public string bank_name { get; set; }
         public string branch_Name { get; set; }
+        [Required]
         public Nullable<double> totalAmount { get; set; }
         public string Invoiceno { get; set; }
         public Nullable<double> Tds_amount { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public string Pfcode { get; set; }
+        [Required(ErrorMessage ="Date must be Required")]
         public Nullable<System.DateTime> tempch_date { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }

@@ -27,10 +27,110 @@
 <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
 <section class="container">
     <div class="row">
-        <div class="col-sm-12">
+        @if (Model != null)
+        {
+           
+                <div class="col-md-12">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h4>View New Register User</h4>
+                        </div>
+
+                        <div class="form-horizontal">
+                            <div class="box-body">
+
+                                <table class="table table-bordered table-responsive table-striped" style="overflow:auto;display:block">
+                                    <thead>
+                                        <tr>
+
+                                            <th>
+                                                Sr No
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Pfcode)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.franchiseName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.emailId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.mobileNo)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.dateTime)
+
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.DaysSinceRegistration)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.userName)
+                                            </th>
+                                            <th>@Html.DisplayNameFor(model => model.password)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        @{
+                                            int srno = 1;
+                                            foreach (var item in Model.Where(x => x.isPaid != true))
+                                            {
+                                                <tr>
+
+
+                                                    <td>
+                                                        @srno
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="hideextra" style="width:300px">
+                                                            @Html.DisplayFor(modelItem => item.Pfcode)
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.franchiseName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.emailId)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.mobileNo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.dateTime)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.DaysSinceRegistration)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.userName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.password)
+                                                    </td>
+                                                </tr>
+                                                srno++;
+                                            }
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+        }
+
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h4>View New Register User</h4>
+                    <h4 style="color:red">Subscription Expire Client</h4>
                 </div>
 
 
@@ -45,7 +145,7 @@
                         <table id="example2" class="table table-bordered table-responsive table-striped" style="overflow:auto;display:block">
                             <thead>
                                 <tr>
-                                   
+
                                     <th>
                                         Sr No
                                     </th>
@@ -55,65 +155,72 @@
                                     <th>
                                         @Html.DisplayNameFor(model => model.franchiseName)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.emailId)
-                                    </th>
+                                   
                                     <th>
                                         @Html.DisplayNameFor(model => model.mobileNo)
                                     </th>
+                                 <th>
+                                     Payment Date
+                                 </th>
                                     <th>
-                                        @Html.DisplayNameFor(model=>model.dateTime)
-
+                                        @Html.DisplayNameFor(model => model.ExpireDate)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model=>model.DaysSinceRegistration)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model=>model.userName)
-                                    </th>
-                                    <th>@Html.DisplayNameFor(model=>model.password)</th>
+                                    <th>  @Html.DisplayNameFor(model => model.ExpiredDays)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
-                                    int srno = 1;
-                                    foreach (var item in Model)
+                                    int srno1 = 1;
+                                    foreach (var item in Model.OrderBy(x=>x.ExpiredDays))
                                     {
-                                        <tr>
-                                           
 
-                                            <td>
-                                                @srno
-                                            </td>
-                                       
-                                            <td>
-                                                <div class="hideextra" style="width:300px">
-                                                    @Html.DisplayFor(modelItem => item.Pfcode)
-                                                </div>
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.franchiseName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.emailId)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem=>item.mobileNo)
-                                            </td>
-                                            <td>
-                                               @Html.DisplayFor(modelItem=>item.dateTime)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem=>item.DaysSinceRegistration)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem=>item.userName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem=>item.password)
-                                            </td>
-                                        </tr>
-                                        srno++;
+                                        if (item.ExpireDate != null)
+                                        {
+
+                                            <tr>
+
+
+                                                <td>
+                                                    @srno1
+                                                </td>
+
+                                                <td>
+                                                    <div class="hideextra" style="width:300px">
+                                                        @Html.DisplayFor(modelItem => item.Pfcode)
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.franchiseName)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.mobileNo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem=>item.dateTime)
+                                                </td>
+                                                @if (item.ExpiredDays < 0)
+                                                {
+                                                    <td style="color:red">
+                                                        @Html.DisplayFor(modelItem => item.ExpireDate, new { @style = "color:red" })
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ExpireDate)
+                                                    </td>
+                                                }
+
+                                                <td>
+                                                    <strong> @Html.DisplayFor(modelItem => item.ExpiredDays)</strong>
+                                                </td>
+                                            </tr>
+                                            srno1++;
+
+                                        }
+
+
                                     }
                                 }
                             </tbody>

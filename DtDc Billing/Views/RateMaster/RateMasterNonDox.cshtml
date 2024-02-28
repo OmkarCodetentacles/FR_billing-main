@@ -32,7 +32,7 @@
 
             @using (Ajax.BeginForm("RateMasterNonDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp2", OnBegin = "onBegin", OnComplete = "onComplete" }))
             {
-
+                @Html.AntiForgeryToken()
                 <input type="hidden" value="@ViewBag.companyid" name="comppid">
                 var company = ViewBag.companyid;
                 if (ViewBag.nonDoxAirCount > 0)
@@ -187,7 +187,7 @@
 
                             @foreach (var item in Model.Where(x => x.Sector.BillNonAir == false).ToList())
                             {
-                                <tr>
+                                <tr class="hidden">
                                     <td class="sectors">
                                         @Html.HiddenFor(modelItem => item.Sector.Sector_Name)
                                     </td>

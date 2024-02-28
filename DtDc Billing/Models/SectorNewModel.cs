@@ -11,6 +11,7 @@ namespace DtDc_Billing.Models
         public int Sector_Id { get; set; }
         public string Sector_Name { get; set; }
         public string Pf_code { get; set; }
+
         public string Pincode_values { get; set; }
         public Nullable<int> Priority { get; set; }
         public Nullable<bool> CashD { get; set; }
