@@ -14,7 +14,7 @@ using System.Web.Mvc;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdmin]
-    [SessionUserModule]
+   // [SessionUserModule]
     //[OutputCache(CacheProfile = "Cachefast")]
     public class RateMasterController : Controller
     {

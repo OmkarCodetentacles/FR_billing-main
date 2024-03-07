@@ -18,7 +18,7 @@ using ClosedXML.Excel;
 namespace DtDc_Billing.Controllers
 {
     [SessionTimeout]
-    [SessionUserModule]
+  //  [SessionUserModule]
     public class EmpBookingController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

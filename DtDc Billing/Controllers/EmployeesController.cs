@@ -12,7 +12,7 @@ using System.Web.Security;
 
 namespace DtDc_Billing.Controllers
 {
-    [SessionUserModule]
+    //[SessionUserModule]
     public class EmployeesController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 
 namespace DtDc_Billing.Controllers
 {
-    [SessionUserModule]
+   // [SessionUserModule]
     public class CashReportsController : Controller
     {
         db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

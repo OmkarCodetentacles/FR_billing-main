@@ -22,7 +22,7 @@ using System.Net.Mail;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdmin]
-    [SessionUserModule]
+   // [SessionUserModule]
     public class CustomerController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

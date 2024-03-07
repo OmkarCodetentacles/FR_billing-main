@@ -443,8 +443,11 @@ namespace DtDc_Billing.Controllers
             if (Receipts != null)
             {
                 
-                string savePath = "https://frbilling.com/ConsignmentPDF/Recieptdetails-" + Receipts.Consignment_No.Replace("/", "-") + ".pdf";
+                string savePath = "https://frbilling.com/ConsignmentPDF/Recieptdetails-" + Receipts.Consignment_No.Replace("/", "-")+ ".pdf";
+                if (savePath == null)
+                {
 
+                }
                 return Redirect(savePath);
             }
 

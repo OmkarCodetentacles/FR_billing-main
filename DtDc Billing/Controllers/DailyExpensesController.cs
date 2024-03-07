@@ -9,12 +9,12 @@ using System.Web.Mvc;
 namespace DtDc_Billing.Controllers
 {
     [SessionTimeout]
-    [SessionUserModule]
+  //  [SessionUserModule]
     public class DailyExpensesController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
-        [SessionUserModule]
+        //[SessionUserModule]
         public ActionResult Add_Expenses()
         {
             ViewBag.Pf_Code = new SelectList(db.Franchisees, "PF_Code", "F_Address");

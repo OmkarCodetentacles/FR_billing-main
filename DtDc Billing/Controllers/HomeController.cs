@@ -31,7 +31,7 @@ using Microsoft.Ajax.Utilities;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdminold]
-   [SessionUserModule]
+ //  [SessionUserModule]
   
     public class HomeController : Controller
     {

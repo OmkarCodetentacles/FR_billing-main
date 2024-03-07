@@ -24,13 +24,13 @@ using System.Net.Http;
 
 namespace DtDc_Billing.Controllers
 {
-    //[OutputCache(CacheProfile = "Cachefast")]
+   // [OutputCache(CacheProfile = "Cachefast")]
     public class AdminController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Adminsss
 
-        [SessionUserModule]
+      //  [SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
 
@@ -1158,8 +1158,9 @@ namespace DtDc_Billing.Controllers
     {
     var register = db.registrations.ToList();
         DateTime currentdate = DateTime.Now;
-
-        List<NewRegisterUser> rg = register.Select(registration => new NewRegisterUser
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
+            ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
+            List<NewRegisterUser> rg = register.Select(registration => new NewRegisterUser
         {
             registrationId = registration.registrationId,
             Pfcode = registration.Pfcode,
@@ -1169,6 +1170,7 @@ namespace DtDc_Billing.Controllers
             dateTime = registration.dateTime.Value.ToString("dd/MM/yyyy"),
             userName = registration.userName,
             password = registration.password,
+            isPaid= registration.isPaid,
             DaysSinceRegistration = (currentdate - registration.dateTime.Value).Days,
             
             subscriptionfordays = registration.subscriptionForInDays ?? 0,
@@ -1181,8 +1183,62 @@ namespace DtDc_Billing.Controllers
 
     return View(rg);
     }
+        [HttpGet]
+        public ActionResult RenewSubcriptionExpClient(string Pfcode, int pid)
+        {
 
-    [SessionAdmin]
+            if (String.IsNullOrEmpty(Pfcode) && pid != 0)
+            {
+                TempData["ErrorMessage"] = "Select Payment Subscription";
+                return RedirectToAction("NewRegisterClient");
+            }
+            Pfcode = Pfcode.ToString().ToUpper();
+
+            var register = db.registrations.Where(x => x.Pfcode.ToUpper() == Pfcode).FirstOrDefault();
+            var package = db.Packages.Where(x => x.Pid == pid).FirstOrDefault();
+            if (register == null)
+            {
+                TempData["ErrorMessage"] = "User not registered. Please register before activating your account.";
+
+                return RedirectToAction("NewRegisterClient");
+            }
+
+            if (register != null)
+            {
+                register.subscriptionForInDays = package.Subcriptionforindays;
+                register.isPaid = package.isPaid;
+                register.paymentDate = DateTime.Now;
+                register.IsRenewal = "Yes";
+                db.Entry(register).State = EntityState.Modified;
+                  db.SaveChanges();
+            }
+
+
+            paymentLog paymentdata = new paymentLog();
+            var pdata = db.paymentLogs.Where(x => x.Pfcode.ToUpper() == Pfcode).FirstOrDefault();
+            if (pdata != null)
+            {
+                pdata.Pfcode = pdata.Pfcode;
+                pdata.ownerName = register.ownerName;
+                pdata.totalAmount = package.Amount;
+                pdata.registrationId = register.registrationId;
+                pdata.status = "authorized";
+                pdata.dateTime = DateTime.Now;
+                pdata.description = package.Despription;
+                pdata.paymentmethod = "Cash".ToUpper();
+                pdata.RenewalDate = DateTime.Now;
+
+                db.Entry(pdata).State = EntityState.Modified;
+              db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Renewal Subscription Done Successfully!!!";
+
+            }
+            return RedirectToAction("NewRegisterClient");
+
+        }
+
+        [SessionAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddFranchisee(Franchisee franchisee)
@@ -2765,39 +2821,82 @@ namespace DtDc_Billing.Controllers
             List<Nondox> Nondox = db.Nondoxes.Where(m => m.Company_id == id).ToList();
             List<Ratem> Ratem = db.Ratems.Where(m => m.Company_id == id).ToList();
             List<Priority> pra = db.Priorities.Where(m => m.Company_id == id).ToList();
-            Company tran = db.Companies.Where(m => m.Company_Id == id).FirstOrDefault();
-
-            foreach (var i in dtdc_Ptps)
+            Company comp = db.Companies.Where(m => m.Company_Id == id).FirstOrDefault();
+            List<Dtdc_Ecommerce> dtdc_Ecom = db.Dtdc_Ecommerce.Where(m => m.Company_id == id).ToList();
+            List<Transaction> dtdc_tran=db.Transactions.Where(m=>m.Customer_Id.ToUpper()==id.ToUpper()).ToList();
+            List<Entity_FR.Invoice> invoice = db.Invoices.Where(m => m.Customer_Id == id).ToList();
+            if (dtdc_Ptps.Count>0)
             {
-                db.Dtdc_Ptp.Remove(i);
+                foreach (var i in dtdc_Ptps)
+                {
+                    db.Dtdc_Ptp.Remove(i);
+                }
             }
-            foreach (var i in dtdcPlu)
+          if(dtdcPlu.Count>0)
             {
-                db.dtdcPlus.Remove(i);
+                foreach (var i in dtdcPlu)
+                {
+                    db.dtdcPlus.Remove(i);
+                }
             }
-            foreach (var i in express_cargo)
+            if (express_cargo.Count > 0)
             {
-                db.express_cargo.Remove(i);
+                foreach (var i in express_cargo)
+                {
+                    db.express_cargo.Remove(i);
+                }
             }
-            foreach (var i in Nondox)
+            if (Nondox.Count > 0)
             {
-                db.Nondoxes.Remove(i);
+                foreach (var i in Nondox)
+                {
+                    db.Nondoxes.Remove(i);
+                }
             }
-            foreach (var i in Ratem)
+            if (Ratem.Count>0)
             {
-                db.Ratems.Remove(i);
+                foreach (var i in Ratem)
+                {
+                    db.Ratems.Remove(i);
+                }
             }
             foreach (var i in pra)
             {
                 db.Priorities.Remove(i);
             }
-            db.Companies.Remove(tran);
+           if(dtdc_Ecom.Count > 0)
+            {
+                foreach (var i in dtdc_Ecom)
+                {
+                    db.Dtdc_Ecommerce.Remove(i);
+                }
+            }
+           if(dtdc_tran.Count > 0)
+            {
+               foreach(var i in dtdc_tran)
+                {
+                    db.Transactions.Remove(i);  
+                }
+            }
+
+            if (invoice.Count > 0)
+            {
+                foreach(var i in invoice)
+                {
+                    db.Invoices.Remove(i);
+                }
+            }
+            db.Companies.Remove(comp);
 
             db.SaveChanges();
             TempData["Success"] = "Company Deleted SuccessFully";
             return RedirectToAction("EditCompanyRateMaster", "RateMaster");
         }
-
+        [HttpGet]
+        public ActionResult CookiesExpires()
+        {
+            return View();  
+        }
 
         public ActionResult WalletHistory(string phone)
         {
@@ -3037,9 +3136,10 @@ namespace DtDc_Billing.Controllers
 
 
 
+
         [SessionAdminold]
         //Not Giving access to User
-        [SessionUserModule]
+       // [SessionUserModule]
         public ActionResult LogOut()
         {
 

@@ -20,8 +20,8 @@ using System.Web.UI.WebControls;
 namespace DtDc_Billing.Controllers
 {
 
-    //[SessionAdmin]
-    [SessionUserModule]
+    [SessionAdmin]
+    //[SessionUserModule]
    
     public class ReportsController : Controller
     {

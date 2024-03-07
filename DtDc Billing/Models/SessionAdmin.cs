@@ -10,6 +10,7 @@ using System.Web.Routing;
 
 namespace DtDc_Billing.Models
 {
+    
     public class SessionAdmin : ActionFilterAttribute
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
@@ -17,21 +18,42 @@ namespace DtDc_Billing.Models
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpContext ctx = HttpContext.Current;
-            if (HttpContext.Current.Request.Cookies["Cookies"]["AdminValue"].ToString() == null)
+            try
             {
-                filterContext.Result = new RedirectToRouteResult(
-                      new RouteValueDictionary(
-                          new
-                          {
-                              controller = "Admin",
-                              action = "AdminLogin",
-                             
-                              returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
-                          }));
+                if (HttpContext.Current.Request.Cookies["Cookies"]["AdminValue"].ToString() == null)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                          new RouteValueDictionary(
+                              new
+                              {
+                                  controller = "Admin",
+                                  action = "AdminLogin",
+
+                                  returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                              }));
+
+                }
+
+                base.OnActionExecuting(filterContext);
+            }
+            catch (Exception ex)
+            {
+              
+                    filterContext.Result = new RedirectToRouteResult(
+                          new RouteValueDictionary(
+                              new
+                              {
+                                  controller = "Admin",
+                                  action = "CookiesExpires",
+
+                                  returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                              }));
+
+                
+
+                base.OnActionExecuting(filterContext);
 
             }
-
-            base.OnActionExecuting(filterContext);
 
         }
 

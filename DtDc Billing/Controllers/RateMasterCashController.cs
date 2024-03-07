@@ -38,7 +38,7 @@ namespace DtDc_Billing.Controllers
             return View(db.Companies.ToList());
         }
 
-        [SessionUserModule]
+        //[SessionUserModule]
         public ActionResult EditCompanyCash()
         {
             
@@ -56,7 +56,7 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionTimeout]
-        [SessionUserModule]
+       // [SessionUserModule]
         public ActionResult Index()
         {
             var CompanyId = TempData.Peek("CompanyId").ToString();

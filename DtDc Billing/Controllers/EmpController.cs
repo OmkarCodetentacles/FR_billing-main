@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 
 namespace EmpBilling.Controllers
 {
-    [SessionUserModule]
+    //[SessionUserModule]
     public class EmpController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

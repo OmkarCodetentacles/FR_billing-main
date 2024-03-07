@@ -272,33 +272,41 @@ namespace DtDc_Billing.CustomModel
                                 tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value);
                                 tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
 
-                               // string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
-                                //string bookingDate = DateTime.ParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                                //   tran.booking_date = Convert.ToDateTime( bookingDate);
+                                //// string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
+                                ////string bookingDate = DateTime.ParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                                ////   tran.booking_date = Convert.ToDateTime( bookingDate);
 
 
-                                //  tran.tembookingdate = tran.booking_date.Value.ToString("dd-MM-yyyy");
+                                ////  tran.tembookingdate = tran.booking_date.Value.ToString("dd-MM-yyyy");
                                 object cellValue = workSheet.Cells[rowIterator, 8]?.Value; // Assuming the date is in the 8th column (column H)
-                                string dateString = cellValue.ToString();
 
-                                double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
-                                DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
-                                string formattedDate = dateTime.ToString("MM/dd/yyyy");
+                                if (cellValue != null && cellValue is DateTime)
+                                {
+                                    DateTime excelDate = (DateTime)cellValue;
+                                    tran.booking_date = excelDate;
+                                    tran.tembookingdate = excelDate.ToString("dd-MM-yyyy"); // If needed, store formatted date
+                                }
 
-                                Console.WriteLine(formattedDate); // Output: 11/17/2022
+                                //string dateString = cellValue.ToString();
 
-                                DateTime parsedDate;
+                                //double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
+                                //DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
+                                //string formattedDate = dateTime.ToString("MM/dd/yyyy");
 
-                                parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+                             
+
+                                //DateTime parsedDate;
+
+                                //parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
 
 
-                                tran.booking_date = parsedDate;
+                                //tran.booking_date = parsedDate;
 
 
 
-                                var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
+                                //var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
 
-                                tran.tembookingdate = formattedDatetemp;
+                                //tran.tembookingdate = formattedDatetemp;
 
                                 tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
                                 tran.Customer_Id = workSheet.Cells[rowIterator, 10]?.Value?.ToString();

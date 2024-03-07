@@ -11,7 +11,7 @@ using DtDc_Billing.Entity_FR;
 
 namespace DtDc_Billing.Controllers
 {
-    [SessionUserModule]
+    //[SessionUserModule]
     public class SectorsController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

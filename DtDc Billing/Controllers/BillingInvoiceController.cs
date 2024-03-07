@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace EmpBilling.Controllers
 {
     [SessionTimeout]
-    [SessionUserModule]
+   // [SessionUserModule]
     public class BillingInvoiceController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

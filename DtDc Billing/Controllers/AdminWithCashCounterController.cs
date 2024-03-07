@@ -28,7 +28,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Admin
-       [SessionUserModule]
+      // [SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
 

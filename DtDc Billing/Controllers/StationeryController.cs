@@ -32,7 +32,7 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-
+            
         [HttpPost]
         public ActionResult Add(StationaryModel stationary, string Submit)
         {

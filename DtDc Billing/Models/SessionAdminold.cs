@@ -18,19 +18,38 @@ namespace DtDc_Billing.Models
         {
             HttpContext ctx = HttpContext.Current;
             //if (HttpContext.Current.Session["Admin"] == null)
-            if (HttpContext.Current.Request.Cookies["Cookies"]["Admin"].ToString()==null)
+            try
+            {
+                if (HttpContext.Current.Request.Cookies["Cookies"]["Admin"].ToString() == null)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                          new RouteValueDictionary(
+                              new
+                              {
+                                  controller = "Admin",
+                                  action = "AdminLogin",
+
+                                  returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                              }));
+
+                }
+                base.OnActionExecuting(filterContext);
+            }
+            catch (Exception ex)
             {
                 filterContext.Result = new RedirectToRouteResult(
-                      new RouteValueDictionary(
-                          new
-                          {
-                              controller = "Admin",
-                              action = "AdminLogin",
-                             
-                              returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
-                          }));
+                         new RouteValueDictionary(
+                             new
+                             {
+                                 controller = "Admin",
+                                 action = "CookiesExpires",
+
+                                 returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                             }));
+                base.OnActionExecuting(filterContext);
 
             }
+            
 
 
            

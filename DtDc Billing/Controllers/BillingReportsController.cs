@@ -16,7 +16,7 @@ using System.Web.Mvc;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdmin]
-    [SessionUserModule]
+ //   [SessionUserModule]
     public class BillingReportsController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();

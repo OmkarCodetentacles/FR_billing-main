@@ -22,7 +22,7 @@ using static System.Net.WebRequestMethods;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdminold]
-    [SessionUserModule]
+   // [SessionUserModule]
     //[OutputCache(CacheProfile = "Cachefast")]
     public class InvoiceController : Controller
     {
@@ -63,6 +63,7 @@ namespace DtDc_Billing.Controllers
 
 
             }
+          
 
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
@@ -73,7 +74,22 @@ namespace DtDc_Billing.Controllers
                 string[] strarrinvno = lastInvoiceno1.Split('/');
                 if(franchisee.PF_Code== "PF2214")
                 {
+                    strarrinvno = lastInvoiceno1.Split('/');
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
+
+                }
+                else if(franchisee.PF_Code == "PF975")
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                    if (strarrinvno[2] == "00")
+                    {
+                        strarrinvno[2] = "597";
+                        ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2]);
+
+                    }
+
+
+
 
                 }
                 else
@@ -93,6 +109,7 @@ namespace DtDc_Billing.Controllers
                 {
                     newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
                 }
+                
                 else
                 {
                     newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
@@ -2219,7 +2236,7 @@ Select(e => new
 
                     string invstart1 = dataInvStart + "/2023-24/";
 
-                    string filePath = Server.MapPath("/PDF/" + invstart1 + i + ".pdf");
+                    string filePath = Server.MapPath("/PDF/" + invstart1.Replace("/","-")+ i + ".pdf");
 
                     if (System.IO.File.Exists(filePath))
                     {
@@ -2251,13 +2268,23 @@ Select(e => new
 
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
 
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
 
             string invstart1 = dataInvStart + "/2023-24/";
+            if (strpfcode == "PF2214")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
 
+                invstart1 = dataInvStart + "/2024-25/";
+
+
+            }
             //string invstart1 = "IJS/2022-23/";
             string no = "";
             string finalstring = "";
@@ -2270,17 +2297,58 @@ Select(e => new
 
             if (lastInvoiceno == null)
             {
-                string[] strarrinvno = lastInvoiceno1.Split('/');
+                //string[] strarrinvno = lastInvoiceno1.Split('/');
 
-                ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                //ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                string[] strarrinvno = lastInvoiceno1.Split('/');
+                if (franchisee.PF_Code == "PF2214")
+                {
+                    strarrinvno = lastInvoiceno1.Split('/');
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
+
+                }
+                else if (franchisee.PF_Code == "PF975")
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                    if (strarrinvno[2] == "00")
+                    {
+                        strarrinvno[2] = "597";
+                        ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2]);
+
+                    }
+
+
+
+
+                }
+                else
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+
+                }
             }
 
             else
             {
 
+                //string[] strarrinvno = lastInvoiceno1.Split('/');
+                ////string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
+                //int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                //finalstring = newnumber.ToString("000");
+                //ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
                 string[] strarrinvno = lastInvoiceno1.Split('/');
                 //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
-                int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                int newnumber = 0;
+                if (franchisee.PF_Code == "PF2214")
+                {
+                    newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
+                }
+
+                else
+                {
+                    newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                }
+
                 finalstring = newnumber.ToString("000");
                 ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
             }

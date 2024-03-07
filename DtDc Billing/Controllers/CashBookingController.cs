@@ -15,7 +15,7 @@ using System.Web.Mvc;
 
 namespace DtDc_Billing.Controllers
 {
-    [SessionUserModule]
+  //  [SessionUserModule]
     public class CashBookingController : Controller
     {
         db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
@@ -23,7 +23,7 @@ namespace DtDc_Billing.Controllers
         //Add_History add_History = new Add_History();
         // GET: Booking
         [SessionTimeout]
-        [SessionUserModule]
+      //  [SessionUserModule]
         public ActionResult Printreceipt()
         {
             return View();

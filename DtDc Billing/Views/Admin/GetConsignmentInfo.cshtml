@@ -63,7 +63,16 @@
 /*    img {
         display: none;
     }*/
-
+  /*  #consignmentdetails {
+        overflow: hidden;
+    }*/
+    /*table#consignmentTable {
+        max-height: none !important;*/ /* Remove the max-height property */
+    /*}*/
+    .bordered-cell {
+        border: 1px solid black; /* Set your desired border style */
+        padding: 5px; /* Optional: Set padding for cells */
+    }
     .widget-header_new {
         background: #808080 repeat scroll 0 0 !important;
         border-top: 4px solid #dde2e6 !important;
@@ -279,6 +288,13 @@
 
 
         }
+        // Hide image if "Successfully Delivered" text is present
+        var deliveredText = "Successfully Delivered";
+        var consignmentDetailsText = $("#consignmentdetails").text();
+
+        if (consignmentDetailsText.includes(deliveredText)) {
+            $("#deliveryImage").hide();
+        }
     }
 
 </script>
@@ -348,6 +364,8 @@
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
+            // Add a CSS class to set the border style
+         
             // Set height and width for the cells
             var cellHeight = "30px"; // Set your desired height
             var cellWidth = "200px"; // Set your desired width
