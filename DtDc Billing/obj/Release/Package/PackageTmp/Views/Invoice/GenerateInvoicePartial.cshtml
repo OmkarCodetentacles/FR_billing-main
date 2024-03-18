@@ -22,7 +22,7 @@
     });
 </script>
 
-@using (Ajax.BeginForm("SaveInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock", }))
+@using (Ajax.BeginForm("SaveInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock",OnBegin= "onBegin",OnComplete="onComplete" }))
 {
 
 
@@ -519,7 +519,24 @@
         form.submit();
     });
 </script>
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
+
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
 
 <script>
 

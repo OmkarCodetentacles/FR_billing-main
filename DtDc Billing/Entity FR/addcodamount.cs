@@ -16,7 +16,8 @@ namespace DtDc_Billing.Entity_FR
     public partial class addcodamount
     {
         public int am_id { get; set; }
-        [Required(ErrorMessage ="Check Number must be Required")]
+        [Required(ErrorMessage = "Check Number must be Required")]
+
         public string chequeno { get; set; }
         public string bank_name { get; set; }
         public string branch { get; set; }

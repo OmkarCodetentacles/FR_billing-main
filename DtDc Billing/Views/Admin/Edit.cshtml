@@ -7,9 +7,7 @@
     }
 </style>
 
-<script>
-    document.getElementById('overlayBlock').style.display = 'none';
-</script>
+
 
 
 @using (Ajax.BeginForm("Edit", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp", OnBegin = "onBegin", OnComplete = "onComplete" }, new { enctype = "multipart/form-data" }))
@@ -437,44 +435,6 @@
     }
 </script>
 
-<script>
-
-
-
-
-     // Show loader if TempData flag is set
-
-    function showLoader() {
-
-
-        document.getElementById('overlayBlock').style.display = 'block';
-
-    }
-    // Scroll to the top of the page
-    function scrollToTop() {
-        window.scrollTo(0, 0);
-    }
-
-        $(document).on('click', '#scrolltotop', function () {
-
-            showLoader('overlayBlock');
-            scrollToTop();
-        });
-
-
-        @*$(document).ready(function () {
-
-            var data = '@TempData["Success"]';
-
-            if (data != null && data!="")
-            {
-                alert(data);
-            }
-
-
-        });*@
-
-</script>
 
 <div class="overlay" id="overlayBlock">
     <div class="loader"></div>

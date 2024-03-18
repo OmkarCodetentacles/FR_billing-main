@@ -1,11 +1,11 @@
 ﻿@model DtDc_Billing.Entity_FR.NEFT
 
 @*@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success" id="successmsg">
-        <strong>Success! </strong>@TempData["Message"]
-    </div>
-}*@
+    {
+        <div class="alert alert-success" id="successmsg">
+            <strong>Success! </strong>@TempData["Message"]
+        </div>
+    }*@
 
 @{
     var successMessage = TempData["Message"] as string;
@@ -14,6 +14,12 @@
 @if (!string.IsNullOrEmpty(successMessage))
 {
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+    <script>
+        setTimeout(function () {
+            window.location.reload();
+
+        }, 2000); // 3000 milliseconds = 3 seconds
+    </script>
 }
 
 @using (Ajax.BeginForm("Neft", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "NeftP", OnSuccess = "createsuccess" }))

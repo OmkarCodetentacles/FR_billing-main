@@ -16,6 +16,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using System.Web.UI;
 using static System.Net.WebRequestMethods;
 
@@ -245,17 +246,21 @@ namespace DtDc_Billing.Controllers
         //    return View(list);
 
         //}
-
         [HttpGet]
-        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo, bool isDelete = false)
+        public ActionResult ViewInvoice()
         {
             List<InvoiceModel> list = new List<InvoiceModel>();
-            if (invfromdate == null)
-            {
-                return View(list);
-            }
+            return View(list);
+        }
+
+        [HttpPost]
+        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo,string invoiceno, bool isDelete = false)
+        {
+            List<InvoiceModel> list = new List<InvoiceModel>();
+      
 
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+           
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -278,7 +283,7 @@ namespace DtDc_Billing.Controllers
                 db.SaveChanges();
                 TempData["success"] = "Delete successfully";
             }
-            if (invfromdate != null)
+            if ((invfromdate != null && invfromdate!="") && (invtodate!=null && invtodate!=""))
             {
                 fromdate = DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
                 todate = DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
@@ -288,79 +293,127 @@ namespace DtDc_Billing.Controllers
             ViewBag.invtodate = invtodate;
 
             ViewBag.Companydetails = Companydetails;//new SelectList(db.Companies, "Company_Id", "Company_Name");
-
-            if (Companydetails != "" && Companydetails != null)
+            ViewBag.invoiceno = invoiceNo;
+            if (strpf != null && strpf!="")
             {
-                var comp = db.Companies.Where(m => m.Company_Id == Companydetails).FirstOrDefault();
-                ViewBag.Companyid = comp.Company_Id;
-
-
-
-                list = db.getInvoice(DateTime.Parse(fromdate), DateTime.Parse(todate), comp.Company_Id, strpf).Select(x => new InvoiceModel
+                var companyid = "";
+                var invno = "";
+                if (Companydetails != null && Companydetails != "")
                 {
+                    var comp = db.Companies.Where(m => m.Company_Id == Companydetails).FirstOrDefault();
 
-                    IN_Id = x.IN_Id,
-                    invoiceno = x.invoiceno,
-                    invoicedate = x.invoicedate,
-                    periodfrom = x.periodfrom,
-                    periodto = x.periodto,
-                    total = x.total,
-                    fullsurchargetax = x.fullsurchargetax,
-                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                    servicetax = x.servicetax,
-                    servicetaxtotal = x.servicetaxtotal,
-                    othercharge = x.othercharge,
-                    netamount = x.netamount,
-                    Customer_Id = x.Customer_Id,
-                    paid = x.paid,
-                    discount = x.discount,
-                    Royalty_charges = x.Royalty_charges,
-                    Docket_charges = x.Docket_charges,
-                    Tempdatefrom = x.Tempdatefrom,
-                    TempdateTo = x.TempdateTo,
-                    tempInvoicedate = x.tempInvoicedate,
-                    Address = x.Address,
-                    Invoice_Lable = x.Invoice_Lable,
-                    Firm_Id = x.Firm_Id,
-                    totalCount = x.totalCount ?? 0
-                }).ToList();
+                    companyid = comp.Company_Id;
+                }
+                if (invoiceno != null && invoiceno != "")
+                {
+                    invno = db.Invoices.Where(m => m.invoiceno == invoiceno).Select(m => m.invoiceno).FirstOrDefault();
+                }
+                DateTime? fdate = !string.IsNullOrEmpty(invfromdate) ? DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
+                DateTime? tdate = !string.IsNullOrEmpty(invtodate) ? DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
+ 
+
+                list = db.getInvoiceWithapplyFilter( fdate,tdate, companyid, strpf, invoiceno)
+                .Select(x => new InvoiceModel
+                {
+                    IN_Id= x.IN_Id,
+                    invoiceno=x.invoiceno,
+                    invoicedate=x.invoicedate,
+                    periodfrom=x.periodfrom,
+                    periodto=x.periodto,
+                    total=x.total,
+                    fullsurchargetax=x.fullsurchargetax,
+                    fullsurchargetaxtotal=x.fullsurchargetaxtotal,
+                    servicetax=x.servicetax,
+                    servicetaxtotal=x.servicetaxtotal,
+                    othercharge=x.othercharge,
+                    netamount=x.netamount,
+                    Customer_Id=x.Customer_Id,
+                    paid=x.paid,
+                    discount=x.discount,
+                    Royalty_charges=x.Royalty_charges,
+                    Docket_charges=x.Docket_charges,
+                    Tempdatefrom=x.Tempdatefrom,
+                    TempdateTo=x.TempdateTo,
+                    tempInvoicedate=x.tempInvoicedate,
+                    Address=x.Address,
+                    Invoice_Lable=x.Invoice_Lable,
+                    Firm_Id=x.Firm_Id,
+                    totalCount=x.totalCount??0
+                }).OrderBy(x => x.invoicedate).ToList();
                 return View(list);
             }
-            else
-            {
-                list = db.getInvoiceWithoutCompany(DateTime.Parse(fromdate), DateTime.Parse(todate), strpf).Select(x => new InvoiceModel
-                {
+            //if (Companydetails != "" && Companydetails != null)
+            //{
+            //    var comp = db.Companies.Where(m => m.Company_Id == Companydetails).FirstOrDefault();
+            //    ViewBag.Companyid = comp.Company_Id;
 
-                    IN_Id = x.IN_Id,
-                    invoiceno = x.invoiceno,
-                    invoicedate = x.invoicedate,
-                    periodfrom = x.periodfrom,
-                    periodto = x.periodto,
-                    total = x.total,
-                    fullsurchargetax = x.fullsurchargetax,
-                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                    servicetax = x.servicetax,
-                    servicetaxtotal = x.servicetaxtotal,
-                    othercharge = x.othercharge,
-                    netamount = x.netamount,
-                    Customer_Id = x.Customer_Id,
-                    paid = x.paid,
-                    discount = x.discount,
-                    Royalty_charges = x.Royalty_charges,
-                    Docket_charges = x.Docket_charges,
-                    Tempdatefrom = x.Tempdatefrom,
-                    TempdateTo = x.TempdateTo,
-                    tempInvoicedate = x.tempInvoicedate,
-                    Address = x.Address,
-                    Invoice_Lable = x.Invoice_Lable,
-                    Firm_Id = x.Firm_Id,
-                    totalCount = x.totalCount ?? 0
-                }).ToList();
 
-                return View(list);
-            }
 
-           // return View(list);
+            //    list = db.getInvoice(DateTime.Parse(fromdate), DateTime.Parse(todate), comp.Company_Id, strpf).Select(x => new InvoiceModel
+            //    {
+
+            //        IN_Id = x.IN_Id,
+            //        invoiceno = x.invoiceno,
+            //        invoicedate = x.invoicedate,
+            //        periodfrom = x.periodfrom,
+            //        periodto = x.periodto,
+            //        total = x.total,
+            //        fullsurchargetax = x.fullsurchargetax,
+            //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+            //        servicetax = x.servicetax,
+            //        servicetaxtotal = x.servicetaxtotal,
+            //        othercharge = x.othercharge,
+            //        netamount = x.netamount,
+            //        Customer_Id = x.Customer_Id,
+            //        paid = x.paid,
+            //        discount = x.discount,
+            //        Royalty_charges = x.Royalty_charges,
+            //        Docket_charges = x.Docket_charges,
+            //        Tempdatefrom = x.Tempdatefrom,
+            //        TempdateTo = x.TempdateTo,
+            //        tempInvoicedate = x.tempInvoicedate,
+            //        Address = x.Address,
+            //        Invoice_Lable = x.Invoice_Lable,
+            //        Firm_Id = x.Firm_Id,
+            //        totalCount = x.totalCount ?? 0
+            //    }).ToList();
+            //    return View(list);
+            //}
+            //else
+            //{
+            //    list = db.getInvoiceWithoutCompany(DateTime.Parse(fromdate), DateTime.Parse(todate), strpf).Select(x => new InvoiceModel
+            //    {
+
+            //        IN_Id = x.IN_Id,
+            //        invoiceno = x.invoiceno,
+            //        invoicedate = x.invoicedate,
+            //        periodfrom = x.periodfrom,
+            //        periodto = x.periodto,
+            //        total = x.total,
+            //        fullsurchargetax = x.fullsurchargetax,
+            //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+            //        servicetax = x.servicetax,
+            //        servicetaxtotal = x.servicetaxtotal,
+            //        othercharge = x.othercharge,
+            //        netamount = x.netamount,
+            //        Customer_Id = x.Customer_Id,
+            //        paid = x.paid,
+            //        discount = x.discount,
+            //        Royalty_charges = x.Royalty_charges,
+            //        Docket_charges = x.Docket_charges,
+            //        Tempdatefrom = x.Tempdatefrom,
+            //        TempdateTo = x.TempdateTo,
+            //        tempInvoicedate = x.tempInvoicedate,
+            //        Address = x.Address,
+            //        Invoice_Lable = x.Invoice_Lable,
+            //        Firm_Id = x.Firm_Id,
+            //        totalCount = x.totalCount ?? 0
+            //    }).ToList();
+
+            //    return View(list);
+            //}
+
+            return View(list);
         }
 
         public ActionResult ViewDPInvoice()
@@ -459,6 +512,20 @@ Select(e => new
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult InvoiceNumberAutocompleteForViewInvocie(string Customer_Id)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+           var  result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "")).
+                Select(m => new { m.invoiceno }).OrderBy(m => m.invoiceno).Distinct().ToList();
+            if (Customer_Id != null && Customer_Id!="")
+            {
+                 result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "") && m.Customer_Id==Customer_Id).
+                Select(m => new { m.invoiceno }).OrderBy(m => m.invoiceno).Distinct().ToList();
+            }
+           
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -3152,21 +3219,7 @@ Select(e => new
 
         }
 
-        public ActionResult Download(long id)
-        {
-            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-            var invoice = db.Invoices.Where(m => m.IN_Id == id && m.Pfcode == PfCode).FirstOrDefault();
-
-            string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
-            //string fileName = invoice.invoiceno.Replace("/", "-") + ".pdf";
-            //string savePath = Server.MapPath("~/PDF/" + fileName);
-
-            string savePath = "https://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
-
-            return Redirect(savePath);
-
-        }
+     
         [HttpGet]
         public string DownloadByInvNo(string invoiceno)
         {

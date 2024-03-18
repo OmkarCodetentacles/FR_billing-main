@@ -22,20 +22,13 @@ namespace DtDc_Billing.Models
         {
             if (value != null)
             {
-                string input = value.ToString();
-
-                // Check for spaces at the beginning or end
-                if (input.Trim() != input)
-                {
-                    return new ValidationResult("Company Id cannot have spaces before or after.");
-                }
-
+                string input = value.ToString().Trim(); // Trim spaces from beginning and end
                 // Check for special characters
                 Regex regex = new Regex("[" + Regex.Escape(_specialCharacters) + "]");
 
                 if (regex.IsMatch(input))
                 {
-                    return new ValidationResult("Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&','(' ,')', or spaces.");
+                    return new ValidationResult("Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&', '(', ')'");
                 }
             }
 
@@ -60,7 +53,7 @@ namespace DtDc_Billing.Models
 
 
         [Required(ErrorMessage = "Please Enter Company Id")]
-        [NoSpacesOrSpecialCharacters(". / < > @ #% * & - (  )", ErrorMessage = "Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&' '-','_', or spaces.")]
+            [NoSpacesOrSpecialCharacters("./<>@#*&()", ErrorMessage = "Company Id cannot contain '.', '/', '<', '>', '@', '#', '%', '*', '&'")]
         public string Company_Id { get; set; }
     
     public int c_id { get; set; }
@@ -72,7 +65,7 @@ namespace DtDc_Billing.Models
 
         [Required(ErrorMessage = "Please Enter Email Id")]
         [MaxLength(50)]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Please enter correct email")]
+       [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Please enter correct email")]
         public string Email { get; set; }
 
         public Nullable<double> Insurance { get; set; }

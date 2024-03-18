@@ -26,7 +26,7 @@ namespace DtDc_Billing.Metadata_Classes
 
         [Display(Name = "Pincode")]
         [Required]
-        [StringLength(6, MinimumLength = 6)]
+        //[StringLength(6, MinimumLength = 6)]
         public string Pincode { get; set; }
 
         [Required]

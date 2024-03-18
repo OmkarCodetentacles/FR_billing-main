@@ -10,26 +10,31 @@
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 <style>
-    .Consignmentreport th{
-         width: 11.11% !important;
+    .Consignmentreport th {
+        width: 11.11% !important;
     }
-    .Expences th{
+
+    .Expences th {
         width: 5% !important
     }
+
     .Payment th {
-        width: 18.33%  !important
+        width: 18.33% !important
     }
-    .saving th{
-         width: 5% !important
+
+    .saving th {
+        width: 5% !important
     }
+
     table {
         height: 450px !important;
         display: list-item !important;
         overflow: auto !important;
         border: 1px solid #e5ecf7;
     }
-    .formpaytble td{
-        width:30% !important;
+
+    .formpaytble td {
+        width: 30% !important;
     }
 </style>
 
@@ -44,12 +49,12 @@
                             <div class="box-header with-border">
                                 <h3 class="box-title">Daily Report</h3>
                             </div><!-- /.box-header -->
-                             <div class="box-body">
+                            <div class="box-body">
                                 @using (Html.BeginForm())
                                 {
 
                                     <div class="col-md-12 no-padding">
-                                        <div class="form-group mt-5" >
+                                        <div class="form-group mt-5">
                                             <div class="col-md-3" style="padding:0;">
                                                 <label class=" no-padding">Date:</label>
                                                 <div class="input-group date">
@@ -66,23 +71,23 @@
                                                     }
                                                 </div>
                                             </div>
-                                            <div class="col-md-1"  >
-                                                <div class="form-group" style="margin: 24px auto" >
+                                            <div class="col-md-1">
+                                                <div class="form-group" style="margin: 24px auto">
                                                     <button type="submit" class="btn btn-block btn-primary" style="width:100%">Search</button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-1" >
+                                            <div class="col-md-1">
                                                 <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block " style="margin: 24px auto" />
                                             </div>
                                         </div>
-                                       
+
 
                                         <!-- /.form-group -->
                                     </div>
-                                    
 
 
-                                   
+
+
 
 
                                 }
@@ -93,7 +98,7 @@
                                                 <h3 class="box-title titlnew" style="margin:0">Consignment Report</h3>
                                                 <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(ViewBag.paidamount ?? 0)</p>
                                             </div><!-- /.box-header -->
-                                            <div class="mt-5" >
+                                            <div class="mt-5">
                                                 <table id="example1" class="table Consignmentreport">
                                                     <thead>
                                                         <tr>
@@ -162,10 +167,10 @@
                                                                         @Html.DisplayFor(modelItem => item.Paid_Amount)
                                                                     </td>
                                                                     @*<td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                                            </td>*@
+                                                                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                                                        </td>*@
 
                                                                 </tr>
                                                             }
@@ -180,7 +185,7 @@
                                     <div class="col-md-6">
                                         <div class="box box-info">
                                             <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
-                                                <h3 class="box-title titlnew"style="margin:0" >Expense</h3>
+                                                <h3 class="box-title titlnew" style="margin:0">Expense</h3>
                                                 <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @ViewBag.expenseCount</p>
                                             </div>
                                             <div class="">
@@ -195,7 +200,7 @@
                                                                 Reason
                                                             </th>
 
-                                                       
+
 
                                                         </tr>
                                                     </thead>
@@ -204,17 +209,17 @@
                                                         {
 
 
-                                                            
-                                                                <tr>
-                                                                    <td>
-                                                                        @item.Amount
-                                                                    </td>
 
-                                                                    <td>
-                                                                        @item.Rason
-                                                                    </td>
-                                                                </tr>
-                                                          
+                                                            <tr>
+                                                                <td>
+                                                                    @item.Amount
+                                                                </td>
+
+                                                                <td>
+                                                                    @item.Rason
+                                                                </td>
+                                                            </tr>
+
                                                         }
                                                     </tbody>
 
@@ -259,7 +264,7 @@
                                                                 <td>
                                                                     @item.Consignment_No
                                                                 </td>
-                                                        
+
                                                                 <td>
                                                                     @item.amount
                                                                 </td>
@@ -400,22 +405,22 @@
                                                 </div>
 
                                                 @*<div class="row">
-                            <div class="col-md-12">
-                                <div class="box box-info">
-                                    <div class="box-body text-left">
-                                        <p>Total Amount:   @ViewBag.sum</p>
-                                        <p>By Cash:   @ViewBag.bycash</p>
-                                        <p>By Card:   @ViewBag.bycard</p>
-                                        <p>By Cheque:   @ViewBag.bycheque</p>
-                                        <p>By Credit:   @ViewBag.bycredit</p>
-                                        <p>By Other:   @ViewBag.byother</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <div class="box-body text-left">
+                                                                    <p>Total Amount:   @ViewBag.sum</p>
+                                                                    <p>By Cash:   @ViewBag.bycash</p>
+                                                                    <p>By Card:   @ViewBag.bycard</p>
+                                                                    <p>By Cheque:   @ViewBag.bycheque</p>
+                                                                    <p>By Credit:   @ViewBag.bycredit</p>
+                                                                    <p>By Other:   @ViewBag.byother</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
                                                 @*<div class="col-md-2">
-                            <p> Credit Amount: @ViewBag.openingbal</p>
-                        </div>*@
+                                                        <p> Credit Amount: @ViewBag.openingbal</p>
+                                                    </div>*@
 
                                                 <!-- /input-group -->
 
@@ -443,7 +448,7 @@
                         </div>
                     </div>
                 </div>
-              
+
 
             </div>
         </div>

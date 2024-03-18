@@ -1907,6 +1907,13 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Parameter Name="Customerid" Type="varchar" Mode="In" />
           <Parameter Name="pfcode" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="getInvoiceWithapplyFilter" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fromDate" Type="datetime" Mode="In" />
+          <Parameter Name="toDate" Type="datetime" Mode="In" />
+          <Parameter Name="Customerid" Type="varchar" Mode="In" />
+          <Parameter Name="pfcode" Type="varchar" Mode="In" />
+          <Parameter Name="invoiceno" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="getInvoiceWithoutCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
           <Parameter Name="toDate" Type="datetime" Mode="In" />
@@ -4975,6 +4982,13 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="getInvoiceWithapplyFilter" ReturnType="Collection(db_a92afa_frbillingModel.getInvoiceWithapplyFilter_Result)">
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Customerid" Mode="In" Type="String" />
+            <Parameter Name="pfcode" Mode="In" Type="String" />
+            <Parameter Name="invoiceno" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5357,6 +5371,32 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="Sender" Nullable="true" />
           <Property Type="String" Name="Receiver" Nullable="true" />
           <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="getInvoiceWithapplyFilter_Result">
+          <Property Type="Int32" Name="IN_Id" Nullable="false" />
+          <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+          <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+          <Property Type="Double" Name="total" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="servicetax" Nullable="true" />
+          <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="othercharge" Nullable="true" />
+          <Property Type="Double" Name="netamount" Nullable="true" />
+          <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="paid" Nullable="true" />
+          <Property Type="String" Name="discount" Nullable="true" MaxLength="20" />
+          <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+          <Property Type="Double" Name="Docket_charges" Nullable="true" />
+          <Property Type="String" Name="Tempdatefrom" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TempdateTo" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Invoice_Lable" Nullable="true" />
+          <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+          <Property Type="Int32" Name="totalCount" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6874,6 +6914,36 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
+          <FunctionImportMapping FunctionImportName="getInvoiceWithapplyFilter" FunctionName="db_a92afa_frbillingModel.Store.getInvoiceWithapplyFilter">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getInvoiceWithapplyFilter_Result">
+                <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
+                <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+                <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
+                <ScalarProperty Name="periodfrom" ColumnName="periodfrom" />
+                <ScalarProperty Name="periodto" ColumnName="periodto" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
+                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
+                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
+                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
+                <ScalarProperty Name="othercharge" ColumnName="othercharge" />
+                <ScalarProperty Name="netamount" ColumnName="netamount" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
+                <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
+                <ScalarProperty Name="Tempdatefrom" ColumnName="Tempdatefrom" />
+                <ScalarProperty Name="TempdateTo" ColumnName="TempdateTo" />
+                <ScalarProperty Name="tempInvoicedate" ColumnName="tempInvoicedate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Invoice_Lable" ColumnName="Invoice_Lable" />
+                <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
+                <ScalarProperty Name="totalCount" ColumnName="totalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

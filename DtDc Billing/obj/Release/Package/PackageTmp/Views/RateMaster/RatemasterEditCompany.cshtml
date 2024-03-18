@@ -1,10 +1,6 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
 
-<script>
-    $(document).ready(function () {
-        document.getElementById('overlayBlock').style.display = 'none';
-    })
-</script>
+
 <!-- /.box-header -->
 @{
 
@@ -12,32 +8,14 @@
 
 }
 
-@if (string.IsNullOrEmpty(successMessage))
+@if (!string.IsNullOrEmpty(successMessage))
 {
-    <script>
-        $(document).ready(function () {
-            document.getElementById('overlayBlock').style.display = 'none';
-        })
-    </script>
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+
+  
 }
 
-@{
-    var sMessage = TempData["Success"] as string;
-
-
-}
-
-@if (!string.IsNullOrEmpty(sMessage))
-{
-    <script>
-        document.getElementById('overlayBlock').style.display = 'none';
-    </script>
-    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-}
-
-
-@using (Ajax.BeginForm("RateMasterEditCompany", "Ratemaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp" }))
+@using (Ajax.BeginForm("RateMasterEditCompany", "Ratemaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp", OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -218,14 +196,14 @@
 
         @*<div class="form-group">
 
-            <label class="col-md-3"><P></P>MF Code</label>
-            <div class="col-md-2">
-                @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly" })
+                <label class="col-md-3"><P></P>MF Code</label>
+                <div class="col-md-2">
+                    @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly" })
 
-                @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
-                @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                    @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
+                    @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             <div class="col-md-7">
@@ -327,20 +305,20 @@
         </div>
 
         @*<div class="form-group">
-            <label class="col-md-3">UserName</label>
-            <div class="col-md-5">
-                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                <label class="col-md-3">UserName</label>
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-md-3">Password</label>
-            <div class="col-md-5">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+            <div class="form-group">
+                <label class="col-md-3">Password</label>
+                <div class="col-md-5">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
 
 
@@ -351,13 +329,13 @@
 
             <div class="col-md-7">
                 <div class="col-md-9 col-md-offset-3">
-                    <input type="submit" value="Next" class="btn btn-primary pull-right" id="editBtn"  onclick="scrollToTop()"/>
+                    <input type="submit" value="Save" class="btn btn-primary pull-right" id="editBtn" onclick="scrollToTop()" />
 
                     @*<div class="col-md-7">
-                        <div class="col-md-12">
-                            <input type="submit" value="Next" class="btn btn-success pull-right" />
-                        </div>
-                    </div>*@
+                            <div class="col-md-12">
+                                <input type="submit" value="Next" class="btn btn-success pull-right" />
+                            </div>
+                        </div>*@
 
                 </div>
             </div>
@@ -376,26 +354,25 @@
 
 
 </script>
-<script>
-
-     $(document).ready(function () {
-         $('#editBtn').on('click', function () {
-             scrollToTop();
-         showLoader('overlayBlock');
-     });
-     var data = '@TempData["Success"]';
-
-     if (data != null && data!="")
-     {
-        // alert(data);
-         document.getElementById('overlayBlock').style.display = 'none';
-
-     }
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
 
- });
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
 
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
 </script>
+
 
 
 

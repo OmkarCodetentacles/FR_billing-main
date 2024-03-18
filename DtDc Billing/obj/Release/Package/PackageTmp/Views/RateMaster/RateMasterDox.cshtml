@@ -2,20 +2,29 @@
 
 
 
+
 <section>
 
- 
-        @{
-            var successMessage = ViewBag.Message as string;
-        }
 
-        @if (!string.IsNullOrEmpty(successMessage))
-        {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-        }
+    @{
+        var successMessage = ViewBag.Message as string;
+    }
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+    }
 
     <div class="" style="padding: 20px; border: 1px solid #dddddd;">
-        @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1" }))
+        <a href="https://www.youtube.com/watch?v=e13892KoxZ4&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=8"
+           target="_blank"
+           data-placement="left"
+           data-toggle="tooltip"
+           class="pull-right" style="padding-right:30px"
+           title="Click to view more info">
+            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+        </a>
+        @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1", OnBegin = "onBegin", OnComplete = "onComplete" }, new { onsubmit = "showLoader" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -64,8 +73,8 @@
                 }
 
             }
-    <div class="row">
-        <div class="col-lg-12 ">
+            <div class="row">
+                <div class="col-lg-12 ">
 
 
                     <table class="table table-bordered table-striped" id="DoxTable">
@@ -129,18 +138,55 @@
                     </table>
                     <div class="row">
                         <div class="col-sm-12">
-                            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn"  onclick="scrollToTop()"/>
+                            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" onclick="scrollToTop()" />
                         </div>
                     </div>
                 </div>
             </div>
             <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
-         
+
 
         }
     </div>
 </section>
 
+<script>
+
+     // Show loader if TempData flag is set
+
+    function showLoader() {
+
+            scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+        $(document).on('click', '#submitBtn', function () {
+           
+            showLoader('overlayBlock');
+            scrollToTop();
+        });
+
+
+        $(document).ready(function () {
+
+            var data = '@TempData["Success"]';
+
+            if (data != null && data!="")
+            {
+                alert(data);
+            }
+
+
+        });
+
+
+
+</script>
 <style>
     table {
         max-height: 400px !important;
@@ -149,14 +195,29 @@
         border: 1px solid #e5ecf7;
     }
 </style>
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+      
+        //scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
 
 <script>
 
 
-        function scrollToTop() {
-            // Scroll the page to the top
-            window.scrollTo(0, 0);
-    }
 
     $(document).ready(function () {
 
@@ -175,11 +236,11 @@
         //$('#DoxTable th:nth-child(2)').hide();
         //$('#DoxTable th:nth-child(3)').hide();
 
-        var test = @ViewBag.Dox[0].NoOfSlab;
+        var Doxtest = '@ViewBag.Dox[0].NoOfSlab';
 
-        //alert(test);
+      //  alert(test);
 
-        if (test == 3) {
+        if (Doxtest == 3) {
 
 
             $('.slab2').show();
@@ -190,18 +251,18 @@
             $('.slab3').hide();
 
 
-            $('#only').val(test);
+            $('#only').val(Doxtest);
         }
-        else if (test == 4) {
+        else if (Doxtest == 4) {
 
             $('.slab2').show();
             $('.slab3').show();
 
 
 
-            $('#only').val(test);
+            $('#only').val(Doxtest);
         }
-        else if (test == 2) {
+        else if (Doxtest == 2) {
             $('.slab2').hide();
             $('.slab3').hide();
 
@@ -212,11 +273,11 @@
 
         $("input[name$='NoOfSlab']").change(function () {
 
-            var test = $(this).val();
+            var Doxtest = $(this).val();
 
             //alert(test);
 
-            if (test == 3) {
+            if (Doxtest == 3) {
 
 
                 $('.slab2').show();
@@ -227,18 +288,18 @@
                 $('.slab3').hide();
 
 
-                $('#only').val(test);
+                $('#only').val(Doxtest);
             }
-            else if (test == 4) {
+            else if (Doxtest == 4) {
 
                 $('.slab2').show();
                 $('.slab3').show();
 
 
 
-                $('#only').val(test);
+                $('#only').val(Doxtest);
             }
-            else if (test == 2) {
+            else if (Doxtest == 2) {
                 $('.slab2').hide();
                 $('.slab3').hide();
 
@@ -253,22 +314,6 @@
 
 
 
-
-@if (ViewBag.Message != null)
-{
-    <script>
-
-$(document).ready(function(){
-
-   // alert('@ViewBag.Message');
-
-    $(this).prop('disabled', false);
-
-});
-
-    </script>
-
-}
 
 
 @if (ViewBag.Session != null)

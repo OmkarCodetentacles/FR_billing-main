@@ -20,7 +20,6 @@ namespace DtDc_Billing.Entity_FR
         [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero")]
 
         public Nullable<double> NeftAmount { get; set; }
-    
         public Nullable<System.DateTime> neftdate { get; set; }
         public string Invoiceno { get; set; }
         public string Transaction_Id { get; set; }
@@ -28,7 +27,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> N_Total_Amount { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public string Pfcode { get; set; }
-        [Required(ErrorMessage ="Date must be Required")]
+        [Required(ErrorMessage = "Date must be Required")]
         public Nullable<System.DateTime> tempneftdate { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }

@@ -60,7 +60,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <input type="submit" value="Save" class="btn btn-primary" id="uploadStamp" />
                         </div>
                     </div>
 
@@ -110,16 +110,21 @@
             type: 'POST',
             success: function (data) {
                 var successMessage = "Stamp Uploaded Successfully!";
+                console.log(data)
+                if (data.FailureReason) {
+                    $("#errormessage").html('<span>' + "File upload failed: File is null" + '</span>');
+                    $("#error-alert").show();
+                }
+                else {
+                    var successMessageDiv = $('<div>', {
+                        'class': 'alert alert-success d-flex justify-content-between align-items-center'
+
+                    }).html('<strong>Success!</strong><span>' + successMessage + '</span><button type="button" class="close" data-dismiss="alert">X</button></div>');
 
 
-
-                var successMessageDiv = $('<div>', {
-                    'class': 'alert alert-success d-flex justify-content-between align-items-center'
-
-                }).html('<strong>Success!</strong><span>' + successMessage + '</span><button type="button" class="close" data-dismiss="alert">X</button></div>');
-
-
-                $("#alertmessage").append(successMessageDiv);
+                    $("#alertmessage").append(successMessageDiv);
+                }
+                
 
 
             },

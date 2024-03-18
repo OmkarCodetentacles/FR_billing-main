@@ -1,144 +1,155 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.Priority>
 
-   <section style="padding: 20px; border: 1px solid #dddddd;" >
-       <div class="">
-           <a href="https://www.youtube.com/watch?v=yDjg5VFMPNc&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=12"
-              target="_blank"
-              data-placement="left"
-              data-toggle="tooltip"
-              class="pull-right"
-              title="Click to view more info">
-               <i class="fa fa-info-circle" style="font-size:25px;"></i>
-           </a>
-           @{
-               var successMessage = ViewBag.Message as string;
-           }
+<section style="padding: 20px; border: 1px solid #dddddd;">
+    <div class="">
+        <a href="https://www.youtube.com/watch?v=yDjg5VFMPNc&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=12"
+           target="_blank"
+           data-placement="left"
+           data-toggle="tooltip"
+           class="pull-right"
+           title="Click to view more info">
+            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+        </a>
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
 
-           @if (!string.IsNullOrEmpty(successMessage))
-           {
-               @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-           }
-           @using (Ajax.BeginForm("Priority", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp6" }))
-           {
-               @Html.AntiForgeryToken()
-               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
 
-               <input type="hidden" value="@ViewBag.companyid" name="comppid">
+        @if (Model.Count() > 0)
+        {
+            using (Ajax.BeginForm("Priority", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp6", OnBegin = "onBegin", OnComplete = "onComplete" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-               foreach (var item in Model)
-               {
-                   if (item.prinoofslab != null)
-                   {
-                       <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
-                           <div class="box-header" style="padding:0">
-                               <div class="col-sm-4">
-                                   <label>  @Html.RadioButtonFor(m => item.prinoofslab, 2) Slab 2</label>
-                               </div>
-                               <div class="col-sm-4">
-                                   <label> @Html.RadioButtonFor(m => item.prinoofslab, 3)  Slab 3</label>
-                               </div>
-                               <div class="col-sm-4">
-                                   <label> @Html.RadioButtonFor(m => item.prinoofslab, 4)  Slab 4</label>
-                               </div>
-                           </div>
-                       </div>
+                <input type="hidden" value="@ViewBag.companyid" name="comppid">
 
-                       break;
-                   }
-                   else
-                   {
-                       <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
-                           <div class="box-header" style="padding:0">
-                               <div class="col-sm-4">
-                                   <label>  @Html.RadioButtonFor(m => item.prinoofslab, 2, new { @checked = "checked" }) Slab 2</label>
-                               </div>
-                               <div class="col-sm-4">
-                                   <label>  @Html.RadioButtonFor(m => item.prinoofslab, 3) slab 3</label>
-                               </div>
-                               <div class="col-sm-4">
-                                   <label> @Html.RadioButtonFor(m => item.prinoofslab, 4)  Slab 4</label>
-                               </div>
-                           </div>
-                       </div>
+                foreach (var item in Model)
+                {
+                    if (item.prinoofslab != null)
+                    {
+                        <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
+                            <div class="box-header" style="padding:0">
+                                <div class="col-sm-4">
+                                    <label>  @Html.RadioButtonFor(m => item.prinoofslab, 2) Slab 2</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.prinoofslab, 3)  Slab 3</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.prinoofslab, 4)  Slab 4</label>
+                                </div>
+                            </div>
+                        </div>
 
-                       break;
+                        break;
+                    }
+                    else
+                    {
+                        <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
+                            <div class="box-header" style="padding:0">
+                                <div class="col-sm-4">
+                                    <label>  @Html.RadioButtonFor(m => item.prinoofslab, 2, new { @checked = "checked" }) Slab 2</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>  @Html.RadioButtonFor(m => item.prinoofslab, 3) slab 3</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.prinoofslab, 4)  Slab 4</label>
+                                </div>
+                            </div>
+                        </div>
 
-                   }
+                        break;
 
-               }
+                    }
 
-
-               <table class="table table-bordered table-striped" id="DoxTable">
-                   <thead>
-                       <tr class="upto-input">
-                           <th>
-                               @*<h4>Sectors</h4>*@
-                               @*<input type="hidden" name="hide" value="@ViewBag.Slabs.Uptosl1" />*@
-                           </th>
-                           <th>
-                               <label>Upto</label>
-                               <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto1" />
-                               <label>Kg</label>
-                           </th>
-                           <th class="pslab2">
-                               <label>Upto</label>
-                               <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto2" />
-                               <label>Kg</label>
-                           </th>
-                           <th class="pslab3">
-                               <label>Upto</label>
-                               <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto3" />
-                               <label>Kg</label>
-                           </th>
-                           <th>
-                               <label>Additional</label>
-                               <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto4" />
-                               <label>Kg</label>
-                           </th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                       @foreach (var item in Model)
-                       {
-                           <tr>
-                               <td class="sectors">
-                                   @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                               </td>
-                               <td>
-                                   @Html.EditorFor(modelItem => item.prislab1)
-                               </td>
-                               <td class="pslab2">
-                                   @Html.EditorFor(modelItem => item.prislab2)
-                               </td>
-                               <td class="pslab3">
-                                   @Html.EditorFor(modelItem => item.prislab3)
-                               </td>
-                               <td>
-                                   @Html.EditorFor(modelItem => item.prislab4)
-                               </td>
-                               <td class="hidden">
-                                   @Html.HiddenFor(modelItem => item.pri_id)
-                               </td>
-                               <td class="hidden">
-                                   @Html.HiddenFor(modelItem => item.Sector_Id)
-                               </td>
-                           </tr>
-                       }
-                   </tbody>
-
-               </table>
-               <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
-               <div class="row">
-                   <div class="col-sm-12">
-                       <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
-                   </div>
-               </div>
-           }
-       </div>
-   </section>
+                }
 
 
-        <script>
+                <table class="table table-bordered table-striped" id="DoxTable">
+                    <thead>
+                        <tr class="upto-input">
+                            <th>
+                                @*<h4>Sectors</h4>*@
+                                @*<input type="hidden" name="hide" value="@ViewBag.Slabs.Uptosl1" />*@
+                            </th>
+                            <th>
+                                <label>Upto</label>
+                                <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto1" />
+                                <label>Kg</label>
+                            </th>
+                            <th class="pslab2">
+                                <label>Upto</label>
+                                <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto2" />
+                                <label>Kg</label>
+                            </th>
+                            <th class="pslab3">
+                                <label>Upto</label>
+                                <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto3" />
+                                <label>Kg</label>
+                            </th>
+                            <th>
+                                <label>Additional</label>
+                                <input type="text" name="Upto" value="@ViewBag.Slabspri.priupto4" />
+                                <label>Kg</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="sectors">
+                                    @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(modelItem => item.prislab1)
+                                </td>
+                                <td class="pslab2">
+                                    @Html.EditorFor(modelItem => item.prislab2)
+                                </td>
+                                <td class="pslab3">
+                                    @Html.EditorFor(modelItem => item.prislab3)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(modelItem => item.prislab4)
+                                </td>
+                                <td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.pri_id)
+                                </td>
+                                <td class="hidden">
+                                    @Html.HiddenFor(modelItem => item.Sector_Id)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+                <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <span>No data found </span>
+        }
+    </div>
+</section>
+
+@if (Model.Count() > 0)
+{
+
+    <script>
     $(document).ready(function () {
 
         //$('#DoxTable td:nth-child(2)').hide();
@@ -147,50 +158,11 @@
         //$('#DoxTable th:nth-child(2)').hide();
         //$('#DoxTable th:nth-child(3)').hide();
 
-
-
-        var test = @Model.FirstOrDefault().prinoofslab;
-
-
-
-        if (test == 3) {
-
-
-            $('.pslab2').show();
+       var Ptest = '@Model.FirstOrDefault().prinoofslab';
 
 
 
-
-            $('.pslab3').hide();
-
-
-            $('#only').val(test);
-        }
-        else if (test == 4) {
-
-            $('.pslab2').show();
-            $('.pslab3').show();
-
-
-
-            $('#only').val(test);
-        }
-        else if (test == 2) {
-            $('.pslab2').hide();
-            $('.pslab3').hide();
-
-            $('#only').val(2);
-
-        }
-
-
-        $("input[name$='prinoofslab']").change(function () {
-
-            var test = $(this).val();
-
-            //alert(test);
-
-            if (test == 3) {
+            if (Ptest == 3) {
 
 
                 $('.pslab2').show();
@@ -201,18 +173,18 @@
                 $('.pslab3').hide();
 
 
-                $('#only').val(test);
+                $('#only').val(Ptest);
             }
-            else if (test == 4) {
+            else if (Ptest == 4) {
 
                 $('.pslab2').show();
                 $('.pslab3').show();
 
 
 
-                $('#only').val(test);
+                $('#only').val(Ptest);
             }
-            else if (test == 2) {
+            else if (Ptest == 2) {
                 $('.pslab2').hide();
                 $('.pslab3').hide();
 
@@ -220,19 +192,75 @@
 
             }
 
-        });
+
+            $("input[name$='prinoofslab']").change(function () {
+
+                var Ptest = $(this).val();
+
+                //alert(test);
+
+                if (Ptest == 3) {
+
+
+                    $('.pslab2').show();
+
+
+
+
+                    $('.pslab3').hide();
+
+
+                    $('#only').val(Ptest);
+                }
+                else if (Ptest == 4) {
+
+                    $('.pslab2').show();
+                    $('.pslab3').show();
+
+
+
+                    $('#only').val(Ptest);
+                }
+                else if (Ptest == 2) {
+                    $('.pslab2').hide();
+                    $('.pslab3').hide();
+
+                    $('#only').val(2);
+
+                }
+
+            });
+
     });
-        </script>
+    </script>
+
+}
+    <script type="text/javascript">
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
+
+
+        function onBegin() {
+            scrollToTop();
+            // Show the loader
+            document.getElementById('overlayBlock').style.display = 'block';
+        }
+
+        function onComplete() {
+            // Hide the loader
+            scrollToTop();
+            document.getElementById('overlayBlock').style.display = 'none';
+        }
+    </script>
 
 
 
 
 
-
-
-        @if (ViewBag.Message != null)
-        {
-            <script>
+    @if (ViewBag.Message != null)
+    {
+        <script>
 
 $(document).ready(function(){
 
@@ -240,14 +268,14 @@ $(document).ready(function(){
 
 });
 
-            </script>
+        </script>
 
-        }
+    }
 
 
-        @if (ViewBag.Session != null)
-        {
-            <script>
+    @if (ViewBag.Session != null)
+    {
+        <script>
 
 $(document).ready(function(){
 
@@ -255,9 +283,9 @@ alert('@ViewBag.Session');
 
 });
 
-            </script>
+        </script>
 
-        }
+    }
 
 
 

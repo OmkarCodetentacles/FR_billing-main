@@ -21,6 +21,7 @@ using static DtDc_Billing.Models.sendEmail;
 using Microsoft.SqlServer.Management.Sdk.Differencing;
 using Microsoft.Win32;
 using System.Net.Http;
+using WebGrease.Css.ImageAssemblyAnalysis.LogModel;
 
 namespace DtDc_Billing.Controllers
 {
@@ -2528,6 +2529,10 @@ namespace DtDc_Billing.Controllers
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 var myFile = Request.Files[i];
+                if (myFile == null)
+                {
+                    return Json(new {  FailureReason= true });
+                }
 
                 if (myFile != null && myFile.ContentLength != 0)
                 {
@@ -2549,7 +2554,11 @@ namespace DtDc_Billing.Controllers
 
 
                         // Rename the file
-                        System.IO.File.Delete(newFilePath);
+                        if (System.IO.File.Exists(newFilePath))
+                        {
+                            System.IO.File.Delete(newFilePath);
+
+                        }
                         System.IO.File.Move(originalFilePath, newFilePath);
 
 
@@ -4147,7 +4156,7 @@ namespace DtDc_Billing.Controllers
             {
                
 
-                Pfcode= Pfcode.ToString().ToUpper();
+                Pfcode= Pfcode.ToString().ToUpper().Trim();
                 var flag = false;
                 var saveSector = false;
                 var Pfcheck = db.registrations.Where(x => x.Pfcode == Pfcode).FirstOrDefault();
@@ -4177,7 +4186,7 @@ namespace DtDc_Billing.Controllers
 
                 {
                     Franchisee fr=new Franchisee();
-                    fr.PF_Code=Pfcode.ToUpper();
+                    fr.PF_Code=Pfcode.ToUpper().Trim();
                     fr.Franchisee_Name = Pfcheck.franchiseName;
                     fr.Sendermail = Pfcheck.emailId;
                     fr.Datetime_Fr=DateTime.Now;
@@ -4313,7 +4322,7 @@ namespace DtDc_Billing.Controllers
 
                     Company cm = new Company();
                     cm.Company_Id = Companyid;
-                    cm.Pf_code = Pfcode.ToUpper();
+                    cm.Pf_code = Pfcode.ToUpper().Trim();
                     cm.Phone = 1234567890;
                     cm.Company_Address = "";
                     cm.Company_Name = Companyid;

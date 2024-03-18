@@ -3,8 +3,17 @@
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+@{
+   
+    var notvalid = ViewBag.notvalidpincode as string;
 
-
+}
+@if (!string.IsNullOrEmpty(notvalid))
+{
+    <script>
+               alert('@notvalid')
+    </script>
+}
 
 @using (Ajax.BeginForm("EditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
@@ -378,23 +387,23 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
     // Scroll to the top of the page
     function scrollToTop() {
-            window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
     }
 
- $(document).ready(function () {
-     $('#submitbook').on('click', function () {
-       
+    $(document).ready(function () {
+        $('#submitbook').on('click', function () {
+
             scrollToTop();
-      
-         var form = $('#frmEmp');
-         
-         form.submit();
 
-     });
+            var form = $('#frmEmp');
+
+            form.submit();
+
+        });
 
 
 
- });
+    });
 
 </script>
 
@@ -413,7 +422,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         $.ajax({
             type: 'GET',
-          
+
             url: '/Booking/CustomerIdAutocomplete',
     data: {},
     dataType: 'json',
@@ -535,419 +544,435 @@ $.ajax({
 
 
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            var Amountglobal;
+        var Amountglobal;
 
-            $('#Consignment_no').focus();
-            $("#insdiv").hide();
-            $('#Topaydiv').hide();
-            $('#coddiv').hide();
+        $('#Consignment_no').focus();
+        $("#insdiv").hide();
+        $('#Topaydiv').hide();
+        $('#coddiv').hide();
 
-            $('#insshow').hide();
-            $('#topayradio').hide();
-            $('#codradio').hide();
+        $('#insshow').hide();
+        $('#topayradio').hide();
+        $('#codradio').hide();
 
 
 
 
 
-            $('#Type_t').on('change', function (e) {
-                var optionSelected = $('#Type_t').find(":selected").text();
-                // alert(optionSelected);
+        $('#Type_t').on('change', function (e) {
+            var optionSelected = $('#Type_t').find(":selected").text();
+            // alert(optionSelected);
 
-                if (optionSelected == "N") {
-                    $('#insshow').show();
-                    $('#insdiv').show();
-                }
-                else {
-                    $('#insshow').hide();
-                    $('#insdiv').hide();
-                    $("#Insurance1").prop("checked", true);
-
-                }
-            });
-
-
-            $('#Consignment_no').focusout(function () {
-
-                var Type_t = $('#Consignment_no').val();
-
-
-                if (Type_t.startsWith("N")) {
-                    $('#intpincode').show();
-                }
-                else {
-                    $('#intpincode').hide();
-                }
-            });
-
-
-
-
-            $('#Consignment_no').keyup(function () {
-                // alert("Keyup");
-                var consno = $("#Consignment_no").val();
-                if (consno.length >= 9) {
-                    $('#Consignment_no').val($(this).val().toUpperCase());
-
-                    $('#Customer_Id').focus();
-                }
-            });
-
-
-            $('#Consignment_no').focusout(function () {
-                // alert("Keyup");
-                var consno = $("#Consignment_no").val();
-                if (consno.length >= 2) {
-                    $('#Consignment_No').val($(this).val().toUpperCase());
-                    $('#Customer_Id').focus();
-                    var str = $('#Consignment_no').val();
-                    var res = str.charAt(0);
-                    // alert(res);
-                    if (res.toLowerCase() == "i") {
-                        ShowRadios(); //calling function
-                    }
-                    $.ajax({
-                        type: 'Get',
-                        dataType: 'json',
-                        url: '/Booking/Consignmentdetails',
-                        data: { Cosignmentno: consno },
-                        success: function (Data) {
-
-                            $('#Customer_Id').val(Data.Customer_Id);
-                            if (Data.Customer_Id == null) {
-                                alert('Consignment Not Booked');
-                                return false;
-                            }
-                            $('#compaddress').val(Data.compaddress);
-                            $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
-                            $('#Pincode').val(Data.Pincode);
-
-
-                            if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
-
-                                $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
-                                $('#Mode').val(Data.Mode);
-                            }
-                            else {
-
-                                $('#Mode').val(Data.Mode);
-                            }
-                            $('#Actual_weight').val(Data.Actual_weight);
-                            $('#Pincode').val(Data.Pincode);
-                            $('#loadingcharge').val(Data.loadingcharge);
-
-                            $('#chargable_weight').val(Data.chargable_weight);
-                            $('#Quanntity').val(Data.Quanntity);
-                            $('#Type_t').val(Data.Type_t);
-                            if (Data.Type_t == "N") {
-                                $('#insshow').show();
-                                $('#insdiv').show();
-                            }
-                            else {
-                                $('#insshow').hide();
-                                $('#insdiv').hide();
-                            }
-                            $('#Amount').val(Data.Amount);
-                            $('#Quanntity').val(Data.Quanntity);
-
-
-
-                            var companyid = Data.Customer_Id;
-
-
-
-
-                            if (Data.Insurance == 'yes') {
-                                $('input:radio[id=Insurance][value=yes]').prop('checked', true);
-                            }
-                            else {
-                                $('input:radio[id=Insurance][value=no]').prop('checked', true);
-                            }
-                            $('#BillAmount').val(Data.BillAmount);
-                            $('#Percentage').val(Data.Percentage);
-                            $('#Risksurcharge').val(Data.Risksurcharge);
-                            $('#Invoice_No').val(Data.Invoice_No);
-
-
-
-
-                            if (Data.topay == 'yes') {
-                                $('input:radio[name=topay][value=yes]').prop('checked', true);
-                            }
-                            else {
-                                $('input:radio[name=topay][value=no]').prop('checked', true);
-                            }
-
-
-
-                            $('#Topaycharges').val(Data.Topaycharges);
-                            $('#consignee').val(Data.consignee);
-                            $('#TopayAmount').val(Data.TopayAmount);
-
-
-
-                            if (Data.cod == 'yes') {
-                                $('input:radio[name=cod][value=yes]').prop('checked', true);
-                            }
-                            else {
-                                $('input:radio[name=cod][value=no]').prop('checked', true);
-                            }
-
-
-
-                            $('#codAmount').val(Data.codAmount);
-                            $('#codcharges').val(Data.codcharges);
-                            $('#consigner').val(Data.consigner);
-                            $('#codtotalamount').val(Data.codtotalamount);
-
-
-
-
-
-                        }
-
-                    });
-                }
-
-            });
-
-
-            $('#Customer_Id').focusout(function () {
-                var Customerid = $('#Customer_Id').val();
-                if (Customerid.length > 0) {
-                    $.ajax({
-                        type: 'Get',
-                        dataType: 'json',
-                        url: '/Booking/Checkcompany',
-                        data: { Customerid: Customerid },
-                        success: function (Data) {
-
-                            if (Data == "0") {
-                                alert("Please Enter Valid Company Id");
-                                $('#Customer_Id').val('');
-                            }
-
-
-
-                        }
-                    });
-                }
-            });
-
-
-
-
-            function ShowRadios() {
-
-                // var str = $('#Consignment_no').val();
-                // var res = str.charAt(0);
-                //// alert(res);
-                // if (res.toLowerCase() == "i") {
-
-
-                $('#topayradio').show();
-                $('#codradio').show();
-                //}
+            if (optionSelected == "N") {
+                $('#insshow').show();
+                $('#insdiv').show();
             }
+            else {
+                $('#insshow').hide();
+                $('#insdiv').hide();
+                $("#Insurance1").prop("checked", true);
+
+            }
+        });
+
+
+        $('#Consignment_no').focusout(function () {
+
+            var Type_t = $('#Consignment_no').val();
+
+
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+            }
+            else {
+                $('#intpincode').hide();
+            }
+        });
 
 
 
 
+        $('#Consignment_no').keyup(function () {
+            // alert("Keyup");
+            var consno = $("#Consignment_no").val();
+            if (consno.length >= 9) {
+                $('#Consignment_no').val($(this).val().toUpperCase());
 
-            $('[name="Insurance"]').change(function () {
+                $('#Customer_Id').focus();
+            }
+        });
 
-                var Insuranceval = $('input[name="Insurance"]:checked').val();
 
-
-                if (Insuranceval == "yes") {
-
-                    $("#insdiv").show();
-                    $('.insurancelable').html("Insuarance");
-                    $('.resksurlable').html("Risk surcharge");
+        $('#Consignment_no').focusout(function () {
+            // alert("Keyup");
+            var consno = $("#Consignment_no").val();
+            if (consno.length >= 2) {
+                $('#Consignment_No').val($(this).val().toUpperCase());
+                $('#Customer_Id').focus();
+                var str = $('#Consignment_no').val();
+                var res = str.charAt(0);
+                // alert(res);
+                if (res.toLowerCase() == "i") {
+                    ShowRadios(); //calling function
                 }
-                else {
-                    $("#insdiv").show();
-                    $('.insurancelable').html("For Percentage");
-                    $('.resksurlable').html("For Charges");
-                }
-
-            });
-
-
-            $('[name="topay"]').change(function () {
-
-                var Insuranceval = $('input[name="topay"]:checked').val();
-
-
-                if (Insuranceval == "yes") {
-                    $('#Topaydiv').show();
-
-
-
-
-                    Amountglobal = $('#Amount').val();
-
-                    Topayaddition();
-
-                    //$('#TopayAmount').keyup();
-
-
-                }
-                else {
-
-                    Topaysubtraction();
-
-                    $('#Topaydiv').hide();
-
-                }
-            });
-
-            $('[name="cod"]').change(function () {
-
-                var Insuranceval = $('input[name="cod"]:checked').val();
-
-                //alert(Insuranceval);
-
-                if (Insuranceval == "yes") {
-                    $('#coddiv').show();
-                }
-                else {
-                    $('#coddiv').hide();
-                }
-
-
-
-            });
-
-            $('#Customer_Id').change(function () {
-
-                var customerid = $('#Customer_Id').val();
-
                 $.ajax({
                     type: 'Get',
                     dataType: 'json',
-                    url: '/Booking/CustomerDetails',
-                    data: { CustomerId: customerid },
+                    url: '/Booking/Consignmentdetails',
+                    data: { Cosignmentno: consno },
                     success: function (Data) {
-                        $('#compaddress').val(Data.Company_Address);
-                        $('#Percentage').val(Data.Insurance);
-                        $('#Topaycharges').val(Data.Topay_Charge);
-                        $('#codcharges').val(Data.Cod_Charge);
+                        console.log(Data)
+                        $('#Customer_Id').val(Data.Customer_Id);
+                        if (Data.Customer_Id == null) {
+                            alert('Consignment Not Booked');
+                            return false;
+                        }
+                        $('#compaddress').val(Data.compaddress);
+                        $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+                        $('#Pincode').val(Data.Pincode);
+
+
+                        if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+                            $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+                            $('#Mode').val(Data.Mode);
+                        }
+                        else {
+
+                            $('#Mode').val(Data.Mode);
+                        }
+                        $('#Actual_weight').val(Data.Actual_weight);
+                        $('#Pincode').val(Data.Pincode);
+                        $('#loadingcharge').val(Data.loadingcharge);
+
+                        $('#chargable_weight').val(Data.chargable_weight);
+                        $('#Quanntity').val(Data.Quanntity);
+                        $('#Type_t').val(Data.Type_t);
+                        if (Data.Type_t == "N") {
+                            $('#insshow').show();
+                            $('#insdiv').show();
+                        }
+                        else {
+                            $('#insshow').hide();
+                            $('#insdiv').hide();
+                        }
+                        $('#Amount').val(Data.Amount);
+                        $('#Quanntity').val(Data.Quanntity);
+
+
+
+                        var companyid = Data.Customer_Id;
+
+
+
+
+                        if (Data.Insurance == 'yes') {
+                            $('input:radio[id=Insurance][value=yes]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[id=Insurance][value=no]').prop('checked', true);
+                        }
+                        $('#BillAmount').val(Data.BillAmount);
+                        $('#Percentage').val(Data.Percentage);
+                        $('#Risksurcharge').val(Data.Risksurcharge);
+                        $('#Invoice_No').val(Data.Invoice_No);
+
+
+
+
+                        if (Data.topay == 'yes') {
+                            $('input:radio[name=topay][value=yes]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[name=topay][value=no]').prop('checked', true);
+                        }
+
+
+
+                        $('#Topaycharges').val(Data.Topaycharges);
+                        $('#consignee').val(Data.consignee);
+                        $('#TopayAmount').val(Data.TopayAmount);
+
+
+
+                        if (Data.cod == 'yes') {
+                            $('input:radio[name=cod][value=yes]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[name=cod][value=no]').prop('checked', true);
+                        }
+
+
+
+                        $('#codAmount').val(Data.codAmount);
+                        $('#codcharges').val(Data.codcharges);
+                        $('#consigner').val(Data.consigner);
+                        $('#codtotalamount').val(Data.codtotalamount);
+
+
+
+
+
+                    }
+
+                });
+            }
+
+        });
+
+
+        $('#Customer_Id').focusout(function () {
+            var Customerid = $('#Customer_Id').val();
+            if (Customerid.length > 0) {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Checkcompany',
+                    data: { Customerid: Customerid },
+                    success: function (Data) {
+
+                        if (Data == "0") {
+                            alert("Please Enter Valid Company Id");
+                            $('#Customer_Id').val('');
+                        }
+
+
 
                     }
                 });
+            }
+        });
 
-            });
 
 
-            $("#BillAmount,#Percentage").keyup(function () {
 
-                Riskcharge();
-            });
+        function ShowRadios() {
 
-            function Riskcharge() {
+            // var str = $('#Consignment_no').val();
+            // var res = str.charAt(0);
+            //// alert(res);
+            // if (res.toLowerCase() == "i") {
 
-                var Billamount = $('#BillAmount').val();
-                var Insurance = $('#Percentage').val();
 
-                var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+            $('#topayradio').show();
+            $('#codradio').show();
+            //}
+        }
 
-                $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
+
+
+
+
+        $('[name="Insurance"]').change(function () {
+
+            var Insuranceval = $('input[name="Insurance"]:checked').val();
+
+
+            if (Insuranceval == "yes") {
+
+                $("#insdiv").show();
+                $('.insurancelable').html("Insuarance");
+                $('.resksurlable').html("Risk surcharge");
+            }
+            else {
+                $("#insdiv").show();
+                $('.insurancelable').html("For Percentage");
+                $('.resksurlable').html("For Charges");
             }
 
+        });
 
-            $("#Topaycharges").keyup(function () {
+
+        $('[name="topay"]').change(function () {
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+
+            if (Insuranceval == "yes") {
+                $('#Topaydiv').show();
+
+
+
+
+                Amountglobal = $('#Amount').val();
 
                 Topayaddition();
 
-            });
-
-
-
-            function Topayaddition() {
-
-
-                var TopayCharge = $('#Topaycharges').val();
-
-
-                var addition = (parseFloat("0" + Amountglobal) + parseFloat("0" + TopayCharge));
-
-                $('#TopayAmount').val(addition);
-
-                $('#Amount').val(0);
-            }
-
-
-            function Topaysubtraction() {
-
-                var amount = $('#TopayAmount').val();
-
-                var TopayCharge = $('#Topaycharges').val();
-
-                // alert(amount);
-                //alert(TopayCharge);
-
-                var subtraction = (parseFloat("0" + amount) - parseFloat("0" + TopayCharge));
-
-                $('#TopayAmount').val(0);
-
-                $('#Amount').val(subtraction);
-
-                Amountglobal = 0;
-                // The function returns Sum Of Amount
-            }
-
-
-            $("#codAmount,#codcharges").keyup(function () {
-
-                CodAddition();
-            });
-
-
-            function CodAddition() {
-
-
-                var codamount = $('#codAmount').val();
-
-                var codcharges = $('#codcharges').val();
-
-
-                var addition = (parseFloat("0" + codamount) + parseFloat("0" + codcharges));
-
-                $('#codtotalamount').val(addition);
+                //$('#TopayAmount').keyup();
 
 
             }
+            else {
 
+                Topaysubtraction();
 
-            $('#submitbook').click(function () {
+                $('#Topaydiv').hide();
 
-                var Amount = $('#Amount').val();
+            }
+        });
 
-                var Insuranceval = $('input[name="topay"]:checked').val();
+        $('[name="cod"]').change(function () {
 
-                if (Insuranceval == "yes") {
-                    return true;
-                }
-                else {
-                    if (Amount <= 0) {
-                        alert("Amount Should be greater than zero");
-                        return false;
-                    }
-                }
+            var Insuranceval = $('input[name="cod"]:checked').val();
 
-            });
+            //alert(Insuranceval);
 
-            //function Addition(p1, p2, p3, p4, p5, p6) {
-            //    //alert(p6);
-            //    var addition = (parseInt("0" + p1) + parseInt("0" + p2) + parseInt("0" + p3) + parseInt("0" + p4) + parseInt("0" + p5) - p6);
-            //    $('#Charges_Total').val(addition);      // The function returns Sum Of Amount
-            //}
+            if (Insuranceval == "yes") {
+                $('#coddiv').show();
+            }
+            else {
+                $('#coddiv').hide();
+            }
+
 
 
         });
+
+        $('#Customer_Id').change(function () {
+
+            var customerid = $('#Customer_Id').val();
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/CustomerDetails',
+                data: { CustomerId: customerid },
+                success: function (Data) {
+                    $('#compaddress').val(Data.Company_Address);
+                    $('#Percentage').val(Data.Insurance);
+                    $('#Topaycharges').val(Data.Topay_Charge);
+                    $('#codcharges').val(Data.Cod_Charge);
+
+                }
+            });
+
+        });
+
+
+        $("#BillAmount,#Percentage").keyup(function () {
+
+            Riskcharge();
+        });
+
+        function Riskcharge() {
+
+            var Billamount = $('#BillAmount').val();
+            var Insurance = $('#Percentage').val();
+
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+
+            $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
+        }
+
+
+        $("#Topaycharges").keyup(function () {
+
+            Topayaddition();
+
+        });
+
+
+
+        function Topayaddition() {
+
+
+            var TopayCharge = $('#Topaycharges').val();
+
+
+            var addition = (parseFloat("0" + Amountglobal) + parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(addition);
+
+            $('#Amount').val(0);
+        }
+
+
+        function Topaysubtraction() {
+
+            var amount = $('#TopayAmount').val();
+
+            var TopayCharge = $('#Topaycharges').val();
+
+            // alert(amount);
+            //alert(TopayCharge);
+
+            var subtraction = (parseFloat("0" + amount) - parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(0);
+
+            $('#Amount').val(subtraction);
+
+            Amountglobal = 0;
+            // The function returns Sum Of Amount
+        }
+
+
+        $("#codAmount,#codcharges").keyup(function () {
+
+            CodAddition();
+        });
+
+
+        function CodAddition() {
+
+
+            var codamount = $('#codAmount').val();
+
+            var codcharges = $('#codcharges').val();
+
+
+            var addition = (parseFloat("0" + codamount) + parseFloat("0" + codcharges));
+
+            $('#codtotalamount').val(addition);
+
+
+        }
+
+
+        $('#submitbook').click(function () {
+
+            var Amount = $('#Amount').val();
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+            if (Insuranceval == "yes") {
+                return true;
+            }
+            else {
+                if (Amount <= 0) {
+                    alert("Amount Should be greater than zero");
+                    return false;
+                }
+            }
+
+        });
+           $('#Pincode').change(function () {
+            var pincode = $('#Pincode').val();
+           
+    $.ajax({
+        type: 'get',
+        data: { Pincode: pincode },
+        url:'@Url.Action("checkpincode")',
+        success: function (Data) {
+            if (Data ==="NotValidPinCode") {
+                alert("Please Choose Valid Pincode");
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $('#loading').hide();
+        }
+    })
+});
+        //function Addition(p1, p2, p3, p4, p5, p6) {
+        //    //alert(p6);
+        //    var addition = (parseInt("0" + p1) + parseInt("0" + p2) + parseInt("0" + p3) + parseInt("0" + p4) + parseInt("0" + p5) - p6);
+        //    $('#Charges_Total').val(addition);      // The function returns Sum Of Amount
+        //}
+
+
+    });
 </script>
 
 <script>
@@ -1023,6 +1048,7 @@ $.ajax({
             });
 
         });
+   
 </script>
 
 

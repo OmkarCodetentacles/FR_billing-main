@@ -771,5 +771,30 @@ namespace DtDc_Billing.Entity_FR
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
         }
+    
+        public virtual ObjectResult<getInvoiceWithapplyFilter_Result> getInvoiceWithapplyFilter(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode, string invoiceno)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            var invoicenoParameter = invoiceno != null ?
+                new ObjectParameter("invoiceno", invoiceno) :
+                new ObjectParameter("invoiceno", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getInvoiceWithapplyFilter_Result>("getInvoiceWithapplyFilter", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter, invoicenoParameter);
+        }
     }
 }

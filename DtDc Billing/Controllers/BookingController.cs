@@ -52,7 +52,9 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult SaveEditConsignment(TransactionMetadata transaction)
         {
-
+              var pincode= transaction.Pincode;
+           
+            
             
 
             if (transaction.topay != "yes")
@@ -74,6 +76,16 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
+                if (pincode != null)
+                {
+                    var checkpincode = db.Destinations.Where(x => x.Pincode == pincode).FirstOrDefault();
+                    if (checkpincode == null)
+                    {
+                        ViewBag.notvalidpincode = "Please select Valid Pincode";
+                        return PartialView("ConsignmentPartial", transaction);
+                    }
+                }
+
                 Transaction tr = db.Transactions.Where(m => m.Consignment_no == transaction.Consignment_no).FirstOrDefault();
 
 
@@ -96,7 +108,7 @@ namespace DtDc_Billing.Controllers
                     tran.Customer_Id = transaction.Customer_Id;
                     tran.booking_date = transaction.booking_date;
                     tran.Consignment_no = transaction.Consignment_no.Trim();
-                    tran.Pincode = transaction.Pincode;
+                    tran.Pincode = transaction.Pincode.Trim();
                     tran.Mode = transaction.Mode;
                     tran.Weight_t = transaction.Weight_t;
                     tran.Amount = transaction.Amount;
@@ -153,7 +165,7 @@ namespace DtDc_Billing.Controllers
                     tran1.Customer_Id = transaction.Customer_Id;
                     tran1.booking_date = transaction.booking_date;
                     tran1.Consignment_no = transaction.Consignment_no.Trim();
-                    tran1.Pincode = transaction.Pincode;
+                    tran1.Pincode = transaction.Pincode.Trim();
                     tran1.Mode = transaction.Mode;
                     tran1.Weight_t = transaction.Weight_t;
                     tran1.Amount = transaction.Amount;
@@ -326,7 +338,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult PincodeautocompleteSender()
         {
                         var entity = db.Destinations.
-            Select(e => new
+            Select(e => new 
             {
                 e.Pincode
             }).ToList();
@@ -385,6 +397,17 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
+                var pincode = transaction.Pincode;
+
+                if (pincode != null)
+                {
+                    var checkpincode = db.Destinations.Where(x => x.Pincode == pincode).FirstOrDefault();
+                    if (checkpincode == null)
+                    {
+                        ViewBag.notvalidpincode = "Please select Valid Pincode";
+                        return PartialView("EditConsignmentPartial", transaction);
+                    }
+                }
                 Transaction tr = db.Transactions.Where(m => m.Consignment_no == transaction.Consignment_no).FirstOrDefault();
 
 
@@ -409,7 +432,7 @@ namespace DtDc_Billing.Controllers
                     tran.Customer_Id = transaction.Customer_Id;
                     tran.booking_date = transaction.booking_date;
                     tran.Consignment_no = transaction.Consignment_no.Trim();
-                    tran.Pincode = transaction.Pincode;
+                    tran.Pincode = transaction.Pincode.Trim();
                     tran.Mode = transaction.Mode;
                     tran.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran.AdminEmp = 000;
@@ -487,7 +510,7 @@ namespace DtDc_Billing.Controllers
 
             return PartialView("EditConsignmentPartial", transaction);
         }
-
+        
 
 
 
@@ -982,7 +1005,15 @@ namespace DtDc_Billing.Controllers
             //return View(transactions);
             return PartialView("weightdiff_Partial", transactions);
         }
-
+        public string checkpincode(string Pincode)
+        {
+            var pincode = db.Destinations.Where(x => x.Pincode == Pincode).FirstOrDefault();
+            if (pincode == null)
+            {
+                return "NotValidPinCode";
+            }
+            return "Valid";
+        }
         public string Checkcompany(string Customerid)
         {
             db.Configuration.ProxyCreationEnabled = false;
@@ -1099,11 +1130,18 @@ namespace DtDc_Billing.Controllers
         public ActionResult InternationalCity()
         {
 
-            var entity = db.Destinations.Where(m => m.Pincode.StartsWith("111")).
-            Select(e => new
-            {
-                e.Name
-            }).Distinct().ToList();
+            //var entity = db.Destinations.Where(m => m.Pincode.StartsWith("111")).
+            //    Select(e => new
+            //    {
+            //        e.Name
+            //    }).Distinct().ToList();
+
+            var entity = db.Destinations.Where(x=>x.Name!=null && x.Name!="").
+                Select(e => new
+                {
+                    e.Name
+                }).OrderBy(e=>e.Name).Distinct().ToList();
+
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
