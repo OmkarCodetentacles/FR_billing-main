@@ -4668,7 +4668,7 @@ namespace DtDc_Billing.Controllers
 
                                 <p>Thank you for choosing FrBilling. We are committed to providing you with an exceptional experience.</p>
 
-                                <p>If you have any questions or need assistance, feel free to contact our support team at <strong>frbillingsoftware@gmail.com</strong> or call us at <strong>+91 9209764995<strong>.</p>
+                                <p>If you have any questions or need assistance, feel free to contact our support team at <strong>info@frbilling.com</strong> or call us at <strong>+91 9209764995<strong>.</p>
 
                                 <p>Best Regards,<br/>
                                 The FrBilling Team</p>
