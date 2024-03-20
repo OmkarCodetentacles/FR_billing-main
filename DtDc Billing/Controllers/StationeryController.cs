@@ -636,8 +636,11 @@ Select(e => new
 
             if (!string.IsNullOrEmpty(pdfFileName))
             {
-                // Redirect to a new action that will open the PDF in a new tab
-                return RedirectToAction("OpenPdfInNewTab", "AdminCashBooking", new { pdfFileName });
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/') + "/";
+                string filePath = baseUrl + "PrintMulConsignmentPDF/" + pdfFileName;
+
+                ViewBag.file = filePath;
             }
 
             return View();
