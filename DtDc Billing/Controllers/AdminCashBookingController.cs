@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using Ionic.Zip;
 using Microsoft.Reporting.WinForms;
 using Razorpay.Api;
 using System;
@@ -28,6 +29,87 @@ namespace DtDc_Billing.Controllers
         // GET: Booking
         // [SessionTimeout]
         // [SessionUserModule]
+
+
+        public ActionResult PrintBulkCashReceipt()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult PrintBulkCashReceipt(string FromConsignment, string ToConsignment)
+        {
+            if((FromConsignment == null || FromConsignment == "") || (ToConsignment == null || ToConsignment == ""))
+            {
+                ModelState.AddModelError("required", "Both fields are required");
+                return View();
+            }
+            string fileType = "application/octet-stream";
+
+            var outputStream = new MemoryStream();
+
+            using (ZipFile zipFile = new ZipFile())
+            {
+
+                var stch = FromConsignment.StartsWith("7D") || FromConsignment.StartsWith("7X") ? FromConsignment.Substring(0, 2) : FromConsignment.Substring(0, 1);
+                var Endch = ToConsignment.StartsWith("7D") || ToConsignment.StartsWith("7X") ? ToConsignment.Substring(0, 2) : ToConsignment.Substring(0, 1);
+
+                if(stch.ToUpper() != Endch.ToUpper())
+                {
+                    ModelState.AddModelError("seriesNotmatch", "Enter valid series");
+                    return View();
+                }
+
+                long startConsignment = FromConsignment.StartsWith("7D") || FromConsignment.StartsWith("7X") ? Convert.ToInt64(FromConsignment.Substring(2)) : Convert.ToInt64(FromConsignment.Substring(1));
+                long EndConsignment = ToConsignment.StartsWith("7D") || ToConsignment.StartsWith("7X") ? Convert.ToInt64(ToConsignment.Substring(2)) : Convert.ToInt64(ToConsignment.Substring(1));
+
+
+
+                for (long i = startConsignment; i <= EndConsignment; i++)
+                {
+
+                    string filePath = Server.MapPath("/CashcounterPDF/" + "Recieptdetails-"+ stch.ToUpper() + ""+ i + ".pdf");
+
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        zipFile.AddFile(filePath, "Recieptdetails");
+                    }
+                    else
+                    {
+                        var pdfFileName = PrintMethod(stch.ToUpper() + "" + i);
+                        ViewBag.Consignmetno = stch.ToUpper() + "" + i;
+
+                        if (!string.IsNullOrEmpty(pdfFileName))
+                        {
+                            ViewBag.pdf = true;
+
+                            ViewBag.PdfFileName = pdfFileName.Replace("/", "-");
+                            var newfilepath = Server.MapPath("~/ConsignmentPDF/" + pdfFileName);
+
+
+                            zipFile.AddFile(newfilepath, "Recieptdetails");
+                        }
+                    }
+
+                }
+
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                //Set zip file name
+                Response.AppendHeader("content-disposition", "attachment; filename=Recieptdetails.zip");
+
+                //Save the zip content in output stream
+                zipFile.Save(outputStream);
+            }
+
+            //Set the cursor to start position
+            outputStream.Position = 0;
+
+            //Dispance the stream
+            return new FileStreamResult(outputStream, fileType);
+        }
+
         public ActionResult Printreceipt()
         {
 
@@ -178,8 +260,6 @@ namespace DtDc_Billing.Controllers
             return View(reciept_Details);
 
         }
-
-
 
         public string PrintMethod(string consignmentno)
         {
@@ -415,6 +495,12 @@ namespace DtDc_Billing.Controllers
             }
 
         }
+
+        //public ActionResult PrintBulkPOD()
+        //{
+            
+        //    return View();
+        //}
 
         public ActionResult Download(string id)
         {

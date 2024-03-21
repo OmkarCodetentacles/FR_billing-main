@@ -247,14 +247,7 @@ namespace DtDc_Billing.Controllers
 
         //}
         [HttpGet]
-        public ActionResult ViewInvoice()
-        {
-            List<InvoiceModel> list = new List<InvoiceModel>();
-            return View(list);
-        }
-
-        [HttpPost]
-        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo,string invoiceno, bool isDelete = false)
+        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo,string invoiceNotoDelete, bool isDelete = false)
         {
             List<InvoiceModel> list = new List<InvoiceModel>();
       
@@ -272,7 +265,7 @@ namespace DtDc_Billing.Controllers
             if (isDelete)
             {
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-                var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNo && x.Pfcode == pfcode).FirstOrDefault();
+                var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNotoDelete && x.Pfcode == pfcode).FirstOrDefault();
                 if (checkInvoiceNo == null)
                 {
                     TempData["error"] = "Invalid Invoice No";
@@ -281,7 +274,7 @@ namespace DtDc_Billing.Controllers
 
                 db.Invoices.Remove(checkInvoiceNo);
                 db.SaveChanges();
-                TempData["success"] = "Delete successfully";
+                TempData["success"] = invoiceNotoDelete + " Delete successfully!";
             }
             if ((invfromdate != null && invfromdate!="") && (invtodate!=null && invtodate!=""))
             {
@@ -291,9 +284,10 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.invfromdate = invfromdate;
             ViewBag.invtodate = invtodate;
+            ViewBag.invoiceno = invoiceNo;
 
             ViewBag.Companydetails = Companydetails;//new SelectList(db.Companies, "Company_Id", "Company_Name");
-            ViewBag.invoiceno = invoiceNo;
+            
             if (strpf != null && strpf!="")
             {
                 var companyid = "";
@@ -304,15 +298,16 @@ namespace DtDc_Billing.Controllers
 
                     companyid = comp.Company_Id;
                 }
-                if (invoiceno != null && invoiceno != "")
+                if (invoiceNo != null && invoiceNo != "")
                 {
-                    invno = db.Invoices.Where(m => m.invoiceno == invoiceno).Select(m => m.invoiceno).FirstOrDefault();
+                    invno = db.Invoices.Where(m => m.invoiceno == invoiceNo).Select(m => m.invoiceno).FirstOrDefault();
+                    
                 }
                 DateTime? fdate = !string.IsNullOrEmpty(invfromdate) ? DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
                 DateTime? tdate = !string.IsNullOrEmpty(invtodate) ? DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
  
 
-                list = db.getInvoiceWithapplyFilter( fdate,tdate, companyid, strpf, invoiceno)
+                list = db.getInvoiceWithapplyFilter( fdate,tdate, companyid, strpf, invoiceNo)
                 .Select(x => new InvoiceModel
                 {
                     IN_Id= x.IN_Id,
@@ -1000,6 +995,20 @@ Select(e => new
 
             }
             return PartialView("GenerateInvoicePartial", invoice);
+        }
+
+
+        public ActionResult Download(long id)
+        {
+
+            var invoice = db.Invoices.Where(m => m.IN_Id == id).FirstOrDefault();
+
+            string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
+
+            string savePath = "https://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+
+            return Redirect(savePath);
+
         }
 
         [HttpPost]
