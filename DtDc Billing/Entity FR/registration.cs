@@ -45,5 +45,6 @@ namespace DtDc_Billing.Entity_FR
         public string emailOTP { get; set; }
         public Nullable<bool> isLoginConfirmed { get; set; }
         public string LoginOTP { get; set; }
+        public string Remark { get; set; }
     }
 }

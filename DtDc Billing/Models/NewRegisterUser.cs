@@ -24,5 +24,7 @@ namespace DtDc_Billing.Models
         public string  ExpireDate { get;set; }    
         public int ExpiredDays { get; set; }
 
+        public string Remark { get; set; }
+
     }
 }

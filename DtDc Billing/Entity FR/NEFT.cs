@@ -11,14 +11,10 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class NEFT
     {
         public int Neft_id { get; set; }
-        [Required]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than zero")]
-
         public Nullable<double> NeftAmount { get; set; }
         public Nullable<System.DateTime> neftdate { get; set; }
         public string Invoiceno { get; set; }
@@ -27,7 +23,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> N_Total_Amount { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public string Pfcode { get; set; }
-        [Required(ErrorMessage = "Date must be Required")]
         public Nullable<System.DateTime> tempneftdate { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }

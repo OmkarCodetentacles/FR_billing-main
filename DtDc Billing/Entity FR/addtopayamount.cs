@@ -11,16 +11,12 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class addtopayamount
     {
         public int ad_id { get; set; }
         public string sapno { get; set; }
-        [Required(ErrorMessage = "Consignment Number must be Required")]
         public string consinmentno { get; set; }
-        [Required(ErrorMessage = "Date must be Required")]
-
         public string date { get; set; }
         public string Invoiceno { get; set; }
     }

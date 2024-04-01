@@ -772,42 +772,6 @@
     <Property Name="Datetime" Type="DateTime" Precision="3" />
     <Property Name="Datetime_Redeem" Type="DateTime" Precision="3" />
   </EntityType>
-  <EntityType Name="registration">
-    <Key>
-      <PropertyRef Name="registrationId" />
-    </Key>
-    <Property Name="registrationId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Pfcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="franchiseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="emailId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="dateTime" Type="DateTime" Precision="3" />
-    <Property Name="ownerName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="isPaid" Type="Boolean" />
-    <Property Name="referralCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="mobileNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="referralby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="GSTNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Pan_No" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="BankName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="AccountNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="IFSC_Code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="AccountType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-    <Property Name="IsRenewal" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="IsRenewalEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
-    <Property Name="subscriptionForInDays" Type="Int32" />
-    <Property Name="paymentDate" Type="DateTime" Precision="3" />
-    <Property Name="isEmailConfirmed" Type="Boolean" />
-    <Property Name="emailOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="isLoginConfirmed" Type="Boolean" />
-    <Property Name="LoginOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
       <PropertyRef Name="Reply_ID" />
@@ -2029,7 +1993,6 @@
     <EntitySet Name="Ratems" EntityType="Self.Ratem" />
     <EntitySet Name="Receipt_details" EntityType="Self.Receipt_details" />
     <EntitySet Name="RedeemOtps" EntityType="Self.RedeemOtp" />
-    <EntitySet Name="registrations" EntityType="Self.registration" />
     <EntitySet Name="ReplyAdmins" EntityType="Self.ReplyAdmin" />
     <EntitySet Name="Savings" EntityType="Self.Saving" />
     <EntitySet Name="sectorNames" EntityType="Self.sectorName" />
@@ -2536,6 +2499,7 @@
       <Parameter Name="pfcode" Mode="In" Type="String" />
       <Parameter Name="invoiceno" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="registrations" EntityType="db_a92afa_frbillingModel.registration" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -2945,4 +2909,41 @@
     <Property Type="Int64" Name="Firm_Id" Nullable="true" />
     <Property Type="Int32" Name="totalCount" Nullable="true" />
   </ComplexType>
+  <EntityType Name="registration">
+    <Key>
+      <PropertyRef Name="registrationId" />
+    </Key>
+    <Property Name="registrationId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pfcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="franchiseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="emailId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="dateTime" Type="DateTime" Precision="3" />
+    <Property Name="ownerName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isPaid" Type="Boolean" />
+    <Property Name="referralCode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="mobileNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="referralby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GSTNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Pan_No" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="BankName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountNo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="IFSC_Code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Branch" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="AccountType" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceStart" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewal" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewalEmail" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="IsRenewalEmailDate" Type="DateTime" Precision="3" />
+    <Property Name="subscriptionForInDays" Type="Int32" />
+    <Property Name="paymentDate" Type="DateTime" Precision="3" />
+    <Property Name="isEmailConfirmed" Type="Boolean" />
+    <Property Name="emailOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="isLoginConfirmed" Type="Boolean" />
+    <Property Name="LoginOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

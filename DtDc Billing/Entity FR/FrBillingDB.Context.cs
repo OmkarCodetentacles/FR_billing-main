@@ -70,7 +70,6 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<Ratem> Ratems { get; set; }
         public virtual DbSet<Receipt_details> Receipt_details { get; set; }
         public virtual DbSet<RedeemOtp> RedeemOtps { get; set; }
-        public virtual DbSet<registration> registrations { get; set; }
         public virtual DbSet<ReplyAdmin> ReplyAdmins { get; set; }
         public virtual DbSet<Saving> Savings { get; set; }
         public virtual DbSet<sectorName> sectorNames { get; set; }
@@ -86,6 +85,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<wallet_History> wallet_History { get; set; }
         public virtual DbSet<WalletPoint> WalletPoints { get; set; }
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
+        public virtual DbSet<registration> registrations { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
         {

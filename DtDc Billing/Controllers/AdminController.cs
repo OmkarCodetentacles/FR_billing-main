@@ -22,6 +22,7 @@ using Microsoft.SqlServer.Management.Sdk.Differencing;
 using Microsoft.Win32;
 using System.Net.Http;
 using WebGrease.Css.ImageAssemblyAnalysis.LogModel;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace DtDc_Billing.Controllers
 {
@@ -606,8 +607,8 @@ namespace DtDc_Billing.Controllers
                     Directory.CreateDirectory(path);
                 }
 
-                filePath = path + Path.GetFileName(ImportText.FileName);
-                string extension = Path.GetExtension(ImportText.FileName);
+                filePath = path + System.IO.Path.GetFileName(ImportText.FileName);
+                string extension = System.IO.Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
                 //Read the contents of CSV file.
@@ -1154,36 +1155,62 @@ namespace DtDc_Billing.Controllers
 
         //    return View(rg);
         //}
+
+        public ActionResult UpdateRemark(long registrationId, string remark)
+        {
+            var getData = db.registrations.Where(x => x.registrationId == registrationId).FirstOrDefault();
+
+            if (getData != null)
+            {
+                getData.Remark = remark;
+                db.Entry(getData).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+            }
+
+            TempData["update"] = "Update successfully";
+            return RedirectToAction("NewRegisterClient", "Admin");
+        }
+
+
+
         [HttpGet]
         public ActionResult NewRegisterClient()
-    {
-    var register = db.registrations.ToList();
-        DateTime currentdate = DateTime.Now;
+        {
+            DateTime currentdate = DateTime.Now;
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
             ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
-            List<NewRegisterUser> rg = register.Select(registration => new NewRegisterUser
-        {
-            registrationId = registration.registrationId,
-            Pfcode = registration.Pfcode,
-            franchiseName = registration.franchiseName,
-            emailId = registration.emailId,
-            mobileNo = registration.mobileNo,
-            dateTime = registration.dateTime.Value.ToString("dd/MM/yyyy"),
-            userName = registration.userName,
-            password = registration.password,
-            isPaid= registration.isPaid,
-            DaysSinceRegistration = (currentdate - registration.dateTime.Value).Days,
-            
-            subscriptionfordays = registration.subscriptionForInDays ?? 0,
-            ExpireDate = registration.paymentDate.HasValue ? registration.paymentDate.Value.AddDays(registration.subscriptionForInDays ?? 0).ToString("dd/MM/yyyy"):null ,
-            ExpiredDays = registration.paymentDate.HasValue ? (registration.paymentDate.Value.AddDays(registration.subscriptionForInDays ?? 0)-currentdate).Days:0
 
-        })
-        .OrderByDescending(x => x.DaysSinceRegistration)
-        .ToList();
+            // Retrieve data from database
+            var registrations = db.registrations.ToList(); // Assuming registrations is your DbSet
 
-    return View(rg);
-    }
+            //ViewBag.remarks = new SelectList(registrations, "Remark", "Remark");
+            // Project the data into NewRegisterUser objects
+            var rg = registrations.Select(x => new NewRegisterUser
+            {
+                registrationId = x.registrationId,
+                Pfcode = x.Pfcode,
+                franchiseName = x.franchiseName,
+                emailId = x.emailId,
+                mobileNo = x.mobileNo,
+                dateTime = x.dateTime.HasValue ? x.dateTime.Value.ToString("dd/MM/yyyy") : null,
+                userName = x.userName,
+                password = x.password,
+                isPaid = x.isPaid,
+                DaysSinceRegistration = (currentdate - (x.dateTime ?? currentdate)).Days,
+
+                subscriptionfordays = x.subscriptionForInDays ?? 0,
+                ExpireDate = x.paymentDate.HasValue ? x.paymentDate.Value.AddDays(x.subscriptionForInDays ?? 0).ToString("dd/MM/yyyy") : null,
+                ExpiredDays = x.paymentDate.HasValue ? (x.paymentDate.Value.AddDays(x.subscriptionForInDays ?? 0) - currentdate).Days : 0,
+                Remark = x.Remark
+            })
+            .OrderByDescending(x => x.DaysSinceRegistration)
+            .ToList();
+
+            return View(rg);
+        }
+
         [HttpGet]
         public ActionResult RenewSubcriptionExpClient(string Pfcode, int pid)
         {
@@ -2539,18 +2566,18 @@ namespace DtDc_Billing.Controllers
                     var file = Request.Files[0];
                     if (file != null)
                     {
-                        var fileName = Path.GetFileName(file.FileName);
+                        var fileName = System.IO.Path.GetFileName(file.FileName);
                         var newFileName = Pfcode;
 
-                        var path = Path.Combine(Server.MapPath("~/Stamps"), fileName);
+                        var path = System.IO.Path.Combine(Server.MapPath("~/Stamps"), fileName);
 
                         // Get the file extension
-                        string fileExtension = Path.GetExtension(path);
+                        string fileExtension = System.IO.Path.GetExtension(path);
                         file.SaveAs(path);
 
 
                         string originalFilePath = path;
-                        string newFilePath = Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
+                        string newFilePath = System.IO.Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
 
 
                         // Rename the file
@@ -2586,7 +2613,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult AddLogo(AddlogoModel logo)
         {
             // Get the file extension in lowercase
-            string extension = Path.GetExtension(logo.file.FileName)?.ToLower();
+            string extension = System.IO.Path.GetExtension(logo.file.FileName)?.ToLower();
 
             if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
             {
@@ -2600,7 +2627,7 @@ namespace DtDc_Billing.Controllers
                 string _path = "";
                 if (logo.file.ContentLength > 0)
                 {
-                    _FileName = Path.GetFileName(logo.file.FileName);
+                    _FileName = System.IO.Path.GetFileName(logo.file.FileName);
                     _path = Server.MapPath("~/UploadedLogo/" + _FileName);
 
                     logo.file.SaveAs(_path);
@@ -4784,7 +4811,7 @@ namespace DtDc_Billing.Controllers
                 //var email1 = DataSet2.FirstOrDefault().email_id;
                 LocalReport lr = new LocalReport();
 
-                string path = Path.Combine(Server.MapPath("~/RdlcReport"), "Invoice.rdlc");
+                string path = System.IO.Path.Combine(Server.MapPath("~/RdlcReport"), "Invoice.rdlc");
 
                 if (System.IO.File.Exists(path))
                 {
