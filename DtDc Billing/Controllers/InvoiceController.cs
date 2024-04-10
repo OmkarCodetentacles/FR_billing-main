@@ -40,6 +40,8 @@ namespace DtDc_Billing.Controllers
 
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.currentPfcode = strpfcode;
+
             var franchisee=db.Franchisees.Where(x=>x.PF_Code == strpfcode).FirstOrDefault(); 
             //if (Firm_Id == 1)
             //{
