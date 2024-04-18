@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>FRBilling | Home</title>
+    <title>FR-Billing | Index</title>
 
     <link rel="shortcut icon" href="~/assets/images/fav.png">
     <!-- Bootstrap core CSS -->
@@ -56,6 +56,66 @@
         font-weight: 500;
         margin-left: 30px;
     }
+
+    .new-blue-button-hover {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: color 0.3s ease, font-size 0.3s ease;
+    animation: shake 0.3s ease infinite;
+}
+
+.new-blue-button-hover a {
+    color: inherit;
+}
+
+.new-blue-button-hover::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    pointer-events: none;
+}
+
+.new-blue-button-hover:hover::after {
+    width: 200px;
+    height: 200px;
+}
+
+.new-blue-button-hover:hover {
+    animation-play-state: paused; /* Pause the shake animation on hover */
+}
+
+@@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-3px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
 </style>
 <body>
 
@@ -81,10 +141,12 @@
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="#services">Services</a></li>
+                            <li class="scroll-to-section"><a href="#Demos">Request Demo</a></li>
                             <li class="scroll-to-section"><a href="#portfolio">Pricing</a></li>
                             <li class="scroll-to-section"><a href="#video">About</a></li>
                             <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
                             <!-- <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>  -->
+
                             <li class="scroll-to-section"><div class="main-red-button-hover"><a href="@Url.Action("AdminLogin","Admin")">Customer Login</a></div></li>
                         </ul>
                         <a class='menu-trigger'>
@@ -106,7 +168,7 @@
                         <div class="col-lg-6 align-self-center">
                             <div class="owl-carousel owl-banner">
                                 <div class="item header-text">
-                                    <h6>Welcome to FR Digital</h6>
+                                    <h6>Welcome to FR-Billing</h6>
                                     <h2>Cloud-Based  <br> <em>Courier </em><span>Billing Software</span></h2>
                                     <p>Experience ease with our automated, Excel-supported solution - the perfect choice for courier franchisees.</p>
                                     <div class="down-buttons">
@@ -310,7 +372,7 @@
                                         <div class="icon">
                                             <img src="~/assets/Home/assets/images/frenchiess.png" alt="">
                                         </div>
-                                        <div class="count-digit">120+</div>
+                                        <div class="count-digit">45+</div>
                                         <div class="count-title">franchisee </div>
 
                                     </div>
@@ -322,7 +384,7 @@
                                         <div class="icon">
                                             <img src="~/assets/Home/assets/images/experiences.png" alt="">
                                         </div>
-                                        <div class="count-digit">3+</div>
+                                        <div class="count-digit">4+</div>
                                         <div class="count-title">years experience</div>
 
                                     </div>
@@ -491,6 +553,35 @@
       </div>
     </div> -->
 
+    <div id="Demos" class="Demos-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 align-self-center">
+                    <div class="section-heading">
+
+
+                        <h2>Experience our <em>Fr-Billing Software </em> firsthand with a live demo! <span>Click here to schedule our interactive demo</span></h2>
+                        <p>Schedule your demo online for convenience and efficiency. Choose a time that fits your schedule, receive automated reminders, and personalize your experience. Discover how our Fr-Billing can benefit you!</p>
+                        <br>
+                        <div class="new-blue-button-hover" id="scheduleButton">
+                            <a href="https://calendly.com/frbillingsoftware/short-overview" target="_blank">Schedule Now</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="left-image">
+                        <img src="https://frbilling.com/assets/Home/imgs/demo.png" alt="Two Girls working together">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+                @Html.Partial("ClientStory")
+
+            
     <div id="portfolio" class="pricing-tables">
         <div class="tables-left-dec">
             <img src="~/assets/Home/assets/images/tables-left-dec.png" alt="">
@@ -515,7 +606,7 @@
                     <div class="item first-item">
                         <h4>Basic Plan</h4>
 
-                        <span>₹799/mo</span>
+                        <span>Rs.799/mo</span>
                         <ul>
                             <li>
                                 <div style="display:flex; gap:5px">
@@ -609,102 +700,102 @@
                     </div>
                 </div>
                 @*<div class="col-lg-4">
-                    <div class="item second-item">
-                        <h4>Standard Plan</h4>
+                        <div class="item second-item">
+                            <h4>Standard Plan</h4>
 
-                        <span>₹7000/Yr</span>
-                        <ul>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Stationery Inventory Management</p>
-                                </div>
+                            <span>₹7000/Yr</span>
+                            <ul>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Stationery Inventory Management</p>
+                                    </div>
 
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Flexible Ratemaster</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Import data from DTDC</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Bulk Booking</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Update Rate for Bulk consignments</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Standard Invoice format</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Send Invoice on Email</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Manage Payments</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Booking for walk in customer</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Print Receipt with barcode</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Expense management</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>GST Reports</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>Billed unbilled consignment</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div style="display:flex; gap:5px">
-                                    <i class="fa fa-solid fa-check"></i>
-                                    <p>No Booking data</p>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="main-blue-button-hover">
-                            <a href="#">Subscribe</a>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Flexible Ratemaster</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Import data from DTDC</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Bulk Booking</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Update Rate for Bulk consignments</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Standard Invoice format</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Send Invoice on Email</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Manage Payments</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Booking for walk in customer</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Print Receipt with barcode</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Expense management</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>GST Reports</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Billed unbilled consignment</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>No Booking data</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="main-blue-button-hover">
+                                <a href="#">Subscribe</a>
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
                 <div class="col-lg-6">
                     <div class="item third-item">
                         <h4>Premium Plan</h4>
@@ -812,23 +903,23 @@
                                 </div>
                             </li>
                             @*<li>
-            <div style="display:flex; gap:5px">
-                <i class="fa fa-solid fa-check"></i>
-                <p>Membership plan for walk in customers</p>
-            </div>
-        </li>
-        <li>
-            <div style="display:flex; gap:5px">
-                <i class="fa fa-solid fa-check"></i>
-                <p>SMS marketing</p>
-            </div>
-        </li>
-        <li>
-            <div style="display:flex; gap:5px">
-                <i class="fa fa-solid fa-check"></i>
-                <p>Email Marketing (Upcoming)</p>
-            </div>
-        </li>*@
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Membership plan for walk in customers</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>SMS marketing</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="display:flex; gap:5px">
+                                        <i class="fa fa-solid fa-check"></i>
+                                        <p>Email Marketing (Upcoming)</p>
+                                    </div>
+                                </li>*@
 
                         </ul>
 
@@ -1050,12 +1141,11 @@
                         <div class="logo">
                             <a href="#"><img src="~/assets/Home/assets/images/logo.png" alt="Onix Digital TemplateMo"></a>
                         </div>
-                        <a href="mailto:frbillingsoftware@gmail.com" type="email">frbillingsoftware@gmail.com</a>
+                        <a href="mailto:info@frbilling.com" type="email">info@frbilling.com</a>
                         <ul>
-                            <li><a href="https://www.facebook.com/Codetentacles" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="https://twitter.com/codetentacles" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="https://www.behance.net/codetentacles" target="_blank"><i class="fa fa-behance"></i></a></li>
-                            <li><a href="https://www.instagram.com/codetentaclestech/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="https://www.facebook.com/people/FrBilling-CT/pfbid0QfLDqvFXRwe4y5KcUHSwaJV6mXmmCTGzpYVy7rdTMH6DgVjgPwZeR8vmVj7DSog3l/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                            <li><a href="https://www.linkedin.com/in/prajkta-navlakhe-47790613b/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -1065,6 +1155,7 @@
                         <ul>
                             <li class="scroll-to-section"><a href="#services">Our Services</a></li>
                             <li class="scroll-to-section"><a href="#about">About</a></li>
+                            <li class="scroll-to-section"><a href="#Demos">Schedule Demo</a></li>
                             <li class="scroll-to-section"><a href="#portfolio">Pricing</a></li>
                             <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
 
@@ -1157,6 +1248,6 @@
 
 
 
-  
+
 </body>
 </html>

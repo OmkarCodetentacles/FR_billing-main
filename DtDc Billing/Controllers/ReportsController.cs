@@ -22,7 +22,7 @@ namespace DtDc_Billing.Controllers
 
     [SessionAdmin]
     //[SessionUserModule]
-   
+
     public class ReportsController : Controller
     {
         db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
@@ -50,7 +50,7 @@ namespace DtDc_Billing.Controllers
         [SessionAdmin]
         public ActionResult billedunbilled()
         {
-            
+
             List<Transaction> list = new List<Transaction>();
             //ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code==strpfcode), "PF_Code", "PF_Code");
             var list1 = new List<SelectListItem>
@@ -180,8 +180,8 @@ namespace DtDc_Billing.Controllers
                 ReciepentsPincode = x.ReciepentsPincode,
                 Pf_Code = x.Pf_Code,
                 Datetime_Cons = x.Datetime_Cons,
-                Charges_Total = x.Charges_Total,         
-            }).OrderByDescending(x=>x.Datetime_Cons).ToList();
+                Charges_Total = x.Charges_Total,
+            }).OrderByDescending(x => x.Datetime_Cons).ToList();
 
             // ViewBag.Employees = new SelectList(db.Users.Take(0), "Name", "Name");
 
@@ -189,7 +189,7 @@ namespace DtDc_Billing.Controllers
             //List<Receipt_details> rc = new List<Receipt_details>();
 
             ViewBag.sum = (from emp in db.Receipt_details
-                           where emp.Pf_Code== PfCode
+                           where emp.Pf_Code == PfCode
                            select emp.Charges_Total).Sum();
 
             return View(rc);
@@ -201,7 +201,7 @@ namespace DtDc_Billing.Controllers
         {
 
 
-          string PfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             if (Employees == null)
             {
@@ -210,7 +210,7 @@ namespace DtDc_Billing.Controllers
 
             List<Receipt_details> rc = new List<Receipt_details>();
 
-            rc = db.Receipt_details.OrderByDescending(x=>x.Datetime_Cons).ToList();
+            rc = db.Receipt_details.OrderByDescending(x => x.Datetime_Cons).ToList();
 
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
 
@@ -227,7 +227,7 @@ namespace DtDc_Billing.Controllers
                 if (Employees == "")
                 {
 
-                    rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
+                    rc = db.Receipt_details.Where(x => x.Pf_Code == PfCode).ToList();
                 }
                 else if (Employees == "")
                 {
@@ -247,7 +247,7 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                     var compdata = (from c in db.Companies
-                                    where c.Company_Name == Employees && c.Pf_code==PfCode
+                                    where c.Company_Name == Employees && c.Pf_code == PfCode
                                     select new { c.Company_Name }).FirstOrDefault();
 
                     rc = (from m in db.Receipt_details
@@ -262,7 +262,7 @@ namespace DtDc_Billing.Controllers
                 if (PfCode == "" && Employees == "")
                 {
 
-                    rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
+                    rc = db.Receipt_details.Where(x => x.Pf_Code == PfCode).ToList();
                 }
                 else if (PfCode != "" && Employees == "")
                 {
@@ -282,7 +282,7 @@ namespace DtDc_Billing.Controllers
                 else
                 {
                     var compdata = (from c in db.Companies
-                                    where c.Company_Name == Employees && c.Pf_code==PfCode
+                                    where c.Company_Name == Employees && c.Pf_code == PfCode
                                     select new { c.Company_Name }).FirstOrDefault();
 
                     rc = (from m in db.Receipt_details
@@ -313,7 +313,7 @@ namespace DtDc_Billing.Controllers
                 if (Employees == "")
                 {
 
-                    rc = db.Receipt_details.Where(m => m.Datetime_Cons != null && DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) && m.Pf_Code== PfCode).ToList();
+                    rc = db.Receipt_details.Where(m => m.Datetime_Cons != null && DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) && m.Pf_Code == PfCode).ToList();
 
                     //.ToList()
                     //.Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
@@ -321,12 +321,12 @@ namespace DtDc_Billing.Controllers
 
                 }
 
-               
+
                 else
                 {
                     var compdata = (from c in db.Companies
-                                   where c.Company_Name == Employees && c.Pf_code==PfCode
-                                   select new { c.Company_Name }).FirstOrDefault(); 
+                                    where c.Company_Name == Employees && c.Pf_code == PfCode
+                                    select new { c.Company_Name }).FirstOrDefault();
 
                     rc = (from m in db.Receipt_details
 
@@ -334,7 +334,7 @@ namespace DtDc_Billing.Controllers
                           && compdata.Company_Name == Employees
                           && m.Datetime_Cons != null
                           select m).ToList()
-                           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code==PfCode )
+                           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code == PfCode)
                               .ToList();
                 }
 
@@ -371,12 +371,12 @@ namespace DtDc_Billing.Controllers
 
         [SessionAdmin]
         [HttpPost]
-        public ActionResult UniqueReport( string ToDatetime, string Fromdatetime, string Submit)
+        public ActionResult UniqueReport(string ToDatetime, string Fromdatetime, string Submit)
         {
             List<Receipt_details> rc = new List<Receipt_details>();
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            rc = db.Receipt_details.Where(x=>x.Pf_Code==PfCode).ToList();
+            rc = db.Receipt_details.Where(x => x.Pf_Code == PfCode).ToList();
 
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
@@ -398,13 +398,13 @@ namespace DtDc_Billing.Controllers
             DateTime todate = Convert.ToDateTime(bdateto);
 
 
-            if (rc!=null)
+            if (rc != null)
             {
 
 
                 rc = db.Receipt_details.Where(m => m.Datetime_Cons != null)
                           .ToList()
-                          .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code==PfCode)
+                          .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code == PfCode)
                           .ToList();
             }
             //else
@@ -433,7 +433,7 @@ namespace DtDc_Billing.Controllers
         [SessionAdmin]
         public ActionResult GetUserList()
         {
-            string Pfcode= Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             db.Configuration.ProxyCreationEnabled = false;
 
             List<User> lstuser = new List<User>();
@@ -448,23 +448,25 @@ namespace DtDc_Billing.Controllers
         }
 
 
-
         [SessionAdmin]
-        public ActionResult DailyReport()
+        public ActionResult DailyReport(DateTime? dateTime)
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+            ViewBag.Consignment = TempData["Consignment"] == null ? null : TempData["Consignment"].ToString();
             DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
             DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
 
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-            List<Receipt_details> rc = db.Receipt_details.Where(m => m.Datetime_Cons.Value.Day == localTime.Day
-            && m.Datetime_Cons.Value.Month == localTime.Month
-            && m.Datetime_Cons.Value.Year == localTime.Year
+            var finalDate = (dateTime != null ? dateTime : localTime);
+
+            List<Receipt_details> rc = db.Receipt_details.Where(m =>  m.Datetime_Cons.Value.Day == finalDate.Value.Day
+            
+            && (m.Datetime_Cons.Value.Month == finalDate.Value.Month)
+            && (m.Datetime_Cons.Value.Year == finalDate.Value.Year)
             && m.Pf_Code == pfcode
-            ).OrderByDescending(x=>x.Datetime_Cons).ToList();
+            ).OrderByDescending(x => x.Datetime_Cons).ToList();
 
 
 
@@ -518,92 +520,10 @@ namespace DtDc_Billing.Controllers
 
 
 
-
-
-            return View(rc);
-
-        }
-
-        [HttpPost]
-        public ActionResult DailyReport(string searcheddate, string Submit)
-        {
-
-
-            DateTime? dateTime;
-
-            if (searcheddate == "")
-            {
-                dateTime = DateTime.Now;
-                ViewBag.date = String.Format("{0:dd/MM/yyyy}", dateTime);
-            }
-            else
-            {
-                dateTime = Convert.ToDateTime(searcheddate, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
-
-                ViewBag.date = searcheddate;
-            }
-
-            if (Submit == "Export to Excel")
-            {
-                ExportToExcel(dateTime);
-            }
-
-            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-            List<Receipt_details> rc = db.Receipt_details.Where(m => m.Datetime_Cons.Value.Day == dateTime.Value.Day
-            && m.Datetime_Cons.Value.Month == dateTime.Value.Month
-            && m.Datetime_Cons.Value.Year == dateTime.Value.Year
-            && m.Pf_Code == pfcode
-            ).ToList();
-
-
-
-
-            ViewBag.sum = (from emp in rc
-
-                           select emp.Charges_Total).Sum();
-
-
-            ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
-             && m.Datetime_Exp.Value.Month == dateTime.Value.Month
-             && m.Datetime_Exp.Value.Year == dateTime.Value.Year
-             && m.Pf_Code == pfcode
-           ).ToList();
-
-            ViewBag.expenseCount = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
-            && m.Datetime_Exp.Value.Month == dateTime.Value.Month
-            && m.Datetime_Exp.Value.Year == dateTime.Value.Year
-            && m.Pf_Code == pfcode
-         ).Select(m => m.Amount).Sum();
-
-
-
-            ViewBag.Payment = db.Payments.Where(m => m.Datetime_Pay.Value.Day == dateTime.Value.Day
-            && m.Datetime_Pay.Value.Month == dateTime.Value.Month
-            && m.Datetime_Pay.Value.Year == dateTime.Value.Year
-            && m.Pf_Code == pfcode
-          ).ToList();
-
-            ViewBag.PaymentCount = db.Payments.Where(m => m.Datetime_Pay.Value.Day == dateTime.Value.Day
-     && m.Datetime_Pay.Value.Month == dateTime.Value.Month
-     && m.Datetime_Pay.Value.Year == dateTime.Value.Year
-     && m.Pf_Code == pfcode
-   ).Select(m => m.amount).Sum();
-
-
-            ViewBag.Savings = db.Savings.Where(m => m.Datetime_Sav.Value.Day == dateTime.Value.Day
-          && m.Datetime_Sav.Value.Month == dateTime.Value.Month
-          && m.Datetime_Sav.Value.Year == dateTime.Value.Year
-          && m.Pf_Code == pfcode
-        ).ToList();
-
-            ViewBag.Savingscount = db.Savings.Where(m => m.Datetime_Sav.Value.Day == dateTime.Value.Day
-   && m.Datetime_Sav.Value.Month == dateTime.Value.Month
-   && m.Datetime_Sav.Value.Year == dateTime.Value.Year
-   && m.Pf_Code == pfcode
- ).Select(m => m.Saving_amount).Sum();
+            ViewBag.Fdate = finalDate;
 
             return View(rc);
+
         }
 
 

@@ -82,7 +82,7 @@
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
                     }
 
-                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Post))
+                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
                     {
 
                         <!--<label for="cars">Size:</label>
@@ -118,7 +118,7 @@
 
                             <label>Invoice Number</label>
 
-                            <input type="text" name="invoiceno" id="invoiceno" class="form-control" value="@ViewBag.invoiceno">
+                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceno">
 
                             @*@Html.DropDownList("Companydetails", "-Please select-")*@
 
@@ -213,7 +213,7 @@
 
                                         </td>
                                         <td>
-                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNo = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
+                                            @Html.ActionLink("Delete", "ViewInvoice", "Invoice", new { invoiceNotoDelete = item.invoiceno, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate, isDelete = true }, new { onclick = "return confirm('Do you really want to delete this invoice?')", @class = "delete-btn" })
                                         </td>
 
                                         <td>

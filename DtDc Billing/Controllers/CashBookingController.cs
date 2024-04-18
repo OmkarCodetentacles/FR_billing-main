@@ -2004,6 +2004,17 @@ Select(e => new
             }
 
         }
-
+        public ActionResult DeleteCashConsignment(string consignmentno,DateTime dateTime)
+        {
+            var receipt=db.Receipt_details.Where(x=>x.Consignment_No==consignmentno).FirstOrDefault();
+            if (receipt != null)
+            {
+                db.Receipt_details.Remove(receipt);
+                db.SaveChanges();
+                TempData["Consignment"] = "Consignment Deleted Successfully";
+              
+            }
+            return RedirectToAction("DailyReport", "Reports", new { dateTime = dateTime });
+        }
     }
 }

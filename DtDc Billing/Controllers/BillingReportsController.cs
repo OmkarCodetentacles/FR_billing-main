@@ -794,7 +794,66 @@ namespace DtDc_Billing.Controllers
                 }
                 else
                 {
-                    TempData["error"] = "Select Company";
+                    var DataSet1 = obj.ToList();
+                  
+                    LocalReport lr = new LocalReport();
+
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstandingWComppany.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+
+
+                    ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
+
+
+                    lr.DataSources.Add(rd2);
+
+                    string reportType = "pdf";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
+
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                       "<Margintop>0.1in</Margintop>" +
+                         "<Marginleft>0.1in</Marginleft>" +
+                          "<Marginright>0.1in</Marginright>" +
+                           "<Marginbottom>0.5in</Marginbottom>" +
+                           "</DeviceInfo>";
+
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+
+                    renderByte = lr.Render
+                  (reportType,
+                  deviceInfo,
+                  out mimeType,
+                  out encoding,
+                  out fileNameExte,
+                  out streams,
+                  out warnings
+                  );
+
+
+                    string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+                    }
+
+
+
+                   
+
+                    return File(renderByte, mimeType);
+
                 }
             }
            
