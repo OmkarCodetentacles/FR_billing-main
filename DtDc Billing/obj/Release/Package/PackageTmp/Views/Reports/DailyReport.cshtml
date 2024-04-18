@@ -47,10 +47,23 @@
                     <div class="col-md-12">
                         <div class="box box-info" style="padding: 16px 16px !important">
                             <div class="box-header with-border">
+                              
+                                
                                 <h3 class="box-title">Daily Report</h3>
                             </div><!-- /.box-header -->
+
                             <div class="box-body">
-                                @using (Html.BeginForm())
+
+                                @{
+                                    var successMessage = ViewBag.Consignment;
+                                }
+
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+
+                                @using (Html.BeginForm("DailyReport", "Reports", FormMethod.Get))
                                 {
 
                                     <div class="col-md-12 no-padding">
@@ -61,17 +74,12 @@
                                                     <div class="input-group-addon" style="border-radius:0 !important">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    @if (ViewBag.date != null)
-                                                    {
-                                                        <input class="form-control pull-right" id="datepicker" value="@ViewBag.date" name="searcheddate" type="text">
-                                                    }
-                                                    else
-                                                    {
-                                                        <input class="form-control pull-right" id="datepicker" name="searcheddate" type="text">
-                                                    }
+                                                  
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("MM/dd/yyyy")" type="text">
+                                                   
                                                 </div>
                                             </div>
-                                            <div class="col-md-1">
+                                            <div class="col-md-2">
                                                 <div class="form-group" style="margin: 24px auto">
                                                     <button type="submit" class="btn btn-block btn-primary" style="width:100%">Search</button>
                                                 </div>
@@ -98,11 +106,15 @@
                                                 <h3 class="box-title titlnew" style="margin:0">Consignment Report</h3>
                                                 <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(ViewBag.paidamount ?? 0)</p>
                                             </div><!-- /.box-header -->
+                                            <script>
+                                             
+                                            </script>
                                             <div class="mt-5">
                                                 <table id="example1" class="table Consignmentreport">
                                                     <thead>
                                                         <tr>
                                                             <th>Sr.No</th>
+                                                            <th>Action</th>
                                                             <th>
                                                                 @Html.DisplayNameFor(model => model.Consignment_No)
                                                             </th>
@@ -142,6 +154,13 @@
                                                                 <tr>
                                                                     <td>@(i++)</td>
                                                                     <td>
+                                                                        
+                                                                       
+
+                                                                        @Html.ActionLink("Delete", "DeleteCashConsignment", "CashBooking",
+                                                                      new { consignmentno = item.Consignment_No, dateTime = ViewBag.Fdate },new { onclick = "return confirm('Are you sure you want to delete this item?');" ,@class = "btn btn-danger", @id = "deleteLink" + i })
+                                                                                                                                    </td>
+                                                                    <td>
                                                                         @Html.DisplayFor(modelItem => item.Consignment_No)
                                                                     </td>
                                                                     <td>
@@ -167,10 +186,10 @@
                                                                         @Html.DisplayFor(modelItem => item.Paid_Amount)
                                                                     </td>
                                                                     @*<td>
-                                                                            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-                                                                            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-                                                                            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-                                                                        </td>*@
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                            </td>*@
 
                                                                 </tr>
                                                             }
@@ -274,7 +293,9 @@
                                                                 </td>
 
                                                             </tr>
+                                                            
                                                         }
+                                                        
                                                     </tbody>
 
                                                 </table>
@@ -405,22 +426,22 @@
                                                 </div>
 
                                                 @*<div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="box box-info">
-                                                                <div class="box-body text-left">
-                                                                    <p>Total Amount:   @ViewBag.sum</p>
-                                                                    <p>By Cash:   @ViewBag.bycash</p>
-                                                                    <p>By Card:   @ViewBag.bycard</p>
-                                                                    <p>By Cheque:   @ViewBag.bycheque</p>
-                                                                    <p>By Credit:   @ViewBag.bycredit</p>
-                                                                    <p>By Other:   @ViewBag.byother</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>*@
+                            <div class="col-md-12">
+                                <div class="box box-info">
+                                    <div class="box-body text-left">
+                                        <p>Total Amount:   @ViewBag.sum</p>
+                                        <p>By Cash:   @ViewBag.bycash</p>
+                                        <p>By Card:   @ViewBag.bycard</p>
+                                        <p>By Cheque:   @ViewBag.bycheque</p>
+                                        <p>By Credit:   @ViewBag.bycredit</p>
+                                        <p>By Other:   @ViewBag.byother</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
                                                 @*<div class="col-md-2">
-                                                        <p> Credit Amount: @ViewBag.openingbal</p>
-                                                    </div>*@
+                            <p> Credit Amount: @ViewBag.openingbal</p>
+                        </div>*@
 
                                                 <!-- /input-group -->
 
@@ -457,10 +478,10 @@
 </div>
 
 <script>
-    //Date picker
+    
     $('#datepicker').datepicker({
         autoclose: true,
-        format: 'dd-mm-yyyy'
+        format: 'mm/dd/yyyy'
     })
 
     $(function () {
@@ -469,5 +490,7 @@
 
         });
     });
+
+
 </script>
 
