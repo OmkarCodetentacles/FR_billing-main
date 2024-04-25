@@ -67,7 +67,14 @@ namespace DtDc_Billing.Controllers
 
             }
           
+            if(strpfcode== "MF868")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
 
+                invstart1 = dataInvStart + "/2024-25/";
+            }
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
@@ -93,6 +100,18 @@ namespace DtDc_Billing.Controllers
 
 
 
+
+                }
+                else if (franchisee.PF_Code == "PF2214")
+                {
+                    strarrinvno = lastInvoiceno1.Split('/');
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
+
+                }
+                else if (franchisee.PF_Code == "MF868")
+                {
+                    strarrinvno = lastInvoiceno1.Split('/');
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
                 else
