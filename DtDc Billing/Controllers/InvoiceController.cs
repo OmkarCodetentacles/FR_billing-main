@@ -108,12 +108,7 @@ namespace DtDc_Billing.Controllers
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
-                else if (franchisee.PF_Code == "MF868")
-                {
-                    strarrinvno = lastInvoiceno1.Split('/');
-                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
-
-                }
+               
                 else
                 {
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
@@ -1710,6 +1705,14 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
+                    if (strpfcode == "MF868")
+                    {
+                        dataInvStart = (from d in db.Franchisees
+                                        where d.PF_Code == strpfcode
+                                        select d.InvoiceStart).FirstOrDefault();
+
+                        invstart1 = dataInvStart + "/2024-25/";
+                    }
 
                     string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
                     string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
@@ -2381,6 +2384,14 @@ Select(e => new
                 invstart1 = dataInvStart + "/2024-25/";
 
 
+            }
+            if (strpfcode == "MF868")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
+
+                invstart1 = dataInvStart + "/2024-25/";
             }
             //string invstart1 = "IJS/2022-23/";
             string no = "";
