@@ -151,8 +151,8 @@
                                                                new SelectListItem() {Text = "Select Subscription", Value=""},
                                                                new SelectListItem() {Text = "1 Month", Value="1"},
                                                                new SelectListItem() {Text = "1 Year", Value="2"},
-                                                            }, new { @class = "form-control", id = "pid" })
-                                                            <a href="#" class="btn btn-success" onclick="renewSubscription('@item.Pfcode')">Renew</a>
+                                                            }, new { @class = "form-control", id = "pid_"+ srno1 })
+                                                            <a href="#" class="btn btn-success" onclick="renewSubscription('@item.Pfcode','@srno1')">Renew</a>
                                                         </td>
                                                     </tr>
                                                     srno1++;
@@ -180,9 +180,9 @@
 
     <!-- Your custom scripts -->
     <script>
-        function renewSubscription(pfcode) {
-            var selectedValue = document.getElementById('pid').value;
-
+        function renewSubscription(pfcode,srno) {
+            var selectedValue = document.getElementById('pid_'+ srno).value;
+            alert(selectedValue)
             if (selectedValue == "" || selectedValue == null) {
                 alert("Select Payment Subscription");
                 return false;
@@ -192,7 +192,12 @@
             }
         }
     </script>
-
+    @if (TempData["SuccessMessage"]as string != null)
+            {
+                <script>
+                    alert('@TempData["SuccessMessage"]')
+                </script>
+            }
     <!-- Initialize DataTables -->
     <script>
         $(document).ready(function () {

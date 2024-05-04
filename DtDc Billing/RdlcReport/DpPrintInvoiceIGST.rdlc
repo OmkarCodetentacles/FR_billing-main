@@ -385,9 +385,6 @@
             <Height>0.18056in</Height>
             <Width>2.65973in</Width>
             <ZIndex>11</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Docket_charges.Value, "invoice")&gt;0,false,true)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -406,7 +403,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Docket_charges.Value, "invoice")</Value>
+                    <Value>=IIf(IsNothing(First(Fields!Docket_charges.Value, "invoice")), 0.00, First(Fields!Docket_charges.Value, "invoice"))</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <Format>0.00;(0.00)</Format>
@@ -594,9 +591,6 @@
             <Height>0.18056in</Height>
             <Width>2.65973in</Width>
             <ZIndex>17</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Royalty_charges.Value, "invoice") &gt; 0, False, True)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -634,7 +628,7 @@
             <Width>1.95138in</Width>
             <ZIndex>18</ZIndex>
             <Visibility>
-              <Hidden>=IIf(First(Fields!Royalty_charges.Value, "invoice") &gt; 0, False, True)</Hidden>
+              <Hidden>=IIf(IsNothing(First(Fields!Royalty_charges.Value, "invoice")), 0.00, First(Fields!Royalty_charges.Value, "invoice"))</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -807,9 +801,6 @@
             <Height>0.1625in</Height>
             <Width>2.65973in</Width>
             <ZIndex>23</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Amount4.Value, "invoice") &gt; 0, False, True)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -828,7 +819,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Amount4.Value, "invoice")</Value>
+                    <Value>=IIf(IsNothing(First(Fields!Amount4.Value, "invoice")), 0.00, First(Fields!Amount4.Value, "invoice"))</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <Format>0.00;(0.00)</Format>

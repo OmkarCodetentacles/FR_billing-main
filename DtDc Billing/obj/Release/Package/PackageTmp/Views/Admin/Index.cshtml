@@ -1,20 +1,64 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@{
+    string robotsTxtPath = Server.MapPath("~/excelformat/robots.txt");
+    string robotsTxtContent = System.IO.File.ReadAllText(robotsTxtPath);
+}
+
 
 <head>
+    @{
+        string context = null;
+        string type = null;
+        string organizationName = "Fr-Billing";
+        string organizationUrl = "http://codetentaclestechnologies.com/";
+        string logoUrl = "https://frbilling.com/";
+        string phoneNumber = "+91 8208668841";
+        string facebookUrl = "https://www.facebook.com/profile.php?id=61555152457829";
+        string instagramUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        string linkedinUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+    }
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "@Html.Raw(organizationName)",
+  "url": "@Html.Raw(organizationUrl)",
+  "logo": "@Html.Raw(logoUrl)",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "@Html.Raw(phoneNumber)",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    "@Html.Raw(facebookUrl)",
+    "@Html.Raw(instagramUrl)",
+    "@Html.Raw(linkedinUrl)"
+  ]
+}
+    </script>
 
     <meta charset="UTF-8">
+
+    <meta name="robots" content="index,follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta property="og:title" content="Your Blog Post Title" />
+    <meta property="og:description" content="Your blog post description" />
+    <meta property="og:image" content="URL to your blog post image" />
+    <meta property="og:url" content="URL to your blog post" />
+
+    <meta name="description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." data-target="Unlock unparalleled efficiency with Fr-Billing - Your Ultimate Billing Solution. Discover how our cutting-edge platform revolutionizes billing processes, elevates user experience, and turbocharges productivity. Streamline operations effortlessly and stay ahead in today's dynamic business landscape. Click now to explore the future of billing">
+
+    <meta name="author" content="CodeTentacles Technologies">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://www.fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <title>FR-Billing | Index</title>
 
     <link rel="shortcut icon" href="~/assets/images/fav.png">
     <!-- Bootstrap core CSS -->
     <link href="~/assets/Home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="canonical" href="https://www.codetentaclestechnologies.com" />
 
 
     <!-- Additional CSS Files -->
@@ -29,100 +73,122 @@
     https://templatemo.com/tm-565-onix-digital
 
     -->
+    <style>
+        i.fa.fa-solid.fa-check {
+            color: #05844f;
+            margin: 0 6px;
+            display: grid;
+            align-items: center;
+        }
+
+        .contacticon {
+            margin-right: 5px;
+            width: 46px;
+            height: 46px;
+            display: inline-block;
+            text-align: center;
+            line-height: 46px;
+            border-radius: 50%;
+            background: rgb(255,104,95);
+            background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .contactus {
+            color: #ff7461;
+            font-size: 15px;
+            font-weight: 500;
+            margin-left: 30px;
+        }
+
+        .indian_wheel
+        {
+            width:20px;
+        }
+
+        .new-blue-button-hover {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: color 0.3s ease, font-size 0.3s ease;
+            animation: shake 0.3s ease infinite;
+        }
+
+            .new-blue-button-hover a {
+                color: inherit;
+            }
+
+            .new-blue-button-hover::after {
+                content: '';
+                position: absolute;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s ease, height 0.3s ease;
+                pointer-events: none;
+            }
+
+            .new-blue-button-hover:hover::after {
+                width: 200px;
+                height: 200px;
+            }
+
+            .new-blue-button-hover:hover {
+                animation-play-state: paused; /* Pause the shake animation on hover */
+            }
+
+        .main-banner .item h1 {
+            font-size: 50px;
+            font-weight: 700;
+            color: #2a2a2a;
+            line-height: 72px;
+        }
+
+            .main-banner .item h1 em {
+                color: #03a4ed;
+                font-style: normal;
+            }
+
+        @@keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-3px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
 </head>
-<style>
-    i.fa.fa-solid.fa-check {
-        color: #05844f;
-        margin: 0 6px;
-        display: grid;
-        align-items: center;
-    }
-    .contacticon {
-        margin-right: 5px;
-        width: 46px;
-        height: 46px;
-        display: inline-block;
-        text-align: center;
-        line-height: 46px;
-        border-radius: 50%;
-        background: rgb(255,104,95);
-        background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);
-        color: #fff;
-        font-size: 20px;
-    }
-    .contactus {
-        color: #ff7461;
-        font-size: 15px;
-        font-weight: 500;
-        margin-left: 30px;
-    }
 
-    .new-blue-button-hover {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    overflow: hidden;
-    transition: color 0.3s ease, font-size 0.3s ease;
-    animation: shake 0.3s ease infinite;
-}
-
-.new-blue-button-hover a {
-    color: inherit;
-}
-
-.new-blue-button-hover::after {
-    content: '';
-    position: absolute;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease;
-    pointer-events: none;
-}
-
-.new-blue-button-hover:hover::after {
-    width: 200px;
-    height: 200px;
-}
-
-.new-blue-button-hover:hover {
-    animation-play-state: paused; /* Pause the shake animation on hover */
-}
-
-@@keyframes shake {
-    0% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-5px);
-    }
-    50% {
-        transform: translateX(5px);
-    }
-    75% {
-        transform: translateX(-3px);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-
-
-</style>
 <body>
 
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
-            <img src="~/assets/Home/assets/images/loader.gif" alt="">
+            <img src="~/assets/Home/assets/images/loader.gif" alt="Loading animation">
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
@@ -133,8 +199,8 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="#" class="logo">
-                            <img src="~/assets/Home/assets/images/logo.png">
+                        <a href="#" class="logo" target="_self">
+                            <img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing logo">
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
@@ -149,7 +215,7 @@
 
                             <li class="scroll-to-section"><div class="main-red-button-hover"><a href="@Url.Action("AdminLogin","Admin")">Customer Login</a></div></li>
                         </ul>
-                        <a class='menu-trigger'>
+                        <a class='menu-trigger' href="">
                             <span>Menu</span>
                         </a>
                         <!-- ***** Menu End ***** -->
@@ -169,7 +235,7 @@
                             <div class="owl-carousel owl-banner">
                                 <div class="item header-text">
                                     <h6>Welcome to FR-Billing</h6>
-                                    <h2>Cloud-Based  <br> <em>Courier </em><span>Billing Software</span></h2>
+                                    <h1>Cloud-Based  <br> <em>Courier </em><span>Billing Software</span></h1>
                                     <p>Experience ease with our automated, Excel-supported solution - the perfect choice for courier franchisees.</p>
                                     <div class="down-buttons">
                                         <div class="main-blue-button-hover">
@@ -191,11 +257,11 @@
 
     <div id="services" class="our-services section">
         <div class="services-right-dec">
-            <img src="~/assets/Home/assets/images/services-right-dec.png" alt="">
+            <img src="~/assets/Home/assets/images/services-right-dec.png" alt="Decorative element on the right side of services section">
         </div>
         <div class="container">
             <div class="services-left-dec">
-                <img src="~/assets/Home/assets/images/services-left-dec.png" alt="">
+                <img src="~/assets/Home/assets/images/services-left-dec.png" alt="Decorative element on the left side of services section">
             </div>
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
@@ -212,60 +278,60 @@
                     <div class="owl-carousel owl-services">
                         <div class="item">
                             <h4>Simple to Use</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/easy-to-use.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/easy-to-use.png" alt="Easy-to-use interface illustration"></div>
                             <p>No tech skills? No problem! Our software is designed to be intuitive and user-friendly, making it accessible to everyone.</p>
                         </div>
                         <div class="item">
                             <h4>Flexible RateMaster</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/flexible.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/flexible.png" alt="Flexible Payment Options Illustration"></div>
                             <p>Easily set and adjust rates to align perfectly with your courier services, ensuring competitive and fair pricing.</p>
                         </div>
                         <div class="item">
                             <h4>Handle Lots of Bookings</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/bookings.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/bookings.png" alt="Booking Calendar Illustration"></div>
                             <p>Efficiently manage multiple orders simultaneously, streamlining your booking process and saving time.</p>
                         </div>
                         <div class="item">
                             <h4>Professional Bills</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/biils.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/biils.png" alt="Bill Payment Illustration"></div>
                             <p>Generate neat, tidy, and professional-looking bills that reflect the quality of your service.</p>
                         </div>
                         <div class="item">
                             <h4>Your Logo Here</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/logo1.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/logo1.png" alt="Fr-Billing Logo"></div>
                             <p>Customize your bills by adding your own logo, enhancing brand recognition and trust.</p>
                         </div>
                         <div class="item">
                             <h4>Help Walk-In Customers</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/customers.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/customers.png" alt="Satisfied Customers Illustration"></div>
                             <p>Serve walk-in customers promptly and efficiently, ensuring a positive experience.</p>
                         </div>
                         <div class="item">
                             <h4>Print Bills & Price Quotes</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/printbills.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/printbills.png" alt="Print Bills Icon"></div>
                             <p>Provide customers with printed bills and price estimates on the spot, enhancing transparency and communication.</p>
                         </div>
                         <div class="item">
                             <h4>Import Data from FRPlus</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/importdata.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/importdata.png" alt="Import Data Icon"></div>
                             <p>Seamlessly integrate data for a smoother and more efficient workflow.</p>
                         </div>
 
                         <div class="item">
                             <h4>Weight Difference Report</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/report.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/report.png" alt="Weight Difference Report Icon"></div>
                             <p>Ensure accurate billing by accommodating varied consignment weights in your reports.</p>
 
                         </div>
                         <div class="item">
                             <h4>Profit/Loss Report</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/profit-loss.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/profit-loss.png" alt="Profile loss Icon"></div>
                             <p>Evaluate your franchise's performance against DTDC charges, helping you make informed business decisions.</p>
 
                         </div>
                         <div class="item">
                             <h4>Stationery Inventory Management</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/inventorymanagement.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/inventorymanagement.png" alt="Inventry Management Icon"></div>
                             <p>
                                 Organize and monitor your office supplies effectively, ensuring you're always well-stocked.
                             </p>
@@ -273,7 +339,7 @@
                         </div>
                         <div class="item">
                             <h4>Reminder for Stationery Expiration</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/expiration.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/expiration.png" alt="Expiration Image"></div>
                             <p>
                                 Receive timely reminders to replenish your stationery, keeping your business running smoothly.
                             </p>
@@ -281,7 +347,7 @@
                         </div>
                         <div class="item">
                             <h4>Multiple Invoice Generation</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/invoice.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/invoice.png" alt="Invoice Image"></div>
                             <p>
                                 Effortlessly manage high-volume billing periods, ensuring no invoice is overlooked.
                             </p>
@@ -289,7 +355,7 @@
                         </div>
                         <div class="item">
                             <h4>Send Mail on Invoice Generation</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/sendmail.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/sendmail.png" alt="Send Email Image"></div>
                             <p>
                                 Automatically notify clients with invoice details, keeping them informed and engaged.
                             </p>
@@ -297,7 +363,7 @@
                         </div>
                         <div class="item">
                             <h4>No Booking Data</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/no-booking-data.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/no-booking-data.png" alt="No Booking Data List"></div>
                             <p>
                                 Identify consignments not booked by the franchisee but booked by DTDC, ensuring accurate record-keeping.
 
@@ -306,7 +372,7 @@
                         </div>
                         <div class="item">
                             <h4>Creditors Report</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/creditorsreport.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/creditorsreport.png" alt="Creditors report Image"></div>
                             <p>
                                 Maintain healthy finances by staying on top of payments and creditor relationships.
 
@@ -315,7 +381,7 @@
                         </div>
                         <div class="item">
                             <h4>Daily Report</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/dailyreport.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/dailyreport.png" alt="Daily Report Image"></div>
                             <p>
                                 Generate daily reports detailing all Payment-Ins and Payment-Outs for cash counter users.
 
@@ -324,7 +390,7 @@
                         </div>
                         <div class="item">
                             <h4>Additional Reports</h4>
-                            <div class="icon"><img src="~/assets/Home/imgs/additionalreport.png" alt=""></div>
+                            <div class="icon"><img src="~/assets/Home/imgs/additionalreport.png" alt="Additional Report Image"></div>
                             <p>
                                 Harness insightful reports to optimize and enhance your franchise operations.
 
@@ -358,7 +424,7 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <img src="~/assets/Home/assets/images/clients.png" alt="">
+                                            <img src="~/assets/Home/assets/images/clients.png" alt="Cleients Image">
                                         </div>
                                         <div class="count-digit">70+</div>
                                         <div class="count-title">clients</div>
@@ -370,7 +436,7 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <img src="~/assets/Home/assets/images/frenchiess.png" alt="">
+                                            <img src="~/assets/Home/assets/images/frenchiess.png" alt="Franchiseee Logo">
                                         </div>
                                         <div class="count-digit">45+</div>
                                         <div class="count-title">franchisee </div>
@@ -382,7 +448,7 @@
                                 <div class="fact-item">
                                     <div class="count-area-content">
                                         <div class="icon">
-                                            <img src="~/assets/Home/assets/images/experiences.png" alt="">
+                                            <img src="~/assets/Home/assets/images/experiences.png" alt="Experience Logo">
                                         </div>
                                         <div class="count-digit">4+</div>
                                         <div class="count-title">years experience</div>
@@ -564,30 +630,30 @@
                         <p>Schedule your demo online for convenience and efficiency. Choose a time that fits your schedule, receive automated reminders, and personalize your experience. Discover how our Fr-Billing can benefit you!</p>
                         <br>
                         <div class="new-blue-button-hover" id="scheduleButton">
-                            <a href="https://calendly.com/frbillingsoftware/short-overview" target="_blank">Schedule Now</a>
+                            <a href="https://www.calendly.com/frbillingsoftware/short-overview" target="_blank">Schedule Now</a>
                         </div>
                     </div>
 
                 </div>
                 <div class="col-lg-6">
                     <div class="left-image">
-                        <img src="https://frbilling.com/assets/Home/imgs/demo.png" alt="Two Girls working together">
+                        <img src="https://www.frbilling.com/assets/Home/imgs/demo.png" alt="Two Girls working together">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-   
 
-                @Html.Partial("ClientStory")
 
-            
+    @Html.Partial("ClientStory")
+
+
     <div id="portfolio" class="pricing-tables">
         <div class="tables-left-dec">
-            <img src="~/assets/Home/assets/images/tables-left-dec.png" alt="">
+            <img src="~/assets/Home/assets/images/tables-left-dec.png" alt="Tables Left Description Logo">
         </div>
         <div class="tables-right-dec">
-            <img src="~/assets/Home/assets/images/tables-right-dec.png" alt="">
+            <img src="~/assets/Home/assets/images/tables-right-dec.png" alt="Tables Right Description Logo">
         </div>
         <div class="container">
             <div class="row">
@@ -695,7 +761,7 @@
                             </li>
                         </ul>
                         <div class="main-blue-button-hover">
-                            <a href="#">Subscribe</a>
+                            <a href="#" target="_self">Subscribe</a>
                         </div>
                     </div>
                 </div>
@@ -924,7 +990,7 @@
                         </ul>
 
                         <div class="main-blue-button-hover">
-                            <a href="tel:8208668841" style="background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);font-size:14px">Contact Us on <i class="fa fa-phone"></i> +91 8208668841</a>
+                            <a href="tel:8208668841" style="background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);font-size:14px" target="_self">Contact Us on <i class="fa fa-phone"></i> +91 8208668841</a>
                         </div>
 
 
@@ -958,10 +1024,10 @@
 
     <div id="video" class="our-videos section" style="padding-top: 206px">
         <div class="videos-left-dec">
-            <img src="~/assets/Home/assets/images/videos-left-dec.png" alt="">
+            <img src="~/assets/Home/assets/images/videos-left-dec.png" alt="videos-left-dec.png">
         </div>
         <div class="videos-right-dec">
-            <img src="~/assets/Home/assets/images/videos-right-dec.png" alt="">
+            <img src="~/assets/Home/assets/images/videos-right-dec.png" alt="videos-left-dec.png">
         </div>
         <div class="container">
             <div class="row">
@@ -1035,7 +1101,7 @@
                                     <div class="menu">
                                         <div class="active">
                                             <div class="thumb">
-                                                <img src="~/assets/Home/assets/images/video-thumb-01.png" alt="">
+                                                <img src="~/assets/Home/assets/images/video-thumb-01.png" alt="Video Thumb Nail 01">
                                                 <div class="inner-content">
                                                     <h4>About FR-Billing</h4>
 
@@ -1044,7 +1110,7 @@
                                         </div>
                                         <div>
                                             <div class="thumb">
-                                                <img src="~/assets/Home/assets/images/video-thumb-02.png" alt="">
+                                                <img src="~/assets/Home/assets/images/video-thumb-02.png" alt="Video Thumb Nail 02">
                                                 <div class="inner-content">
                                                     <h4>Our Vision</h4>
 
@@ -1072,65 +1138,69 @@
     </div>
 
     @*<div id="contact" class="contact-us section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="section-heading">
-                            <h2> <em>Contact</em>  <span>US</span></h2>
-                            <div id="map">
-                                <iframe src="https://maps.google.com/maps?q=Av.+L%C3%BAcio+Costa,+Rio+de+Janeiro+-+RJ,+Brazil&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="360px" frameborder="0" style="border:0" allowfullscreen=""></iframe>
-                            </div>
-                            <div class="info">
-                                <span><i class="fa fa-phone"></i> <a href="#" class="m-auto">8208668841</a></span>
-                                <span><i class="fa fa-envelope"></i> <a href="#" class="m-auto">frbilling@gmail.com</a></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 align-self-center">
-                        <form id="contact" action="" method="get">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <input type="name" name="name" id="name" placeholder="Name" autocomplete="on" required>
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <input type="surname" name="surname" id="surname" placeholder="Surname" autocomplete="on" required>
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <input type="text" name="email" id="email" pattern="" placeholder="Your Email" required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <input type="text" name="website" id="website" placeholder="Your Website URL" required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <button type="submit" id="form-submit" class="main-button">Submit Request</button>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="contact-dec">
-                <img src="~/assets/Home/assets/images/contact-dec.png" alt="">
-            </div>
-            <div class="contact-left-dec">
-                <img src="~/assets/Home/assets/images/contact-left-dec.png" alt="">
-            </div>
-        </div>*@
+                   <div class="container">
+                       <div class="row">
+                           <div class="col-lg-7">
+                               <div class="section-heading">
+                                   <h2> <em>Contact</em>  <span>US</span></h2>
+                                   <div id="map">
+                                       <iframe src="https://maps.google.com/maps?q=Av.+L%C3%BAcio+Costa,+Rio+de+Janeiro+-+RJ,+Brazil&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="360px" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+                                   </div>
+                                   <div class="info">
+                                       <span><i class="fa fa-phone"></i> <a href="#" class="m-auto">8208668841</a></span>
+                                       <span><i class="fa fa-envelope"></i> <a href="#" class="m-auto">frbilling@gmail.com</a></span>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-lg-5 align-self-center">
+                               <form id="contact" action="" method="get">
+                                   <div class="row">
+                                       <div class="col-lg-12">
+                                           <fieldset>
+                                               <input type="name" name="name" id="name" placeholder="Name" autocomplete="on" required>
+                                           </fieldset>
+                                       </div>
+                                       <div class="col-lg-12">
+                                           <fieldset>
+                                               <input type="surname" name="surname" id="surname" placeholder="Surname" autocomplete="on" required>
+                                           </fieldset>
+                                       </div>
+                                       <div class="col-lg-12">
+                                           <fieldset>
+                                               <input type="text" name="email" id="email" pattern="" placeholder="Your Email" required="">
+                                           </fieldset>
+                                       </div>
+                                       <div class="col-lg-12">
+                                           <fieldset>
+                                               <input type="text" name="website" id="website" placeholder="Your Website URL" required="">
+                                           </fieldset>
+                                       </div>
+                                       <div class="col-lg-12">
+                                           <fieldset>
+                                               <button type="submit" id="form-submit" class="main-button">Submit Request</button>
+                                           </fieldset>
+                                       </div>
+                                   </div>
+
+
+
+        <div class="contact-dec">
+            <img src="~/assets/Home/assets/images/contact-dec.png" alt="contact description Image">
+        </div>
+        <div class="contact-left-dec">
+            <img src="~/assets/Home/assets/images/contact-left-dec.png" alt="contact left-dec png">
+        </div>
+                               </form>
+                           </div>
+                       </div>
+                   </div>
+
+               </div>*@
     <div id="contact" class="contact-us section">
         @Html.Partial("ContactUsPartialView")
     </div>
     <div class="footer-dec">
-        <img src="~/assets/Home/assets/images/footer-dec.png" alt="">
+        <img src="~/assets/Home/assets/images/footer-dec.png" alt="Footer Image">
     </div>
 
     <footer>
@@ -1141,7 +1211,7 @@
                         <div class="logo">
                             <a href="#"><img src="~/assets/Home/assets/images/logo.png" alt="Onix Digital TemplateMo"></a>
                         </div>
-                        <a href="mailto:info@frbilling.com" type="email">info@frbilling.com</a>
+                        <a href="mailto:info@frbilling.com" type="email" target="_blank">info@frbilling.com</a>
                         <ul>
                             <li><a href="https://www.facebook.com/people/FrBilling-CT/pfbid0QfLDqvFXRwe4y5KcUHSwaJV6mXmmCTGzpYVy7rdTMH6DgVjgPwZeR8vmVj7DSog3l/" target="_blank"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank"><i class="fa fa-youtube"></i></a></li>
@@ -1158,7 +1228,9 @@
                             <li class="scroll-to-section"><a href="#Demos">Schedule Demo</a></li>
                             <li class="scroll-to-section"><a href="#portfolio">Pricing</a></li>
                             <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
-
+                            <li class="scrll-to-section">
+                                <a href="http://frbilling.com/excelformat/robots.txt" target="_blank">About Us</a>
+                            </li>
                         </ul>
                     </div>
 
@@ -1198,8 +1270,10 @@
                 <div class="col-lg-12">
                     <div class="copyright">
                         <p>
-                            Copyright © @DateTime.Now.Year FR Billing, Ltd. All Rights Reserved.
-                            <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>
+                            @*Copyright © @DateTime.Now.Year FR Billing, Ltd. All Rights Reserved.
+        <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>*@
+                            <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="https://frbilling.com/uploadedlogo/indiaFlag.jpg" alt="India Flag" class="indian_wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">codetentacles</span></a> <a href="https://frbilling.com" target="_blank"><span class="text-primary">frbilling</span></a></strong>
+
                         </p>
                     </div>
                 </div>

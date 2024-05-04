@@ -66,6 +66,14 @@ namespace DtDc_Billing.Controllers
 
 
             }
+            if(strpfcode == "PF1649")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
+
+                invstart1 = dataInvStart + "/2024-25/";
+            }
           
             if(strpfcode== "MF868")
             {
@@ -1705,7 +1713,7 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
-                    if (strpfcode == "MF868")
+                    if (strpfcode == "MF868" || strpfcode=="PF1649")
                     {
                         dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
@@ -2385,6 +2393,15 @@ Select(e => new
 
 
             }
+            if (strpfcode == "PF1649")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
+
+                invstart1 = dataInvStart + "/2024-25/";
+            }
+
             if (strpfcode == "MF868")
             {
                 dataInvStart = (from d in db.Franchisees

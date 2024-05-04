@@ -391,9 +391,6 @@
             <Height>0.18056in</Height>
             <Width>2.37848in</Width>
             <ZIndex>10</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Docket_charges.Value, "invoice")&gt;0,false,true)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -412,7 +409,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Docket_charges.Value, "invoice")</Value>
+                    <Value>=IIf(IsNothing(First(Fields!Docket_charges.Value, "invoice")), 0.00, First(Fields!Docket_charges.Value, "invoice"))</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <Format>0.00;(0.00)</Format>
@@ -763,9 +760,6 @@
             <Height>0.18056in</Height>
             <Width>2.37848in</Width>
             <ZIndex>21</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Royalty_charges.Value, "invoice") &gt; 0, False, True)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -784,7 +778,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Royalty_charges.Value, "invoice")</Value>
+                    <Value>=IIf(IsNothing(First(Fields!Royalty_charges.Value, "invoice")), 0.00, First(Fields!Royalty_charges.Value, "invoice"))</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <Format>0.00;(0.00)</Format>
@@ -802,9 +796,6 @@
             <Height>0.18056in</Height>
             <Width>1.95138in</Width>
             <ZIndex>22</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Royalty_charges.Value, "invoice") &gt; 0, False, True)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -946,9 +937,6 @@
             <Height>0.18056in</Height>
             <Width>1.95138in</Width>
             <ZIndex>26</ZIndex>
-            <Visibility>
-              <Hidden>=IIf(First(Fields!Amount4.Value, "invoice") &gt; 0, False, True)</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>

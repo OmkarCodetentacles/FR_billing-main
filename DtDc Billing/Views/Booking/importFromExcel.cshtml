@@ -44,11 +44,13 @@
         }*@
 
                     @*@if (TempData["error"] != null)
-                    {
-                        <div class="alert alert-danger">
-                            <strong>Error!</strong> @TempData["error"]
-                        </div>
-                    }*@
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong> @TempData["error"]
+            </div>
+        }*@
+    
+
 
                     <div class="form-horizontal">
                         <div class="box-body">
@@ -62,7 +64,7 @@
                                                 <label for="file"><strong id="up-txt"> Upload for Document </strong></label>
                                                 <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
                                                 <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn"/>
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
                                                     <a href="http://frbilling.com/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a>
                                                 </div>
                                             </div>
@@ -80,60 +82,60 @@
 
                     <div class="form-horizontal">
                         <div class="box-body">
-                     <div class="row">
-                          <div class="col-md-12">
-                        <div class="form-group">
-                            @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-                                <div class="col-md-8 no-padding">
-                                    <label for="file"><strong id="up-txt"> Upload for Non-Document </strong></label>
-                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
-                                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn"/>
-                                        <a href="http://frbilling.com/excelformat/UploadforNonDocument.xlsx" class="btn btn-success" > Export Excel</a>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-8 no-padding">
+                                                <label for="file"><strong id="up-txt"> Upload for Non-Document </strong></label>
+                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                    <a href="http://frbilling.com/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                                </div>
+                                            </div>
+
+                                        }
                                     </div>
                                 </div>
+                            </div>
+                            <hr />
 
-                            }
                         </div>
+
+
+
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                            {
+                                                <div class="col-md-8 no-padding">
+                                                    <label for="file"><strong id="up-txt"> Upload New </strong></label>
+                                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                        <a href="http://frbilling.com/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a>
+                                                    </div>
+                                                </div>
+
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+
+                            </div>
                         </div>
-                     </div>
-                        <hr />
-
-                    </div>
 
 
 
-                    <div class="form-horizontal">
-                        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                        <div class="form-group">
-            @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="col-md-8 no-padding">
-                    <label for="file"><strong id="up-txt"> Upload New </strong></label>
-                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
-                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                        <a href="http://frbilling.com/excelformat/UploadNew.xlsx" class="btn btn-success" > Export Excel</a>
                     </div>
                 </div>
-              
-                  
-            }
-        </div>
-                        </div>
-            </div>
-                        <hr />
-
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
     </div>
 
 </div>
