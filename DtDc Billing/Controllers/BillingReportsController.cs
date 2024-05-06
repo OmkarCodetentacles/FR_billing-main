@@ -677,7 +677,7 @@ namespace DtDc_Billing.Controllers
             {
                 if (Custid != null && Custid != "")
                 {
-                    var DataSet1 = obj.ToList();
+                    var DataSet1 = obj.OrderBy(x=>x.IN_Id).ToList();
                     var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
                     var pfcode = DataSet2.FirstOrDefault().Pf_code;
                     var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode).ToList();
@@ -794,7 +794,7 @@ namespace DtDc_Billing.Controllers
                 }
                 else
                 {
-                    var DataSet1 = obj.ToList();
+                    var DataSet1 = obj.OrderBy(x => x.IN_Id).ToList();
                   
                     LocalReport lr = new LocalReport();
 
