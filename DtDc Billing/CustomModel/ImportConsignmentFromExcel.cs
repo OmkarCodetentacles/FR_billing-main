@@ -255,8 +255,10 @@ namespace DtDc_Billing.CustomModel
                     var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
 
                     //string[] formats = { "dd-MM-yyyy" };
-                    string[] formats = { "dd-MM-yyyy" };
+                   // string[] formats = { "dd-MM-yyyy","dd-MMM-yyyy", "yyyy-MM-dd",
+                   //"dd-MM-yyyy", "M/d/yyyy","d/M/yyyy", "dd MMM yyyy","MM-dd-yyyy","M-d-yyyy","dd/MM/yyyy","d-M-yyyy","d-MM-yyyy","d/MM/yyyy" ,"dd/M/yyyy","M/d/yyyy h:mm:ss tt","d/M/yyyy h:mm:ss tt","MM/dd/yyyy h:mm:ss tt","dd/MM/yyyy h:mm:ss tt","M/dd/yyyy h:mm:ss tt","d/MM/yyyy h:mm:ss tt","MM/d/yyyy h:mm:ss tt","dd/M/yyyy h:mm:ss tt"};
 
+                    string[] formats = { "d/M/yyyy h:mm:ss tt", "dd/MM/yyyy h:mm:ss tt"/*"M/d/yyyy h:mm:ss tt", "MM/dd/yyyy h:mm:ss tt"*/ };
                     #region getting cookies pf code
 
                     BookingController admin = new BookingController();
@@ -291,7 +293,7 @@ namespace DtDc_Billing.CustomModel
                                     DateTime dateTime;
 
                                     // Parse the date string with the specified format
-                                    if (DateTime.TryParseExact(dateString, "dd-MM-yyyy", null, System.Globalization.DateTimeStyles.None, out dateTime))
+                                    if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out dateTime))
                                     {
                                         // Convert the DateTime object to the Excel date number
                                         double excelDateNumber = dateTime.ToOADate();
@@ -304,7 +306,7 @@ namespace DtDc_Billing.CustomModel
 
                                         // Set the booking date
                                         tran.booking_date = formattedDateTime;
-
+                                       // tran.tembookingdate = dateTime.ToString("dd-MM-yyyy");
                                         // Set the tembookingdate
                                         tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
                                     }
