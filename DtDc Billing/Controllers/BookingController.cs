@@ -17,6 +17,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using DtDc_Billing.CustomModel;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Transactions;
+using Transaction = DtDc_Billing.Entity_FR.Transaction;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1795,10 +1799,179 @@ namespace DtDc_Billing.Controllers
             }
 
             TempData["Upload"] = "File Uploaded Successfully!";
-
             return RedirectToAction("ConsignMent", "Booking");
-
         }
 
+
+
+
+        //Sr.No Consignment No Chargable Weight Mode    Company Address Quanntity Pincode BookingDate(dd-MM-YYYY)    Type Customer Id other changes Receiver
+
+         public ActionResult ExportCSV()
+        {
+            string csvContent = "SrNo,ConsignmentNo,ChargableWeight,Mode,CompanyAddress,Quantity,Pincode,BookingDate(dd/MM/yyyy)/(dd-MM-yyyy),Type,CustomerId,OtherCharges,Receiver\n";
+
+            byte[] csvBytes = System.Text.Encoding.UTF8.GetBytes(csvContent);
+
+            return File(csvBytes, "text/csv", "UploadNewCSV.csv");
+        }
+        [HttpPost]
+        public ActionResult ImportCSV(HttpPostedFileBase file)
+        {
+            
+
+
+            if (file != null)
+            {
+                var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var passcsvdata = SaveBookingDatabyCSVFile(file, PfCode);
+
+                TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+            return RedirectToAction("importFromExcel");
+
+
+        }
+        public string SaveBookingDatabyCSVFile(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        {
+            var damageResult = Task.Run(() => asyncAddNewImportFromCSVFile(httpPostedFileBase, PfCode));
+
+            return damageResult.ToString();
+        }
+        public async Task<string> asyncAddNewImportFromCSVFile(HttpPostedFileBase file,string strpfcode)
+        {
+            string[] formats = { "dd-MM-yyyy","dd/MM/yyyy","dd/M/yyyy","d/MM/yyyy","d-MM-yyyy","dd-M-yyyy"};
+            if (file != null && file.ContentLength > 0)
+            {
+                using (StreamReader reader = new StreamReader(file.InputStream))
+                {
+                    // Skip the header row
+                    reader.ReadLine();
+
+                    // Process CSV data and store in the database
+                    while (!reader.EndOfStream)
+                    {
+                        Transaction tran = new Transaction();
+                        string line = reader.ReadLine();
+                        string[] fields = line.Split(',');
+
+                        //// Assuming fields are in the correct order as per the model
+                        //var newBooking = new ExportBookingCSV
+                        //{
+                        //    SrNo = int.Parse(fields[0]),
+                        //    ConsignmentNo = fields[1],
+                        //    ChargableWeight = double.Parse(fields[2]), // Parse as double
+                        //    Mode = fields[3],
+                        //    CompanyAddres = fields[4],
+                        //    Quanntity = int.Parse(fields[5]),
+                        //    Pincode = (fields[6]),
+
+
+
+                        //    BookingDate = DateTime.ParseExact(fields[7], formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("dd-MM-yyyy"),
+
+                        //    Type = fields[8],
+                        //    CustomerId = fields[9],
+                        //    otherchanges = float.Parse(fields[10]),
+                        //    Receiver = fields[11]
+                        //};
+
+                        tran.Consignment_no = fields[1];
+                        tran.chargable_weight= double.Parse(fields[2]);
+                        tran.Mode = fields[3];
+                        tran.compaddress = fields[4];
+                        tran.Quanntity = int.TryParse(fields[5], out int quantity) ? quantity : 0;
+                        tran.Pincode = fields[6];
+
+                        string dateformat = fields[7];
+
+                        tran.tembookingdate = DateTime.ParseExact(fields[7], formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("dd-MM-yyyy");
+
+                        tran.Type_t = fields[8];
+                        tran.Customer_Id = fields[9];
+                        tran.loadingcharge = float.TryParse(fields[10], out float charge) ? charge : 0.0f;
+
+                        tran.Receiver = fields[11];
+
+
+                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == strpfcode).FirstOrDefault();
+                        var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id&& m.Pf_code == strpfcode).Select(m => m.Pf_code).FirstOrDefault();
+                        string bdatestring;
+                        if (Pf_Code != null)
+                        {
+
+                            if (transaction != null)
+                            {
+
+                                CalculateAmount ca = new CalculateAmount();
+
+                                double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+
+                                transaction.Amount = amt;
+                                transaction.Customer_Id = tran.Customer_Id;
+
+                                transaction.Consignment_no = tran.Consignment_no;
+                                transaction.chargable_weight = tran.chargable_weight;
+                                transaction.Mode = tran.Mode;
+                                transaction.compaddress = tran.compaddress;
+                                transaction.Quanntity = tran.Quanntity;
+                                transaction.Pincode =tran.Pincode;
+                                 bdatestring = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                                transaction.booking_date = Convert.ToDateTime(bdatestring);
+                                transaction.Type_t = tran.Type_t;
+                                transaction.tembookingdate = tran.tembookingdate;
+                                transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+                                transaction.AdminEmp = 000;
+                                transaction.loadingcharge =tran.loadingcharge;
+                                tran.Receiver = tran.Receiver;
+
+
+                                db.Entry(transaction).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                            else
+                            {
+                                CalculateAmount ca = new CalculateAmount();
+
+
+                                double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+
+                                tran.Amount = amt;
+
+                                string bdate = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                                tran.tembookingdate = tran.tembookingdate;
+                                tran.booking_date = Convert.ToDateTime(bdate);
+
+                                tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+                                tran.AdminEmp = 000;
+
+                                db.Transactions.Add(tran);
+                                db.SaveChanges();
+
+                            }
+
+                        }
+
+
+
+                    }
+                }
+
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }
+        }
+     
+
+
+       
     }
 }
