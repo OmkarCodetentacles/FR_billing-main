@@ -643,7 +643,7 @@ Select(e => new
                         db.SaveChanges();
 
 
-                        Companies = db.Transactions.Where(m => m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
                         Companies.ForEach(m => m.status_t = invoice.invoiceno);
@@ -730,7 +730,7 @@ Select(e => new
                         db.SaveChanges();
 
 
-                        Companies = db.Transactions.Where(m => m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
                         Companies.ForEach(m => m.status_t = invoice.invoiceno);
@@ -746,14 +746,14 @@ Select(e => new
                 LocalReport lr = new LocalReport();
 
 
-                var dataset = db.TransactionViews.Where(m => m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                var dataset = db.TransactionViews.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
              Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                            .ToList();
 
                 var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
                 franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
 
-                var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno);
+                var dataset3 = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
                 var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
 

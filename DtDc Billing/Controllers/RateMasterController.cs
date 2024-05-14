@@ -1385,6 +1385,7 @@ namespace DtDc_Billing.Controllers
                 TempData["ShowLoader"] = true;
 
                 var Non_IDarray = fc.GetValues("item.Non_ID");
+                var Non_IDSarray = fc.GetValues("item.NonIDS");
                 var Aslab1arayy = fc.GetValues("item.Aslab1");
                 var Aslab2arayy = fc.GetValues("item.Aslab2");
                 var Aslab3arayy = fc.GetValues("item.Aslab3");
@@ -1455,39 +1456,49 @@ namespace DtDc_Billing.Controllers
 
                 for (int i = 0; i < Non_IDarray.Count(); i++)
                 {
-                    
-
                     Nondox rm = db.Nondoxes.Find(Convert.ToInt16(Non_IDarray[i]));
 
-                   if(rm.Sector.BillNonAir==true && rm.Sector.BillNonSur == true)
-                    {
-                        rm.Aslab1 = Convert.ToDouble(Aslab1arayy[i]);
-                        rm.Aslab2 = Convert.ToDouble(Aslab2arayy[i]);
-                        rm.Aslab3 = Convert.ToDouble(Aslab3arayy[i]);
-                        rm.Aslab4 = Convert.ToDouble(Aslab4arayy[i]);
-                        rm.Sslab1 = Convert.ToDouble(Sslab1arayy[i]);
-                        rm.Sslab2 = Convert.ToDouble(Sslab2arayy[i]);
-                        rm.Sslab3 = Convert.ToDouble(Sslab3arayy[i]);
-                        rm.Sslab4 = Convert.ToDouble(Sslab4arayy[i]);
-                        rm.AUptosl1 = Convert.ToDouble(Auptoarray[0]);
-                        rm.AUptosl2 = Convert.ToDouble(Auptoarray[1]);
-                        rm.AUptosl3 = Convert.ToDouble(Auptoarray[2]);
-                        rm.AUptosl4 = Convert.ToDouble(Auptoarray[3]);
-                        rm.SUptosl1 = Convert.ToDouble(Suptoarray[0]);
-                        rm.SUptosl2 = Convert.ToDouble(Suptoarray[1]);
-                        rm.SUptosl3 = Convert.ToDouble(Suptoarray[2]);
-                        rm.SUptosl4 = Convert.ToDouble(Suptoarray[3]);
-                        rm.Company_id = CompanyId;
-                        rm.Sector_Id = Convert.ToInt16(sectoridarray[i]);
-                        rm.NoOfSlabN = Convert.ToInt16(NoofslabN[0]);
-                        rm.NoOfSlabS = Convert.ToInt16(NoofslabS[0]);
+                    rm.Aslab1 = Convert.ToDouble(Aslab1arayy[i]);
+                    rm.Aslab2 = Convert.ToDouble(Aslab2arayy[i]);
+                    rm.Aslab3 = Convert.ToDouble(Aslab3arayy[i]);
+                    rm.Aslab4 = Convert.ToDouble(Aslab4arayy[i]);
 
-                        db.Entry(rm).State = EntityState.Modified;
-                        db.SaveChanges();
+                    rm.AUptosl1 = Convert.ToDouble(Auptoarray[0]);
+                    rm.AUptosl2 = Convert.ToDouble(Auptoarray[1]);
+                    rm.AUptosl3 = Convert.ToDouble(Auptoarray[2]);
+                    rm.AUptosl4 = Convert.ToDouble(Auptoarray[3]);
 
-                    }
+                    rm.Company_id = CompanyId;
+                    // rm.Sector_Id = Convert.ToInt16(sectoridarray[i]);
+                    rm.NoOfSlabN = Convert.ToInt16(NoofslabN[0]);
 
-                   
+                    db.Entry(rm).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+
+                for (int i = 0; i < Non_IDSarray.Count(); i++)
+                {
+
+
+                    Nondox rm = db.Nondoxes.Find(Convert.ToInt16(Non_IDSarray[i]));
+
+
+                    rm.Sslab1 = Convert.ToDouble(Sslab1arayy[i]);
+                    rm.Sslab2 = Convert.ToDouble(Sslab2arayy[i]);
+                    rm.Sslab3 = Convert.ToDouble(Sslab3arayy[i]);
+                    rm.Sslab4 = Convert.ToDouble(Sslab4arayy[i]);
+                    rm.SUptosl1 = Convert.ToDouble(Suptoarray[0]);
+                    rm.SUptosl2 = Convert.ToDouble(Suptoarray[1]);
+                    rm.SUptosl3 = Convert.ToDouble(Suptoarray[2]);
+                    rm.SUptosl4 = Convert.ToDouble(Suptoarray[3]);
+                    rm.Company_id = CompanyId;
+                    // rm.Sector_Id = Convert.ToInt16(sectoridarray[i]);
+
+                    rm.NoOfSlabS = Convert.ToInt16(NoofslabS[0]);
+
+                    db.Entry(rm).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
 
 

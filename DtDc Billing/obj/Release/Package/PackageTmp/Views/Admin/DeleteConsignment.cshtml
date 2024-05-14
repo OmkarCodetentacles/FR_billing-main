@@ -1,77 +1,105 @@
 ﻿
 @{
-    ViewBag.Title = "DeleteCons";
+    ViewBag.Title = "DeleteConsignment";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
+<style>
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        height: 36px !important;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info">
 
-<section class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h4>Delete Consignment</h4>
-                </div>
+        <div class="box-header with-border">
+            <h4>
+                Delete Consignment
+                <a href="https://www.youtube.com/watch?v=NrRtW2ui1vg&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=22"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
 
-                <div class="form-horizontal">
-                    <div class="box-body">
+                    @{
+                        var failMessage = TempData["fail"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(failMessage))
+                    {
+
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", failMessage))
+                    }
+
+                    @{
+                        var successMessage = TempData["Success"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+
+                    <div class="form-horizontal">
+
                         <div class="row">
-                            <div class="col-md-12">
-                                @{
-                                    var failMessage = TempData["fail"] as string;
-                                }
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("DeleteConsignment", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
 
-                                @if (!string.IsNullOrEmpty(failMessage))
-                                {
+                                        <div class="form-horizontal">
+                                            <div class="box-body">
 
-                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", failMessage))
-                                }
+                                                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                @{
-                                    var successMessage = TempData["Success"] as string;
-                                }
-
-                                @if (!string.IsNullOrEmpty(successMessage))
-                                {
-
-                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                                }
+                                                    @Html.HiddenFor(model => model.F_Id, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    @Html.ValidationMessageFor(model => model.F_Id, "", new { @class = "text-danger" })
 
 
-                                @using (Html.BeginForm("DeleteConsignment", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                                {
-                                    @Html.AntiForgeryToken()
+                                                    @Html.HiddenFor(model => model.PF_Code)*@
 
-                                    <div class="form-horizontal">
-                                        <div class="box-body">
-
-                                            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    @Html.HiddenFor(model => model.F_Id, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                    @Html.ValidationMessageFor(model => model.F_Id, "", new { @class = "text-danger" })
+                                                <div class="form-group">
+                                                    <label class="col-md-4"> <strong>Consignment No</strong></label>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" name="Consignment_no" id="consno">
+                                                    </div>
 
 
-                    @Html.HiddenFor(model => model.PF_Code)*@
 
-                                            <div class="form-group">
-                                                <label class="col-md-2"> Consignment No</label>
-                                                <div class="col-md-5">
-                                                    <input type="text" class="form-control" name="Consignment_no" id="consno">
+
+                                                    <div class="col-md-1">
+                                                        <input type="submit" value="Delete" class="btn btn-danger" id="deleteButton"/>
+                                                     
+                                                    </div>
+
+                                                    <div class="col-md-1">
+                                                        <input type="button" class="btn btn-warning" id="cancelButton" value="Cancel">
+
+                                                    </div>
                                                 </div>
-
-
-
-
-                                                <div class="col-md-2">
-                                                    <input type="submit" value="Delete" class="btn btn-danger" />
-                                                </div>
-
-
                                             </div>
+
                                         </div>
 
-                                    </div>
-
-                                }
+                                    }
+                                </div>
 
                             </div>
                         </div>
@@ -80,21 +108,39 @@
             </div>
         </div>
     </div>
-</section>
 
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#deleteButton').click( function (e) {
+            
+            var confirmation = confirm('Are you sure you want to delete?');
+            if (!confirmation) {
+                e.preventDefault();
+            }
+        });
+
+        $('#cancelButton').click( function () {
+           
+          
+            window.location.href = '/Home/Index'; // Redirect to Admin Index page
+        });
+    })
+</script>
 
 @*@if (TempData["fail"] != null)
-{
-    <script>
-        alert('@TempData["fail"]');
-    </script>
-}*@
+    {
+        <script>
+            alert('@TempData["fail"]');
+        </script>
+    }*@
 
 
 
 @*@if (TempData["Success"] != null)
-{
-    <script>
-        alert('@TempData["Success"]');
-    </script>
-}*@
+    {
+        <script>
+            alert('@TempData["Success"]');
+        </script>
+    }*@

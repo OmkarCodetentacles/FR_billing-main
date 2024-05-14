@@ -255,10 +255,10 @@ namespace DtDc_Billing.CustomModel
                     var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
 
                   
-                    string[] formats = { "dd-MM-yyyy","dd-MMM-yyyy", "yyyy-MM-dd",
-                   "dd-MM-yyyy", "M/d/yyyy","d/M/yyyy", "dd MMM yyyy","MM-dd-yyyy","M-d-yyyy","dd/MM/yyyy","d-M-yyyy","d-MM-yyyy","d/MM/yyyy" ,"dd/M/yyyy","M/d/yyyy h:mm:ss tt","d/M/yyyy h:mm:ss tt","MM/dd/yyyy h:mm:ss tt","dd/MM/yyyy h:mm:ss tt","M/dd/yyyy h:mm:ss tt","d/MM/yyyy h:mm:ss tt","MM/d/yyyy h:mm:ss tt","dd/M/yyyy h:mm:ss tt"};
+                   // string[] formats = { "dd-MM-yyyy","dd-MMM-yyyy", "yyyy-MM-dd",
+                   //"dd-MM-yyyy", "M/d/yyyy","d/M/yyyy", "dd MMM yyyy","MM-dd-yyyy","M-d-yyyy","dd/MM/yyyy","d-M-yyyy","d-MM-yyyy","d/MM/yyyy" ,"dd/M/yyyy","M/d/yyyy h:mm:ss tt","d/M/yyyy h:mm:ss tt","MM/dd/yyyy h:mm:ss tt","dd/MM/yyyy h:mm:ss tt","M/dd/yyyy h:mm:ss tt","d/MM/yyyy h:mm:ss tt","MM/d/yyyy h:mm:ss tt","dd/M/yyyy h:mm:ss tt"};
 
-                    //    string[] formats = { "d/M/yyyy h:mm:ss tt", "dd/MM/yyyy h:mm:ss tt"/*"M/d/yyyy h:mm:ss tt", "MM/dd/yyyy h:mm:ss tt"*/ };
+                     string[] formats = { "dd/MM/yyyy","dd-MM-yyyy", "dd-MMM-yyyy", "d/MM/yyyy","d-MM-yyyy","dd/M/yyyy","dd-M-yyyy" /*"d /M/yyyy h:mm:ss tt", "dd/MM/yyyy h:mm:ss tt" ,"d-M-yyyy h:mm:ss tt", "dd-MM-yyyy h:mm:ss tt"*//*"M/d/yyyy h:mm:ss tt", "MM/dd/yyyy h:mm:ss tt"*/ };
                     #region getting cookies pf code
 
                     BookingController admin = new BookingController();
@@ -290,25 +290,25 @@ namespace DtDc_Billing.CustomModel
                                  string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
                                 try
                                 {
-                                    //DateTime dateTime;
+                                    DateTime dateTime;
 
-                                    //// Parse the date string with the specified format
-                                    //if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out dateTime))
+                                    //// parse the date string with the specified format
+                                    //if (datetime.tryparseexact(datestring, formats, null, system.globalization.datetimestyles.none, out datetime))
                                     //{
-                                    //    // Convert the DateTime object to the Excel date number
-                                    //    double excelDateNumber = dateTime.ToOADate();
+                                    //    // convert the datetime object to the excel date number
+                                    //    double exceldatenumber = datetime.tooadate();
 
-                                    //    // Format the Excel date number as MM/dd/yyyy
-                                    //    string formattedDate = DateTime.FromOADate(excelDateNumber).ToString("MM/dd/yyyy");
+                                    //    // format the excel date number as mm/dd/yyyy
+                                    //    string formatteddate = datetime.fromoadate(exceldatenumber).tostring("mm/dd/yyyy");
 
-                                    //    // Convert the formatted date string back to DateTime
-                                    //    DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+                                    //    // convert the formatted date string back to datetime
+                                    //    datetime formatteddatetime = datetime.parseexact(formatteddate, "mm/dd/yyyy", null);
 
-                                    //    // Set the booking date
-                                    //    tran.booking_date = formattedDateTime;
-                                    //   // tran.tembookingdate = dateTime.ToString("dd-MM-yyyy");
-                                    //    // Set the tembookingdate
-                                    //    tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+                                    //    // set the booking date
+                                    //    tran.booking_date = formatteddatetime;
+                                    //   // tran.tembookingdate = datetime.tostring("dd-mm-yyyy");
+                                    //    // set the tembookingdate
+                                    //    tran.tembookingdate = formatteddatetime.tostring("dd-mm-yyyy");
                                     //}
 
 
@@ -323,18 +323,41 @@ namespace DtDc_Billing.CustomModel
                                     }
                                     else
                                     {
-                                        string dateString1 = cellValue.ToString();
-                                        double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
-                                        DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
-                                        string formattedDate = dateTime.ToString("MM/dd/yyyy");
-                                        DateTime parsedDate;
-                                        parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+                                        //string dateString1 = cellValue.ToString();
+                                        //double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
+                                        //DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
+                                        //string formattedDate = dateTime.ToString("MM/dd/yyyy");
+                                        //DateTime parsedDate;
+                                        //parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
 
-                                        tran.booking_date = parsedDate;
+                                        //tran.booking_date = parsedDate;
 
-                                        var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
+                                        //var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
 
-                                        tran.tembookingdate = formattedDatetemp;
+                                        //tran.tembookingdate = formattedDatetemp;
+
+
+
+
+                                        // parse the date string with the specified format
+                                        if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+                                        {
+                                            // Convert the DateTime object to the Excel date number
+                                            double excelDateNumber = parsedDateTime.ToOADate();
+
+                                            // Format the Excel date number as MM/dd/yyyy
+                                            string formattedDate = DateTime.FromOADate(excelDateNumber).ToString("MM/dd/yyyy");
+
+                                            // Convert the formatted date string back to DateTime
+                                            DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+
+                                            // Set the booking date
+                                            tran.booking_date = formattedDateTime;
+
+                                            // Set the tembookingdate
+                                            tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+                                        }
+
                                     }
 
                                     tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
