@@ -46,5 +46,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<bool> isLoginConfirmed { get; set; }
         public string LoginOTP { get; set; }
         public string Remark { get; set; }
+        public Nullable<System.DateTime> FirstTimeLoginTime { get; set; }
+        public Nullable<int> LoginCount { get; set; }
     }
 }

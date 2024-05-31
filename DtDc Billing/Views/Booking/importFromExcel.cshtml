@@ -2,6 +2,8 @@
 @{
 
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                   Request.ApplicationPath.TrimEnd('/');
 }
 
 <div class="content-wrapper">
@@ -65,7 +67,7 @@
                                                 <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
                                                 <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                    <a href="http://frbilling.com/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                                    <a href="@baseUrl/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a><!--CREAte Dynamic http://frbilling.com-->
                                                 </div>
                                             </div>
 
@@ -92,7 +94,7 @@
                                                 <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
                                                 <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                    <a href="http://frbilling.com/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                                    <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
                                                 </div>
                                             </div>
 
@@ -118,7 +120,7 @@
                                                     <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
                                                     <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
                                                         <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                        <a href="http://frbilling.com/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a>
+                                                        <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a><!--Create Dynamic url-->
                                                     </div>
                                                 </div>
 

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿
+@{ 
+    string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
+}
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -71,6 +77,7 @@
             $('#bookdate').datepicker();
         });
     </script>
+
 
 </head>
 
@@ -379,9 +386,13 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="@Url.Action("InvoicePaymentList","Payment")"><i class="fa fa-circle-o"></i> Add Payment</a></li>
-                            @*<li><a href="@Url.Action("AddCodPayment","Payment")"><i class="fa fa-circle-o"></i> Add COD Amount</a></li>
-                <li><a href="@Url.Action("AddTopayPayment","Payment")"><i class="fa fa-circle-o"></i> Add ToPay Amount</a></li>*@
                             <li><a href="@Url.Action("PaymentTrack","Payment")"><i class="fa fa-circle-o"></i> Payment Details</a></li>
+                            <li><a href="@Url.Action("AddCodPayment","Payment")"><i class="fa fa-circle-o"></i> Add COD Amount</a></li>
+                            <li><a href="@Url.Action("AddTopayPayment","Payment")"><i class="fa fa-circle-o"></i> Add ToPay Amount</a></li>
+
+                            <li><a href="@Url.Action("Codreport","Reports")"><i class="fa fa-circle-o"></i>Cod Report </a></li>
+                            <li><a href="@Url.Action("Topayreport","Reports")"><i class="fa fa-circle-o"></i>Topay Report </a></li>
+
                         </ul>
                     </li>
                     <li id="Dashboard">
@@ -474,7 +485,7 @@
 
                             <li><a href="@Url.Action("Add_Expenses", "AdminDailyExpenses")"><i class="fa fa-circle-o"></i> Add Expenses</a></li>
                             <li><a href="@Url.Action("Add_Payment", "AdminDailyExpenses")"><i class="fa fa-circle-o"></i> Add Payments</a></li>
-                            <li><a href="@Url.Action("Add_Saving", "AdminDailyExpenses")"><i class="fa fa-circle-o"></i> Add Saving</a></li>
+                            @*<li><a href="@Url.Action("Add_Saving", "AdminDailyExpenses")"><i class="fa fa-circle-o"></i> Add Saving</a></li>*@
 
                         </ul>
                     </li>
@@ -661,8 +672,8 @@
         <!-- /.content-wrapper -->
         <!-- Main Footer -->
     <footer class="main-footer">
-        <!-- Default to the left -->
-        <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="https://frbilling.com/uploadedlogo/indiaFlag.jpg" width="20" alt="India Flag" class="indian__wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">codetentacles</span></a> <a href="https://frbilling.com" target="_blank"><span class="text-primary">frbilling</span></a></strong>
+        <!-- Default to the left                       https://frbilling.com create dynamic rather than static -->
+        <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="@baseurl/uploadedlogo/indiaFlag.jpg" width="20" alt="India Flag" class="indian__wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">codetentacles</span></a></strong>
     </footer><!-- Control Sidebar -->
         @*<aside class="control-sidebar control-sidebar-dark">
                 <!-- Create the tabs -->

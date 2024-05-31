@@ -10,7 +10,7 @@
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
 }
 
-<section>
+<div class="content-wrapper">
 
     <div class="container">
         <div class="row">
@@ -46,64 +46,71 @@
             </div>
         </div>
 
-        <table id="edit-consignment" class="table table-striped table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th>
-
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Consignment_no)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-
-                    <th>
-                        @Html.DisplayNameFor(model => model.booking_date)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Mode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TopayAmount)
-                    </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="col-md-8">
+            <table id="edit-consignment" class="table table-striped table-bordered table-responsive">
+                <thead>
                     <tr>
-                        <td>
-                            <input type="button" class="custbtn" value="Edit" data-datac="@item.Consignment_no" />
-                        </td>
+                        <th style="width:130px">Sr. No</th>
+                        <th style="width:130px">
+                            Action
+                        </th>
+                        <th style="width:140px">
+                            @Html.DisplayNameFor(model => model.Consignment_no)
+                        </th>
+                        <th style="width:130px">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Consignment_no)
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-
-
-                        <td>
-                            @item.booking_date.Value.ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Mode)
-                        </td>
-                        <td>
-                            @item.TopayAmount
-                        </td>
+                        <th style="width:140px">
+                            @Html.DisplayNameFor(model => model.booking_date)
+                        </th>
+                        <th style="width:130px">
+                            @Html.DisplayNameFor(model => model.Mode)
+                        </th>
+                        <th style="width:130px">
+                            @Html.DisplayNameFor(model => model.TopayAmount)
+                        </th>
 
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</section>
+                </thead>
+                <tbody>
+                    @{ int i = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>
+                                <input type="button" class="custbtn btn btn-primary" value="Edit" data-datac="@item.Consignment_no" />
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+
+
+                            <td>
+                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mode)
+                            </td>
+                            <td>
+                                @item.TopayAmount
+                            </td>
+
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+       </div>
+</div>
 
 @*@if (ViewBag.Message != null)
 {

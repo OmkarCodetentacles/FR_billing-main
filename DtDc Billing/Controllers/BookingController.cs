@@ -21,6 +21,7 @@ using DocumentFormat.OpenXml.InkML;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using System.Transactions;
 using Transaction = DtDc_Billing.Entity_FR.Transaction;
+using PagedList;
 
 namespace DtDc_Billing.Controllers
 {
@@ -34,6 +35,8 @@ namespace DtDc_Billing.Controllers
         {
             // Retrieve the message from TempData
                  string uploadMessage = TempData["Upload"] as string;
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.PfCode=strpfcode;
 
             // Pass the message to the view using ViewBag
             ViewBag.UploadMessage = uploadMessage;
@@ -309,7 +312,8 @@ namespace DtDc_Billing.Controllers
                     Select(e => new
                     {
                        e.Company_Id,
-                       e.Pf_code
+                       e.Pf_code,
+                      e.Company_Name
                     }).Where(d => d.Pf_code == strpfcode).Distinct().OrderBy(d=>d.Company_Id).ToList();
 
 
@@ -365,6 +369,8 @@ namespace DtDc_Billing.Controllers
             ViewBag.transaction = new TransactionMetadata();
 
             ViewBag.talist = new List<TransactionView>();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.PfCode = strpfcode;
 
             return View();
         }
@@ -722,11 +728,13 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-        public ActionResult Checkbookinglist()
+        public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid, string Submit)
         {
             List<TransactionView> list = new List<TransactionView>();
-            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString(); 
-            
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.fromdate = Fromdatetime;
+            ViewBag.todate = ToDatetime;
+            ViewBag.Custid = Custid;
             //var obj = db.getCheckBookingListAll(strpf).Select(x => new TransactionView
             //{
 
@@ -755,7 +763,7 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpPost]
-        public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid, string Submit)
+        public ActionResult Checkbookinglist(List<TransactionView> trans,  string Fromdatetime, string ToDatetime, string Custid, string Submit)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -765,7 +773,11 @@ namespace DtDc_Billing.Controllers
 
             DateTime? fromdate;
             DateTime? todate;
+            if(trans != null)
+            {
+                ModelState.Clear();
 
+            }
             if (Fromdatetime != "")
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -814,13 +826,14 @@ namespace DtDc_Billing.Controllers
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge
-
-                }).OrderByDescending(d => d.booking_date).ToList();
+                  
+                }).OrderByDescending(d => d.booking_date).ToList() ;
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
                 if (Submit == "Export to Excel")
                 {
+                    obj=obj.OrderByDescending(b=>b.booking_date).Where(x=>x.isRTO==null || x.isRTO==false).ToList();    
                     //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                     //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
                     //    .OrderByDescending(m=>m.BookingDate).ToList();
@@ -862,7 +875,7 @@ namespace DtDc_Billing.Controllers
                     //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
                     //(m.Customer_Id == null || m.Customer_Id == Custid)
                     //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
-
+                    obj= obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
 
                     ExportToExcelAll.ExportToExcelAdmin(obj);
                 }
@@ -870,15 +883,37 @@ namespace DtDc_Billing.Controllers
                 return View(obj);
             }
 
+        }
+        //Convert the Consignment for the RTO 
 
+        public JsonResult CovertConsignmentToRTO(string consignmnets)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            try
+            {
+                string[] conno = consignmnets.Split(',');
 
+                foreach (var con in conno)
+                {
+                    var trans = db.Transactions.Where(x => x.Consignment_no == con && x.Pf_Code == strpf).FirstOrDefault();
+                    if (trans != null)
+                    {
+                        trans.isRTO = true;
+                        db.Entry(trans).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
 
+                }
+                return Json("Success", JsonRequestBehavior.AllowGet);
 
+            }
+            catch(Exception ex) {
+
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
 
         }
-
-
         public ActionResult Nobookinglist()
         {
             List<Transaction> list = new List<Transaction>();
@@ -1582,11 +1617,22 @@ namespace DtDc_Billing.Controllers
         {
             if (httpPostedFileBase != null)
             {
-                var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-                ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
-                var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
-
-                TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                try
+                {
+                    var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                    ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
+                    var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
+                    if (damageResult == "1")
+                    {
+                        TempData["error"] = "Something Went Wrong\n<b style=" + "color:red" + ">May be Issue in the Excel</b>";
+                    }
+                    TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                }
+                catch(Exception ex)
+                {
+                   
+                    return PartialView("~/Views/Shared/Error.cshtml");
+                }
             }
             else
             {

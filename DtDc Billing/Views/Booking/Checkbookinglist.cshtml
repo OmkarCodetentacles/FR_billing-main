@@ -1,8 +1,8 @@
 ﻿@{
-                /**/
+    /**/
 
 
-                Layout = "~/Views/Shared/AdminLayout.cshtml";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
 
@@ -53,7 +53,7 @@
 
 
 
-                                    @using (Html.BeginForm())
+                                    @using (Html.BeginForm("Checkbookinglist", "Booking"))
                                     {
 
 
@@ -121,134 +121,115 @@
                                             <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt col-sm-12" style="width:100%" />
 
                                         </div>
-
+                                      
 
                                     }
                                 </div>
                             </div>
                         </div>
+                      
 
-                        <table id="check-booking-list" class="table checkbooklist " style="display: inline-block !important;">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Sr No
-                                    </th>
-                                    <th>
-                                        Consignment no
-                                    </th>
-                                    <th>
-                                        Weight
-                                    </th>
-                                    <th>
-                                        Quantity
-                                    </th>
-                                    <th>
-                                        Destination
-                                    </th>
-                                    <th>
-                                        Pincode
-                                    </th>
-                                    <th>
-                                        Address
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Mode
-                                    </th>
-                                    <th>
-                                        Amount
-                                    </th>
-                                    <th>
-                                        Booking Date
-                                    </th>
-                                    <th>
-                                        Insurance
-                                    </th>
-                                    <th>
-                                        Claim amount
-                                    </th>
-                                    <th>
-                                        Percentage
-                                    </th>
-                                    <th>
-                                        Risk surcharge
-                                    </th>
-                                    <th>
-                                        Other Charges
-                                    </th>
-                                    <th>
-                                        Total
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{ int i = 1;
-                                    foreach (var item in Model)
+                            <table id="check-booking-list" class="table checkbooklist " style="display: inline-block !important;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Sr No
+                                        </th>
+                                        <th>Check Is RTO</th>
+                                        <th>
+                                            Consignment no
+                                        </th>
+                                        <th>
+                                            Weight
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Destination
+                                        </th>
+                                        <th>
+                                            Pincode
+                                        </th>
+                                        <th>
+                                            Address
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Mode
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th>
+                                            Booking Date
+                                        </th>
+                                        <th>
+                                            Insurance
+                                        </th>
+                                        <th>
+                                            Claim amount
+                                        </th>
+                                        <th>
+                                            Percentage
+                                        </th>
+                                        <th>
+                                            Risk surcharge
+                                        </th>
+                                        <th>
+                                            Other Charges
+                                        </th>
+                                        <th>
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 1; 
+
+
+
+
+                                        var items = Model.ToList(); // Convert Model to List for indexing
+                             
+                                        for (int j = 0; j < items.Count; j++)
                                     {
-                                        <tr>
+                                        var item = items[j];
+                                        i = j + 1;
+                                                                        <tr>
+                                                                            @*@{
+                                                                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+                                                                            }*@
 
-                                            <td>
-                                                @i
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Consignment_no)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.chargable_weight)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Quanntity)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Pincode)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.compaddress)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Type_t)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Mode)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Amount)
-                                            </td>
-                                            <td>
-                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Insurance)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.BillAmount)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Percentage)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Risksurcharge)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.loadingcharge)
-                                            </td>
-                                            <td>
-                                                @(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))
-                                            </td>
+                                                                            <td>@i</td>
 
-                                        </tr>
+                                                                            <td>@Html.CheckBox("items[" + j + "].isRTO", (bool)(items[j].isRTO == null ? false : items[j].isRTO))</td>
 
-                                        i++;
+                                                                            <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Name)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Pincode)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].compaddress)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Type_t)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Mode)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Amount)</td>
+                                                                            <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Insurance)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Percentage)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
+                                                                            <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
+                                                                        </tr>
+                                        }
                                     }
-                                }
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                            <input type="button" value="Set RTO"  class="btn btn-primary"  onclick="getCheckedConsignments()" />
+                        
 
                         <!-- /input-group -->
                         <div class="row">
@@ -308,7 +289,7 @@
         });
 
 
-
+        
      $('#datepicker').datepicker({
          autoclose: true,
          format: 'dd-mm-yyyy'
@@ -348,6 +329,56 @@
         });
 
     </script>
+<script>
+    var checkedConsignments = [];
+        // Function to get checked consignment numbers
+        function getCheckedConsignments() {
+           
+            // Loop through each row in the table
+            $('#check-booking-list tbody tr').each(function () {
+                // Find the checkbox within the current row
+                var checkbox = $(this).find('td:eq(1) input[type="checkbox"]');
+                // Check if the checkbox is checked
+                if (checkbox.prop('checked')) {
+                    // If checked, get the consignment number from the second column
+                    var consignmentNumber = $(this).find('td:eq(2)').text().trim();
+                    checkedConsignments.push(consignmentNumber);
+                }
+            });
+            PasstheConsignmentsToRTO();
+           
+        }
+
+    function PasstheConsignmentsToRTO() {
+      
+        var consignmentsString = checkedConsignments.join(',');
+        $.ajax({
+            type: 'GET',
+            url: '/Booking/CovertConsignmentToRTO',
+            data: { consignmnets: consignmentsString },
+            dataType: 'json',
+            success: function (data) {
+             
+                if (data === "Success") {
+                    alert("Consignment Set for the RTO  successfully!!!");
+                                  }
+                else {
+                    alert("Something Went Wrong")
+                }
+                window.location.href = "/Booking/Checkbookinglist?" +
+                    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                    "&Custid=" + encodeURIComponent($("#custid").val());
+
+
+            },
+            error: function () {
+                alert("Error occurred while processing the request.");
+            }
+        })
+    }
+
+</script>
 
     <script>
         $(function () {

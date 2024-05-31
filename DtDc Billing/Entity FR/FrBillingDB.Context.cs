@@ -70,6 +70,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<Ratem> Ratems { get; set; }
         public virtual DbSet<Receipt_details> Receipt_details { get; set; }
         public virtual DbSet<RedeemOtp> RedeemOtps { get; set; }
+        public virtual DbSet<registration> registrations { get; set; }
         public virtual DbSet<ReplyAdmin> ReplyAdmins { get; set; }
         public virtual DbSet<Saving> Savings { get; set; }
         public virtual DbSet<sectorName> sectorNames { get; set; }
@@ -85,7 +86,6 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<wallet_History> wallet_History { get; set; }
         public virtual DbSet<WalletPoint> WalletPoints { get; set; }
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
-        public virtual DbSet<registration> registrations { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
         {
@@ -281,6 +281,27 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithoutCompany_Result>("getCreditorsInvoiceWithoutCompany", fromDateParameter, toDateParameter, pfcodeParameter);
         }
     
+        public virtual ObjectResult<getCreditorsInvoiceWithTDSAmount_Result> getCreditorsInvoiceWithTDSAmount(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithTDSAmount_Result>("getCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+        }
+    
         public virtual ObjectResult<getInvoice_Result> getInvoice(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -300,6 +321,31 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getInvoice_Result>("getInvoice", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<getInvoiceWithapplyFilter_Result> getInvoiceWithapplyFilter(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode, string invoiceno)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            var invoicenoParameter = invoiceno != null ?
+                new ObjectParameter("invoiceno", invoiceno) :
+                new ObjectParameter("invoiceno", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getInvoiceWithapplyFilter_Result>("getInvoiceWithapplyFilter", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter, invoicenoParameter);
         }
     
         public virtual ObjectResult<getInvoiceWithoutCompany_Result> getInvoiceWithoutCompany(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string pfcode)
@@ -770,31 +816,6 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("FirmName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
-        }
-    
-        public virtual ObjectResult<getInvoiceWithapplyFilter_Result> getInvoiceWithapplyFilter(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode, string invoiceno)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("fromDate", fromDate) :
-                new ObjectParameter("fromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("toDate", toDate) :
-                new ObjectParameter("toDate", typeof(System.DateTime));
-    
-            var customeridParameter = customerid != null ?
-                new ObjectParameter("Customerid", customerid) :
-                new ObjectParameter("Customerid", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            var invoicenoParameter = invoiceno != null ?
-                new ObjectParameter("invoiceno", invoiceno) :
-                new ObjectParameter("invoiceno", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getInvoiceWithapplyFilter_Result>("getInvoiceWithapplyFilter", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter, invoicenoParameter);
         }
     }
 }

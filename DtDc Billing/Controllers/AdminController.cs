@@ -160,7 +160,7 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
-                var ObjData = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode, franchiseName =x.franchiseName, emailId =x.emailId, dateTime =x.dateTime , ownerName =x.ownerName, isPaid =x.isPaid , mobileNo =x.mobileNo, address =x.address, IsRenewal=x.IsRenewal, IsRenewalEmail =x.IsRenewalEmail , IsRenewalEmailDate =x.IsRenewalEmailDate , subscriptionForInDays =x.subscriptionForInDays , paymentDate =x.paymentDate }).FirstOrDefault();
+                var ObjData = db.getLogin(login.UserName.Trim(), login.Password.Trim(), "").Select(x => new registration { registrationId = x.registrationId, userName = x.username, Pfcode = x.Pfcode, referralCode = x.referralCode, franchiseName =x.franchiseName, emailId =x.emailId, dateTime =x.dateTime , ownerName =x.ownerName, isPaid =x.isPaid , mobileNo =x.mobileNo, address =x.address, IsRenewal=x.IsRenewal, IsRenewalEmail =x.IsRenewalEmail , IsRenewalEmailDate =x.IsRenewalEmailDate , subscriptionForInDays =x.subscriptionForInDays , paymentDate =x.paymentDate ,FirstTimeLoginTime=x.FirstTimeLoginTime,LoginCount=x.LoginCount,password=x.password}).FirstOrDefault();
 
                 if (ObjData != null)
                 {
@@ -170,11 +170,64 @@ namespace DtDc_Billing.Controllers
                         return View();
                     }
 
-                
+
+                    if(ObjData.LoginCount==null || !(ObjData.LoginCount> 4))
+                    {
+                        if (ObjData.FirstTimeLoginTime == null)
+                        {
+                            var logindata = db.registrations.Where(x => x.userName == ObjData.userName && x.password == ObjData.password).FirstOrDefault();
+                            logindata.FirstTimeLoginTime = DateTime.Now;
+                            logindata.FirstTimeLoginTime = DateTime.Now.Date; // Initialize last login date
+                            logindata.LoginCount = 1; // Initialize login count
+
+                            db.Entry(logindata).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            TempData["ShowModal "] = true;
+                        }
+                        else
+                        {
+                            var updatedLogintime = ObjData.FirstTimeLoginTime.Value;
+                            var timeDifference =DateTime.Now - updatedLogintime;
 
 
+                            if (timeDifference.Hours < 24)
+                            {
+                                if (ObjData.LoginCount <2)
+                                {
+                                    ObjData.LoginCount += 1;
+                                    db.Entry(ObjData).State = EntityState.Modified;
+                                    db.SaveChanges();
+
+                                    TempData["ShowModal "] = true;
+                                }
+                                else
+                                {
+                                    TempData["ShowModal "] = false;
+                                }
+                            }
+                            else if (timeDifference.Hours>24 &&ObjData.LoginCount>2 &&  timeDifference.Hours < 48)
+                            {
+                                if (ObjData.LoginCount < 4)
+                                {
+                                    ObjData.LoginCount += 1;
+                                    db.Entry(ObjData).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    TempData["ShowModal "] = true;
+                                }
+                                else
+                                {
+                                    TempData["ShowModal "] = false;
+                                }
+                            }
+                        }
 
 
+                    }
+                    else
+                    {
+                        TempData["ShowModal "] = false;
+                    }
 
                     //Emal Verification Code Before Login check email is confirmed
 
@@ -256,11 +309,13 @@ namespace DtDc_Billing.Controllers
                         {
                             if ((newDate - DateTime.Now).TotalDays < 30)
                             {
+                                var updation = db.registrations.Where(x => x.userName == ObjData.userName && x.password == ObjData.password).FirstOrDefault();
+
                                 if (ObjData.IsRenewalEmailDate != DateTime.Now.Date)
                                 {
-                                    ObjData.IsRenewalEmail = "0";
-                                    ObjData.password = login.Password;
-                                    db.Entry(ObjData).State = EntityState.Modified;
+                                    updation.IsRenewalEmail = "0";
+                                    updation.password = login.Password;
+                                    db.Entry(updation).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }
 
@@ -430,6 +485,21 @@ namespace DtDc_Billing.Controllers
             
 
            
+        }
+        public string CountIncreaseofLogin()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var login = db.registrations.Where(x => x.Pfcode == strpfcode).FirstOrDefault();
+            if (login != null)
+            {
+                login.LoginCount = Convert.ToInt32(login.LoginCount ?? 0 + 1);
+                db.Entry(login).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return "Increase";
+            }
+            return "Something Went Wrong";
+
         }
         public bool SetCookies(string pfcode)
         {
@@ -2560,7 +2630,8 @@ namespace DtDc_Billing.Controllers
                 {
                     return Json(new {  FailureReason= true });
                 }
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                           Request.ApplicationPath.TrimEnd('/');
                 if (myFile != null && myFile.ContentLength != 0)
                 {
                     var file = Request.Files[0];
@@ -2579,7 +2650,7 @@ namespace DtDc_Billing.Controllers
                         string originalFilePath = path;
                         string newFilePath = System.IO.Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
 
-
+                        
                         // Rename the file
                         if (System.IO.File.Exists(newFilePath))
                         {
@@ -2594,7 +2665,7 @@ namespace DtDc_Billing.Controllers
                         {
 
                             var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
-                            franchises.StampFilePath = "https://frbilling.com/Stamps/" + newFileName + "" + fileExtension;
+                            franchises.StampFilePath = baseurl+"/Stamps/" + newFileName + "" + fileExtension;//create dynamic
                            // franchises.StampFilePath=newFilePath;
                             db.SaveChanges();
                         }

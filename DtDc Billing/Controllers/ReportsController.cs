@@ -473,6 +473,24 @@ namespace DtDc_Billing.Controllers
             ViewBag.sum = (from emp in rc
 
                            select emp.Paid_Amount).Sum();
+            ViewBag.bycard = (from card in rc
+                              where card.Credit == "card"
+                              select card.Credit_Amount).Sum();
+            ViewBag.bycheque = (from cheque in rc
+                                where cheque.Credit == "cheque"
+                                select cheque.Credit_Amount).Sum();
+            ViewBag.bycredit = (from credit in rc
+                                where credit.Credit == "credit"
+                                select credit.Credit_Amount).Sum();
+            ViewBag.bycash = (from cash in rc
+                              where cash.Credit == "cash"
+                              select cash.Credit_Amount).Sum();
+            ViewBag.byother = (from other in rc
+                               where other.Credit == "other"
+                               select other.Credit_Amount).Sum();
+            ViewBag.byOnline = (from online in rc
+                                where online.Credit == "online"
+                                select online.Credit_Amount).Sum();
 
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == localTime.Day
@@ -576,7 +594,9 @@ namespace DtDc_Billing.Controllers
             ViewBag.byother = (from other in rc
                                where other.Credit == "other"
                                select other.Credit_Amount).Sum();
-
+            ViewBag.byOnline = (from online in rc
+                                where online.Credit == "online"
+                                select online.Credit_Amount).Sum();
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
              && m.Datetime_Exp.Value.Month == dateTime.Value.Month
@@ -696,6 +716,9 @@ namespace DtDc_Billing.Controllers
             ViewBag.byother = (from other in rc
                                where other.Credit == "other"
                                select other.Credit_Amount).Sum();
+            ViewBag.byOnline = (from online in rc
+                                where online.Credit == "online"
+                                select online.Credit_Amount).Sum();
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
              && m.Datetime_Exp.Value.Month == dateTime.Value.Month
@@ -1931,12 +1954,14 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
         public ActionResult Topayreport()
         {
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+          //  ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
             // List<TransactionView> transactions = db.TransactionViews.Where(m => m.topay == "yes").ToList();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
             var obj = (from t in db.TransactionViews
                        join ad in db.addtopayamounts on t.Consignment_no equals ad.consinmentno into adt
                        from ad in adt.DefaultIfEmpty()
-                       where t.topay=="yes"
+                       where t.topay=="yes" && t.Pf_Code==PfCode
                        select new
                        {
                            Customer_Id = t.Customer_Id,
@@ -1963,11 +1988,13 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         }
 
         [HttpPost]
-        public ActionResult Topayreport(string PfCode, string ToDatetime, string Fromdatetime)
+        public ActionResult Topayreport( string ToDatetime, string Fromdatetime)
         {
             //  List<TransactionView> transactions = new List<TransactionView>();
 
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            //  ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
             if (Fromdatetime == "")
             {
                 ModelState.AddModelError("Fromdateeror", "Please select Date");
@@ -2032,7 +2059,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                     var obj = (from t in db.TransactionViews
                                join ad in db.addtopayamounts on t.Consignment_no equals ad.consinmentno into adt
                                from ad in adt.DefaultIfEmpty()
-                               where t.topay == "yes"
+                               where t.topay == "yes" && t.Pf_Code==t.Pf_Code
                                select new
                                {
                                    Customer_Id = t.Customer_Id,
@@ -2065,12 +2092,14 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         public ActionResult Codreport()
         {
             //   List<TransactionView> transactions = db.TransactionViews.Where(m => m.cod == "yes").ToList();
+            //Remove the Pfcode option becauase SAS model
+        //    ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();    
             var obj = (from t in db.TransactionViews
                        join ad in db.addcodamounts on t.Consignment_no equals ad.consinment_no into adt
                        from ad in adt.DefaultIfEmpty()
-                       where t.cod=="yes"
+                       where t.cod=="yes" && t.Pf_Code==strpfcode
                        select new
                        {
                            Customer_Id = t.Customer_Id,
@@ -2097,11 +2126,13 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         }
 
         [HttpPost]
-        public ActionResult Codreport(string PfCode, string ToDatetime, string Fromdatetime)
+        public ActionResult Codreport( string ToDatetime, string Fromdatetime)
         {
             // List<TransactionView> transactions = new List<TransactionView>();
 
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
             if (Fromdatetime == "")
             {
                 ModelState.AddModelError("Fromdateeror", "Please select Date");
@@ -2422,7 +2453,65 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(rc);
+
+                var data = (from recep in rc
+                            select new ReceiptDetailsForDailyReport
+                            {
+                                Consignment_No = recep.Consignment_No,
+                                Destination = recep.Destination,
+                                sender_phone = recep.sender_phone,
+                                Sender_Email = recep.Sender_Email,
+                                Sender = recep.Sender,
+                                SenderCompany = recep.SenderCompany,
+                                SenderAddress = recep.SenderAddress,
+                                SenderCity = recep.SenderCity,
+                                SenderState = recep.SenderState,
+                                SenderPincode = recep.SenderPincode,
+                                Reciepents_phone = recep.Reciepents_phone,
+                                Reciepents_Email = recep.Reciepents_Email,
+                                Reciepents = recep.Reciepents,
+                                ReciepentCompany = recep.ReciepentCompany,
+                                ReciepentsAddress = recep.ReciepentsAddress,
+                                ReciepentsCity = recep.ReciepentsCity,
+                                ReciepentsState = recep.ReciepentsState,
+                                ReciepentsPincode = recep.ReciepentsPincode,
+                                Shipmenttype = recep.Shipmenttype,
+                                Shipment_Length = recep.Shipment_Length,
+                                Shipment_Quantity = recep.Shipment_Quantity,
+                                Shipment_Breadth = recep.Shipment_Breadth,
+                                Shipment_Heigth = recep.Shipment_Heigth,
+                                DivideBy = recep.DivideBy,
+                                TotalNo = recep.TotalNo,
+                                Actual_Weight = recep.Actual_Weight,
+                                volumetric_Weight = recep.volumetric_Weight,
+                                DescriptionContent1 = recep.DescriptionContent1,
+                                DescriptionContent2 = recep.DescriptionContent2,
+                                DescriptionContent3 = recep.DescriptionContent3,
+                                Amount1 = recep.Amount1,
+                                Amount2 = recep.Amount2,
+                                Amount3 = recep.Amount3,
+                                Total_Amount = recep.Total_Amount,
+                                Insurance = recep.Insurance,
+                                Insuance_Percentage = recep.Insuance_Percentage,
+                                Insuance_Amount = recep.Insuance_Amount,
+                                Charges_Amount = recep.Charges_Amount,
+                                Charges_Service = recep.Charges_Service,
+                                Risk_Surcharge = recep.Risk_Surcharge,
+                                Service_Tax = recep.Service_Tax,
+                                Charges_Total = recep.Charges_Total,
+                                Cash = recep.Cash,
+                                Credit = recep.Credit,
+                                Credit_Amount = recep.Credit_Amount,
+                                Shipment_Mode = recep.Shipment_Mode,
+                                Addition_charge = recep.Addition_charge,
+                                Addition_Lable = recep.Addition_Lable,
+                                Discount = recep.Discount,
+                               
+                                CreateDateString = recep.Datetime_Cons.Value.ToString("dd-MM-yyyy"),
+                                Paid_Amount = recep.Paid_Amount
+                            }).ToList();
+
+                ExportToExcelAll.ExportToExcelAdmin(data);
             }
             return View(rc);
         }
@@ -2506,8 +2595,9 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
             ViewBag.byother = (from other in rc
                                where other.Credit == "other"
                                select other.Paid_Amount).Sum();
-
-
+            ViewBag.byOnline = (from online in rc
+                                where online.Credit == "online"
+                                select online.Credit_Amount).Sum();
             // ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
             //  && m.Datetime_Exp.Value.Month == dateTime.Value.Month
             //  && m.Datetime_Exp.Value.Year == dateTime.Value.Year
@@ -2684,7 +2774,9 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                                where other.Credit == "other"
                                select other.Paid_Amount).Sum();
 
-
+            ViewBag.byOnline = (from online in rc
+                                where online.Credit == "online"
+                                select online.Credit_Amount).Sum();
 
             ViewBag.Expense = (from e in db.Expenses
                                where e.Pf_Code == pfcode

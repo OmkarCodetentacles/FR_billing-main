@@ -10,7 +10,7 @@
     }
     .PaymentDetails th, td {
        
-        width: 11% !important;
+        width: 11%;
     }
     table {
         max-height: 400px !important;
@@ -35,98 +35,105 @@
                 <div class="col-sm-12">
 
                     <div class="form-horizontal">
+                        @{ 
 
+                            var smessage = ViewBag.DeletedMessage as string;
+                        }
 
+                        @if (!string.IsNullOrEmpty(smessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", smessage))
+                        }
                         @*<div class="row">
-                            <div class="col-md-12">*@
-                                <div class="form-group">
+        <div class="col-md-12">*@
+                        <div class="form-group">
 
 
-                                    @using (Html.BeginForm())
-                                    {
+                            @using (Html.BeginForm())
+                            {
 
-                                        if (ViewBag.Custid != null)
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>CustomerId</label>
+                                if (ViewBag.Custid != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
 
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>CustomerId</label>
-
-                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
-                                                </div>
-                                            </div>
-                                        }
-                                        if (ViewBag.fromdate != null)
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>From Date <span style="color:red" > *</span>: </label>
-
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>From Date <span style="color:red"> *</span>:</label>
-
-                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text">
-                                                </div>
-                                            </div>
-                                        }
-
-                                        if (ViewBag.todate != null)
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>To Date <span style="color:red"> *</span>:</label>
-
-                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
-                                                </div>
-                                            </div>
-                                        }
-
-                                        else
-                                        {
-                                            <div class="col-md-3 padding-left-0">
-                                                <div class="form-group">
-                                                    <label>To Date <span style="color:red"> *</span>:</label>
-
-                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
-                                                </div>
-                                            </div>
-                                        }
-
-                                        <div class="col-md-1" style="margin-top:22px">
-                                            <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width:100%" />
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                                         </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
 
-                                    }
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red"> *</span>: </label>
 
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red"> *</span>:</label>
 
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text">
+                                        </div>
+                                    </div>
+                                }
 
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red"> *</span>:</label>
+
+                                            <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                        </div>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red"> *</span>:</label>
+
+                                            <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-1" style="margin-top:22px">
+                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width:100%" />
                                 </div>
-                            @*</div>
-                        </div>*@
+
+                            }
+
+
+
+                        </div>
+                        @*</div>
+        </div>*@
 
 
                         <table id="check-booking-list" class="table PaymentDetails">
-                            <thead >
+                            <thead>
                                 <tr>
                                     <th>Sr.No</th>
 
-                                    <th>Edit</th>
+                                    <th style="width:140px">Action</th>
                                     <th>
                                         Invoiceno
                                     </th>
@@ -149,10 +156,12 @@
                                     <th>
                                         Net Amount
                                     </th>
-
+                                    <th>
+                                        Balance
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody >
+                            <tbody>
                                 @{ var i = 1;
                                     foreach (var item in Model)
                                     {
@@ -160,27 +169,31 @@
 
                                             <td>@i</td>
 
-                                            <td>
+                                            <td style="width:140px">
                                                 @if (item.Modeofpayment == "Cash")
                                                 {
-                                                    <a class="edit-btn" href="@Url.Action("CashEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a href="@Url.Action("CashEdit", "Payment", new { id = item.id, firm_id = item.Firmid })">Edit</a>
 
                                                 }
                                                 else if (item.Modeofpayment == "Cheque")
                                                 {
-                                                    <a class="edit-btn"  href="@Url.Action("ChequeEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a href="@Url.Action("ChequeEdit", "Payment", new { id = item.id, firm_id = item.Firmid })">Edit</a>
                                                 }
                                                 else if (item.Modeofpayment == "NEFT")
                                                 {
-                                                    <a class="edit-btn" href="@Url.Action("NEFTEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
+                                                    <a href="@Url.Action("NEFTEdit", "Payment", new { id = item.id, firm_id = item.Firmid })">Edit</a>
                                                 }
                                                 else if (item.Modeofpayment == "CreditNote")
                                                 {
-                                                        <div>
-                                                            <a class="edit-btn" href="@Url.Action("CreditEdit", "Payment", new { id = item.id, firm_id = item.Firmid})">Edit</a>
-                                                            @*<a class="  btn-primary sbmt" href="#" onClick="Print(@item.id)" ; style="padding:6px "> Print </a>*@
-                                                        </div>
+                                                    <div>
+                                                        <a href="@Url.Action("CreditEdit", "Payment", new { id = item.id, firm_id = item.Firmid })">Edit</a>
+                                                        @*<a class="  btn-primary sbmt" href="#" onClick="Print(@item.id)" ; style="padding:6px "> Print </a>*@
+                                                    </div>
                                                 }
+                                                <div>
+                                                    <a style="margin-right:5px" href="@Url.Action("DeletePayment", "Payment", new { id = item.id, modeofpayment = item.Modeofpayment })" onclick="return confirm('Are you sure you want to delete this payment?');">Delete</a>
+                                                    @*<a class="  btn-primary sbmt" href="#" onClick="Print(@item.id)" ; style="padding:6px "> Print </a>*@
+                                                </div>
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Invoiceno)
@@ -208,7 +221,9 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.netamount)
                                             </td>
-
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CalculatedAmount)
+                                            </td>
                                         </tr>
 
                                         i++;
@@ -219,7 +234,7 @@
                         <br>
                         <!-- /input-group -->
 
-                        <div class="col-sm-3 " style="float: right; padding-right: 0";>
+                        <div class="col-sm-3 " style="float: right; padding-right: 0" ;>
                             <div class="input-group">
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-danger total-label">Total</button>
@@ -449,7 +464,7 @@ select: function(event, ui) {
 
         });
     </script>
-    <a id="saveinv" style="" href="" download>
+    <a id="saveinv" style="" href="" target="_blank" download>
     </a>
 
  

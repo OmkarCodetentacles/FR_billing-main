@@ -17,7 +17,7 @@ namespace DtDc_Billing.Models
         [Required]
         public string Destination { get; set; }
         [Display(Name = "Sender Phone")]
-        [Required]
+       
         [MaxLength(10)]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Phone no must be numeric")]
         public string sender_phone { get; set; }
@@ -25,7 +25,7 @@ namespace DtDc_Billing.Models
         [Display(Name = "Sender Name")]
         public string Sender { get; set; }
         public string SenderCompany { get; set; }
-        [Required]
+       
         public string SenderAddress { get; set; }
         [Display(Name = "Sender City")]
         [Required]

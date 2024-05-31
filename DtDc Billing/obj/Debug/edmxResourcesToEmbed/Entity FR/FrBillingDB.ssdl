@@ -10,6 +10,7 @@
     <Property Name="branch" Type="varchar" MaxLength="100" />
     <Property Name="consinment_no" Type="varchar" MaxLength="100" />
     <Property Name="Invoiceno" Type="varchar" MaxLength="23" />
+    <Property Name="pfcode" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="addtopayamount">
     <Key>
@@ -20,6 +21,7 @@
     <Property Name="consinmentno" Type="varchar" MaxLength="100" />
     <Property Name="date" Type="varchar" MaxLength="100" />
     <Property Name="Invoiceno" Type="varchar" MaxLength="23" />
+    <Property Name="pfcode" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Admin">
     <Key>
@@ -319,6 +321,8 @@
     <Property Name="InvoiceStart" Type="varchar" MaxLength="10" />
     <Property Name="LogoFilePath" Type="varchar" MaxLength="500" />
     <Property Name="StampFilePath" Type="varchar(max)" />
+    <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
+    <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="Holiday">
     <Key>
@@ -701,6 +705,8 @@
     <Property Name="isLoginConfirmed" Type="bit" />
     <Property Name="LoginOTP" Type="varchar" MaxLength="100" />
     <Property Name="Remark" Type="varchar" MaxLength="100" />
+    <Property Name="FirstTimeLoginTime" Type="datetime" />
+    <Property Name="LoginCount" Type="int" />
   </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
@@ -861,6 +867,7 @@
     <Property Name="Sender" Type="varchar(max)" />
     <Property Name="Receiver" Type="varchar(max)" />
     <Property Name="compaddress" Type="varchar" MaxLength="200" />
+    <Property Name="isRTO" Type="bit" />
   </EntityType>
   <EntityType Name="UserModuleList">
     <Key>
@@ -948,6 +955,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Property Name="fovcharge" Type="float" />
     <Property Name="loadingcharge" Type="float" />
     <Property Name="odocharge" Type="float" />
+    <Property Name="isRTO" Type="bit" />
     <Property Name="Risksurcharge" Type="float" />
     <Property Name="Invoice_No" Type="bigint" />
     <Property Name="BillAmount" Type="float" />
@@ -1897,6 +1905,12 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Parameter Name="toDate" Type="datetime" Mode="In" />
     <Parameter Name="pfcode" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="getCreditorsInvoiceWithTDSAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fromDate" Type="datetime" Mode="In" />
+    <Parameter Name="toDate" Type="datetime" Mode="In" />
+    <Parameter Name="Customerid" Type="varchar" Mode="In" />
+    <Parameter Name="pfcode" Type="varchar" Mode="In" />
+  </Function>
   <Function Name="getInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="fromDate" Type="datetime" Mode="In" />
     <Parameter Name="toDate" Type="datetime" Mode="In" />
@@ -2135,6 +2149,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     [TransactionView].[fovcharge] AS [fovcharge], 
     [TransactionView].[loadingcharge] AS [loadingcharge], 
     [TransactionView].[odocharge] AS [odocharge], 
+    [TransactionView].[isRTO] AS [isRTO], 
     [TransactionView].[Risksurcharge] AS [Risksurcharge], 
     [TransactionView].[Invoice_No] AS [Invoice_No], 
     [TransactionView].[BillAmount] AS [BillAmount], 

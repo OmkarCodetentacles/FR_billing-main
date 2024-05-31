@@ -30,5 +30,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<System.DateTime> IsRenewalEmailDate { get; set; }
         public Nullable<int> subscriptionForInDays { get; set; }
         public Nullable<System.DateTime> paymentDate { get; set; }
+        public Nullable<System.DateTime> FirstTimeLoginTime { get; set; }
+        public Nullable<int> LoginCount { get; set; }
     }
 }

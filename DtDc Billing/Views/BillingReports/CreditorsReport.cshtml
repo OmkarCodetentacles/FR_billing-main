@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<DtDc_Billing.Entity_FR.Invoice>
+@model IEnumerable<DtDc_Billing.CustomModel.CreditorsInvoiceModel>
 
 
 
@@ -203,15 +203,15 @@
                                     <th>
                                         Balance
                                     </th>
-
-
+                                        <th>TDS Amount</th>
+                                        <th>Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{ var i = 1;}
                                 @foreach (var item in Model)
                                 {
-                                    <tr class="@(item.discountamount==0 ? "paid-party" : "unpaid-party")">
+                                    <tr class="@(item.discountamount<=0? "paid-party" : "unpaid-party")">
                                         <td>
                                             @i
                                         </td>
@@ -256,7 +256,13 @@
                                             @Html.DisplayFor(modelItem => item.paid)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.discountamount)
+                                            @Html.DisplayFor(modelItem =>item.discountamount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TdsAmount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TotalAmount)
                                         </td>
                                     </tr>
                                     i++;
@@ -272,7 +278,7 @@
                                         <button type="button" class="btn btn-primary total-label">Total</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>(m.netamount))">
+                                    <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -284,7 +290,7 @@
                                         <button type="button" class="btn btn-success">Paid</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>(m.paid))">
+                                    <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -296,7 +302,7 @@
                                         <button type="button" class="btn btn-danger">Balance</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>(m.discountamount))">
+                                    <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -419,7 +425,8 @@ $(function () {
 /**/
 data: { },
 dataType: 'json',
-success: function(data) {
+        success: function (data) {
+            console.log(data)
     $.each(data, function(i, item) {
                 company_idarr.push(item.Company_Id);
             });

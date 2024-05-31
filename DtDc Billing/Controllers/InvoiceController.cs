@@ -27,10 +27,10 @@ namespace DtDc_Billing.Controllers
     //[OutputCache(CacheProfile = "Cachefast")]
     public class InvoiceController : Controller
     {
-
+        /*https://frbilling.com     currently we have remove the static link done its dynamic by applying the baseUrl property*/
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
-
+       
         // string invstart = "INV/2022-23/";
         string invstart = "INV/2023-24/";
 
@@ -42,7 +42,9 @@ namespace DtDc_Billing.Controllers
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.currentPfcode = strpfcode;
 
-            var franchisee=db.Franchisees.Where(x=>x.PF_Code == strpfcode).FirstOrDefault(); 
+            var franchisee=db.Franchisees.Where(x=>x.PF_Code == strpfcode).FirstOrDefault();
+            var gst = franchisee.GstNo;
+            ViewBag.GST = gst;  
             //if (Firm_Id == 1)
             //{
             var dataInvStart = (from d in db.Franchisees
@@ -56,7 +58,7 @@ namespace DtDc_Billing.Controllers
             string invstart1 = dataInvStart + "/2023-24/";
             string no = "";
             string finalstring = "";
-            if (strpfcode == "PF2214")
+            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958")
             {
                 dataInvStart = (from d in db.Franchisees
                                     where d.PF_Code == strpfcode
@@ -76,6 +78,14 @@ namespace DtDc_Billing.Controllers
             }
           
             if(strpfcode== "MF868")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
+
+                invstart1 = dataInvStart + "/2024-25/";
+            }
+            if (strpfcode == "UF2679")
             {
                 dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -110,6 +120,20 @@ namespace DtDc_Billing.Controllers
 
 
                 }
+
+                 else if(franchisee.PF_Code == "UF2679")
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                    if (strarrinvno[2] == "00")
+                    {
+                        strarrinvno[2] = "10";
+                        ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2]);
+
+                    }
+
+
+                }
+
                 else if (franchisee.PF_Code == "PF2214")
                 {
                     strarrinvno = lastInvoiceno1.Split('/');
@@ -195,7 +219,19 @@ namespace DtDc_Billing.Controllers
 
 
         }
+        public JsonResult CheckComapnyGST(string Customerid)
+        {
+            var data = db.Companies.Where(x => x.Company_Id == Customerid).FirstOrDefault();
+            if (string.IsNullOrEmpty(data.Gst_No) || data.Gst_No=="0")
+            {
+                return Json("0", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("1", JsonRequestBehavior.AllowGet);
+            }
 
+        }
         public ActionResult getFirm()
         {
             return Json(db.FirmDetails.Select(x => new
@@ -569,6 +605,11 @@ Select(e => new
 
                 string[] formats = { "dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd", "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy" };
 
+                string comapnycheck = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Pf_code).FirstOrDefault(); /// take dynamically
+                if (comapnycheck == null)
+                {
+                    ModelState.AddModelError("comapnycheck", "Customer Id Does Not Exist");
+                }
 
                 Invoice inv = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode).FirstOrDefault();
 
@@ -739,34 +780,57 @@ Select(e => new
                     ///////////////////end of update consignment///////////////////////
 
                 }
-
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+               Request.ApplicationPath.TrimEnd('/') + "/";
                 string Pfcode = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Pf_code).FirstOrDefault(); /// take dynamically
 
 
-                LocalReport lr = new LocalReport();
-
-
-                var dataset = db.TransactionViews.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
-             Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
-                           .ToList();
-
-                var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
-
-                var dataset3 = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
-
-                var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
-
-                string clientGst = dataset4.FirstOrDefault().Gst_No;
-                string frgst = franchisee.FirstOrDefault().GstNo;
-
-                franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
-                string discount = dataset3.FirstOrDefault().discount;
-                if (discount == "no")
+                if (Pfcode != null)
                 {
-                    if (clientGst != null && clientGst.Length > 4)
+                    LocalReport lr = new LocalReport();
+
+
+                    var dataset = db.TransactionViews.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                 Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                               .ToList();
+
+                    var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
+                    franchisee.FirstOrDefault().LogoFilePath = (franchisee.FirstOrDefault().LogoFilePath == null || franchisee.FirstOrDefault().LogoFilePath == "") ? baseUrl + "/assets/Dtdclogo.png" : franchisee.FirstOrDefault().LogoFilePath;
+
+                    var dataset3 = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
+
+                    var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
+
+                    string clientGst = dataset4.FirstOrDefault().Gst_No;
+                    string frgst = franchisee.FirstOrDefault().GstNo;
+
+                    franchisee.FirstOrDefault().StampFilePath = (franchisee.FirstOrDefault().StampFilePath == null || franchisee.FirstOrDefault().StampFilePath == "") ? baseUrl + "/assets/Dtdclogo.png" : franchisee.FirstOrDefault().StampFilePath;
+                    string discount = dataset3.FirstOrDefault().discount;
+                    if (discount == "no")
                     {
-                        if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
+                        if (clientGst != null && clientGst.Length > 4)
+                        {
+                            if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
+                            {
+                                string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintInvoice.rdlc");
+
+                                if (System.IO.File.Exists(path))
+                                {
+                                    lr.ReportPath = path;
+                                }
+
+                            }
+                            else
+                            {
+                                string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintInvoiceIGST.rdlc");
+
+                                if (System.IO.File.Exists(path))
+                                {
+                                    lr.ReportPath = path;
+                                }
+                            }
+                        }
+                        else
                         {
                             string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintInvoice.rdlc");
 
@@ -774,100 +838,80 @@ Select(e => new
                             {
                                 lr.ReportPath = path;
                             }
-
-                        }
-                        else
-                        {
-                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintInvoiceIGST.rdlc");
-
-                            if (System.IO.File.Exists(path))
-                            {
-                                lr.ReportPath = path;
-                            }
                         }
                     }
-                    else
+
+                    else if (discount == "yes")
                     {
-                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PrintInvoice.rdlc");
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "DiscountPrint.rdlc");
 
                         if (System.IO.File.Exists(path))
                         {
                             lr.ReportPath = path;
                         }
                     }
-                }
 
-                else if (discount == "yes")
-                {
-                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "DiscountPrint.rdlc");
 
-                    if (System.IO.File.Exists(path))
+                    lr.EnableExternalImages = true;
+                    ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
+                    ReportDataSource rd1 = new ReportDataSource("franchisee", franchisee);
+                    ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
+                    ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
+
+
+
+                    lr.DataSources.Add(rd);
+                    lr.DataSources.Add(rd1);
+                    lr.DataSources.Add(rd2);
+                    lr.DataSources.Add(rd3);
+
+                    string reportType = "pdf";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
+
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                       "<Margintop>0.1in</Margintop>" +
+                         "<Marginleft>0.1in</Marginleft>" +
+                          "<Marginright>0.1in</Marginright>" +
+                           "<Marginbottom>0.5in</Marginbottom>" +
+                           "</DeviceInfo>";
+
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+
+                    renderByte = lr.Render
+                  (reportType,
+                  deviceInfo,
+                  out mimeType,
+                  out encoding,
+                  out fileNameExte,
+                  out streams,
+                  out warnings
+                  );
+
+                    ViewBag.pdf = false;
+
+                    if (submit == "Generate")
                     {
-                        lr.ReportPath = path;
+                        ViewBag.pdf = true;
+                        ViewBag.invoiceno = invoice.invoiceno.Replace("/", "-");
                     }
-                }
+                    string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                    ViewBag.savePath = savePath;
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+                    }
 
-
-                lr.EnableExternalImages = true;
-                ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-                ReportDataSource rd1 = new ReportDataSource("franchisee", franchisee);
-                ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
-                ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
-
-
-
-                lr.DataSources.Add(rd);
-                lr.DataSources.Add(rd1);
-                lr.DataSources.Add(rd2);
-                lr.DataSources.Add(rd3);
-
-                string reportType = "pdf";
-                string mimeType;
-                string encoding;
-                string fileNameExte;
-
-                string deviceInfo =
-                    "<DeviceInfo>" +
-                    "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                    "<PageHeight>11in</PageHeight>" +
-                   "<Margintop>0.1in</Margintop>" +
-                     "<Marginleft>0.1in</Marginleft>" +
-                      "<Marginright>0.1in</Marginright>" +
-                       "<Marginbottom>0.5in</Marginbottom>" +
-                       "</DeviceInfo>";
-
-                Warning[] warnings;
-                string[] streams;
-                byte[] renderByte;
-
-
-                renderByte = lr.Render
-              (reportType,
-              deviceInfo,
-              out mimeType,
-              out encoding,
-              out fileNameExte,
-              out streams,
-              out warnings
-              );
-
-                ViewBag.pdf = false;
-
-                if (submit == "Generate")
-                {
-                    ViewBag.pdf = true;
-                    ViewBag.invoiceno = invoice.invoiceno.Replace("/","-");
-                }
-                string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
-                ViewBag.savePath = savePath;
-                using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                {
-                    stream.Write(renderByte, 0, renderByte.Length);
-                }
-
-                if (submit == "Email")
-                {
-                    string emailBody = $@"
+                    if (submit == "Email")
+                    {
+                        string emailBody = $@"
                         <html>
                         <head>
                             <title>Your Invoice has been Generated</title>
@@ -938,80 +982,85 @@ Select(e => new
                         </html>
                         ";
 
-                    var path = "https://www.frbilling.com/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
-                    //Set up the email model
-                    SendModel emailModel = new SendModel
-                    {
+                        var path = baseUrl + "/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+                        //Set up the email model
+                        SendModel emailModel = new SendModel
+                        {
 
-                        toEmail = dataset4.FirstOrDefault().Email,
-                        subject = "Invoice",
-                        body = emailBody,
-                        filepath = savePath
-                    };
+                            toEmail = dataset4.FirstOrDefault().Email,
+                            subject = "Invoice",
+                            body = emailBody,
+                            filepath = savePath
+                        };
 
-                    // Send the email using your email sending logic
-
-
-
-
-
-                    SendEmailModel sm = new SendEmailModel();
-                    var mailMessage = sm.MailSend(emailModel);
-
-
-
-                    //    MemoryStream memoryStream = new MemoryStream(renderByte);
-
-
-
-                    //    using (MailMessage mm = new MailMessage("billingdtdc48@gmail.com", dataset4.FirstOrDefault().Email))
-                    //    {
+                        // Send the email using your email sending logic
 
 
 
 
 
-
-
-                    //        mm.Subject = "Invoice";
-
-                    //        string Bodytext = "<html><body>Please Find Attachment</body></html>";
-                    //        Attachment attachment = new Attachment(memoryStream, "Invoice.pdf");
-
-                    //        mm.IsBodyHtml = true;
+                        SendEmailModel sm = new SendEmailModel();
+                        var mailMessage = sm.MailSend(emailModel);
 
 
 
-                    //        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
-                    //        // Add plain text view
-                    //        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
-                    //        mm.AlternateViews.Add(plainView);
+                        //    MemoryStream memoryStream = new MemoryStream(renderByte);
 
-                    //        // Add HTML view
-                    //        AlternateView htmlView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(Bodytext, null, "text/html");
-                    //        mm.AlternateViews.Add(htmlView);
 
-                    //        // Add Byte array as Attachment.
-                    //        mm.Attachments.Add(attachment);
-                    //        SmtpClient smtp = new SmtpClient();
-                    //        smtp.Host = "smtp.gmail.com";
-                    //        smtp.EnableSsl = true;
-                    //        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                    //        credentials.UserName = "frbillingsoftware@gmail.com";
-                    //        credentials.Password = "dtdcmf1339";
-                    //        smtp.UseDefaultCredentials = true;
-                    //        NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
-                    //        smtp.Credentials = _network;
 
-                    //        smtp.Credentials = credentials;
-                    //        smtp.Port = 587;
-                    //        smtp.Send(mm);
-                    //    }
+                        //    using (MailMessage mm = new MailMessage("billingdtdc48@gmail.com", dataset4.FirstOrDefault().Email))
+                        //    {
+
+
+
+
+
+
+
+                        //        mm.Subject = "Invoice";
+
+                        //        string Bodytext = "<html><body>Please Find Attachment</body></html>";
+                        //        Attachment attachment = new Attachment(memoryStream, "Invoice.pdf");
+
+                        //        mm.IsBodyHtml = true;
+
+
+
+                        //        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+                        //        // Add plain text view
+                        //        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+                        //        mm.AlternateViews.Add(plainView);
+
+                        //        // Add HTML view
+                        //        AlternateView htmlView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(Bodytext, null, "text/html");
+                        //        mm.AlternateViews.Add(htmlView);
+
+                        //        // Add Byte array as Attachment.
+                        //        mm.Attachments.Add(attachment);
+                        //        SmtpClient smtp = new SmtpClient();
+                        //        smtp.Host = "smtp.gmail.com";
+                        //        smtp.EnableSsl = true;
+                        //        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+                        //        credentials.UserName = "frbillingsoftware@gmail.com";
+                        //        credentials.Password = "dtdcmf1339";
+                        //        smtp.UseDefaultCredentials = true;
+                        //        NetworkCredential _network = new NetworkCredential("frbillingsoftware@gmail.com", "rqaynjbevkygswkx");
+                        //        smtp.Credentials = _network;
+
+                        //        smtp.Credentials = credentials;
+                        //        smtp.Port = 587;
+                        //        smtp.Send(mm);
+                        //    }
+
+                    }
+
 
                 }
-
-
-
+                else
+                {
+                    TempData["NUllCustomer"] = "Customer Id Does not Exists";
+                    ViewBag.success = null;
+                }
 
 
 
@@ -1026,12 +1075,21 @@ Select(e => new
         {
 
             var invoice = db.Invoices.Where(m => m.IN_Id == id).FirstOrDefault();
+            string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                 Request.ApplicationPath.TrimEnd('/') + "/";
 
-            string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
 
-            string savePath = "https://frbilling.com/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+            if (invoice != null)
+            {
+                string savePath = baseUrl + "/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+                return Redirect(savePath);
 
-            return Redirect(savePath);
+            }
+
+
+
+
+            return Redirect("ViewInvoice");
 
         }
 
@@ -1125,7 +1183,8 @@ Select(e => new
                     ViewBag.success = "Invoice Added SuccessFully";
 
                 }
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                               Request.ApplicationPath.TrimEnd('/');
                 string Pfcode = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Pf_code).FirstOrDefault(); /// take dynamically
 
 
@@ -1145,7 +1204,8 @@ Select(e => new
 
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = dataset2.FirstOrDefault().GstNo;
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                dataset2.FirstOrDefault().StampFilePath = (dataset2.FirstOrDefault().StampFilePath == null || dataset2.FirstOrDefault().StampFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().StampFilePath;
 
 
                 if (clientGst != null && clientGst.Length > 4)
@@ -1377,7 +1437,8 @@ Select(e => new
         public ActionResult ReportPrinterMethod(string myParameter, long firmid)
         {
             {
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                              Request.ApplicationPath.TrimEnd('/');
                 LocalReport lr = new LocalReport();
 
 
@@ -1393,7 +1454,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -1499,7 +1560,8 @@ Select(e => new
         public ActionResult DpReportPrinterMethod(string myParameter, long firmid)
         {
             {
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
                 LocalReport lr = new LocalReport();
 
 
@@ -1515,7 +1577,8 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                /*https://frbilling.com     currently we have remove the static link done its dynamic*/ 
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -1620,7 +1683,9 @@ Select(e => new
         {
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+            var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
+            var gst = franchisee.GstNo;
+            ViewBag.GST = gst;
             ViewBag.Complist = db.Companies.Where(m => !(m.Company_Id.StartsWith("Cash_")) && !(m.Company_Id.StartsWith("BASIC_TS")) && m.Pf_code == strpfcode).Select(m => m.Company_Id).ToList();
 
             return View();
@@ -1713,7 +1778,7 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
-                    if (strpfcode == "MF868" || strpfcode=="PF1649")
+                    if (strpfcode == "MF868" || strpfcode=="PF1649" || strpfcode == "UF2679")
                     {
                         dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
@@ -1856,8 +1921,11 @@ Select(e => new
 
         public void SendMailInvoiceMultiple(Invoice invoice, string submit)
         {
-            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                              Request.ApplicationPath.TrimEnd('/');
             LocalReport lr = new LocalReport();
 
             string Pfcode = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
@@ -1874,7 +1942,7 @@ Select(e => new
 
 
             var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-            dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+            dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
             var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
@@ -2173,7 +2241,8 @@ Select(e => new
 
                 LocalReport lr = new LocalReport();
 
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                                       Request.ApplicationPath.TrimEnd('/');
 
                 Invoice inc = db.Invoices.Where(m => m.invoiceno == myParameter && m.Firm_Id == firmid).FirstOrDefault();
 
@@ -2185,8 +2254,8 @@ Select(e => new
                       .ToList();
 
 
-                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);//https://frbilling.com
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -2377,7 +2446,8 @@ Select(e => new
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
-
+            var gst = franchisee.GstNo;
+            ViewBag.GST = gst;
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
@@ -2410,6 +2480,16 @@ Select(e => new
 
                 invstart1 = dataInvStart + "/2024-25/";
             }
+
+            if (strpfcode == "UF2679")
+            {
+                dataInvStart = (from d in db.Franchisees
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
+
+                invstart1 = dataInvStart + "/2024-25/";
+            }
+
             //string invstart1 = "IJS/2022-23/";
             string no = "";
             string finalstring = "";
@@ -2442,8 +2522,16 @@ Select(e => new
 
                     }
 
+                }
+                else if (franchisee.PF_Code == "UF2679")
+                {
+                    ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                    if (strarrinvno[2] == "00")
+                    {
+                        strarrinvno[2] = "10";
+                        ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2]);
 
-
+                    }
 
                 }
                 else
@@ -2547,8 +2635,9 @@ Select(e => new
         {
 
             ViewBag.consignmnts = consignments;
-
-            if (invoice.discount == "yes")
+            string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                               Request.ApplicationPath.TrimEnd('/');
+             if (invoice.discount == "yes")
             {
                 ViewBag.disc = invoice.discount;
             }
@@ -2751,8 +2840,8 @@ Select(e => new
                     dataset.Add(temp);
                 }
 
-                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);//https://frbilling.com
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
@@ -2938,7 +3027,8 @@ Select(e => new
 
                 LocalReport lr = new LocalReport();
 
-
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                         Request.ApplicationPath.TrimEnd('/');
 
                 Invoice inc = db.Invoices.Where(m => m.invoiceno == myParameter && m.Firm_Id == firmid).FirstOrDefault();
 
@@ -2962,7 +3052,7 @@ Select(e => new
 
 
                 var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ?  baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Firm_Id == firmid);
 
@@ -3070,8 +3160,10 @@ Select(e => new
         public string SavesinglepdInvoice(string myParameter)
         {
             {
-                string Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+          
+                 string Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                             Request.ApplicationPath.TrimEnd('/');
                 LocalReport lr = new LocalReport();
 
 
@@ -3098,8 +3190,8 @@ Select(e => new
 
 
 
-                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
-                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+                var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);//https://frbilling.com
+                dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
 
                 var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == inc.invoiceno && m.Pfcode == Pf_Code);
 
@@ -3282,14 +3374,15 @@ Select(e => new
         public string DownloadByInvNo(string invoiceno)
         {
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+            string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                     Request.ApplicationPath.TrimEnd('/');
             var invoice = db.Invoices.Where(m => m.invoiceno == invoiceno && m.Pfcode == PfCode).FirstOrDefault();
 
             string companyname = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Company_Id).FirstOrDefault().ToString();
 
             var pdffileName = invoice.invoiceno.Replace("/", "-") + ".pdf";
             //https://frbilling.com/PDF/DFRB-2023-24-144.pdf
-            string savePath = "https://frbilling.com/PDF/" + pdffileName;
+            string savePath = baseurl+"/PDF/" + pdffileName;
 
             return savePath;
           

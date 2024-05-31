@@ -1,19 +1,22 @@
 ﻿@model DtDc_Billing.Models.InvoiceModel
 
-
+@{ 
+    string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
+}
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <style>
     .Generateinvoice th {
         width: 7.69% !important;
     }
+
     .field-validation-error {
         display: inline;
         color: red; /* Set the color for error messages */
         font-size: 12px; /* Adjust the font size */
         margin-top: 5px; /* Add a small margin to separate from the input field */
     }
-
 </style>
 <script>
     $(document).ready(function () {
@@ -22,7 +25,7 @@
     });
 </script>
 
-@using (Ajax.BeginForm("SaveInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock",OnBegin= "onBegin",OnComplete="onComplete" }))
+@using (Ajax.BeginForm("SaveInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock", OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
 
 
@@ -48,14 +51,22 @@
                         @if (ViewBag.success != null)
                         {
                             successMessage = ViewBag.success as string;
+                          
                         }
-
+                        @{ 
+                            string errorMessage = TempData["NUllCustomer"] as string;
+                            }
 
 
                         @if (!string.IsNullOrEmpty(successMessage))
                         {
 
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", successMessage))
                         }
                         <!-- /.box-header -->
                         @Html.ValidationMessage("invoi", new { @class = "text-danger" })
@@ -67,6 +78,7 @@
                                         <label class="text-right" for="email">Customer Id:</label>
                                         @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Customer_Id, "", new { @class = "text-danger" })
+                                       @Html.ValidationMessage("comapnycheck", "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -161,19 +173,19 @@
 
 
                             @*<label for="email">Firm Details:</label>
-                               @Html.DropDownList("Firm_Name",
-        (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
+                                   @Html.DropDownList("Firm_Name",
+            (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
 
                             @*  @Html.DropDownList("Firm_Id", "Firm_Name")*@
                             @* @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
 
 
                             @*<label for="departmentsDropdown">Firm Name</label>
-        <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
+            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
 
 
 
-        @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
 
@@ -455,6 +467,7 @@
 
 
 }
+
 <div class="overlay" id="overlayBlock">
     <div class="loader"></div>
 </div>
@@ -844,7 +857,28 @@ $('#servicetaxtotal').val(percamount.toFixed(2));
 }
 
 
+        $('#Customer_Id').focusout(function () {
+            var Customerid = $('#Customer_Id').val();
+            if (Customerid.length > 0) {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Invoice/CheckComapnyGST',
+                    data: { Customerid: Customerid },
+                    success: function (Data) {
 
+                        if (Data == "0") {
+                            $("#servicetax").val(0);
+                            Gst_Amount();
+                        }
+                        else {
+                            $("#servicetax").val(18);
+                            Gst_Amount();
+                        }
+                    }
+                });
+            }
+        });
 
 
 
@@ -1095,6 +1129,7 @@ $("#Customer_Id").autocomplete({
 
 
 });
+    
 
 </script>
 
@@ -1118,14 +1153,16 @@ $("#Customer_Id").autocomplete({
         console.log(data);
         $("#overlayBlock").hide();
 
-                $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
-             
-                document.getElementById('saveinv').click();
-  
-             
-            
-       
+                $('#saveinv').attr('href', "@baseurl/PDF/" + data);
 
+                document.getElementById('saveinv').click();
+        
     </script>
 }
-
+@if (ViewBag.GST == null || ViewBag.GST=="0")
+{
+<script>
+    $("#servicetax").val(0);
+    $("#servicetaxtotal").val(0);
+</script>
+}

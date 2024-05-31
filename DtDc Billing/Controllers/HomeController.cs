@@ -174,6 +174,9 @@ namespace DtDc_Billing.Controllers
             ViewBag.invalidcon = obj.invalidCon;
             ViewBag.stationary = obj.expiredStationaryCount;
 
+
+
+            ViewBag.ShowModal = TempData["ShowModal "];
             //if (PfCount < 6)
             //{
             //    ViewBag.RedirectSector = true;

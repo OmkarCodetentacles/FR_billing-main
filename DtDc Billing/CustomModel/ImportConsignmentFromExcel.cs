@@ -233,9 +233,16 @@ namespace DtDc_Billing.CustomModel
 
         public string Import3Async(HttpPostedFileBase httpPostedFileBase, string PfCode)
         {
-            var damageResult = Task.Run(() => asyncAddNewimporFromExcel(httpPostedFileBase, PfCode));
+            try
+            {
+                var damageResult = Task.Run(() => asyncAddNewimporFromExcel(httpPostedFileBase, PfCode));
 
-            return damageResult.ToString();
+                return damageResult.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new RedirectException(ex.Message);
+            }
         }
        
         public static async Task<string> asyncAddNewimporFromExcel(HttpPostedFileBase httpPostedFileBase,string PfCode)
@@ -276,8 +283,9 @@ namespace DtDc_Billing.CustomModel
                         {
                             var tran = new Transaction();
 
-
-                            if (workSheet.Cells[rowIterator, 8]?.Value?.ToString()!=null)
+                            try
+                            {
+                                if (workSheet.Cells[rowIterator, 8]?.Value?.ToString()!=null)
                             {
                                 tran.Consignment_no = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
 
@@ -288,8 +296,7 @@ namespace DtDc_Billing.CustomModel
                                 tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
 
                                  string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
-                                try
-                                {
+                               
                                     DateTime dateTime;
 
                                     //// parse the date string with the specified format
@@ -321,31 +328,11 @@ namespace DtDc_Billing.CustomModel
                                         tran.booking_date = excelDate;
                                         tran.tembookingdate = excelDate.ToString("dd-MM-yyyy"); // If needed, store formatted date
                                     }
-                                    else
-                                    {
-                                        //string dateString1 = cellValue.ToString();
-                                        //double excelDateSerialNumber = Convert.ToDouble(cellValue); // Example Excel date serial number
-                                        //DateTime dateTime = DateTime.FromOADate(excelDateSerialNumber);
-                                        //string formattedDate = dateTime.ToString("MM/dd/yyyy");
-                                        //DateTime parsedDate;
-                                        //parsedDate = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
-
-                                        //tran.booking_date = parsedDate;
-
-                                        //var formattedDatetemp = tran.booking_date.Value.ToString("dd-MM-yyyy");
-
-                                        //tran.tembookingdate = formattedDatetemp;
-
-
-
-
-                                        // parse the date string with the specified format
-                                        if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+                                    
+                                        // Check if the dateString can be parsed as a double (Excel serial date number)
+                                     else  if (double.TryParse(dateString, out double excelDateNumber))
                                         {
-                                            // Convert the DateTime object to the Excel date number
-                                            double excelDateNumber = parsedDateTime.ToOADate();
-
-                                            // Format the Excel date number as MM/dd/yyyy
+                                            dateTime = DateTime.FromOADate(excelDateNumber);
                                             string formattedDate = DateTime.FromOADate(excelDateNumber).ToString("MM/dd/yyyy");
 
                                             // Convert the formatted date string back to DateTime
@@ -357,8 +344,29 @@ namespace DtDc_Billing.CustomModel
                                             // Set the tembookingdate
                                             tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
                                         }
+                                        else
+                                        {
+                                            // parse the date string with the specified format
+                                            if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+                                            {
+                                                // Convert the DateTime object to the Excel date number
+                                                double excelDateNumber1 = parsedDateTime.ToOADate();
 
-                                    }
+                                                // Format the Excel date number as MM/dd/yyyy
+                                                string formattedDate = DateTime.FromOADate(excelDateNumber1).ToString("MM/dd/yyyy");
+
+                                                // Convert the formatted date string back to DateTime
+                                                DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+
+                                                // Set the booking date
+                                                tran.booking_date = formattedDateTime;
+
+                                                // Set the tembookingdate
+                                                tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+                                            }
+                                        }
+
+                                    
 
                                     tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
                                     tran.Customer_Id = workSheet.Cells[rowIterator, 10]?.Value?.ToString();
@@ -366,11 +374,7 @@ namespace DtDc_Billing.CustomModel
                                     tran.loadingcharge = loadingChargeValue ?? 0.0;
                                     tran.Receiver = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
 
-                                }
-                                catch(Exception e)
-                                {
-
-                                }
+                             
                                 Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
                                 var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code==getPfcode).Select(m => m.Pf_code).FirstOrDefault();
 
@@ -424,8 +428,12 @@ namespace DtDc_Billing.CustomModel
 
                                 }
                             }
-                           
-                            
+
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new RedirectException(ex.Message);
+                            }
                         }
                     }
 
@@ -433,5 +441,6 @@ namespace DtDc_Billing.CustomModel
             }
             return "1";
         }
+
     }
 }

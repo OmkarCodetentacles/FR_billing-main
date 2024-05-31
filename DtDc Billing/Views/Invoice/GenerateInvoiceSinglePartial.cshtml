@@ -1,6 +1,9 @@
 ﻿
 @model DtDc_Billing.Models.InvoiceModel
-
+@{ 
+    string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
+}
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
@@ -15,7 +18,7 @@
 
 
 
-@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, OnBegin = "onBegin", OnComplete = "onComplete" ,LoadingElementId= "myForm" }))
+@using (Ajax.BeginForm("SaveSingleInvoice", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, OnBegin = "onBegin", OnComplete = "onComplete", LoadingElementId = "myForm" }))
 {
     <style>
         .padding-left-0 {
@@ -60,19 +63,19 @@
 
                         @if (!string.IsNullOrEmpty(successMessage))
                         {
-                            
+
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                             <script>
                                 function onComplete(xhr, status) {
                                     if (status === "success") {
-                                     
+
                                         alert("Success")
-                                        
+
                                         setTimeout(function () {
                                             location.reload();
-                                        }, 1000); 
+                                        }, 1000);
                                     } else {
-                                        
+
                                     }
                                 }
                             </script>
@@ -146,7 +149,7 @@
                                         <div class="col-md-12">
                                             <label for="email">Period From:</label>
                                             @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.Tempdatefrom,"", new { @class = "text-danger"  })
+                                            @Html.ValidationMessageFor(model => model.Tempdatefrom, "", new { @class = "text-danger" })
                                         </div>
 
 
@@ -184,7 +187,7 @@
 
                                         <div class="col-md-12">
                                             <label for="email">Consignment No:</label>
-                                            <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" style="width:100%" required/>
+                                            <input type="text" name="consiaddno" id="consiaddno" class="consiaddno" style="width:100%" required />
                                         </div>
 
 
@@ -494,8 +497,8 @@
 }
 
 <script type="text/javascript">
-  
-  
+
+
     function scrollToTop() {
         window.scrollTo(0, 0);
     }
@@ -503,12 +506,12 @@
 
     function onBegin() {
         scrollToTop();
-        
-        var consignmentNumber = $("#consiaddno").val(); 
+
+        var consignmentNumber = $("#consiaddno").val();
         var invdate = $("#tempInvoicedate").val();
         var TempFrom = $("#Tempdatefrom").val();
         var TempTo = $("#TempdateTo").val();
-        
+
         if (consignmentNumber === null || consignmentNumber === "") {
 
             alert("Consignment number cannot be null.");
@@ -747,7 +750,7 @@
 
         function showtable () {
 
-           
+
             var Customerid = $('#Customer_Id').val();
 
 
@@ -977,7 +980,28 @@ $('#servicetaxtotal').val(percamount.toFixed(2));
 }
 
 
+        $('#Customer_Id').focusout(function () {
+            var Customerid = $('#Customer_Id').val();
+            if (Customerid.length > 0) {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Invoice/CheckComapnyGST',
+                    data: { Customerid: Customerid },
+                    success: function (Data) {
 
+                        if (Data == "0") {
+                            $("#servicetax").val(0);
+                            Gst_Amount();
+                        }
+                        else {
+                            $("#servicetax").val(18);
+                            Gst_Amount();
+                        }
+                    }
+                });
+            }
+        });
 
 
 
@@ -1246,7 +1270,7 @@ $("#Customer_Id").autocomplete({
 
     //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
         $.get("/Invoice/SavesinglepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', "https://frbilling.com/PDF/" + data);
+            $('#saveinv').attr('href', @baseurl+"/PDF/" + data);
 
           document.getElementById('saveinv').click();
 
@@ -1265,7 +1289,14 @@ else
     </script>
 }
 
-<a id="savecon" style="" href="" download>
+<a id="savecon" style="" href="" download target="_blank">
 </a>
 
 
+@if (ViewBag.GST == null || ViewBag.GST=="0")
+{
+    <script>
+        $("#servicetax").val(0);
+        $("#servicetaxtotal").val(0);
+    </script>
+}

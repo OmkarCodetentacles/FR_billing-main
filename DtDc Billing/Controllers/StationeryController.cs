@@ -89,10 +89,11 @@ namespace DtDc_Billing.Controllers
 
                         string imageName = getsingle + "." + ImageType.Png;
                         string imagePath = "/BarcodeImages/" + imageName;
-                        //string baseUrl = "https://frbilling.com/";
+                        
 
-                        string baseUrl = "https://frbilling.com/";
-
+                        //    string baseUrl = "https://frbilling.com/";     // create dynamic url rahter than static url of the frbiling
+                        string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                                           Request.ApplicationPath.TrimEnd('/');
                         //  Uri imageUri = new Uri(new Uri(baseUrl), imagePath);
                         //  string imageServerPath = imageUri.AbsoluteUri;
 
@@ -416,10 +417,11 @@ namespace DtDc_Billing.Controllers
                 //////if barcode is not generated/////////
                 string imageName = getConsignement + "." + ImageType.Png;
                 string imagePath = "/BarcodeImages/" + imageName;
-                //string baseUrl = "https://frbilling.com/";
+              
 
-                string baseUrl = "https://frbilling.com/";
-
+                //string baseUrl = "https://frbilling.com/"; use Dynamic url rather than static url
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
                 string imageServerPath = Server.MapPath("~" + imagePath);
 
 
@@ -697,10 +699,11 @@ Select(e => new
 
                 string imageName = getsingle + "." + ImageType.Png;
                 string imagePath = "/BarcodeImages/" + imageName;
-                //string baseUrl = "https://frbilling.com/";
+              
 
-                string baseUrl = "https://frbilling.com/";
-
+             //   string baseUrl = "https://frbilling.com/";
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+       Request.ApplicationPath.TrimEnd('/');
                 //  Uri imageUri = new Uri(new Uri(baseUrl), imagePath);
                 //  string imageServerPath = imageUri.AbsoluteUri;
 

@@ -28,7 +28,7 @@
                     @{
                         var sMessage = TempData["Updatedsuccss"] as string;
                     }
-                    @if (!string.IsNullOrEmpty(sMessage))
+                    @if (!string.IsNullOrEmpty(sMessage))   
                     {
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
                     }
@@ -66,9 +66,12 @@
 
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.tempinserteddate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <label class="control-label col-md-2">
+                                    Date
+                                </label>
+                                @*@Html.LabelFor(model => model.tempinserteddate, htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 <div class="col-md-4">
-                                    @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
+                                    @Html.EditorFor(model => model.FormattedTempInsertedDate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate",@readonly="readonly" } })
                                     @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
                                 </div>
                             </div>

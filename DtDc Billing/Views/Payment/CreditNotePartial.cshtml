@@ -71,7 +71,10 @@
 
 
 <script>
-
+    $('#tempch_date').datepicker({
+        autoclose: true,
+        format: 'mm-dd-yyyy'
+    })
     function createsuccess() {
         $('#Cr_Amount').removeAttr('value');
         $('#tempinserteddate').removeAttr('value');
@@ -107,6 +110,29 @@
         document.getElementById('overlayBlock').style.display = 'none';
     }
 </script>
+<a id="savecredit" style="" href="" target="_blank" download>
+</a>
+@if (ViewBag.FileName != null)
+{
+        var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                            Request.ApplicationPath.TrimEnd('/');
+
+<script>
+     var data = '@ViewBag.FileName';
+       var baseurl = '@baseurl';
+    document.getElementById('overlayBlock').style.display = 'none';
+
+    $('#savecredit').attr('href', baseurl + "/PDF/" + data);
+
+    document.getElementById('savecredit').click();
+
+</script>
+
+
+
+}
+
+
 
 
 @if (TempData["success"] != null)

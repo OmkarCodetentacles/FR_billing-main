@@ -2062,10 +2062,11 @@ namespace DtDc_Billing.Controllers
 
                 //var logo = db.Franchisees.Where(m => m.PF_Code == Pfcode).FirstOrDefault();
                 //logo.LogoFilePath = (logo.LogoFilePath== null || logo.LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : logo.LogoFilePath;
+                 string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                                                Request.ApplicationPath.TrimEnd('/');
 
-
-                var dataset = db.Franchisees.Where(m => m.PF_Code == Pfcode).ToList();
-                dataset.FirstOrDefault().LogoFilePath = (dataset.FirstOrDefault().LogoFilePath == null || dataset.FirstOrDefault().LogoFilePath == "") ? "https://frbilling.com/assets/Dtdclogo.png" : dataset.FirstOrDefault().LogoFilePath;
+                var dataset = db.Franchisees.Where(m => m.PF_Code == Pfcode).ToList();//https://frbilling.com Remove static url
+                dataset.FirstOrDefault().LogoFilePath = (dataset.FirstOrDefault().LogoFilePath == null || dataset.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset.FirstOrDefault().LogoFilePath;
 
                 var dataset1 = db.Companies.Where(m => m.Company_Id == CompanyId).ToList();
 

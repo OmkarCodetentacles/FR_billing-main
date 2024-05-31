@@ -27,7 +27,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" id="close" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title">
@@ -213,13 +213,13 @@
                         {
                             <tr>
                                 <td>
-                                    @if (item.Balance == 0) //
+                                    @if (item.Balance == 0 || item.Balance<0) //
                                     {
                                         <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
                                     }
                                     else
                                     {
-                                        <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default">
+                                        <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default" data-backdrop="static" data-keyboard="false">
                                             Add Payments
                                         </button>
                                     }
@@ -364,11 +364,12 @@
         border: 1px solid #ff0000 !important;
     }
 </style>
-
 <script>
 
     $(document).ready(function () {
+     
         $(".addpmt").click(function () {
+           
             var d = $(this).data('datac');
             var netamt = $(this).data('dataamt');
             netamt = Math.round(netamt);
@@ -381,8 +382,15 @@
             $('.Netamount').text('Net Amount Is' + " : " + netamt);
             $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
 
-
+         
         });
+        $("#modal-default .close").click(function () {
+            // Clear all forms inside the modal
+            $('#modal-default').find('form').each(function () {
+                this.reset();
+            });
+            $(".text-danger").empty();
+        })
 
         $('#tempinserteddate,#tempch_date,#tempneftdate,#cr_date').datepicker({
             autoclose: true,

@@ -374,7 +374,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!Tempdatefrom.Value, "DataSet2")</Value>
+                    <Value>=First(Fields!Tempdatefrom.Value,"DataSet2")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <Format>0.00;(0.00)</Format>
@@ -744,7 +744,7 @@
           </Textbox>
           <Image Name="Image4">
             <Source>External</Source>
-            <Value>=First(Fields!StampFilePath.Value, "DataSet1")</Value>
+            <Value>=IIf(IsNothing(First(Fields!StampFilePath.Value, "DataSet1")), "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", First(Fields!StampFilePath.Value, "DataSet1"))</Value>
             <MIMEType>image/png</MIMEType>
             <Sizing>Fit</Sizing>
             <Top>0.16466in</Top>
@@ -806,7 +806,7 @@
       </Textbox>
       <Image Name="Image2">
         <Source>External</Source>
-        <Value>=First(Fields!LogoFilePath.Value, "DataSet1")</Value>
+        <Value>=IIf(IsNothing(First(Fields!LogoFilePath.Value, "DataSet1")), "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", First(Fields!LogoFilePath.Value, "DataSet1"))</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
         <Top>0.47985in</Top>

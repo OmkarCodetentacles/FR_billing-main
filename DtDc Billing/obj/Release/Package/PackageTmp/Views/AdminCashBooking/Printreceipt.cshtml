@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Printreceipt";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
 }
 
 <style>
@@ -696,6 +698,12 @@
                                         </div>
                                         <div class="radio col-md-4">
                                             <label>
+                                                <input type="radio" name="credit" id="online" value="online">
+                                                <span style="margin-left:20px">Online</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-4">
+                                            <label>
                                                 <input type="radio" name="credit" id="other" value="other">
                                                 <span style="margin-left:20px">Other</span>
                                             </label>
@@ -1127,6 +1135,11 @@
         $('#details').hide();
 
     }
+    function onlineamount() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').hide();
+    }
 
     function cashamount() {
         $('#creditamount').show();
@@ -1221,7 +1234,9 @@
         $('#other').click(function () {
             otheramount();
         });
-
+        $("#online").click(function () {
+            onlineamount();
+        })
         $('#Insuance_Percentage,#Insuance_Amount').keyup(function () {
             var perc = $('#Insuance_Percentage').val();
             var Amt = $('#Insuance_Amount').val();
@@ -2678,8 +2693,8 @@ $(document).ready(function () {
             var filename = '@ViewBag.PdfFileName';
             console.log(filename);
             $("#overlayBlock").hide();
-
-            $('#savecon').attr('href', "https://frbilling.com/ConsignmentPDF/" + filename);
+            //https://frbilling.com  create Dynamic Link rather than Static LInk
+            $('#savecon').attr('href', "@baseurl/ConsignmentPDF/" + filename);
 
             document.getElementById('savecon').click();
     

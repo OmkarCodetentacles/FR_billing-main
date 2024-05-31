@@ -10,6 +10,7 @@
     <Property Name="branch" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="consinment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="addtopayamount">
     <Key>
@@ -20,6 +21,7 @@
     <Property Name="consinmentno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="date" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+    <Property Name="pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Admin">
     <Key>
@@ -383,6 +385,8 @@
     <Property Name="InvoiceStart" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="LogoFilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="StampFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceYear" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="InvoiceStartNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Companies" Relationship="Self.fk_company" FromRole="Franchisee" ToRole="Company" />
     <NavigationProperty Name="Employees" Relationship="Self.Emp_Fk" FromRole="Franchisee" ToRole="Employee" />
     <NavigationProperty Name="Expenses" Relationship="Self.fk_exp" FromRole="Franchisee" ToRole="Expense" />
@@ -807,6 +811,9 @@
     <Property Name="emailOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="isLoginConfirmed" Type="Boolean" />
     <Property Name="LoginOTP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FirstTimeLoginTime" Type="DateTime" Precision="3" />
+    <Property Name="LoginCount" Type="Int32" />
   </EntityType>
   <EntityType Name="ReplyAdmin">
     <Key>
@@ -994,6 +1001,7 @@
     <Property Name="compaddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Company" Relationship="Self.fk_Tansaction" FromRole="Transactions" ToRole="Company" />
     <NavigationProperty Name="Franchisee" Relationship="Self.fk_Tansaction1" FromRole="Transactions" ToRole="Franchisee" />
+    <Property Name="isRTO" Type="Boolean" />
   </EntityType>
   <EntityType Name="UserModuleList">
     <Key>
@@ -1106,6 +1114,7 @@
     <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="isRTO" Type="Boolean" />
   </EntityType>
   <Association Name="FK__Cash__Firm_Id__2180FB33">
     <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
@@ -2392,11 +2401,24 @@
       <Parameter Name="toDate" Mode="In" Type="DateTime" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="getCreditorsInvoiceWithTDSAmount" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSAmount_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="getInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getInvoice_Result)">
       <Parameter Name="fromDate" Mode="In" Type="DateTime" />
       <Parameter Name="toDate" Mode="In" Type="DateTime" />
       <Parameter Name="Customerid" Mode="In" Type="String" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getInvoiceWithapplyFilter" ReturnType="Collection(db_a92afa_frbillingModel.getInvoiceWithapplyFilter_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+      <Parameter Name="invoiceno" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="getInvoiceWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getInvoiceWithoutCompany_Result)">
       <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -2529,13 +2551,6 @@
       <Parameter Name="FirmId" Mode="In" Type="Int64" />
       <Parameter Name="FirmName" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="getInvoiceWithapplyFilter" ReturnType="Collection(db_a92afa_frbillingModel.getInvoiceWithapplyFilter_Result)">
-      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-      <Parameter Name="toDate" Mode="In" Type="DateTime" />
-      <Parameter Name="Customerid" Mode="In" Type="String" />
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-      <Parameter Name="invoiceno" Mode="In" Type="String" />
-    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -2636,7 +2651,49 @@
     <Property Type="Double" Name="netamount" Nullable="true" />
     <Property Type="Double" Name="paid" Nullable="true" />
   </ComplexType>
+  <ComplexType Name="getCreditorsInvoiceWithTDSAmount_Result">
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="Double" Name="TdsAmount" Nullable="true" />
+    <Property Type="Double" Name="TotalAmount" Nullable="true" />
+  </ComplexType>
   <ComplexType Name="getInvoice_Result">
+    <Property Type="Int32" Name="IN_Id" Nullable="false" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="othercharge" Nullable="true" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="String" Name="discount" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
+    <Property Type="Double" Name="Docket_charges" Nullable="true" />
+    <Property Type="String" Name="Tempdatefrom" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="TempdateTo" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Invoice_Lable" Nullable="true" />
+    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
+    <Property Type="Int32" Name="totalCount" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="getInvoiceWithapplyFilter_Result">
     <Property Type="Int32" Name="IN_Id" Nullable="false" />
     <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
     <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
@@ -2720,6 +2777,8 @@
     <Property Type="DateTime" Name="IsRenewalEmailDate" Nullable="true" Precision="23" />
     <Property Type="Int32" Name="subscriptionForInDays" Nullable="true" />
     <Property Type="DateTime" Name="paymentDate" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="FirstTimeLoginTime" Nullable="true" Precision="23" />
+    <Property Type="Int32" Name="LoginCount" Nullable="true" />
   </ComplexType>
   <ComplexType Name="getLoginforDev_Result">
     <Property Type="String" Name="username" Nullable="true" MaxLength="50" />
@@ -2918,31 +2977,5 @@
     <Property Type="String" Name="Sender" Nullable="true" />
     <Property Type="String" Name="Receiver" Nullable="true" />
     <Property Type="String" Name="compaddress" Nullable="true" MaxLength="200" />
-  </ComplexType>
-  <ComplexType Name="getInvoiceWithapplyFilter_Result">
-    <Property Type="Int32" Name="IN_Id" Nullable="false" />
-    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
-    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
-    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
-    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
-    <Property Type="Double" Name="total" Nullable="true" />
-    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
-    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
-    <Property Type="Double" Name="servicetax" Nullable="true" />
-    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
-    <Property Type="Double" Name="othercharge" Nullable="true" />
-    <Property Type="Double" Name="netamount" Nullable="true" />
-    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
-    <Property Type="Double" Name="paid" Nullable="true" />
-    <Property Type="String" Name="discount" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Royalty_charges" Nullable="true" />
-    <Property Type="Double" Name="Docket_charges" Nullable="true" />
-    <Property Type="String" Name="Tempdatefrom" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="TempdateTo" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="tempInvoicedate" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Address" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="Invoice_Lable" Nullable="true" />
-    <Property Type="Int64" Name="Firm_Id" Nullable="true" />
-    <Property Type="Int32" Name="totalCount" Nullable="true" />
   </ComplexType>
 </Schema>

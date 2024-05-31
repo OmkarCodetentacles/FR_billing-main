@@ -13,6 +13,7 @@
 {
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
     <script>
+
         setTimeout(function () {
             window.location.reload();
 
@@ -98,7 +99,10 @@
 }
 
 <script>
-
+    $('#tempch_date').datepicker({
+        autoclose: true,
+        format: 'mm-dd-yyyy'
+    })
     function createsuccess() {
         $('#C_Amount').removeAttr('value');
         $('#tempinserteddate').removeAttr('value');

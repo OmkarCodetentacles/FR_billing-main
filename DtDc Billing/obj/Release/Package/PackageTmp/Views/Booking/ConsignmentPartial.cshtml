@@ -362,39 +362,48 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
 <script>
 
-    /////Sender Autocomplete
     $(function () {
-        var availableTutorials = [
+        var company_name = [];
+        var company_idarr = [];
 
-        ];
-        var company_idarr = [
-
-        ];
-
+        // Fetch data using AJAX
         $.ajax({
             type: 'GET',
-          
             url: '/Booking/CustomerIdAutocomplete',
-    data: {},
-    dataType: 'json',
-    success: function (data) {
-        $.each(data, function (i, item) {
-            company_idarr.push(item.Company_Id);
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    company_name.push({
+                        label: item.Company_Name, // Display this in the autocomplete dropdown
+                        value: item.Company_Id   // Store this as the actual value
+                    });
+                    company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
+                });
+
+                // Initialize the autocomplete
+                $("#Customer_Id").autocomplete({
+                    source: company_idarr,
+                    select: function (event, ui) {
+                        // When an item is selected, update the input value with the selected item's value
+                        $("#Customer_Id").val(ui.item.value);
+                        $("#Customer_Id").trigger("focusout");
+                        return false; // Prevent the default behavior of updating the input with the label
+                    }
+                });
+                var pfcode = '@ViewBag.PfCode';
+                if (pfcode == "CF2024") {
+
+                 //Customize how the items are rendered in the autocomplete dropdown
+                $("#Customer_Id").autocomplete("instance")._renderItem = function (ul, item) {
+                    return $("<li>")
+                        .append("<div>" + item.label + " (" + item.value + ")</div>")
+                        .appendTo(ul);
+                };
+                }
+               
+            }
         });
-
-    }
-});
-
-        $("#Customer_Id").autocomplete({
-            source: company_idarr,
-         select: function (event, ui) {
-        $("#Customer_Id").val(ui.item.value);
-
-        $("#Customer_Id").trigger("focusout");
-    }
-});
     });
-
 
 
 
@@ -667,7 +676,7 @@ $("#Pincode").autocomplete({
                             if (Data.Type_t == "N") {
                                 $('#insshow').show();
                             }
-
+                            $("#dtdcamount").val(Data.dtdcamount);
                             $('#Amount').val(Data.Amount);
                             $('#Quanntity').val(Data.Quanntity);
 
@@ -733,7 +742,7 @@ $("#Pincode").autocomplete({
                         }
                         $('#Actual_weight').val(Data.Actual_weight);
                         $('#Pincode').val(Data.Pincode);
-
+                        $("#dtdcamount").val(Data.dtdcamount);
 
                         $('#chargable_weight').val(Data.chargable_weight);
                         $('#Quanntity').val(Data.Quanntity);

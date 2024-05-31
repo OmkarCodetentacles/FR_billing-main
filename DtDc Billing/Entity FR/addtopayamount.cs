@@ -11,13 +11,17 @@ namespace DtDc_Billing.Entity_FR
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class addtopayamount
     {
         public int ad_id { get; set; }
         public string sapno { get; set; }
+        [Required]
         public string consinmentno { get; set; }
         public string date { get; set; }
+        [Required]
         public string Invoiceno { get; set; }
+        public string pfcode { get; set; }
     }
 }
