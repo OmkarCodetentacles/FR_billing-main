@@ -13,11 +13,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
 using System.Web.UI;
+using System.Windows.Forms;
+using ZXing.QrCode.Internal;
 using static System.Net.WebRequestMethods;
 
 namespace DtDc_Billing.Controllers
@@ -58,7 +61,7 @@ namespace DtDc_Billing.Controllers
             string invstart1 = dataInvStart + "/2023-24/";
             string no = "";
             string finalstring = "";
-            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958")
+            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958" || strpfcode== "CF2024")
             {
                 dataInvStart = (from d in db.Franchisees
                                     where d.PF_Code == strpfcode
@@ -140,6 +143,23 @@ namespace DtDc_Billing.Controllers
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
+                else if(franchisee.PF_Code== "CF2024")
+                {
+                    string incrementedNumber = "00";
+                    strarrinvno = lastInvoiceno1.Split('/');
+                    int number = int.Parse(strarrinvno[2]) + 1;
+                
+                    if (number < 10)
+                    {
+                         incrementedNumber = number.ToString().PadLeft(2, '0');
+
+                    }
+                    else
+                    {
+                         incrementedNumber = number.ToString();
+                    }
+                    ViewBag.lastInvoiceno = dataInvStart+"/" + incrementedNumber+"/2024-25";
+                }
                
                 else
                 {
@@ -154,18 +174,39 @@ namespace DtDc_Billing.Controllers
                 string[] strarrinvno = lastInvoiceno1.Split('/');
                 //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
                 int newnumber=0;
+                string incrementedNumber = "00";
                 if (franchisee.PF_Code == "PF2214")
                 {
                     newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
+                    finalstring = newnumber.ToString("000");
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
                 }
+                else if (franchisee.PF_Code == "CF2024")
+                {
+                    newnumber = Convert.ToInt32(int.Parse(strarrinvno[2]) + 1);
+
+                    if (newnumber < 10)
+                    {
+                        incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+
+                    }
+                    else
+                    {
+                        incrementedNumber = newnumber.ToString();
+                    }
                 
+                    //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+                    ViewBag.lastInvoiceno = dataInvStart+"/" + (int.Parse(strarrinvno[2]) + 1) + "/2024-25";
+                }
+
                 else
                 {
                     newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                    finalstring = newnumber.ToString("000");
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
                 }
 
-                finalstring = newnumber.ToString("000");
-                ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+              
             }
 
             var data = (from d in db.Invoices
@@ -185,7 +226,7 @@ namespace DtDc_Billing.Controllers
                 Inv.total = data.total;
                 Inv.fullsurchargetax = data.fullsurchargetax;
                 Inv.fullsurchargetaxtotal = data.fullsurchargetaxtotal;
-                Inv.servicetax = data.servicetax;
+                Inv.servicetax = data.servicetax??0;
                 Inv.servicetaxtotal = data.servicetaxtotal;
                 Inv.othercharge = data.othercharge;
                 Inv.netamount = data.netamount;
@@ -376,11 +417,11 @@ namespace DtDc_Billing.Controllers
                     periodfrom=x.periodfrom,
                     periodto=x.periodto,
                     total=x.total,
-                    fullsurchargetax=x.fullsurchargetax,
-                    fullsurchargetaxtotal=x.fullsurchargetaxtotal,
-                    servicetax=x.servicetax,
-                    servicetaxtotal=x.servicetaxtotal,
-                    othercharge=x.othercharge,
+                    fullsurchargetax=x.fullsurchargetax??0,
+                    fullsurchargetaxtotal=x.fullsurchargetaxtotal??0,
+                    servicetax=x.servicetax??0,
+                    servicetaxtotal=x.servicetaxtotal??0,
+                    othercharge=x.othercharge??0,
                     netamount=x.netamount,
                     Customer_Id=x.Customer_Id,
                     paid=x.paid,
@@ -479,7 +520,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewSingleInvoice(string invoiceNo, bool isDelete = false)
+        public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo, bool isDelete = false)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -500,9 +541,47 @@ namespace DtDc_Billing.Controllers
             var temp = db.singleinvoiceconsignments.Select(m => m.Invoice_no).ToList();
 
 
+            DateTime? fromdate = null;
+            DateTime? todate = null;
 
+
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+
+
+            if (invfromdate != "" && invfromdate!=null)
+            {
+
+                string bdatefrom = DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                fromdate = Convert.ToDateTime(bdatefrom);
+
+                ViewBag.todate = invtodate;
+            }
+            else
+            {
+                todate = null;
+            }
+
+            if (invtodate != "" && invtodate!=null)
+            {
+                string bdateto = DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                todate = Convert.ToDateTime(bdateto);
+                ViewBag.fromdate = invfromdate;
+            }
+            else
+            {
+                fromdate = null;
+            }
+            if (Companydetails != "")
+            {
+                ViewBag.Custid = Companydetails;
+            }
             var a = (from member in db.Invoices
                      where temp.Contains(member.invoiceno) && member.Pfcode == strpf
+                     && (invfromdate == null || member.invoicedate >= fromdate.Value)
+                     && (invtodate == null || member.invoicedate <= todate.Value)
+                     && (Companydetails == null || member.Customer_Id== Companydetails)
+                     && (invoiceNo==null || member.invoiceno== invoiceNo)
                      select member).ToList();
 
 
@@ -532,9 +611,37 @@ namespace DtDc_Billing.Controllers
 
             db.Configuration.ProxyCreationEnabled = false;
 
-            var Companies = db.TransactionViews.Where(m => m.Customer_Id == CustomerId && m.Pf_Code == strpfcode && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
-            Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
-                              .ToList();
+            var Companies =(from t in db.TransactionViews
+                            join d in db.Destinations 
+                            on t.Pincode equals d.Pincode
+                            where t.Customer_Id == CustomerId && t.Pf_Code == strpfcode
+                           && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
+                           select new
+                           {
+                               Consignment_no=t.Consignment_no,
+                               Name=d.Name,
+                               chargable_weight =t.chargable_weight,
+                               Pincode=t.Pincode,
+                               Mode=t.Mode,
+                               Amount=t.Amount??0,
+                               tembookingdate=t.tembookingdate,
+                               Insurance=t.Insurance,
+                               Claimamount=t.Claimamount ?? "0",
+                               Percentage=t.Percentage??"0",
+                               loadingcharge=t.loadingcharge ?? 0,
+                               Risksurcharge=t.Risksurcharge??0,
+                               booking_date=t.booking_date
+
+                           }
+                           ).ToList().Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                              .ToList(); 
+
+                
+                
+                
+            //    db.TransactionViews.Where(m => m.Customer_Id == CustomerId && m.Pf_Code == strpfcode && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+            //Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+            //                  .ToList();
 
 
 
@@ -800,7 +907,7 @@ Select(e => new
                     var dataset3 = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
                     var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
-
+                    dataset3.FirstOrDefault().Invoice_Lable = AmountTowords.changeToWords(dataset3.FirstOrDefault().netamount.ToString());
                     string clientGst = dataset4.FirstOrDefault().Gst_No;
                     string frgst = franchisee.FirstOrDefault().GstNo;
 
@@ -1694,6 +1801,7 @@ Select(e => new
         [HttpPost]
         public async Task<ActionResult> MultipleInvoice(string[] Companies, Invoice invoice, string submit)
         {
+           
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             ViewBag.Complist = db.Companies.Where(m => !(m.Company_Id.StartsWith("Cash_")) && !(m.Company_Id.StartsWith("BASIC_TS")) && m.Pf_code == strpfcode).Select(m => m.Company_Id).ToList();
@@ -1728,6 +1836,7 @@ Select(e => new
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+          
             foreach (var i in Companies)
             {
                 var invoi = db.Invoices.Where(m => m.tempInvoicedate == invoice.tempInvoicedate && m.Pfcode == strpfcode && m.Customer_Id == i).FirstOrDefault();
@@ -1765,7 +1874,7 @@ Select(e => new
                     inv.Address = db.Companies.Where(m => m.Company_Id == i).Select(m => m.Company_Address).FirstOrDefault();
                     inv.Customer_Id = i;
                     inv.Pfcode = strpfcode;
-                    inv.fullsurchargetaxtotal = ((inv.total * Convert.ToDouble(cm.Fuel_Sur_Charge)) / 100);
+                    inv.fullsurchargetaxtotal = Math.Round((double)((inv.total * Convert.ToDouble(cm.Fuel_Sur_Charge)) / 100));
 
                     string invoiceno = "0";
 
@@ -1778,7 +1887,7 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
-                    if (strpfcode == "MF868" || strpfcode=="PF1649" || strpfcode == "UF2679")
+                    if (strpfcode == "MF868" || strpfcode=="PF1649" || strpfcode == "UF2679" || strpfcode== " CF2024")
                     {
                         dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
@@ -1792,19 +1901,66 @@ Select(e => new
 
                     if (lastInvoiceno == null)
                     {
-                        int number = Convert.ToInt32(lastInvoiceno.Substring(12));
-                        no = lastInvoiceno.Substring(12);
-                        ViewBag.lastInvoiceno = invstart1 + "" + (no + 1);
-                    }
+                        if (strpfcode == "CF2024")
+                        {
 
+                            string incrementedNumber = "00";
+                            string[] strarrinvno = lastInvoiceno1.Split('/');
+                            strarrinvno = lastInvoiceno1.Split('/');
+                            int number1 = int.Parse(strarrinvno[2]) + 1;
+                            if (number1 < 10)
+                            {
+                                incrementedNumber = number1.ToString().PadLeft(2, '0');
+
+                            }
+                            else
+                            {
+                                incrementedNumber = number1.ToString();
+                            }
+                           // string incrementedNumber = number1.ToString().PadLeft(2, '0');
+                            ViewBag.lastInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
+
+
+                        }
+                        else
+                        {
+                            int number = Convert.ToInt32(lastInvoiceno.Substring(12));
+                            no = lastInvoiceno.Substring(12);
+                            ViewBag.lastInvoiceno = invstart1 + "" + (no + 1);
+                        }
+
+
+                        
+                    }
                     else
                     {
-
                         string[] strarrinvno = lastInvoiceno1.Split('/');
+                        string incrementedNumber = "0";
+                        if (strpfcode== "CF2024")
+                        {
+                             int  newnumber = Convert.ToInt32(int.Parse(strarrinvno[2]) + 1);
+                            if (newnumber < 10)
+                            {
+                                incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+
+                            }
+                            else
+                            {
+                                incrementedNumber = newnumber.ToString();
+                            }
+                          //  string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+                            ViewBag.lastInvoiceno = dataInvStart + "/" + (int.Parse(strarrinvno[2]) + 1) + "/2024-25";
+                        }
+                        else
+                        {
+                            int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                            finalstring = newnumber.ToString("000");
+                            ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+
+                        }
                         //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
-                        int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
-                        finalstring = newnumber.ToString("000");
-                        ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+
+
                     }
 
                     inv.invoiceno = lastInvoiceno;
@@ -1848,13 +2004,13 @@ Select(e => new
                         }
                     }
 
-                    inv.Royalty_charges = ((inv.total * Convert.ToDouble(cm.Royalty_Charges)) / 100);
+                    inv.Royalty_charges = Math.Round((double)((inv.total * Convert.ToDouble(cm.Royalty_Charges)) / 100));
 
-                    inv.servicetaxtotal = (((inv.total + inv.fullsurchargetaxtotal + inv.Docket_charges + inv.Royalty_charges) * invoice.servicetax) / 100); //((gst_total * parseFloat("0" + gst)) / 100);
-                    inv.netamount = inv.total + inv.Docket_charges + inv.Royalty_charges + inv.servicetaxtotal + inv.fullsurchargetaxtotal;
+                    inv.servicetaxtotal = Math.Round((double)(((inv.total + inv.fullsurchargetaxtotal + inv.Docket_charges + inv.Royalty_charges) * invoice.servicetax) / 100)); //((gst_total * parseFloat("0" + gst)) / 100);
+                    inv.netamount = Math.Round((double)(inv.total + inv.Docket_charges + inv.Royalty_charges + inv.servicetaxtotal + inv.fullsurchargetaxtotal));
                     inv.netamount = Math.Round(inv.netamount ?? 0, 0);
-                    inv.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
-
+                    inv.Invoice_Lable = AmountTowords.changeToWords(inv.netamount.ToString());
+                    inv.Docket_charges= Math.Round((double)inv.Docket_charges);
                     if (inv.netamount > 0)
                     {
                         db.Invoices.Add(inv);
@@ -2453,7 +2609,7 @@ Select(e => new
                                 select d.InvoiceStart).FirstOrDefault();
 
             string invstart1 = dataInvStart + "/2023-24/";
-            if (strpfcode == "PF2214")
+            if (strpfcode == "PF2214" || strpfcode== "CF2024")
             {
                 dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -2534,6 +2690,27 @@ Select(e => new
                     }
 
                 }
+                else if (franchisee.PF_Code == "CF2024")
+                {
+                    string incrementedNumber = "00";
+                    strarrinvno = lastInvoiceno1.Split('/');
+                    int number = int.Parse(strarrinvno[2]) + 1;
+                    if (strpfcode == "CF2024")
+                 
+                        if (number < 10)
+                        {
+                            incrementedNumber = number.ToString().PadLeft(2, '0');
+
+                        }
+                        else
+                        {
+                            incrementedNumber = number.ToString();
+                        }
+                       
+               //     string incrementedNumber = number.ToString().PadLeft(2, '0');
+                    ViewBag.lastInvoiceno = dataInvStart +"/"+ incrementedNumber + "/2024-25";
+                }
+
                 else
                 {
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
@@ -2555,15 +2732,36 @@ Select(e => new
                 if (franchisee.PF_Code == "PF2214")
                 {
                     newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
+                    finalstring = newnumber.ToString("000");
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+                }
+                else if (franchisee.PF_Code == "CF2024")
+                {
+                    newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                    string incrementedNumber = "00";
+                        if (newnumber < 10)
+                        {
+                            incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+
+                        }
+                        else
+                        {
+                            incrementedNumber = newnumber.ToString();
+                        }
+                      
+                       
+                    //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+                    ViewBag.lastInvoiceno = dataInvStart+"/" + (int.Parse(strarrinvno[2]) + 1) + "/204-25";
                 }
 
                 else
                 {
                     newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                    finalstring = newnumber.ToString("000");
+                    ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
                 }
 
-                finalstring = newnumber.ToString("000");
-                ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+               
             }
 
 
@@ -2595,7 +2793,7 @@ Select(e => new
                 Inv.total = data.total;
                 Inv.fullsurchargetax = data.fullsurchargetax;
                 Inv.fullsurchargetaxtotal = data.fullsurchargetaxtotal;
-                Inv.servicetax = data.servicetax;
+                Inv.servicetax = data.servicetax??0;
                 Inv.servicetaxtotal = data.servicetaxtotal;
                 Inv.othercharge = data.othercharge;
                 Inv.netamount = data.netamount;
@@ -2930,8 +3128,10 @@ Select(e => new
 
 
 
+                //ViewBag.pdf = true;
+                //ViewBag.invoiceno = invoice.invoiceno;
                 ViewBag.pdf = true;
-                ViewBag.invoiceno = invoice.invoiceno;
+                ViewBag.invoiceno = invoice.invoiceno.Replace("/", "-");
                 string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
 
                 using (FileStream stream = new FileStream(savePath, FileMode.Create))
@@ -2995,7 +3195,8 @@ Select(e => new
         public JsonResult InvoiceTableSingle(string[] array, string Customerid)
         {
 
-            List<Transaction> Companies = new List<Transaction>();
+            //  List<Transaction> Companies = new List<Transaction>();
+            var result = new List<object>();
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -3005,19 +3206,31 @@ Select(e => new
                 foreach (var i in array.Distinct().ToArray())
                 {
 
-                    Transaction tr = db.Transactions.Where(m => m.Consignment_no == i.Trim() && m.Pf_Code == strpfcode && m.Customer_Id == Customerid).FirstOrDefault();
-
+                    //   Transaction tr = db.Transactions.Where(m => m.Consignment_no == i.Trim() && m.Pf_Code == strpfcode && m.Customer_Id == Customerid).FirstOrDefault();
+                    //for showing the Destination
+                    var tr = db.Transactions
+                       .Join(db.Destinations,
+                             transaction => transaction.Pincode,
+                             destination => destination.Pincode,
+                             (transaction, destination) => new { transaction, destination })
+                       .Where(joined => joined.transaction.Consignment_no == i.Trim()
+                                        && joined.transaction.Pf_Code == strpfcode
+                                        && joined.transaction.Customer_Id == Customerid)
+                       .Select(joined => new { Transaction = joined.transaction, Name = joined.destination.Name })
+                       .FirstOrDefault();
                     if (tr != null)
                     {
-                        Companies.Add(tr);
+                        //Companies.Add(tr);
+
+                        result.Add(tr);
                     }
 
                 }
             }
 
 
-            return Json(Companies, JsonRequestBehavior.AllowGet);
-
+            //return Json(Companies, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

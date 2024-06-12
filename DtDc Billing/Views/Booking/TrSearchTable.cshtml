@@ -1,5 +1,20 @@
 ﻿@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+@{
 
+    var consignments = ViewBag.Consignments;
+    {
+        if (consignments != null)
+        {
+            var jsArray = @Html.Raw(Json.Encode(consignments));
+            <script>
+
+             var consignmentsArray = @Html.Raw(jsArray);
+
+            </script>
+        }
+    }
+
+}
 <section>
     <div class="row">
         <div class="col-md-12 mt-15" style="padding:0">
@@ -79,12 +94,12 @@
                         </div>
                     </div>
 
-            @*<div class="col-md-1 p-0" style="margin-top:12px">
-                <div class="form-group">
-                    <label></label>
-                    <input type="submit" class="btn btn-primary" id="submitajx" name="Show" value="Show" style=" display: block; width: 100%" />
-                </div>
-                </div>*@
+                    @*<div class="col-md-1 p-0" style="margin-top:12px">
+                        <div class="form-group">
+                            <label></label>
+                            <input type="submit" class="btn btn-primary" id="submitajx" name="Show" value="Show" style=" display: block; width: 100%" />
+                        </div>
+                        </div>*@
 
 
                 }
@@ -293,7 +308,7 @@
 
 
 
-    
+
     $(document).ready(function () {
         /////Sender Autocomplete
         $(function () {
@@ -348,17 +363,19 @@
     });
 </script>
 <style>
-   
+
     .tools {
         width: 110px;
     }
-    .tools i{
-        cursor:pointer;
-    }
-        .tools i:hover {
+
+        .tools i {
             cursor: pointer;
-            text-decoration:underline;
         }
+
+            .tools i:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
 </style>
 
 

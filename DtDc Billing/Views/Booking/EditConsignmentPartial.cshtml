@@ -4,7 +4,7 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 @{
-   
+
     var notvalid = ViewBag.notvalidpincode as string;
 
 }
@@ -69,6 +69,9 @@
         @if (!string.IsNullOrEmpty(successMessage))
         {
             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            <script>
+                insertConsignments();
+            </script>
         }
         <label>
             Consi no<span style="color:red">*</span>:
@@ -384,6 +387,82 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 </style>
 
 <script>
+    var currentConsignmentno;
+    function insertConsignments() {
+        if (consignmentsArray != null && consignmentsArray.length > 0) {
+
+            var consignmentTextBox = $("#Consignment_no");
+            console.log(consignmentsArray)
+
+            var currentIndex = consignmentsArray.indexOf(currentConsignmentno);
+            if (currentIndex != -1 && currentIndex < consignmentsArray.length - 1) {
+                var nextConsignment = consignmentsArray[currentIndex + 1];
+
+                consignmentTextBox.val(nextConsignment);
+
+            }
+            else {
+                alert("No more consignments available.");
+            }
+        }
+
+    }
+    $(document).ready(function () {
+            /////Sender Autocomplete
+ $(function () {
+     var company_name = [];
+     var company_idarr = [];
+
+     // Fetch data using AJAX
+     $.ajax({
+         type: 'GET',
+         url: '/Booking/CustomerIdAutocomplete',
+         dataType: 'json',
+         success: function (data) {
+             $.each(data, function (i, item) {
+                 company_name.push({
+                     label: item.Company_Name, // Display this in the autocomplete dropdown
+                     value: item.Company_Id   // Store this as the actual value
+                 });
+                 company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
+             });
+             console.log(company_name)
+             var pfcode = '@ViewBag.PfCode';
+             if (pfcode == "CF2024") {
+                 // Initialize the autocomplete and customize how the items are rendered in the dropdown
+                 $("#Customer_Id").autocomplete({
+                     source: company_name, // Use company_name as the source for autocomplete
+                     select: function (event, ui) {
+                         // When an item is selected, update the input value with the selected item's value
+                         $("#Customer_Id").val(ui.item.value);
+                         $("#Customer_Id").trigger("focusout");
+                         return false; // Prevent the default behavior of updating the input with the label
+                     }
+                 }).autocomplete("instance")._renderItem = function (ul, item) {
+                     return $("<li>")
+                         .append("<div>" + item.value + " (" + item.label + ")</div>")
+                         .appendTo(ul);
+                 };
+             } else {
+                 // Initialize the autocomplete with the default settings
+                 $("#Customer_Id").autocomplete({
+                     source: company_idarr, // Use company_idarr as the source for autocomplete
+                     select: function (event, ui) {
+                         // When an item is selected, update the input value with the selected item's value
+                         $("#Customer_Id").val(ui.item.value);
+                         $("#Customer_Id").trigger("focusout");
+                         return false; // Prevent the default behavior of updating the input with the label
+                     }
+                 }).autocomplete("instance")._renderItem = function (ul, item) {
+                     return $("<li>")
+                         .append("<div>" + item.value + "</div>")
+                         .appendTo(ul);
+                 };;
+             }
+         }
+     });
+ });
+    })
 
     // Scroll to the top of the page
     function scrollToTop() {
@@ -411,59 +490,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
 <script>
     $(document).ready(function () {
-    /////Sender Autocomplete
-   $(function () {
-    var company_name = [];
-    var company_idarr = [];
 
-    // Fetch data using AJAX
-    $.ajax({
-        type: 'GET',
-        url: '/Booking/CustomerIdAutocomplete',
-        dataType: 'json',
-        success: function (data) {
-            $.each(data, function (i, item) {
-                company_name.push({
-                    label: item.Company_Name, // Display this in the autocomplete dropdown
-                    value: item.Company_Id   // Store this as the actual value
-                });
-                company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
-            });
-
-            // Initialize the autocomplete
-            $("#Customer_Id").autocomplete({
-                source: company_name, // Use company_name as the source for autocomplete
-                select: function (event, ui) {
-                    // When an item is selected, update the input value with the selected item's value
-                    $("#Customer_Id").val(ui.item.value);
-                    $("#Customer_Id").trigger("focusout");
-                    return false; // Prevent the default behavior of updating the input with the label
-                }
-            });
-
-            var pfcode = '@ViewBag.PfCode';
-            if (pfcode == "CF2024") {
-                // Customize how the items are rendered in the autocomplete dropdown
-                $("#Customer_Id").autocomplete("instance")._renderItem = function (ul, item) {
-                    return $("<li>")
-                        .append("<div>" + item.value + " (" + item.label + ")</div>")
-                        .appendTo(ul);
-                };
-            }
-        }
-    });
-
-//    }
-
-    //    $("#Customer_Id").autocomplete({
-    //        source: company_idarr,
-    //select: function (event, ui) {
-    //    $("#Customer_Id").val(ui.item.value);
-
-    //    $("#Customer_Id").trigger("focusout");
-    //}
-    //    });
-});
 
 
 
@@ -617,6 +644,7 @@ $.ajax({
         $('#Consignment_no').keyup(function () {
             // alert("Keyup");
             var consno = $("#Consignment_no").val();
+            currentConsignmentno = consno;
             if (consno.length >= 9) {
                 $('#Consignment_no').val($(this).val().toUpperCase());
 
@@ -628,10 +656,13 @@ $.ajax({
         $('#Consignment_no').focusout(function () {
             // alert("Keyup");
             var consno = $("#Consignment_no").val();
+            currentConsignmentno = consno;
             if (consno.length >= 2) {
                 $('#Consignment_No').val($(this).val().toUpperCase());
                 $('#Customer_Id').focus();
                 var str = $('#Consignment_no').val();
+
+                currentConsignmentno = str;
                 var res = str.charAt(0);
                 // alert(res);
                 if (res.toLowerCase() == "i") {
@@ -666,7 +697,7 @@ $.ajax({
                         $('#Actual_weight').val(Data.Actual_weight);
                         $('#Pincode').val(Data.Pincode);
                         $('#loadingcharge').val(Data.loadingcharge);
-
+                        $("#Receiver").val(Data.Receiver);
                         $('#chargable_weight').val(Data.chargable_weight);
                         $('#Quanntity').val(Data.Quanntity);
                         $('#Type_t').val(Data.Type_t);
@@ -882,7 +913,7 @@ $.ajax({
             var Billamount = $('#BillAmount').val();
             var Insurance = $('#Percentage').val();
 
-            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance)).toFixed();
 
             $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
         }
@@ -971,7 +1002,7 @@ $.ajax({
         });
            $('#Pincode').change(function () {
             var pincode = $('#Pincode').val();
-           
+
     $.ajax({
         type: 'get',
         data: { Pincode: pincode },
@@ -997,79 +1028,79 @@ $.ajax({
 </script>
 
 <script>
-        $(document).ready(function () {
-            $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
+    $(document).ready(function () {
+        $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
 
-                var Consino = $('#Consignment_no').val();
-                var custid = $('#Customer_Id').val();
-                var bookdate = $('#booking_date').val();
-                var pincode = $('#Pincode').val();
-                var mode = $('#Mode').val();
-                var qty = $('#Quanntity').val();
-                var charweight = $('#chargable_weight').val();
-                var type = $('[name="Type_t"]').val();
-                if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+            var Consino = $('#Consignment_no').val();
+            var custid = $('#Customer_Id').val();
+            var bookdate = $('#booking_date').val();
+            var pincode = $('#Pincode').val();
+            var mode = $('#Mode').val();
+            var qty = $('#Quanntity').val();
+            var charweight = $('#chargable_weight').val();
+            var type = $('[name="Type_t"]').val();
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
 
-                    return false;
-                }
-                else {
+                return false;
+            }
+            else {
 
-                    //alert($(this).val());
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        url: '/Calculation/CalulateAmt',
-                        data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
-                        success: function (Data) {
-                            //alert(Data.Amount);
-                            var Insuranceval = $('input[name="topay"]:checked').val();
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Calculation/CalulateAmt',
+                    data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        //alert(Data.Amount);
+                        var Insuranceval = $('input[name="topay"]:checked').val();
 
 
-                            if (Insuranceval == "yes") {
-                                $('#Amount').val(0);
-                            }
-                            else {
-
-                                $('#Amount').val(Data.Amount);
-                            }
-
-                            // $('#dtdcamount').val(Data.dtdcamount);
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-
+                        if (Insuranceval == "yes") {
+                            $('#Amount').val(0);
                         }
-                    });
-                }
+                        else {
 
-            });
+                            $('#Amount').val(Data.Amount);
+                        }
 
-            var currentDate = new Date();
+                        // $('#dtdcamount').val(Data.dtdcamount);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-            $('#tembookingdate').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-
-            })
-
-
-            $('#datepicker').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-            $('#datepicker1').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-
-            $('[name="Mode"],[name="Type_t"]').change(function () {
-
-                $("#Customer_Id").trigger("focusout");
-            });
+                    }
+                });
+            }
 
         });
-   
+
+        var currentDate = new Date();
+
+        $('#tembookingdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+
+        })
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+        $('[name="Mode"],[name="Type_t"]').change(function () {
+
+            $("#Customer_Id").trigger("focusout");
+        });
+
+    });
+
 </script>
 
 

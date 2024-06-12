@@ -11,7 +11,7 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
-<section class="container">
+<div class="content-wrapper">
     <div class="row">
         <div class="col-sm-12">
             <div class="box box-info" style="padding: 16px 16px !important">
@@ -34,11 +34,11 @@
 
 
 
-                                        <div class="col-md-3">
-                                            <div class="pf-code">
-                                            @Html.DropDownList("PfCode", "-ALL MF-")
-                                                </div>
-                                        </div>
+                                        @*<div class="col-md-3">
+                                                <div class="pf-code">
+                                                @Html.DropDownList("PfCode", "-ALL MF-")
+                                                    </div>
+                                            </div>*@
 
                                         if (ViewBag.fromdate != null)
                                         {
@@ -67,10 +67,10 @@
                                         <div class="col-md-1">
                                             <input type="submit" class=" btn btn-primary sbmt" id="Show" name="Show" value="Show" />
                                         </div>
-                                    <div class="col-md-2">
-                                       
+                                        <div class="col-md-2">
+
                                             <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" />
-                                      
+
                                         </div>
                                     }
                                 </div>
@@ -84,7 +84,7 @@
                                     <th>
                                         Company ID
                                     </th>
-
+                                    <th>Customer Name</th>
                                     <th>
                                         Total
                                     </th>
@@ -100,34 +100,36 @@
                                 @{ int i = 1;
                                     foreach (var item in Model)
                                     {
-                                <tr>
-                                    <td>@(i++)</td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PfCode)
-                                    </td>
+                                        <tr>
+                                            <td>@(i++)</td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerId)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Sum)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Branchname)
+                                            </td>
+                                            <td>
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Sum)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Branchname)
-                                    </td>
-                                    <td>
+                                                @using (Html.BeginForm("Checkbookinglist", "Booking"))
+                                                {
+                                                    <input type="hidden" name="ToDatetime" value="@ViewBag.todate" />
+                                                    <input type="hidden" name="Fromdatetime" value="@ViewBag.fromdate" />
 
-                                        @using (Html.BeginForm("Checkbookinglist", "Booking"))
-                                        {
-                                            <input type="hidden" name="ToDatetime" value="@ViewBag.todate" />
-                                            <input type="hidden" name="Fromdatetime" value="@ViewBag.fromdate" />
+                                                    @Html.Hidden("Custid", item.PfCode)
 
-                                            @Html.Hidden("Custid", item.PfCode)
+                                                    <button type="submit" class="btn btn-primary total-label">View in Checklist</button>
 
-                                            <button type="submit" class="btn btn-primary total-label">View in Checklist</button>
-
-                                        }
-                                    </td>
-                                </tr>
+                                                }
+                                            </td>
+                                        </tr>
                                     }
-                                    }
+                                }
                             </tbody>
                         </table>
                         <br>
@@ -140,7 +142,7 @@
                                     <button type="button" class="btn btn-danger total-label">Total</button>
                                 </div>
                                 <!-- /btn-group -->
-                                <input type="text" class="form-control total-amount" value="  @Model.Sum(m => m.Sum)">
+                                <input type="text" class="form-control total-amount" value="@Model.Sum(m => m.Sum)">
                             </div>
                         </div>
                         <!-- /input-group -->
@@ -152,7 +154,7 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 
 <script>
@@ -171,7 +173,7 @@
             /**/
             /**/
             /**/
-            url: '@Url.Action("CustomerIdAutocomplete")',
+            url: '@Url.Action("CustomerIdAutocomplete", "Booking")',
     /**/
     /**/
     /**/
@@ -214,33 +216,33 @@
     }
 </style>
 @*<script>
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $('#Show').click(function () {
-            var cutid = $('#custid').val();
-            var frmdate = $('#datepicker').val();
-            var todate = $('#datepicker1').val();
-
-
-            if (cutid == "") {
-                alert("Please Enter Customer Id");
-                return false;
-            }
-            else if (frmdate == "") {
-                alert("Please Enter From Date");
-                return false;
-            }
-            else if (todate == "") {
-                alert("Please Enter To Date");
-                return false;
-            }
-            else { return true; }
+            $('#Show').click(function () {
+                var cutid = $('#custid').val();
+                var frmdate = $('#datepicker').val();
+                var todate = $('#datepicker1').val();
 
 
+                if (cutid == "") {
+                    alert("Please Enter Customer Id");
+                    return false;
+                }
+                else if (frmdate == "") {
+                    alert("Please Enter From Date");
+                    return false;
+                }
+                else if (todate == "") {
+                    alert("Please Enter To Date");
+                    return false;
+                }
+                else { return true; }
+
+
+            });
         });
-    });
 
-</script>*@
+    </script>*@
 
 
 
@@ -299,11 +301,11 @@
 <script>
     $(function () {
         $('#table_display_block').dataTable({
-            "bPaginate": false,
+            "bPaginate": true,
             "bLengthChange": true,
             "bFilter": true,
             "bSort": true,
-            "bInfo": false,
+            "bInfo": true,
             "bAutoWidth": false
         });
     });

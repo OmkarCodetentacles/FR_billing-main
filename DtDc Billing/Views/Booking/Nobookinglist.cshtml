@@ -39,11 +39,21 @@
 
             <div class="row">
                 <div class="col-sm-12">
+                    @{
+                        string errormessage = ViewBag.ErrorMessage;
+
+                    }
+                    @if (!string.IsNullOrEmpty(errormessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", errormessage))
+                    }
+
+
 
                     <div class="form-horizontal">
 
                         @*<div class="row">
-                            <div class="col-md-12">*@
+            <div class="col-md-12">*@
                         <div class="form-group">
 
 
@@ -93,8 +103,8 @@
 
 
                                 @*<div class="col-md-2">
-                @Html.DropDownList("PfCode", null, "-ALL PF-", new { @class = "form-control" })
-            </div>*@
+                        @Html.DropDownList("PfCode", null, "-ALL PF-", new { @class = "form-control" })
+                    </div>*@
 
 
                                 <div class="col-md-1" style=" margin-top: 23px; ">
@@ -109,8 +119,8 @@
                             }
 
                         </div>
-                            @*</div>
-                        </div>*@
+                        @*</div>
+            </div>*@
 
 
                         <table id="table_display_block" class="table BookingData">
@@ -120,8 +130,8 @@
                                         Sr No
                                     </th>
                                     @*<th>
-                                        PF Code
-                                    </th>*@
+                            PF Code
+                        </th>*@
                                     <th>
                                         Consignment no
                                     </th>
@@ -154,8 +164,8 @@
                                                 @i
                                             </td>
                                             @*<td>
-                                                @Html.DisplayFor(modelItem => item.Pf_Code)
-                                            </td>*@
+                                    @Html.DisplayFor(modelItem => item.Pf_Code)
+                                </td>*@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Consignment_no)
                                             </td>

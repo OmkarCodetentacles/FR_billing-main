@@ -1,4 +1,4 @@
-﻿@model DtDc_Billing.Entity_FR.CreditNote
+﻿@model DtDc_Billing.Models.CreditNoteModel
 
 @{
     ViewBag.Title = "CreditEdit";
@@ -46,7 +46,7 @@
                                     <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
                                 </div>
                                 <div class="col-md-6" style="text-align:right">
-                                    <h5> Balance :  <strong class="text-danger">@(ViewBag.netamount - ViewBag.paidamt)</strong></h5>
+                                    <h5> Balance :  <strong class="text-danger">@(Math.Round(ViewBag.netamount - ViewBag.paidamt,2))</strong></h5>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -72,6 +72,7 @@
                                     <div class="col-md-9">
                                         @Html.DisplayFor(model => model.FormattedTempCrInsertedDate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" ,@readonly="readonly"} })
                                         @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model=>model.tempch_date,"")
                                     </div>
                                 </div>
                             </div>

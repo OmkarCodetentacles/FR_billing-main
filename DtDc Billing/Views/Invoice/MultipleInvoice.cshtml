@@ -32,8 +32,12 @@
                                 <div class="form-horizontal">
                                     @{
                                         var successMessage = ViewBag.Success as string;
+                                        var errorMessage = ViewBag.ErrorMessage as string;
                                     }
-
+                                    @if (!string.IsNullOrEmpty(errorMessage))
+                                    {
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", successMessage))
+                                    }
                                     @if (!string.IsNullOrEmpty(successMessage))
                                     {
                                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
@@ -330,7 +334,7 @@
             $('.sbmt').click(function () {
 
                 $("#lstBox2 option").attr("selected", "selected");
-
+               // $("#lstBox2 option").prop("selected", true);
                 var frmdate = $('#Tempdatefrom').val();
 
                 var todate = $('#TempdateTo').val();

@@ -2641,22 +2641,47 @@ namespace DtDc_Billing.Controllers
                         var newFileName = Pfcode;
 
                         var path = System.IO.Path.Combine(Server.MapPath("~/Stamps"), fileName);
-
                         // Get the file extension
                         string fileExtension = System.IO.Path.GetExtension(path);
+                        string newFilePath = System.IO.Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
+                        // Rename the file
+                        //if (System.IO.File.Exists(newFilePath))
+                        //{
+                        //    System.IO.File.Delete(newFilePath);
+
+                        //}
+
+                        string folderPath = System.IO.Path.Combine(Server.MapPath("~/Stamps")); // Specify the folder path here
+                        string imageName = Pfcode; // Specify the image name here
+
+                        // Check if the folder exists
+                        if (Directory.Exists(folderPath))
+                        {
+                            // Get all files in the folder
+                            string[] allFiles = Directory.GetFiles(folderPath);
+
+                            // Filter files with the same name
+                            var filesWithSameName = allFiles.Where(file123 =>
+                                System.IO.Path.GetFileNameWithoutExtension(file123) == imageName);
+
+                            // Delete each file with the same name
+                            foreach (string file1 in filesWithSameName)
+                            {
+                                System.IO.File.Delete(file1);
+                                Console.WriteLine($"Deleted: {file1}");
+                            }
+
+                            Console.WriteLine($"All files with the name '{imageName}' deleted successfully.");
+                        }
+
+
                         file.SaveAs(path);
 
 
                         string originalFilePath = path;
-                        string newFilePath = System.IO.Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
 
                         
-                        // Rename the file
-                        if (System.IO.File.Exists(newFilePath))
-                        {
-                            System.IO.File.Delete(newFilePath);
-
-                        }
+                       
                         System.IO.File.Move(originalFilePath, newFilePath);
 
 
@@ -2918,10 +2943,9 @@ namespace DtDc_Billing.Controllers
         }
 
 
-
-        public ActionResult DeleteCompapy(string id)
+        public ActionResult DeleteCompapy(string companyid)
         {
-
+            var id = companyid.Replace("__", "&").Replace("xdotx",".");
             List<Dtdc_Ptp> dtdc_Ptps = db.Dtdc_Ptp.Where(m => m.Company_id == id).ToList();
             List<dtdcPlu> dtdcPlu = db.dtdcPlus.Where(m => m.Company_id == id).ToList();
             List<express_cargo> express_cargo = db.express_cargo.Where(m => m.Company_id == id).ToList();
@@ -2993,7 +3017,11 @@ namespace DtDc_Billing.Controllers
                     db.Invoices.Remove(i);
                 }
             }
-            db.Companies.Remove(comp);
+            if (comp != null)
+            {
+                db.Companies.Remove(comp);
+            }
+           
 
             db.SaveChanges();
             TempData["Success"] = "Company Deleted SuccessFully";
@@ -3019,7 +3047,8 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult DeleteConsignment(string Consignment_no)
         {
-            var validcons = db.Transactions.Where(p => p.Consignment_no == Consignment_no).FirstOrDefault();
+            var Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var validcons = db.Transactions.Where(p => p.Consignment_no == Consignment_no && p.Pf_Code==Pf_Code).FirstOrDefault();
             if (validcons != null)
             {
                 Transaction tran = db.Transactions.Where(m => m.Consignment_no == Consignment_no).FirstOrDefault();

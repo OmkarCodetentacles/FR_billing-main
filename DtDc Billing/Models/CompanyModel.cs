@@ -85,12 +85,12 @@ namespace DtDc_Billing.Models
 
         public Nullable<System.DateTime> Datetime_Comp { get; set; }
 
-        
+        public Nullable<int> DueDays { get; set; }
         public string Gst_No { get; set; }
 
         
         public string Pan_No { get; set; }
-
+        public int remainingdays { get; set; }
         public Nullable<double> Royalty_Charges { get; set; }
         public Nullable<double> D_Docket { get; set; }
         public Nullable<double> P_Docket { get; set; }
@@ -126,5 +126,13 @@ namespace DtDc_Billing.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual Franchisee Franchisee { get; set; }
+    }
+
+    public class DueDaysModel
+    {
+        public Nullable<System.DateTime> Date { get; set; }
+        public int DueDays { get; set; }
+        public string Company_Id { get; set; }
+        public string InvoiceNo { get; set; }   
     }
 }

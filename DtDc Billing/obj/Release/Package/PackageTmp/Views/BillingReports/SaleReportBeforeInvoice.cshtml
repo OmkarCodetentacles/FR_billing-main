@@ -11,7 +11,7 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
-<section class="container">
+<div class="content-wrapper">
     <div class="row">
         <div class="col-sm-12">
             <div class="box box-info" style="padding: 16px 16px !important">
@@ -34,11 +34,11 @@
 
 
 
-                                        <div class="col-md-3">
+                                        @*<div class="col-md-3">
                                             <div class="pf-code">
                                             @Html.DropDownList("PfCode", "-ALL MF-")
                                                 </div>
-                                        </div>
+                                        </div>*@
 
                                         if (ViewBag.fromdate != null)
                                         {
@@ -103,7 +103,7 @@
                                 <tr>
                                     <td>@(i++)</td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.PfCode)
+                                        @Html.DisplayFor(modelItem => item.CustomerId)
                                     </td>
 
                                     <td>
@@ -140,7 +140,7 @@
                                     <button type="button" class="btn btn-danger total-label">Total</button>
                                 </div>
                                 <!-- /btn-group -->
-                                <input type="text" class="form-control total-amount" value="  @Model.Sum(m => m.Sum)">
+                                <input type="text" class="form-control total-amount" value="@Model.Sum(m => m.Sum)">
                             </div>
                         </div>
                         <!-- /input-group -->
@@ -152,7 +152,7 @@
             </div>
         </div>
     </div>
-</section>
+</div>
 
 
 <script>
@@ -171,7 +171,7 @@
             /**/
             /**/
             /**/
-            url: '@Url.Action("CustomerIdAutocomplete")',
+            url: '@Url.Action("CustomerIdAutocomplete", "Booking")',
     /**/
     /**/
     /**/

@@ -2,6 +2,7 @@
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Razorpay.Api;
 using System;
 using System.Collections.Generic;
@@ -194,8 +195,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult SaleReportBeforeInvoice()
         {
 
-
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+           //it is pfcode based 
+         //   ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
 
             List<DisplayPFSum> list = new List<DisplayPFSum>();
@@ -204,10 +205,10 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaleReportBeforeInvoice(string PfCode, string Fromdatetime, string ToDatetime,string Submit)
+        public ActionResult SaleReportBeforeInvoice(string Fromdatetime, string ToDatetime,string Submit)
         {
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
-
+            //  ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -236,27 +237,36 @@ namespace DtDc_Billing.Controllers
             Pfsum = (from student in db.Transactions
                      join ab in db.Companies on
                      student.Customer_Id equals ab.Company_Id
-                     where (ab.Pf_code == PfCode || PfCode == "")
+                     where (ab.Pf_code == PfCode && student.Pf_Code==PfCode)
                      && student.Customer_Id != null
-                     group student by student.Customer_Id into studentGroup
+                     group   student  by student.Customer_Id into studentGroup
+                     
                      select new DisplayPFSum
                      {
-                         PfCode = studentGroup.Key,
+                         CustomerId=studentGroup.FirstOrDefault().Customer_Id,
+                         CustomerName=(from comp in db.Companies
+                                       where comp.Company_Id==studentGroup.FirstOrDefault().Customer_Id
+                                       select comp.Company_Name
+                                       ).FirstOrDefault(),
                          Sum = db.TransactionViews.Where(m =>
                (m.Customer_Id == studentGroup.Key)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
                            .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0)),
+
                          Branchname = db.TransactionViews.Where(m =>
                  (m.Customer_Id == studentGroup.Key)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
                            .Count().ToString(),
+                        Count=studentGroup.Select(x=>x.Consignment_no).Count(),
+                      
                      }
+                    
                     ).ToList();
 
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(m=> new { PFCode =m.PfCode,m.Sum}));
+                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(m=> new { CustomerId=m.CustomerId,Count=m.Count,Total=m.Sum}));
             }
 ;
           
@@ -542,12 +552,14 @@ namespace DtDc_Billing.Controllers
                     servicetax = x.servicetax,
                     servicetaxtotal = x.servicetaxtotal,
                     Customer_Id = x.Customer_Id,
+                    CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
                     discountamount = x.netamount - (x.paid ?? 0),
                     TdsAmount=x.TdsAmount??0,
                     TotalAmount=x.TotalAmount??0
-                    
+
                 }).ToList().Where(x => x.discountamount <= 0).ToList();
 
 
@@ -658,12 +670,13 @@ namespace DtDc_Billing.Controllers
                     servicetax = x.servicetax,
                     servicetaxtotal = x.servicetaxtotal,
                     Customer_Id = x.Customer_Id,
+                    CustomerName=db.Companies.Where(m=>m.Company_Id==x.Customer_Id).Select(m=>m.Company_Name).FirstOrDefault(),
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
                     discountamount = x.netamount - (x.paid ?? 0),
                     TdsAmount = x.TdsAmount??0,
                     TotalAmount = x.TotalAmount??0
-
+                    
                 }).ToList().Where(x => x.discountamount > 0 || x.paid == null).ToList();
 
 
@@ -732,6 +745,8 @@ namespace DtDc_Billing.Controllers
                             servicetax = x.servicetax,
                             servicetaxtotal = x.servicetaxtotal,
                             Customer_Id = x.Customer_Id,
+                            CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+
                             netamount = x.netamount??0,
                             paid = x.paid ?? 0,
                             discountamount = x.netamount - (x.paid ?? 0),
@@ -749,8 +764,28 @@ namespace DtDc_Billing.Controllers
             if (Submit == "Export to Excel")
             {
                 //ExportToExcelAll.ExportToExcelAdmin(obj);
-                //Apply as per TDS amount
-                ExportToExcelAll.ExportToExcelAdmin(newObj);
+                //Apply as per TDS amount\
+
+                var data = newObj.Select(x => new
+                {
+                    InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
+                    InvoiceNo = x.invoiceno,
+                    PeriodFrom = x.periodfrom.Value.ToString("dd-MM-yyyy"),
+                    PeriodTo = x.periodto.Value.ToString("dd-MM-yyyy"),
+                    Total = x.total,
+                    FullSurchargeTax = x.fullsurchargetax,
+                    FullSurChargeTotal = x.fullsurchargetaxtotal,
+                    ServiceTax = x.servicetax,
+                    ServiceTaxTotal = x.servicetaxtotal,
+                    CustomerId = x.Customer_Id,
+                    NetAmount = x.netamount ?? 0,
+                    Paid = x.paid ?? 0,
+                    DiscountAmount = x.netamount - (x.paid ?? 0),
+                    TDSAmount = x.TotalAmount ?? 0,
+                    TotalAmount = x.TotalAmount ?? 0
+
+                }).ToList();
+                ExportToExcelAll.ExportToExcelAdmin(data);
             }
 
             if (Submit == "Print" || Submit == "Send mail")

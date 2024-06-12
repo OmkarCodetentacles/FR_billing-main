@@ -17,6 +17,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 
+
 namespace DtDc_Billing.Controllers
 {
 
@@ -1086,6 +1087,106 @@ namespace DtDc_Billing.Controllers
             return View(Pfsum);
         }
 
+        [HttpGet]
+        public ActionResult ShowDueDays()
+        {
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string Fromdatetime = GetLocalTime.GetDateTime().ToString("dd-MM-yyyy");
+          string   ToDatetime = GetLocalTime.GetDateTime().ToString("dd-MM-yyyy");
+            ViewBag.fromdate = Fromdatetime;
+            ViewBag.todate = ToDatetime;
+            var invoiceData = (from inv in db.Invoices
+                               join comp in db.Companies
+                               on inv.Customer_Id equals comp.Company_Id
+                               where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)
+                               && inv.invoicedate != null
+                               select new
+                               {
+                                   DueDaydata = comp.DueDays ?? 0,
+                                   Company_Iddata = inv.Customer_Id,
+                                   InvoiceDate = inv.invoicedate,
+                                   InvoiceNo = inv.invoiceno
+                               }).ToList();
+
+            //  Perform the date calculations in memory
+
+            var Duedaysdata = (from d in invoiceData
+                               select new DueDaysModel
+                               {
+                                   Date = d.InvoiceDate.Value.AddDays(d.DueDaydata),
+                                   DueDays = (d.InvoiceDate.Value.AddDays(d.DueDaydata).Date - System.DateTime.Now.Date).Days,
+                                   Company_Id = d.Company_Iddata,
+                                   InvoiceNo = d.InvoiceNo
+                               }).OrderByDescending(d => d.DueDays).ToList().Where(x=>x.DueDays>-50);
+
+            return View(Duedaysdata);
+        }
+        [HttpPost]
+        public ActionResult ShowDueDays(string Fromdatetime, string ToDatetime, string Submit)
+        {
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+          
+
+            DateTime? fromdate = null;
+            DateTime? todate = null;
+
+
+
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+
+
+
+            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            fromdate = Convert.ToDateTime(bdatefrom);
+
+
+
+
+            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            todate = Convert.ToDateTime(bdateto);
+            ViewBag.fromdate = Fromdatetime;
+            ViewBag.todate = ToDatetime;
+
+            var invoiceData = (from inv in db.Invoices
+                               join comp in db.Companies
+                               on inv.Customer_Id equals comp.Company_Id
+                               where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)&&
+                               inv.invoicedate != null 
+                                     //  Perform the date calculations in memory
+                             //     && DbFunctions.TruncateTime(inv.invoicedate) >= DbFunctions.TruncateTime(fromdate)
+                             //&& DbFunctions.TruncateTime(inv.invoicedate) <= DbFunctions.TruncateTime(todate)
+
+                               select new
+                               {
+                                   DueDaydata = comp.DueDays ?? 0,
+                                   Company_Iddata = inv.Customer_Id,
+                                   InvoiceDate = inv.invoicedate,
+                                   InvoiceNo = inv.invoiceno
+                               }).ToList();
+
+            //  Perform the date calculations in memory
+
+            var Duedaysdata = (from d in invoiceData
+                               
+                               select new DueDaysModel
+                               {
+                                   Date = d.InvoiceDate.Value.AddDays(d.DueDaydata),
+                                   DueDays = (d.InvoiceDate.Value.AddDays(d.DueDaydata).Date - DateTime.Now.Date).Days,
+                                   Company_Id = d.Company_Iddata,
+                                   InvoiceNo = d.InvoiceNo
+                               }).OrderByDescending(d => d.DueDays).ToList().Where(x => x.DueDays > -50 && x.Date.Value.Date >= fromdate.Value.Date && x.Date.Value.Date <= todate.Value.Date);
+
+
+
+            if (Submit == "Export to Excel")
+            {
+                ExportToExcelAll.ExportToExcelAdmin(Duedaysdata.Select(x => new { PFCode = x.Company_Id, x.InvoiceNo, x.Date,x.DueDays}));
+            }
+            return View(Duedaysdata);
+        }
+
 
         [HttpPost]
         public ActionResult Todaysale(string Fromdatetime, string ToDatetime, string Submit)
@@ -1340,7 +1441,7 @@ namespace DtDc_Billing.Controllers
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(x => new { PFCode = x.PfCode, x.Branchname, x.Sum }));
+                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(x => new { CashSale = x.Sumcash, CashNoofBooking= x.Countcash, BillingSale=x.Sum, BillingNoofBooking=x.Count, TotalSale= (x.Sumcash + x.Sum), TotalNoofBooking= (x.Countcash + x.Count) }));
             }
 
 

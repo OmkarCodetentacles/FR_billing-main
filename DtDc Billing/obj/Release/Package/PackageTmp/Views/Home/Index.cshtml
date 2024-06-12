@@ -9,6 +9,20 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
+    /* Custom styles for tooltip */
+    #tooltip-custom .tooltip-inner {
+        background-color: #999; /* Dark background color */
+        color: #000000; /* White text color */
+        padding: 10px; /* Padding inside the tooltip */
+        border-radius: 5px; /* Rounded corners */
+        font-size: 14px; /* Font size */
+    }
+
+    #tooltip-custom .tooltip-arrow {
+        border-top-color: #333; /* Match the background color of the tooltip */
+    }
+</style>
+<style>
     /* (A) WARNING KEYFRAMES */
     @@keyframes blinking {
         0% {
@@ -207,7 +221,7 @@
                             <div class="row ">
 
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <a class="text-black" href="@Url.Action("Nobookinglist", "Booking")">
                                         <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
                                             <div class="row" style="display:flex; align-items:center;width:100%">
@@ -236,7 +250,7 @@
 
 
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <a class="text-black" href="@Url.Action("Destinations", "BillingReports")">
                                         <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
                                             <div class="row" style="display:flex; align-items:center;width:100%">
@@ -266,7 +280,7 @@
                                 </div>
 
 
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
                                         <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
                                             <div class="row" style="display:flex; align-items:center;width:100%">
@@ -278,6 +292,32 @@
 
                                                         <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
                                                         <span class="info-box-text" style="padding:0">Invalid Consignment Found</span>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <!-- /.info-box-content -->
+                                        </div>
+                                    </a>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <a class="text-black" href="@Url.Action("ShowDueDays", "Reports")">
+                                        <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
+                                            <div class="row" style="display:flex; align-items:center;width:100%">
+                                                <div class="col-sm-4">
+                                                    <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
+                                                </div>
+                                                <div class="col-sm-8" style="text-align:end">
+                                                    <div class="">
+
+                                                        <span class="info-box-number"> <strong>@ViewBag.DueDaysExpire</strong></span>
+                                                        <span class="info-box-text" style="padding:0">DueDays of CustomerId</span>
 
 
                                                     </div>
@@ -312,8 +352,8 @@
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
                                         <!-- small box -->
 
-                                        <div class="small-box bg-aqua ">
-                                            <div class="row">
+                                        <div class="small-box bg-aqua" id="tooltip-custom" data-toggle="tooltip" title="Today Cash Collection">
+                                            <div class="row" data-toggle="tooltip" title="Today Cash Collection">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
 
@@ -352,7 +392,7 @@
                                     <!-- ./col -->
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4  ">
 
-                                        <div class="small-box " style="background-color: #ffffff !important; color: white; border: 3px solid #eff5ff; width: 100%; border-radius: 10px; padding: 13px; ">
+                                        <div class="small-box " style="background-color: #ffffff !important; color: white; border: 3px solid #eff5ff; width: 100%; border-radius: 10px; padding: 13px; " data-toggle="tooltip" title="Month Cash Collection">
                                             <div class="row">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
@@ -390,7 +430,7 @@
                                     <!-- ./col -->
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4  ">
                                         <!-- small box -->
-                                        <div class="small-box bg-yellow ">
+                                        <div class="small-box bg-yellow " data-toggle="tooltip" title="Today No. of Booking">
                                             <div class="row">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
@@ -428,7 +468,7 @@
                                     <!-- ./col -->
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4  ">
                                         <!-- small box -->
-                                        <div class="small-box bg-red ">
+                                        <div class="small-box bg-red " data-toggle="tooltip" title="Month No. of Booking">
                                             <div class="row">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9" style="padding-right:0">
                                                     <div class="inner">
@@ -468,7 +508,7 @@
                                     <!-- ./col -->
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4  ">
                                         <!-- small box -->
-                                        <div class="small-box bg-yellow ">
+                                        <div class="small-box bg-yellow " data-toggle="tooltip" title="Today Expense">
                                             <div class="row">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
@@ -501,7 +541,7 @@
 
                                     <div class="col-12 col-xs-12 col-md-4 col-lg-4 col-xl-4  ">
                                         <!-- small box -->
-                                        <div class="small-box bg-aqua " style="width: 100%;">
+                                        <div class="small-box bg-aqua " style="width: 100%;" data-toggle="tooltip" title=" This Month Expense">
                                             <div class="row">
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
@@ -543,7 +583,7 @@
 
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Todays Sale">
                                         <a href="@Url.Action("Todaysale","Reports")">
                                             <div class="info-box billing-cards ">
 
@@ -563,7 +603,7 @@
 
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month Sale">
                                         <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
@@ -580,7 +620,7 @@
                                     </div>
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Avg Sale per month">
                                         <div class="info-box billing-cards">
 
 
@@ -595,7 +635,7 @@
                                     </div>
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Todays No of Bookings">
                                         <div class="info-box billing-cards  ">
 
 
@@ -614,7 +654,7 @@
 
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month No. of Booking">
                                         <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
                                             <div class="info-box  billing-cards">
                                                 <div class="info-box-content">
@@ -634,7 +674,7 @@
                                     </div>
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Avg No.of Bookings">
                                         <div class="info-box  billing-cards ">
 
 
@@ -649,7 +689,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total Sale">
                                         <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
                                             <div class="info-box billing-cards ">
 
@@ -670,7 +710,7 @@
                                     </div>
 
 
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3">
+                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total No of.Bookings">
                                         <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
@@ -785,7 +825,6 @@
     </div>
 </div>
 
-
 @if (ViewBag.sendmail != null)
 {
     <script>
@@ -815,37 +854,40 @@
     $(document).ready(function () {
 
 
+               // $('[data-toggle="tooltip"]').tooltip();
+
+
         // Attach click event handlers to the close buttons to show an alert
         $('#YoutubeInfoModel .close, #YoutubeInfoModel .btn-danger').on('click', function () {
             $.ajax({
-                url: "@Url.Action("CountIncreaseofLogin","Admin")",
+                url: "@Url.Action("CountIncreaseofLogin", "Admin")",
                 type: 'post',
                 success: function (data) {
 
                 }
-            })
-        });
-     $.ajax({
-            type: 'GET',
-            url: '@Url.Action("Datewise", "AtkApi")',
-            data: { },
-            dataType: 'json',
-            success: function (data) {
+                })
+                });
+                $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Datewise", "AtkApi")',
+                data: { },
+                dataType: 'json',
+                success: function (data) {
 
                 $("#Todayamt").html(data.Amount);
                 $("#todaybooking").text(data.Count);
- },
-            error: function (emp) {
+                },
+                error: function (emp) {
                 alert('error');
-            }
-        });
+                }
+                });
 
-             $.ajax({
-            type: 'GET',
-            url: '@Url.Action("ThisMonth", "AtkApi")',
-            data: { },
-            dataType: 'json',
-            success: function (data) {
+                $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ThisMonth", "AtkApi")',
+                data: { },
+                dataType: 'json',
+                success: function (data) {
                 $("#Lastamt").text(data.Amount);
                 $("#lastbooking").text(data.Count);
                 var totalthismonthsale = parseInt($("#sumofbillingcurrentmonth").text());
@@ -854,15 +896,15 @@
                 $("#totalnoofbook").text(data.Count + thismonthnoofbooking);
 
 
- },
-            error: function (emp) {
+                },
+                error: function (emp) {
                 alert('error');
-            }
-        });
+                }
+                });
 
 
 
-    });
+                });
 
 </script>
 @if (ViewBag.ShowModal != null && ViewBag.ShowModal == true)

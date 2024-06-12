@@ -27,6 +27,7 @@ using System.Text;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using System.Threading.Tasks;
 using Microsoft.Ajax.Utilities;
+using static DtDc_Billing.invo;
 
 namespace DtDc_Billing.Controllers
 {
@@ -300,6 +301,52 @@ namespace DtDc_Billing.Controllers
                 Task<string> whatsappmessage = sw.sendWhatsappMessage(mobileno, message);
 
             }
+
+
+            //Show the Company which Duedays is less than current date
+
+          //  Fetch the necessary data without using AddDays in the query
+            var invoiceData = (from inv in db.Invoices
+                               join comp in db.Companies
+                               on inv.Customer_Id equals comp.Company_Id
+                               where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)
+                               && inv.invoicedate!=null
+                               select new
+                               {
+                                   DueDaydata = comp.DueDays ?? 0,
+                                   Company_Iddata = inv.Customer_Id,
+                                   InvoiceDate = inv.invoicedate,
+                                   InvoiceNo=inv.invoiceno
+                               }).ToList();
+
+          //  Perform the date calculations in memory
+
+            var Duedaysdata= (from d in invoiceData
+                             select new DueDaysModel
+                             {
+                                 Date=d.InvoiceDate.Value.AddDays(d.DueDaydata),
+                                 DueDays=(d.InvoiceDate.Value.AddDays(d.DueDaydata).Date-DateTime.Now.Date).Days,
+                                 Company_Id=d.Company_Iddata,
+                                 InvoiceNo=d.InvoiceNo  
+                             }).OrderBy(d=>d.DueDays).ToList();  
+            
+            var Duedysexpires=Duedaysdata.Where(x=>x.DueDays>0 && x.DueDays<5).Count();
+
+            ViewBag.DueDaysExpire = Duedysexpires;
+           //var DueDays = invoiceData.Where(data => data != null).Select(data => new DueDaysModel
+
+           //{
+           //    Date = data.InvoiceDate.Value.AddDays(data.DueDaydata),
+
+
+           //    DueDays = (data.InvoiceDate.Value.AddDays(data.DueDaydata).Date - DateTime.Now.Date).Days,
+
+
+           //    Company_Id = data.Company_Iddata
+           //}).ToList();
+
+
+
             //Backup();
             //Session["EndDate"] = After1Year.ToString("dd/MM/yyyy");
             return View(obj);
@@ -331,14 +378,14 @@ namespace DtDc_Billing.Controllers
             ConsignmentCount consptp = new ConsignmentCount();
 
             consptp.Destination = "PTP";
-            consptp.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("E") && m.Pf_Code == PfCode).Count();
+            consptp.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("E") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consptp);
 
             ConsignmentCount consPlus = new ConsignmentCount();
 
             consPlus.Destination = "Plus";
-            consPlus.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("V") && m.Pf_Code == PfCode).Count();
+            consPlus.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("V") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consPlus);
 
@@ -346,7 +393,7 @@ namespace DtDc_Billing.Controllers
             ConsignmentCount consInternational = new ConsignmentCount();
 
             consInternational.Destination = "International";
-            consInternational.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("N") && m.Pf_Code == PfCode).Count();
+            consInternational.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("N") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consInternational);
 
@@ -354,7 +401,7 @@ namespace DtDc_Billing.Controllers
             ConsignmentCount consDox = new ConsignmentCount();
 
             consDox.Destination = "Standard";
-            consDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("P") && m.Pf_Code == PfCode).Count();
+            consDox.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("P") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consDox);
 
@@ -362,7 +409,7 @@ namespace DtDc_Billing.Controllers
             ConsignmentCount consNonDox = new ConsignmentCount();
 
             consNonDox.Destination = "Non Dox";
-            consNonDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("D") && m.Pf_Code == PfCode).Count();
+            consNonDox.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("D") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consNonDox);
 
@@ -370,7 +417,7 @@ namespace DtDc_Billing.Controllers
             ConsignmentCount consNonVas = new ConsignmentCount();
 
             consNonVas.Destination = "VAS";
-            consNonVas.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("I") && m.Pf_Code == PfCode).Count();
+            consNonVas.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("I") && m.Pf_Code == PfCode).Count();
 
             obj.Consignmentcount.Add(consNonVas);
 

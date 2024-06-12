@@ -11,12 +11,13 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <style>
-   
-    .padding-left-0{
-        padding-left:0
+
+    .padding-left-0 {
+        padding-left: 0
     }
-    .Creditorsreport th{
-         width:7.14% !important;
+
+    .Creditorsreport th {
+        width: 7.14% !important;
     }
 </style>
 
@@ -50,7 +51,7 @@
 
 
                         @*<div class="row">
-            <div class="">*@
+                            <div class="">*@
                         <div class="form-group">
 
 
@@ -157,16 +158,20 @@
 
                         </div>
                         @*</div>
-            </div>*@
+                            </div>*@
 
                         <table id="table_display_block" class="table Creditorsreport">
                             <thead>
-                                <tr><th>Sr.No</th>
+                                <tr>
+                                    <th>Sr.No</th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.invoiceno)
                                     </th>
                                     <th>
                                         @*@Html.DisplayNameFor(model => model.Customer_Id)*@@Html.DisplayName("Customer Id")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CustomerName)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.invoicedate)
@@ -203,8 +208,8 @@
                                     <th>
                                         Balance
                                     </th>
-                                        <th>TDS Amount</th>
-                                        <th>Total Amount</th>
+                                    <th>TDS Amount</th>
+                                    <th>Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -220,6 +225,9 @@
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Customer_Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CustomerName)
                                         </td>
                                         <td>
                                             @item.invoicedate.Value.ToString("dd/MM/yyyy")
@@ -256,7 +264,7 @@
                                             @Html.DisplayFor(modelItem => item.paid)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem =>item.discountamount)
+                                            @Html.DisplayFor(modelItem => item.discountamount)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.TdsAmount)
@@ -321,87 +329,87 @@
 
 
 
-                                @functions {
+@functions {
 
-                                    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
-                                    public int getdays(DateTime invoicedate)
-                                    {
+    public int getdays(DateTime invoicedate)
+    {
 
-                                        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
-                                        var day = (indianTime.Date - invoicedate.Date).TotalDays;
-                                        return Convert.ToInt32(day);
-                                    }
-                                }
+        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+        var day = (indianTime.Date - invoicedate.Date).TotalDays;
+        return Convert.ToInt32(day);
+    }
+}
 
-                                @if (ViewBag.select != null)
-                                {
-                                    <script>
+@if (ViewBag.select != null)
+{
+    <script>
                 $(document).ready(function() {
         $("select").val('@ViewBag.select');
             });
-                                    </script>
-                                }
+    </script>
+}
 
-                                @*@if (TempData["error"] != null)
-                {
-                    <script>
-                alert('@TempData["error"]');
-                    </script>
-                }*@
+@*@if (TempData["error"] != null)
+    {
+        <script>
+    alert('@TempData["error"]');
+        </script>
+    }*@
 
-                                <script>
+<script>
 
-                                    $(document).ready(function () {
-                                        $(".custbtn").click(function () {
-                                            var d = $(this).data('datac');
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
 
-                                            $('#consinmentno').val(d);
-                                            $('#consinmentno').keyup();
-
-
-                                        });
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
 
 
-
-
-                                        $('#datepicker').datepicker({
-                                            autoclose: true,
-                                            format: 'dd-mm-yyyy'
-                                        })
-
-                                        $('#datepicker1').datepicker({
-                                            autoclose: true,
-                                            format: 'dd-mm-yyyy'
-                                        })
+        });
 
 
 
-                                    });
-                                </script>
-                                <style>
-                                    #edit-consignment {
-                                        display: block;
-                                    }
 
-                                    .paid-party {
-                                        color: #008000;
-                                    }
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
 
-                                        .paid-party td {
-                                            border-color: #00800059 !important;
-                                        }
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
 
-                                    .unpaid-party {
-                                        background-color: #ff000059;
-                                    }
 
-                                        .unpaid-party td {
-                                            border-color: #ff000059 !important;
-                                        }
-                                </style>
 
-                                <script>
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+
+    .paid-party {
+        color: #008000;
+    }
+
+        .paid-party td {
+            border-color: #00800059 !important;
+        }
+
+    .unpaid-party {
+        background-color: #ff000059;
+    }
+
+        .unpaid-party td {
+            border-color: #ff000059 !important;
+        }
+</style>
+
+<script>
 
 /////Sender Autocomplete
 $(function () {
@@ -450,43 +458,43 @@ select: function(event, ui) {
         }
     });
 });
-                                </script>
+</script>
 
 
 
-                                <script>
-                                    $(document).ready(function () {
-                                        $('.sbmt').click(function () {
-                                            var frmdate = $('#datepicker').val();
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
 
-                                            var todate = $('#datepicker1').val();
+            var todate = $('#datepicker1').val();
 
-                                            if (frmdate == "") {
-                                                alert("Please Enter Start Date");
-                                                return false;
-                                            }
-                                            else if (todate == "") {
-                                                alert("Please Enter End Date");
-                                                return false;
-                                            }
-                                            else {
-                                                return true;
-                                            }
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
 
-                                        });
+        });
 
-                                    });
-                                </script>
+    });
+</script>
 
-                                <script>
-                                    $(function () {
-                                        $('#table_display_block').dataTable({
-                                            "bPaginate": false,
-                                            "bLengthChange": true,
-                                            "bFilter": true,
-                                            "bSort": true,
-                                            "bInfo": false,
-                                            "bAutoWidth": false
-                                        });
-                                    });
-                                </script>
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

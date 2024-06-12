@@ -1,10 +1,25 @@
-﻿
+﻿@{
+
+    var consignments = ViewBag.Consignments;
+    {
+        if (consignments != null)
+        {
+            var jsArray = @Html.Raw(Json.Encode(consignments));
+            <script>
+
+             var consignmentsArray = @Html.Raw(jsArray);
+
+            </script>
+        }
+    }
+
+}
 @{
 
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <div class="content-wrapper">
-    <div class="box box-info"  style="padding: 16px 16px !important">
+    <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>
                 Edit Consignment

@@ -118,6 +118,7 @@
           <Property Name="Password" Type="nvarchar" MaxLength="20" />
           <Property Name="Username" Type="varchar" MaxLength="200" />
           <Property Name="G_Docket" Type="float" />
+          <Property Name="DueDays" Type="int" />
         </EntityType>
         <EntityType Name="Complaint">
           <Key>
@@ -2603,6 +2604,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Dtdc_Ptp" Relationship="Self.fk_ptp" FromRole="Company" ToRole="Dtdc_Ptp" />
           <NavigationProperty Name="express_cargo" Relationship="Self.fk_ptpexp" FromRole="Company" ToRole="express_cargo" />
           <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction" FromRole="Company" ToRole="Transactions" />
+          <Property Name="DueDays" Type="Int32" />
         </EntityType>
         <EntityType Name="Complaint">
           <Key>
@@ -5545,6 +5547,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="DueDays" ColumnName="DueDays" />
                 <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="c_id" ColumnName="c_id" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />

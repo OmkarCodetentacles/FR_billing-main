@@ -255,41 +255,64 @@
 
     </div>
 </div>
-    <script>
-    $(document).ready(function () {
+<script>
+$(document).ready(function () {
+    $(function () {
+        var company_name = [];
+        var company_idarr = [];
 
-     $(function () {
-        var availableTutorials = [
-
-        ];
-        var company_idarr = [
-
-        ];
-
+        // Fetch data using AJAX
         $.ajax({
             type: 'GET',
             url: '/Booking/CustomerIdAutocomplete',
-    data: {},
-    dataType: 'json',
-    success: function (data) {
-        $.each(data, function (i, item) {
-            company_idarr.push(item.Company_Id);
-            console.log(item.Company_Id);
-        });
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    company_name.push({
+                        label: item.Company_Name, // Display this in the autocomplete dropdown
+                        value: item.Company_Id   // Store this as the actual value
+                    });
+                    company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
+                });
 
-    }
-});
-
-        $("#custid").autocomplete({
-            source: company_idarr,
-            select: function (event, ui) {
-
+                var pfcode = '@ViewBag.PfCode';
+                if (pfcode == "CF2024") {
+                    // Initialize the autocomplete and customize how the items are rendered in the dropdown
+                    $("#custid").autocomplete({
+                        source: company_name, // Use company_name as the source for autocomplete
+                        select: function (event, ui) {
+                            // When an item is selected, update the input value with the selected item's value
+                            $("#custid").val(ui.item.value);
+                            $("#custid").trigger("focusout");
+                            return false; // Prevent the default behavior of updating the input with the label
+                        }
+                    }).autocomplete("instance")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<div>" + item.value + " (" + item.label + ")</div>")
+                            .appendTo(ul);
+                    };
+                } else {
+                    // Initialize the autocomplete with the default settings
+                    $("#custid").autocomplete({
+                        source: company_idarr, // Use company_idarr as the source for autocomplete
+                        select: function (event, ui) {
+                            // When an item is selected, update the input value with the selected item's value
+                            $("#custid").val(ui.item.value);
+                            $("#custid").trigger("focusout");
+                            return false; // Prevent the default behavior of updating the input with the label
+                        }
+                    });
+                }
             }
         });
-        });
+    });
+});
 
 
-        
+
+
+
+
      $('#datepicker').datepicker({
          autoclose: true,
          format: 'dd-mm-yyyy'
@@ -300,8 +323,8 @@
          format: 'dd-mm-yyyy'
      })
 
-    });
-    </script>
+ 
+</script>
     
 
 
