@@ -130,6 +130,25 @@
         /* border-color: #d73925; */
         /* border-radius: 0; */
     }
+
+
+    .glow {
+        font-family: cursive;
+        font-size: 15px;
+        color: #990000;
+        text-align: center;
+        animation: glow 1s ease-in-out infinite alternate;
+    }
+
+@@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
 </style>
 
 
@@ -177,7 +196,8 @@
     <div class="box" style="padding:16px 16px !important">
         <div class="box-header with-border">
             <h4>
-                Dashboard
+                
+                <strong style="color: #0049af; font-size: 20px;">Dashboard</strong>
                 <a href="https://www.youtube.com/watch?v=vUAm6rWI45s&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=1" target="_blank" style="padding-top:10px" data-toggle="tooltip" title="Click to view more info">
                     @*<i class="fa fa-eye"></i>*@
                     <i class="fa fa-info-circle" style="font-size:25px;margin-top:10px"></i>
@@ -219,7 +239,34 @@
                         }
                         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="row ">
+                                <div class="col-md-3">
+                                    <a class="text-black" href="@Url.Action("ShowDueDays", "Reports")">
+                                        <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
+                                            <div class="row" style="display:flex; align-items:center;width:100%">
+                                                <div class="col-sm-4">
+                                                    <span class="info-box-icon"><i class="fa fa-calendar icon1"></i></span>
+                                                </div>
+                                                <div class="col-sm-8" style="text-align:end">
+                                                    <div class="">
 
+                                                        <span class="info-box-number">
+                                                            @if (@ViewBag.DueDaysExpire > 0)
+                                                            {
+                                                            <span class="glow">exceed</span>
+                                                            }
+                                                            <strong>@ViewBag.DueDaysExpire</strong>
+                                                        </span>
+                                                        <span class="info-box-text" style="padding:0"> Due Days Invoice</span>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </a>
+
+                                </div>
 
                                 <div class="col-md-3">
                                     <a class="text-black" href="@Url.Action("Nobookinglist", "Booking")">
@@ -306,31 +353,7 @@
 
                                 </div>
 
-                                <div class="col-md-3">
-                                    <a class="text-black" href="@Url.Action("ShowDueDays", "Reports")">
-                                        <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
-                                            <div class="row" style="display:flex; align-items:center;width:100%">
-                                                <div class="col-sm-4">
-                                                    <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
-                                                </div>
-                                                <div class="col-sm-8" style="text-align:end">
-                                                    <div class="">
 
-                                                        <span class="info-box-number"> <strong>@ViewBag.DueDaysExpire</strong></span>
-                                                        <span class="info-box-text" style="padding:0">DueDays of CustomerId</span>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
-
-                                </div>
 
                             </div>
                             <div class="text-center notetxt">

@@ -1,6 +1,6 @@
 ﻿
 @model DtDc_Billing.Models.InvoiceModel
-@{ 
+@{
     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
      Request.ApplicationPath.TrimEnd('/');
 }
@@ -228,6 +228,7 @@
                                             <tr>
                                                 <th>Sr. No</th>
                                                 <th>Consignment No</th>
+                                                <th>Destination</th>
                                                 <th>Weight</th>
                                                 <th>Pincode</th>
                                                 <th>Mode</th>
@@ -422,9 +423,9 @@
                                         <div class="col-sm-12 col-xs-12">
                                             <div class="form-group">
 
-                                                <label for="gst-total" class=" control-label">GST</label>
+                                                <label for="gst-total" class=" control-label">GST%</label>
                                                 <div class="" style="display: flex; gap: 3px">
-                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"@*, @Value = "18"*@ } })   @* @Value = "18" *@
                                                     @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
                                                 </div>
                                                 <div class="">
@@ -438,7 +439,7 @@
                                                 <label for="other-charge" class=" control-label">Other Charge</label>
 
                                                 <div class="">
-                                                    @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                    @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
 
                                                 </div>
                                             </div>
@@ -451,7 +452,7 @@
 
                                                 <div class="">
 
-                                                    @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                    @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "number", @class = "form-control", @readonly = "readonly" } })
 
                                                 </div>
 
@@ -666,7 +667,18 @@
 
     $(document).ready(function () {
 
+        $('input[type="number"]').on('keypress', function (e) {
+            // Allow only numbers and prevent the default action for other characters
+            if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') {
+                e.preventDefault();
+            }
+        });
 
+        // Attach input event handler to remove invalid characters
+        $('input[type="number"]').on('input', function () {
+            // Replace non-numeric characters
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
 
         var consignmets = '@ViewBag.consignmnts';
 
@@ -700,7 +712,7 @@
 
             array.push($('#consiaddno').val().trim());
 
-            $('#consiaddno').val('');
+           // $('#consiaddno').val('');
 
             var str = array.join(',');
 
@@ -775,7 +787,7 @@
 
 	     success: function (data) {
 
-
+             console.log(data)
 
         var rows;
 
@@ -785,22 +797,23 @@
                 $("#generate-invoice tbody").empty();
             }
 
-            console.log(item.Consignment_no);
+
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
-                + "<td>" + item.Consignment_no + "</td>"
-                + "<td>" + item.chargable_weight + "</td>"
-                + "<td>" + item.Pincode + "</td>"
-                + "<td>" + item.Mode + "</td>"
+                + "<td>" + item.Transaction.Consignment_no + "</td>"
+                + "<td>" + item.Name + "</td>"
+                + "<td>" + item.Transaction.chargable_weight + "</td>"
+                + "<td>" + item.Transaction.Pincode + "</td>"
+                + "<td>" + item.Transaction.Mode + "</td>"
 
-                + "<td>" + item.Amount + "</td>"
-                + "<td>" + item.tembookingdate + "</td>"
-                + "<td>" + item.Insurance + "</td>"
-                + "<td>" + item.Claimamount + "</td>"
-                + "<td>" + item.Percentage + "</td>"
-                + "<td>" + item.Risksurcharge + "</td>" +
-                "<td>" + item.loadingcharge + "</td>"
-                + "<td>" + (item.Risksurcharge + item.Amount + item.loadingcharge) + "</td>"
+                + "<td>" + item.Transaction.Amount + "</td>"
+                + "<td>" + item.Transaction.tembookingdate + "</td>"
+                + "<td>" + item.Transaction.Insurance + "</td>"
+                + "<td>" + item.Transaction.Claimamount + "</td>"
+                + "<td>" + item.Transaction.Percentage + "</td>"
+                + "<td>" + item.Transaction.Risksurcharge + "</td>" +
+                "<td>" + item.Transaction.loadingcharge + "</td>"
+                + "<td>" + (item.Transaction.Risksurcharge + item.Transaction.Amount + item.Transaction.loadingcharge) + "</td>"
 
                 + "</tr>";
 
@@ -808,7 +821,7 @@
 
 
             ///////Calculating Docket amount
-            var str = item.Consignment_no;
+            var str = item.Transaction.Consignment_no;
             var res = str.charAt(0);
 
             if (res.toLowerCase() == "d") {
@@ -836,15 +849,15 @@
             //////////////////
 
 
-            total = total + (item.Risksurcharge + item.Amount + item.loadingcharge);
+            total = total + (item.Transaction.Risksurcharge + item.Transaction.Amount + item.Transaction.loadingcharge);
 
 
         });
 
 
-        $('#total').val(total);
-        $('#total').keyup();
-        $('#Docket_charges').val(Docket_Charge);
+             $('#total').val(total.toFixed());
+             $('#total').keyup();
+             $('#Docket_charges').val(Docket_Charge);
         $('#Docket_charges').keyup();
         set_Docket_charges();
 
@@ -868,7 +881,7 @@
 var total = $('#total').val();
 var fullsurchargetax = $('#fullsurchargetax').val();
 
-var percamount = ((total * parseFloat("0" + fullsurchargetax)) / 100);
+            var percamount = ((total * parseFloat("0" + fullsurchargetax)) / 100).toFixed();
 
 $('#fullsurchargetaxtotal').val(percamount);
 
@@ -904,12 +917,12 @@ $('#discountper').keyup(function () {
 
 var discount = $('#discountper').val();
 
-    var percamount = ((parseFloat("0" + total) * parseFloat("0" + discount)) / 100);
+    var percamount = ((parseFloat("0" + total) * parseFloat("0" + discount)) / 100).toFixed();
 
     $('#discountamount').val(percamount);
 
-var ttl = total;
-var set_total_amt = ttl - percamount;
+    var ttl = total;
+    var set_total_amt = (ttl - percamount).toFixed();
 
 if (percamount != 0) {
 
@@ -927,16 +940,16 @@ else {
 function set_subtotal() {
 
 var total = $('#total').val();
-var fullsurchargetax = $('#fullsurchargetaxtotal').val();
-
-$('#subtotal').val(parseFloat("0" + total) + parseFloat("0" + fullsurchargetax));
+    var fullsurchargetax = $('#fullsurchargetaxtotal').val();
+    var subdata = (parseFloat("0" + total) + parseFloat("0" + fullsurchargetax)).toFixed(0);
+    $('#subtotal').val(subdata);
 }
 
 
 function set_Docket_charges() {
 
 
-var percamount = ((total * parseFloat("0" + Royalty_Per)) / 100);
+    var percamount = ((total * parseFloat("0" + Royalty_Per)) / 100).toFixed();
 
 $('#Royalty_charges').val(percamount);
 $('#Royalty_charges').keyup();
@@ -958,7 +971,7 @@ var other_charges = $('#othercharge').val();
 var netamt = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Gst) + parseFloat("0" + other_charges);
 
 // alert(netamt);
-$('#netamount').val(netamt.toFixed(2));
+$('#netamount').val(netamt.toFixed());
 }
 
 
@@ -975,7 +988,7 @@ var gst_total = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + p
 
     var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
 
-$('#servicetaxtotal').val(percamount.toFixed(2));
+$('#servicetaxtotal').val(percamount.toFixed());
 
 }
 
@@ -1064,27 +1077,27 @@ if ('@ViewBag.disc' == "yes") {
     /**/
             data: { array: array, Customerid: custid },
     dataType: 'json',
-    success: function (data) {
+            success: function (data) {
 
         var rows;
 
         $.each(data, function (i, item) {
-            console.log(item.Consignment_no);
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
-                + "<td>" + item.Consignment_no + "</td>"
-                + "<td>" + item.chargable_weight + "</td>"
-                + "<td>" + item.Pincode + "</td>"
-                + "<td>" + item.Mode + "</td>"
+                + "<td>" + item.Transaction.Consignment_no + "</td>"
+                + "<td>" + item.Transaction.Name + "</td>"
+                + "<td>" + item.Transaction.chargable_weight + "</td>"
+                + "<td>" + item.Transaction.Pincode + "</td>"
+                + "<td>" + item.Transaction.Mode + "</td>"
 
-                + "<td>" + item.Amount + "</td>"
-                + "<td>" + item.tembookingdate + "</td>"
-                + "<td>" + item.Insurance + "</td>"
-                + "<td>" + item.Claimamount + "</td>"
-                + "<td>" + item.Percentage + "</td>"
-                + "<td>" + item.Risksurcharge + "</td>"
-                + "<td>" + item.loadingcharge + "</td>"
-                + "<td>" + (item.Risksurcharge + item.Amount + item.loadingcharge) + "</td>"
+                + "<td>" + item.Transaction.Amount + "</td>"
+                + "<td>" + item.Transaction.tembookingdate + "</td>"
+                + "<td>" + item.Transaction.Insurance + "</td>"
+                + "<td>" + item.Transaction.Claimamount + "</td>"
+                + "<td>" + item.Transaction.Percentage + "</td>"
+                + "<td>" + item.Transaction.Risksurcharge + "</td>"
+                + "<td>" + item.Transaction.loadingcharge + "</td>"
+                + "<td>" + (item.Transaction.Risksurcharge + item.Transaction.Amount + item.Transaction.loadingcharge) + "</td>"
 
                 + "</tr>";
 
@@ -1092,7 +1105,7 @@ if ('@ViewBag.disc' == "yes") {
 
 
             ///////Calculating Docket amount
-            var str = item.Consignment_no;
+            var str = item.Transaction.Consignment_no;
             var res = str.charAt(0);
 
             if (res.toLowerCase() == "d") {
@@ -1119,14 +1132,15 @@ if ('@ViewBag.disc' == "yes") {
             //////////////////
 
 
-            total = total + (item.Risksurcharge + item.Amount + item.loadingcharge);
+            total = total + (item.Transaction.Risksurcharge + item.Transaction
+                .Amount + item.Transaction.loadingcharge);
 
 
         });
 
 
 
-        $('#total').val(total);
+                $('#total').val(total.toFixed());
         $('#total').keyup();
         $('#Docket_charges').val(Docket_Charge);
         $('#Docket_charges').keyup();
@@ -1254,46 +1268,40 @@ $("#Customer_Id").autocomplete({
 
 </script>
 
+<a id="saveinv" style="" href="" download target="_blank">
+</a>
 @if (ViewBag.invoiceno != null)
 {
     <script>
-        $("#overlayBlock").show();
-    /**/
-    var print = '@ViewBag.pdf';
-    /**/
+        $(document).ready(function () {
+            $("#overlayBlock").show();
 
-    if (print == "True") {
-        /**/
-        var myParamether = '@ViewBag.invoiceno';
+            var print = '@ViewBag.pdf';
 
-    /**/
+            if (print == "True") {
+                var myParameter = '@ViewBag.invoiceno';
+                var baseUrl = '@baseurl';
+                var data = myParameter + ".pdf";
 
-    //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
-        $.get("/Invoice/SavesinglepdInvoice", { myParameter: myParamether }, function (data) {
-            $('#saveinv').attr('href', @baseurl+"/PDF/" + data);
+                $('#saveinv').attr('href', baseUrl + "/PDF/" + data);
+                document.getElementById('saveinv').click();
+            }
 
-          document.getElementById('saveinv').click();
-
-
-
-
+            $("#overlayBlock").hide();
         });
-        $("#overlayBlock").hide();
-}
     </script>
 }
 else
 {
     <script>
-        $("#overlayBlock").hide();
+        $(document).ready(function () {
+            $("#overlayBlock").hide();
+        });
     </script>
 }
 
-<a id="savecon" style="" href="" download target="_blank">
-</a>
 
-
-@if (ViewBag.GST == null || ViewBag.GST=="0")
+@if (ViewBag.GST == null || ViewBag.GST == "0")
 {
     <script>
         $("#servicetax").val(0);

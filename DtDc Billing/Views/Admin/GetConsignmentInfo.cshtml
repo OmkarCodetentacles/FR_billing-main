@@ -93,106 +93,110 @@
     })
 </script>
 <br/><br/>
-<section class="content-wrapper" style="background: rgb(245 245 245)">
-    <div class="container">
+<section class="content-wrapper" sstyle="margin-left:20px">
+    @*<div class="">
         <div class="row">
             <div class="col-md-12 ">
             
 
-                    <div class="container">
-                        <div class="row">
-                            <div class="box box-info" style="background: none; border: 1px solid #dbdbdb !important; background: white; padding: 15px; height:100%">
-
+                    <div class="">*@
+                        @*<div class="row">*@
+                            <div class="box box-info" style="background: none; background: white; padding: 15px; height:100%">
+                                <div class="box-header with-border">
+                                    <h4> Tracking Information of Consignment</h4>
+                                </div><!-- /.box-header -->
                                 <div class="form-horizontal">
                                     <div class="row">
                                         <div class="col-md-12">
 
 
-                                            <div class="form-group">
-                                                <label class="col-md-3 control-label">Enter Consignment Number<br /></label>
-                                                <div class="col-md-12">
-                                                    <div class="row">
-                                                        @using (Html.BeginForm())
-                                                        {
-                                                            <div class="col-md-6">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label">Enter Consignment Number<br /></label>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            @using (Html.BeginForm())
+                                                            {
+                                                                <div class="col-md-6">
 
 
-                                                                @if (ViewBag.Consignmentno == null)
-                                                                {
-                                                                    <input type="text" name="consignmetno" id="consignmetno" class="form-control" required />
+                                                                    @if (ViewBag.Consignmentno == null)
+                                                                    {
+                                                                        <input type="text" name="consignmetno" id="consignmetno" class="form-control" required />
 
-                                                                }
-                                                                else
-                                                                {
-                                                                    <input type="text" name="consignmetno" id="consignmetno" class="form-control" value="@ViewBag.Consignmentno" required />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <input type="text" name="consignmetno" id="consignmetno" class="form-control" value="@ViewBag.Consignmentno" required />
 
-                                                                }
+                                                                    }
 
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <input type="submit" value="View" class="btn btn-primary" />
-                                                            </div>
-                                                        }
-
-
-                                                        @if (Model != null)
-                                                        {
-                                                            <br /><br />
-                                                                  <div class="pull-left" id="consignmentdetails" style="padding-top:50px;">
-                                                                      @*padding-right:140px*@
-
-                                                                                                                              <div class="col-md-12">
-                                                                                                                                  @Html.Raw(Model)
-
-                                                                                                                              </div>
-                                                                                                                          </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-md-6">
+                                                                    <input type="submit" value="View" class="btn btn-primary" />
+                                                                </div>
+                                                            }
 
 
-                                                            <table id="consignmentTable">
-                                                                <thead>
-                                                                    <tr id="tableHeaders">
-                                                                        <th>Sr No</th>
-                                                                        <th>Date</th>
-                                                                        <th>Delivery Status</th>
-                                                                        <th>Activity Type</th>
-                                                                        @*<th>From</th>*@
-                                                                        <th>Origin</th>
-                                                                        <th>To</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="consdata">
-                                                                </tbody>
-                                                                <tbody>
-                                                                    <!-- Table body will be populated dynamically -->
-                                                                </tbody>
-                                                            </table>
+                                                            @if (Model != null)
+                                                            {
+                                                                <br /><br />
+                                                                <div class="pull-left" id="consignmentdetails" style="padding-top:50px;">
+                                                                    @*padding-right:140px*@
 
-                                                        }
+                                                                    <div class="col-md-12">
+                                                                        @Html.Raw(Model)
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <input type="button" class="btn btn-info" @*id="showalldetails"*@ onclick="GetConsignmentDetails()" value="View All Details" />
+                                                                    </div>
+                                                                </div>
 
 
+                                                                <table id="consignmentTable">
+                                                                    <thead>
+                                                                        <tr id="tableHeaders">
+                                                                            <th>Sr No</th>
+                                                                            <th>Date</th>
+                                                                            <th>Delivery Status</th>
+                                                                            <th>Activity Type</th>
+                                                                            @*<th>From</th>*@
+                                                                            <th>Origin</th>
+                                                                            <th>To</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="consdata">
+                                                                    </tbody>
+                                                                    <tbody>
+                                                                        <!-- Table body will be populated dynamically -->
+                                                                    </tbody>
+                                                                </table>
+
+                                                            }
+
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             @*<div class="form-group">
-                                                    <div class="col-md-offset-2 col-md-10">
-                                                        <input type="submit" value="Save" class="btn btn-primary" />
-                                                    </div>
-                                                </div>*@
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </div>*@
 
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                        @*</div>
 
-                    </div>
+                    </div>*@
 
 
                 
@@ -207,9 +211,9 @@
 
                 @*@Html.Partial("GetConsignmentDetails", Model)*@
 
-            </div>
+            @*</div>
         </div>
-        </div>
+        </div>*@
 </section>
 
 

@@ -251,13 +251,14 @@ namespace DtDc_Billing.Controllers
                          Sum = db.TransactionViews.Where(m =>
                (m.Customer_Id == studentGroup.Key)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
-                           .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0)),
+                           .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0))??0,
 
                          Branchname = db.TransactionViews.Where(m =>
                  (m.Customer_Id == studentGroup.Key)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
                            .Count().ToString(),
-                        Count=studentGroup.Select(x=>x.Consignment_no).Count(),
+
+                        Count=studentGroup.Select(x=>x.Consignment_no).Count()!=null? studentGroup.Select(x => x.Consignment_no).Count():0,
                       
                      }
                     
@@ -506,7 +507,17 @@ namespace DtDc_Billing.Controllers
             DateTime? fromdate = null;
             DateTime? todate = null;
 
-
+            if(Submit == "Send mail")
+            {
+                if (Custid == null || Custid=="")
+                {
+                    ViewBag.fromdate = Fromdatetime;
+                    ViewBag.todate = ToDatetime;
+                    ViewBag.select = status;
+                    ModelState.AddModelError("CustError", "Customer Id is Required");
+                    return View();
+                }
+            }
             ViewBag.select = status;
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
@@ -556,7 +567,7 @@ namespace DtDc_Billing.Controllers
 
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
-                    discountamount = x.netamount - (x.paid ?? 0),
+                    discountamount =Math.Round((double)x.netamount - (x.paid ?? 0)) ,
                     TdsAmount=x.TdsAmount??0,
                     TotalAmount=x.TotalAmount??0
 
@@ -673,7 +684,7 @@ namespace DtDc_Billing.Controllers
                     CustomerName=db.Companies.Where(m=>m.Company_Id==x.Customer_Id).Select(m=>m.Company_Name).FirstOrDefault(),
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
-                    discountamount = x.netamount - (x.paid ?? 0),
+                    discountamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                     TdsAmount = x.TdsAmount??0,
                     TotalAmount = x.TotalAmount??0
                     
@@ -749,7 +760,7 @@ namespace DtDc_Billing.Controllers
 
                             netamount = x.netamount??0,
                             paid = x.paid ?? 0,
-                            discountamount = x.netamount - (x.paid ?? 0),
+                            discountamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                             TdsAmount = x.TdsAmount??0,
                             TotalAmount = x.TotalAmount??0
                         })
@@ -1978,16 +1989,16 @@ namespace DtDc_Billing.Controllers
                         periodto = i.periodto,
                         total = i.total,
                         fullsurchargetax = i.fullsurchargetax,
-                        fullsurchargetaxtotal = i.fullsurchargetaxtotal,
+                        fullsurchargetaxtotal = i.fullsurchargetaxtotal!=null?Math.Round((double)i.fullsurchargetaxtotal):0,
                         servicetax = i.servicetax,
-                        servicetaxtotal = i.servicetaxtotal,
-                        othercharge = i.othercharge,
-                        netamount = i.netamount,
+                        servicetaxtotal = i.servicetaxtotal != null ? Math.Round((double)i.servicetaxtotal) : 0 ,
+                        othercharge = i.othercharge != null ? Math.Round((double)i.othercharge) : 0,
+                        netamount = Math.Round((double)i.netamount),
                         Customer_Id = i.Customer_Id,
                         fid = i.fid,
-                        servicecharges = i.servicecharges,
-                        Royalty_charges = i.Royalty_charges,
-                        Docket_charges = i.Docket_charges,
+                        servicecharges = i.servicecharges!=null?Math.Round((double)i.servicecharges):0,
+                        Royalty_charges = i.Royalty_charges!=null?Math.Round((double)i.Royalty_charges):0,
+                        Docket_charges = i.Docket_charges!=null ? Math.Round((double)i.Docket_charges):0,
                         Tempdatefrom = i.Tempdatefrom,
                         TempdateTo = i.TempdateTo,
                         tempInvoicedate = i.tempInvoicedate,

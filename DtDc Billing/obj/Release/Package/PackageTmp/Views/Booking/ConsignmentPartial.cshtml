@@ -23,7 +23,7 @@
 
     label {
         display: inline-block;
-        width:117px !important;
+        width: 117px !important;
         margin-right: 0.5em;
         padding-top: 1.5em;
     }
@@ -37,24 +37,25 @@
     }
 </style>
 
-  @{ 
-      var smessage =ViewBag.Message as string;
-      var notvalid = ViewBag.notvalidpincode as string;
+@{
+    var smessage = ViewBag.Message as string;
+    var notvalid = ViewBag.notvalidpincode as string;
 
-  }
-  
+}
 
 
-   @if (!string.IsNullOrEmpty(smessage))
-   {
-        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
-    }
-     @if (!string.IsNullOrEmpty(notvalid))
-            {
-              <script>
+
+@if (!string.IsNullOrEmpty(smessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
+
+}
+@if (!string.IsNullOrEmpty(notvalid))
+{
+    <script>
                   alert('@notvalid')
-              </script>
-            }
+    </script>
+}
 @using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
 
@@ -82,8 +83,8 @@
 
 
         @*<label>
-            Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
-        </label>*@
+                Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+            </label>*@
         <label>
             Cust Id<span style="color:red">*</span>:  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -105,8 +106,8 @@
 
 
         @*<label>
-            Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
-        </label>*@
+                Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+            </label>*@
         <label>
             Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -168,8 +169,8 @@ new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select"
 
 
         @*<label>
-        char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
-            </label>*@
+            char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+                </label>*@
         <label>
             char Wt<span style="color:red">*</span>: @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -348,7 +349,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
         </div>
     </div>
-    
+
 
 
 
@@ -461,48 +462,49 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
 </script>
 <script>
-   /* $(function () {
-        var availableTutorials = [];
-  $.ajax({
-        url: '@@Url.Action("InternationalCity")',
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            var availableTutorials = data.map(function(city) {
-                return city.Name;
-            });
+    /* $(function () {
+         var availableTutorials = [];
+   $.ajax({
+         url: '@@Url.Action("InternationalCity")',
+         type: 'GET',
+         dataType: 'json',
+         success: function (data) {
+             var availableTutorials = data.map(function(city) {
+                 return city.Name;
+             });
 
-            $("#intpincode").autocomplete({
-                source: availableTutorials,
-                minLength: 0, // Set minimum length to 0 so that the dropdown appears on focus
-                select: function (event, ui) {
-                    $("#intpincode").val(ui.item.value);
-                    setPincodeInt();
-                }
-            }).focus(function () {
-                $(this).autocomplete("search", ""); // Trigger the autocomplete search on focus
-            });
-        }
-    });
+             $("#intpincode").autocomplete({
+                 source: availableTutorials,
+                 minLength: 0, // Set minimum length to 0 so that the dropdown appears on focus
+                 select: function (event, ui) {
+                     $("#intpincode").val(ui.item.value);
+                     setPincodeInt();
+                 }
+             }).focus(function () {
+                 $(this).autocomplete("search", ""); // Trigger the autocomplete search on focus
+             });
+         }
+     });
 
-        function setPincodeInt() {
-            var consno = $("#intpincode").val();
+         function setPincodeInt() {
+             var consno = $("#intpincode").val();
 
-            $.ajax({
-                type: 'Get',
-                url: '/Booking/FillPincode',
-                data: { Name: consno },
-                success: function (Data) {
-                    $('#Pincode').val(Data[0].Pincode);
-                    $('#Pincode').focus();
-                }
-            });
-        }
-        });*/
+             $.ajax({
+                 type: 'Get',
+                 url: '/Booking/FillPincode',
+                 data: { Name: consno },
+                 success: function (Data) {
+                     $('#Pincode').val(Data[0].Pincode);
+                     $('#Pincode').focus();
+                 }
+             });
+         }
+         });*/
 </script>
 
 
 <script>
+
  function initializeAutocomplete() {
     var availableTutorials = [];
     $.ajax({
@@ -917,7 +919,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             var Billamount = $('#BillAmount').val();
             var Insurance = $('#Percentage').val();
 
-            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance)).toFixed();
 
             $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
         }
@@ -1035,7 +1037,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             var Consino = $('#Consignment_no').val();
             var custid = $('#Customer_Id').val();
             var bookdate = $('#booking_date').val();
-           
+
             var mode = $('#Mode').val();
             var qty = $('#Quanntity').val();
             var charweight = $('#chargable_weight').val();

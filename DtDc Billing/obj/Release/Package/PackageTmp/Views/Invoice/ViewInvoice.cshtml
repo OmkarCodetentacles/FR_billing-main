@@ -483,6 +483,27 @@ select: function(event, ui) {
     //});
 });
 
+    $('#Companydetails').focusout(function () {
+        var Customerid = $('#Companydetails').val();
+        if (Customerid.length >= 3) {
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/Checkcompany',
+                data: { Customerid: Customerid },
+                success: function (Data) {
+
+                    if (Data == "0") {
+                        alert("Please Enter Valid Company Id");
+                        $('#Companydetails').val('');
+                    }
+
+
+
+                }
+            });
+        }
+    });
 
 
     $(function () {

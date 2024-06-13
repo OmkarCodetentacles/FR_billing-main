@@ -4,7 +4,7 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 @{
-   
+
     var notvalid = ViewBag.notvalidpincode as string;
 
 }
@@ -69,6 +69,9 @@
         @if (!string.IsNullOrEmpty(successMessage))
         {
             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            <script>
+                insertConsignments();
+            </script>
         }
         <label>
             Consi no<span style="color:red">*</span>:
@@ -384,6 +387,26 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 </style>
 
 <script>
+    var currentConsignmentno;
+    function insertConsignments() {
+        if (consignmentsArray != null && consignmentsArray.length > 0) {
+
+            var consignmentTextBox = $("#Consignment_no");
+            console.log(consignmentsArray)
+
+            var currentIndex = consignmentsArray.indexOf(currentConsignmentno);
+            if (currentIndex != -1 && currentIndex < consignmentsArray.length - 1) {
+                var nextConsignment = consignmentsArray[currentIndex + 1];
+
+                consignmentTextBox.val(nextConsignment);
+
+            }
+            else {
+                alert("No more consignments available.");
+            }
+        }
+
+    }
     $(document).ready(function () {
             /////Sender Autocomplete
  $(function () {
@@ -621,6 +644,7 @@ $.ajax({
         $('#Consignment_no').keyup(function () {
             // alert("Keyup");
             var consno = $("#Consignment_no").val();
+            currentConsignmentno = consno;
             if (consno.length >= 9) {
                 $('#Consignment_no').val($(this).val().toUpperCase());
 
@@ -632,10 +656,13 @@ $.ajax({
         $('#Consignment_no').focusout(function () {
             // alert("Keyup");
             var consno = $("#Consignment_no").val();
+            currentConsignmentno = consno;
             if (consno.length >= 2) {
                 $('#Consignment_No').val($(this).val().toUpperCase());
                 $('#Customer_Id').focus();
                 var str = $('#Consignment_no').val();
+
+                currentConsignmentno = str;
                 var res = str.charAt(0);
                 // alert(res);
                 if (res.toLowerCase() == "i") {
@@ -886,7 +913,7 @@ $.ajax({
             var Billamount = $('#BillAmount').val();
             var Insurance = $('#Percentage').val();
 
-            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance)).toFixed();
 
             $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
         }
@@ -975,7 +1002,7 @@ $.ajax({
         });
            $('#Pincode').change(function () {
             var pincode = $('#Pincode').val();
-           
+
     $.ajax({
         type: 'get',
         data: { Pincode: pincode },
@@ -1001,79 +1028,79 @@ $.ajax({
 </script>
 
 <script>
-        $(document).ready(function () {
-            $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
+    $(document).ready(function () {
+        $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
 
-                var Consino = $('#Consignment_no').val();
-                var custid = $('#Customer_Id').val();
-                var bookdate = $('#booking_date').val();
-                var pincode = $('#Pincode').val();
-                var mode = $('#Mode').val();
-                var qty = $('#Quanntity').val();
-                var charweight = $('#chargable_weight').val();
-                var type = $('[name="Type_t"]').val();
-                if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+            var Consino = $('#Consignment_no').val();
+            var custid = $('#Customer_Id').val();
+            var bookdate = $('#booking_date').val();
+            var pincode = $('#Pincode').val();
+            var mode = $('#Mode').val();
+            var qty = $('#Quanntity').val();
+            var charweight = $('#chargable_weight').val();
+            var type = $('[name="Type_t"]').val();
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
 
-                    return false;
-                }
-                else {
+                return false;
+            }
+            else {
 
-                    //alert($(this).val());
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        url: '/Calculation/CalulateAmt',
-                        data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
-                        success: function (Data) {
-                            //alert(Data.Amount);
-                            var Insuranceval = $('input[name="topay"]:checked').val();
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Calculation/CalulateAmt',
+                    data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        //alert(Data.Amount);
+                        var Insuranceval = $('input[name="topay"]:checked').val();
 
 
-                            if (Insuranceval == "yes") {
-                                $('#Amount').val(0);
-                            }
-                            else {
-
-                                $('#Amount').val(Data.Amount);
-                            }
-
-                            // $('#dtdcamount').val(Data.dtdcamount);
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-
+                        if (Insuranceval == "yes") {
+                            $('#Amount').val(0);
                         }
-                    });
-                }
+                        else {
 
-            });
+                            $('#Amount').val(Data.Amount);
+                        }
 
-            var currentDate = new Date();
+                        // $('#dtdcamount').val(Data.dtdcamount);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-            $('#tembookingdate').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-
-            })
-
-
-            $('#datepicker').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-            $('#datepicker1').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-
-            $('[name="Mode"],[name="Type_t"]').change(function () {
-
-                $("#Customer_Id").trigger("focusout");
-            });
+                    }
+                });
+            }
 
         });
-   
+
+        var currentDate = new Date();
+
+        $('#tembookingdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+
+        })
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+        $('[name="Mode"],[name="Type_t"]').change(function () {
+
+            $("#Customer_Id").trigger("focusout");
+        });
+
+    });
+
 </script>
 
 

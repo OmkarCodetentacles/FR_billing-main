@@ -78,7 +78,7 @@
                                     int srno = 1;
                                     foreach (var item in Model)
                                     {
-                                        var id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
+                                        string id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
                                                                 <tr>
                                                                     <td>
                                                                         @srno
@@ -117,12 +117,12 @@
                                                                     </td>
                                                                     <td>
                                                                         @if (item.Company_Name == "BASIC_TS")
-                                                                        {
+                                                                        { 
                                                                             <input type="button" value="Delete" class="btn btn-danger tableEdit" disabled>
                                                                         }
                                                                         else
                                                                         {
-                                                                            @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { id = id },
+                                                                            @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { companyid = id },
                                                                               new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger tableEdit" })
                                                                         }
                                                                     </td>

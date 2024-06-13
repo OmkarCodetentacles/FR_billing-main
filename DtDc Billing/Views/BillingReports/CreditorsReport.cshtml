@@ -66,6 +66,9 @@
 
                                             <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                                         </div>
+                                        <span style="color:red">
+                                        @Html.ValidationMessage("CustError")
+                                        </span>
                                     </div>
                                 }
                                 else
@@ -73,10 +76,15 @@
                                     <div class="col-md-3 padding-left-0">
                                         <div class="form-group">
                                             <label>CustomerId</label>
+
                                             <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                            <span style="color:red">
+                                                @Html.ValidationMessage("CustError")
+                                            </span>
                                         </div>
                                     </div>
                                 }
+                       
                                 if (ViewBag.fromdate != null)
                                 {
                                     <div class="col-md-2">
@@ -130,7 +138,7 @@
 
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="margin-top:10px">
 
-                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width: 100%" />
+                                    <input type="submit" class="btn btn-primary sbmt" name="Submit" value="Show" style="width: 100%" />
 
                                 </div>
 
@@ -148,7 +156,7 @@
                                 </div>
                                 <div class="col-lg-10 col-md-11 col-sm-11"></div>
                                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" style="margin-top:10px">
-                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style=" padding: 15px; line-height: 0; width: 100%" />
+                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" id="sendmail" style=" padding: 15px; line-height: 0; width: 100%" />
 
                                 </div>
 
@@ -214,66 +222,69 @@
                             </thead>
                             <tbody>
                                 @{ var i = 1;}
-                                @foreach (var item in Model)
+                                @if (Model != null)
                                 {
-                                    <tr class="@(item.discountamount<=0? "paid-party" : "unpaid-party")">
-                                        <td>
-                                            @i
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.invoiceno)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Customer_Id)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.CustomerName)
-                                        </td>
-                                        <td>
-                                            @item.invoicedate.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @getdays((DateTime)item.invoicedate)
-                                        </td>
-                                        <td>
-                                            @item.periodfrom.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @item.periodto.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.total)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                        </td>
+                                    foreach (var item in Model)
+                                    {
+                                        <tr class="@(item.discountamount <= 0 ? "paid-party" : "unpaid-party")">
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.invoiceno)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerName)
+                                            </td>
+                                            <td>
+                                                @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @getdays((DateTime)item.invoicedate)
+                                            </td>
+                                            <td>
+                                                @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @item.periodto.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                            </td>
 
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.netamount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.paid)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.discountamount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TdsAmount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TotalAmount)
-                                        </td>
-                                    </tr>
-                                    i++;
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.netamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.paid)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TdsAmount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TotalAmount)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -286,7 +297,16 @@
                                         <button type="button" class="btn btn-primary total-label">Total</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -298,7 +318,16 @@
                                         <button type="button" class="btn btn-success">Paid</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -310,7 +339,16 @@
                                         <button type="button" class="btn btn-danger">Balance</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -464,11 +502,13 @@ select: function(event, ui) {
 
 <script>
     $(document).ready(function () {
+       
         $('.sbmt').click(function () {
+         var sbmt=   $(".sbmt").val();
             var frmdate = $('#datepicker').val();
 
             var todate = $('#datepicker1').val();
-
+            
             if (frmdate == "") {
                 alert("Please Enter Start Date");
                 return false;
@@ -483,6 +523,7 @@ select: function(event, ui) {
 
         });
 
+      
     });
 </script>
 

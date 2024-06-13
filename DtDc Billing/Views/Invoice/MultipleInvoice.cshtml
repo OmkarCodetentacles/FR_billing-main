@@ -142,9 +142,9 @@
 
                                                     <div class="col-sm-12 no-padding" style="text-align:end">
                                                         <div class="form-group">
-                                                            <input type="submit" name="submit" class="btn btn-success " value="Save" style="width:auto" />
+                                                            <input type="submit" name="submit" class="btn btn-success sbmt" id="sbmt" value="Save" style="width:auto" />
                                                             &nbsp;
-                                                            <button type="submit" name="submit" class="btn bg-maroon " value="Email" style="width:auto">Send Mail</button>
+                                                            <button type="submit" name="submit" class="btn bg-maroon sbmt" id="sbmt" value="Email" style="width:auto">Send Mail</button>
                                                         </div>
 
 
@@ -331,14 +331,18 @@
 
 
 
-            $('.sbmt').click(function () {
-
+            $('#sbmt').click(function () {
+                var selectedOpts = $('#lstBox2 option');
+                
                 $("#lstBox2 option").attr("selected", "selected");
                // $("#lstBox2 option").prop("selected", true);
                 var frmdate = $('#Tempdatefrom').val();
-
+                var invdate = $("#tempInvoicedate").val();
                 var todate = $('#TempdateTo').val();
-
+                if (invdate == "") {
+                    alert("Please Enter Invoice Date");
+                    return false;
+                }
                 if (frmdate == "") {
                     alert("Please Enter Start Date");
                     return false;

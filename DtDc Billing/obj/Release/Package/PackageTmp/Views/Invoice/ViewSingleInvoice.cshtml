@@ -9,8 +9,8 @@
 
 
 <style>
-    .Viewsingleinvoice th{
-         width:7.14% !important
+    .Viewsingleinvoice th {
+        width: 7.14% !important
     }
 </style>
 <!-- Main content -->
@@ -45,13 +45,61 @@
                 @if (!string.IsNullOrEmpty(errorMessage))
                 {
                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
+
+                }
+                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
+                    {
+
+                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
+
+                            <label>Company Name</label>
+
+                            <input type="text" name="Companydetails" id="Companydetails" class="form-control" value="@ViewBag.Companydetails">
+
+                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
+
+                        </div>
+                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
+
+                            <label>Invoice Number</label>
+
+                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceno">
+
+                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
+
+                        </div>
+
+                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                            <label>From Date</label>
+                            @*<label class="Reqired">*</label>*@
+                            <input type="text" name="invfromdate" id="invfromdate" class="form-control" value="@ViewBag.invfromdate">
+                        </div>
+
+
+                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                            <label>To Date</label>
+                            @*<label class="Reqired">*</label>*@
+                            <input type="text" name="invtodate" id="invtodate" class="form-control" value="@ViewBag.invtodate">
+                        </div>
+
+                        <input type="hidden" value="@ViewBag.firmid">
+                        <input type="hidden" value="@ViewBag.Companyid">
+
+                        @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+
+                        <div class="col-md-1" style="padding:0">
+                            <input type="submit" class="btn btn-primary sbmt" name="submit" id="submitbook" value="Submit" style="margin:33px auto;width:100%" />
+                        </div>
+
+                        <br /><br /><br /><br />
+                    
                 }
                 <div class="col-xs-12">
 
                     @*<div class="col-md-4">
-                <label for="departmentsDropdown">Firm Name</label>
-                <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
-            </div>*@
+                            <label for="departmentsDropdown">Firm Name</label>
+                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+                        </div>*@
                     <table id="table_display_block" class="table Viewsingleinvoice">
                         <thead>
                             <tr>
@@ -165,19 +213,179 @@
 </div>
 
 <script>
+    $('#invfromdate').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#invtodate').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
     $(function () {
 
         $('#table_display_block').dataTable({
-            "bPaginate": false,
+            "bPaginate": true,
             "bLengthChange": true,
             "bFilter": true,
             "bSort": true,
-            "bInfo": false,
+            "bInfo": true,
             "bAutoWidth": false
         });
 
 
     });
+</script>
+
+
+<script>
+    var availableinvoicesarr = [];
+    var availableTutorials = [];
+    var company_idarr = [];
+/////Sender Autocomplete
+$(function () {
+
+
+    $.ajax({
+        type: 'GET',
+                url: '@Url.Action("CustomerIdAutocompleteForViewInvocie")',
+        data: { },
+        dataType: 'json',
+        success: function(data) {
+            $.each(data, function(i, item) {
+                        company_idarr.push(item.Company_Id);
+            });
+                }
+            });
+
+    $("#Companydetails").autocomplete({
+        source: company_idarr,
+select: function(event, ui) {
+    $("#Companydetails").val(ui.item.value);
+
+    $("#Companydetails").trigger("focusout");
+        }
+    });
+
+    //$("#Companydetails").autocomplete({
+    //    source: company_idarr,
+    //    select: function(event, ui) {
+
+    //    }
+    //});
+});
+
+    $('#Companydetails').focusout(function () {
+        var Customerid = $('#Companydetails').val();
+        if (Customerid.length >= 3) {
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/Checkcompany',
+                data: { Customerid: Customerid },
+                success: function (Data) {
+
+                    if (Data == "0") {
+                        alert("Please Enter Valid Company Id");
+                        $('#Companydetails').val('');
+                    }
+
+
+
+                }
+            });
+        }
+    });
+
+
+    $(function () {
+
+          $.ajax({
+      type: 'GET',
+      url: '@Url.Action("InvoiceNumberAutocompleteForViewInvocie")',
+              data: { Customer_Id:null},
+      dataType: 'json',
+              success: function (data) {
+
+          $.each(data, function (i, item) {
+              availableinvoicesarr.push(item.invoiceno);
+          })
+      }
+  });
+  //      $("#invoiceno").autocomplete({
+  //          source: availableinvoicesarr,
+  //          select: function (event, ui) {
+  //              $("#invoiceno").val(ui.item.value);
+  //              $("#invoiceno").trigger("focusout")
+  //          }
+  //      });
+        $("#invoiceno").autocomplete({
+            source: availableinvoicesarr,
+          select: function (event, ui) {
+              $("#invoiceno").val(ui.item.value);
+
+              $("#invoiceno").trigger("focusout");
+          }
+      });
+    })
+
+</script>
+
+<script>
+
+    $('#Companydetails').change(function () {
+        var Customerid = $('#Companydetails').val();
+
+        if (Customerid.length >= 3) {
+            availableinvoicesarr = [];
+
+            $("#invoiceno").autocomplete({
+                source: availableinvoicesarr,
+                select: function (event, ui) {
+                    $("#invoiceno").val(ui.item.value);
+
+                    $("#invoiceno").trigger("focusout");
+                }
+            });
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
+                data: { Customer_Id: Customerid },
+                success: function (Data) {
+                    $.each(Data, function (i, item) {
+                        availableinvoicesarr.push(item.invoiceno);
+                    })
+
+                }
+            });
+        }
+        $("#invoiceno").autocomplete({
+            source: availableinvoicesarr,
+            select: function (event, ui) {
+                $("#invoiceno").val(ui.item.value);
+
+                $("#invoiceno").trigger("focusout");
+            }
+        });
+
+
+    });
+    $("#invoiceno").focusout(function () {
+        availableinvoicesarr = [];
+        $("#invoiceno").autocomplete({
+            source: availableinvoicesarr,
+            select: function (event, ui) {
+                $("#invoiceno").val(ui.item.value);
+
+                $("#invoiceno").trigger("focusout");
+            }
+        });
+
+    });
+
 </script>
 @*<script>
     var a =@Request.Params["Firm_Id"];
@@ -228,17 +436,17 @@
 
 
 @*@if (TempData["error"] != null)
-{
-    <script>
-        //alert('@TempData["error"]');
-    </script>
-}
+    {
+        <script>
+            //alert('@TempData["error"]');
+        </script>
+    }
 
 
 
-@if (TempData["success"] != null)
-{
-    <script>
-        //alert('@TempData["success"]');
-    </script>
-}*@
+    @if (TempData["success"] != null)
+    {
+        <script>
+            //alert('@TempData["success"]');
+        </script>
+    }*@

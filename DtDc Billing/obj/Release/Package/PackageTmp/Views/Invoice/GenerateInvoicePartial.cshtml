@@ -1,6 +1,6 @@
 ﻿@model DtDc_Billing.Models.InvoiceModel
 
-@{ 
+@{
     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
      Request.ApplicationPath.TrimEnd('/');
 }
@@ -51,11 +51,11 @@
                         @if (ViewBag.success != null)
                         {
                             successMessage = ViewBag.success as string;
-                          
+
                         }
-                        @{ 
+                        @{
                             string errorMessage = TempData["NUllCustomer"] as string;
-                            }
+                        }
 
 
                         @if (!string.IsNullOrEmpty(successMessage))
@@ -78,7 +78,7 @@
                                         <label class="text-right" for="email">Customer Id:</label>
                                         @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Customer_Id, "", new { @class = "text-danger" })
-                                       @Html.ValidationMessage("comapnycheck", "", new { @class = "text-danger" })
+                                        @Html.ValidationMessage("comapnycheck", "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -173,19 +173,19 @@
 
 
                             @*<label for="email">Firm Details:</label>
-                                   @Html.DropDownList("Firm_Name",
-            (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
+                                                       @Html.DropDownList("Firm_Name",
+                                (IEnumerable<SelectListItem>)ViewBag.Firm_Name,  new { id = "ddlStudent", @class = "form-control" })*@
 
                             @*  @Html.DropDownList("Firm_Id", "Firm_Name")*@
                             @* @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
 
 
                             @*<label for="departmentsDropdown">Firm Name</label>
-            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
+                                <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
 
 
 
-            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+                                @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
 
 
@@ -198,6 +198,7 @@
                                         <tr>
                                             <th>Sr. No</th>
                                             <th>Consignment No</th>
+                                            <th>Destination</th>
                                             <th>Weight</th>
                                             <th>Pincode</th>
                                             <th>Mode</th>
@@ -396,11 +397,11 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-3">
-                                                            <label for="gst-total" class=" control-label">GST</label>
+                                                            <label for="gst-total" class=" control-label">GST%</label>
                                                         </div>
                                                         <div class="col-md-9" style="display:flex;gap:2px">
-                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
-                                                            @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} }) @* @Value = "18" *@
+                                                            @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "", @class = "form-control", @readonly = "readonly" } })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -412,7 +413,7 @@
                                                             <label for="other-charge" class=" control-label">Other Charge</label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -425,7 +426,7 @@
                                                             <label for="net-amount" class=" control-label">Net Amount</label>
                                                         </div>
                                                         <div class="col-md-9">
-                                                            @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                            @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "number", @class = "form-control", @readonly = "readonly" } })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -593,7 +594,18 @@
     $(document).ready(function () {
 
 
+     $('input[type="number"]').on('keypress', function (e) {
+        // Allow only numbers and prevent the default action for other characters
+        if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') {
+            e.preventDefault();
+        }
+    });
 
+    // Attach input event handler to remove invalid characters
+    $('input[type="number"]').on('input', function () {
+        // Replace non-numeric characters
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
         var customerid = $('Customer_Id').val();
         var Tempdatefrom = $('Tempdatefrom').val();
         var TempdateTo = $('TempdateTo').val();
@@ -647,7 +659,10 @@
             var custid = $('#Customer_Id').val();
             var periodfrom = $('#Tempdatefrom').val();
             var periodto = $('#TempdateTo').val();
-
+            if (custid == "" || periodfrom == "" || periodto == "") {
+                alert("Customer Id ,Period From and Period To can not be Empty!!!")
+                return false;
+            }
 
             $.ajax({
                 type: 'GET',
@@ -666,6 +681,8 @@
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
                 + "<td>" + item.Consignment_no + "</td>"
+                + "<td>" + item.Name + "</td>"
+
                 + "<td>" + item.chargable_weight + "</td>"
                 + "<td>" + item.Pincode + "</td>"
                 + "<td>" + item.Mode + "</td>"
@@ -676,7 +693,7 @@
                 + "<td>" + item.Claimamount + "</td>"
                 + "<td>" + item.Percentage + "</td>"
                 + "<td>" + item.loadingcharge + "</td>"
-                + "<td>" + item.Risksurcharge + "</td>"
+                + "<td>" + item.Risksurcharge+ "</td>"
                 + "<td>" + (item.Risksurcharge + item.Amount + item.loadingcharge) + "</td>"
 
                 + "</tr>";
@@ -719,7 +736,7 @@
         });
 
 
-        $('#total').val(total);
+        $('#total').val(total.toFixed());
         $('#total').keyup();
         $('#Docket_charges').val(Docket_Charge);
         $('#Docket_charges').keyup();
@@ -729,7 +746,7 @@
         $('#generate-invoice tbody').append(rows);
     },
     error: function (emp) {
-        alert('error');
+        alert('Something Went Wrong!');
     }
 });
 
@@ -745,7 +762,7 @@
 var total = $('#total').val();
 var fullsurchargetax = $('#fullsurchargetax').val();
 
-var percamount = ((total * parseFloat("0" + fullsurchargetax)) / 100);
+            var percamount = ((total * parseFloat("0" + fullsurchargetax)) / 100).toFixed();
 
 $('#fullsurchargetaxtotal').val(percamount);
 
@@ -768,7 +785,7 @@ if (Invoice == "yes") {
 }
 else {
     $('#discountdiv').hide();
-    $("#show").click();
+  //  $("#show").click();
 }
 
 
@@ -781,7 +798,7 @@ $('#discountper').keyup(function () {
 
 var discount = $('#discountper').val();
 
-    var percamount = ((parseFloat("0" + total) * parseFloat("0" + discount)) / 100);
+    var percamount = ((parseFloat("0" + total) * parseFloat("0" + discount)) / 100).toFixed();
 
     $('#discountamount').val(percamount);
 
@@ -804,16 +821,16 @@ else {
 function set_subtotal() {
 
 var total = $('#total').val();
-var fullsurchargetax = $('#fullsurchargetaxtotal').val();
-
-$('#subtotal').val(parseFloat("0" + total) + parseFloat("0" + fullsurchargetax));
+    var fullsurchargetax = $('#fullsurchargetaxtotal').val();
+    var subdata = (parseFloat("0" + total) + parseFloat("0" + fullsurchargetax)).toFixed();
+    $('#subtotal').val(subdata);
 }
 
 
 function set_Docket_charges() {
 
 
-var percamount = ((total * parseFloat("0" + Royalty_Per)) / 100);
+    var percamount = ((total * parseFloat("0" + Royalty_Per)) / 100).toFixed();
 
 $('#Royalty_charges').val(percamount);
 $('#Royalty_charges').keyup();
@@ -835,7 +852,7 @@ var other_charges = $('#othercharge').val();
 var netamt = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Gst) + parseFloat("0" + other_charges);
 
 // alert(netamt);
-$('#netamount').val(netamt.toFixed(2));
+$('#netamount').val(netamt.toFixed());
 }
 
 
@@ -850,9 +867,9 @@ var Royalty_charges = $('#Royalty_charges').val();
 
 var gst_total = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges);
 
-    var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
+    var percamount = ((gst_total * parseFloat("0" + gst)) / 100).toFixed();
 
-$('#servicetaxtotal').val(percamount.toFixed(2));
+$('#servicetaxtotal').val(percamount);
 
 }
 
@@ -949,6 +966,8 @@ if ('@ViewBag.disc' == "yes") {
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
                 + "<td>" + item.Consignment_no + "</td>"
+                + "<td>" + item.Name + "</td>"
+
                 + "<td>" + item.chargable_weight + "</td>"
                 + "<td>" + item.Pincode + "</td>"
                 + "<td>" + item.Mode + "</td>"
@@ -959,7 +978,7 @@ if ('@ViewBag.disc' == "yes") {
                 + "<td>" + item.Claimamount + "</td>"
                 + "<td>" + item.Percentage + "</td>"
                 + "<td>" + item.loadingcharge + "</td>"
-                + "<td>" + item.Risksurcharge + "</td>"
+                + "<td>" + item.Risksurcharge+ "</td>"
                 + "<td>" + (item.Risksurcharge + item.Amount + item.loadingcharge) + "</td>"
 
                 + "</tr>";
@@ -1004,8 +1023,9 @@ if ('@ViewBag.disc' == "yes") {
         });
 
 
+      
 
-        $('#total').val(total);
+        $('#total').val(total.toFixed());
         $('#total').keyup();
         $('#Docket_charges').val(Docket_Charge);
         $('#Docket_charges').keyup();
@@ -1129,7 +1149,7 @@ $("#Customer_Id").autocomplete({
 
 
 });
-    
+
 
 </script>
 
@@ -1156,13 +1176,13 @@ $("#Customer_Id").autocomplete({
                 $('#saveinv').attr('href', "@baseurl/PDF/" + data);
 
                 document.getElementById('saveinv').click();
-        
+
     </script>
 }
-@if (ViewBag.GST == null || ViewBag.GST=="0")
+@if (ViewBag.GST == null || ViewBag.GST == "0")
 {
-<script>
-    $("#servicetax").val(0);
-    $("#servicetaxtotal").val(0);
-</script>
+    <script>
+        $("#servicetax").val(0);
+        $("#servicetaxtotal").val(0);
+    </script>
 }

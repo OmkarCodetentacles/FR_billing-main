@@ -401,7 +401,7 @@
                                                         </div>
                                                         <div class="col-md-9" style="display:flex;gap:2px">
                                                             @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} }) @* @Value = "18" *@
-                                                            @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                            @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "", @class = "form-control", @readonly = "readonly" } })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -730,7 +730,7 @@
             //////////////////
 
 
-            total = total + (item.Risksurcharge + item.Amount + item.loadingcharge).toFixed();
+            total = total + (item.Risksurcharge + item.Amount + item.loadingcharge);
 
 
         });
@@ -1023,6 +1023,7 @@ if ('@ViewBag.disc' == "yes") {
         });
 
 
+      
 
         $('#total').val(total.toFixed());
         $('#total').keyup();

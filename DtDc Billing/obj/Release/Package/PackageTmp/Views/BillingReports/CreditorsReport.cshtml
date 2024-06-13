@@ -11,12 +11,13 @@
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <style>
-   
-    .padding-left-0{
-        padding-left:0
+
+    .padding-left-0 {
+        padding-left: 0
     }
-    .Creditorsreport th{
-         width:7.14% !important;
+
+    .Creditorsreport th {
+        width: 7.14% !important;
     }
 </style>
 
@@ -50,7 +51,7 @@
 
 
                         @*<div class="row">
-            <div class="">*@
+                            <div class="">*@
                         <div class="form-group">
 
 
@@ -65,6 +66,9 @@
 
                                             <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                                         </div>
+                                        <span style="color:red">
+                                        @Html.ValidationMessage("CustError")
+                                        </span>
                                     </div>
                                 }
                                 else
@@ -72,10 +76,15 @@
                                     <div class="col-md-3 padding-left-0">
                                         <div class="form-group">
                                             <label>CustomerId</label>
+
                                             <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                            <span style="color:red">
+                                                @Html.ValidationMessage("CustError")
+                                            </span>
                                         </div>
                                     </div>
                                 }
+                       
                                 if (ViewBag.fromdate != null)
                                 {
                                     <div class="col-md-2">
@@ -129,7 +138,7 @@
 
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="margin-top:10px">
 
-                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width: 100%" />
+                                    <input type="submit" class="btn btn-primary sbmt" name="Submit" value="Show" style="width: 100%" />
 
                                 </div>
 
@@ -147,7 +156,7 @@
                                 </div>
                                 <div class="col-lg-10 col-md-11 col-sm-11"></div>
                                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" style="margin-top:10px">
-                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" style=" padding: 15px; line-height: 0; width: 100%" />
+                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" id="sendmail" style=" padding: 15px; line-height: 0; width: 100%" />
 
                                 </div>
 
@@ -157,16 +166,20 @@
 
                         </div>
                         @*</div>
-            </div>*@
+                            </div>*@
 
                         <table id="table_display_block" class="table Creditorsreport">
                             <thead>
-                                <tr><th>Sr.No</th>
+                                <tr>
+                                    <th>Sr.No</th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.invoiceno)
                                     </th>
                                     <th>
                                         @*@Html.DisplayNameFor(model => model.Customer_Id)*@@Html.DisplayName("Customer Id")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CustomerName)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.invoicedate)
@@ -203,69 +216,75 @@
                                     <th>
                                         Balance
                                     </th>
-                                        <th>TDS Amount</th>
-                                        <th>Total Amount</th>
+                                    <th>TDS Amount</th>
+                                    <th>Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{ var i = 1;}
-                                @foreach (var item in Model)
+                                @if (Model != null)
                                 {
-                                    <tr class="@(item.discountamount<=0? "paid-party" : "unpaid-party")">
-                                        <td>
-                                            @i
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.invoiceno)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Customer_Id)
-                                        </td>
-                                        <td>
-                                            @item.invoicedate.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @getdays((DateTime)item.invoicedate)
-                                        </td>
-                                        <td>
-                                            @item.periodfrom.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @item.periodto.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.total)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                        </td>
+                                    foreach (var item in Model)
+                                    {
+                                        <tr class="@(item.discountamount <= 0 ? "paid-party" : "unpaid-party")">
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.invoiceno)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerName)
+                                            </td>
+                                            <td>
+                                                @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @getdays((DateTime)item.invoicedate)
+                                            </td>
+                                            <td>
+                                                @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @item.periodto.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                            </td>
 
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.netamount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.paid)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem =>item.discountamount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TdsAmount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TotalAmount)
-                                        </td>
-                                    </tr>
-                                    i++;
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.netamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.paid)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TdsAmount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TotalAmount)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
                                 }
                             </tbody>
                         </table>
@@ -278,7 +297,16 @@
                                         <button type="button" class="btn btn-primary total-label">Total</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -290,7 +318,16 @@
                                         <button type="button" class="btn btn-success">Paid</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -302,7 +339,16 @@
                                         <button type="button" class="btn btn-danger">Balance</button>
                                     </div>
                                     <!-- /btn-group -->
-                                    <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="0">
+
+                                    }
                                 </div>
                             </div>
                             <!-- /input-group -->
@@ -321,87 +367,87 @@
 
 
 
-                                @functions {
+@functions {
 
-                                    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
-                                    public int getdays(DateTime invoicedate)
-                                    {
+    public int getdays(DateTime invoicedate)
+    {
 
-                                        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
-                                        var day = (indianTime.Date - invoicedate.Date).TotalDays;
-                                        return Convert.ToInt32(day);
-                                    }
-                                }
+        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+        var day = (indianTime.Date - invoicedate.Date).TotalDays;
+        return Convert.ToInt32(day);
+    }
+}
 
-                                @if (ViewBag.select != null)
-                                {
-                                    <script>
+@if (ViewBag.select != null)
+{
+    <script>
                 $(document).ready(function() {
         $("select").val('@ViewBag.select');
             });
-                                    </script>
-                                }
+    </script>
+}
 
-                                @*@if (TempData["error"] != null)
-                {
-                    <script>
-                alert('@TempData["error"]');
-                    </script>
-                }*@
+@*@if (TempData["error"] != null)
+    {
+        <script>
+    alert('@TempData["error"]');
+        </script>
+    }*@
 
-                                <script>
+<script>
 
-                                    $(document).ready(function () {
-                                        $(".custbtn").click(function () {
-                                            var d = $(this).data('datac');
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
 
-                                            $('#consinmentno').val(d);
-                                            $('#consinmentno').keyup();
-
-
-                                        });
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
 
 
-
-
-                                        $('#datepicker').datepicker({
-                                            autoclose: true,
-                                            format: 'dd-mm-yyyy'
-                                        })
-
-                                        $('#datepicker1').datepicker({
-                                            autoclose: true,
-                                            format: 'dd-mm-yyyy'
-                                        })
+        });
 
 
 
-                                    });
-                                </script>
-                                <style>
-                                    #edit-consignment {
-                                        display: block;
-                                    }
 
-                                    .paid-party {
-                                        color: #008000;
-                                    }
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
 
-                                        .paid-party td {
-                                            border-color: #00800059 !important;
-                                        }
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
 
-                                    .unpaid-party {
-                                        background-color: #ff000059;
-                                    }
 
-                                        .unpaid-party td {
-                                            border-color: #ff000059 !important;
-                                        }
-                                </style>
 
-                                <script>
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+
+    .paid-party {
+        color: #008000;
+    }
+
+        .paid-party td {
+            border-color: #00800059 !important;
+        }
+
+    .unpaid-party {
+        background-color: #ff000059;
+    }
+
+        .unpaid-party td {
+            border-color: #ff000059 !important;
+        }
+</style>
+
+<script>
 
 /////Sender Autocomplete
 $(function () {
@@ -450,43 +496,46 @@ select: function(event, ui) {
         }
     });
 });
-                                </script>
+</script>
 
 
 
-                                <script>
-                                    $(document).ready(function () {
-                                        $('.sbmt').click(function () {
-                                            var frmdate = $('#datepicker').val();
+<script>
+    $(document).ready(function () {
+       
+        $('.sbmt').click(function () {
+         var sbmt=   $(".sbmt").val();
+            var frmdate = $('#datepicker').val();
 
-                                            var todate = $('#datepicker1').val();
+            var todate = $('#datepicker1').val();
+            
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
 
-                                            if (frmdate == "") {
-                                                alert("Please Enter Start Date");
-                                                return false;
-                                            }
-                                            else if (todate == "") {
-                                                alert("Please Enter End Date");
-                                                return false;
-                                            }
-                                            else {
-                                                return true;
-                                            }
+        });
 
-                                        });
+      
+    });
+</script>
 
-                                    });
-                                </script>
-
-                                <script>
-                                    $(function () {
-                                        $('#table_display_block').dataTable({
-                                            "bPaginate": false,
-                                            "bLengthChange": true,
-                                            "bFilter": true,
-                                            "bSort": true,
-                                            "bInfo": false,
-                                            "bAutoWidth": false
-                                        });
-                                    });
-                                </script>
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

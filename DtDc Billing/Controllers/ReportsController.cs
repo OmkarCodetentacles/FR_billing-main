@@ -2196,6 +2196,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
             //Remove the Pfcode option becauase SAS model
         //    ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
+           
             var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();    
             var obj = (from t in db.TransactionViews
                        join ad in db.addcodamounts on t.Consignment_no equals ad.consinment_no into adt

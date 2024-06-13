@@ -99,7 +99,13 @@ namespace DtDc_Billing.Controllers
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
-           
+ //          if(strpfcode== "CF2024")
+ //           {
+ //               lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault()
+ //;
+ //               lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart +"/" + "00"+"/2024-25"; 
+
+ //           }
             if (lastInvoiceno == null)
             {
                 string[] strarrinvno = lastInvoiceno1.Split('/');
@@ -147,7 +153,7 @@ namespace DtDc_Billing.Controllers
                 {
                     string incrementedNumber = "00";
                     strarrinvno = lastInvoiceno1.Split('/');
-                    int number = int.Parse(strarrinvno[2]) + 1;
+                    int number = int.Parse(strarrinvno[1]) + 1;
                 
                     if (number < 10)
                     {
@@ -183,7 +189,7 @@ namespace DtDc_Billing.Controllers
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
-                    newnumber = Convert.ToInt32(int.Parse(strarrinvno[2]) + 1);
+                    newnumber = Convert.ToInt32(int.Parse(strarrinvno[1]) + 1);
 
                     if (newnumber < 10)
                     {
@@ -196,7 +202,7 @@ namespace DtDc_Billing.Controllers
                     }
                 
                     //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
-                    ViewBag.lastInvoiceno = dataInvStart+"/" + (int.Parse(strarrinvno[2]) + 1) + "/2024-25";
+                    ViewBag.lastInvoiceno = dataInvStart+"/" + incrementedNumber + "/2024-25";
                 }
 
                 else
@@ -1189,6 +1195,7 @@ Select(e => new
             if (invoice != null)
             {
                 string savePath = baseUrl + "/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+
                 return Redirect(savePath);
 
             }
@@ -1844,6 +1851,7 @@ Select(e => new
                 if (invoi == null)
                 {
                     Company cm = db.Companies.Where(m => m.Company_Id == i && m.Pf_code == strpfcode).FirstOrDefault();
+                    var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
 
                     var TrList = db.TransactionViews.Where(m => m.Customer_Id == i).ToList().
                    Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0)
@@ -1878,7 +1886,7 @@ Select(e => new
 
                     string invoiceno = "0";
 
-
+                    string finalInvoiceno="0";  
                     var dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
@@ -1887,58 +1895,172 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
-                    if (strpfcode == "MF868" || strpfcode=="PF1649" || strpfcode == "UF2679" || strpfcode== " CF2024")
+                    if (strpfcode == "MF868" || strpfcode=="PF1649"  || strpfcode=="PF934" || strpfcode == "UF2679" || strpfcode== "CF2024" || strpfcode=="PF2214"|| strpfcode== "PF1958")
                     {
                         dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
-
+                        
                         invstart1 = dataInvStart + "/2024-25/";
                     }
 
-                    string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
-                    string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
+                    string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+                    string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
+                    //if (strpfcode == "CF2024")
+                    //{
+                    //     lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+                    //     lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart+"/" + "00"+"/2024-25";
 
+                    //}
+                    //if (lastInvoiceno == null)
+                    //{
+                    //    string[] strarrinvno = lastInvoiceno1.Split('/');
+                    //    if (strpfcode == "CF2024")
+                    //    {
+
+                    //        string incrementedNumber = "00";
+                    //        string[] strarrinvno = lastInvoiceno1.Split('/');
+                    //        strarrinvno = lastInvoiceno1.Split('/');
+                    //        int number1 = int.Parse(strarrinvno[2]) + 1;
+                    //        if (number1 < 10)
+                    //        {
+                    //            incrementedNumber = number1.ToString().PadLeft(2, '0');
+
+                    //        }
+                    //        else
+                    //        {
+                    //            incrementedNumber = number1.ToString();
+                    //        }
+                    //        // string incrementedNumber = number1.ToString().PadLeft(2, '0');
+                    //        finalInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
+
+
+                    //    }
+                    //    else
+                    //    {
+                    //        int number = Convert.ToInt32(lastInvoiceno.Substring(12));
+                    //        no = lastInvoiceno.Substring(12);
+                    //        finalInvoiceno = invstart1 + "" + (no + 1);
+                    //    }
+
+
+
+                    //}
+                    //else
+                    //{
+                    //    string[] strarrinvno = lastInvoiceno1.Split('/');
+                    //    string incrementedNumber = "0";
+                    //    if (strpfcode== "CF2024")
+                    //    {
+                    //         int  newnumber = Convert.ToInt32(int.Parse(strarrinvno[2]) + 1);
+                    //        if (newnumber < 10)
+                    //        {
+                    //            incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+
+                    //        }
+                    //        else
+                    //        {
+                    //            incrementedNumber = newnumber.ToString();
+                    //        }
+                    //        //  string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+                    //        finalInvoiceno = dataInvStart + "/" + (int.Parse(strarrinvno[2]) + 1) + "/2024-25";
+                    //    }
+                    //    else
+                    //    {
+                    //        int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                    //        finalstring = newnumber.ToString("000");
+                    //        finalInvoiceno = invstart1 + "" + finalstring;
+
+                    //    }
+                    //    //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
+
+
+                    //}
                     if (lastInvoiceno == null)
                     {
-                        if (strpfcode == "CF2024")
+                        string[] strarrinvno = lastInvoiceno1.Split('/');
+                        if (strpfcode == "PF2214")
                         {
-
-                            string incrementedNumber = "00";
-                            string[] strarrinvno = lastInvoiceno1.Split('/');
                             strarrinvno = lastInvoiceno1.Split('/');
-                            int number1 = int.Parse(strarrinvno[2]) + 1;
-                            if (number1 < 10)
+                            finalInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
+
+                        }
+                        else if (strpfcode == "PF975")
+                        {
+                            finalInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                            if (strarrinvno[2] == "00")
                             {
-                                incrementedNumber = number1.ToString().PadLeft(2, '0');
+                                strarrinvno[2] = "597";
+                                finalInvoiceno = invstart1 + "" + (strarrinvno[2]);
+
+                            }
+
+
+
+
+                        }
+
+                        else if (strpfcode == "UF2679")
+                        {
+                            finalInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+                            if (strarrinvno[2] == "00")
+                            {
+                                strarrinvno[2] = "10";
+                                finalInvoiceno = invstart1 + "" + (strarrinvno[2]);
+
+                            }
+
+
+                        }
+
+                        else if (strpfcode == "PF2214")
+                        {
+                            strarrinvno = lastInvoiceno1.Split('/');
+                            finalInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
+
+                        }
+                        else if (strpfcode == "CF2024")
+                        {
+                            string incrementedNumber = "00";
+                            strarrinvno = lastInvoiceno1.Split('/');
+                            int number = int.Parse(strarrinvno[1]) + 1;
+
+                            if (number < 10)
+                            {
+                                incrementedNumber = number.ToString().PadLeft(2, '0');
 
                             }
                             else
                             {
-                                incrementedNumber = number1.ToString();
+                                incrementedNumber = number.ToString();
                             }
-                           // string incrementedNumber = number1.ToString().PadLeft(2, '0');
-                            ViewBag.lastInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
-
-
+                            finalInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
                         }
+
                         else
                         {
-                            int number = Convert.ToInt32(lastInvoiceno.Substring(12));
-                            no = lastInvoiceno.Substring(12);
-                            ViewBag.lastInvoiceno = invstart1 + "" + (no + 1);
+                            finalInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
+
                         }
-
-
-                        
                     }
+
                     else
                     {
+
                         string[] strarrinvno = lastInvoiceno1.Split('/');
-                        string incrementedNumber = "0";
-                        if (strpfcode== "CF2024")
+                        //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
+                        int newnumber = 0;
+                        string incrementedNumber = "00";
+                        if (strpfcode == "PF2214")
                         {
-                             int  newnumber = Convert.ToInt32(int.Parse(strarrinvno[2]) + 1);
+                            newnumber = Convert.ToInt32(strarrinvno[3]) + 1;
+                            finalstring = newnumber.ToString("000");
+                            ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
+                        }
+                        else if (strpfcode == "CF2024")
+                        {
+                            newnumber = Convert.ToInt32(int.Parse(strarrinvno[1]) + 1);
+
                             if (newnumber < 10)
                             {
                                 incrementedNumber = newnumber.ToString().PadLeft(2, '0');
@@ -1948,22 +2070,22 @@ Select(e => new
                             {
                                 incrementedNumber = newnumber.ToString();
                             }
-                          //  string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
-                            ViewBag.lastInvoiceno = dataInvStart + "/" + (int.Parse(strarrinvno[2]) + 1) + "/2024-25";
+
+                            //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
+                            finalInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
                         }
+
                         else
                         {
-                            int newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                            newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
                             finalstring = newnumber.ToString("000");
-                            ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
-
+                            finalInvoiceno = invstart1 + "" + finalstring;
                         }
-                        //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
 
 
                     }
 
-                    inv.invoiceno = lastInvoiceno;
+                    inv.invoiceno = finalInvoiceno;
 
                     inv.Firm_Id = invoice.Firm_Id;
                     inv.discount = "no";
@@ -2004,7 +2126,7 @@ Select(e => new
                         }
                     }
 
-                    inv.Royalty_charges = Math.Round((double)((inv.total * Convert.ToDouble(cm.Royalty_Charges)) / 100));
+                    inv.Royalty_charges = Math.Round((double)((inv.total * Convert.ToDouble(cm.Royalty_Charges??1)) / 100));
 
                     inv.servicetaxtotal = Math.Round((double)(((inv.total + inv.fullsurchargetaxtotal + inv.Docket_charges + inv.Royalty_charges) * invoice.servicetax) / 100)); //((gst_total * parseFloat("0" + gst)) / 100);
                     inv.netamount = Math.Round((double)(inv.total + inv.Docket_charges + inv.Royalty_charges + inv.servicetaxtotal + inv.fullsurchargetaxtotal));
@@ -2099,6 +2221,7 @@ Select(e => new
 
             var dataset2 = db.Franchisees.Where(x => x.PF_Code == Pfcode);
             dataset2.FirstOrDefault().LogoFilePath = (dataset2.FirstOrDefault().LogoFilePath == null || dataset2.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : dataset2.FirstOrDefault().LogoFilePath;
+            dataset2.FirstOrDefault().StampFilePath = (dataset2.FirstOrDefault().StampFilePath == null || dataset2.FirstOrDefault().StampFilePath == "") ? baseurl + "/assets/Dtdclogo.png" : dataset2.FirstOrDefault().StampFilePath;
 
             var dataset3 = db.Invoices.OrderByDescending(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
@@ -2144,7 +2267,7 @@ Select(e => new
 
 
             ReportDataSource rd = new ReportDataSource("PrintInvoice", dataset);
-            ReportDataSource rd1 = new ReportDataSource("franchisees", dataset2);
+            ReportDataSource rd1 = new ReportDataSource("franchisee", dataset2);
             ReportDataSource rd2 = new ReportDataSource("invoice", dataset3);
             ReportDataSource rd3 = new ReportDataSource("comp", dataset4);
 
@@ -2656,6 +2779,12 @@ Select(e => new
             string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
+            //if (strpfcode == "CF2024")
+            //{
+            //     lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+            //     lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode && franchisee.InvoiceYear == "2024-25").OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart+"/"+  "00"+"/2024-25";
+
+            //}
             if (lastInvoiceno == null)
             {
                 //string[] strarrinvno = lastInvoiceno1.Split('/');
@@ -2694,7 +2823,7 @@ Select(e => new
                 {
                     string incrementedNumber = "00";
                     strarrinvno = lastInvoiceno1.Split('/');
-                    int number = int.Parse(strarrinvno[2]) + 1;
+                    int number = int.Parse(strarrinvno[1]) + 1;
                     if (strpfcode == "CF2024")
                  
                         if (number < 10)
@@ -2737,7 +2866,7 @@ Select(e => new
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
-                    newnumber = Convert.ToInt32(strarrinvno[2]) + 1;
+                    newnumber = Convert.ToInt32(strarrinvno[1]) + 1;
                     string incrementedNumber = "00";
                         if (newnumber < 10)
                         {
@@ -2751,7 +2880,7 @@ Select(e => new
                       
                        
                     //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
-                    ViewBag.lastInvoiceno = dataInvStart+"/" + (int.Parse(strarrinvno[2]) + 1) + "/204-25";
+                    ViewBag.lastInvoiceno = dataInvStart+"/" + incrementedNumber+ "/2024-25";
                 }
 
                 else
