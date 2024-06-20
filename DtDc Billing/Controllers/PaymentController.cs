@@ -507,6 +507,7 @@ namespace DtDc_Billing.Controllers
 
             List<TransactionView> transactions = (from u in db.TransactionViews
                                                   where u.cod == "yes" && u.Pf_Code == strpfcode &&
+                                                  ( Custid==null || Custid==""|| u.Customer_Id== Custid) &&
                                                   !db.addcodamounts.Any(f => f.consinment_no == u.Consignment_no)
 
                                                   && (u.isRTO == null || u.isRTO == false)
@@ -586,6 +587,8 @@ namespace DtDc_Billing.Controllers
           
             List<TransactionView> transactions = (from u in db.TransactionViews
                                                   where u.topay == "yes" && u.Pf_Code== strpfcode &&
+                                                 (Custid == null || Custid == "" || u.Customer_Id == Custid) &&
+
                                                   !db.addtopayamounts.Any(f => f.consinmentno == u.Consignment_no)
                                                    && (u.isRTO == null || u.isRTO == false)
                                                   select u).ToList();
@@ -607,7 +610,7 @@ namespace DtDc_Billing.Controllers
                 if (topay != null)
                 {
                     topay.sapno = addtopayamount.sapno;
-                    topay.consinmentno = addtopayamount.consinmentno;
+                    topay.consinmentno = addtopayamount.consinmentno.ToUpper().Trim();
                     //string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
 
                     //string bdate = DateTime.ParseExact(Convert.ToString(addtopayamount.date), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -617,6 +620,8 @@ namespace DtDc_Billing.Controllers
                     topay.date = addtopayamount.date;
                     topay.Invoiceno = addtopayamount.Invoiceno;
                     topay.pfcode = strpfcode;
+                    db.Entry(topay).State= EntityState.Modified;    
+                    db.SaveChanges();   
                     ViewBag.Message = "Topay Payment Updated SuccessFully";
 
                 }
@@ -625,7 +630,7 @@ namespace DtDc_Billing.Controllers
                     addtopayamount pay=new addtopayamount();
 
                     pay.sapno = addtopayamount.sapno;
-                    pay.consinmentno = addtopayamount.consinmentno;
+                    pay.consinmentno = addtopayamount.consinmentno.ToUpper().Trim();
                     //string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
 
                     //string bdate = DateTime.ParseExact(Convert.ToString(addtopayamount.date), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -634,8 +639,8 @@ namespace DtDc_Billing.Controllers
 
                     //topay.date = format.ToString("dd/MM/yyyy");
                     pay.date=addtopayamount.date;
-                    topay.Invoiceno = addtopayamount.Invoiceno;
-                    topay.pfcode = strpfcode;
+                    pay.Invoiceno = addtopayamount.Invoiceno.Trim();
+                    pay.pfcode = strpfcode;
                     db.addtopayamounts.Add(pay);
                     db.SaveChanges();
 

@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.CustomModel;
+﻿using ClosedXML.Excel;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Newtonsoft.Json;
@@ -137,24 +138,51 @@ namespace DtDc_Billing.Controllers
 
                     var import = db.Transactions.Where(m =>
                 (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight = x.Actual_weight, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(import);
+                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0,ChargableWeight=x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+                   if(import.Count()==0 || import == null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
+
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(import);
+
+                    }
                 }
 
                 else if (status == "Unbilled")
                 {
                     var import = db.Transactions.Where(m =>
               (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
-                  ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight = x.Actual_weight, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(import);
+                  ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+                  if(import.Count()==0 || import == null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
+
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(import);
+
+                    }
                 }
                 else
                 {
 
                     var import = db.Transactions.Where(m =>
                 (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight = x.Actual_weight, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(import);
+                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+                if(import.Count()<=0 || import == null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
+
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(import);
+
+                    }
                 }
 
             }
@@ -351,7 +379,15 @@ namespace DtDc_Billing.Controllers
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(rc);
+                if(rc.Count()<=0 || rc == null)
+                {
+                    ViewBag.Nodata = "No Data Found";
+                }
+                else
+                {
+                    ExportToExcelAll.ExportToExcelAdmin(rc.Select(x => new { ConsignmentNo=x.Consignment_No,x.Destination,SenderPhone=x.sender_phone,SenderCity=x.SenderCity,x.SenderPincode,ReceipentsPhone=x.Reciepents_phone,x.Reciepents,x.ReciepentsPincode,DataTime=x.Datetime_Cons.Value.ToString("dd/MM/yyyy"),x.Charges_Total}));
+
+                }
             }
             return View(rc);
         }
@@ -450,7 +486,7 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionAdmin]
-        public ActionResult DailyReport(DateTime? dateTime)
+        public ActionResult DailyReport(DateTime? dateTime,string Submit)
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.Consignment = TempData["Consignment"] == null ? null : TempData["Consignment"].ToString();
@@ -469,29 +505,35 @@ namespace DtDc_Billing.Controllers
             && m.Pf_Code == pfcode
             ).OrderByDescending(x => x.Datetime_Cons).ToList();
 
+            var sum = (from emp in rc
+                       select emp.Paid_Amount).Sum();
+            var bycard = (from card in rc
+                          where card.Credit == "card"
+                          select card.Credit_Amount).Sum();
+            var bycheque = (from cheque in rc
+                            where cheque.Credit == "cheque"
+                            select cheque.Credit_Amount).Sum();
+            var bycredit = (from credit in rc
+                            where credit.Credit == "credit"
+                            select credit.Credit_Amount).Sum();
+            var bycash = (from cash in rc
+                          where cash.Credit == "cash"
+                          select cash.Credit_Amount).Sum();
+            var byother = (from other in rc
+                           where other.Credit == "other"
+                           select other.Credit_Amount).Sum();
+            var byOnline = (from online in rc
+                            where online.Credit == "online"
+                            select online.Credit_Amount).Sum();
 
 
-            ViewBag.sum = (from emp in rc
-
-                           select emp.Paid_Amount).Sum();
-            ViewBag.bycard = (from card in rc
-                              where card.Credit == "card"
-                              select card.Credit_Amount).Sum();
-            ViewBag.bycheque = (from cheque in rc
-                                where cheque.Credit == "cheque"
-                                select cheque.Credit_Amount).Sum();
-            ViewBag.bycredit = (from credit in rc
-                                where credit.Credit == "credit"
-                                select credit.Credit_Amount).Sum();
-            ViewBag.bycash = (from cash in rc
-                              where cash.Credit == "cash"
-                              select cash.Credit_Amount).Sum();
-            ViewBag.byother = (from other in rc
-                               where other.Credit == "other"
-                               select other.Credit_Amount).Sum();
-            ViewBag.byOnline = (from online in rc
-                                where online.Credit == "online"
-                                select online.Credit_Amount).Sum();
+            ViewBag.sum = sum;
+            ViewBag.bycard = bycard;
+            ViewBag.bycheque = bycheque;
+            ViewBag.bycredit = bycredit;
+            ViewBag.bycash = bycash;
+            ViewBag.byother = byother;
+            ViewBag.byOnline = byOnline;
 
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == localTime.Day
@@ -538,12 +580,155 @@ namespace DtDc_Billing.Controllers
      ).Select(m => m.Saving_amount).Sum();
 
 
+            if (Submit == "Export to Excel")
+            {
+         
+                   if(rc.Count()<=0 || rc == null)
+                {
+                    ViewBag.Nodata = "No Data Found";
+                }
+                else
+                {
+                    //StringWriter sw = new StringWriter();
 
+                    //sw.WriteLine("\"Consignment No\",\"Sender\",\"Sender Phone\",\"Destination\",\"Actual Weight\",\"Volumetric Weight\",\"Payment Mode\",\"Paid Amount\"");
+
+                    //Response.ClearContent();
+                    //Response.AddHeader("content-disposition", "attachment;filename=DailyReport.xls");
+                    //Response.ContentType = "application/ms-excel";
+
+
+                    //string Servicetype = "";
+                    //foreach (var e in rc)
+                    //{
+
+
+
+
+
+                    //    sw.WriteLine(string.Format("\"{0}\",\"{1}\",\"{2}\",\"{3}\",\"{4}\",\"{5}\",\"{6}\",\"{7}\"",
+
+                    //                               e.Consignment_No,
+                    //                               e.Sender,
+                    //                              e.sender_phone,
+                    //                              e.Destination,
+                    //                              e.Actual_Weight,
+                    //                              e.volumetric_Weight,
+                    //                              e.Credit,
+                    //                              e.Paid_Amount
+
+                    //                               ));
+                    //}
+
+                    //// Add empty lines
+                    //sw.WriteLine();
+                    //sw.WriteLine();
+                    //sw.WriteLine();
+                    //sw.WriteLine();
+                    //sw.WriteLine();
+
+                    //// Write total amount
+                    //sw.WriteLine("\"By Card\",\"" + bycard + "\"");
+                    //sw.WriteLine("\"By Cheque\",\"" + bycheque + "\"");
+                    //sw.WriteLine("\"By Credit\",\"" + bycredit + "\"");
+                    //sw.WriteLine("\"By Cash\",\"" + bycash + "\"");
+                    //sw.WriteLine("\"By Online\",\"" + byOnline + "\"");
+                    //sw.WriteLine("\"By Other\",\"" + byother + "\"");
+
+                    //sw.WriteLine("\"Total Amount\",\"" + sum + "\"");
+
+
+                    //Response.Write(sw.ToString());
+
+                    //Response.End();
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("Daily Report");
+
+                        // Add headers
+                        worksheet.Cell(1, 1).Value = "Consignment No";
+                        worksheet.Cell(1, 2).Value = "Sender";
+                        worksheet.Cell(1, 3).Value = "Sender Phone";
+                        worksheet.Cell(1, 4).Value = "Destination";
+                        worksheet.Cell(1, 5).Value = "Actual Weight";
+                        worksheet.Cell(1, 6).Value = "Volumetric Weight";
+                        worksheet.Cell(1, 7).Value = "Payment Mode";
+                        worksheet.Cell(1, 8).Value = "Paid Amount";
+
+                        // Add data
+                        int row = 2;
+                        foreach (var e in rc)
+                        {
+                            worksheet.Cell(row, 1).Value = e.Consignment_No;
+                            worksheet.Cell(row, 2).Value = e.Sender;
+                            worksheet.Cell(row, 3).Value = e.sender_phone;
+                            worksheet.Cell(row, 4).Value = e.Destination;
+                            worksheet.Cell(row, 5).Value = e.Actual_Weight;
+                            worksheet.Cell(row, 6).Value = e.volumetric_Weight;
+                            worksheet.Cell(row, 7).Value = e.Credit;
+                            worksheet.Cell(row, 8).Value = e.Paid_Amount;
+                            row++;
+                        }
+
+                        // Add empty lines
+                        row += 3;
+
+                        // Write amounts
+                        worksheet.Cell(row, 1).Value = "By Card";
+                        worksheet.Cell(row, 2).Value = bycard;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "By Cheque";
+                        worksheet.Cell(row, 2).Value = bycheque;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "By Credit";
+                        worksheet.Cell(row, 2).Value = bycredit;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "By Cash";
+                        worksheet.Cell(row, 2).Value = bycash;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "By Online";
+                        worksheet.Cell(row, 2).Value = byOnline;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "By Other";
+                        worksheet.Cell(row, 2).Value = byother;
+
+                        row++;
+                        worksheet.Cell(row, 1).Value = "Total Amount";
+                        worksheet.Cell(row, 2).Value = sum;
+
+                        // Stream the Excel file to the response
+                        using (var stream = new MemoryStream())
+                        {
+                            workbook.SaveAs(stream);
+                            var content = stream.ToArray();
+
+                            Response.Clear();
+                            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                            Response.AddHeader("content-disposition", "attachment;filename=DailyReport.xlsx");
+                            Response.BinaryWrite(content);
+                            Response.End();
+                        }
+                    }
+
+                }
+
+
+
+
+
+
+            }
             ViewBag.Fdate = finalDate;
 
             return View(rc);
 
         }
+      
 
 
         public ActionResult AdminDailyReport(string searcheddate, string pfcode)
@@ -2612,8 +2797,15 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                                 CreateDateString = recep.Datetime_Cons.Value.ToString("dd-MM-yyyy"),
                                 Paid_Amount = recep.Paid_Amount
                             }).ToList();
+                if(data.Count()<=0 || data==null)
+                {
+                    ViewBag.Nodata = "No Data Found";
+                }
+                else
+                {
+                    ExportToExcelAll.ExportToExcelAdmin(data);
 
-                ExportToExcelAll.ExportToExcelAdmin(data);
+                }
             }
             return View(rc);
         }

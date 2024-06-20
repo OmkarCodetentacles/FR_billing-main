@@ -47,6 +47,14 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="row">
+             
+                @{
+                    var nodata = ViewBag.Nodata as string;
+                }
+                @if (!string.IsNullOrEmpty(nodata))
+                {
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                }
                 <div class="col-xs-12">
 
 
@@ -54,24 +62,24 @@
                     {
                         <div class="row">
                             @*<div class="col-md-2">
-                                    <div class="form-group">
-                                        <label>PF Code</label>
-                                        <div class="mf-code">
-                                            @Html.DropDownList("PfCode", "-Please select-")
-                                        </div>
-                                    </div>
-                                </div>*@
+                        <div class="form-group">
+                            <label>PF Code</label>
+                            <div class="mf-code">
+                                @Html.DropDownList("PfCode", "-Please select-")
+                            </div>
+                        </div>
+                    </div>*@
 
                             @*<div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Customer Id</label>
-                                    <div class="emp-id">
-                                        @Html.DropDownList("Employees", "-Please select-")
-                                        <input type="text" name="Employees" value="@ViewBag.Employees" id="Employees" class="form-control">
+                        <div class="form-group">
+                            <label>Customer Id</label>
+                            <div class="emp-id">
+                                @Html.DropDownList("Employees", "-Please select-")
+                                <input type="text" name="Employees" value="@ViewBag.Employees" id="Employees" class="form-control">
 
-                                    </div>
-                                </div>
-                            </div>*@
+                            </div>
+                        </div>
+                    </div>*@
 
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -116,10 +124,10 @@
                             </div>
 
                             <div class="col-md-1" style="padding:0">
-                                    <button type="submit" class="btn btn-block btn-primary" style="margin: 22px auto; width:100%" >Search</button>
+                                <button type="submit" class="btn btn-block btn-primary" style="margin: 22px auto; width:100%">Search</button>
                             </div>
                             <div class="col-md-1">
-                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success" style="margin: 22px auto" />
+                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success" style="margin: 22px auto" />
                             </div>
 
                         </div>
@@ -133,7 +141,7 @@
                         <thead>
                             <tr>
                                 <th>Sr.No</th>
-                           <th>View</th>
+                                <th>View</th>
                                 <th>
                                     @*@Html.DisplayNameFor(model => model.Consignment_No)*@Consignment No
                                 </th>
@@ -145,8 +153,8 @@
                                 </th>
 
                                 @*<th>
-                                        @Html.DisplayNameFor(model => model.Sender)
-                                    </th>*@
+                            @Html.DisplayNameFor(model => model.Sender)
+                        </th>*@
 
 
                                 <th>
@@ -167,8 +175,8 @@
                                     @Html.DisplayNameFor(model => model.ReciepentsPincode)
                                 </th>
                                 @*<th>
-                                    @Html.DisplayNameFor(model => model.Pf_Code)
-                                </th>*@
+                            @Html.DisplayNameFor(model => model.Pf_Code)
+                        </th>*@
                                 <th>
                                     @*@Html.DisplayNameFor(model => model.Datetime_Cons)*@DateTime
                                 </th>
@@ -179,7 +187,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                         @{    int srno = 1;
+                            @{ int srno = 1;
                             }
                             @foreach (var item in Model)
                             {
@@ -206,8 +214,8 @@
                                     </td>
 
                                     @*<td>
-            @Html.DisplayFor(modelItem => item.Sender)
-        </td>*@
+                                @Html.DisplayFor(modelItem => item.Sender)
+                            </td>*@
 
 
                                     <td>
@@ -232,8 +240,8 @@
                                         @Html.DisplayFor(modelItem => item.ReciepentsPincode)
                                     </td>
                                     @*<td>
-            @Html.DisplayFor(modelItem => item.Pf_Code)
-        </td>*@
+                                @Html.DisplayFor(modelItem => item.Pf_Code)
+                            </td>*@
                                     <td>
                                         @date
                                     </td>
@@ -243,10 +251,10 @@
                                     </td>
 
                                     @*<td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
-        </td>*@
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                            </td>*@
                                 </tr>
                                 srno++;
                             }

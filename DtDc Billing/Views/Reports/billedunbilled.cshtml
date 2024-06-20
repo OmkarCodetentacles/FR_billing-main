@@ -42,7 +42,13 @@
 
             <div class="row">
                 <div class="col-sm-12">
-
+                    @{
+                        var nodata = ViewBag.Nodata as string;
+                    }
+                    @if (!string.IsNullOrEmpty(nodata))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                    }
                     <div class="form-horizontal">
 
 
@@ -59,7 +65,7 @@
                                         {
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>From Date <span style="color:red" >*</span>: </label>
+                                                    <label>From Date <span style="color:red">*</span>: </label>
 
                                                     <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" placeholder="From Date" required>
                                                 </div>
@@ -67,62 +73,62 @@
                                         }
                                         else
                                         {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date <span style="color:red">*</span>:</label>
-                                        <input name="Fromdatetime" class="form-control" id="datepicker"  type="text"  placeholder="From Date" required>
-                                    </div>
-                                    </div>
-                                    }
-
-                                    if (ViewBag.todate != null)
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>To Date <span style="color:red">*</span>:</label>
-                                        <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control"  id="datepicker1" type="text" placeholder="To Date" required>
-                                    </div>
-                                    </div>
-                                    }
-                                    else
-                                    {
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date <span style="color:red">*</span>:</label>
-                                        <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text" required>
-                                    </div>
-                                    </div>
-                                    }
-
-
-
-                                    @*<div class="col-md-2">
-        <div class=" pf-code">
-            @Html.DropDownList("PfCode")
-        </div>
-        </div>*@
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Status</label>
-                                        
-                                        <div class=" pf-code"  >
-                                            @Html.DropDownList("status", new List<SelectListItem>
-                                            {
-                                                new SelectListItem{ Text="Billed", Value = "Billed" },
-                                                new SelectListItem{ Text="Unbilled", Value = "Unbilled" },
-                                                new SelectListItem{ Text="Both", Value = "Both" },
-                                             })
-
-                                        </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>:</label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" placeholder="From Date" required>
+                                                </div>
                                             </div>
-                                    </div>
-                                    <div class="col-md-1" style="margin: 22px auto; text-align: center; padding:0">
-                                        <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" style="width:100%" />
-                                    </div>
+                                        }
 
-                                    <div class="col-md-1" style="margin: 22px auto; text-align: center;">
-                                        <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" style="margin-left:auto" />
-                                    </div>
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" placeholder="To Date" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                        @*<div class="col-md-2">
+                        <div class=" pf-code">
+                            @Html.DropDownList("PfCode")
+                        </div>
+                        </div>*@
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Status</label>
+
+                                                <div class=" pf-code">
+                                                    @Html.DropDownList("status", new List<SelectListItem>
+                                                    {
+                                                        new SelectListItem{ Text="Billed", Value = "Billed" },
+                                                        new SelectListItem{ Text="Unbilled", Value = "Unbilled" },
+                                                        new SelectListItem{ Text="Both", Value = "Both" },
+                                                     })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1" style="margin: 22px auto; text-align: center; padding:0">
+                                            <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" style="width:100%" />
+                                        </div>
+
+                                        <div class="col-md-1" style="margin: 22px auto; text-align: center;">
+                                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" style="margin-left:auto" />
+                                        </div>
                                     }
 
                                 </div>
@@ -152,7 +158,10 @@
                                         Company Id
                                     </th>
                                     <th>
-                                        Weight
+                                        Actual Weight
+                                    </th>
+                                    <th>
+                                        Chargable Weight
                                     </th>
                                     <th>
                                         Quantity
@@ -166,8 +175,12 @@
                                 @{ int i = 1;
                                     foreach (var item in Model)
                                     {
+                                        if (item.Actual_weight == null)
+                                        {
+                                            item.Actual_weight = 0;
+                                        }
                                         <tr>
-
+                                            
                                             <td>
                                                 @i
                                             </td>
@@ -188,6 +201,9 @@
                                                 @Html.DisplayFor(modelItem => item.Actual_weight)
                                             </td>
                                             <td>
+                                                @Html.DisplayFor(modelItem => item.chargable_weight)
+                                            </td>
+                                            <td>
                                                 @Html.DisplayFor(modelItem => item.Quanntity)
                                             </td>
                                             <td>
@@ -201,20 +217,55 @@
                             </tbody>
                         </table>
 
-                        @if (ViewBag.totalamt != null)
-                        {
-                            <p> Total Amount : @ViewBag.totalamt </p>
+                     
+                        <!-- /input-group -->
+                        <div class="row mt-15">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary total-label">Total Amount</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.Amount,2))">
 
-                        }
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
 
+                                    }
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-success total-label">Total Consignment</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Count()">
 
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
 
 </div>
+    </div>
     <script>
     $(document).ready(function () {
 

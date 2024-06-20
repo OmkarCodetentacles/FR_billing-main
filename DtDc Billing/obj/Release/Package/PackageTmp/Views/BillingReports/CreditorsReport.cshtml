@@ -41,17 +41,22 @@
                     @{
 
                         var errorMessage = TempData["error"] as string;
+                        var nodata = ViewBag.Nodata as string;
                     }
 
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", errorMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(nodata))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
                     }
                     <div class="form-horizontal">
 
 
                         @*<div class="row">
-                            <div class="">*@
+            <div class="">*@
                         <div class="form-group">
 
 
@@ -67,7 +72,7 @@
                                             <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
                                         </div>
                                         <span style="color:red">
-                                        @Html.ValidationMessage("CustError")
+                                            @Html.ValidationMessage("CustError")
                                         </span>
                                     </div>
                                 }
@@ -84,7 +89,7 @@
                                         </div>
                                     </div>
                                 }
-                       
+
                                 if (ViewBag.fromdate != null)
                                 {
                                     <div class="col-md-2">
@@ -151,7 +156,7 @@
                                 </div>
                                 <div class="col-lg-10 col-md-11 col-sm-11"></div>
                                 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 " style="margin-top:10px">
-                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" formtarget="_blank" />
+                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" @*formtarget="_blank"*@ id="printButton" />
 
                                 </div>
                                 <div class="col-lg-10 col-md-11 col-sm-11"></div>
@@ -166,7 +171,7 @@
 
                         </div>
                         @*</div>
-                            </div>*@
+            </div>*@
 
                         <table id="table_display_block" class="table Creditorsreport">
                             <thead>
@@ -364,7 +369,21 @@
 
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var nodata = '@ViewBag.Nodata';
+        document.getElementById('printButton').addEventListener('click', function (event) {
+            if (nodata!="") {
+                event.preventDefault(); // Prevent form submission
 
+            }
+            else {
+                document.getElementById('printButton').setAttribute('formtarget', '_blank'); // Open in new tab if data is found
+
+            }
+        });
+    });
+</script>
 
 
 @functions {

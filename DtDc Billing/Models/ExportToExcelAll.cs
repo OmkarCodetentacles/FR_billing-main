@@ -1,4 +1,6 @@
 ﻿using DtDc_Billing.Entity_FR;
+using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.UI;
@@ -32,5 +34,6 @@ namespace DtDc_Billing.Models
             System.Web.HttpContext.Current.Response.End();
 
         }
+      
     }
 }

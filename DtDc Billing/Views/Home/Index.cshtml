@@ -236,7 +236,7 @@
                                 @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>*@
                                 @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
                             </div>
-                        }
+                                    }
                         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="row ">
                                 <div class="col-md-3">
@@ -550,7 +550,7 @@
                                                 </div>
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
-                                                        <a href="@Url.Action("ExpensesList","Admin",new { Fromdatetime = ViewBag.currentday,ToDatetime=ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                        <a href="@Url.Action("ExpensesList", "Admin", new { Fromdatetime = ViewBag.currentday, ToDatetime = ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -583,7 +583,7 @@
                                                 </div>
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
-                                                        <a href="@Url.Action("ExpensesList","Admin",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                        <a href="@Url.Action("ExpensesList", "Admin", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -607,14 +607,14 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Todays Sale">
-                                        <a href="@Url.Action("Todaysale","Reports")">
+                                        <a href="@Url.Action("Todaysale", "Reports")">
                                             <div class="info-box billing-cards ">
 
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">Todays Sale</p>
                                                     <span class="info-box-number text-truncate">
-                                                        <strong>@Model.sumOfBilling</strong>
+                                                        <strong>@Math.Round(Model.sumOfBilling)</strong>
                                                     </span>
 
                                                 </div>
@@ -627,13 +627,13 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month Sale">
-                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Todaysale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">This Month Sale</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="sumofbillingcurrentmonth">@Model.sumOfBillingCurrentMonth</strong></span>
+                                                    <span class="info-box-number text-truncate"> <strong id="sumofbillingcurrentmonth">@Math.Round(Model.sumOfBillingCurrentMonth)</strong></span>
 
                                                 </div>
                                                 <!-- /.info-box-content -->
@@ -649,7 +649,7 @@
 
                                             <div class="info-box-content">
                                                 <p class="info-box-text text-truncate">Avg Sale per month</p>
-                                                <span class="info-box-number text-truncate"> <strong>@Model.avgOfBillingSum.ToString()</strong></span>
+                                                <span class="info-box-number text-truncate"> <strong>@Math.Round((double)Model.avgOfBillingSum).ToString()</strong></span>
 
 
                                             </div>
@@ -678,7 +678,7 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month No. of Booking">
-                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Todaysale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box  billing-cards">
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">This Month No. of Bookings</p>
@@ -713,7 +713,7 @@
                                     </div>
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total Sale">
-                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards ">
 
 
@@ -734,7 +734,7 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total No of.Bookings">
-                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
 
@@ -792,7 +792,7 @@
 
                                         </div>
                                         <span class="progress-description">
-                                            <a class="text-black" href="@Url.Action("ExpiredStationary","Stationery")">View details</a>
+                                            <a class="text-black" href="@Url.Action("ExpiredStationary", "Stationery")">View details</a>
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -804,8 +804,13 @@
 
 
                         @*@{Html.RenderAction("steplinechart", "Home");}*@
+                    <div class="row">
                         @{Html.RenderAction("DestinationAndProductPartial", "Home");}
 
+                    </div>
+                        <div>
+                            @{Html.RenderAction("GetTop5Customer", "Home");}
+                        </div>
                     </div>
 
                 </div>

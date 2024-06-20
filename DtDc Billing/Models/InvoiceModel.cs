@@ -56,4 +56,10 @@ namespace DtDc_Billing.Models
 
 
     }
+
+    public class Top5data
+    {
+        public string customerId { get; set; }
+        public Nullable<double> NetAmount { get; set; }
+    }
 }

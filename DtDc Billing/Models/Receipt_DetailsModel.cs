@@ -39,7 +39,7 @@ namespace DtDc_Billing.Models
         [RegularExpression("^[0-9]*$", ErrorMessage = "Pincode must be numeric")]
         public string SenderPincode { get; set; }
         [Display(Name = "Receipents Phone")]
-        [Required]
+        //[Required]
         [MaxLength(10)]
         [RegularExpression("^[0-9]*$", ErrorMessage = "Phone no must be numeric")]
         public string Reciepents_phone { get; set; }
@@ -47,7 +47,7 @@ namespace DtDc_Billing.Models
         [Display(Name = "Receipents Name")]
         public string Reciepents { get; set; }
         public string ReciepentCompany { get; set; }
-        [Required]
+        //[Required]
         public string ReciepentsAddress { get; set; }
         [Required]
         public string ReciepentsCity { get; set; }

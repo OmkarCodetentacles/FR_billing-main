@@ -49,7 +49,7 @@
                                                 <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
                                             }
 
-                                            @Html.ValidationMessage("Fromdateeror")
+                                        <span style="color:red"> @Html.ValidationMessage("Fromdateeror")</span>
                                         </div>
                                     </div>
                                 </div>
@@ -70,14 +70,17 @@
                                                 <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
                                             }
 
-                                            @Html.ValidationMessage("Todateeror")
+                                        <span style="color:red">  @Html.ValidationMessage("Todateeror")</span>
                                         </div>
 
                                     </div>
 
                                 </div>
                                 <div class="col-md-3">
-                                    <button type="submit" class="btn btn-block btn-success">Search</button>
+                                    <div class="form-group" style="margin-top:20px">
+                                        <button type="submit" id="submitbtn" class="btn btn-block btn-success">Search</button>
+
+                                    </div>
                                 </div>
                             }
                             <table id="example1" class="table table-striped table-bordered table-scroll">
@@ -107,34 +110,37 @@
 
                                 <tbody>
                                     @{ int i = 1;
-                                        foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <th>@i</th>
-                                                <td>    @Html.DisplayFor(modelItem => item.Customer_Id)</td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Consignment_no)
-                                                </td>
-                                                <td>
-                                                    @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Pincode)
-                                                </td>
-                                                <td>   @Html.DisplayFor(modelItem => item.Name)</td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.TopayAmount)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Topaycharges)
-                                                </td>
+if (Model != null)
+            {
+                   foreach (var item in Model)
+   {
+       <tr>
+           <th>@i</th>
+           <td>    @Html.DisplayFor(modelItem => item.Customer_Id)</td>
+           <td>
+               @Html.DisplayFor(modelItem => item.Consignment_no)
+           </td>
+           <td>
+               @item.booking_date.Value.ToString("dd/MM/yyyy")
+           </td>
+           <td>
+               @Html.DisplayFor(modelItem => item.Pincode)
+           </td>
+           <td>   @Html.DisplayFor(modelItem => item.Name)</td>
+           <td>
+               @Html.DisplayFor(modelItem => item.TopayAmount)
+           </td>
+           <td>
+               @Html.DisplayFor(modelItem => item.Topaycharges)
+           </td>
 
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.status_t)
-                                                </td>
-                                            </tr>
-                                            i++;
-                                        }
+           <td>
+               @Html.DisplayFor(modelItem => item.status_t)
+           </td>
+       </tr>
+       i++;
+   }
+            }
                                     }
 
                                 </tbody>
@@ -167,6 +173,30 @@
     });
 </script>
 <script>
+    $("#submitbtn").click(function () {
+        var fromdate = $("#datepicker").val();
+        var todate = $("#datepicker1").val();
+        if (fromdate == "") {
+            alert("FromDate is Required");
+            return false;
+        }
+        if (todate == "") {
+            alert("Todate is Required.");
+            return false;
+        }
+    })
+
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
     $('#datepicker').datepicker({
         autoclose: true,
         format: 'dd-mm-yyyy'

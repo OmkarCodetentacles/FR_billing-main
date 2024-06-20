@@ -1,18 +1,22 @@
 ﻿
 
 @model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+<style>
+    .table th {
+        width: 11.25% !important;
+    }
+</style>
+<section style="margin-top:50px">
 
-<div class="content-wrapper">
-
-        <div class="row">
-            @if (ViewBag.Message != null)
-            {
-                var sMessage = ViewBag.Message as string;
-                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
-            }
+    <div class="row">
+        @if (ViewBag.Message != null)
+        {
+            var sMessage = ViewBag.Message as string;
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+        }
 
 
-          
+        <div class="col-md-12 mt-15" style="padding:0">
 
             <div class="col-md-7 ">
                 <div class="form-group">
@@ -39,83 +43,83 @@
                         </div>
 
                     }
-                    </div>
-                </div>
-                    <div class="col-md-8">
-                        <table id="edit-consignment" class="table table-striped table-bordered table-responsive col-md-12">
-                            <thead>
-                                <tr>
-                                    <th style="width:130px">
-                                        Sr No
-                                    </th>
-                                    <th style="width:130px">Action</th>
-                                    <th style="width:150px">
-                                        @Html.DisplayNameFor(model => model.Consignment_no)
-                                    </th>
-                                    <th style="width:130px">
-                                        @Html.DisplayNameFor(model => model.Name)
-                                    </th>
-
-                                    <th style="width:140px">
-                                        @Html.DisplayNameFor(model => model.booking_date)
-                                    </th>
-                                    <th style="width:130px">
-                                        @Html.DisplayNameFor(model => model.Mode)
-                                    </th>
-                                    <th style="width:130px">
-                                        @Html.DisplayNameFor(model => model.codAmount)
-                                    </th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    int i = 1;
-                                }
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>
-                                            <input type="button" class="custbtn btn btn-primary"  value="Edit" data-datac="@item.Consignment_no"   />
-                                        </td>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Consignment_no)
-                                        </td>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-
-
-                                        <td>
-                                            @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Mode)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.codAmount)
-                                        </td>
-
-                                    </tr>
-                                    i++;
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-
                 </div>
             </div>
-       
+
+
+        </div>
+        <table id="edit-consignment" class="table table-striped table-bordered table-responsive col-md-12">
+            <thead>
+                <tr>
+                    <th style="width:130px">
+                        Sr No
+                    </th>
+                    <th style="width:130px">Action</th>
+                    <th style="width:150px">
+                        @Html.DisplayNameFor(model => model.Consignment_no)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+
+                    <th style="width:140px">
+                        @Html.DisplayNameFor(model => model.booking_date)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.Mode)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.codAmount)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>
+                            <input type="button" class="custbtn btn btn-primary" value="Edit" data-datac="@item.Consignment_no" />
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Consignment_no)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+
+                        <td>
+                            @item.booking_date.Value.ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.codAmount)
+                        </td>
+
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
 
 @*@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-         alert("@ViewBag.Message");
-    </script>
-}*@
+    {
+        <script type="text/javascript">
+             alert("@ViewBag.Message");
+        </script>
+    }*@
 
 
 
@@ -167,12 +171,12 @@
 
 <script>
     var company_idarr = [];
-  
+
     $(function () {
-       
+
 
         $.ajax({
-            type: 'GET',         
+            type: 'GET',
             url: '@Url.Action("CustomerIdAutocomplete")',
     data: {},
     dataType: 'json',
@@ -180,14 +184,14 @@
         $.each(data, function (i, item) {
             company_idarr.push(item.Company_Id);
         });
-  
+
             }
 
 
         });
         console.log(company_idarr)
-     
-      
+
+
     });
     $("#custid").autocomplete({
         source: company_idarr,
@@ -196,5 +200,18 @@
 
             $("#custid").trigger("focusout");
         }
+    });
+</script>
+
+<script>
+    $(function () {
+        $('#edit-consignment').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
     });
 </script>

@@ -770,218 +770,229 @@ namespace DtDc_Billing.Controllers
 
             }
 
+         
+        
 
-
-            if (Submit == "Export to Excel")
-            {
-                //ExportToExcelAll.ExportToExcelAdmin(obj);
-                //Apply as per TDS amount\
-
-                var data = newObj.Select(x => new
+                if (Submit == "Export to Excel")
                 {
-                    InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
-                    InvoiceNo = x.invoiceno,
-                    PeriodFrom = x.periodfrom.Value.ToString("dd-MM-yyyy"),
-                    PeriodTo = x.periodto.Value.ToString("dd-MM-yyyy"),
-                    Total = x.total,
-                    FullSurchargeTax = x.fullsurchargetax,
-                    FullSurChargeTotal = x.fullsurchargetaxtotal,
-                    ServiceTax = x.servicetax,
-                    ServiceTaxTotal = x.servicetaxtotal,
-                    CustomerId = x.Customer_Id,
-                    NetAmount = x.netamount ?? 0,
-                    Paid = x.paid ?? 0,
-                    DiscountAmount = x.netamount - (x.paid ?? 0),
-                    TDSAmount = x.TotalAmount ?? 0,
-                    TotalAmount = x.TotalAmount ?? 0
+                    //ExportToExcelAll.ExportToExcelAdmin(obj);
+                    //Apply as per TDS amount\
 
-                }).ToList();
-                ExportToExcelAll.ExportToExcelAdmin(data);
-            }
+                    var data = newObj.Select(x => new
+                    {
+                        InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
+                        InvoiceNo = x.invoiceno,
+                        PeriodFrom = x.periodfrom.Value.ToString("dd-MM-yyyy"),
+                        PeriodTo = x.periodto.Value.ToString("dd-MM-yyyy"),
+                        Total = x.total,
+                        FullSurchargeTax = x.fullsurchargetax,
+                        FullSurChargeTotal = x.fullsurchargetaxtotal,
+                        ServiceTax = x.servicetax,
+                        ServiceTaxTotal = x.servicetaxtotal,
+                        CustomerId = x.Customer_Id,
+                        NetAmount = x.netamount ?? 0,
+                        Paid = x.paid ?? 0,
+                        DiscountAmount = x.netamount - (x.paid ?? 0),
+                        TDSAmount = x.TotalAmount ?? 0,
+                        TotalAmount = x.TotalAmount ?? 0
 
-            if (Submit == "Print" || Submit == "Send mail")
-            {
-                if (Custid != null && Custid != "")
+                    }).ToList();
+                if (newObj.Count() <= 0 || newObj == null)
                 {
-                    var DataSet1 = newObj.OrderBy(x=>x.invoiceno).ToList();
-                    var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
-                    var pfcode1 = DataSet2.FirstOrDefault().Pf_code;
-                    var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode1).ToList();//Remove static url https://frbilling.com
-                    DataSet3.FirstOrDefault().LogoFilePath = (DataSet3.FirstOrDefault().LogoFilePath == null || DataSet3.FirstOrDefault().LogoFilePath == "") ? baseurl+"/assets/Dtdclogo.png" : DataSet3.FirstOrDefault().LogoFilePath;
-
-                    LocalReport lr = new LocalReport();
-
-                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstanding.rdlc");
-
-                    if (System.IO.File.Exists(path))
-                    {
-                        lr.ReportPath = path;
-                    }
-
-                   
-                    ReportDataSource rd1 = new ReportDataSource("DataSet3", DataSet3);
-                    ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
-                    ReportDataSource rd3 = new ReportDataSource("DataSet2", DataSet2);
-                    ReportDataSource rd4 = new ReportDataSource("DataSet4", DataSet1);
-
-                    lr.DataSources.Add(rd1);
-                    lr.DataSources.Add(rd2);
-                    lr.DataSources.Add(rd3);
-                    lr.DataSources.Add(rd4);
-                    string reportType = "pdf";
-                    string mimeType;
-                    string encoding;
-                    string fileNameExte;
-
-                    string deviceInfo =
-                        "<DeviceInfo>" +
-                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                        "<PageHeight>11in</PageHeight>" +
-                       "<Margintop>0.1in</Margintop>" +
-                         "<Marginleft>0.1in</Marginleft>" +
-                          "<Marginright>0.1in</Marginright>" +
-                           "<Marginbottom>0.5in</Marginbottom>" +
-                           "</DeviceInfo>";
-
-                    Warning[] warnings;
-                    string[] streams;
-                    byte[] renderByte;
-
-
-                    renderByte = lr.Render
-                  (reportType,
-                  deviceInfo,
-                  out mimeType,
-                  out encoding,
-                  out fileNameExte,
-                  out streams,
-                  out warnings
-                  );
-
-
-                    string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
-                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                    {
-                        stream.Write(renderByte, 0, renderByte.Length);
-                    }
-
-
-
-                    if(Submit == "Send mail")
-                    {
-                        if (DataSet2.FirstOrDefault().Email != null || DataSet2.FirstOrDefault().Email != "")
-                        {
-                            MemoryStream memoryStream = new MemoryStream(renderByte);
-
-
-
-                            using (MailMessage mm = new MailMessage(DataSet3.FirstOrDefault().Sendermail, DataSet2.FirstOrDefault().Email))
-                            {
-                                mm.Subject = "Payment Outstanding from "+ Fromdatetime +" to " + ToDatetime;
-
-                                string Bodytext = "<html><body>Please Find Attachment</body></html>";
-                                Attachment attachment = new Attachment(memoryStream, "PaymentOutstanding.pdf");
-
-                                mm.IsBodyHtml = true;
-
-
-
-                                mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
-
-                                AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
-                                // mm.Body = Bodytext;
-                                mm.Body = Bodytext;
-
-                                //Add Byte array as Attachment.
-
-                                mm.Attachments.Add(attachment);
-
-                                SmtpClient smtp = new SmtpClient();
-                                smtp.Host = "smtp.gmail.com";
-                                smtp.EnableSsl = true;
-                                System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                                credentials.UserName = DataSet3.FirstOrDefault().Sendermail;
-                                credentials.Password = DataSet3.FirstOrDefault().password;
-                                smtp.UseDefaultCredentials = true;
-                                smtp.Credentials = credentials;
-                                smtp.Port = 587;
-                                smtp.Send(mm);
-                            }
-                        }
-                        {
-                            TempData["error"] = "Select Company";
-                        }
-
-                        return View(obj);
-                    }
-
-                    return File(renderByte, mimeType);
-
+                    ViewBag.Nodata = "No Data Found";
                 }
                 else
                 {
-                    var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
-                    LocalReport lr = new LocalReport();
-
-                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstandingWComppany.rdlc");
-
-                    if (System.IO.File.Exists(path))
-                    {
-                        lr.ReportPath = path;
-                    }
-
-
-                    ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
-                    ReportDataSource rd4 = new ReportDataSource("DataSet4", DataSet1);
-
-                    lr.DataSources.Add(rd4);
-                    lr.DataSources.Add(rd2);
-
-                    string reportType = "pdf";
-                    string mimeType;
-                    string encoding;
-                    string fileNameExte;
-
-                    string deviceInfo =
-                        "<DeviceInfo>" +
-                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                        "<PageHeight>11in</PageHeight>" +
-                       "<Margintop>0.1in</Margintop>" +
-                         "<Marginleft>0.1in</Marginleft>" +
-                          "<Marginright>0.1in</Marginright>" +
-                           "<Marginbottom>0.5in</Marginbottom>" +
-                           "</DeviceInfo>";
-
-                    Warning[] warnings;
-                    string[] streams;
-                    byte[] renderByte;
-
-
-                    renderByte = lr.Render
-                  (reportType,
-                  deviceInfo,
-                  out mimeType,
-                  out encoding,
-                  out fileNameExte,
-                  out streams,
-                  out warnings
-                  );
-
-
-                    string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
-                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
-                    {
-                        stream.Write(renderByte, 0, renderByte.Length);
-                    }
-
-
-
-                   
-
-                    return File(renderByte, mimeType);
+                    ExportToExcelAll.ExportToExcelAdmin(data);
 
                 }
             }
+
+                if (Submit == "Print" || Submit == "Send mail")
+                {
+                    if (Custid != null && Custid != "")
+                    {
+                        var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
+                        var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
+                        var pfcode1 = DataSet2.FirstOrDefault().Pf_code;
+                        var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode1).ToList();//Remove static url https://frbilling.com
+                        DataSet3.FirstOrDefault().LogoFilePath = (DataSet3.FirstOrDefault().LogoFilePath == null || DataSet3.FirstOrDefault().LogoFilePath == "") ? baseurl + "/assets/Dtdclogo.png" : DataSet3.FirstOrDefault().LogoFilePath;
+
+                        LocalReport lr = new LocalReport();
+
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstanding.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+
+
+                        ReportDataSource rd1 = new ReportDataSource("DataSet3", DataSet3);
+                        ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
+                        ReportDataSource rd3 = new ReportDataSource("DataSet2", DataSet2);
+                        ReportDataSource rd4 = new ReportDataSource("DataSet4", DataSet1);
+
+                        lr.DataSources.Add(rd1);
+                        lr.DataSources.Add(rd2);
+                        lr.DataSources.Add(rd3);
+                        lr.DataSources.Add(rd4);
+                        string reportType = "pdf";
+                        string mimeType;
+                        string encoding;
+                        string fileNameExte;
+
+                        string deviceInfo =
+                            "<DeviceInfo>" +
+                            "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                            "<PageHeight>11in</PageHeight>" +
+                           "<Margintop>0.1in</Margintop>" +
+                             "<Marginleft>0.1in</Marginleft>" +
+                              "<Marginright>0.1in</Marginright>" +
+                               "<Marginbottom>0.5in</Marginbottom>" +
+                               "</DeviceInfo>";
+
+                        Warning[] warnings;
+                        string[] streams;
+                        byte[] renderByte;
+
+
+                        renderByte = lr.Render
+                      (reportType,
+                      deviceInfo,
+                      out mimeType,
+                      out encoding,
+                      out fileNameExte,
+                      out streams,
+                      out warnings
+                      );
+
+
+                        string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
+                        using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                        {
+                            stream.Write(renderByte, 0, renderByte.Length);
+                        }
+
+
+
+                        if (Submit == "Send mail")
+                        {
+                            if (DataSet2.FirstOrDefault().Email != null || DataSet2.FirstOrDefault().Email != "")
+                            {
+                                MemoryStream memoryStream = new MemoryStream(renderByte);
+
+
+
+                                using (MailMessage mm = new MailMessage(DataSet3.FirstOrDefault().Sendermail, DataSet2.FirstOrDefault().Email))
+                                {
+                                    mm.Subject = "Payment Outstanding from " + Fromdatetime + " to " + ToDatetime;
+
+                                    string Bodytext = "<html><body>Please Find Attachment</body></html>";
+                                    Attachment attachment = new Attachment(memoryStream, "PaymentOutstanding.pdf");
+
+                                    mm.IsBodyHtml = true;
+
+
+
+                                    mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+
+                                    AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+                                    // mm.Body = Bodytext;
+                                    mm.Body = Bodytext;
+
+                                    //Add Byte array as Attachment.
+
+                                    mm.Attachments.Add(attachment);
+
+                                    SmtpClient smtp = new SmtpClient();
+                                    smtp.Host = "smtp.gmail.com";
+                                    smtp.EnableSsl = true;
+                                    System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+                                    credentials.UserName = DataSet3.FirstOrDefault().Sendermail;
+                                    credentials.Password = DataSet3.FirstOrDefault().password;
+                                    smtp.UseDefaultCredentials = true;
+                                    smtp.Credentials = credentials;
+                                    smtp.Port = 587;
+                                    smtp.Send(mm);
+                                }
+                            }
+                            {
+                                TempData["error"] = "Select Company";
+                            }
+
+                            return View(obj);
+                        }
+
+                        return File(renderByte, mimeType);
+
+                    }
+                    else
+                    {
+                        var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
+                        LocalReport lr = new LocalReport();
+
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstandingWComppany.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+
+
+                        ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
+                        ReportDataSource rd4 = new ReportDataSource("DataSet4", DataSet1);
+
+                        lr.DataSources.Add(rd4);
+                        lr.DataSources.Add(rd2);
+
+                        string reportType = "pdf";
+                        string mimeType;
+                        string encoding;
+                        string fileNameExte;
+
+                        string deviceInfo =
+                            "<DeviceInfo>" +
+                            "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                            "<PageHeight>11in</PageHeight>" +
+                           "<Margintop>0.1in</Margintop>" +
+                             "<Marginleft>0.1in</Marginleft>" +
+                              "<Marginright>0.1in</Marginright>" +
+                               "<Marginbottom>0.5in</Marginbottom>" +
+                               "</DeviceInfo>";
+
+                        Warning[] warnings;
+                        string[] streams;
+                        byte[] renderByte;
+
+
+                        renderByte = lr.Render
+                      (reportType,
+                      deviceInfo,
+                      out mimeType,
+                      out encoding,
+                      out fileNameExte,
+                      out streams,
+                      out warnings
+                      );
+
+
+                        string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
+                        using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                        {
+                            stream.Write(renderByte, 0, renderByte.Length);
+                        }
+
+
+
+
+
+                        return File(renderByte, mimeType);
+
+                    }
+                }
+            
+
 
             //  return View(obj);
             
@@ -999,7 +1010,7 @@ namespace DtDc_Billing.Controllers
 
         [HttpPost]
         public ActionResult BusinessAnalysis(string Fromdatetime, string ToDatetime, string Custid)
-        {
+       {
             var Pfcode = CommonFunctions.getSessionPfcode();
 
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -1039,12 +1050,15 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Custid = Custid;
             }
 
-
+          
 
             List<TransactionView> transactions =
                 db.TransactionViews.Where(m =>
-               (m.Customer_Id==null ||    m.Customer_Id == Custid)
-                    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+               (string.IsNullOrEmpty(Custid) ||  m.Customer_Id == Custid)
+               && m.Pf_Code==pfcode
+               && m.booking_date.HasValue && m.booking_date.Value >= fromdate.Value && m.booking_date.Value <= todate.Value
+
+                    ).ToList().OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                            .ToList();
             ViewBag.totalamt = transactions.Sum(b => b.Amount);
 
@@ -1707,8 +1721,15 @@ namespace DtDc_Billing.Controllers
                                      IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
 
                                  }).ToList();
+                    if (list1.Count() <= 0 || list1==null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(list1);
 
-                    ExportToExcelAll.ExportToExcelAdmin(list1);
+                    }
                 }
 
                 if (Tallyexcel == "Tally excel")
@@ -1762,8 +1783,16 @@ namespace DtDc_Billing.Controllers
 
 
                                  }).ToList();
+                    if (list1.Count() <= 0 || list1==null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
 
-                    ExportToExcelAll.ExportToExcelAdmin(list1);
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(list1);
+
+                    }
                 }
 
                 return View(list);
@@ -1864,8 +1893,15 @@ namespace DtDc_Billing.Controllers
 
 
                                  }).ToList();
+                    if(list1.Count()<=0 || list1 == null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(list1);
 
-                    ExportToExcelAll.ExportToExcelAdmin(list1);
+                    }
                 }
 
 
@@ -1921,9 +1957,16 @@ namespace DtDc_Billing.Controllers
 
 
                                  }).ToList();
+                    if (list1.Count() <= 0 || list1 == null)
+                    {
+                        ViewBag.Nodata = "No Data Found";
 
-                    ExportToExcelAll.ExportToExcelAdmin(list1);
+                    }
+                    else
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(list1);
 
+                    }
                 }
 
 
@@ -2070,8 +2113,16 @@ namespace DtDc_Billing.Controllers
                                                     IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
 
                                                 }).ToList();
+                if (list1.Count() <= 0 || list1 == null)
+                {
+                    ViewBag.Nodata = "No Data Found";
 
-                ExportToExcelAll.ExportToExcelAdmin(list1);
+                }
+                else
+                {
+                    ExportToExcelAll.ExportToExcelAdmin(list1);
+
+                }
             }
 
             if (Tallyexcel == "Tally excel")
@@ -2131,9 +2182,20 @@ namespace DtDc_Billing.Controllers
 
                              }).ToList();
 
+         
+
+            if (list2.Count() <= 0 || list2 == null)
+            {
+                ViewBag.Nodata = "No Data Found";
+
+            }
+            else
+            {
                 ExportToExcelAll.ExportToExcelAdmin(list2);
 
             }
+
+        }
 
 
 

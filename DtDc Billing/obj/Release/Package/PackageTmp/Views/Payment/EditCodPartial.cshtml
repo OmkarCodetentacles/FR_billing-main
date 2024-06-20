@@ -14,7 +14,7 @@
 @using (Ajax.BeginForm("EditCod", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
 
-    <div class="container">
+    <div class="row" style="margin-left:140px">
         <div id="sg1">
             <label>
                 Consignment no @Html.EditorFor(model => model.consinment_no, new { htmlAttributes = new { @class = "form-control" } })
@@ -111,49 +111,49 @@
 
 
 <script>
-    $(document).ready(function () {
+    //$(document).ready(function () {
 
-        $('#consinment_no').keyup(function () {
+    //    $('#consinment_no').keyup(function () {
 
-            var consno = $("#consinment_no").val();
-            if (consno.length >= 9) {
-                $('#consinment_no').val($(this).val().toUpperCase());
-                $('#consinment_no').focusout();
-
-
-                $.ajax({
-                    type: 'Get',
-                    dataType: 'json',
-                    url: '/Payment/Coddetails',
-                    data: { Cosignmentno: consno },
-                    success: function (Data) {
-
-                        $('#tempdelivereddate').val(Data.tempdelivereddate);
-                        $('#tempdeliveredtime').val(Data.tempdeliveredtime);
+    //        var consno = $("#consinment_no").val();
+    //        if (consno.length >= 9) {
+    //            $('#consinment_no').val($(this).val().toUpperCase());
+    //            $('#consinment_no').focusout();
 
 
-                        $('#remarks').val(Data.remarks);
-                        $('#receivedby').val(Data.receivedby);
+    //            $.ajax({
+    //                type: 'Get',
+    //                dataType: 'json',
+    //                url: '/Payment/Coddetails',
+    //                data: { Cosignmentno: consno },
+    //                success: function (Data) {
 
-                        // $('#consinmentno').val(Data.consinmentno);
-
-
-
-
-                    },
-                    error: function (textStatus, errorThrown) {
-
-                        $('#delivered_date').val(' ');
-                        $('#delivered_time').val(' ');
+    //                    $('#tempdelivereddate').val(Data.tempdelivereddate);
+    //                    $('#tempdeliveredtime').val(Data.tempdeliveredtime);
 
 
-                        $('#remarks').val(' ');
-                        $('#receivedby').val(' ');
+    //                    $('#remarks').val(Data.remarks);
+    //                    $('#receivedby').val(Data.receivedby);
 
-                    }
-                });
-            }
+    //                    // $('#consinmentno').val(Data.consinmentno);
 
-        });
-    });
+
+
+
+    //                },
+    //                error: function (textStatus, errorThrown) {
+
+    //                    $('#delivered_date').val(' ');
+    //                    $('#delivered_time').val(' ');
+
+
+    //                    $('#remarks').val(' ');
+    //                    $('#receivedby').val(' ');
+
+    //                }
+    //            });
+    //        }
+
+    //    });
+    //});
 </script>

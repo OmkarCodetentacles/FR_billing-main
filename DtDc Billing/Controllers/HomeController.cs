@@ -352,7 +352,25 @@ namespace DtDc_Billing.Controllers
             return View(obj);
         }
         
+        public PartialViewResult GetTop5Customer()
+        {
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            DateTime threeMonthsAgo = DateTime.Now.AddMonths(-3);
+
+            var data = db.Invoices
+                         .Where(x => x.Pfcode == PfCode && x.invoicedate >= threeMonthsAgo)
+                         .GroupBy(x => x.Customer_Id)
+                         .Select(g => new Top5data {
+                             customerId = g.FirstOrDefault().Customer_Id,
+                             NetAmount = g.Sum(x => x.netamount)
+                         })
+                         .OrderByDescending(x => x.NetAmount)
+                         .Take(5)
+                         .ToList();
+            return PartialView(data);   
+
+        }
 
         public PartialViewResult DestinationAndProductPartial()
         {
