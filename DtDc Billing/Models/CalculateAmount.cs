@@ -80,18 +80,18 @@ namespace DtDc_Billing.Models
 
             if (Consignment.ToLower().StartsWith("e"))
             {
-                if (mode == "CP2" || mode == "D2Z" || mode == "D12")
+                if (mode!=null &&( mode == "CP2" || mode == "D2Z" || mode == "D12"))
                 {
                     Dtdc_Ptp dtdc_Ptp = null;
-                    if (mode == "CP2")
+                    if (mode!=null && mode == "CP2")
                     {
                         dtdc_Ptp = db.Dtdc_Ptp.Where(m => m.dest.Contains("City") && m.Company_id == CashRate).FirstOrDefault();
                     }
-                    else if (mode == "D2Z")
+                    else if (mode!=null && mode == "D2Z")
                     {
                         dtdc_Ptp = db.Dtdc_Ptp.Where(m => m.dest.Contains("ZONAL") && m.Company_id == CashRate).FirstOrDefault();
                     }
-                    else if (mode == "D12")
+                    else if (mode!=null && mode == "D12")
                     {
                         dtdc_Ptp = db.Dtdc_Ptp.Where(m => m.dest.Contains("METRO") && m.Company_id == CashRate).FirstOrDefault();
                     }
@@ -201,7 +201,7 @@ namespace DtDc_Billing.Models
 
                     Amount = amount1;
                 }
-                else if (mode == "CSP" || mode == "DZ2" || mode == "DM2")
+                else if (mode!=null && (mode == "CSP" || mode == "DZ2" || mode == "DM2"))
                 {
                     double? amount1;
 
@@ -474,7 +474,7 @@ namespace DtDc_Billing.Models
                 Amount = AirAmount;
             }
 
-            else if (mode.ToLower().StartsWith("ge"))
+            else if (mode!=null && mode.ToLower().StartsWith("ge"))
             {
                 express_cargo express = db.express_cargo.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
 
@@ -584,7 +584,7 @@ namespace DtDc_Billing.Models
             {
                 Nondox nondox = db.Nondoxes.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
 
-                if (mode.ToLower().StartsWith("a"))
+                if (mode != null &&  mode.ToLower().StartsWith("a"))
                 {
                     double? AirAmount = 0.0;
 
@@ -655,7 +655,7 @@ namespace DtDc_Billing.Models
 
                     Amount = AirAmount;
                 }
-                else if (mode.ToLower().StartsWith("s"))
+                else if (mode!=null && mode.ToLower().StartsWith("s"))
                 {
 
                     ///////////////////////////////////Air Surface /////////////////////////////
@@ -739,7 +739,7 @@ namespace DtDc_Billing.Models
                     Amount = Amountsurf;
                 }
 
-                else if (mode == "D71" || mode == "P7X")
+                else if (mode!=null && (mode != null && mode == "D71" || mode == "P7X"))
                 {
 
                     Dtdc_Ecommerce dtdc_ecom = db.Dtdc_Ecommerce.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
@@ -814,7 +814,7 @@ namespace DtDc_Billing.Models
 
                         Amount = amount1;
                     }
-                    else if (mode == "D71")
+                    else if (mode!=null && mode == "D71")
                     {
                         double? amount1 = 0.0;
                         if (dtdc_ecom.NoOfSlabS == 2)

@@ -82,7 +82,7 @@ namespace DtDc_Billing.Controllers
 
             if (Consignment.ToLower().StartsWith("e"))
             {
-                if (mode == "CP2" || mode == "D2Z" || mode == "D12")
+                if (mode != null && (mode == "CP2" || mode == "D2Z" || mode == "D12")               )
                 {
                     Dtdc_Ptp dtdc_Ptp = null;
                     if (mode == "CP2")
@@ -203,7 +203,7 @@ namespace DtDc_Billing.Controllers
 
                     Amount = amount1;
                 }
-                else if (mode == "CSP" || mode == "DZ2" || mode == "DM2")
+                else if (mode != null && (mode == "CSP" || mode == "DZ2" || mode == "DM2"))
                 {
                     double? amount1;
 
@@ -275,7 +275,7 @@ namespace DtDc_Billing.Controllers
             {
                 dtdcPlu dtdc_plus = null;
 
-                if (mode == "DCP" || mode == "DC2" || mode == "DCD" || mode == "DCS" || mode == "PEC")
+                if (mode != null && (mode == "DCP" || mode == "DC2" || mode == "DCD" || mode == "DCS" || mode == "PEC"))
                 {
                     dtdc_plus = db.dtdcPlus.Where(m => m.destination.Contains("CITY") && m.Company_id == CashRate).FirstOrDefault();
                 }
@@ -476,7 +476,7 @@ namespace DtDc_Billing.Controllers
                     Amount = AirAmount;
                 }
             
-            else if (mode.ToLower().StartsWith("ge"))
+            else if ( mode!=null &&  mode.ToLower().StartsWith("ge"))
             {
                 express_cargo express = db.express_cargo.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
 
@@ -657,7 +657,7 @@ namespace DtDc_Billing.Controllers
 
                     Amount = AirAmount;
                 }
-                else if (mode.ToLower().StartsWith("s"))
+                else if (mode!=null && mode.ToLower().StartsWith("s"))
                 {
 
                     ///////////////////////////////////Air Surface /////////////////////////////
@@ -741,7 +741,7 @@ namespace DtDc_Billing.Controllers
                     Amount = Amountsurf;
                 }
 
-                else if (mode == "D71" || mode == "P7X")
+                else if (mode != null && (mode != null && mode == "D71" || mode == "P7X"))
                 {
 
                     Dtdc_Ecommerce dtdc_ecom = db.Dtdc_Ecommerce.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();

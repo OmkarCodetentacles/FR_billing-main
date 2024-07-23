@@ -38,9 +38,9 @@ namespace DtDc_Billing.Controllers
         public ActionResult ConsignMent()
         {
             // Retrieve the message from TempData
-                 string uploadMessage = TempData["Upload"] as string;
+            string uploadMessage = TempData["Upload"] as string;
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            ViewBag.PfCode=strpfcode;
+            ViewBag.PfCode = strpfcode;
 
             // Pass the message to the view using ViewBag
             ViewBag.UploadMessage = uploadMessage;
@@ -53,24 +53,24 @@ namespace DtDc_Billing.Controllers
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             db.Configuration.ProxyCreationEnabled = false;
-             
-           
+
+
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
-          return Json(suggestions, JsonRequestBehavior.AllowGet);
-                }
+            return Json(suggestions, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public ActionResult SaveEditConsignment(TransactionMetadata transaction)
         {
-              var pincode= transaction.Pincode;
-           
-            
-            
+            var pincode = transaction.Pincode;
+
+
+
 
             if (transaction.topay != "yes")
             {
-                transaction.Topaycharges = 0;   
+                transaction.Topaycharges = 0;
                 transaction.consignee = "0";
                 transaction.TopayAmount = 0;
             }
@@ -157,10 +157,10 @@ namespace DtDc_Billing.Controllers
                     tran.codtotalamount = transaction.codtotalamount;
                     tran.consigner = transaction.consigner;
                     tran.compaddress = transaction.compaddress;
-                    tran.Receiver=transaction.Receiver;
+                    tran.Receiver = transaction.Receiver;
                     tran.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran.AdminEmp = 000;
-                    tran.Receiver=transaction.Receiver; 
+                    tran.Receiver = transaction.Receiver;
                     /////////////////////////////
 
                     tran.T_id = tr.T_id;
@@ -202,7 +202,7 @@ namespace DtDc_Billing.Controllers
                     tran1.codAmount = transaction.codAmount;
                     tran1.dtdcamount = transaction.dtdcamount;
                     tran1.chargable_weight = transaction.chargable_weight;
-                    
+
                     tran1.rateperkg = transaction.rateperkg;
                     tran1.docketcharege = transaction.docketcharege;
                     tran1.fovcharge = transaction.fovcharge;
@@ -220,14 +220,14 @@ namespace DtDc_Billing.Controllers
                     tran1.AdminEmp = 000;
                     db.Transactions.Add(tran1);
 
-                   
+
 
                     try
                     {
                         // Your code...
                         // Could also be before try if you know the exception occurs in SaveChanges
 
-                       db.SaveChanges();
+                        db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)
                     {
@@ -317,10 +317,10 @@ namespace DtDc_Billing.Controllers
             var entity = db.Companies.
                     Select(e => new
                     {
-                       e.Company_Id,
-                       e.Pf_code,
-                      e.Company_Name
-                    }).Where(d => d.Pf_code == strpfcode).Distinct().OrderBy(d=>d.Company_Id).ToList();
+                        e.Company_Id,
+                        e.Pf_code,
+                        e.Company_Name
+                    }).Where(d => d.Pf_code == strpfcode).Distinct().OrderBy(d => d.Company_Id).ToList();
 
 
 
@@ -338,11 +338,11 @@ namespace DtDc_Billing.Controllers
         {
 
 
-                    var entity = db.Companies.Where(m => m.Pf_code == id).
-        Select(e => new
-        {
-            e.Company_Id
-        }).Distinct().ToList();
+            var entity = db.Companies.Where(m => m.Pf_code == id).
+Select(e => new
+{
+    e.Company_Id
+}).Distinct().ToList();
 
 
             return Json(entity, JsonRequestBehavior.AllowGet);
@@ -351,11 +351,11 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult PincodeautocompleteSender()
         {
-                        var entity = db.Destinations.
-            Select(e => new 
-            {
-                e.Pincode
-            }).ToList();
+            var entity = db.Destinations.
+Select(e => new
+{
+    e.Pincode
+}).ToList();
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
         public JsonResult CustomerDetails(string CustomerId)
@@ -381,7 +381,7 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-         public ActionResult weightdiffModify()
+        public ActionResult weightdiffModify()
         {
             ViewBag.transaction = new TransactionMetadata();
 
@@ -400,7 +400,7 @@ namespace DtDc_Billing.Controllers
             {
                 transaction.Topaycharges = 0;
                 transaction.consignee = "0";
-                transaction.TopayAmount = 0;                
+                transaction.TopayAmount = 0;
             }
             if (transaction.cod != "yes")
             {
@@ -455,7 +455,7 @@ namespace DtDc_Billing.Controllers
                     tran.Weight_t = transaction.Weight_t;
                     tran.Amount = transaction.Amount;
                     tran.Company_id = transaction.Company_id;
-                    
+
                     tran.Quanntity = transaction.Quanntity;
                     tran.Type_t = transaction.Type_t;
                     tran.Insurance = transaction.Insurance;
@@ -488,7 +488,7 @@ namespace DtDc_Billing.Controllers
                     tran.compaddress = transaction.compaddress;
                     tran.codtotalamount = transaction.codtotalamount;
                     tran.consigner = transaction.consigner;
-                    tran.Receiver=transaction.Receiver; 
+                    tran.Receiver = transaction.Receiver;
                     db.Entry(tran).State = EntityState.Modified;
 
                     db.SaveChanges();
@@ -526,7 +526,7 @@ namespace DtDc_Billing.Controllers
 
             return PartialView("EditConsignmentPartial", transaction);
         }
-        
+
 
 
 
@@ -538,11 +538,11 @@ namespace DtDc_Billing.Controllers
 
             DateTime? fromdate = null;
             DateTime? todate = null;
-            
+
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-            
+
 
             if (Fromdatetime != "")
             {
@@ -738,7 +738,7 @@ namespace DtDc_Billing.Controllers
         {
             List<TransactionView> list = new List<TransactionView>();
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            ViewBag.PfCode= strpf;
+            ViewBag.PfCode = strpf;
             ViewBag.fromdate = Fromdatetime;
             ViewBag.todate = ToDatetime;
             ViewBag.Custid = Custid;
@@ -770,7 +770,7 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpPost]
-        public ActionResult Checkbookinglist(List<TransactionView> trans,  string Fromdatetime, string ToDatetime, string Custid, string Submit)
+        public ActionResult Checkbookinglist(List<TransactionView> trans, string Fromdatetime, string ToDatetime, string Custid, string Submit)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -780,7 +780,7 @@ namespace DtDc_Billing.Controllers
 
             DateTime? fromdate;
             DateTime? todate;
-            if(trans != null)
+            if (trans != null)
             {
                 ModelState.Clear();
 
@@ -833,14 +833,14 @@ namespace DtDc_Billing.Controllers
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge
-                  
-                }).OrderBy(d => d.booking_date).ToList() ;
+
+                }).OrderBy(d => d.booking_date).ToList();
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
                 if (Submit == "Export to Excel")
                 {
-                    obj=obj.OrderByDescending(b=>b.booking_date).Where(x=>x.isRTO==null || x.isRTO==false).ToList();
+                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
                     //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                     //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
                     //    .OrderByDescending(m=>m.BookingDate).ToList();
@@ -892,7 +892,7 @@ namespace DtDc_Billing.Controllers
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
-                    
+
                 }).OrderByDescending(d => d.booking_date).ToList();
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
@@ -902,7 +902,7 @@ namespace DtDc_Billing.Controllers
                     //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
                     //(m.Customer_Id == null || m.Customer_Id == Custid)
                     //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
-                    obj= obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
+                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
                     var data = obj.Select(x => new {
                         ConsignmentNo = x.Consignment_no,
                         Weight = x.chargable_weight,
@@ -914,12 +914,12 @@ namespace DtDc_Billing.Controllers
                         x.Mode,
                         x.Amount,
                         BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
-                         x.Insurance,
+                        x.Insurance,
                         x.Claimamount,
                         x.Percentage,
                         x.Risksurcharge,
-                        OtherCharges=x.loadingcharge,
-                        Total=Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
+                        OtherCharges = x.loadingcharge,
+                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
 
 
 
@@ -955,7 +955,8 @@ namespace DtDc_Billing.Controllers
                 return Json("Success", JsonRequestBehavior.AllowGet);
 
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
 
                 return Json("Error", JsonRequestBehavior.AllowGet);
             }
@@ -1018,7 +1019,7 @@ namespace DtDc_Billing.Controllers
                 //var import = db.Transactions.Where(m =>
                 //(m.Pf_Code == PfCode)&& (m.Customer_Id == null || m.Customer_Id == "")
                 //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight=x.Actual_weight, x.Pincode, x.Amount,BookingDate= x.tembookingdate }).ToList();
-                if (transactions.Count!=0)
+                if (transactions.Count != 0)
                 {
                     ExportToExcelAll.ExportToExcelAdmin(transactions);
                 }
@@ -1033,7 +1034,7 @@ namespace DtDc_Billing.Controllers
         }
         public ActionResult weightdiff_Partial()
         {
-            
+
 
             List<TransactionView> transactions = new List<TransactionView>();
 
@@ -1110,9 +1111,9 @@ namespace DtDc_Billing.Controllers
         public string Checkcompany(string Customerid)
         {
             db.Configuration.ProxyCreationEnabled = false;
-            string pfCode= Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string pfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             var suggestions = (from s in db.Companies
-                               where s.Company_Id == Customerid && s.Pf_code== pfCode
+                               where s.Company_Id == Customerid && s.Pf_code == pfCode
                                select s).FirstOrDefault();
 
             if (suggestions == null)
@@ -1229,11 +1230,11 @@ namespace DtDc_Billing.Controllers
             //        e.Name
             //    }).Distinct().ToList();
 
-            var entity = db.Destinations.Where(x=>x.Name!=null && x.Name!="").
+            var entity = db.Destinations.Where(x => x.Name != null && x.Name != "").
                 Select(e => new
                 {
                     e.Name
-                }).OrderBy(e=>e.Name).Distinct().ToList();
+                }).OrderBy(e => e.Name).Distinct().ToList();
 
 
 
@@ -1286,7 +1287,7 @@ namespace DtDc_Billing.Controllers
 
             DateTime? fromdate;
             DateTime? todate;
-           
+
             if (Fromdatetime != "")
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -1346,7 +1347,7 @@ namespace DtDc_Billing.Controllers
                     foreach (var i in obj)
                     {
 
-                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code==strpf).FirstOrDefault();
+                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf).FirstOrDefault();
 
                         if (transaction != null)
                         {
@@ -1380,7 +1381,7 @@ namespace DtDc_Billing.Controllers
             {
                 var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
                 {
-                    Customer_Id=x.customer_id,
+                    Customer_Id = x.customer_id,
                     Consignment_no = x.Consignment_no,
                     chargable_weight = x.chargable_weight,
                     Quanntity = x.Quanntity,
@@ -1436,9 +1437,9 @@ namespace DtDc_Billing.Controllers
             }
 
 
-         
 
-           
+
+
         }
 
 
@@ -1582,8 +1583,8 @@ namespace DtDc_Billing.Controllers
         }
 
         ///////////////////Added on 16-05-22 //////////////////
-        
-       
+
+
         //[SessionTimeout]
         public ActionResult CompanyList()
         {
@@ -1591,7 +1592,7 @@ namespace DtDc_Billing.Controllers
 
             //if (Session["UserType"] != null)
             //{
-                pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             //}
             //else
             //{
@@ -1682,9 +1683,9 @@ namespace DtDc_Billing.Controllers
                     }
                     TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                   
+
                     return PartialView("~/Views/Shared/Error.cshtml");
                 }
             }
@@ -1720,7 +1721,7 @@ namespace DtDc_Billing.Controllers
                 string extension = Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
-              Task.Run(() => InsertRecords(filePath, ImportText.FileName));
+                Task.Run(() => InsertRecords(filePath, ImportText.FileName));
 
             }
 
@@ -1871,7 +1872,7 @@ namespace DtDc_Billing.Controllers
 
             }
 
-           
+
         }
 
 
@@ -1907,7 +1908,7 @@ namespace DtDc_Billing.Controllers
 
         //Sr.No Consignment No Chargable Weight Mode    Company Address Quanntity Pincode BookingDate(dd-MM-YYYY)    Type Customer Id other changes Receiver
 
-         public ActionResult ExportCSV()
+        public ActionResult ExportCSV()
         {
             string csvContent = "SrNo,ConsignmentNo,ChargableWeight,Mode,CompanyAddress,Quantity,Pincode,BookingDate(dd/MM/yyyy)/(dd-MM-yyyy),Type,CustomerId,OtherCharges,Receiver\n";
 
@@ -1918,7 +1919,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult ImportCSV(HttpPostedFileBase file)
         {
-            
+
 
 
             if (file != null)
@@ -1943,9 +1944,9 @@ namespace DtDc_Billing.Controllers
 
             return damageResult.ToString();
         }
-        public async Task<string> asyncAddNewImportFromCSVFile(HttpPostedFileBase file,string strpfcode)
+        public async Task<string> asyncAddNewImportFromCSVFile(HttpPostedFileBase file, string strpfcode)
         {
-            string[] formats = { "dd-MM-yyyy","dd/MM/yyyy","dd/M/yyyy","d/MM/yyyy","d-MM-yyyy","dd-M-yyyy"};
+            string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy", "dd/M/yyyy", "d/MM/yyyy", "d-MM-yyyy", "dd-M-yyyy" };
             if (file != null && file.ContentLength > 0)
             {
                 using (StreamReader reader = new StreamReader(file.InputStream))
@@ -1982,7 +1983,7 @@ namespace DtDc_Billing.Controllers
                         //};
 
                         tran.Consignment_no = fields[1];
-                        tran.chargable_weight= double.Parse(fields[2]);
+                        tran.chargable_weight = double.Parse(fields[2]);
                         tran.Mode = fields[3];
                         tran.compaddress = fields[4];
                         tran.Quanntity = int.TryParse(fields[5], out int quantity) ? quantity : 0;
@@ -1990,7 +1991,7 @@ namespace DtDc_Billing.Controllers
 
                         string dateformat = fields[7];
 
-                        tran.tembookingdate = DateTime.ParseExact(fields[7], formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("dd-MM-yyyy");
+                        tran.tembookingdate = DateTime.ParseExact(fields[7], formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
                         tran.Type_t = fields[8];
                         tran.Customer_Id = fields[9];
@@ -2000,7 +2001,7 @@ namespace DtDc_Billing.Controllers
 
 
                         Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == strpfcode).FirstOrDefault();
-                        var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id&& m.Pf_code == strpfcode).Select(m => m.Pf_code).FirstOrDefault();
+                        var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code == strpfcode).Select(m => m.Pf_code).FirstOrDefault();
                         string bdatestring;
                         if (Pf_Code != null)
                         {
@@ -2020,14 +2021,14 @@ namespace DtDc_Billing.Controllers
                                 transaction.Mode = tran.Mode;
                                 transaction.compaddress = tran.compaddress;
                                 transaction.Quanntity = tran.Quanntity;
-                                transaction.Pincode =tran.Pincode;
-                                 bdatestring = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                                transaction.Pincode = tran.Pincode;
+                                bdatestring = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                                 transaction.booking_date = Convert.ToDateTime(bdatestring);
                                 transaction.Type_t = tran.Type_t;
                                 transaction.tembookingdate = tran.tembookingdate;
                                 transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                 transaction.AdminEmp = 000;
-                                transaction.loadingcharge =tran.loadingcharge;
+                                transaction.loadingcharge = tran.loadingcharge;
                                 tran.Receiver = tran.Receiver;
 
 
@@ -2069,9 +2070,9 @@ namespace DtDc_Billing.Controllers
                 return "0";
             }
         }
-     
 
 
-       
+
+
     }
 }

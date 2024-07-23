@@ -401,7 +401,7 @@
 
                                                 <div class="">
 
-                                                    @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                    @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control"@*, @readonly = "readonly"*@ } })
 
                                                 </div>
                                             </div>
@@ -414,7 +414,7 @@
 
 
                                                 <div class="">
-                                                    @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
+                                                    @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control"@*, @readonly = "readonly"*@ } })
                                                 </div>
                                             </div>
                                         </div>
@@ -738,8 +738,13 @@
 
                     $('#Address').val(Data.Company_Address);
 
+                    var fullsurdata = $('#fullsurchargetax').val();
+                    console.log(fullsurdata)
+                    if (fullsurdata == null || fullsurdata == "" || fullsurdata == NaN) {
+                        $('#fullsurchargetax').val(Data.Fuel_Sur_Charge);
 
-                    $('#fullsurchargetax').val(Data.Fuel_Sur_Charge);
+                    }
+                   // $('#fullsurchargetax').val(Data.Fuel_Sur_Charge);
 
                     D_Docket = Data.D_Docket;
                     P_Docket = Data.P_Docket;

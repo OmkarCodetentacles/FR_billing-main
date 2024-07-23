@@ -817,5 +817,51 @@ namespace DtDc_Billing.Entity_FR
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
         }
+    
+        public virtual ObjectResult<sp_getTransation_Result> sp_getTransation(Nullable<int> yearStart, Nullable<int> currentYear, string pfcode)
+        {
+            var yearStartParameter = yearStart.HasValue ?
+                new ObjectParameter("yearStart", yearStart) :
+                new ObjectParameter("yearStart", typeof(int));
+    
+            var currentYearParameter = currentYear.HasValue ?
+                new ObjectParameter("currentYear", currentYear) :
+                new ObjectParameter("currentYear", typeof(int));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_getTransation_Result>("sp_getTransation", yearStartParameter, currentYearParameter, pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<sp_getCheckBookingList_Result> sp_getCheckBookingList(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode, Nullable<int> yearStart, Nullable<int> currentYear)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            var yearStartParameter = yearStart.HasValue ?
+                new ObjectParameter("yearStart", yearStart) :
+                new ObjectParameter("yearStart", typeof(int));
+    
+            var currentYearParameter = currentYear.HasValue ?
+                new ObjectParameter("currentYear", currentYear) :
+                new ObjectParameter("currentYear", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_getCheckBookingList_Result>("sp_getCheckBookingList", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter, yearStartParameter, currentYearParameter);
+        }
     }
 }

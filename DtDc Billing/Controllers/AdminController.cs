@@ -23,6 +23,7 @@ using Microsoft.Win32;
 using System.Net.Http;
 using WebGrease.Css.ImageAssemblyAnalysis.LogModel;
 using DocumentFormat.OpenXml.Drawing;
+using PagedList;
 
 namespace DtDc_Billing.Controllers
 {
@@ -336,12 +337,16 @@ namespace DtDc_Billing.Controllers
                         cookie["Admin"] = ObjData.registrationId.ToString();
                         cookie["UserName"] = ObjData.userName.ToString();
                         cookie["pfCode"] = ObjData.Pfcode.ToString();
+                        cookie["CurrentYear"] = DateTime.Now.Year.ToString();
+                        cookie["YearStart"] = DateTime.Now.AddYears(-2).Year.ToString();
+                        cookie["datayear"] = "financialYear";
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
 
 
 
                         cookie["referalCode"] = ObjData.referralCode.ToString();
+                        
                         cookie.Expires = DateTime.Now.AddDays(1);
                         Response.Cookies.Add(cookie);
 
@@ -482,9 +487,44 @@ namespace DtDc_Billing.Controllers
             }
            
                 return View();
-            
+    
+        }
+        public JsonResult UpdateYearStart(string year)
+        {
+            //cookie["CurrentYear"] = DateTime.Now.Year.ToString();
+            HttpCookie cookie = Request.Cookies["Cookies"];
+            if (cookie != null)
+            {
+               if(year== "financialYear")
+                {
+                    cookie["YearStart"] = DateTime.Now.AddYears(-1).Year.ToString();
+                    cookie["CurrentYear"] = DateTime.Now.Year.ToString();
 
-           
+                }
+               else if(year== "FinancialYearwithLast")
+                {
+                    cookie["YearStart"] = DateTime.Now.AddYears(-2).Year.ToString();
+                    cookie["CurrentYear"] = DateTime.Now.Year.ToString();
+                }
+               else if(year== "FinancialWithLast2year")
+                {
+                    cookie["YearStart"] = DateTime.Now.AddYears(-3).Year.ToString();
+                    cookie["CurrentYear"] = DateTime.Now.Year.ToString();
+                }
+               else if(year== "All")
+                {
+                    cookie["YearStart"] = "0";
+                    cookie["CurrentYear"] ="0";
+                }
+                cookie["datayear"]=year;
+
+                cookie.Expires = DateTime.Now.AddDays(1);
+                Response.Cookies.Add(cookie);
+
+                return Json(new { success = true, yearStart =/* cookie["YearStart"]*/year }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, yearStart = /*cookie["YearStart"]*/year }, JsonRequestBehavior.AllowGet);
+
         }
         public string CountIncreaseofLogin()
         {

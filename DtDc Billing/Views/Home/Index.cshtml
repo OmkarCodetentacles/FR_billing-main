@@ -3,6 +3,13 @@
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    HttpCookie cookie = Request.Cookies["Cookies"];
+    var yeardata = "";
+    if (cookie != null)
+    {
+        yeardata = Request.Cookies["Cookies"]["datayear"].ToString() ?? "";
+
+    }
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -140,15 +147,15 @@
         animation: glow 1s ease-in-out infinite alternate;
     }
 
-@@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
+    @@-webkit-keyframes glow {
+        from {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+        }
 
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
-}
+        to {
+            text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+        }
+    }
 </style>
 
 
@@ -196,7 +203,7 @@
     <div class="box" style="padding:16px 16px !important">
         <div class="box-header with-border">
             <h4>
-                
+
                 <strong style="color: #0049af; font-size: 20px;">Dashboard</strong>
                 <a href="https://www.youtube.com/watch?v=vUAm6rWI45s&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=1" target="_blank" style="padding-top:10px" data-toggle="tooltip" title="Click to view more info">
                     @*<i class="fa fa-eye"></i>*@
@@ -204,6 +211,28 @@
                 </a>
 
             </h4>
+           
+
+                <span>Change Start Year</span>
+                <i aria-hidden="true"></i>
+                <span class="text-primary">
+
+                    @Html.DropDownList("Yearstart", new SelectListItem[]
+{
+        new SelectListItem() { Text = "Financial Year", Value = "financialYear" },
+
+    new SelectListItem() { Text = "Financial Year Last Year", Value = "FinancialYearwithLast" },
+    new SelectListItem() { Text = "Financial Year With Last 2 Year", Value = "FinancialWithLast2year" },
+        new SelectListItem() { Text = "All", Value = "All" }
+
+    //new SelectListItem() { Text = "Financial Year=2024,Last Year=2023,Last 3 Year=2021", Value = "2024-2021" },
+
+}, new { @class = "", @id = "yearStartDropdown" })
+
+                </span>
+
+   
+
         </div><!-- /.box-header -->
 
 
@@ -236,7 +265,7 @@
                                 @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>*@
                                 @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
                             </div>
-                                    }
+                        }
                         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="row ">
                                 <div class="col-md-3">
@@ -252,7 +281,7 @@
                                                         <span class="info-box-number">
                                                             @if (@ViewBag.DueDaysExpire > 0)
                                                             {
-                                                            <span class="glow">exceed</span>
+                                                                <span class="glow">exceed</span>
                                                             }
                                                             <strong>@ViewBag.DueDaysExpire</strong>
                                                         </span>
@@ -804,10 +833,10 @@
 
 
                         @*@{Html.RenderAction("steplinechart", "Home");}*@
-                    <div class="row">
-                        @{Html.RenderAction("DestinationAndProductPartial", "Home");}
+                        <div class="row">
+                            @{Html.RenderAction("DestinationAndProductPartial", "Home");}
 
-                    </div>
+                        </div>
                         <div>
                             @{Html.RenderAction("GetTop5Customer", "Home");}
                         </div>
@@ -947,4 +976,35 @@
         });
     </script>
 }
-
+<script>
+    $(document).ready(function () {
+           document.addEventListener('DOMContentLoaded', (event) => {
+               var yeardata = '@yeardata';
+               if (yeardata != "" || yeardata!=null) {
+            var dropdown = document.getElementById('yearStartDropdown');
+            dropdown.value = yeardata;
+        }
+    });
+        $('#yearStartDropdown').change(function () {
+            var selectedYears = $(this).val();
+            var confirmChange = confirm("Are you sure you want to change the  year(s) ?");
+            if (confirmChange) {
+                $.ajax({
+                    url: '/Admin/UpdateYearStart',
+                    type: 'GET',
+                    data: { year: selectedYears },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Start year has been updated to " + response.yearStart);
+                        } else {
+                            alert("Failed to update start year");
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                    }
+                });
+            }
+        });
+    });
+</script>
