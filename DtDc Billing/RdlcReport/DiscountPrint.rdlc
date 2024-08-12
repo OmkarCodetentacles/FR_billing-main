@@ -84,13 +84,13 @@
               <Width>1.44198in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.49296in</Width>
+              <Width>0.38929in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.33715in</Width>
+              <Width>0.46303in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.29666in</Width>
+              <Width>0.27444in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.39605in</Width>
@@ -322,7 +322,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -877,7 +877,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -960,7 +960,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1682,14 +1682,17 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Sum(Fields!Amount.Value+Fields!Risksurcharge.Value+Fields!loadingcharge.Value)</Value>
+                              <Value>=Round(Sum(Fields!Amount.Value) + Sum(Fields!Risksurcharge.Value) + Sum(Fields!loadingcharge.Value), 0)</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00;(#,0.00)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox159</rd:DefaultName>
@@ -1701,8 +1704,6 @@
                         <LeftBorder>
                           <Style>None</Style>
                         </LeftBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>4pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
@@ -4273,7 +4274,9 @@ Received Date</Value>
       </Textbox>
       <Image Name="Image2">
         <Source>External</Source>
-        <Value>=IIf(IsNothing(First(Fields!LogoFilePath.Value, "franchisee")), "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", First(Fields!LogoFilePath.Value, "franchisee"))</Value>
+        <Value>=IIf(IsNothing(First(Fields!LogoFilePath.Value, "franchisee")) OrElse String.IsNullOrEmpty(First(Fields!LogoFilePath.Value, "franchisee")), 
+    "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", 
+    First(Fields!LogoFilePath.Value, "franchisee"))</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
         <Top>0.13194in</Top>
@@ -4291,7 +4294,7 @@ Received Date</Value>
     <Height>10.45827in</Height>
     <Style />
   </Body>
-  <Width>8.23829in</Width>
+  <Width>8.14908in</Width>
   <Page>
     <PageFooter>
       <Height>0.49881in</Height>

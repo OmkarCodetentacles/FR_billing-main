@@ -2486,7 +2486,7 @@ Received Date</Value>
               <Width>0.51502in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.39056in</Width>
+              <Width>0.52216in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.293in</Width>
@@ -2495,16 +2495,16 @@ Received Date</Value>
               <Width>0.28822in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.61716in</Width>
+              <Width>0.4991in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.51914in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.46896in</Width>
+              <Width>0.48979in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.71806in</Width>
+              <Width>0.56906in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -2721,7 +2721,7 @@ Received Date</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -3275,7 +3275,7 @@ Received Date</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -3358,7 +3358,7 @@ Received Date</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -4081,12 +4081,15 @@ Received Date</Value>
                             <TextRun>
                               <Value>=Sum(Fields!Amount.Value+Fields!Risksurcharge.Value+Fields!loadingcharge.Value)</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00;(#,0.00)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox159</rd:DefaultName>
@@ -4098,8 +4101,7 @@ Received Date</Value>
                         <LeftBorder>
                           <Style>None</Style>
                         </LeftBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>4pt</PaddingRight>
+                        <PaddingRight>1pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
@@ -4147,7 +4149,7 @@ Received Date</Value>
         <Top>9.49882in</Top>
         <Left>0.09887in</Left>
         <Height>0.75812in</Height>
-        <Width>7.92655in</Width>
+        <Width>7.81197in</Width>
         <ZIndex>33</ZIndex>
         <Style>
           <Border>
@@ -4157,7 +4159,9 @@ Received Date</Value>
       </Tablix>
       <Image Name="Image2">
         <Source>External</Source>
-        <Value>=IIf(IsNothing(First(Fields!LogoFilePath.Value, "franchisee")), "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", First(Fields!LogoFilePath.Value, "franchisee"))</Value>
+        <Value>=IIf(IsNothing(First(Fields!LogoFilePath.Value, "franchisee")) OrElse String.IsNullOrEmpty(First(Fields!LogoFilePath.Value, "franchisee")), 
+    "https://frbilling.com/assets/Home/assets/images/Dtdclogo.png", 
+    First(Fields!LogoFilePath.Value, "franchisee"))</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
         <Top>0.13194in</Top>
@@ -4210,7 +4214,7 @@ Received Date</Value>
     <Height>10.29861in</Height>
     <Style />
   </Body>
-  <Width>8.07147in</Width>
+  <Width>8.15706in</Width>
   <Page>
     <PageHeader>
       <Height>0.23958in</Height>
