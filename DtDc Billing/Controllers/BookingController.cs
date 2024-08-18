@@ -1697,6 +1697,42 @@ Select(e => new
         }
 
 
+        [HttpGet]
+        public ActionResult AddCodTopayimporFromExcel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddCodTopayimporFromExcel(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase != null)
+            {
+                try
+                {
+                    var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                    ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
+                    var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
+                    if (damageResult == "1")
+                    {
+                        TempData["error"] = "Something Went Wrong\n<b style=" + "color:red" + ">May be Issue in the Excel</b>";
+                    }
+                    TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                }
+                catch (Exception ex)
+                {
+
+                    return PartialView("~/Views/Shared/Error.cshtml");
+                }
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+            return RedirectToAction("importFromExcel");
+        }
+
+
         public ActionResult importTextFile()
         {
 

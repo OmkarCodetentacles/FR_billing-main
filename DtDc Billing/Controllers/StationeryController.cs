@@ -17,6 +17,7 @@ using System.Drawing;
 using ZXing;
 using DocumentFormat.OpenXml;
 using System.Transactions;
+using System.Windows.Forms;
 
 namespace DtDc_Billing.Controllers
 {
@@ -858,7 +859,8 @@ Select(e => new
         static List<string> GenerateSeries(string startValue, string endValue)
         {
             List<string> series = new List<string>();
-
+            var slength = startValue.Length;
+            var elength=endValue.Length;    
             // Extract the prefix and numeric part from the start and end values
             string prefix = "";
             int startNumber = ExtractNumericPart(startValue, out prefix);
@@ -867,7 +869,10 @@ Select(e => new
             // Generate the series
             for (int i = startNumber; i <= endNumber; i++)
             {
-                series.Add(prefix + i.ToString());
+                var paddedNumber = i.ToString().PadLeft(slength -i.ToString().Length, '0');
+
+                var finalvalue = prefix + paddedNumber;
+                series.Add(finalvalue);
             }
 
             return series;

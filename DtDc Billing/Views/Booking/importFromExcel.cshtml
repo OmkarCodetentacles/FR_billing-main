@@ -134,19 +134,47 @@
                             </div>
                         </div>
 
+                        @*<div class="form-horizontal">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @using (Html.BeginForm("ImportCSV", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <div class="col-md-8 no-padding">
+                                    <label for="file"><strong id="up-txt"> Upload New </strong></label>
+                                    <input type="file" name="file" id="file" class="form-control" />
+                                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                          <a href="@Url.Action("ExportCSV", "Booking")" class="btn btn-success" target="_blank">Export CSV</a>
+                                    </div>
+                                </div>
+
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+            </div>
+        </div>*@
+
                         <div class="form-horizontal">
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @using (Html.BeginForm("ImportCSV", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                            @using (Html.BeginForm("AddCodTopayimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                             {
                                                 <div class="col-md-8 no-padding">
                                                     <label for="file"><strong id="up-txt"> Upload New </strong></label>
                                                     <input type="file" name="file" id="file" class="form-control" />
                                                     <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
                                                         <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                          <a href="@Url.Action("ExportCSV", "Booking")" class="btn btn-success" target="_blank">Export CSV</a>                                 
+                                                        <a href="@baseUrl/excelformat/ExportCCodTopayExcel.xlsx" class="btn btn-success"> Export Excel</a><!--Create Dynamic url-->
+
+                                                        @*<a href="@Url.Action("ExportCCodTopayExcel", "Booking")" class="btn btn-success" target="_blank">Export CSV</a>*@
                                                     </div>
                                                 </div>
 
@@ -159,8 +187,6 @@
 
                             </div>
                         </div>
-
-
                     </div>
                 </div>
     </div>

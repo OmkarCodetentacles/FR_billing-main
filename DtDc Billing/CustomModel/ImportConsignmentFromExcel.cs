@@ -288,30 +288,53 @@ namespace DtDc_Billing.CustomModel
                                 if (workSheet.Cells[rowIterator, 8]?.Value?.ToString()!=null)
                             {
                                 tran.Consignment_no = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
+                                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
 
-                                tran.chargable_weight = Convert.ToDouble(workSheet.Cells[rowIterator, 3]?.Value);
-                                tran.Mode = workSheet.Cells[rowIterator, 4]?.Value?.ToString().ToUpper();
-                                tran.compaddress = (workSheet?.Cells[rowIterator, 5]?.Value?.ToString());
-                                tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value);
-                                tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
 
-                                 string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
+
+                                    //       tran.chargable_weight =  Convert.ToDouble(workSheet.Cells[rowIterator, 3]?.Value);
+                                    tran.chargable_weight = workSheet.Cells[rowIterator, 3]?.Value != null
+                                          ? Convert.ToDouble(workSheet.Cells[rowIterator, 3]?.Value)
+                                          : transaction.chargable_weight;
+
+                                    // tran.Mode = workSheet.Cells[rowIterator, 4]?.Value?.ToString().ToUpper();
+
+                                    tran.Mode = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 4]?.Value?.ToString().ToUpper())
+                                       ? workSheet.Cells[rowIterator, 4]?.Value?.ToString().ToUpper()
+                                       : transaction.Mode;
+
+                                    //tran.compaddress = (workSheet?.Cells[rowIterator, 5]?.Value?.ToString());
+                                    tran.compaddress = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 5]?.Value?.ToString())
+                                    ? workSheet.Cells[rowIterator, 5]?.Value?.ToString()
+                                    : transaction.compaddress;
+
+                                    //  tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value);
+                                    tran.Quanntity = workSheet.Cells[rowIterator, 6]?.Value != null
+                                     ? Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value)
+                                     : transaction.Quanntity;
+
+                                    //  tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
+                                    tran.Pincode = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 7]?.Value?.ToString())
+              ? workSheet.Cells[rowIterator, 7]?.Value?.ToString()
+              : transaction.Pincode;
+
+                                    string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
                                     DateTime dateTime;
                                     ////  tran.tembookingdate = tran.booking_date.Value.ToString("dd-MM-yyyy");
                                     object cellValue = workSheet.Cells[rowIterator, 8]?.Value; // Assuming the date is in the 8th column (column H)
 
-                                   
 
-                                   
-                                    if (cellValue != null && cellValue is DateTime)
+                                    if (!string.IsNullOrEmpty(dateString))
                                     {
-                                        DateTime excelDate = (DateTime)cellValue;
-                                        tran.booking_date = excelDate;
-                                        tran.tembookingdate = excelDate.ToString("dd-MM-yyyy"); // If needed, store formatted date
-                                    }
-                                    
+                                        if (cellValue != null && cellValue is DateTime)
+                                        {
+                                            DateTime excelDate = (DateTime)cellValue;
+                                            tran.booking_date = excelDate;
+                                            tran.tembookingdate = excelDate.ToString("dd-MM-yyyy"); // If needed, store formatted date
+                                        }
+
                                         // Check if the dateString can be parsed as a double (Excel serial date number)
-                                     else  if (double.TryParse(dateString, out double excelDateNumber))
+                                        else if (double.TryParse(dateString, out double excelDateNumber))
                                         {
                                             dateTime = DateTime.FromOADate(excelDateNumber);
                                             string formattedDate = DateTime.FromOADate(excelDateNumber).ToString("MM/dd/yyyy");
@@ -345,41 +368,63 @@ namespace DtDc_Billing.CustomModel
                                                 // Set the tembookingdate
                                                 tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
                                             }
-                                        else
-                                        {
-                                            if (DateTime.TryParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+                                            else
                                             {
-                                                // Convert the DateTime object to the Excel date number
-                                                double excelDateNumberd = dateTime.ToOADate();
+                                                if (DateTime.TryParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+                                                {
+                                                    // Convert the DateTime object to the Excel date number
+                                                    double excelDateNumberd = dateTime.ToOADate();
 
-                                                // Format the Excel date number as MM/dd/yyyy
-                                                string formattedDate = DateTime.FromOADate(excelDateNumberd).ToString("MM/dd/yyyy");
+                                                    // Format the Excel date number as MM/dd/yyyy
+                                                    string formattedDate = DateTime.FromOADate(excelDateNumberd).ToString("MM/dd/yyyy");
 
-                                                // Convert the formatted date string back to DateTime
-                                                DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                                                    // Convert the formatted date string back to DateTime
+                                                    DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
 
-                                                // Set the booking date
-                                                tran.booking_date = formattedDateTime;
+                                                    // Set the booking date
+                                                    tran.booking_date = formattedDateTime;
 
-                                                // Set the tembookingdate
-                                                tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+                                                    // Set the tembookingdate
+                                                    tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+                                                }
+
                                             }
-
                                         }
+
+
                                     }
 
-                                    
 
-                                    tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
-                                    tran.Customer_Id = workSheet.Cells[rowIterator, 10]?.Value?.ToString();
-                                    double? loadingChargeValue = workSheet?.Cells[rowIterator, 11]?.Value as double?;
-                                    tran.loadingcharge = loadingChargeValue ?? 0.0;
-                                    tran.Receiver = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
-                                    double?  amount= workSheet?.Cells[rowIterator, 13]?.Value as double?;
-                                    tran.Amount = amount ?? 0.0;
-                             
-                                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
-                                var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code==getPfcode).Select(m => m.Pf_code).FirstOrDefault();
+
+                                    // tran.Type_t = workSheet.Cells[rowIterator, 9]?.Value?.ToString();
+                                    tran.Type_t = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 9]?.Value?.ToString())
+                                     ? workSheet.Cells[rowIterator, 9]?.Value?.ToString()
+                                     : transaction.Type_t;
+
+                                    //  tran.Customer_Id = workSheet.Cells[rowIterator, 10]?.Value?.ToString();
+
+                                    tran.Customer_Id = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 10]?.Value?.ToString())
+                                    ? workSheet.Cells[rowIterator, 10]?.Value?.ToString()
+                                    : transaction.Customer_Id;
+
+                                    // double? loadingChargeValue = workSheet?.Cells[rowIterator, 11]?.Value as double?;
+                                   // tran.loadingcharge = loadingChargeValue ?? 0.0;
+                                    tran.loadingcharge = workSheet.Cells[rowIterator, 11]?.Value is double loadingChargeValue
+                                        ? loadingChargeValue
+                                        : transaction.loadingcharge;
+
+                                    //tran.Receiver = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
+                                    tran.Receiver = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 12]?.Value?.ToString())
+                                    ? workSheet.Cells[rowIterator, 12]?.Value?.ToString()
+                                    : transaction.Receiver;
+
+                                    //double?  amount= workSheet?.Cells[rowIterator, 13]?.Value as double?;
+                                    //tran.Amount = amount ?? 0.0;
+                                    tran.Amount = workSheet.Cells[rowIterator, 13]?.Value is double amount
+                                           ? amount
+                                           : tran.Amount;
+
+                                    var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code==getPfcode).Select(m => m.Pf_code).FirstOrDefault();
 
                                 if (Pf_Code!=null)
                                 {
