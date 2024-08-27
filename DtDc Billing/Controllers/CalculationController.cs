@@ -15,7 +15,7 @@ namespace DtDc_Billing.Controllers
         // GET: Calculation
         [HttpPost]
         public ActionResult CalulateAmt(string Consignment, string custid, string Pincode, string mode, string qty, double charweight, string type)
-       {
+        {
             double? DoxNonDoxAmt = 10;
 
 
@@ -50,7 +50,7 @@ namespace DtDc_Billing.Controllers
             {
                 string[] sectarray = i.Pincode_values.Split(',');
 
-                foreach (var m in sectarray)
+                    foreach (var m in sectarray)
                 {
                     if (m.Contains("-"))
                     {
@@ -757,11 +757,11 @@ namespace DtDc_Billing.Controllers
                             }
                             else
                             {
-                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomPslab1)) / Convert.ToDouble(dtdc_ecom.EcomPupto4);
+                                double weightmod = (highwaight - Convert.ToDouble(dtdc_ecom.EcomPupto1)) / Convert.ToDouble(dtdc_ecom.EcomPupto4);
 
                                 weightmod = Math.Ceiling(weightmod);
 
-                                amount1 = Convert.ToDouble((dtdc_ecom.EcomPslab1 * dtdc_ecom.EcomPupto1) + (dtdc_ecom.EcomPslab4 * weightmod));
+                                amount1 = Convert.ToDouble((dtdc_ecom.EcomPslab1) + (dtdc_ecom.EcomPslab4 * weightmod));
                             }
                         }
                         else if (dtdc_ecom.NoOfSlabN == 3)

@@ -1,9 +1,11 @@
-﻿using DtDc_Billing.Entity_FR;
+﻿using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -162,7 +164,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult EditCompanyRateMaster()
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+            ViewBag.error = TempData["error"];
+            ViewBag.success = TempData["success"];
             var data = (from d in db.Companies
                         where d.Pf_code == strpfcode
                         // && d. == stradmin
@@ -487,6 +490,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
             TempData["ShowLoader"] = true;
+        
             List<SelectListItem> items = new List<SelectListItem>();
 
             items.Add(new SelectListItem { Text = "0", Value = "0", Selected = true });
@@ -2166,5 +2170,51 @@ namespace DtDc_Billing.Controllers
               
             }
         }
+
+
+        [HttpGet]
+        public ActionResult AddCompanyimporFromExcel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddCompanyimporFromExcel(HttpPostedFileBase httpPostedFileBase)
+        {
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var company=db.Companies.Where(x=>x.Pf_code==PfCode).Select(x=>x.Company_Id).FirstOrDefault();
+            if (company == null)
+            {
+                TempData["error"] = "You have not added a company for your PF Code. Please add the company and fill its Rate Master. Use the company's Rate Master to complete the Rate Master for the Excel companies.";
+
+                return RedirectToAction("AddCompany");
+            }
+
+            if (httpPostedFileBase != null)
+            {
+                try { 
+                    
+                    ImportComapnyFromExcel importConsignmentFromExcel = new ImportComapnyFromExcel();
+                    var damageResult = importConsignmentFromExcel.ImportComapnyAsync(httpPostedFileBase, PfCode);
+                    if (damageResult == "1")
+                    {
+                        TempData["error"] = "Something Went Wrong\n<b style=" + "color:red" + ">May be Issue in the Excel</b>";
+                    }
+                    TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                    return RedirectToAction("EditCompanyRateMaster", "RateMaster");
+                }
+                catch (Exception ex)
+                {
+
+                    return PartialView("~/Views/Shared/Error.cshtml");
+                }
+            }
+            else
+            {
+                TempData["error"] = "Please upload file";
+            }
+            return RedirectToAction("AddCompany");
+        }
+
     }
 }

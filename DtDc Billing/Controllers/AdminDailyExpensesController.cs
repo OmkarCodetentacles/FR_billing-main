@@ -118,6 +118,13 @@ namespace DtDc_Billing.Controllers
                
                 Payment pay = new Payment();
 
+                var update = db.Receipt_details.Where(m => m.Consignment_No == payment.Consignment_No).FirstOrDefault();
+                if (update == null)
+                {
+                    ViewBag.Error = "Consignment Number Does not Exists!";
+                    return View(payment);
+                }
+
                 pay.Consignment_No = payment.Consignment_No;
                 pay.amount = payment.amount;
                 pay.Description_ = payment.Description_;
@@ -131,13 +138,14 @@ namespace DtDc_Billing.Controllers
                 //////////Alert Afte Success///
                 ViewBag.Success = " Added Successfully...!!!";
                 ////////////////////////////////////////
-                
-                var update = db.Receipt_details.Where(m => m.Consignment_No == payment.Consignment_No).FirstOrDefault();
-                update.Paid_Amount = update.Paid_Amount + payment.amount;
-                db.Receipt_details.Attach(update);
-
-                db.Entry(update).Property(x => x.Paid_Amount).IsModified = true;
-                db.SaveChanges();
+              
+             
+                    update.Paid_Amount = update.Paid_Amount + payment.amount;
+                    db.Receipt_details.Attach(update);
+                    db.Entry(update).Property(x => x.Paid_Amount).IsModified = true;
+                    db.SaveChanges();
+              
+             
                 ModelState.Clear();
                 return View();
                 

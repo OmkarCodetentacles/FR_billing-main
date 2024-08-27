@@ -716,20 +716,20 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             var flag = 0;
             var consval = consno.toLowerCase();
 
-            if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
+            //if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
 
-                flag = 1;
+            //    flag = 1;
 
-            }
-            else {
-                //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
-                if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
+            //}
+            //else {
+            //    //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
+            //    if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
 
 
-                    flag = 1;
-                }
-            }
-            if (flag===1) {
+            //        flag = 1;
+            //    }
+            //}
+            if (consval.length>=9) {
                 $('#Consignment_No').val($(this).val().toUpperCase());
                 $('#Customer_Id').focus();
                 ShowRadios(); //calling function
