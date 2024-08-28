@@ -58,13 +58,14 @@ namespace DtDc_Billing.CustomModel
             emailData.to = toList;
 
             emailData.subject = sendModel.subject;
-            emailData.htmlContent = sendModel.body;
+
 
 
             // Attachments
             if (!string.IsNullOrEmpty(sendModel.filepath))
             {
                 try
+
                 {
                     byte[] fileBytes = File.ReadAllBytes(sendModel.filepath);
 
@@ -110,7 +111,7 @@ namespace DtDc_Billing.CustomModel
             }
 
         }
-
+     
 
 
         public  async Task<string> SendEmailWithAttachment(SendModel sendEmailModel)
