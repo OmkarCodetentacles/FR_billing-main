@@ -66,7 +66,7 @@
                         @if (!string.IsNullOrEmpty(errorMessage))
                         {
 
-                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", successMessage))
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", errorMessage))
                         }
                         <!-- /.box-header -->
                         @Html.ValidationMessage("invoi", new { @class = "text-danger" })
@@ -97,6 +97,25 @@
                                         {
 
                                             if (Model != null && Model.invoiceno.Length > 10)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno } })
+                                            }
+                                            else if (ViewBag.nextinvoice != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice } })
+                                            }
+                                            else if (ViewBag.lastInvoiceno != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
+                                        }
+                                        else if (ViewBag.currentPfcode == "cf2567")
+                                        {
+                                            if (Model != null && Model.invoiceno.Length >=4)
                                             {
                                                 @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno } })
                                             }

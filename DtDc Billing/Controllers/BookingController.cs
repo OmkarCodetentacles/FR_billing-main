@@ -1712,7 +1712,7 @@ Select(e => new
                 {
                     var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                     ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
-                    var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
+                    var damageResult = importConsignmentFromExcel.ImportCodTopayAsync(httpPostedFileBase, PfCode);
                     if (damageResult == "1")
                     {
                         TempData["error"] = "Something Went Wrong\n<b style=" + "color:red" + ">May be Issue in the Excel</b>";
