@@ -61,7 +61,7 @@ namespace DtDc_Billing.Controllers
             string invstart1 = dataInvStart + "/2023-24/";
             string no = "";
             string finalstring = "";
-            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958" || strpfcode== "CF2024" || strpfcode=="PF2213")
+            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958" || strpfcode== "CF2024" || strpfcode=="PF2213" || strpfcode== "PF2046"|| strpfcode== "PF857")
             {
                 dataInvStart = (from d in db.Franchisees
                                     where d.PF_Code == strpfcode
@@ -547,9 +547,14 @@ namespace DtDc_Billing.Controllers
 
         [HttpGet]
         public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo, bool isDelete = false)
+        
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            ViewBag.fromdate = invfromdate;
+            ViewBag.todate=invtodate;
+            ViewBag.Companydetails = Companydetails;
+            ViewBag.invoiceNo = invoiceNo;
             if (isDelete)
             {
                 var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNo && x.Pfcode == strpf).FirstOrDefault();
@@ -581,7 +586,7 @@ namespace DtDc_Billing.Controllers
                 string bdatefrom = DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 fromdate = Convert.ToDateTime(bdatefrom);
 
-                ViewBag.todate = invtodate;
+               
             }
             else
             {
@@ -592,7 +597,7 @@ namespace DtDc_Billing.Controllers
             {
                 string bdateto = DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 todate = Convert.ToDateTime(bdateto);
-                ViewBag.fromdate = invfromdate;
+               
             }
             else
             {
@@ -602,13 +607,15 @@ namespace DtDc_Billing.Controllers
             {
                 ViewBag.Custid = Companydetails;
             }
-            var a = (from member in db.Invoices
-                     where temp.Contains(member.invoiceno) && member.Pfcode == strpf
-                     && (invfromdate == null || member.invoicedate >= fromdate.Value)
-                     && (invtodate == null || member.invoicedate <= todate.Value)
-                     && (Companydetails == null || member.Customer_Id== Companydetails)
-                     && (invoiceNo==null || member.invoiceno== invoiceNo)
-                     select member).ToList();
+            
+            var a = (from m in db.Invoices
+                     where temp.Contains(m.invoiceno) &&
+                     m.Pfcode == strpf
+                     && ( string.IsNullOrEmpty(invfromdate) || m.invoicedate >= fromdate.Value)
+                     && (string.IsNullOrEmpty(invtodate) ||  m.invoicedate <= todate.Value)
+                     && ( string.IsNullOrEmpty(Companydetails) || m.Customer_Id== Companydetails)
+                     && (invoiceNo==null || invoiceNo=="" || m.invoiceno== invoiceNo)
+                     select m).ToList();
 
 
 
@@ -1040,9 +1047,23 @@ Select(e => new
                     {
                         ViewBag.pdf = true;
                         ViewBag.invoiceno = invoice.invoiceno.Replace("/", "-");
+                        ViewBag.strpfcode = strpfcode;
                     }
-                    string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+
+                    var pdfPath = Server.MapPath("~/PDF/" + strpfcode);
+                    // Check if the directory exists
+                    if (!Directory.Exists(pdfPath))
+                    {
+                        // Create the directory if it doesn't exist
+                        Directory.CreateDirectory(pdfPath);
+                    }
+                    var invoicefile = dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+                    string savePath = Path.Combine(pdfPath,invoicefile );
+
+
+                   //  savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
                     ViewBag.savePath = savePath;
+                    
                     using (FileStream stream = new FileStream(savePath, FileMode.Create))
                     {
                         stream.Write(renderByte, 0, renderByte.Length);
@@ -1050,7 +1071,7 @@ Select(e => new
 
                     if (submit == "Email")
                     {
-                        var path1 = baseUrl + "/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+                        var path1 = baseUrl + "/PDF/"+strpfcode+"/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
 
                         string emailBody = $@"
                         <html>
@@ -1114,7 +1135,7 @@ Select(e => new
                                 <hr>
 <p><a href='{path1}'>Download your Invoice here</a></p> <!-- Add a link to the path -->      
                                 <p>If you have any questions or concerns regarding your invoice, please contact our support team.<br />
-                                    <strong> at +91 9209764995</strong></p>
+                                    <strong> at +91 82086688415</strong></p>
 
                                 <p>Thank you for choosing Fr-Billing.</p>
                                 <p>Best regards,</p>
@@ -1144,6 +1165,13 @@ Select(e => new
                         var mailMessage = sm.MailSend(emailModel);
 
 
+                        //string em = dataset4.FirstOrDefault().Email;
+                        //var mail = SendEmailModel.SendEmail(em, "Invoice", emailBody, renderByte);
+                        //if (mail == "Failed to send email")
+                        //{
+                        //    TempData["emailError"] = "Something Went Wrong to Sent Mail!!!";
+                        //    return PartialView("GenerateInvoicePartial", invoice);
+                        //}
 
                         //    MemoryStream memoryStream = new MemoryStream(renderByte);
 
@@ -1213,20 +1241,35 @@ Select(e => new
 
 
         public ActionResult Download(long id)
-        {
+         {
+            var pfcode = Request.Cookies["cookies"]["AdminValue"].ToString();
 
-            var invoice = db.Invoices.Where(m => m.IN_Id == id).FirstOrDefault();
+            var invoice = db.Invoices.Where(m => m.IN_Id == id && m.Pfcode==pfcode).FirstOrDefault();
             string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
                  Request.ApplicationPath.TrimEnd('/') + "/";
-
-
+            var pdfPath = Server.MapPath("~/PDF/" + pfcode);
+            var filename = invoice.invoiceno.Replace("/", "-") + ".pdf";
+            string savePath = Path.Combine(pdfPath,filename);
             if (invoice != null)
             {
-                string savePath = baseUrl + "/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+                if (System.IO.File.Exists(savePath))
+                {
 
-                return Redirect(savePath);
+                    savePath=baseUrl+"/PDF/"+pfcode +"/"+ invoice.invoiceno.Replace("/", "-") + ".pdf";
+                    return Redirect(savePath);
+                }
+                else
+                {
+                     savePath = baseUrl + "/PDF/" + invoice.invoiceno.Replace("/", "-") + ".pdf";
+
+                    return Redirect(savePath);
+                }
 
             }
+          
+           
+
+           
 
 
 
@@ -1923,7 +1966,7 @@ Select(e => new
                     //string invstart1 = "IJS/2022-23/";
                     string no = "";
                     string finalstring = "";
-                    if (strpfcode == "MF868" || strpfcode=="PF1649"  || strpfcode=="PF934" || strpfcode == "UF2679" || strpfcode== "CF2024" || strpfcode=="PF2214"|| strpfcode== "PF1958" || strpfcode== "PF2213")
+                    if (strpfcode == "MF868" || strpfcode == "PF1649" || strpfcode == "PF934" || strpfcode == "UF2679" || strpfcode == "CF2024" || strpfcode == "PF2214" || strpfcode == "PF1958" || strpfcode == "PF2213" || strpfcode == "PF2046" || strpfcode == "PF857")
                     {
                         dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
@@ -2358,6 +2401,30 @@ Select(e => new
           out streams,
           out warnings
           );
+            string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+            //New Updation in the Path of the Invocie PDf save
+            var pdfpath = Server.MapPath("~/PDF/" + strpfcode);
+            if (!Directory.Exists(pdfpath))
+            {
+                Directory.CreateDirectory(pdfpath);
+            }
+            // Construct the file name with Firm_Id and Invoice number, replacing "/" with "-"
+            string fileName =  dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+
+            // Combine the directory path and the file name to get the full save path
+            string savePath = Path.Combine(pdfpath, fileName);
+
+
+            // string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + "-" + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+          //  string savePath = Path.Combine(pdfpath + dataset3.FirstOrDefault().Firm_Id + "-" + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+
+
+            var path1 = baseUrl + pdfpath + dataset3.FirstOrDefault().Firm_Id + "-" + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+
+            using (FileStream stream = new FileStream(savePath, FileMode.Create))
+            {
+                stream.Write(renderByte, 0, renderByte.Length);
+            }
 
             if (submit == "Email")
             {
@@ -2396,16 +2463,90 @@ Select(e => new
                     smtp.Send(mm);
                 }
 
+                string emailBody = $@"
+                        <html>
+                        <head>
+                            <title>Your Invoice has been Generated</title>
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    margin: 0;
+                                    padding: 0;
+                                    background-color: #F5E8E8;
+                                }}
+
+                                .container {{
+                                    max-width: 600px;
+                                    margin: 0 auto;
+                                    padding: 20px;
+                                    background-color: #FFFFFF;
+                                }}
+
+                                h2 {{
+                                    color: #333333;
+                                }}
+
+                                p {{
+                                    color: #555555;
+                                }}
+
+                                table {{
+                                    width: 100%;
+                                }}
+
+                                th, td {{
+                                    padding: 10px;
+                                    text-align: left;
+                                    vertical-align: top;
+                                    border-bottom: 1px solid #dddddd;
+                                }}
+
+                                .logo {{
+                                    text-align: center;
+                                    margin-bottom: 20px;
+                                }}
+
+                                .logo img {{
+                                    max-width: 200px;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <div class='container'>
+                                <div class='logo'>
+                                    <img src='https://frbilling.com/assets/Home/assets/images/logo.png' alt='Logo'>
+                                </div>
+                                <h4>Your Invoice has been Generated</h4>
+                                <h3><strong>Dear Customer,</strong></h3>
+                                <p>We are pleased to inform you that your invoice has been successfully generated.</p>
+                                <p>Please find the details below:</p>
+                                <!-- Include invoice details as a table or any other format you prefer -->
+
+                                <hr>
+ <p><a href='{path1}'>Download your Invoice here</a></p> <!-- Add a link to the path -->            
+<p>If you have any questions or concerns regarding your invoice, please contact our support team.<br />
+                                    <strong> at +91  8208668841</strong></p>
+
+                                <p>Thank you for choosing OnTrack.</p>
+                                <p>Best regards,</p>
+                                <p><strong>OnTrack Express</strong></p>
+                            </div>
+                        </body>
+                        </html>
+                        ";
+
+                //string em = dataset4.FirstOrDefault().Email;
+                //var mail = SendEmailModel.SendEmail(em, "Invoice", emailBody, renderByte);
+                //if (mail == "Failed to send email")
+                //{
+                //    TempData["emailError"] = "Something Went Wrong to Sent Mail!!!";
+                //}
+
 
             }
 
 
-            string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + "-" + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
-
-            using (FileStream stream = new FileStream(savePath, FileMode.Create))
-            {
-                stream.Write(renderByte, 0, renderByte.Length);
-            }
+          
 
 
 
@@ -2783,7 +2924,7 @@ Select(e => new
                                 select d.InvoiceStart).FirstOrDefault();
 
             string invstart1 = dataInvStart + "/2023-24/";
-            if (strpfcode == "PF2214" || strpfcode== "CF2024" || strpfcode== "PF2213")
+            if (strpfcode == "PF2214" || strpfcode== "CF2024" || strpfcode== "PF2213" || strpfcode== "PF2046" || strpfcode== "PF857")
             {
                 dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -3335,7 +3476,17 @@ Select(e => new
                 //ViewBag.invoiceno = invoice.invoiceno;
                 ViewBag.pdf = true;
                 ViewBag.invoiceno = invoice.invoiceno.Replace("/", "-");
-                string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                ViewBag.strpfcode = strpfcode;
+
+                var pdfPath = Server.MapPath("~/PDF/" + strpfcode);
+                if (!Directory.Exists(pdfPath))
+                {
+                    // Create the directory if it doesn't exist
+                    Directory.CreateDirectory(pdfPath);
+                }
+                var invoicefile = dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
+                //string savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                string savePath = Path.Combine(pdfPath,invoicefile );
 
                 using (FileStream stream = new FileStream(savePath, FileMode.Create))
                 {

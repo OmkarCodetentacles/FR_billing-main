@@ -3,7 +3,7 @@
 @{
     /**/
 
-    ViewBag.Title = "ViewInvoice";
+    ViewBag.Title = "ViewSingleInvoice";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
@@ -47,9 +47,12 @@
                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
 
                 }
-                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
-                    {
+                @using (Html.BeginForm("ViewSingleInvoice", "Invoice", FormMethod.Get))
+                {
 
+
+                    if (ViewBag.Companydetails != null)
+                    {
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
                             <label>Company Name</label>
@@ -59,47 +62,97 @@
                             @*@Html.DropDownList("Companydetails", "-Please select-")*@
 
                         </div>
+                    }
+                    else
+                    {
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
-                            <label>Invoice Number</label>
+                            <label>Company Name</label>
 
-                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceno">
+                            <input type="text" name="Companydetails" id="Companydetails" class="form-control">
 
                             @*@Html.DropDownList("Companydetails", "-Please select-")*@
 
                         </div>
+                    }
+                    if (ViewBag.invoiceNo != null)
+                    {
+                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
+                            <label>Invoice Number</label>
+
+                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceNo">
+
+                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
+
+                            <label>Invoice Number</label>
+
+                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control">
+
+                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
+
+                        </div>
+                    }
+                    if (ViewBag.fromdate != null)
+                    {
                         <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
                             <label>From Date</label>
                             @*<label class="Reqired">*</label>*@
-                            <input type="text" name="invfromdate" id="invfromdate" class="form-control" value="@ViewBag.invfromdate">
+                            <input type="text" name="invfromdate" id="invfromdate" class="form-control" value="@ViewBag.fromdate">
                         </div>
-
-
+                    }
+                    else
+                    {
+                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                            <label>From Date</label>
+                            @*<label class="Reqired">*</label>*@
+                            <input type="text" name="invfromdate" id="invfromdate" class="form-control">
+                        </div>
+                    }
+                    if (ViewBag.todate != null)
+                    {
                         <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
                             <label>To Date</label>
                             @*<label class="Reqired">*</label>*@
-                            <input type="text" name="invtodate" id="invtodate" class="form-control" value="@ViewBag.invtodate">
+                            <input type="text" name="invtodate" id="invtodate" class="form-control" value="@ViewBag.todate">
                         </div>
-
-                        <input type="hidden" value="@ViewBag.firmid">
-                        <input type="hidden" value="@ViewBag.Companyid">
-
-                        @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
-
-                        <div class="col-md-1" style="padding:0">
-                            <input type="submit" class="btn btn-primary sbmt" name="submit" id="submitbook" value="Submit" style="margin:33px auto;width:100%" />
+                    }
+                    else
+                    {
+                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                            <label>To Date</label>
+                            @*<label class="Reqired">*</label>*@
+                            <input type="text" name="invtodate" id="invtodate" class="form-control">
                         </div>
+                    }
 
-                        <br /><br /><br /><br />
-                    
+
+
+
+                    <input type="hidden" value="@ViewBag.firmid">
+                    <input type="hidden" value="@ViewBag.Companyid">
+
+                    @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+
+                    <div class="col-md-1" style="padding:0">
+                        <input type="submit" class="btn btn-primary sbmt" name="submit" id="submitbook" value="Submit" style="margin:33px auto;width:100%" />
+                    </div>
+
+                    <br /><br /><br /><br />
+
                 }
                 <div class="col-xs-12">
 
                     @*<div class="col-md-4">
-                            <label for="departmentsDropdown">Firm Name</label>
-                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
-                        </div>*@
+                <label for="departmentsDropdown">Firm Name</label>
+                <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+            </div>*@
                     <table id="table_display_block" class="table Viewsingleinvoice">
                         <thead>
                             <tr>

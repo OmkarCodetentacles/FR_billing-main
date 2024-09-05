@@ -165,8 +165,46 @@ namespace DtDc_Billing.CustomModel
 
 
 
+        public static string SendEmail(string email, string subject, string description, byte[] renderByte)
+        {
+            try
+            {
+                // Create the sender and recipient
+                var fromAddress = new MailAddress("ontrackexpresscare@gmail.com", "Ontrack Express");
+                var toAddress = new MailAddress(email, email);
+                MemoryStream memoryStream = new MemoryStream(renderByte);
+                Attachment attachment = new Attachment(memoryStream, "Invoice.pdf");
 
-        
+                // Create the email messageSAve
+                MailMessage message = new MailMessage(fromAddress, toAddress);
+                message.Subject = subject;
+                message.Body = description;
+                message.IsBodyHtml = true;
+                message.Attachments.Add(attachment);
+
+                SmtpClient smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    UseDefaultCredentials = false,
+
+                    Credentials = new NetworkCredential("ontrackexpresscare@gmail.com", "ejbocwdchgkyitmx"),
+                    Port = 587
+                };
+
+                // Send the email
+                smtp.Send(message);
+
+                return "Email sent successfully!";
+            }
+            catch (Exception ex)
+            {
+                // Return the error message if something goes wrong
+                return $"Failed to send email";
+            }
+        }
+
+
 
 
 
