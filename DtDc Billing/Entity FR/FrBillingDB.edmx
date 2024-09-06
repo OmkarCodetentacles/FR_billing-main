@@ -329,6 +329,7 @@
           <Property Name="StampFilePath" Type="varchar(max)" />
           <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
           <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
+          <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="Holiday">
           <Key>
@@ -749,7 +750,7 @@
           <Property Name="Sector_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Sector_Name" Type="varchar" MaxLength="100" />
           <Property Name="Pf_code" Type="varchar" MaxLength="20" />
-          <Property Name="Pincode_values" Type="varchar" MaxLength="1000" />
+          <Property Name="Pincode_values" Type="varchar" MaxLength="1500" />
           <Property Name="Priority" Type="int" />
           <Property Name="CashD" Type="bit" />
           <Property Name="CashN" Type="bit" />
@@ -2886,6 +2887,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
           <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
           <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
+          <Property Name="QrCodeImage" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Holiday">
           <Key>
@@ -3340,7 +3342,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Sector_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Sector_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Pincode_values" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Pincode_values" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
           <Property Name="Priority" Type="Int32" />
           <Property Name="CashD" Type="Boolean" />
           <Property Name="CashN" Type="Boolean" />
@@ -5871,6 +5873,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Franchisees">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Franchisee">
               <MappingFragment StoreEntitySet="Franchisee">
+                <ScalarProperty Name="QrCodeImage" ColumnName="QrCodeImage" />
                 <ScalarProperty Name="F_Id" ColumnName="F_Id" />
                 <ScalarProperty Name="PF_Code" ColumnName="PF_Code" />
                 <ScalarProperty Name="F_Address" ColumnName="F_Address" />

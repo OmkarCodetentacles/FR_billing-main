@@ -2790,6 +2790,62 @@ namespace DtDc_Billing.Controllers
             //return PartialView(logo);
 
         }
+        public ActionResult UploadQrCode()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult AddQrCode(AddQrCodeModel qrcode)
+        {
+            // Get the file extension in lowercase
+            string extension = System.IO.Path.GetExtension(qrcode.file.FileName)?.ToLower();
+            string baseUrl = Request.Url.Authority + "://";
+            if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+            {
+                // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+                TempData["Error"] = "Only Image files allowed!";
+            }
+            else
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                string _FileName = "";
+                string _path = "";
+                if (qrcode.file.ContentLength > 0)
+                {
+                    _FileName = strpf+ System.IO.Path.GetExtension(qrcode.file.FileName);
+                    string qrpath = Server.MapPath("~/UploadedQrCode/");
+                    if (!Directory.Exists(qrpath))
+                    {
+                        Directory.CreateDirectory(qrpath);
+                    }
+                    _path = Server.MapPath("~/UploadedQrCode/" + _FileName);
+                  
+                    qrcode.file.SaveAs(_path);
+                }
+
+                var lo = (from d in db.Franchisees
+                          where d.PF_Code == strpf
+                          select d).FirstOrDefault();
+                var QrFilePath = "https://frbilling.com/" +"UploadedQrCode/" + _FileName;
+
+
+                // lo.LogoFilePath =_path;
+                lo.QrCodeImage = QrFilePath;
+
+                db.Entry(lo).State = EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["Success1"] = "QrCode Added Successfully!";
+                return RedirectToAction("Franchiseelist");
+            }
+
+            return View("UploadQrCode");
+            // return RedirectToAction("Franchiseelist");
+            //return PartialView(logo);
+
+        }
+
 
         public ActionResult ImportCsv()
         {
@@ -2815,7 +2871,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.logoImage = data.LogoFilePath;
 
             ViewBag.stampImage = data.StampFilePath;
-
+            ViewBag.QrCodeImage= data.QrCodeImage;
             FranchiseeModel Fr = new FranchiseeModel();
 
             Fr.PF_Code = data.PF_Code;

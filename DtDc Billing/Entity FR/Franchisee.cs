@@ -55,6 +55,7 @@ namespace DtDc_Billing.Entity_FR
         public string StampFilePath { get; set; }
         public string InvoiceYear { get; set; }
         public string InvoiceStartNumber { get; set; }
+        public string QrCodeImage { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }

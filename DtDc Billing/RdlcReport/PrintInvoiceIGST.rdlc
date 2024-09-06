@@ -2364,8 +2364,30 @@ within Seven days from the receipt of the invoice.</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>
-Received Date</Value>
+                <Value xml:space="preserve">
+</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value />
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Received Date</Value>
                 <Style>
                   <FontSize>8pt</FontSize>
                 </Style>
@@ -4149,7 +4171,7 @@ Received Date</Value>
         <Top>9.49882in</Top>
         <Left>0.09887in</Left>
         <Height>0.75812in</Height>
-        <Width>7.81197in</Width>
+        <Width>7.81196in</Width>
         <ZIndex>33</ZIndex>
         <Style>
           <Border>
@@ -4210,6 +4232,25 @@ Received Date</Value>
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Image Name="Image5">
+        <Source>External</Source>
+        <Value>=First(Fields!QrCodeImage.Value, "franchisee")</Value>
+        <MIMEType>image/png</MIMEType>
+        <Sizing>Fit</Sizing>
+        <Top>8.65299in</Top>
+        <Left>2.49613in</Left>
+        <Height>0.75919in</Height>
+        <Width>1.37652in</Width>
+        <ZIndex>36</ZIndex>
+        <Visibility>
+          <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
     </ReportItems>
     <Height>10.29861in</Height>
     <Style />
@@ -4961,10 +5002,22 @@ Received Date</Value>
           <DataField>StampFilePath</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="InvoiceYear">
+          <DataField>InvoiceYear</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvoiceStartNumber">
+          <DataField>InvoiceStartNumber</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="QrCodeImage">
+          <DataField>QrCodeImage</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>FRdeatils</rd:DataSetName>
-        <rd:SchemaPath>D:\PRAJKTA_LIVE\LetestPrajkta\Fr-BillingLive\FR_billing\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\DTDCLiveProjects\Fr-Billing\FrBillingMain\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
         <rd:TableName>Franchisee</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

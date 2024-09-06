@@ -4137,8 +4137,30 @@ within Seven days from the receipt of the invoice.</Value>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>
-Received Date</Value>
+                <Value xml:space="preserve">
+</Value>
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value />
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Received Date</Value>
                 <Style>
                   <FontSize>8pt</FontSize>
                 </Style>
@@ -4284,6 +4306,25 @@ Received Date</Value>
         <Height>0.50693in</Height>
         <Width>2.08423in</Width>
         <ZIndex>35</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Image Name="Image6">
+        <Source>External</Source>
+        <Value>=First(Fields!QrCodeImage.Value, "franchisee")</Value>
+        <MIMEType>image/png</MIMEType>
+        <Sizing>Fit</Sizing>
+        <Top>8.6516in</Top>
+        <Left>2.72706in</Left>
+        <Height>0.68055in</Height>
+        <Width>1.27235in</Width>
+        <ZIndex>36</ZIndex>
+        <Visibility>
+          <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
+        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
@@ -4767,10 +4808,22 @@ Received Date</Value>
           <DataField>StampFilePath</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="InvoiceYear">
+          <DataField>InvoiceYear</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvoiceStartNumber">
+          <DataField>InvoiceStartNumber</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="QrCodeImage">
+          <DataField>QrCodeImage</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>FRdeatils</rd:DataSetName>
-        <rd:SchemaPath>C:\Fr-Billing\FR_billing\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\DTDCLiveProjects\Fr-Billing\FrBillingMain\DtDc Billing\FRdeatils.xsd</rd:SchemaPath>
         <rd:TableName>Franchisee</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

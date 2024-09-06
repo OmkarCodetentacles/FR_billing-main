@@ -1,0 +1,112 @@
+﻿@model DtDc_Billing.Models.AddQrCodeModel
+
+
+
+<style>
+    #frmEmp {
+        margin: 15px 0;
+        text-align: left;
+    }
+</style>
+
+
+@using (Html.BeginForm("AddQrCode", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <form enctype="multipart/form-data">
+
+            <div class="" style="padding: 0px 15px">
+                <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
+                    <div class="box-header with-border" style="background:none;border:none">
+                        <h4>Upload QrCode</h4>
+
+                    </div>
+                    <div class="" style="padding:0 20px">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                @*@{
+                                        var successMessage = TempData["Success1"] as string;
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(successMessage))
+                                    {
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                    }*@
+
+
+                                <div class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Upload QrCode<br /><small>(It will appear on invoice & Image must be .png or .jpg or .jpeg format)</small></label>
+                                            <div class="col-md-5">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="file" name="file" id="file" class="form-control" />
+                                                        @Html.ValidationMessage("fileerr")
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        @if (ViewBag.QrCodeImage != null)
+                                                        {
+                                                            <img src="@ViewBag.QrCodeImage" style="height:100px;width:100px" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Image not Uploaded</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-5">
+                                                <!-- Optional content in the middle of the form -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </section>
+
+}
+
+<script src="jquery-3.6.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script>
+
+        @*$(document).ready(function () {
+            var data = '@TempData["Success1"]';
+
+
+            if (data != null && data!="")
+            {
+
+               alert(data);
+            }
+
+
+        });*@
+
+</script>
+

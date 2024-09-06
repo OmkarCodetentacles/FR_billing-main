@@ -325,6 +325,12 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnStampFilePath;
             
+            private global::System.Data.DataColumn columnInvoiceYear;
+            
+            private global::System.Data.DataColumn columnInvoiceStartNumber;
+            
+            private global::System.Data.DataColumn columnQrCodeImage;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public FranchiseeDataTable() {
@@ -544,6 +550,30 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InvoiceYearColumn {
+                get {
+                    return this.columnInvoiceYear;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn InvoiceStartNumberColumn {
+                get {
+                    return this.columnInvoiceStartNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn QrCodeImageColumn {
+                get {
+                    return this.columnQrCodeImage;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -601,7 +631,10 @@ namespace DtDc_Billing {
                         string Accounttype, 
                         string InvoiceStart, 
                         string LogoFilePath, 
-                        string StampFilePath) {
+                        string StampFilePath, 
+                        string InvoiceYear, 
+                        string InvoiceStartNumber, 
+                        string QrCodeImage) {
                 FranchiseeRow rowFranchiseeRow = ((FranchiseeRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -626,7 +659,10 @@ namespace DtDc_Billing {
                         Accounttype,
                         InvoiceStart,
                         LogoFilePath,
-                        StampFilePath};
+                        StampFilePath,
+                        InvoiceYear,
+                        InvoiceStartNumber,
+                        QrCodeImage};
                 rowFranchiseeRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowFranchiseeRow);
                 return rowFranchiseeRow;
@@ -679,6 +715,9 @@ namespace DtDc_Billing {
                 this.columnInvoiceStart = base.Columns["InvoiceStart"];
                 this.columnLogoFilePath = base.Columns["LogoFilePath"];
                 this.columnStampFilePath = base.Columns["StampFilePath"];
+                this.columnInvoiceYear = base.Columns["InvoiceYear"];
+                this.columnInvoiceStartNumber = base.Columns["InvoiceStartNumber"];
+                this.columnQrCodeImage = base.Columns["QrCodeImage"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -730,6 +769,12 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnLogoFilePath);
                 this.columnStampFilePath = new global::System.Data.DataColumn("StampFilePath", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStampFilePath);
+                this.columnInvoiceYear = new global::System.Data.DataColumn("InvoiceYear", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInvoiceYear);
+                this.columnInvoiceStartNumber = new global::System.Data.DataColumn("InvoiceStartNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInvoiceStartNumber);
+                this.columnQrCodeImage = new global::System.Data.DataColumn("QrCodeImage", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQrCodeImage);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnPF_Code}, true));
                 this.columnF_Id.AutoIncrement = true;
@@ -756,9 +801,12 @@ namespace DtDc_Billing {
                 this.columnIFSCcode.MaxLength = 200;
                 this.columnBranch.MaxLength = 200;
                 this.columnAccounttype.MaxLength = 200;
-                this.columnInvoiceStart.MaxLength = 5;
+                this.columnInvoiceStart.MaxLength = 10;
                 this.columnLogoFilePath.MaxLength = 500;
                 this.columnStampFilePath.MaxLength = 2147483647;
+                this.columnInvoiceYear.MaxLength = 20;
+                this.columnInvoiceStartNumber.MaxLength = 20;
+                this.columnQrCodeImage.MaxLength = 300;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1259,6 +1307,54 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InvoiceYear {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.InvoiceYearColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InvoiceYear\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.InvoiceYearColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string InvoiceStartNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.InvoiceStartNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'InvoiceStartNumber\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.InvoiceStartNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string QrCodeImage {
+                get {
+                    try {
+                        return ((string)(this[this.tableFranchisee.QrCodeImageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'QrCodeImage\' in table \'Franchisee\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableFranchisee.QrCodeImageColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsF_AddressNull() {
                 return this.IsNull(this.tableFranchisee.F_AddressColumn);
             }
@@ -1508,6 +1604,42 @@ namespace DtDc_Billing {
             public void SetStampFilePathNull() {
                 this[this.tableFranchisee.StampFilePathColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInvoiceYearNull() {
+                return this.IsNull(this.tableFranchisee.InvoiceYearColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInvoiceYearNull() {
+                this[this.tableFranchisee.InvoiceYearColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsInvoiceStartNumberNull() {
+                return this.IsNull(this.tableFranchisee.InvoiceStartNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetInvoiceStartNumberNull() {
+                this[this.tableFranchisee.InvoiceStartNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsQrCodeImageNull() {
+                return this.IsNull(this.tableFranchisee.QrCodeImageColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetQrCodeImageNull() {
+                this[this.tableFranchisee.QrCodeImageColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1692,6 +1824,9 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             tableMapping.ColumnMappings.Add("InvoiceStart", "InvoiceStart");
             tableMapping.ColumnMappings.Add("LogoFilePath", "LogoFilePath");
             tableMapping.ColumnMappings.Add("StampFilePath", "StampFilePath");
+            tableMapping.ColumnMappings.Add("InvoiceYear", "InvoiceYear");
+            tableMapping.ColumnMappings.Add("InvoiceStartNumber", "InvoiceStartNumber");
+            tableMapping.ColumnMappings.Add("QrCodeImage", "QrCodeImage");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
@@ -1700,7 +1835,7 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Franchisee] ([PF_Code], [F_Address], [OwnerName], [BranchName], [GstNo], [Franchisee_Name], [ContactNo], [Branch_Area], [Datetime_Fr], [Pan_No], [Firm_Id], [Sendermail], [password], [AccountName], [Bankname], [Accountno], [IFSCcode], [Branch], [Accounttype], [InvoiceStart], [LogoFilePath], [StampFilePath]) VALUES (@PF_Code, @F_Address, @OwnerName, @BranchName, @GstNo, @Franchisee_Name, @ContactNo, @Branch_Area, @Datetime_Fr, @Pan_No, @Firm_Id, @Sendermail, @password, @AccountName, @Bankname, @Accountno, @IFSCcode, @Branch, @Accounttype, @InvoiceStart, @LogoFilePath, @StampFilePath)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Franchisee] ([PF_Code], [F_Address], [OwnerName], [BranchName], [GstNo], [Franchisee_Name], [ContactNo], [Branch_Area], [Datetime_Fr], [Pan_No], [Firm_Id], [Sendermail], [password], [AccountName], [Bankname], [Accountno], [IFSCcode], [Branch], [Accounttype], [InvoiceStart], [LogoFilePath], [StampFilePath], [InvoiceYear], [InvoiceStartNumber], [QrCodeImage]) VALUES (@PF_Code, @F_Address, @OwnerName, @BranchName, @GstNo, @Franchisee_Name, @ContactNo, @Branch_Area, @Datetime_Fr, @Pan_No, @Firm_Id, @Sendermail, @password, @AccountName, @Bankname, @Accountno, @IFSCcode, @Branch, @Accounttype, @InvoiceStart, @LogoFilePath, @StampFilePath, @InvoiceYear, @InvoiceStartNumber, @QrCodeImage)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@F_Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "F_Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1724,9 +1859,12 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStart", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStart", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LogoFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LogoFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StampFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StampFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceYear", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceYear", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStartNumber", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStartNumber", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QrCodeImage", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QrCodeImage", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [Franchisee] SET [PF_Code] = @PF_Code, [F_Address] = @F_Address, [OwnerName] = @OwnerName, [BranchName] = @BranchName, [GstNo] = @GstNo, [Franchisee_Name] = @Franchisee_Name, [ContactNo] = @ContactNo, [Branch_Area] = @Branch_Area, [Datetime_Fr] = @Datetime_Fr, [Pan_No] = @Pan_No, [Firm_Id] = @Firm_Id, [Sendermail] = @Sendermail, [password] = @password, [AccountName] = @AccountName, [Bankname] = @Bankname, [Accountno] = @Accountno, [IFSCcode] = @IFSCcode, [Branch] = @Branch, [Accounttype] = @Accounttype, [InvoiceStart] = @InvoiceStart, [LogoFilePath] = @LogoFilePath, [StampFilePath] = @StampFilePath WHERE (([PF_Code] = @Original_PF_Code))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Franchisee] SET [PF_Code] = @PF_Code, [F_Address] = @F_Address, [OwnerName] = @OwnerName, [BranchName] = @BranchName, [GstNo] = @GstNo, [Franchisee_Name] = @Franchisee_Name, [ContactNo] = @ContactNo, [Branch_Area] = @Branch_Area, [Datetime_Fr] = @Datetime_Fr, [Pan_No] = @Pan_No, [Firm_Id] = @Firm_Id, [Sendermail] = @Sendermail, [password] = @password, [AccountName] = @AccountName, [Bankname] = @Bankname, [Accountno] = @Accountno, [IFSCcode] = @IFSCcode, [Branch] = @Branch, [Accounttype] = @Accounttype, [InvoiceStart] = @InvoiceStart, [LogoFilePath] = @LogoFilePath, [StampFilePath] = @StampFilePath, [InvoiceYear] = @InvoiceYear, [InvoiceStartNumber] = @InvoiceStartNumber, [QrCodeImage] = @QrCodeImage WHERE (([PF_Code] = @Original_PF_Code))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@F_Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "F_Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -1750,6 +1888,9 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStart", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStart", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@LogoFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "LogoFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StampFilePath", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "StampFilePath", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceYear", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceYear", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@InvoiceStartNumber", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "InvoiceStartNumber", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QrCodeImage", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QrCodeImage", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PF_Code", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PF_Code", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -1766,9 +1907,7 @@ namespace DtDc_Billing.FRdeatilsTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT        F_Id, PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, 
-                         Accounttype, InvoiceStart, LogoFilePath, StampFilePath
-FROM            Franchisee";
+            this._commandCollection[0].CommandText = "SELECT        Franchisee.*\r\nFROM            Franchisee";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1878,7 +2017,10 @@ FROM            Franchisee";
                     string Accounttype, 
                     string InvoiceStart, 
                     string LogoFilePath, 
-                    string StampFilePath) {
+                    string StampFilePath, 
+                    string InvoiceYear, 
+                    string InvoiceStartNumber, 
+                    string QrCodeImage) {
             if ((PF_Code == null)) {
                 throw new global::System.ArgumentNullException("PF_Code");
             }
@@ -2011,6 +2153,24 @@ FROM            Franchisee";
             else {
                 this.Adapter.InsertCommand.Parameters[21].Value = ((string)(StampFilePath));
             }
+            if ((InvoiceYear == null)) {
+                this.Adapter.InsertCommand.Parameters[22].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[22].Value = ((string)(InvoiceYear));
+            }
+            if ((InvoiceStartNumber == null)) {
+                this.Adapter.InsertCommand.Parameters[23].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[23].Value = ((string)(InvoiceStartNumber));
+            }
+            if ((QrCodeImage == null)) {
+                this.Adapter.InsertCommand.Parameters[24].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[24].Value = ((string)(QrCodeImage));
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2054,6 +2214,9 @@ FROM            Franchisee";
                     string InvoiceStart, 
                     string LogoFilePath, 
                     string StampFilePath, 
+                    string InvoiceYear, 
+                    string InvoiceStartNumber, 
+                    string QrCodeImage, 
                     string Original_PF_Code) {
             if ((PF_Code == null)) {
                 throw new global::System.ArgumentNullException("PF_Code");
@@ -2187,11 +2350,29 @@ FROM            Franchisee";
             else {
                 this.Adapter.UpdateCommand.Parameters[21].Value = ((string)(StampFilePath));
             }
+            if ((InvoiceYear == null)) {
+                this.Adapter.UpdateCommand.Parameters[22].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[22].Value = ((string)(InvoiceYear));
+            }
+            if ((InvoiceStartNumber == null)) {
+                this.Adapter.UpdateCommand.Parameters[23].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[23].Value = ((string)(InvoiceStartNumber));
+            }
+            if ((QrCodeImage == null)) {
+                this.Adapter.UpdateCommand.Parameters[24].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[24].Value = ((string)(QrCodeImage));
+            }
             if ((Original_PF_Code == null)) {
                 throw new global::System.ArgumentNullException("Original_PF_Code");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[22].Value = ((string)(Original_PF_Code));
+                this.Adapter.UpdateCommand.Parameters[25].Value = ((string)(Original_PF_Code));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -2235,8 +2416,11 @@ FROM            Franchisee";
                     string InvoiceStart, 
                     string LogoFilePath, 
                     string StampFilePath, 
+                    string InvoiceYear, 
+                    string InvoiceStartNumber, 
+                    string QrCodeImage, 
                     string Original_PF_Code) {
-            return this.Update(Original_PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, Accounttype, InvoiceStart, LogoFilePath, StampFilePath, Original_PF_Code);
+            return this.Update(Original_PF_Code, F_Address, OwnerName, BranchName, GstNo, Franchisee_Name, ContactNo, Branch_Area, Datetime_Fr, Pan_No, Firm_Id, Sendermail, password, AccountName, Bankname, Accountno, IFSCcode, Branch, Accounttype, InvoiceStart, LogoFilePath, StampFilePath, InvoiceYear, InvoiceStartNumber, QrCodeImage, Original_PF_Code);
         }
     }
     

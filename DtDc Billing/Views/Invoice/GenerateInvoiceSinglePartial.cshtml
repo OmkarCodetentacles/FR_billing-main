@@ -1302,13 +1302,13 @@ $("#Customer_Id").autocomplete({
             $("#overlayBlock").show();
 
             var print = '@ViewBag.pdf';
-
+            var strpfcode=@ViewBag.strpfcode;
             if (print == "True") {
                 var myParameter = '@ViewBag.invoiceno';
                 var baseUrl = '@baseurl';
                 var data = myParameter + ".pdf";
 
-                $('#saveinv').attr('href', baseUrl + "/PDF/@ViewBag.strpfcode/" + data);
+                $('#saveinv').attr('href', baseUrl + "/PDF/" + strpfcode + "/" + data);
                 document.getElementById('saveinv').click();
             }
 
