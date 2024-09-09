@@ -23,8 +23,8 @@
             <rd:DefaultName>Textbox14</rd:DefaultName>
             <Top>0.04167in</Top>
             <Left>0.05719in</Left>
-            <Height>0.65502in</Height>
-            <Width>3.6365in</Width>
+            <Height>0.21752in</Height>
+            <Width>0.97339in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4293,7 +4293,7 @@ within Seven days from the receipt of the invoice.</Value>
       </Textbox>
       <Image Name="Image5">
         <Source>External</Source>
-        <Value>=First(Fields!QrCodeImage.Value, "franchisee")</Value>
+        <Value>=IIf(IsNothing(First(Fields!QrCodeImage.Value, "franchisee")) Or First(Fields!QrCodeImage.Value, "franchisee") = "", Nothing, First(Fields!QrCodeImage.Value, "franchisee"))</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
         <Top>8.54396in</Top>
@@ -4302,7 +4302,7 @@ within Seven days from the receipt of the invoice.</Value>
         <Width>1.37652in</Width>
         <ZIndex>36</ZIndex>
         <Visibility>
-          <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
+          <Hidden>=IIf(IsNothing(First(Fields!QrCodeImage.Value, "franchisee")) Or First(Fields!QrCodeImage.Value, "franchisee") = "", True, False)</Hidden>
         </Visibility>
         <Style>
           <Border>

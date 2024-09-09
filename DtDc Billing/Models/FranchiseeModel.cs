@@ -46,6 +46,8 @@ namespace DtDc_Billing.Models
         public string InvoiceStart { get; set; }
 
         public string StampFilePath { get; set; }
+        public string LogoFilePath { get; set; }
+        public string QrCodeFilePath { get; set; }
 
        
     }

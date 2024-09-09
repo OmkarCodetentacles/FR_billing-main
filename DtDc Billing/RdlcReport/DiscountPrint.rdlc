@@ -4314,16 +4314,16 @@ within Seven days from the receipt of the invoice.</Value>
       </Image>
       <Image Name="Image6">
         <Source>External</Source>
-        <Value>=First(Fields!QrCodeImage.Value, "franchisee")</Value>
+        <Value>=IIf(IsNothing(First(Fields!QrCodeImage.Value, "franchisee")) Or First(Fields!QrCodeImage.Value, "franchisee") = "", Nothing, First(Fields!QrCodeImage.Value, "franchisee"))</Value>
         <MIMEType>image/png</MIMEType>
         <Sizing>Fit</Sizing>
-        <Top>8.6516in</Top>
+        <Top>8.62383in</Top>
         <Left>2.72706in</Left>
-        <Height>0.68055in</Height>
+        <Height>0.70832in</Height>
         <Width>1.27235in</Width>
         <ZIndex>36</ZIndex>
         <Visibility>
-          <Hidden>=IIf(IsNothing(First(Fields!StampFilePath.Value, "franchisee")) Or First(Fields!StampFilePath.Value, "franchisee") = "", True, False)</Hidden>
+          <Hidden>=IIf(IsNothing(First(Fields!QrCodeImage.Value, "franchisee")) Or First(Fields!QrCodeImage.Value, "franchisee") = "", True, False)</Hidden>
         </Visibility>
         <Style>
           <Border>

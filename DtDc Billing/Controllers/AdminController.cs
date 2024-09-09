@@ -2579,9 +2579,10 @@ namespace DtDc_Billing.Controllers
         {
             if (ModelState.IsValid)
             {
-                Franchisee Fr = new Franchisee();
+                var PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-                Fr.PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                Franchisee Fr =db.Franchisees.Where(x => x.PF_Code == PF_Code).FirstOrDefault();
+
                 Fr.F_Address = franchisee.F_Address;
                 Fr.OwnerName = franchisee.OwnerName;
                 Fr.BranchName = franchisee.BranchName;
@@ -2601,14 +2602,15 @@ namespace DtDc_Billing.Controllers
                 Fr.Accounttype = franchisee.Accounttype;
                 Fr.InvoiceStart = franchisee.InvoiceStart;
 
-                var getNewFilePath = "";
-                if (franchisee.StampFilePath == null)
-                {
-                    getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
+                //var getNewFilePath = "";
+                //if (franchisee.StampFilePath == null)
+                //{
+                //    getNewFilePath = db.Franchisees.Where(x => x.PF_Code == Fr.PF_Code).Select(x => x.StampFilePath).FirstOrDefault();
 
-                }
-                Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
+                //}
 
+                //Fr.StampFilePath = (franchisee.StampFilePath == null || franchisee.StampFilePath == "") ? getNewFilePath : franchisee.StampFilePath;
+             
 
                 db.Entry(Fr).State = EntityState.Modified;
                 db.SaveChanges();
