@@ -409,15 +409,43 @@ namespace DtDc_Billing.CustomModel
                                     : transaction.Customer_Id;
 
                                     // double? loadingChargeValue = workSheet?.Cells[rowIterator, 11]?.Value as double?;
-                                   // tran.loadingcharge = loadingChargeValue ?? 0.0;
-                                    tran.loadingcharge = workSheet.Cells[rowIterator, 11]?.Value is double loadingChargeValue
-                                        ? loadingChargeValue
-                                        : transaction.loadingcharge;
+                                    // tran.loadingcharge = loadingChargeValue ?? 0.0;
+                                    //tran.loadingcharge = workSheet.Cells[rowIterator, 11]?.Value is double loadingChargeValue
+                                    //    ? loadingChargeValue
+                                    //    : transaction.loadingcharge;
+
+
+                                    // Assuming 'workSheet' is your worksheet instance
+                                    // Define a default value for loadingcharge if needed
+                                    double defaultValue = 0.0;
+
+                                    // Retrieve cell value from the worksheet
+                                    var cellValue1 = workSheet.Cells[rowIterator, 11]?.Value;
+
+                                    // Convert and assign cellValue to transaction.loadingcharge
+                                    if (cellValue1 != null && cellValue1 is double loadingChargeValue)
+                                    {
+                                        // Cell value is a double, assign it to transaction.loadingcharge
+                                        tran.loadingcharge = loadingChargeValue;
+                                    }
+                                    else
+                                    {
+                                        // Cell value is not a double or is null, set transaction.loadingcharge to defaultValue
+                                        tran.loadingcharge = defaultValue;
+                                    }
+
+                                    string defaultrece = "";
 
                                     //tran.Receiver = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
-                                    tran.Receiver = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 12]?.Value?.ToString())
-                                    ? workSheet.Cells[rowIterator, 12]?.Value?.ToString()
-                                    : transaction.Receiver;
+                                    //tran.Receiver = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 12]?.Value?.ToString())
+                                    //? workSheet.Cells[rowIterator, 12]?.Value?.ToString()
+                                    //: transaction.Receiver;
+
+                                    // Retrieve and assign Receiver value
+                                    string receiverValue = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
+                                    tran.Receiver = !string.IsNullOrEmpty(receiverValue) ? receiverValue : defaultrece;
+
+
 
                                     //double?  amount= workSheet?.Cells[rowIterator, 13]?.Value as double?;
                                     //tran.Amount = amount ?? 0.0;
