@@ -449,9 +449,11 @@ namespace DtDc_Billing.CustomModel
 
                                     //double?  amount= workSheet?.Cells[rowIterator, 13]?.Value as double?;
                                     //tran.Amount = amount ?? 0.0;
-                                    tran.Amount = workSheet.Cells[rowIterator, 13]?.Value is double amount
-                                           ? amount
-                                           : tran.Amount;
+
+                                    var amtval = workSheet.Cells[rowIterator, 13]?.Value;
+                                    tran.Amount = amtval != null && double.TryParse(amtval.ToString(), out double parsedAmt)
+                                        ? parsedAmt
+                                        : 0;
 
                                     var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code==getPfcode).Select(m => m.Pf_code).FirstOrDefault();
 

@@ -2619,7 +2619,7 @@ namespace DtDc_Billing.Controllers
                            where d.Pfcode == franchisee.PF_Code
                            select d).FirstOrDefault();
 
-                Reg.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+               // Reg.Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString().ToUpper();
                 Reg.address = franchisee.F_Address;
                 Reg.ownerName = franchisee.OwnerName;
                 Reg.Branch = franchisee.BranchName;
@@ -2807,6 +2807,7 @@ namespace DtDc_Billing.Controllers
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
                 TempData["Error"] = "Only Image files allowed!";
+                return RedirectToAction("UploadQrCode");
             }
             else
             {
