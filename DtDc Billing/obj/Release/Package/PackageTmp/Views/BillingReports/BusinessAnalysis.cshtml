@@ -29,8 +29,9 @@
 <div class="content-wrapper">
     <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
-            <h4>Business Analysis
-            
+            <h4>
+                Business Analysis
+
                 <a href="https://www.youtube.com/watch?v=nmTofHy71pU&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=36"
                    target="_blank"
                    data-toggle="tooltip"
@@ -125,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                       @Html.Partial("RangeLineChart")
+                        @Html.Partial("RangeLineChart")
                         <table id="check-booking-list" class="table BusinessAnalysis">
                             <thead>
                                 <tr>
@@ -158,44 +159,45 @@
                             </thead>
                             <tbody>
                                 @{ int i = 1;
-                                    foreach (var item in Model)
+                                    if (Model != null)
                                     {
-                                        <tr>
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
 
-                                            <td>
-                                                @i
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Consignment_no)
-                                            </td>
-                                            <td>
-                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.chargable_weight)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
+                                                <td>
+                                                    @i
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Consignment_no)
+                                                </td>
+                                                <td>
+                                                    @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.chargable_weight)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
 
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Amount)
-                                            </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Amount)
+                                                </td>
 
 
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.dtdcamount)
-                                            </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.dtdcamount)
+                                                </td>
 
-                                            <td class="@((((item.Amount-item.dtdcamount)/ item.dtdcamount) *100) >0?"text-success":"text-danger")"><b>@(((item.Amount- item.dtdcamount) / item.dtdcamount) *100)</b></td>
-                                        </tr>
+                                                <td class="@((((item.Amount-item.dtdcamount)/ item.dtdcamount) *100) >0?"text-success":"text-danger")"><b>@(((item.Amount- item.dtdcamount) / item.dtdcamount) *100)</b></td>
+                                            </tr>
 
-                                        i++;
+                                            i++;
+                                        }
                                     }
                                 }
-                                <tr>
-                                    <td colspan="8">Data Not Found</td>
-                                </tr>
+
                             </tbody>
                         </table>
 
@@ -308,13 +310,13 @@
     $(document).ready(function () {
 
         $('#Show').click(function () {
-            
+
             var frmdate = $('#datepicker').val();
             var todate = $('#datepicker1').val();
 
 
-           
-       if (frmdate == "") {
+
+            if (frmdate == "") {
                 alert("Please Enter From Date");
                 return false;
             }
@@ -357,4 +359,16 @@
         });
     });
 
+</script>
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
 </script>

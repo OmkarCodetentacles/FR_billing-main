@@ -1,5 +1,34 @@
 ﻿@model  IEnumerable<DtDc_Billing.Models.SectorNewModel>
 
+<style>
+
+    .table > thead > tr > th {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #e5ecf7;
+        border-right: 1px solid #004eb84d;
+        text-align: center;
+    }
+
+    .table > tbody > tr > td {
+        width: 300px;
+        height: 100px;
+    }
+
+    .delete-icon {
+        color: #dc3545; /* Red color for delete */
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+
+    textarea {
+        border: 1px solid #0049af30 !important;
+        border-radius: 5px !important;
+        height: 80px !important;
+        
+    }
+</style>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -51,7 +80,7 @@
                     if (ViewBag.Message != null)
                     {
                         <div class="alert-danger col-sm-12" style="width:1000px;height:40px;color:red;text-align:center">
-                                            <strong style="color:red;text-align:center;margin-bottom:10px"> @ViewBag.Message</strong>
+                            <strong style="color:red;text-align:center;margin-bottom:10px"> @ViewBag.Message</strong>
                         </div>
                     }
                 }
@@ -76,9 +105,10 @@
                                 <table id="add-sector-pin" class="table table-responsive table-bordered" style="display:inline-table !important; width:100%; text-align:center;">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                Priority
-                                            </th>
+                                            <th>Sr.No</th>
+                                            @*<th>
+                                                    Priority
+                                                </th>*@
                                             <th>
                                                 Sector Name
                                             </th>
@@ -115,22 +145,23 @@
                                             foreach (var item in Model)
                                             {
                                                 <tr>
+                                                    <td>@i</td>
+                                                    <!--<td>
+                                                        <label>-->
+                                                    @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
+                                                    @Html.HiddenFor(modelItem => item.Priority, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    @*</label>
+                                                        </td>*@
+                                                    <td>
+                                                        <label>
+                                                            @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
+                                                            @Html.EditorFor(modelItem => item.Sector_Name, new { htmlAttributes = new { @class = "form-control input-sm", @style = "width: 230px; height: 78px;" } })
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
 
-                                                    <td>
-                                                        <label>
-                                                            @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
-                                                            @Html.EditorFor(modelItem => item.Priority, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <label>
-                                                            @*@Html.DisplayFor(modelItem => item.Sector_Name)*@
-                                                            @Html.EditorFor(modelItem => item.Sector_Name, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                        </label>
-                                                    </td>
-                                                    <td>
-                                                        <label style="width:100%">
-                                                            @Html.TextAreaFor(modelItem => item.Pincode_values, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                            @Html.TextAreaFor(modelItem => item.Pincode_values, new { htmlAttributes = new { @class = "form-control input-sm custom-textarea" } })
                                                         </label>
 
                                                     </td>
@@ -190,10 +221,13 @@
                                                     </td>
 
                                                     <td>
-                                                        <a href="@Url.Action("DeleteSingleSector", "admin", new { sectorId = item.Sector_Id })"
+                                                        @*<a href="@Url.Action("DeleteSingleSector", "admin", new { sectorId = item.Sector_Id })"
                                                            class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this sector?');">
                                                             Delete
-                                                        </a>
+                                                        </a>*@
+                                                        <a href="@Url.Action("DeleteSingleSector", "admin", new { sectorId = item.Sector_Id })"
+                                                                       onclick="return confirm('Are you sure you want to delete this sector?');">
+                                                            <i class="fa fa-trash-o" style="color:red"></i>  </a>
                                                     </td>
                                                     @Html.HiddenFor(modelItem => item.Sector_Id)
 
@@ -277,27 +311,27 @@ else
 
 <script type="text/javascript">
 
- 
-        function scrollToTop() {
-            window.scrollTo(0, 0);
-        }
+
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
 
-function onBegin() {
-    scrollToTop();
-    // Show the loader
-    $("#overlayBlock").show();
+    function onBegin() {
+        scrollToTop();
+        // Show the loader
+        $("#overlayBlock").show();
 
-    document.getElementById('overlayBlock').style.display = 'block';
-}
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
 
-function onComplete() {
-    // Hide the loader
-    scrollToTop();
-    $("#overlayBlock").hide();
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        $("#overlayBlock").hide();
 
-    document.getElementById('overlayBlock').style.display = 'none';
-}
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
 
 
     function onCompleteSingle() {

@@ -1125,7 +1125,7 @@ namespace DtDc_Billing.Controllers
                          Branchname = (from od in db.Franchisees
                                        where od.PF_Code == studentGroup.Key
 
-                                       select od.BranchName).FirstOrDefault()
+                                       select od.Franchisee_Name).FirstOrDefault()
                      }).Where(d=>d.PfCode==PfCode).ToList();
             return View(Pfsum);
         }
@@ -1179,7 +1179,7 @@ namespace DtDc_Billing.Controllers
                          Branchname = (from od in db.Franchisees
                                        where od.PF_Code == studentGroup.Key
 
-                                       select od.BranchName).FirstOrDefault()
+                                       select od.Franchisee_Name).FirstOrDefault()
                      }).Where(d=>d.PfCode==PfCode).ToList();
 
             if (Submit == "Export to Excel")
@@ -1367,7 +1367,9 @@ namespace DtDc_Billing.Controllers
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(Duedaysdata.Select(x => new { PFCode = x.Company_Id, x.InvoiceNo, x.Date,x.DueDays}));
+                // ExportToExcelAll.ExportToExcelAdmin(Duedaysdata.Select(x => new { PFCode = x.Company_Id, x.InvoiceNo, x.Date,x.DueDays}));
+
+                ExportToExcelAll.ExportToExcelAdmin(Duedaysdata);
             }
             return View(Duedaysdata);
         }
@@ -1434,12 +1436,12 @@ namespace DtDc_Billing.Controllers
                          Branchname = (from od in db.Franchisees
                                        where od.PF_Code == PfCode
 
-                                       select od.BranchName).FirstOrDefault()
+                                       select od.Franchisee_Name).FirstOrDefault()
                      }).Where(d=>d.PfCode== PfCode).ToList();
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(x => new { PFCode = x.PfCode, x.Branchname, x.Sum }));
+                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(x => new { PFCode = x.PfCode, x.Branchname, x.Sum,x.Count }));
             }
 
 
@@ -1540,7 +1542,7 @@ namespace DtDc_Billing.Controllers
                          Branchname = (from od in db.Franchisees
                                        where od.PF_Code == studentGroup.Key
 
-                                       select od.BranchName).FirstOrDefault()
+                                       select od.Franchisee_Name).FirstOrDefault()
                      }).Where(d=>d.PfCode== PfCode).ToList();
             return View(Pfsum);
         }
@@ -1621,7 +1623,7 @@ namespace DtDc_Billing.Controllers
                          Branchname = (from od in db.Franchisees
                                        where od.PF_Code == studentGroup.Key
 
-                                       select od.BranchName).FirstOrDefault()
+                                       select od.Franchisee_Name).FirstOrDefault()
                      }).Where(d=>d.PfCode==PfCode).ToList();
 
             if (Submit == "Export to Excel")

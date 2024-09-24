@@ -65,30 +65,48 @@ namespace DtDc_Billing.Controllers
 
 
 
+                // Get the length of the start consignment number as a string
+                int referenceLength = startConsignment.ToString().Length;
+
                 for (long i = startConsignment; i <= EndConsignment; i++)
                 {
+                    string currentConsignmentString = i.ToString();
+
+                    if (currentConsignmentString.Length < referenceLength)
+                    {
+                        currentConsignmentString = currentConsignmentString.PadLeft(referenceLength, '0');
+                    }
+
+                    // Build the consignment number with the proper prefix
+                    string consignmentNo = stch.ToUpper() + currentConsignmentString;
 
                     string filePath = Server.MapPath("/CashcounterPDF/" + "Recieptdetails-"+ stch.ToUpper() + ""+ i + ".pdf");
 
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        zipFile.AddFile(filePath, "Recieptdetails");
-                    }
-                    else
-                    {
-                        var pdfFileName = PrintMethod(stch.ToUpper() + "" + i);
-                        ViewBag.Consignmetno = stch.ToUpper() + "" + i;
+                    var getRecipt = db.Receipt_details.Where(x => x.Consignment_No == consignmentNo).FirstOrDefault();
 
-                        if (!string.IsNullOrEmpty(pdfFileName))
+                    if (getRecipt != null)
+                    {
+                        if (System.IO.File.Exists(filePath))
                         {
-                            ViewBag.pdf = true;
-
-                            ViewBag.PdfFileName = pdfFileName.Replace("/", "-");
-                            var newfilepath = Server.MapPath("~/ConsignmentPDF/" + pdfFileName);
-
-
-                            zipFile.AddFile(newfilepath, "Recieptdetails");
+                            zipFile.AddFile(filePath, "Recieptdetails");
                         }
+                        else
+                        {
+                            var pdfFileName = PrintMethod(stch.ToUpper() + "" + i);
+                            ViewBag.Consignmetno = stch.ToUpper() + "" + i;
+
+                            if (!string.IsNullOrEmpty(pdfFileName))
+                            {
+                                ViewBag.pdf = true;
+
+                                ViewBag.PdfFileName = pdfFileName.Replace("/", "-");
+                                var newfilepath = Server.MapPath("~/ConsignmentPDF/" + pdfFileName);
+
+
+                                zipFile.AddFile(newfilepath, "Recieptdetails");
+                            }
+                        }
+                        
                     }
 
                 }
@@ -264,6 +282,8 @@ namespace DtDc_Billing.Controllers
         public string PrintMethod(string consignmentno)
         {
             ////////////////test print reciept////////////////////
+            var getRecipt = db.Receipt_details.Where(x => x.Consignment_No == consignmentno).FirstOrDefault();
+
 
             string imageName = consignmentno + "." + ImageType.Png;
             string imagePath = "/BarcodeImages/" + imageName;
@@ -291,7 +311,7 @@ namespace DtDc_Billing.Controllers
             // Dispose of the image
             barcodeImage.Dispose();
 
-            var getRecipt = db.Receipt_details.Where(x => x.Consignment_No == consignmentno).FirstOrDefault();
+   
             getRecipt.BarcodeImage = baseUrl + imagePath;
             db.SaveChanges();
 

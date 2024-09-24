@@ -324,6 +324,7 @@
     <Property Name="StampFilePath" Type="varchar(max)" />
     <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
     <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
+    <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
   </EntityType>
   <EntityType Name="Holiday">
     <Key>
@@ -744,7 +745,7 @@
     <Property Name="Sector_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Sector_Name" Type="varchar" MaxLength="100" />
     <Property Name="Pf_code" Type="varchar" MaxLength="20" />
-    <Property Name="Pincode_values" Type="varchar" MaxLength="1000" />
+    <Property Name="Pincode_values" Type="varchar" MaxLength="1500" />
     <Property Name="Priority" Type="int" />
     <Property Name="CashD" Type="bit" />
     <Property Name="CashN" Type="bit" />
@@ -867,7 +868,7 @@
     <Property Name="diff_weight" Type="float" />
     <Property Name="Sender" Type="varchar(max)" />
     <Property Name="Receiver" Type="varchar(max)" />
-    <Property Name="compaddress" Type="varchar" MaxLength="200" />
+    <Property Name="compaddress" Type="varchar" MaxLength="500" />
     <Property Name="isRTO" Type="bit" />
   </EntityType>
   <EntityType Name="UserModuleList">
@@ -2039,8 +2040,21 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Parameter Name="enterValue" Type="varchar" Mode="In" />
     <Parameter Name="pfcode" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="sp_getCheckBookingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fromDate" Type="datetime" Mode="In" />
+    <Parameter Name="toDate" Type="datetime" Mode="In" />
+    <Parameter Name="Customerid" Type="varchar" Mode="In" />
+    <Parameter Name="pfcode" Type="varchar" Mode="In" />
+    <Parameter Name="yearStart" Type="int" Mode="In" />
+    <Parameter Name="currentYear" Type="int" Mode="In" />
+  </Function>
   <Function Name="Sp_GetSingleConsignment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Con_no" Type="varchar" Mode="In" />
+    <Parameter Name="pfcode" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="sp_getTransation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="yearStart" Type="int" Mode="In" />
+    <Parameter Name="currentYear" Type="int" Mode="In" />
     <Parameter Name="pfcode" Type="varchar" Mode="In" />
   </Function>
   <Function Name="TicketSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">

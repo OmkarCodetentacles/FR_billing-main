@@ -878,6 +878,8 @@ namespace DtDc_Billing.Controllers
 
                         if (Submit == "Send mail")
                         {
+                        try
+                        {
                             if (DataSet2.FirstOrDefault().Email != null || DataSet2.FirstOrDefault().Email != "")
                             {
                                 MemoryStream memoryStream = new MemoryStream(renderByte);
@@ -919,9 +921,17 @@ namespace DtDc_Billing.Controllers
                             }
                             {
                                 TempData["error"] = "Select Company";
-                            }
+                                return View(newObj);
 
-                            return View(obj);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                            TempData["error"] = "Something Went Wrong To send the E-mail,Please Check Your Franchisee E-Mail Id and Company E-Mail Id";
+                            return View(newObj);
+                        }
+
                         }
 
                         return File(renderByte, mimeType);

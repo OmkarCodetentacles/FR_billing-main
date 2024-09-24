@@ -3,6 +3,13 @@
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
+    HttpCookie cookie = Request.Cookies["Cookies"];
+    var yeardata = "";
+    if (cookie != null)
+    {
+        yeardata = Request.Cookies["Cookies"]["datayear"].ToString() ?? "";
+
+    }
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -140,15 +147,15 @@
         animation: glow 1s ease-in-out infinite alternate;
     }
 
-@@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
+    @@-webkit-keyframes glow {
+        from {
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+        }
 
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
-}
+        to {
+            text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+        }
+    }
 </style>
 
 
@@ -196,7 +203,7 @@
     <div class="box" style="padding:16px 16px !important">
         <div class="box-header with-border">
             <h4>
-                
+
                 <strong style="color: #0049af; font-size: 20px;">Dashboard</strong>
                 <a href="https://www.youtube.com/watch?v=vUAm6rWI45s&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=1" target="_blank" style="padding-top:10px" data-toggle="tooltip" title="Click to view more info">
                     @*<i class="fa fa-eye"></i>*@
@@ -204,6 +211,28 @@
                 </a>
 
             </h4>
+           
+
+                <span>Change Start Year</span>
+                <i aria-hidden="true"></i>
+                <span class="text-primary">
+
+                    @Html.DropDownList("Yearstart", new SelectListItem[]
+{
+        new SelectListItem() { Text = "Financial Year", Value = "financialYear" },
+
+    new SelectListItem() { Text = "Financial Year Last Year", Value = "FinancialYearwithLast" },
+    new SelectListItem() { Text = "Financial Year With Last 2 Year", Value = "FinancialWithLast2year" },
+        new SelectListItem() { Text = "All", Value = "All" }
+
+    //new SelectListItem() { Text = "Financial Year=2024,Last Year=2023,Last 3 Year=2021", Value = "2024-2021" },
+
+}, new { @class = "", @id = "yearStartDropdown" })
+
+                </span>
+
+   
+
         </div><!-- /.box-header -->
 
 
@@ -252,7 +281,7 @@
                                                         <span class="info-box-number">
                                                             @if (@ViewBag.DueDaysExpire > 0)
                                                             {
-                                                            <span class="glow">exceed</span>
+                                                                <span class="glow">exceed</span>
                                                             }
                                                             <strong>@ViewBag.DueDaysExpire</strong>
                                                         </span>
@@ -550,7 +579,7 @@
                                                 </div>
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
-                                                        <a href="@Url.Action("ExpensesList","Admin",new { Fromdatetime = ViewBag.currentday,ToDatetime=ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                        <a href="@Url.Action("ExpensesList", "Admin", new { Fromdatetime = ViewBag.currentday, ToDatetime = ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -583,7 +612,7 @@
                                                 </div>
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
-                                                        <a href="@Url.Action("ExpensesList","Admin",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                        <a href="@Url.Action("ExpensesList", "Admin", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })" class="small-box-footer"> View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -607,14 +636,14 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Todays Sale">
-                                        <a href="@Url.Action("Todaysale","Reports")">
+                                        <a href="@Url.Action("Todaysale", "Reports")">
                                             <div class="info-box billing-cards ">
 
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">Todays Sale</p>
                                                     <span class="info-box-number text-truncate">
-                                                        <strong>@Model.sumOfBilling</strong>
+                                                        <strong>@Math.Round(Model.sumOfBilling)</strong>
                                                     </span>
 
                                                 </div>
@@ -627,13 +656,13 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month Sale">
-                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Todaysale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">This Month Sale</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="sumofbillingcurrentmonth">@Model.sumOfBillingCurrentMonth</strong></span>
+                                                    <span class="info-box-number text-truncate"> <strong id="sumofbillingcurrentmonth">@Math.Round(Model.sumOfBillingCurrentMonth)</strong></span>
 
                                                 </div>
                                                 <!-- /.info-box-content -->
@@ -649,7 +678,7 @@
 
                                             <div class="info-box-content">
                                                 <p class="info-box-text text-truncate">Avg Sale per month</p>
-                                                <span class="info-box-number text-truncate"> <strong>@Model.avgOfBillingSum.ToString()</strong></span>
+                                                <span class="info-box-number text-truncate"> <strong>@Math.Round((double)Model.avgOfBillingSum).ToString()</strong></span>
 
 
                                             </div>
@@ -678,7 +707,7 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="This Month No. of Booking">
-                                        <a href="@Url.Action("Todaysale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Todaysale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box  billing-cards">
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">This Month No. of Bookings</p>
@@ -713,7 +742,7 @@
                                     </div>
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total Sale">
-                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards ">
 
 
@@ -734,7 +763,7 @@
 
 
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total No of.Bookings">
-                                        <a href="@Url.Action("Cashtotalsale","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })">
+                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
                                             <div class="info-box billing-cards">
 
 
@@ -792,7 +821,7 @@
 
                                         </div>
                                         <span class="progress-description">
-                                            <a class="text-black" href="@Url.Action("ExpiredStationary","Stationery")">View details</a>
+                                            <a class="text-black" href="@Url.Action("ExpiredStationary", "Stationery")">View details</a>
                                         </span>
                                     </div>
                                     <!-- /.info-box-content -->
@@ -804,8 +833,13 @@
 
 
                         @*@{Html.RenderAction("steplinechart", "Home");}*@
-                        @{Html.RenderAction("DestinationAndProductPartial", "Home");}
+                        <div class="row">
+                            @{Html.RenderAction("DestinationAndProductPartial", "Home");}
 
+                        </div>
+                        <div>
+                            @{Html.RenderAction("GetTop5Customer", "Home");}
+                        </div>
                     </div>
 
                 </div>
@@ -942,4 +976,35 @@
         });
     </script>
 }
-
+<script>
+    $(document).ready(function () {
+           document.addEventListener('DOMContentLoaded', (event) => {
+               var yeardata = '@yeardata';
+               if (yeardata != "" || yeardata!=null) {
+            var dropdown = document.getElementById('yearStartDropdown');
+            dropdown.value = yeardata;
+        }
+    });
+        $('#yearStartDropdown').change(function () {
+            var selectedYears = $(this).val();
+            var confirmChange = confirm("Are you sure you want to change the  year(s) ?");
+            if (confirmChange) {
+                $.ajax({
+                    url: '/Admin/UpdateYearStart',
+                    type: 'GET',
+                    data: { year: selectedYears },
+                    success: function (response) {
+                        if (response.success) {
+                            alert("Start year has been updated to " + response.yearStart);
+                        } else {
+                            alert("Failed to update start year");
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                    }
+                });
+            }
+        });
+    });
+</script>

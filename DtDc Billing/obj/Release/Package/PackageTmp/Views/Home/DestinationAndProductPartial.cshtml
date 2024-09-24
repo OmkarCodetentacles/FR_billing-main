@@ -1,98 +1,96 @@
 ﻿@model DtDc_Billing.CustomModel.dashboardDataModel
 
 @*@if (ViewBag.DestinationCount > 0)
-{*@
-    <div class="col-md-6" style="margin-top:30px"   >
-        <div class="box box-info box-collapsed collapsed-box" style=" width: 98%; " >
-            <div class="box-header box-header-collapsed with-border">
-                @*<h3 class="box-title">Favorable Destinations</h3>*@
-                <p><strong style="color: #0049af; font-size: 20px;">Favorable Destinations</strong> </p>
+    {*@
+<div class="col-md-6" style="margin-top:30px">
+    <div class="box box-info box-collapsed collapsed-box" style=" width: 98%; ">
+        <div class="box-header box-header-collapsed with-border">
+            @*<h3 class="box-title">Favorable Destinations</h3>*@
+            <p><strong style="color: #0049af; font-size: 20px;">Favorable Destinations</strong> </p>
 
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body box-body-collapsed">
-                <div class="table-responsive">
-                    <table id="table_display_block" class="table no-margin tblProducts height-450">
-                        <thead>
-                            <tr>
-                                <th style="text-align:center" >City</th>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body box-body-collapsed">
+            <div class="table-responsive">
+                <table id="table_display_block" class="table no-margin tblProducts height-450">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">City</th>
 
-                                <th style="text-align:center">Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.DestinationList)
-                            {
+                            <th style="text-align:center">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DestinationList)
+                        {
                             <tr>
                                 <td> @item.City </td>
                                 <td>@item.Count</td>
                             </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.table-responsive -->
+                        }
+                    </tbody>
+                </table>
             </div>
-
+            <!-- /.table-responsive -->
         </div>
+
     </div>
+</div>
 
 @*}
 
-@if (ViewBag.Consignmentcount > 0)
-{*@
-    <div class="col-md-6" style=" padding-right:0;margin-top:30px">
-        <div class="box box-info box-collapsed collapsed-box" style=" width: 97%; ">
-            <div class="box-header box-collapsed with-border">
-                @*<h3 class="box-title">Product Wise Report</h3>*@
-                <p><strong style="color: #0049af; font-size: 20px;">Product Wise Report</strong> </p>
-                <div class="box-tools  box-tools-collapsed pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                </div>
+    @if (ViewBag.Consignmentcount > 0)
+    {*@
+<div class="col-md-6" style=" padding-right:0;margin-top:30px">
+    <div class="box box-info box-collapsed collapsed-box" style=" width: 97%; ">
+        <div class="box-header box-collapsed with-border">
+            @*<h3 class="box-title">Product Wise Report</h3>*@
+            <p><strong style="color: #0049af; font-size: 20px;">Product Wise Report</strong> </p>
+            <div class="box-tools  box-tools-collapsed pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
-            <!-- /.box-header -->
-
-            <div class="box-body box-body-collapsed">
-
-                <div class="table-responsive">
-
-
-                    <!-- /.box-header -->
-                    <table id="" class="tblCons table no-margin table no-margin tblProducts height-450">
-                        <thead>
-                            <tr>
-                                <th style="text-align:center">Category</th>
-                                <th style="text-align:center">Count</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Consignmentcount)
-                            {
-                                <tr>
-                                    <td>@item.Destination </td>
-                                    <td>@item.Count</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.table-responsive -->
-            </div>
-
-
         </div>
+        <!-- /.box-header -->
+
+        <div class="box-body box-body-collapsed">
+
+            <div class="table-responsive">
+
+
+                <!-- /.box-header -->
+                <table id="" class="tblCons table no-margin table no-margin tblProducts height-450">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">Category</th>
+                            <th style="text-align:center">Count</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Consignmentcount)
+                        {
+                            <tr>
+                                <td>@item.Destination </td>
+                                <td>@item.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+
+
     </div>
-    @*}*@
-    <!-- /.box -->
-
-
+</div>
+@*}*@
+<!-- /.box -->

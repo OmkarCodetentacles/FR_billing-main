@@ -55,12 +55,20 @@
                 <div class="col-md-12">
                     @{
                         var successMessage = ViewBag.success as string;
+                        var errorMessage = ViewBag.Error as string;
                     }
 
                     @if (!string.IsNullOrEmpty(successMessage))
                     {
                         successMessage = "Payment Added SuccessFully";
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+
+                    {
+                        errorMessage = "Consignment number Does not Exists";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("message", errorMessage))
+
                     }
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -78,7 +86,7 @@
                                             @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                  
+
                                 </div>
                                 <div class="col-md-7" style="margin-bottom: 20px;">
                                     <div class="row">
@@ -90,7 +98,7 @@
                                             @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                   
+
                                 </div>
                                 <div class="col-md-7" style="margin-bottom: 20px;">
                                     <div class="row">
@@ -102,11 +110,11 @@
                                             @Html.ValidationMessageFor(model => model.Description_, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    
-                                    
+
+
                                 </div>
                                 <div class="col-md-7">
-                                    <div >
+                                    <div>
 
                                         <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin-top:10px" />
                                     </div>
