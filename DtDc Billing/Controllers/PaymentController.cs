@@ -142,7 +142,7 @@ namespace DtDc_Billing.Controllers
 
                 double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid);
 
-                if (cash.C_Total_Amount > balance)
+                if (cash.C_Total_Amount >balance)
                 {
                     TempData["remainingAmount"] = balance;
                     ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
