@@ -42,7 +42,11 @@
                                     <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
                                 </div>
                                 <div class="col-md-2">
-                                    <h5> Balance :  <strong class="text-danger">@(Math.Round(ViewBag.netamount - ViewBag.paidamt,2))</strong></h5>
+                                    <h5> Balance :  <strong class="text-danger">
+    @*@(Math.Round(ViewBag.netamount - ViewBag.paidamt!=null? ViewBag.paidamt: 0,2))*@
+    @(Math.Round((decimal)(ViewBag.netamount - (ViewBag.paidamt != null ? ViewBag.paidamt : 0)), 2))
+
+</strong></h5>
                                 </div>
                             </div>
 

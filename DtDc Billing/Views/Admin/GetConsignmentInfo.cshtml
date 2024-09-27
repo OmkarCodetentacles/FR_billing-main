@@ -89,7 +89,7 @@
 </style>
 <script>
     $(document).ready(function () {
-        $("#consignmentdetails").hide();
+        $("#consignmentdetails").show();
     })
 </script>
 <br/><br/>
@@ -218,6 +218,12 @@
 
 
 <script>
+
+    $(document).ready(function () {
+        var consbody = '@ViewBag.Consignmentno';
+        $("#@ViewBag.Consignmentno").show();
+        $("#@ViewBag.Consignmentno_displayBar").show();
+    })
     function removeDuplicateScriptsAndStyles() {
         // Create arrays to store unique script and link sources
         var scriptSources = [];
@@ -321,7 +327,7 @@
                         // Handle the success response
 
 
-
+                        console.log(data);
                         jsonData = data;
                         renderTable();
                     },
@@ -340,6 +346,7 @@
       //  $("#consignmentTable tbody").empty();
 
         var parsedData = JSON.parse(jsonData);
+        console.log(parsedData)
         var tableBody = document.getElementById('consdata');
         console.log(parsedData)
         //var rows='';

@@ -64,10 +64,11 @@ namespace DtDc_Billing.Controllers
                 }
                 else
                 {
-                    db.Entry(abc).State = EntityState.Detached;
+                    //db.Entry(abc).State = EntityState.Detached;
 
-                    destination.Dest_Id = abc.Dest_Id;
-                    db.Entry(destination).State = EntityState.Modified;
+                    //destination.Dest_Id = abc.Dest_Id;
+                    abc.Name = destination.Name;
+                    db.Entry(abc).State = EntityState.Modified;
 
                     db.SaveChanges();
                 }

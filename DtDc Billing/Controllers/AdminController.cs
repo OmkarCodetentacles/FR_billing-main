@@ -5217,8 +5217,9 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public async  Task<ActionResult> GetConsignmentInfo(string consignmetno)
         {
-            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=" + consignmetno;
-
+            //string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cType=Consignment&cnNo=" + consignmetno;
+            //  string apiurl = "https://www.dtdc.com/track?trackid="+consignmetno;
+            string apiurl = "https://txk.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=" + consignmetno.Trim() + "&cType=Consignment#";
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -5260,8 +5261,8 @@ namespace DtDc_Billing.Controllers
             {
                 return Json(null);
             }
-            string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=getLoadMovementDetails&cnNo=" + ConsignmnetNo;
-
+          //  string apiurl = "https://tracking.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=getLoadMovementDetails&cnNo=" + ConsignmnetNo;
+            string apiurl = "https://txk.dtdc.com/ctbs-tracking/customerInterface.tr?submitName=showCITrackingDetails&cnNo=" + ConsignmnetNo + "&cType=Consignment";
             using (HttpClient client = new HttpClient())
             {
                 try

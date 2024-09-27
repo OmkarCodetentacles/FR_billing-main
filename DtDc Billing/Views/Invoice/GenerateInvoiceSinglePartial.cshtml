@@ -445,7 +445,17 @@
 
                                                 <label for="gst-total" class=" control-label">GST%</label>
                                                 <div class="" style="display: flex; gap: 3px">
-                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"@*, @Value = "18"*@ } })   @* @Value = "18" *@
+                                                    @if (!string.IsNullOrEmpty(Model.servicetax.Value.ToString()))
+                                                    {
+                                                        @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } }) @* @Value = "18" *@
+
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } }) @* @Value = "18" *@
+
+                                                    }
+
                                                     @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly" } })
                                                 </div>
                                                 <div class="">

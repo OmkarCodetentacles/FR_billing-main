@@ -419,7 +419,16 @@
                                                             <label for="gst-total" class=" control-label">GST%</label>
                                                         </div>
                                                         <div class="col-md-9" style="display:flex;gap:2px">
-                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} }) @* @Value = "18" *@
+                                                            @if (!string.IsNullOrEmpty(Model.servicetax.Value.ToString()))
+                                                            {
+                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } }) @* @Value = "18" *@
+
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } }) @* @Value = "18" *@
+
+                                                            }
                                                             @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "", @class = "form-control", @readonly = "readonly" } })
                                                         </div>
                                                     </div>
@@ -982,8 +991,8 @@ if ('@ViewBag.disc' == "yes") {
     /**/
     data: { CustomerId: custid, Tempdatefrom: periodfrom, TempdateTo: periodto },
     dataType: 'json',
-    success: function (data) {
-
+            success: function (data) {
+                console.log(data)
         var rows;
 
         $.each(data, function (i, item) {
