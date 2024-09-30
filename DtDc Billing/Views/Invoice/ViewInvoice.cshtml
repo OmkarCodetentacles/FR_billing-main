@@ -82,28 +82,28 @@
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
                     }
 
-                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get))
+                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get, new {id="FormSubmit"}))
                     {
 
                         <!--<label for="cars">Size:</label>
-        <select name="size">
-            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
-            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
+                        <select name="size">
+                            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
+                            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
+                            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
                         @*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@
 
                         <!--</select>-->
 
 
                         @*<div class="col-md-5">
-                <div class="form-group">
-                    <div class="pf-code">
-                        <label>Firm Name</label>
-                        <label class="Reqired">*</label>
-                        @Html.DropDownList("FirmDetails", "-Please select-")
-                    </div>
-                </div>
-            </div>*@
+                                <div class="form-group">
+                                    <div class="pf-code">
+                                        <label>Firm Name</label>
+                                        <label class="Reqired">*</label>
+                                        @Html.DropDownList("FirmDetails", "-Please select-")
+                                    </div>
+                                </div>
+                            </div>*@
 
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
@@ -265,22 +265,22 @@
                     </table>
 
                     @*<div class="pagination">
-            @{
-                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+                            @{
+                                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                if (getTotalCount > 10)
-                {
+                                if (getTotalCount > 10)
+                                {
 
-                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                    {
+                                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                                    {
 
-                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
-                    }
-                }
-            }
-        </div>*@
+                                    }
+                                }
+                            }
+                        </div>*@
                 </div>
 
                 <!-- /.box-body -->
@@ -294,7 +294,7 @@
 </div>
 <!-- /.content -->
 <script>
-  
+
     $(function () {
 
         $('#table_display_block').dataTable({
@@ -507,14 +507,14 @@ select: function(event, ui) {
 
 
     $(function () {
-        
+
           $.ajax({
       type: 'GET',
       url: '@Url.Action("InvoiceNumberAutocompleteForViewInvocie")',
               data: { Customer_Id:null},
       dataType: 'json',
               success: function (data) {
-                 
+
           $.each(data, function (i, item) {
               availableinvoicesarr.push(item.invoiceno);
           })
@@ -536,17 +536,17 @@ select: function(event, ui) {
           }
       });
     })
-   
+
 </script>
 
 <script>
-   
+
     $('#Companydetails').change(function () {
         var Customerid = $('#Companydetails').val();
-        
+
         if (Customerid.length >= 3) {
             availableinvoicesarr = [];
-           
+
             $("#invoiceno").autocomplete({
                 source: availableinvoicesarr,
                 select: function (event, ui) {
@@ -565,7 +565,7 @@ select: function(event, ui) {
                     $.each(Data, function (i, item) {
                         availableinvoicesarr.push(item.invoiceno);
                     })
-                  
+
                 }
             });
         }
@@ -577,7 +577,7 @@ select: function(event, ui) {
                 $("#invoiceno").trigger("focusout");
             }
         });
-   
+
 
     });
     $("#invoiceno").focusout(function () {
@@ -590,9 +590,9 @@ select: function(event, ui) {
                 $("#invoiceno").trigger("focusout");
             }
         });
-       
+
     });
-   
+
 </script>
 
 @*<script>
@@ -656,3 +656,29 @@ select: function(event, ui) {
     //    alert('@TempData["success"]');
     </script>
 }
+
+<!-- Validation Script -->
+<script>
+    $(document).ready(function () {
+        $('#submitbook').on('click', function (e) {
+            // Prevent form submission
+         
+
+            // Get values of the fields
+            var companyDetails = $('#Companydetails').val().trim();
+            var invoiceNo = $('#invoiceNo').val().trim();
+            var invFromDate = $('#invfromdate').val().trim();
+            var invToDate = $('#invtodate').val().trim();
+
+            // Check if at least one of the fields is filled
+            if (companyDetails === "" && invoiceNo === "" && (invFromDate === "" || invToDate === "")) {
+                alert("Please select at least one: Company Name, Invoice Number, or From Date to To Date.");
+                e.preventDefault();
+                return false; // Stop the form submission
+            }
+          
+            // If validation passes, submit the form
+            $("#FormSubmit").submit();
+        });
+    });
+</script>

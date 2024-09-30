@@ -53,7 +53,7 @@
 
 
 
-                                    @using (Html.BeginForm("Checkbookinglist", "Booking"))
+                                    @using (Html.BeginForm("Checkbookinglist", "Booking",new {id="NoBookingData"}))
                                     {
 
 
@@ -375,23 +375,43 @@ $(document).ready(function () {
     function PasstheConsignmentsToRTO() {
       
         var consignmentsString = checkedConsignments.join(',');
+        var fromdate = $("#datepicker").val();
+        var todate = $("#datepicker1").val();
+        var custid = $("#custid").val();
         $.ajax({
             type: 'GET',
-            url: '/Booking/CovertConsignmentToRTO',
+            url: '/Booking/CovertConsignmentToRTO?' + "fromdate=" + fromdate + "&todate=" + todate + "&custId=" + custid,
             data: { consignmnets: consignmentsString },
             dataType: 'json',
             success: function (data) {
-             
+                console.log(data);
                 if (data === "Success") {
                     alert("Consignment Set for the RTO  successfully!!!");
-                                  }
+
+                    //window.location.href = "/Booking/Checkbookinglist?" +
+                    //    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                    //    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                    //    "&Custid=" + encodeURIComponent($("#custid").val());
+
+
+                    window.location.replace("/Booking/Checkbookinglist?" +
+                        "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                        "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                        "&Custid=" + encodeURIComponent($("#custid").val()));
+                }
+                //else
+                //if (data === "Success") {
+                //    alert("Success")
+                //    $("#NoBookingData").submit()
+                //    //window.location.href = "/Booking/Checkbookinglist?" +
+                //    //    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                //    //    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                //    //    "&Custid=" + encodeURIComponent($("#custid").val());
+                //}
                 else {
                     alert("Something Went Wrong")
                 }
-                window.location.href = "/Booking/Checkbookinglist?" +
-                    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
-                    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
-                    "&Custid=" + encodeURIComponent($("#custid").val());
+              
 
 
             },

@@ -2921,6 +2921,7 @@ Select(e => new
 
 
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.currentPfcode=strpfcode;
             var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
             var gst = franchisee.GstNo;
             ViewBag.GST = gst;

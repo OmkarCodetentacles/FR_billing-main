@@ -60,7 +60,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data",id= "form1" }))
                                         {
                                             <div class="col-md-8 no-padding">
                                                 <label for="file"><strong id="up-txt"> Upload for Document </strong></label>
@@ -87,13 +87,13 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data",id= "form2" }))
                                         {
                                             <div class="col-md-8 no-padding">
                                                 <label for="file"><strong id="up-txt"> Upload for Non-Document </strong></label>
-                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                <input type="file" name="httpPostedFileBase" id="file2" class="form-control" />
                                                 <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn2" />
                                                     <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
                                                 </div>
                                             </div>
@@ -113,13 +113,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                            @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data",id= "form3" }))
                                             {
                                                 <div class="col-md-8 no-padding">
                                                     <label for="file"><strong id="up-txt"> Upload New </strong></label>
-                                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                    <input type="file" name="httpPostedFileBase" id="file3" class="form-control" />
                                                     <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn3" />
                                                         <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a><!--Create Dynamic url-->
                                                     </div>
                                                 </div>
@@ -201,14 +201,72 @@
                 window.scrollTo(0, 0);
             }
             $(document).ready(function () {
-                $('#submitBtn').on('click', function () {
+                $('#submitBtn').on('click', function (e) {
+                    // Prevent default form submission (since we are handling submission manually)
+                 
+
+                    // Scroll to the top of the page
                     scrollToTop();
-                  
+                    // Get the file input value
+                    var file = $("#file").val();
+                    // Check if file input is empty
+                    if (file == "" || file == NaN) {
+                        e.preventDefault();
+                        alert("Please select a file before Uploading.");
+                        return false; // Stop the form submission
+                    }
+
+                    // Show the loader after validation
                     showLoader('overlayBlock');
-                    // Get the form element
-                    var form = $('#frmEmp');
-                    // Submit the form
-                    form.submit();
+
+                    // Get the form element and submit the form after validation
+                    $('#form1').submit();
+                });
+
+
+                $('#submitBtn2').on('click', function (e) {
+                    // Prevent default form submission (since we are handling submission manually)
+                  
+
+                    // Scroll to the top of the page
+                    scrollToTop();
+                    // Get the file input value
+                    var file = $("#file2").val();
+                    // Check if file input is empty
+                    if (file == "" || file == NaN) {
+                        e.preventDefault();
+                        alert("Please select a file before Uploading.");
+                        return false; // Stop the form submission
+                    }
+
+                    // Show the loader after validation
+                    showLoader('overlayBlock');
+
+                    // Get the form element and submit the form after validation
+                    $('#form2').submit();
+                });
+
+                $('#submitBtn3').on('click', function (e) {
+                    // Prevent default form submission (since we are handling submission manually)
+                   
+                    // Scroll to the top of the page
+                    scrollToTop();
+                    // Get the file input value
+                    var file = $("#file3").val();
+                    // Check if file input is empty
+                    if (file == "" || file == NaN) {
+                        e.preventDefault();
+
+                        alert("Please select a file before Uploading.");
+                        return false; // Stop the form submission
+                    }
+
+                    // Show the loader after validation
+                    showLoader('overlayBlock');
+
+                    // Get the form element and submit the form after validation
+                    $('#form3').submit();
+                });
 
                 });
 

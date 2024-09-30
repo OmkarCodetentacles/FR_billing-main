@@ -305,19 +305,19 @@ namespace DtDc_Billing.CustomModel
                                        : transaction.Mode;
 
                                     //tran.compaddress = (workSheet?.Cells[rowIterator, 5]?.Value?.ToString());
-                                    tran.compaddress = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 5]?.Value?.ToString())
+                                    tran.compaddress = workSheet.Cells[rowIterator, 5]!=null
                                     ? workSheet.Cells[rowIterator, 5]?.Value?.ToString()
                                     : transaction.compaddress;
 
                                     //  tran.Quanntity = Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value);
-                                    tran.Quanntity = workSheet.Cells[rowIterator, 6]?.Value != null
+                                    tran.Quanntity = workSheet.Cells[rowIterator, 6]!= null
                                      ? Convert.ToInt16(workSheet.Cells[rowIterator, 6]?.Value)
                                      : transaction.Quanntity;
 
                                     //  tran.Pincode = workSheet.Cells[rowIterator, 7]?.Value?.ToString();
-                                    tran.Pincode = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 7]?.Value?.ToString())
-              ? workSheet.Cells[rowIterator, 7]?.Value?.ToString()
-              : transaction.Pincode;
+                                    tran.Pincode = workSheet.Cells[rowIterator, 7]!=null
+                                              ? workSheet.Cells[rowIterator, 7]?.Value?.ToString()
+                                              : transaction.Pincode;
 
                                     string dateString = workSheet.Cells[rowIterator, 8]?.Value?.ToString();
                                     DateTime dateTime;

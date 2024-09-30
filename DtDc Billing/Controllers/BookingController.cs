@@ -764,8 +764,158 @@ Select(e => new
             //}).ToList();
 
             //ViewBag.totalamt = obj.Sum(b => b.Amount);
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
-            return View(list);
+
+            DateTime? fromdate=DateTime.Now;
+            DateTime? todate=DateTime.Now;
+          
+            if (Fromdatetime != "" && Fromdatetime!=null)
+            {
+                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                fromdate = Convert.ToDateTime(bdatefrom);
+
+                ViewBag.fromdate = Fromdatetime;
+            }
+            else
+            {
+                fromdate = DateTime.Now;
+            }
+
+            if (ToDatetime != "" && ToDatetime!=null)
+            {
+                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                todate = Convert.ToDateTime(bdateto);
+                ViewBag.todate = ToDatetime;
+            }
+            else
+            {
+                todate = DateTime.Now;
+            }
+
+            if (Custid != "" && Custid != null)
+            {
+                ViewBag.Custid = Custid;
+            }
+
+            if (Custid == "")
+            {
+                var obj = db.getCheckBookingListWithoutCompany(fromdate, todate, strpf).Select(x => new TransactionView
+                {
+
+                    Consignment_no = x.Consignment_no,
+                    chargable_weight = x.chargable_weight,
+                    Quanntity = x.Quanntity,
+                    Name = x.Name,
+                    Pincode = x.Pincode,
+                    compaddress = x.compaddress,
+                    Type_t = x.Type_t,
+                    Mode = x.Mode,
+                    Amount = x.Amount,
+                    booking_date = x.booking_date,
+                    Insurance = x.Insurance,
+                    BillAmount = x.BillAmount,
+                    Percentage = x.Percentage,
+                    Risksurcharge = x.Risksurcharge,
+                    loadingcharge = x.loadingcharge
+
+                }).OrderBy(d => d.booking_date).ToList();
+
+                ViewBag.totalamt = obj.Sum(b => b.Amount);
+
+                if (Submit == "Export to Excel")
+                {
+                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
+                    //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                    //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
+                    //    .OrderByDescending(m=>m.BookingDate).ToList();
+                    var data = obj.Select(x => new {
+                        ConsignmentNo = x.Consignment_no,
+                        Weight = x.chargable_weight,
+                        x.Quanntity,
+                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
+                        Pincode = x.Pincode,
+                        Address = x.compaddress,
+                        Type = x.Type_t,
+                        x.Mode,
+                        x.Amount,
+                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
+                        x.Insurance,
+                        x.Claimamount,
+                        x.Percentage,
+                        x.Risksurcharge,
+                        OtherCharges = x.loadingcharge,
+                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
+
+
+
+                    }).ToList();
+                    ExportToExcelAll.ExportToExcelAdmin(data);
+                }
+
+
+                return View(obj);
+
+            }
+            else
+            {
+                var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
+                {
+
+                    Consignment_no = x.Consignment_no,
+                    chargable_weight = x.chargable_weight,
+                    Quanntity = x.Quanntity,
+                    Name = x.Name,
+                    Pincode = x.Pincode,
+                    compaddress = x.compaddress,
+                    Type_t = x.Type_t,
+                    Mode = x.Mode,
+                    Amount = x.Amount,
+                    booking_date = x.booking_date,
+                    Insurance = x.Insurance,
+                    BillAmount = x.BillAmount,
+                    Percentage = x.Percentage,
+                    Risksurcharge = x.Risksurcharge,
+                    loadingcharge = x.loadingcharge,
+
+                }).OrderByDescending(d => d.booking_date).ToList();
+
+                ViewBag.totalamt = obj.Sum(b => b.Amount);
+
+                if (Submit == "Export to Excel")
+                {
+                    //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
+                    //(m.Customer_Id == null || m.Customer_Id == Custid)
+                    //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
+                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
+                    var data = obj.Select(x => new {
+                        ConsignmentNo = x.Consignment_no,
+                        Weight = x.chargable_weight,
+                        x.Quanntity,
+                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
+                        Pincode = x.Pincode,
+                        Address = x.compaddress,
+                        Type = x.Type_t,
+                        x.Mode,
+                        x.Amount,
+                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
+                        x.Insurance,
+                        x.Claimamount,
+                        x.Percentage,
+                        x.Risksurcharge,
+                        OtherCharges = x.loadingcharge,
+                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
+
+
+
+                    }).ToList();
+                    ExportToExcelAll.ExportToExcelAdmin(data);
+                }
+
+                return View(obj);
+            }
+
         }
 
 
@@ -933,7 +1083,7 @@ Select(e => new
         }
         //Convert the Consignment for the RTO 
 
-        public JsonResult CovertConsignmentToRTO(string consignmnets)
+        public JsonResult CovertConsignmentToRTO(string consignmnets,string fromdate,string todate,string custId)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -952,7 +1102,8 @@ Select(e => new
                     }
 
                 }
-                return Json("Success", JsonRequestBehavior.AllowGet);
+               return Json("Success", JsonRequestBehavior.AllowGet);
+             //   return Json(new { redirectUrl = Url.Action("Checkbookinglist", "Booking", new { Fromdatetime = fromdate, ToDatetime = todate, Custid = custId }) },JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
