@@ -1,5 +1,8 @@
 ﻿@model DtDc_Billing.Models.AddlogoModel
-
+@{
+    ViewBag.Title = "AddLogo";
+    Html.EnableClientValidation(true);
+}
 
 
 <style>
@@ -21,20 +24,24 @@
                 <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
                     <div class="box-header with-border" style="background:none;border:none">
                         <h4>Upload Logo</h4>
-                      
+
                     </div>
                     <div class="" style="padding:0 20px">
                         <div class="row">
                             <div class="col-md-12 ">
                                 @*@{
                                     var successMessage = TempData["Success1"] as string;
+                                    var errorMessage = TempData["Error"] as string;
                                 }
 
                                 @if (!string.IsNullOrEmpty(successMessage))
                                 {
                                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+                                @if (!string.IsNullOrEmpty(errorMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
                                 }*@
-
 
                                 <div class="form-horizontal">
                                     <div class="box-body">
@@ -44,7 +51,8 @@
                                             <div class="col-md-5">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="file" name="file" id="file" class="form-control" />
+                                                        <input type="file" name="file" id="filelogo" class="form-control" />
+                                                        <span id="fileErrorlogo" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
                                                         @Html.ValidationMessage("fileerr")
                                                     </div>
                                                     <div class="col-md-6">
@@ -53,10 +61,10 @@
                                                             <img src="@ViewBag.logoImage" style="height:100px;width:100px" />
 
                                                         }
-                                                         else
-                                                            {
-                                                                <span>Image not Uploaded</span>
-                                                            }
+                                                        else
+                                                        {
+                                                            <span>Image not Uploaded</span>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -70,7 +78,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                                <input type="submit" value="Save"  id="submitBtnlogo" class="btn btn-primary" />
                                             </div>
                                         </div>
                                     </div>
@@ -110,3 +118,29 @@
 
 </script>
 
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#fileErrorlogo").hide();
+        $('#submitBtnlogo').on('click', function (e) {
+
+
+            // Get the file input value
+            var file = $("#filelogo").val();
+
+            // Check if file input is empty
+            if (file == "" || file == NaN || file == null) {
+                $("#fileErrorlogo").show();  // Display the error span
+                e.preventDefault();      // Prevent form submission
+                return false;            // Sto
+            }
+
+            // Hide the error if a file is selected (this is a fallback check)
+            $("#fileErrorlogo").hide();
+
+
+        });
+    })
+</script>

@@ -51,7 +51,7 @@
                     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
 
                 }
-                @using (Html.BeginForm("ViewSingleInvoice", "Invoice", FormMethod.Get))
+                @using (Html.BeginForm("ViewSingleInvoice", "Invoice", FormMethod.Get, new {id= "FormSubmitSingle" }))
                 {
 
 
@@ -507,3 +507,30 @@ select: function(event, ui) {
             //alert('@TempData["success"]');
         </script>
     }*@
+
+
+<!-- Validation Script -->
+<script>
+    $(document).ready(function () {
+        $('#submitbook').on('click', function (e) {
+            // Prevent form submission
+
+
+            // Get values of the fields
+            var companyDetails = $('#Companydetails').val().trim();
+            var invoiceNo = $('#invoiceNo').val().trim();
+            var invFromDate = $('#invfromdate').val().trim();
+            var invToDate = $('#invtodate').val().trim();
+
+            // Check if at least one of the fields is filled
+            if (companyDetails === "" && invoiceNo === "" && (invFromDate === "" || invToDate === "")) {
+                alert("Please select at least one: Company Name, Invoice Number, or From Date to To Date.");
+                e.preventDefault();
+                return false; // Stop the form submission
+            }
+
+            // If validation passes, submit the form
+            $("#FormSubmitSingle").submit();
+        });
+    });
+</script>

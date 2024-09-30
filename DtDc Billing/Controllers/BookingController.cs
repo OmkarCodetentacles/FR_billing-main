@@ -824,36 +824,7 @@ Select(e => new
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
-                if (Submit == "Export to Excel")
-                {
-                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
-                    //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
-                    //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
-                    //    .OrderByDescending(m=>m.BookingDate).ToList();
-                    var data = obj.Select(x => new {
-                        ConsignmentNo = x.Consignment_no,
-                        Weight = x.chargable_weight,
-                        x.Quanntity,
-                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
-                        Pincode = x.Pincode,
-                        Address = x.compaddress,
-                        Type = x.Type_t,
-                        x.Mode,
-                        x.Amount,
-                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
-                        x.Insurance,
-                        x.Claimamount,
-                        x.Percentage,
-                        x.Risksurcharge,
-                        OtherCharges = x.loadingcharge,
-                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
-
-
-
-                    }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(data);
-                }
-
+             
 
                 return View(obj);
 
@@ -883,35 +854,7 @@ Select(e => new
 
                 ViewBag.totalamt = obj.Sum(b => b.Amount);
 
-                if (Submit == "Export to Excel")
-                {
-                    //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
-                    //(m.Customer_Id == null || m.Customer_Id == Custid)
-                    //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
-                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
-                    var data = obj.Select(x => new {
-                        ConsignmentNo = x.Consignment_no,
-                        Weight = x.chargable_weight,
-                        x.Quanntity,
-                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
-                        Pincode = x.Pincode,
-                        Address = x.compaddress,
-                        Type = x.Type_t,
-                        x.Mode,
-                        x.Amount,
-                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
-                        x.Insurance,
-                        x.Claimamount,
-                        x.Percentage,
-                        x.Risksurcharge,
-                        OtherCharges = x.loadingcharge,
-                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
-
-
-
-                    }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(data);
-                }
+             
 
                 return View(obj);
             }

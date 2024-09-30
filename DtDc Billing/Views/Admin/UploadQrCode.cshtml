@@ -1,6 +1,9 @@
 ﻿@model DtDc_Billing.Models.AddQrCodeModel
 
-
+@{
+    ViewBag.Title = "UploadQrCode";
+    Html.EnableClientValidation(true);
+}
 
 <style>
     #frmEmp {
@@ -10,7 +13,7 @@
 </style>
 
 
-@using (Html.BeginForm("AddQrCode", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddQrCode", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromQrCode" }))
 {
     @Html.AntiForgeryToken()
 
@@ -27,14 +30,18 @@
                         <div class="row">
                             <div class="col-md-12 ">
                                 @*@{
-                                        var successMessage = TempData["Success1"] as string;
-                                    }
+                                    var successMessage = TempData["Success1"] as string;
+                                    var errorMessage = TempData["Error"] as string;
+                                }
 
-                                    @if (!string.IsNullOrEmpty(successMessage))
-                                    {
-                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                                    }*@
-
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+                                @if (!string.IsNullOrEmpty(errorMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                                }*@
 
                                 <div class="form-horizontal">
                                     <div class="box-body">
@@ -44,7 +51,9 @@
                                             <div class="col-md-5">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="file" name="file" id="file" class="form-control" />
+                                                        <input type="file" name="file" id="qrfile" class="form-control" />
+                                                        <span id="fileErrorqr" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
                                                         @Html.ValidationMessage("fileerr")
                                                     </div>
                                                     <div class="col-md-6">
@@ -70,7 +79,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                                <input type="submit" value="Save" id="submitBtnqr" class="btn btn-primary" />
                                             </div>
                                         </div>
                                     </div>
@@ -110,3 +119,27 @@
 
 </script>
 
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#fileError").hide();
+        $('#submitBtnqr').on('click', function (e) {
+
+
+            // Get the file input value
+            var file = $("#qrfile").val();
+
+            // Check if file input is empty
+            if (file == "" || file == NaN || file == null) {
+                $("#fileErrorqr").show();
+                return false;            // Sto
+            }
+
+           
+
+
+        });
+    })
+</script>

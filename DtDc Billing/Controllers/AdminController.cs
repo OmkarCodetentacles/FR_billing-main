@@ -2753,6 +2753,12 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AddLogo(AddlogoModel logo)
         {
+
+            if(logo.file == null)
+            {
+                TempData["Error"] = " Image file Not Uploaded!";
+                return RedirectToAction("Franchiseelist");
+            }
             // Get the file extension in lowercase
             string extension = System.IO.Path.GetExtension(logo.file.FileName)?.ToLower();
 
@@ -2760,6 +2766,8 @@ namespace DtDc_Billing.Controllers
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
                 TempData["Error"] = "Only Image files allowed!";
+                return RedirectToAction("Franchiseelist");
+
             }
             else
             {
@@ -2790,7 +2798,7 @@ namespace DtDc_Billing.Controllers
                 return RedirectToAction("Franchiseelist");
             }
 
-            return View("AddLogo");
+           // return View("AddLogo");
            // return RedirectToAction("Franchiseelist");
             //return PartialView(logo);
 
@@ -2803,6 +2811,13 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AddQrCode(AddQrCodeModel qrcode)
         {
+            if (qrcode.file== null)
+            {
+                // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+                TempData["Error"] = " Image file Not Upload!";
+                return RedirectToAction("Franchiseelist");
+
+            }
             // Get the file extension in lowercase
             string extension = System.IO.Path.GetExtension(qrcode.file.FileName)?.ToLower();
             string baseUrl = Request.Url.Authority + "://";
@@ -2810,7 +2825,7 @@ namespace DtDc_Billing.Controllers
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
                 TempData["Error"] = "Only Image files allowed!";
-                return RedirectToAction("UploadQrCode");
+                return RedirectToAction("Franchiseelist");
             }
             else
             {
@@ -2846,7 +2861,7 @@ namespace DtDc_Billing.Controllers
                 return RedirectToAction("Franchiseelist");
             }
 
-            return View("UploadQrCode");
+         //   return View("UploadQrCode");
             // return RedirectToAction("Franchiseelist");
             //return PartialView(logo);
 
