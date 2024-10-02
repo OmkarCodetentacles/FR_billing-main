@@ -161,6 +161,7 @@ namespace DtDc_Billing.Controllers
                     tran.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran.AdminEmp = 000;
                     tran.Receiver = transaction.Receiver;
+                    tran.isDelete = false;
                     /////////////////////////////
 
                     tran.T_id = tr.T_id;
@@ -215,7 +216,7 @@ namespace DtDc_Billing.Controllers
                     tran1.codtotalamount = transaction.codtotalamount;
                     tran1.consigner = transaction.consigner;
                     tran1.compaddress = transaction.compaddress;
-
+                    tran1.isDelete = false;
                     tran1.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran1.AdminEmp = 000;
                     db.Transactions.Add(tran1);
@@ -489,6 +490,7 @@ Select(e => new
                     tran.codtotalamount = transaction.codtotalamount;
                     tran.consigner = transaction.consigner;
                     tran.Receiver = transaction.Receiver;
+                    tran.isDelete = false;
                     db.Entry(tran).State = EntityState.Modified;
 
                     db.SaveChanges();
@@ -699,7 +701,7 @@ Select(e => new
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
                     if (transaction != null)
                     {
@@ -1036,7 +1038,7 @@ Select(e => new
 
                 foreach (var con in conno)
                 {
-                    var trans = db.Transactions.Where(x => x.Consignment_no == con && x.Pf_Code == strpf).FirstOrDefault();
+                    var trans = db.Transactions.Where(x => x.Consignment_no == con && x.Pf_Code == strpf ).FirstOrDefault();
                     if (trans != null)
                     {
                         trans.isRTO = true;
@@ -1105,6 +1107,7 @@ Select(e => new
             List<Transaction> transactions =
                 db.Transactions.Where(m =>
                (m.Pf_Code == PfCode) && (m.Customer_Id == null || m.Customer_Id == "")
+               && m.isDelete==false
                     ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
 
@@ -1441,7 +1444,7 @@ Select(e => new
                     foreach (var i in obj)
                     {
 
-                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf).FirstOrDefault();
+                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf && m.isDelete==false).FirstOrDefault();
 
                         if (transaction != null)
                         {
@@ -1500,7 +1503,7 @@ Select(e => new
                     foreach (var i in obj)
                     {
 
-                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf).FirstOrDefault();
+                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf && m.isDelete == false).FirstOrDefault();
 
                         if (transaction != null)
                         {
@@ -1611,7 +1614,7 @@ Select(e => new
 
         public int Bulkupdatesave(string Consignment, string custid, string mode, double charweight, string type, double? amount)
         {
-            Transaction tran = db.Transactions.Where(m => m.Consignment_no == Consignment).FirstOrDefault();
+            Transaction tran = db.Transactions.Where(m => m.Consignment_no == Consignment && m.isDelete == false).FirstOrDefault();
 
             if (tran != null)
             {
@@ -1911,7 +1914,7 @@ Select(e => new
                     //tr.Insurance = "no";
                     tr.Type_t = values[16].Trim('\'');
                     tr.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
-
+                    tr.isDelete = false;
                     if (tr.BillAmount == 0.00)
                     {
                         tr.Insurance = "nocoverage";
@@ -1965,7 +1968,7 @@ Select(e => new
 
                         insertupdate.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
                         insertupdate.Insurance = tr.Insurance;
-
+                        insertupdate.isDelete = false;
                         db.Entry(insertupdate).State = EntityState.Modified;
 
                         try
@@ -2118,7 +2121,7 @@ Select(e => new
                         tran.compaddress = fields[4];
                         tran.Quanntity = int.TryParse(fields[5], out int quantity) ? quantity : 0;
                         tran.Pincode = fields[6];
-
+                        tran.isDelete = false;
                         string dateformat = fields[7];
 
                         tran.tembookingdate = DateTime.ParseExact(fields[7], formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -2160,7 +2163,7 @@ Select(e => new
                                 transaction.AdminEmp = 000;
                                 transaction.loadingcharge = tran.loadingcharge;
                                 tran.Receiver = tran.Receiver;
-
+                                tran.isDelete = false;
 
                                 db.Entry(transaction).State = EntityState.Modified;
                                 db.SaveChanges();
@@ -2177,10 +2180,10 @@ Select(e => new
                                 string bdate = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                                 tran.tembookingdate = tran.tembookingdate;
                                 tran.booking_date = Convert.ToDateTime(bdate);
-
+                                
                                 tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                 tran.AdminEmp = 000;
-
+                                tran.isDelete=false;
                                 db.Transactions.Add(tran);
                                 db.SaveChanges();
 
@@ -2201,7 +2204,30 @@ Select(e => new
             }
         }
 
+        [HttpGet]
+        public ActionResult RecycleConsignment()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            var list =db.Transactions.Where(x=>x.Pf_Code==strpfcode && x.isDelete==true).ToList();
+            return View(list);
+        }
+            public ActionResult RestoreConsignment(string consignmentno)
+        {
+            var data=db.Transactions.Where(x=>x.Consignment_no==consignmentno).FirstOrDefault();
+            if (data != null)
+            {
+                data.isDelete= false;
+                db.Entry(data).State=EntityState.Modified;  
+                db.SaveChanges();
+                TempData["Message"] = "Consignment Restore Successfully";
+                return RedirectToAction("RecycleConsignment");
+
+            }
+            TempData["Message"] = "Something Went Wrong";
+
+            return RedirectToAction("RecycleConsignment");
+        }
 
 
     }

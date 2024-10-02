@@ -110,21 +110,21 @@ namespace DtDc_Billing.Controllers
             {
                 transactions =
                    db.Transactions.Where(m =>
-                  (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode)
+                  (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete==false
                        ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
             }
             else if (status == "Unbilled")
             {
                 transactions =
                   db.Transactions.Where(m =>
-                 (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode)
+                 (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
                       ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
             }
             else
             {
                 transactions =
                  db.Transactions.Where(m =>
-                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode)
+                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
                      ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
             }
@@ -137,7 +137,7 @@ namespace DtDc_Billing.Controllers
                 {
 
                     var import = db.Transactions.Where(m =>
-                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
+                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
                     ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0,ChargableWeight=x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                    if(import.Count()==0 || import == null)
                     {
@@ -154,7 +154,7 @@ namespace DtDc_Billing.Controllers
                 else if (status == "Unbilled")
                 {
                     var import = db.Transactions.Where(m =>
-              (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
+              (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
                   ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                   if(import.Count()==0 || import == null)
                     {
@@ -171,7 +171,7 @@ namespace DtDc_Billing.Controllers
                 {
 
                     var import = db.Transactions.Where(m =>
-                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "")
+                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
                     ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                 if(import.Count()<=0 || import == null)
                     {
@@ -1284,6 +1284,7 @@ namespace DtDc_Billing.Controllers
                                join comp in db.Companies
                                on inv.Customer_Id equals comp.Company_Id
                                where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)
+                                && inv.isDelete==false
                                && inv.invoicedate != null
                                select new
                                {
@@ -1339,6 +1340,7 @@ namespace DtDc_Billing.Controllers
                                on inv.Customer_Id equals comp.Company_Id
                                where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)&&
                                inv.invoicedate != null 
+                               && inv.isDelete==false
                                      //  Perform the date calculations in memory
                              //     && DbFunctions.TruncateTime(inv.invoicedate) >= DbFunctions.TruncateTime(fromdate)
                              //&& DbFunctions.TruncateTime(inv.invoicedate) <= DbFunctions.TruncateTime(todate)
@@ -3144,7 +3146,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         {
             try
             {
-                ViewBag.DataPoints = JsonConvert.SerializeObject(db.Invoices.Select(m=> new { m.netamount, month= SqlFunctions.DatePart("month",m.invoicedate)+"-"+SqlFunctions.DatePart("year", m.invoicedate) }).GroupBy(o => new
+                ViewBag.DataPoints = JsonConvert.SerializeObject(db.Invoices.Where(x=>x.isDelete==false).Select(m=> new { m.netamount, month= SqlFunctions.DatePart("month",m.invoicedate)+"-"+SqlFunctions.DatePart("year", m.invoicedate) }).GroupBy(o => new
                 {
                    o.month
                    

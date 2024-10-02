@@ -322,6 +322,7 @@ namespace DtDc_Billing.Controllers
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
                                         where c.Pf_code == PfCode
+                                        && u.isDelete==false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -348,6 +349,7 @@ namespace DtDc_Billing.Controllers
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
                                         where c.Pf_code == PfCode
+                                        && u.isDelete == false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -375,6 +377,7 @@ namespace DtDc_Billing.Controllers
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
                                         where c.Pf_code == PfCode
+                                        && u.isDelete==false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -404,7 +407,7 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
-
+                                        where u.isDelete==false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -430,6 +433,7 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
+                                        where u.isDelete==false
                                          select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -456,6 +460,7 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
+                                         where u.isDelete==false
                                       select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -1100,7 +1105,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
@@ -1154,7 +1159,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
@@ -1385,6 +1390,7 @@ namespace DtDc_Billing.Controllers
             var list = (from user in db.Transactions
                         where !db.Destinations.Any(f => f.Pincode == user.Pincode)
                         && user.Pf_Code== pfcode
+                        && user.isDelete==false
                         select user).ToList();
 
             return View(list);
@@ -1397,6 +1403,7 @@ namespace DtDc_Billing.Controllers
             var list = (from user in db.Transactions
                         where !db.Companies.Any(f => f.Company_Id == user.Customer_Id) && user.Customer_Id != null
                         && user.Pf_Code== pfcode
+                        && user.isDelete==false
                         select user).ToList();
 
             return View(list);
@@ -1648,6 +1655,7 @@ namespace DtDc_Billing.Controllers
 
                         where
                             (c.Pf_code == PfCode) &&
+                            i.isDelete==false &&
                             DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1697,6 +1705,7 @@ namespace DtDc_Billing.Controllers
 
                                  where
                                      (c.Pf_code == PfCode) &&
+                                     i.isDelete==false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1752,6 +1761,7 @@ namespace DtDc_Billing.Controllers
 
                                  where
                                      (c.Pf_code == PfCode) &&
+                                     i.isDelete==false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
                                  select new
                                  {
@@ -1817,7 +1827,7 @@ namespace DtDc_Billing.Controllers
                         on c.Pf_code equals f.PF_Code
 
                         where
-
+                        i.isDelete==false &&
                             DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1867,7 +1877,7 @@ namespace DtDc_Billing.Controllers
                                  on c.Pf_code equals f.PF_Code
 
                                  where
-
+                                 i.isDelete== false && 
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1924,7 +1934,7 @@ namespace DtDc_Billing.Controllers
                                  on c.Pf_code equals f.PF_Code
 
                                  where
-
+                                 i.isDelete==false && 
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
                                  select new
@@ -2031,6 +2041,7 @@ namespace DtDc_Billing.Controllers
                     where
                         (i.Customer_Id == Custid || Custid == "") && 
                         i.Pfcode== strpf &&
+                        i.isDelete==false &&
                         DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2081,6 +2092,7 @@ namespace DtDc_Billing.Controllers
                                                 where
                                                     (i.Customer_Id == Custid || Custid == "") &&
                                                      i.Pfcode == strpf &&
+                                                     i.isDelete==false &&
                                                     DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2144,10 +2156,11 @@ namespace DtDc_Billing.Controllers
                              on i.Customer_Id equals c.Company_Id
                              join f in db.Franchisees
                              on c.Pf_code equals f.PF_Code
-
+                             
                              where
                                  (i.Customer_Id == Custid || Custid == "") &&
                                   i.Pfcode == strpf &&
+                                  i.isDelete == false &&
                                  DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2234,7 +2247,7 @@ namespace DtDc_Billing.Controllers
                 string updateconsignment = stch + i.ToString();
 
 
-                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
 
                 if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)

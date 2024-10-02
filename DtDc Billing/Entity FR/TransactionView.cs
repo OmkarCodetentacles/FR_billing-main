@@ -47,6 +47,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> fovcharge { get; set; }
         public Nullable<double> loadingcharge { get; set; }
         public Nullable<double> odocharge { get; set; }
+        public Nullable<bool> isRTO { get; set; }
         public Nullable<double> Risksurcharge { get; set; }
         public Nullable<long> Invoice_No { get; set; }
         public Nullable<double> BillAmount { get; set; }
@@ -57,11 +58,11 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> diff_weight { get; set; }
         public string Sender { get; set; }
         public string receiver { get; set; }
+        public Nullable<bool> isDelete { get; set; }
         public string Name { get; set; }
         public string tempdelivereddate { get; set; }
         public string receivedby { get; set; }
         public string remarks { get; set; }
         public string tempdeliveredtime { get; set; }
-        public Nullable<bool> isRTO { get; set; }
     }
 }

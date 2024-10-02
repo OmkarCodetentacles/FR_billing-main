@@ -311,6 +311,7 @@ namespace DtDc_Billing.Controllers
                                on inv.Customer_Id equals comp.Company_Id
                                where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)
                                && inv.invoicedate!=null
+                               && inv.isDelete==false
                                select new
                                {
                                    DueDaydata = comp.DueDays ?? 0,
@@ -322,12 +323,14 @@ namespace DtDc_Billing.Controllers
           //  Perform the date calculations in memory
 
             var Duedaysdata= (from d in invoiceData
+                             
                              select new DueDaysModel
                              {
                                  Date=d.InvoiceDate.Value.AddDays(d.DueDaydata),
                                  DueDays=(d.InvoiceDate.Value.AddDays(d.DueDaydata).Date-DateTime.Now.Date).Days,
                                  Company_Id=d.Company_Iddata,
                                  InvoiceNo=d.InvoiceNo  
+                                 
                              }).OrderBy(d=>d.DueDays).ToList();  
             
             var Duedysexpires=Duedaysdata.Where(x=>x.DueDays>0 && x.DueDays<5).Count();
@@ -359,7 +362,7 @@ namespace DtDc_Billing.Controllers
             DateTime threeMonthsAgo = DateTime.Now.AddMonths(-3);
 
             var data = db.Invoices
-                         .Where(x => x.Pfcode == PfCode && x.invoicedate >= threeMonthsAgo)
+                         .Where(x => x.Pfcode == PfCode && x.invoicedate >= threeMonthsAgo && x.isDelete==false)
                          .GroupBy(x => x.Customer_Id)
                          .Select(g => new Top5data {
                              customerId = g.FirstOrDefault().Customer_Id,
@@ -617,6 +620,7 @@ namespace DtDc_Billing.Controllers
 
         public JsonResult PivotData()
         {
+            
             var results = (from c in db.Invoices
                            group c by new
                            {
@@ -843,7 +847,7 @@ namespace DtDc_Billing.Controllers
 
             if (pfcode == null || pfcode == "")
             {
-                var inv1 = db.Invoices.Select(m => new { m.netamount, m.invoicedate, day= SqlFunctions.DatePart("day", m.invoicedate), month = SqlFunctions.DatePart("month", m.invoicedate) + "-" + SqlFunctions.DatePart("year", m.invoicedate) }).GroupBy(m => m.month).Select(m => new { netamount = m.Sum(c => c.netamount), day = SqlFunctions.DatePart("day", m.FirstOrDefault().invoicedate), month = SqlFunctions.DatePart("month", m.FirstOrDefault().invoicedate), Year = SqlFunctions.DatePart("year", m.FirstOrDefault().invoicedate), invoicedate = m.FirstOrDefault().invoicedate }).OrderBy(m => m.invoicedate).Where(m => m.invoicedate >= sixMonthsBack && m.invoicedate <= today).Take(6).ToList();
+                var inv1 = db.Invoices.Where(x=>x.isDelete==false).Select(m => new { m.netamount, m.invoicedate, day= SqlFunctions.DatePart("day", m.invoicedate), month = SqlFunctions.DatePart("month", m.invoicedate) + "-" + SqlFunctions.DatePart("year", m.invoicedate) }).GroupBy(m => m.month).Select(m => new { netamount = m.Sum(c => c.netamount), day = SqlFunctions.DatePart("day", m.FirstOrDefault().invoicedate), month = SqlFunctions.DatePart("month", m.FirstOrDefault().invoicedate), Year = SqlFunctions.DatePart("year", m.FirstOrDefault().invoicedate), invoicedate = m.FirstOrDefault().invoicedate }).OrderBy(m => m.invoicedate).Where(m => m.invoicedate >= sixMonthsBack && m.invoicedate <= today).Take(6).ToList();
 
                 foreach (var i in inv1)
                 {
@@ -861,6 +865,7 @@ namespace DtDc_Billing.Controllers
                 var inv1 = (from inv in db.Invoices
                             join c in db.Companies on inv.Customer_Id equals c.Company_Id
                             where c.Pf_code == pfcode
+                            && inv.isDelete== false
                             select (new { inv.netamount, inv.invoicedate, c.Pf_code,  month = SqlFunctions.DatePart("day", inv.invoicedate) +"-"+ SqlFunctions.DatePart("month", inv.invoicedate) + "-" + SqlFunctions.DatePart("year", inv.invoicedate) }))
                            .GroupBy(m => m.month).Select(m => new
                            {
@@ -918,6 +923,7 @@ namespace DtDc_Billing.Controllers
                 var inv1 = (from inv in db.Receipt_details
                             join c in db.Companies on inv.Pf_Code equals c.Pf_code
                             where c.Pf_code == pfcode
+                            
                             select (new { inv.Charges_Amount, inv.Datetime_Cons, c.Pf_code, month = SqlFunctions.DatePart("day", inv.Datetime_Cons) + "-" + SqlFunctions.DatePart("month", inv.Datetime_Cons) + "-" + SqlFunctions.DatePart("year", inv.Datetime_Cons) }))
                            .GroupBy(m => m.month).Select(m => new
                            {

@@ -36,6 +36,7 @@ namespace DtDc_Billing.Entity_FR
         public string Address { get; set; }
         public string Invoice_Lable { get; set; }
         public Nullable<long> Firm_Id { get; set; }
+        public Nullable<bool> isDelete { get; set; }
         public Nullable<int> totalCount { get; set; }
     }
 }

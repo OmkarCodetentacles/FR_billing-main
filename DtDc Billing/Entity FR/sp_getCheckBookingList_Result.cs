@@ -25,6 +25,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> Amount { get; set; }
         public Nullable<System.DateTime> booking_date { get; set; }
         public string Insurance { get; set; }
+        public Nullable<bool> isDelete { get; set; }
         public Nullable<double> BillAmount { get; set; }
         public string Percentage { get; set; }
         public Nullable<double> Risksurcharge { get; set; }

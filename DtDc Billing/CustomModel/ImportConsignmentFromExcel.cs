@@ -92,6 +92,7 @@ namespace DtDc_Billing.CustomModel
 
                                         transaction.Customer_Id = tran.Customer_Id;
                                         transaction.Pf_Code = getPfcode;
+                                        transaction.isDelete =false;
                                         db.Entry(transaction).State = EntityState.Modified;
                                         db.SaveChanges();
                                     }
@@ -215,7 +216,7 @@ namespace DtDc_Billing.CustomModel
 
 
                                         transaction.AdminEmp = 000;
-
+                                        transaction.isDelete = false;
                                         db.Entry(transaction).State = EntityState.Modified;
                                         db.SaveChanges();
                                     }
@@ -489,7 +490,7 @@ namespace DtDc_Billing.CustomModel
                                         transaction.tembookingdate = tran.tembookingdate;
                                         transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                         transaction.AdminEmp = 000;
-
+                                        transaction.isDelete=false;
 
 
                                         db.Entry(transaction).State = EntityState.Modified;
@@ -509,7 +510,7 @@ namespace DtDc_Billing.CustomModel
 
                                         tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                         tran.AdminEmp = 000;
-
+                                        tran.isDelete=false; 
 
                                         db.Transactions.Add(tran);
                                             db.SaveChanges();
@@ -727,7 +728,7 @@ namespace DtDc_Billing.CustomModel
                                             transaction.tembookingdate = tran.tembookingdate;
                                             transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                             transaction.AdminEmp = 000;
-
+                                            transaction.isDelete = false;
 
 
                                             db.Entry(transaction).State = EntityState.Modified;
@@ -747,7 +748,7 @@ namespace DtDc_Billing.CustomModel
 
                                             tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                             tran.AdminEmp = 000;
-
+                                            tran.isDelete = false;
 
                                             db.Transactions.Add(tran);
                                             db.SaveChanges();
@@ -1000,7 +1001,7 @@ namespace DtDc_Billing.CustomModel
                                             transaction.tembookingdate = tran.tembookingdate;
                                             transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                             transaction.AdminEmp = 000;
-
+                                            transaction.isDelete = false;
 
 
                                             db.Entry(transaction).State = EntityState.Modified;
@@ -1020,7 +1021,7 @@ namespace DtDc_Billing.CustomModel
 
                                             tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                             tran.AdminEmp = 000;
-
+                                            tran.isDelete = false;
 
                                             db.Transactions.Add(tran);
                                             db.SaveChanges();

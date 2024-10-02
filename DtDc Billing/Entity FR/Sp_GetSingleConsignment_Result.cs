@@ -57,5 +57,7 @@ namespace DtDc_Billing.Entity_FR
         public string Sender { get; set; }
         public string Receiver { get; set; }
         public string compaddress { get; set; }
+        public Nullable<bool> isRTO { get; set; }
+        public Nullable<bool> isDelete { get; set; }
     }
 }

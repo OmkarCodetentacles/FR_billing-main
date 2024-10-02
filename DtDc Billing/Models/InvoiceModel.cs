@@ -53,6 +53,7 @@ namespace DtDc_Billing.Models
         public Nullable<long> Firm_Id { get; set; }
         public string Pfcode { get; set; }
         public int totalCount { get; set; }
+        public Nullable<bool> isDelete { get; set; }
 
 
     }

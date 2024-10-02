@@ -15,6 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Services.Description;
@@ -96,7 +97,7 @@ namespace DtDc_Billing.Controllers
 
                 invstart1 = dataInvStart + "/2024-25/";
             }
-            string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+            string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode ).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
             if (strpfcode == "CF2024")
@@ -108,7 +109,7 @@ namespace DtDc_Billing.Controllers
             else if(strpfcode== "CF2567")
             {
                 dataInvStart = "NGR";
-                lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode ).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+                lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
                 lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart+" " + 120;
 
             }
@@ -237,7 +238,8 @@ namespace DtDc_Billing.Controllers
 
             var data = (from d in db.Invoices
                         where d.Pfcode == strpfcode
-                        && d.invoiceno == Invoiceno
+                        && d.invoiceno == Invoiceno 
+                        && d.isDelete==false
                         select d).FirstOrDefault();
 
             if (data != null)
@@ -314,7 +316,7 @@ namespace DtDc_Billing.Controllers
             if (Firm_Id == 1)
             {
                 string invstart1 = "IFS/21-22/";
-                string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Firm_Id == Firm_Id).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 000;
+                string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Firm_Id == Firm_Id ).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 000;
                 int number = Convert.ToInt32(lastInvoiceno.Substring(10));
 
                 ViewBag.lastInvoiceno = invstart1 + "" + (number + 1);
@@ -399,7 +401,11 @@ namespace DtDc_Billing.Controllers
 
                 }
 
-                db.Invoices.Remove(checkInvoiceNo);
+                //db.Invoices.Remove(checkInvoiceNo);
+                checkInvoiceNo.isDelete=true;
+                db.Entry(checkInvoiceNo).State=EntityState.Modified;
+
+
                 db.SaveChanges();
                 TempData["success"] = invoiceNotoDelete + " Delete successfully!";
             }
@@ -427,7 +433,7 @@ namespace DtDc_Billing.Controllers
                 }
                 if (invoiceNo != null && invoiceNo != "")
                 {
-                    invno = db.Invoices.Where(m => m.invoiceno == invoiceNo).Select(m => m.invoiceno).FirstOrDefault();
+                    invno = db.Invoices.Where(m => m.invoiceno == invoiceNo ).Select(m => m.invoiceno).FirstOrDefault();
                     
                 }
                 DateTime? fdate = !string.IsNullOrEmpty(invfromdate) ? DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
@@ -460,8 +466,9 @@ namespace DtDc_Billing.Controllers
                     Address=x.Address,
                     Invoice_Lable=x.Invoice_Lable,
                     Firm_Id=x.Firm_Id,
-                    totalCount=x.totalCount??0
-                }).OrderBy(x => x.invoicedate).ToList();
+                    totalCount=x.totalCount??0,
+                   
+                }).OrderByDescending(x => x.invoicedate).ToList();
                 return View(list);
             }
             //if (Companydetails != "" && Companydetails != null)
@@ -542,7 +549,7 @@ namespace DtDc_Billing.Controllers
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            return View(db.Invoices.Where(m => (((m.Total_Lable != null || m.Total_Lable.Length > 0) && m.Pfcode == strpf))).ToList());
+            return View(db.Invoices.Where(m => (((m.Total_Lable != null || m.Total_Lable.Length > 0) && m.Pfcode == strpf)) && m.isDelete==false).ToList());
         }
 
         [HttpGet]
@@ -564,9 +571,19 @@ namespace DtDc_Billing.Controllers
 
                 }
 
-                db.Invoices.Remove(checkInvoiceNo);
+                 db.Invoices.Remove(checkInvoiceNo);
                 db.SaveChanges();
-                TempData["success"] = "Delete successfully";
+
+                //checkInvoiceNo.isDelete=true;
+                //  db.Entry(checkInvoiceNo).State = EntityState.Modified;
+                var signle =db.singleinvoiceconsignments.Where(x => x.Invoice_no== invoiceNo).ToList();
+                foreach(var i in signle)
+                {
+                    db.singleinvoiceconsignments.Remove(i);
+                    db.SaveChanges();
+                }
+
+                TempData["success"] = "Deleted successfully";
             }
 
             var temp = db.singleinvoiceconsignments.Select(m => m.Invoice_no).ToList();
@@ -611,11 +628,12 @@ namespace DtDc_Billing.Controllers
             var a = (from m in db.Invoices
                      where temp.Contains(m.invoiceno) &&
                      m.Pfcode == strpf
+                     && m.isDelete==false
                      && ( string.IsNullOrEmpty(invfromdate) || m.invoicedate >= fromdate.Value)
                      && (string.IsNullOrEmpty(invtodate) ||  m.invoicedate <= todate.Value)
                      && ( string.IsNullOrEmpty(Companydetails) || m.Customer_Id== Companydetails)
                      && (invoiceNo==null || invoiceNo=="" || m.invoiceno== invoiceNo)
-                     select m).ToList();
+                     select m).OrderByDescending(x=>x.invoicedate).ToList();
 
 
 
@@ -712,11 +730,11 @@ Select(e => new
         public ActionResult InvoiceNumberAutocompleteForViewInvocie(string Customer_Id)
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-           var  result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "")).
+           var  result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "") && m.isDelete==false).
                 Select(m => new { m.invoiceno }).OrderBy(m => m.invoiceno).Distinct().ToList();
             if (Customer_Id != null && Customer_Id!="")
             {
-                 result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "") && m.Customer_Id==Customer_Id).
+                 result = db.Invoices.Where(m => m.Pfcode == pfcode && (m.invoiceno != null || m.invoiceno != "") && m.Customer_Id==Customer_Id && m.isDelete==false).
                 Select(m => new { m.invoiceno }).OrderBy(m => m.invoiceno).Distinct().ToList();
             }
            
@@ -808,7 +826,7 @@ Select(e => new
                     invo.periodto = Convert.ToDateTime(bdateto);
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
-
+                    invo.isDelete = false;
                     invoice.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
                     db.Entry(inv).State = EntityState.Detached;
                     db.Entry(invo).State = EntityState.Modified;
@@ -818,13 +836,13 @@ Select(e => new
                     /////////////////// update consignment///////////////////////
                     using (var db = new db_a92afa_frbillingEntities())
                     {
-                        var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno).ToList();
+                        var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno && m.isDelete==false).ToList();
 
                         Companies.ForEach(m => m.status_t = "0");
                         db.SaveChanges();
 
 
-                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && m.isDelete==false && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
                         Companies.ForEach(m => m.status_t = invoice.invoiceno);
@@ -837,7 +855,7 @@ Select(e => new
                 else
                 {
 
-                    var invoi = db.Invoices.Where(m => m.tempInvoicedate == invoice.tempInvoicedate && m.Customer_Id == invoice.Customer_Id && m.Pfcode == invoice.Pfcode).FirstOrDefault();
+                    var invoi = db.Invoices.Where(m => m.tempInvoicedate == invoice.tempInvoicedate && m.Customer_Id == invoice.Customer_Id && m.Pfcode == invoice.Pfcode && m.isDelete==false).FirstOrDefault();
 
                     if (invoi != null)
                     {
@@ -890,7 +908,7 @@ Select(e => new
                     invo.Docket_Lable = invoice.Docket_Lable;
                     invo.Amount4 = invoice.Amount4;
                     invo.Amount4_Lable = invoice.Amount4_Lable;
-
+                    invo.isDelete = false;
                     invo.periodfrom = Convert.ToDateTime(bdatefrom);
                     invo.periodto = Convert.ToDateTime(bdateto);
                     invo.invoicedate = Convert.ToDateTime(invdate);
@@ -907,13 +925,13 @@ Select(e => new
                     /////////////////// update consignment///////////////////////
                     using (var db = new db_a92afa_frbillingEntities())
                     {
-                        var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno).ToList();
+                        var Companies = db.Transactions.Where(m => m.status_t == invoice.invoiceno && m.isDelete==false).ToList();
 
                         Companies.ForEach(m => m.status_t = "0");
                         db.SaveChanges();
 
 
-                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
+                        Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.isDelete == false && m.Customer_Id == invoice.Customer_Id && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
                         Companies.ForEach(m => m.status_t = invoice.invoiceno);
@@ -3575,7 +3593,9 @@ Select(e => new
                              (transaction, destination) => new { transaction, destination })
                        .Where(joined => joined.transaction.Consignment_no == i.Trim()
                                         && joined.transaction.Pf_Code == strpfcode
-                                        && joined.transaction.Customer_Id == Customerid)
+                                        && joined.transaction.Customer_Id == Customerid
+                                        && joined.transaction.isDelete == false) 
+                                       
                        .Select(joined => new { Transaction = joined.transaction, Name = joined.destination.Name })
                        .FirstOrDefault();
                     if (tr != null)
@@ -4173,5 +4193,30 @@ Select(e => new
         //    TempData["success"] = "Delete successfully";
         //    return RedirectToAction("ViewInvoice", "Invoice", new { invfromdate = invfromdate, Companydetails = Companydetails, invtodate = invtodate });
         //}
+
+
+
+
+        [HttpGet]
+        public ActionResult RecycleInvoice()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var list = db.Invoices.Where(x => x.Pfcode == strpfcode && x.isDelete == true).ToList();
+            return View(list);
+        }
+        public JsonResult RestoreInvoice(string invoiceno)
+        {
+            var data = db.Invoices.Where(x => x.invoiceno == invoiceno).FirstOrDefault();
+            if (data != null)
+            {
+                data.isDelete = false;
+                db.Entry(data).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json("Success", JsonRequestBehavior.AllowGet);
+
+            }
+            return Json("Error", JsonRequestBehavior.AllowGet);
+        }
     }
 }

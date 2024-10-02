@@ -49,6 +49,7 @@ namespace DtDc_Billing.Entity_FR
         public string Amount4_Lable { get; set; }
         public Nullable<long> Firm_Id { get; set; }
         public string Pfcode { get; set; }
+        public Nullable<bool> isDelete { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }
         public virtual FirmDetail FirmDetail1 { get; set; }

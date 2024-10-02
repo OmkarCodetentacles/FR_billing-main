@@ -403,7 +403,7 @@ namespace DtDc_Billing.Controllers
                 string updateconsignment = stch + i.ToString();
 
 
-                var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
 
 
@@ -493,7 +493,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+                    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)

@@ -23,5 +23,6 @@ namespace DtDc_Billing.Entity_FR
         public int id { get; set; }
         public string remark { get; set; }
         public Nullable<long> Firm_Id { get; set; }
+        public Nullable<bool> isDelete { get; set; }
     }
 }

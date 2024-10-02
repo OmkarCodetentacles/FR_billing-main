@@ -3169,7 +3169,9 @@ namespace DtDc_Billing.Controllers
             if (validcons != null)
             {
                 Transaction tran = db.Transactions.Where(m => m.Consignment_no == Consignment_no).FirstOrDefault();
-                db.Transactions.Remove(tran);
+                tran.isDelete= true;
+                db.Entry(tran).State=EntityState.Modified;
+              //  db.Transactions.Remove(tran);
                 db.SaveChanges();
             }
             else
