@@ -4205,18 +4205,24 @@ Select(e => new
             var list = db.Invoices.Where(x => x.Pfcode == strpfcode && x.isDelete == true).ToList();
             return View(list);
         }
-        public JsonResult RestoreInvoice(string invoiceno)
+        public ActionResult RestoreInvoice(string invoiceno)
         {
-            var data = db.Invoices.Where(x => x.invoiceno == invoiceno).FirstOrDefault();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var data = db.Invoices.Where(x => x.invoiceno == invoiceno && x.Pfcode==strpfcode).FirstOrDefault();
             if (data != null)
             {
                 data.isDelete = false;
                 db.Entry(data).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json("Success", JsonRequestBehavior.AllowGet);
+                TempData["Message"] = "Invoice Restore Successfully";
+
+                return RedirectToAction("RecycleInvoice");
 
             }
-            return Json("Error", JsonRequestBehavior.AllowGet);
+            TempData["Message"] = "Something Went Wrong";
+
+            return RedirectToAction("RecycleInvoice");
         }
     }
 }

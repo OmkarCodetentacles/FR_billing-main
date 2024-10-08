@@ -24,6 +24,7 @@ namespace DtDc_Billing.Models
         public Nullable<double> netamount { get; set; }
 
         public string remark { get; set; }
+        public Nullable<bool> isDelete { get; set; }
 
         public Nullable<long> Firmid { get; set; }
         public double CalculatedAmount

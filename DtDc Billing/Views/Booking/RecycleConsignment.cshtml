@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DtDc_Billing.Entity_FR.Transaction>
+﻿
+@model IEnumerable<DtDc_Billing.Entity_FR.Transaction>
 
 @{
     ViewBag.Title = "";
@@ -12,72 +13,85 @@
 
 
 <div class="content-wrapper">
-    <section class="container">
+    <section class="">
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="box-title"> Receipt Report</h3>
+                        <h3 class="box-title"> Recycle Consignment</h3>
                         @*<h3 class="box-title">Receipts Report</h3><h3 class="pull-right">Total Collection : ₹ @ViewBag.totalAmt </h3>*@
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         @*@using (Html.BeginForm())
-                        {
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>From Date:</label>
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            @if (ViewBag.Fromdatetime != null)
-                                            {
-                                                <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
-                                            }
-                                            else
-                                            {
-                                                <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
-                                            }
-                                            @Html.ValidationMessage("Fromdateeror")
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>To Date:</label>
-
-                                        <div class="input-group date">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            @if (ViewBag.ToDatetime != null)
-                                            {
-                                                <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
-                                            }
-                                            else
-                                            {
-                                                <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
-                                            }
-                                            @Html.ValidationMessage("Todateeror")
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label> </label>
-                                        <button type="submit" id="sbmt" class="btn btn-block btn-primary sbmt">Search</button>
-                                    </div>
-                                </div>
-
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>From Date:</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
                             </div>
-                        }*@
+                            @if (ViewBag.Fromdatetime != null)
+                            {
+                                <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                            }
+                            else
+                            {
+                                <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                            }
+                            @Html.ValidationMessage("Fromdateeror")
+                        </div>
+                    </div>
 
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>To Date:</label>
+
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            @if (ViewBag.ToDatetime != null)
+                            {
+                                <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                            }
+                            else
+                            {
+                                <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                            }
+                            @Html.ValidationMessage("Todateeror")
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label> </label>
+                        <button type="submit" id="sbmt" class="btn btn-block btn-primary sbmt">Search</button>
+                    </div>
+                </div>
+
+            </div>
+        }*@
+
+                        @{ 
+                            string successMessage = null;
+                        }
+                        @if (TempData["Message"] != null)
+                        {
+                            successMessage = TempData["Message"] as string;
+
+                        }
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
                         <table id="example1" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -86,14 +100,14 @@
                                         @Html.DisplayNameFor(model => model.Consignment_no)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model=>model.Customer_Id)
+                                        @Html.DisplayNameFor(model => model.Customer_Id)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.booking_date)
                                     </th>
-                                   
+
                                     <th>
-                                         Amount
+                                        Amount
                                     </th>
 
                                     <th>Action</th>
@@ -115,14 +129,23 @@
                                                 @Html.DisplayFor(modelItem => item.Customer_Id)
                                             </td>
                                             <td>
-                                               @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
                                             </td>
-                                          
+
                                             <td>
-                                                @item.Amount??0;
+                                                @item.Amount
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Restore Consignment","")
+                                                @Html.ActionLink("Restore Consignment", "RestoreConsignment", "Booking",
+                                                    new { consignmentno = item.Consignment_no },
+                                                    new
+                                                         {
+                                                             onclick = "return confirm('Do you really want to restore this consignment? Please note, if this consignment exists in any invoice, you will need to regenerate that invoice.')",
+                                                       @class = "delete-btn"
+
+                                                    })
+
+
                                             </td>
 
 
@@ -136,12 +159,12 @@
 
 
 
-}
+                                }
 
                             </tbody>
 
                         </table>
-                       
+
                     </div>
                 </div>
             </div>
@@ -149,12 +172,12 @@
     </section>
 
 </div>
-@if (TempData["Message"] != null)
+@*@if (TempData["Message"] != null)
             {
                 <script>
                     alert('@TempData["Message"]');
                 </script>
-            }
+            }*@
 
 <script>
 

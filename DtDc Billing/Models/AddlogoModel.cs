@@ -20,4 +20,10 @@ namespace DtDc_Billing.Models
         // [RegularExpression(@"(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.jpg|.JPG|.gif|.GIF|.png|.PNG)$", ErrorMessage = "Only Image files allowed.")]
         public HttpPostedFileBase file { get; set; }
     }
+    public class AddPincoodeModel
+    {
+        [Required(ErrorMessage = "Please Select File")]
+        // [RegularExpression(@"(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.jpg|.JPG|.gif|.GIF|.png|.PNG)$", ErrorMessage = "Only Image files allowed.")]
+        public HttpPostedFileBase file { get; set; }
+    }
 }

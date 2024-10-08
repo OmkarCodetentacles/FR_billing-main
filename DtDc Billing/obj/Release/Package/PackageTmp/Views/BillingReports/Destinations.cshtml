@@ -22,11 +22,15 @@
             <div class="col-xs-12">
                 <div class="box box-info" style="padding: 16px 16px !important">
                     <div class="box-header with-border">
-                        <h4> New Destination</h4>
-                    </div><!-- /.box-header -->
-                   
+                        <a href="@Url.Action("UploadPincodeFromExcel", "Booking")" class="btn btn-success  pull-right">Upload From Excel</a>
 
-                    @if (TempData["Success"]!=null)
+                        <h4> New Destination</h4>
+
+                    </div><!-- /.box-header -->
+
+
+
+                    @if (TempData["Success"] != null)
                     {
                         var successMessage = "Destination Added SuccessFully";
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
@@ -59,7 +63,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-2" style="margin:22px auto">
+                                    <div class="col-md-4" style="margin:22px auto">
                                         <input type="submit" value="Add" class="btn btn-primary pull-right" />
                                     </div>
                                 </div>

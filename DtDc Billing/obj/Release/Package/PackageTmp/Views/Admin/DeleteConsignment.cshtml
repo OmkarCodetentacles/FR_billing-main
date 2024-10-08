@@ -113,9 +113,14 @@
 
 <script>
     $(document).ready(function () {
-        $('#deleteButton').click( function (e) {
-            
-            var confirmation = confirm('Are you sure you want to delete?');
+        $('#deleteButton').click(function (e) {
+            var consno = $("#consno").val();
+
+            if (consno == "" || consno == NaN || consno==null) {
+                alert("Please enter a consignment number.");
+                return false;
+            }
+            var confirmation = confirm('Are you sure you want to delete? If this consignment is part of any invoice, you will need to regenerate the invoice.');
             if (!confirmation) {
                 e.preventDefault();
             }

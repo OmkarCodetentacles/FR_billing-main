@@ -790,7 +790,7 @@ Select(e => new
                     tempinserteddate = x.tempinserteddate,
                     id = x.id,
                     remark = x.remark,
-                    
+                    isDelete = x.isDelete,
 
                 }).ToList();
 
@@ -807,6 +807,8 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
+                isDelete= x.isDelete
+                
                
             }).ToList();
 
@@ -823,6 +825,8 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
+                isDelete= x.isDelete
+
               
             }).ToList();
 
@@ -839,7 +843,7 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
-              
+                isDelete = x.isDelete
 
             }).ToList();
 

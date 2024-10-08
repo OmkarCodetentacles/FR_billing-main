@@ -2214,7 +2214,9 @@ Select(e => new
         }
             public ActionResult RestoreConsignment(string consignmentno)
         {
-            var data=db.Transactions.Where(x=>x.Consignment_no==consignmentno).FirstOrDefault();
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var data =db.Transactions.Where(x=>x.Consignment_no==consignmentno && x.Pf_Code==strpfcode).FirstOrDefault();
             if (data != null)
             {
                 data.isDelete= false;
@@ -2229,6 +2231,47 @@ Select(e => new
             return RedirectToAction("RecycleConsignment");
         }
 
+        [HttpGet]
+        public ActionResult UploadPincodeFromExcel()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult UploadPincodeFromExcel(HttpPostedFileBase file)
+        {
+            if (ModelState.IsValid)
+            {
 
+                if (file != null)
+                {
+                    try
+                    {
+                        var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                        ImportPincodeFromExcel importPincode = new ImportPincodeFromExcel();
+                        var damageResult = importPincode.ImportPincodeAsync(file, PfCode);
+                        if (damageResult == "1")
+                        {
+                            TempData["error"] = "Something Went Wrong\n<b style=" + "color:red" + ">May be Issue in the Excel</b>";
+                        }
+                        TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                        ModelState.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+
+                        return PartialView("~/Views/Shared/Error.cshtml");
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Please upload file";
+                }
+                return View();
+
+            }
+            
+            return View();
+
+        }
     }
 }

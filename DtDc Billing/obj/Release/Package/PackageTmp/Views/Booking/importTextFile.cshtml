@@ -35,14 +35,14 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data",id="fromttext" }))
                                     {
                                         <label class="">Upload Text or Csv  File </label>
                                         <div class="">
-                                            <input id="File1" type="file" name="ImportText" />
+                                            <input  id="File1" type="file" name="ImportText" />
                                         </div>
                                         <div style="text-align:end;">
-                                            <input type="submit" class="btn btn-success mt-3" value="Upload" style="margin-top:20px" />
+                                            <input type="submit" class="btn btn-success mt-3" id="submitBtn" value="Upload" style="margin-top:20px" />
                                         </div>
                                     }
                                 </div>
@@ -57,4 +57,32 @@
 
 </div>
 
+<script>
 
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+      //      e.preventDefault();
+            // Prevent default form submission (since we are handling submission manually)
+       
+
+            // Scroll to the top of the page
+         //   scrollToTop();
+            // Get the file input value
+            var file = $("#File1").val();
+           // alert(file)
+            // Check if file input is empty
+            if (file == "" || file == NaN)
+            {
+                alert("Please select a file before Uploading.");
+                e.preventDefault();
+                return false; // Stop the form submission
+            }
+
+            // Show the loader after validation
+          //  showLoader('overlayBlock');
+
+            // Get the form element and submit the form after validation
+            $('#fromttext').submit();
+        });
+    })
+</script>
