@@ -85,12 +85,12 @@
 
 
                                                     <div class="col-md-1">
-                                                        <input type="submit" value="Delete" class="btn btn-danger" id="deleteButton"/>
+                                                        <input type="submit" value="Delete" class="btn btn-danger col-sm-12" id="deleteButton" style="width:100%"/>
                                                      
                                                     </div>
 
                                                     <div class="col-md-1">
-                                                        <input type="button" style="margin-right:10px" class="btn btn-warning" id="cancelButton" value="Cancel">
+                                                        <input type="button" style="margin-right:10px" class="btn btn-block btn-warning col-sm-12" id="cancelButton" value="Cancel">
 
                                                     </div>
                                                 </div>
@@ -128,7 +128,12 @@
 
         $('#cancelButton').click( function () {
            
-          
+            var consno = $("#consno").val();
+
+            if (consno == "" || consno == NaN || consno == null) {
+                alert("Please enter a consignment number.");
+                return false;
+            }
             window.location.href = '/Admin/DeleteConsignment'; // Redirect to Admin Index page
         });
     })

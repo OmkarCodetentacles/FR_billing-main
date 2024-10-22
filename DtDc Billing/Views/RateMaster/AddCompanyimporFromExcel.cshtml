@@ -36,15 +36,21 @@
                                     <div class="form-group">
                                         @using (Html.BeginForm("AddCompanyimporFromExcel", "RateMaster", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                         {
-                                            <div class="col-md-8 no-padding">
+                                            <div class="col-md-6 no-padding">
                                                 <label for="file"><strong id="up-txt"> Upload Companies </strong></label>
-                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
-                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
-                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                    <a href="@baseUrl/excelformat/UploadCompany.xlsx" class="btn btn-success"> Export Excel</a><!--CREAte Dynamic http://frbilling.com-->
+                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" required/>
+                                           
                                                 </div>
-                                            </div>
+                                            <div class="col-md-6">
+                                                    <div class="col-md-3" style=" margin-top: 28px; ">
+                                                        <input type="submit" value="Upload" class="btn btn-primary"  style="width:100%"  id="submitBtn" />
+                                                    </div>
+                                                    <div class="col-md-3" style=" margin-top: 28px; ">
+                                                        <a href="@baseUrl/excelformat/UploadCompany.xlsx" class="btn btn-success  btn-block  col-sm-12"> Export Excel</a><!--CREAte Dynamic http://frbilling.com-->
+                                                    </div>
 
+
+                                            </div>
 
                                         }
                                     </div>

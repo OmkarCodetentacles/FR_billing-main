@@ -1,88 +1,90 @@
 ﻿
 @model IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ecommerce>
+<section style="padding: 20px; border: 1px solid #dddddd;">
+<div class="">
+   
 
-
-@using (Ajax.BeginForm("RateMasterEcommerce", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp7", OnBegin = "onBegin", OnComplete = "onComplete" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <input type="hidden" value="@ViewBag.companyid" name="comppid">
-    var successMessage = ViewBag.Message as string;
-
-
-    if (!string.IsNullOrEmpty(successMessage))
+    @using (Ajax.BeginForm("RateMasterEcommerce", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp7", OnBegin = "onBegin", OnComplete = "onComplete" }))
     {
-        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-    }
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <input type="hidden" value="@ViewBag.companyid" name="comppid">
+        var successMessage = ViewBag.Message as string;
 
 
-    <div class="col-sm-12 text-center">
-        <h4>Ecommerce Priority - 7X</h4>
-    </div>
-
-
-
-    @*if (ViewBag.EcomPCount > 0)
-    {
-        foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
+        if (!string.IsNullOrEmpty(successMessage))
         {
-            var Ecommerce_NoOfSlabN = item.NoOfSlabN;
-            if (item.NoOfSlabN != null)
-            {
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-            }
-            else
-            {
-                <div class="col-sm-6">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                        </div>
-
-                    </div>
-                </div>
-                break;
-
-
-            }
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
         }
 
-    }
-    else if (ViewBag.EcomPCount == 0)
-    {
 
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="box-header">
-
-                <h4> No Data Found</h4>
-
-            </div>
+        <div class="col-sm-12 text-center">
+            <h4>Ecommerce Priority - 7X</h4>
         </div>
-    }*@
-    if (ViewBag.EcomPCount != null && ViewBag.EcomPCount > 0)
-    {
-        
-            foreach (var item in Model.Where(x=>x.Sector.BillEcomPrio == true))
+
+
+
+        @*if (ViewBag.EcomPCount > 0)
+            {
+                foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
+                {
+                    var Ecommerce_NoOfSlabN = item.NoOfSlabN;
+                    if (item.NoOfSlabN != null)
+                    {
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="box-header">
+                                <div class="col-sm-4">
+                                    <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                                </div>
+                            </div>
+                        </div>
+                        break;
+                    }
+                    else
+                    {
+                        <div class="col-sm-6">
+                            <div class="box-header">
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                                </div>
+
+                            </div>
+                        </div>
+                        break;
+
+
+                    }
+                }
+
+            }
+            else if (ViewBag.EcomPCount == 0)
+            {
+
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="box-header">
+
+                        <h4> No Data Found</h4>
+
+                    </div>
+                </div>
+            }*@
+        if (ViewBag.EcomPCount != null && ViewBag.EcomPCount > 0)
+        {
+
+            foreach (var item in Model.Where(x => x.Sector.BillEcomPrio == true))
             {
                 if (item != null && item.NoOfSlabN != null)
                 {
@@ -149,225 +151,226 @@
                     break;
                 }
             }
-    
-    }
-
-
-
-    if (ViewBag.EcomPCount > 0)
-    {
-        <table class="table table-bordered table-striped" id="dtdc_ptp">
-            <thead>
-                <tr class="upto-input">
-                    <th>
-                        @*<h4>Sectors</h4>*@
-                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                    </th>
-                    <th>
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto1" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab2Air">
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto2" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab3Air">
-                        <label>Upto</label>
-                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto3" />
-                        <label>Kg</label>
-                    </th>
-                    <th>
-                        <label>Addtional</label>
-                        <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto4" />
-                        <label>Kg</label>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true).ToList())
-                {
-                    <tr>
-                        <td class="sectors">
-                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.EcomPslab1)
-                        </td>
-                        <td class="slab2Air">
-                            @Html.EditorFor(modelItem => item.EcomPslab2)
-                        </td>
-                        <td class="slab3Air">
-                            @Html.EditorFor(modelItem => item.EcomPslab3)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.EcomPslab4)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Ecom_id)
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Sector_Id)
-                        </td>
-
-
-                    </tr>
-                }
-
-
-            </tbody>
-        </table>
-    }
-
-    <div class="col-sm-12 text-center">
-        <h4>Ecommerce Ground Express - 7D</h4>
-    </div>
-    if (ViewBag.EcomGECount != null && ViewBag.EcomGECount != 0)
-    {
-        foreach (var item in Model.Where(x => x.Sector.BillEcomGE == true))
-        {
-            if (item.NoOfSlabS != null)
-            {
-                var Ecommerce_NoOfSlabS = item.NoOfSlabS;
-                <div class="col-sm-6 col-sm-offset-3" id="7DEcommercePriority">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-            }
-            else
-            {
-
-                <div class="col-sm-6" id="7DEcommercePriority">
-                    <div class="box-header">
-                        <div class="col-sm-4">
-                            <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
-                        </div>
-                    </div>
-                </div>
-                break;
-
-            }
 
         }
-    }
-    else if (ViewBag.EcomGECount == 0)
-    {
-
-        <div class="col-sm-6 col-sm-offset-3">
-            <div class="box-header">
-
-                <h4> No Data Found</h4>
-
-            </div>
-        </div>
-    }
 
 
-    if (ViewBag.EcomGECount != 0)
-    {
-        <table class="table table-bordered table-striped" id="dtdc_ptp">
-            <thead>
-                <tr class="upto-input">
-                    <th>
-                        @*<h4>Sectors</h4>*@
-                        @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
-                    </th>
-                    <th>
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto1" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab2Sirf">
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto2" />
-                        <label>Kg</label>
-                    </th>
-                    <th class="slab3Sirf">
-                        <label>Upto</label>
-                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto3" />
-                        <label>Kg</label>
-                    </th>
-                    <th>
-                        <label>
-                            Addtional
-                        </label>
-                        <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto4" />
-                        <label>Kg</label>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomGE == true).ToList())
-                {
-                    <tr>
-                        <td class="sectors">
-                            @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.EcomGEslab1)
-                        </td>
-                        <td class="slab2Sirf">
-                            @Html.EditorFor(modelItem => item.EcomGEslab2)
-                        </td>
-                        <td class="slab3Sirf">
-                            @Html.EditorFor(modelItem => item.EcomGEslab3)
-                        </td>
-                        <td>
-                            @Html.EditorFor(modelItem => item.EcomGEslab4)
-                        </td>
-                        <td class="hidden">
-
-                            <input type="hidden" name="Non_ID_GC" value="@item.Ecom_id">
-                        </td>
-                        <td class="hidden">
-                            @Html.HiddenFor(modelItem => item.Sector_Id)
-                        </td>
+        if (ViewBag.EcomPCount > 0)
+        {
+            <table class="table table-bordered table-striped" id="dtdc_ptp">
+                <thead>
+                    <tr class="upto-input">
+                        <th>
+                            @*<h4>Sectors</h4>*@
+                            @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                        </th>
+                        <th>
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto1" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab2Air">
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto2" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab3Air">
+                            <label>Upto</label>
+                            <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto3" />
+                            <label>Kg</label>
+                        </th>
+                        <th>
+                            <label>Addtional</label>
+                            <input type="text" name="AUpto" value="@ViewBag.comP.EcomPupto4" />
+                            <label>Kg</label>
+                        </th>
                     </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true).ToList())
+                    {
+                        <tr>
+                            <td class="sectors">
+                                @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.EcomPslab1)
+                            </td>
+                            <td class="slab2Air">
+                                @Html.EditorFor(modelItem => item.EcomPslab2)
+                            </td>
+                            <td class="slab3Air">
+                                @Html.EditorFor(modelItem => item.EcomPslab3)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.EcomPslab4)
+                            </td>
+                            <td class="hidden">
+                                @Html.HiddenFor(modelItem => item.Ecom_id)
+                            </td>
+                            <td class="hidden">
+                                @Html.HiddenFor(modelItem => item.Sector_Id)
+                            </td>
+
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+
+        <div class="col-sm-12 text-center">
+            <h4>Ecommerce Ground Express - 7D</h4>
+        </div>
+        if (ViewBag.EcomGECount != null && ViewBag.EcomGECount != 0)
+        {
+            foreach (var item in Model.Where(x => x.Sector.BillEcomGE == true))
+            {
+                if (item.NoOfSlabS != null)
+                {
+                    var Ecommerce_NoOfSlabS = item.NoOfSlabS;
+                    <div class="col-sm-6 col-sm-offset-3" id="7DEcommercePriority">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)  Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)  Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+                }
+                else
+                {
+
+                    <div class="col-sm-6" id="7DEcommercePriority">
+                        <div class="box-header">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlabS, 2, new { @checked = "checked" }) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 3)     Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlabS, 4)         Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+                    break;
+
                 }
 
+            }
+        }
+        else if (ViewBag.EcomGECount == 0)
+        {
 
-            </tbody>
-        </table>
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="box-header">
+
+                    <h4> No Data Found</h4>
+
+                </div>
+            </div>
+        }
+
+
+        if (ViewBag.EcomGECount != 0)
+        {
+            <table class="table table-bordered table-striped" id="dtdc_ptp">
+                <thead>
+                    <tr class="upto-input">
+                        <th>
+                            @*<h4>Sectors</h4>*@
+                            @*<input type="hidden" name="hide" value="@ViewBag.Slabs1.AUptosl1" />*@
+                        </th>
+                        <th>
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto1" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab2Sirf">
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto2" />
+                            <label>Kg</label>
+                        </th>
+                        <th class="slab3Sirf">
+                            <label>Upto</label>
+                            <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto3" />
+                            <label>Kg</label>
+                        </th>
+                        <th>
+                            <label>
+                                Addtional
+                            </label>
+                            <input type="text" name="SUpto" value="@ViewBag.comGc.EcomGEupto4" />
+                            <label>Kg</label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomGE == true).ToList())
+                    {
+                        <tr>
+                            <td class="sectors">
+                                @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.EcomGEslab1)
+                            </td>
+                            <td class="slab2Sirf">
+                                @Html.EditorFor(modelItem => item.EcomGEslab2)
+                            </td>
+                            <td class="slab3Sirf">
+                                @Html.EditorFor(modelItem => item.EcomGEslab3)
+                            </td>
+                            <td>
+                                @Html.EditorFor(modelItem => item.EcomGEslab4)
+                            </td>
+                            <td class="hidden">
+
+                                <input type="hidden" name="Non_ID_GC" value="@item.Ecom_id">
+                            </td>
+                            <td class="hidden">
+                                @Html.HiddenFor(modelItem => item.Sector_Id)
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+
+        if (ViewBag.EcomPCount > 0 || ViewBag.EcomPCount > 0)
+        {
+            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+        }
+
+
     }
 
-    if (ViewBag.EcomPCount > 0 || ViewBag.EcomPCount > 0)
-    {
-        <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" />
+    @{
+        var EStest = 0;
+
+
+        if (ViewBag.EcomGECount > 0 && ViewBag.comGC != null)
+        {
+            EStest = ViewBag.comGc.NoOfSlabS;
+        }
     }
-
-
-}
-
-@{
-    var EStest = 0;
-
-   
-    if (ViewBag.EcomGECount > 0 && ViewBag.comGC != null )
-    {
-        EStest = ViewBag.comGc.NoOfSlabS;
-    }
-}
-
-<script>
+    </div>
+    </section>
+    <script>
     $(document).ready(function () {
 
 
@@ -441,20 +444,20 @@
 
         });
     });
-</script>
+    </script>
 
-@{
-    var ENtest = 0;
-    if (ViewBag.EcomPCount > 0 && ViewBag.comP != null)
-    {
-        ENtest = ViewBag.comP.NoOfSlabN;
+    @{
+        var ENtest = 0;
+        if (ViewBag.EcomPCount > 0 && ViewBag.comP != null)
+        {
+            ENtest = ViewBag.comP.NoOfSlabN;
+        }
     }
-}
 
-<script>
+    <script>
     $(document).ready(function () {
         var ENtest = '@ENtest';
-        
+
         if (ENtest == 3) {
 
 
@@ -521,22 +524,22 @@
 
         });
     });
-</script>
-<script type="text/javascript">
-    function scrollToTop() {
-        window.scrollTo(0, 0);
-    }
+    </script>
+    <script type="text/javascript">
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
 
 
-    function onBegin() {
+        function onBegin() {
 
-        // Show the loader
-        document.getElementById('overlayBlock').style.display = 'block';
-    }
+            // Show the loader
+            document.getElementById('overlayBlock').style.display = 'block';
+        }
 
-    function onComplete() {
-        // Hide the loader
-        scrollToTop();
-        document.getElementById('overlayBlock').style.display = 'none';
-    }
-</script>
+        function onComplete() {
+            // Hide the loader
+            scrollToTop();
+            document.getElementById('overlayBlock').style.display = 'none';
+        }
+    </script>

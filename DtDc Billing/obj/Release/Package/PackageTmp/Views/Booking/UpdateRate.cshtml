@@ -248,7 +248,7 @@
                                     <button type="button" class="btn btn-danger total-label">Total</button>
                                 </div>
                                 <!-- /btn-group -->
-                                <input type="text" class="form-control total-amount" value="@ViewBag.totalamt">
+                                <input type="text" class="form-control total-amount" value="@Model.ToList().Sum(x=>Math.Round(((double)x.Amount)+(x.Risksurcharge??0)+(x.loadingcharge??0)))">
                             </div>
                         </div>
                         <!-- /input-group -->

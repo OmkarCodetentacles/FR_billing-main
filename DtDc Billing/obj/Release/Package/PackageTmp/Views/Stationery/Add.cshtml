@@ -253,9 +253,22 @@
 
             var startno = $("#startno").val();
             var endno = $("#endno").val();
-
             calstart = startno.substring(1);
             calend = endno.substring(1);
+            if (startno.toUpperCase().startsWith("7X") && endno.toUpperCase().startsWith("7X")) {
+                // Extract substring starting from the third character
+                calstart = startno.substring(2);
+                calend = endno.substring(2);
+            }
+            else if (startno.toUpperCase().startsWith("7D") && endno.toUpperCase().startsWith("7D")) {
+                // Extract substring starting from the third character
+                calstart = startno.substring(2);
+                calend = endno.substring(2);
+            }
+            else {
+                calstart = startno.substring(1);
+                calend = endno.substring(1);
+            }
 
 
 

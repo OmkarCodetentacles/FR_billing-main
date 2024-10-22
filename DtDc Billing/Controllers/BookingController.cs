@@ -625,7 +625,8 @@ Select(e => new
                     BillAmount = x.BillAmount,
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge
+                    loadingcharge = x.loadingcharge,
+
 
                 }).OrderBy(d => d.Consignment_no).ToList();
 
@@ -927,7 +928,8 @@ Select(e => new
                     BillAmount = x.BillAmount,
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge
+                    loadingcharge = x.loadingcharge,
+                    Customer_Id=x.customer_id
 
                 }).OrderBy(d => d.booking_date).ToList();
 
@@ -987,6 +989,7 @@ Select(e => new
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
+                    Customer_Id=x.customer_id
 
                 }).OrderByDescending(d => d.booking_date).ToList();
 
@@ -999,6 +1002,7 @@ Select(e => new
                     //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
                     obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
                     var data = obj.Select(x => new {
+                        CustomerId=x.Customer_Id,
                         ConsignmentNo = x.Consignment_no,
                         Weight = x.chargable_weight,
                         x.Quanntity,
@@ -1469,7 +1473,7 @@ Select(e => new
 
                 }
 
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
+                ViewBag.totalamt = obj.Sum(b => b.Amount+b.Risksurcharge??0+b.loadingcharge??0);
 
                 return View(obj);
 
@@ -1528,7 +1532,7 @@ Select(e => new
 
                 }
 
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
+                ViewBag.totalamt = obj.Sum(b =>  b.Amount+b.Risksurcharge??0+b.loadingcharge??0);
 
                 return View(obj);
             }

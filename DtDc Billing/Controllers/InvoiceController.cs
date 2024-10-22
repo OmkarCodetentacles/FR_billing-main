@@ -391,6 +391,9 @@ namespace DtDc_Billing.Controllers
 
             string todate = "";
 
+            ViewBag.invfromdate = invfromdate;
+            ViewBag.invtodate = invtodate;
+            ViewBag.invoiceno = invoiceNo;
             if (isDelete)
             {
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -408,6 +411,8 @@ namespace DtDc_Billing.Controllers
 
                 db.SaveChanges();
                 TempData["success"] = invoiceNotoDelete + " Delete successfully!";
+                ViewBag.invoiceno = "";
+                invoiceNo = "";
             }
             if ((invfromdate != null && invfromdate!="") && (invtodate!=null && invtodate!=""))
             {
@@ -415,10 +420,8 @@ namespace DtDc_Billing.Controllers
                 todate = DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
             }
 
-            ViewBag.invfromdate = invfromdate;
-            ViewBag.invtodate = invtodate;
-            ViewBag.invoiceno = invoiceNo;
 
+            
             ViewBag.Companydetails = Companydetails;//new SelectList(db.Companies, "Company_Id", "Company_Name");
             
             if (strpf != null && strpf!="")
@@ -583,7 +586,9 @@ namespace DtDc_Billing.Controllers
                     db.SaveChanges();
                 }
 
-                TempData["success"] = "Deleted successfully";
+                TempData["success"] = "Invoice Number "+invoiceNo+"  Deleted successfully";
+                ViewBag.invoiceno = "";
+                invoiceNo = "";
             }
 
             var temp = db.singleinvoiceconsignments.Select(m => m.Invoice_no).ToList();
@@ -3234,7 +3239,7 @@ Select(e => new
                     invoice.invoicedate = Convert.ToDateTime(invdate);
 
 
-                    ViewBag.nextinvoice = GetmaxInvoiceno(invstart, strpfcode);
+                    ViewBag.nextinvoice = GetmaxInvoiceno(invstart, inv.Pfcode);
 
 
                     Invoice invo = new Invoice();
@@ -3296,7 +3301,7 @@ Select(e => new
 
 
 
-                    ViewBag.nextinvoice = GetmaxInvoiceno(invstart, invoice.Pfcode);
+                    ViewBag.nextinvoice = GetmaxInvoiceno(invstart, strpfcode);
 
                     invoice.invoiceno = invoice.invoiceno;
 

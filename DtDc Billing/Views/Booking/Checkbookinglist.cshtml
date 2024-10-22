@@ -118,7 +118,7 @@
                                         </div>
                                         <div class="col-md-1" style=" margin-top: 22px;">
 
-                                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt col-sm-12" style="width:100%" />
+                                            <input type="submit" value="Export to Excel" id="btnExcelSubmit" name="Submit" class="btn btn-block btn-success sbmt col-sm-12" style="width:100%" />
 
                                         </div>
                                       
@@ -136,6 +136,12 @@
                                             Sr No
                                         </th>
                                         <th>Check Is RTO</th>
+                                        @if (ViewBag.Custid == null)
+                                        {
+                                                <th>
+                                                    Customer Id
+                                                </th>
+                                        }
                                         <th>
                                             Consignment no
                                         </th>
@@ -200,30 +206,33 @@
                                         i = j + 1;
                                                                         <tr>
                                                                             @*@{
-                                                                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
-                                                                            }*@
+            var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+        }*@
 
                                                                             <td>@i</td>
 
                                                                             <td>@Html.CheckBox("items[" + j + "].isRTO", (bool)(items[j].isRTO == null ? false : items[j].isRTO))</td>
-
-                                                                            <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Name)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Pincode)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].compaddress)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Type_t)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Mode)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Amount)</td>
-                                                                            <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Insurance)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Percentage)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
-                                                                            <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
-                                                                            <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
-                                                                        </tr>
+                                                                            @if (ViewBag.Custid == null)
+                                                                            {
+                                                                                <td>@Html.DisplayFor(m => items[j].Customer_Id)</td>
+                                                                            }
+                                                                                <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Name)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Pincode)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].compaddress)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Type_t)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Mode)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Amount)</td>
+                                                                                <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Insurance)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Percentage)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
+                                                                                <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
+                                                                                <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
+                                                                            </tr>
                                         }
                                     }
                                 </tbody>
@@ -349,6 +358,22 @@ $(document).ready(function () {
 
 
             });
+            $("#btnExcelSubmit").click(function () {
+                var cutid = $('#custid').val();
+                var frmdate = $('#datepicker').val();
+                var todate = $('#datepicker1').val();
+               
+                if (cutid == "") {
+                    alert("To generate the Excel report for the Check Booking List, please provide the From Date, To Date, and Customer ID")
+                    return false;
+                }
+                //if (custid == "" && fromdate == "" && todate == "") {
+                //    alert("To Generate the Excel Report for the To generate the Excel report for the Check Booking List, please provide the From Date, To Date, and Customer ID")
+                //    return false;
+                //}
+              
+
+            })
         });
 
     </script>

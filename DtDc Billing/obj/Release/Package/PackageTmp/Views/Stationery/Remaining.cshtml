@@ -122,7 +122,7 @@
 
 
         <div class="row">
-            <div class="col-12 col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-12 col-sm-12 col-xs-12 col-md-10 col-lg-10 col-xl-10">
 
                 <table id="table_display_block" class="table table-bordered table-responsive Ramainingtable">
                     <thead>
@@ -401,13 +401,13 @@
                     </div>*@
 
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+            <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 ">
 
                 <table id="example2" class="table Ramainingtable1">
                     <thead>
                         <tr>
                             <th>Consignment No</th>
-                            <th>Barcode</th>
+                            @*<th>Barcode</th>*@
                         </tr>
 
                     </thead>
@@ -473,6 +473,14 @@
         long diff = 0;
 
         if (startno.ToLower().StartsWith("7d") && endno.ToLower().StartsWith("7d"))
+        {
+            long startConsignment = Convert.ToInt64(startno.Substring(2));
+            long EndConsignment = Convert.ToInt64(endno.Substring(2));
+
+            diff = EndConsignment - startConsignment;
+
+        }
+        else if (startno.ToLower().StartsWith("7x") && endno.ToLower().StartsWith("7x"))
         {
             long startConsignment = Convert.ToInt64(startno.Substring(2));
             long EndConsignment = Convert.ToInt64(endno.Substring(2));
@@ -571,7 +579,7 @@
                     rows += "<tr>"
                         + "<td>" + item.ConsignmentNo + "</td>"
                         /**/
-                        + "<td> <img src=" + item.FilePath + "></td>"
+                      /*  + "<td> <img src=" + item.FilePath + "></td>"*/
                         /**/
                         + "</tr>";
                 });

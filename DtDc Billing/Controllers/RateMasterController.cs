@@ -1944,6 +1944,11 @@ namespace DtDc_Billing.Controllers
                                 orderby a.Priority
                                 select new
                                 {
+                                    ab.CashCounter,
+                                    
+                                    ab.Company_id,
+                                    ab.Sector_Id,
+                                    ab.Rete_Id,
                                     a.BillD,
                                     a.BillN,
                                     a.CashD,
@@ -1962,14 +1967,17 @@ namespace DtDc_Billing.Controllers
 
                 var dataset5 = (from a in db.Sectors
                                 join ab in db.Nondoxes on a.Sector_Id equals ab.Sector_Id
-                                where ab.Company_id == CompanyId /*&& a.BillN == true*/
+                                where ab.Company_id == CompanyId /*&& a.BillN == true*/ && a.BillNonAir== true && a.BillNonSur==true
                                 orderby a.Priority
                                 select new
 
                                 {
                                     a.BillNonAir,
                                     a.BillNonSur,
-
+                                    ab.Non_ID,
+                                    ab.Sector_Id,
+                                    ab.Company_id,
+                                    ab.CashCounterNon,
                                     a.Sector_Name,
                                     ab.Aslab1,
                                     ab.Aslab2,
@@ -2001,6 +2009,10 @@ namespace DtDc_Billing.Controllers
                  orderby a.Priority
                  select new
                  {
+                     ab.pri_id,
+                     ab.Sector_Id,
+                     ab.Company_id,
+                     a.Priorities,
                      a.BillPriority,
                      a.Sector_Name,
                      ab.priupto1,
@@ -2010,6 +2022,7 @@ namespace DtDc_Billing.Controllers
                      ab.prislab1,
                      ab.prislab2,
                      ab.prislab3,
+                     ab.prislab4,
                    
                      ab.prinoofslab
                  }).ToList();
@@ -2020,20 +2033,27 @@ namespace DtDc_Billing.Controllers
                  orderby a.Priority
                  select new
                  {
-
+                     ab.Exp_Id,
+                     ab.Sector_Id,
+                     ab.Company_id,
+                     a.express_cargo,
                      a.Sector_Name,
                      ab.Exslab1,
                      ab.Exslab2,
-                   
+                    ab.Upto,
+                    a.BillExpCargo,
+                    ab.CashCounterExpr,
                  }).ToList();
 
               // var DataSet10= db.Dtdc_Ecommerce.Where(m => m.Company_id == CompanyId).Include(e => e.Sector).OrderBy(m => m.Sector.Priority).ToList();
 
                 var DataSet10= (from a in db.Sectors
                                 join ab in db.Dtdc_Ecommerce on a.Sector_Id equals ab.Sector_Id
-                                where ab.Company_id==CompanyId orderby a.Priority
+                                where ab.Company_id==CompanyId  && a.BillEcomGE==true  && a.BillEcomPrio==true orderby a.Priority
                                 select new
                                 {
+                                 
+                                  
                                    a.Sector_Name,
                                    a.Pf_code,
                                    a.BillEcomPrio,
