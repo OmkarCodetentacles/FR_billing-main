@@ -162,6 +162,7 @@ namespace DtDc_Billing.Controllers
                     tran.AdminEmp = 000;
                     tran.Receiver = transaction.Receiver;
                     tran.isDelete = false;
+                    tran.IsGSTConsignment = false;
                     /////////////////////////////
 
                     tran.T_id = tr.T_id;
@@ -217,6 +218,7 @@ namespace DtDc_Billing.Controllers
                     tran1.consigner = transaction.consigner;
                     tran1.compaddress = transaction.compaddress;
                     tran1.isDelete = false;
+                    tran1.IsGSTConsignment = false;
                     tran1.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran1.AdminEmp = 000;
                     db.Transactions.Add(tran1);
@@ -501,25 +503,40 @@ Select(e => new
 
                 ViewBag.success = true;
 
-                char ch = transaction.Consignment_no[0];
-
-                long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(1));
-
-                consignnumber = consignnumber + 1;
-
-
-
-                string nextconsignment = ch + "" + consignnumber;
-
-
-                var con = db.Transactions.Where(m => m.Consignment_no == nextconsignment).FirstOrDefault();
-
-                if (con != null)
+                if (transaction.Consignment_no.ToLower().StartsWith("7d"))
                 {
+                    string ch = transaction.Consignment_no.Substring(0, 2);
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(2));
+                    long consignnumberadd = consignnumber + 1;
+                    var lenght = transaction.Consignment_no.Substring(2).Length;
 
-                    ViewBag.nextconsignment = ch + "" + consignnumber;
+                    ViewBag.nextconsignment = ch + "" + (consignnumberadd.ToString().PadLeft(lenght, '1'));
+                }
+
+                else if (transaction.Consignment_no.ToLower().StartsWith("7x"))
+                {
+                    string ch = transaction.Consignment_no.Substring(0, 2);
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(2));
+                    consignnumber = consignnumber + 1;
+                    var lenght = transaction.Consignment_no.Substring(2).Length;
+
+                    ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght, '1'));
+                }
+
+                else
+                {
+                    char ch = transaction.Consignment_no[0];
+
+                    long consignnumber = Convert.ToInt64(transaction.Consignment_no.Substring(1));
+
+                    consignnumber = consignnumber + 1;
+
+                    var lenght = transaction.Consignment_no.Substring(1).Length;
+
+                    ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght, '0'));
 
                 }
+
 
 
 

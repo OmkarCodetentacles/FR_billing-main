@@ -60,6 +60,7 @@ namespace DtDc_Billing.Entity_FR
         public string compaddress { get; set; }
         public Nullable<bool> isRTO { get; set; }
         public Nullable<bool> isDelete { get; set; }
+        public Nullable<bool> IsGSTConsignment { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual Franchisee Franchisee { get; set; }

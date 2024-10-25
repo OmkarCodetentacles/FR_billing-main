@@ -3185,8 +3185,8 @@ namespace DtDc_Billing.Controllers
 
         public ActionResult ExpensesList(string ToDatetime, string Fromdatetime)
         {
-            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
-
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+            ViewBag.Pf_Code=pfcode;
 
             var Cat = new List<SelectListItem>
     {
@@ -3222,11 +3222,11 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Fromdatetime = Fromdatetime;
                 ViewBag.ToDatetime = ToDatetime;
 
-                obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+                obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate) && m.Pf_Code==pfcode).ToList();
             }
             else
             {
-                obj = db.Expenses.ToList();
+                obj = db.Expenses.Where(x=>x.Pf_Code==pfcode).ToList();
             }
             return View(obj);
         }

@@ -303,6 +303,12 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnpaid;
             
+            private global::System.Data.DataColumn columnisDelete;
+            
+            private global::System.Data.DataColumn columndiscountper;
+            
+            private global::System.Data.DataColumn columndiscountamount;
+            
             private global::System.Data.DataColumn columnTdsAmount;
             
             private global::System.Data.DataColumn columnTotalAmount;
@@ -438,6 +444,30 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn isDeleteColumn {
+                get {
+                    return this.columnisDelete;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn discountperColumn {
+                get {
+                    return this.columndiscountper;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn discountamountColumn {
+                get {
+                    return this.columndiscountamount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn TdsAmountColumn {
                 get {
                     return this.columnTdsAmount;
@@ -489,7 +519,24 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public getCreditorsInvoiceWithTDSAmountRow AddgetCreditorsInvoiceWithTDSAmountRow(System.DateTime invoicedate, string invoiceno, System.DateTime periodfrom, System.DateTime periodto, double total, double fullsurchargetax, double fullsurchargetaxtotal, double servicetax, double servicetaxtotal, string Customer_Id, double netamount, double paid, double TdsAmount, double TotalAmount) {
+            public getCreditorsInvoiceWithTDSAmountRow AddgetCreditorsInvoiceWithTDSAmountRow(
+                        System.DateTime invoicedate, 
+                        string invoiceno, 
+                        System.DateTime periodfrom, 
+                        System.DateTime periodto, 
+                        double total, 
+                        double fullsurchargetax, 
+                        double fullsurchargetaxtotal, 
+                        double servicetax, 
+                        double servicetaxtotal, 
+                        string Customer_Id, 
+                        double netamount, 
+                        double paid, 
+                        bool isDelete, 
+                        double discountper, 
+                        double discountamount, 
+                        double TdsAmount, 
+                        double TotalAmount) {
                 getCreditorsInvoiceWithTDSAmountRow rowgetCreditorsInvoiceWithTDSAmountRow = ((getCreditorsInvoiceWithTDSAmountRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         invoicedate,
@@ -504,6 +551,9 @@ namespace DtDc_Billing {
                         Customer_Id,
                         netamount,
                         paid,
+                        isDelete,
+                        discountper,
+                        discountamount,
                         TdsAmount,
                         TotalAmount};
                 rowgetCreditorsInvoiceWithTDSAmountRow.ItemArray = columnValuesArray;
@@ -540,6 +590,9 @@ namespace DtDc_Billing {
                 this.columnCustomer_Id = base.Columns["Customer_Id"];
                 this.columnnetamount = base.Columns["netamount"];
                 this.columnpaid = base.Columns["paid"];
+                this.columnisDelete = base.Columns["isDelete"];
+                this.columndiscountper = base.Columns["discountper"];
+                this.columndiscountamount = base.Columns["discountamount"];
                 this.columnTdsAmount = base.Columns["TdsAmount"];
                 this.columnTotalAmount = base.Columns["TotalAmount"];
             }
@@ -571,6 +624,12 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnnetamount);
                 this.columnpaid = new global::System.Data.DataColumn("paid", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnpaid);
+                this.columnisDelete = new global::System.Data.DataColumn("isDelete", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnisDelete);
+                this.columndiscountper = new global::System.Data.DataColumn("discountper", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndiscountper);
+                this.columndiscountamount = new global::System.Data.DataColumn("discountamount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndiscountamount);
                 this.columnTdsAmount = new global::System.Data.DataColumn("TdsAmount", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTdsAmount);
                 this.columnTotalAmount = new global::System.Data.DataColumn("TotalAmount", typeof(double), null, global::System.Data.MappingType.Element);
@@ -925,6 +984,57 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool isDelete {
+                get {
+                    try {
+                        return ((bool)(this[this.tablegetCreditorsInvoiceWithTDSAmount.isDeleteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'isDelete\' in table \'getCreditorsInvoiceWithTDSAmount\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tablegetCreditorsInvoiceWithTDSAmount.isDeleteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double discountper {
+                get {
+                    try {
+                        return ((double)(this[this.tablegetCreditorsInvoiceWithTDSAmount.discountperColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'discountper\' in table \'getCreditorsInvoiceWithTDSAmount\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablegetCreditorsInvoiceWithTDSAmount.discountperColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double discountamount {
+                get {
+                    try {
+                        return ((double)(this[this.tablegetCreditorsInvoiceWithTDSAmount.discountamountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'discountamount\' in table \'getCreditorsInvoiceWithTDSAmount\'" +
+                                " is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablegetCreditorsInvoiceWithTDSAmount.discountamountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public double TdsAmount {
                 get {
                     try {
@@ -1099,6 +1209,42 @@ namespace DtDc_Billing {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetpaidNull() {
                 this[this.tablegetCreditorsInvoiceWithTDSAmount.paidColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsisDeleteNull() {
+                return this.IsNull(this.tablegetCreditorsInvoiceWithTDSAmount.isDeleteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetisDeleteNull() {
+                this[this.tablegetCreditorsInvoiceWithTDSAmount.isDeleteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsdiscountperNull() {
+                return this.IsNull(this.tablegetCreditorsInvoiceWithTDSAmount.discountperColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetdiscountperNull() {
+                this[this.tablegetCreditorsInvoiceWithTDSAmount.discountperColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsdiscountamountNull() {
+                return this.IsNull(this.tablegetCreditorsInvoiceWithTDSAmount.discountamountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetdiscountamountNull() {
+                this[this.tablegetCreditorsInvoiceWithTDSAmount.discountamountColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1297,6 +1443,9 @@ namespace DtDc_Billing.CreditorsInoviceWithTDSComTableAdapters {
             tableMapping.ColumnMappings.Add("Customer_Id", "Customer_Id");
             tableMapping.ColumnMappings.Add("netamount", "netamount");
             tableMapping.ColumnMappings.Add("paid", "paid");
+            tableMapping.ColumnMappings.Add("isDelete", "isDelete");
+            tableMapping.ColumnMappings.Add("discountper", "discountper");
+            tableMapping.ColumnMappings.Add("discountamount", "discountamount");
             tableMapping.ColumnMappings.Add("TdsAmount", "TdsAmount");
             tableMapping.ColumnMappings.Add("TotalAmount", "TotalAmount");
             this._adapter.TableMappings.Add(tableMapping);

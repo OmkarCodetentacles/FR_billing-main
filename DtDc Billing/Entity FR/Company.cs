@@ -63,6 +63,7 @@ namespace DtDc_Billing.Entity_FR
         public string Username { get; set; }
         public Nullable<double> G_Docket { get; set; }
         public Nullable<int> DueDays { get; set; }
+        public Nullable<double> B_Docket { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dtdc_Ecommerce> Dtdc_Ecommerce { get; set; }

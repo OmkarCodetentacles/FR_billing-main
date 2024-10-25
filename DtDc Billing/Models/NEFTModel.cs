@@ -32,8 +32,9 @@ namespace DtDc_Billing.Models
             }
 
             public Nullable<System.DateTime> tempneftdate { get; set; }
+        public Nullable<double> Balance { get; set; }
 
-            public virtual FirmDetail FirmDetail { get; set; }
+        public virtual FirmDetail FirmDetail { get; set; }
             public virtual FirmDetail FirmDetail1 { get; set; }
         
     }

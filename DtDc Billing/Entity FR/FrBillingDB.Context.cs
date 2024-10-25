@@ -87,6 +87,8 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<WalletPoint> WalletPoints { get; set; }
         public virtual DbSet<InvoiceView> InvoiceViews { get; set; }
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
+        public virtual DbSet<GSTInvoiceConsignment> GSTInvoiceConsignments { get; set; }
+        public virtual DbSet<GSTInvoice> GSTInvoices { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
         {

@@ -26,7 +26,9 @@ namespace DtDc_Billing.Models
 
             public Nullable<System.DateTime> tempinserteddate { get; set; }
             public Nullable<System.DateTime> tempch_date { get; set; }
-            public string FormattedTempInsertedDate
+        public Nullable<double> Balance { get; set; }
+
+        public string FormattedTempInsertedDate
             {
                 get
                 {

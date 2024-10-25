@@ -159,6 +159,7 @@
                         <table id="table_display_block" class="table TaxReport">
                             <thead>
                                 <tr>
+                                    <th>Sr.No</th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.Customer_Id)
                                     </th>
@@ -178,7 +179,7 @@
                                         @Html.DisplayNameFor(model => model.total)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.fullsurchargetax)
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax) (%)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
@@ -190,39 +191,49 @@
                                         @Html.DisplayNameFor(model => model.Docket_charges)
                                     </th>
                                     <th>
+                                       Discount(%)
+                                    </th>
+                                    <th>
+                                       Discount Amount
+                                    </th>
+                                    <th>
                                         Subtotal
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.CgstPer)
+                                        @*@Html.DisplayNameFor(model => model.CgstPer)*@ CGST(%)
+                                     </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.CgstAmt)*@ CGST Amt
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.CgstAmt)
+                                        @*@Html.DisplayNameFor(model => model.SgstPer)*@ SGST(%)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.SgstPer)
+                                        @*@Html.DisplayNameFor(model => model.SgstAmt)*@  SGST Amt
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.SgstAmt)
+                                        @*@Html.DisplayNameFor(model => model.IgstPer)*@  IGST(%)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.IgstPer)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.IgstAmt)
+                                        @*@Html.DisplayNameFor(model => model.IgstAmt)*@ IGST Amt
                                     </th>
                                     <th>GST Total</th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.netamount)
+                                        @*@Html.DisplayNameFor(model => model.netamount)*@ Net Amout
                                     </th>
 
 
                                 </tr>
                             </thead>
-
+                            @{ 
+                                int i = 1;
+                            }
                             @foreach (var item in Model)
                             {
                                 <tr>
-
+                                    <td>
+                                        @i
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Customer_Id)
                                     </td>
@@ -255,6 +266,12 @@
                                         @Html.DisplayFor(modelItem => item.Docket_charges)
                                     </td>
                                     <td>
+                                        @Html.DisplayFor(modelItem=>item.discount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem=>item.discountamount)
+                                    </td>
+                                    <td>
                                         @(Math.Round((double)(item.total + item.fullsurchargetaxtotal + item.Royalty_charges + item.Docket_charges)))
                                     </td>
                                     <td>
@@ -284,6 +301,7 @@
                                     </td>
 
                                 </tr>
+                                i++;
                             }
                             @*<tr>
                 <td colspan="19" >No Data Found</td>

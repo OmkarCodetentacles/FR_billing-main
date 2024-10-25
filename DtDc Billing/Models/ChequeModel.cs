@@ -26,7 +26,9 @@ namespace DtDc_Billing.Models
             public Nullable<long> Firm_Id { get; set; }
             public string Pfcode { get; set; }
             public Nullable<System.DateTime> tempch_date { get; set; }
-            public string FormattedTempChInsertedDate
+        public Nullable<double> Balance { get; set; }
+
+        public string FormattedTempChInsertedDate
             {
                 get
                 {

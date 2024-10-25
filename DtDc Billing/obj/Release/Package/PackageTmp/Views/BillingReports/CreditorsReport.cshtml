@@ -202,27 +202,32 @@
                                         @Html.DisplayNameFor(model => model.total)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.fullsurchargetax)
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax) (%)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.servicetax)
+                                        @Html.DisplayNameFor(model => model.servicetax) (%)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(model => model.servicetaxtotal)
                                     </th>
-
                                     <th>
-                                        @Html.DisplayNameFor(model => model.netamount)
+                                        Discount(%)
+                                    </th>
+                                    <th>
+                                            Discount Amount
+                                    </th>
+                                    <th>
+                                      Net Amount
                                     </th>
                                     <th>Paid</th>
                                     <th>
                                         Balance
                                     </th>
-                                    <th>TDS Amount</th>
-                                    <th>Total Amount</th>
+                                    <th>Payment Mode TDS Amount</th>
+                                    <th>Payment Mode Total Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -231,7 +236,7 @@
                                 {
                                     foreach (var item in Model)
                                     {
-                                        <tr class="@(item.discountamount <= 0 ? "paid-party" : "unpaid-party")">
+                                        <tr class="@(item.balanceamount <= 0 ? "paid-party" : "unpaid-party")">
                                             <td>
                                                 @i
                                             </td>
@@ -271,7 +276,12 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.servicetaxtotal)
                                             </td>
-
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountper)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                            </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.netamount)
                                             </td>
@@ -279,7 +289,7 @@
                                                 @Html.DisplayFor(modelItem => item.paid)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                                @Html.DisplayFor(modelItem => item.balanceamount)
                                             </td>
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.TdsAmount)
@@ -304,7 +314,8 @@
                                     <!-- /btn-group -->
                                     @if (Model != null)
                                     {
-                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.netamount,2))">
+                                        //@*@Model.GroupBy(x => x.invoiceno).Select(g => new {InvoiceNo=g.Key,TotalNetAmount=g.Sum(x=>Math.Round((double)x.netamount,2))}).Sum(x=>x.TotalNetAmount)*@
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@ViewBag.NetAmountSum" />
 
                                     }
                                     else
@@ -325,7 +336,8 @@
                                     <!-- /btn-group -->
                                     @if (Model != null)
                                     {
-                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.paid,2))">
+                                        //@*@Model.GroupBy(x => x.invoiceno).Select(g => new {InvoiceNo=g.Key,TotalNetAmount=g.Sum(x=>Math.Round((double)x.paid,2))}).Sum(x=>x.TotalNetAmount)*@ 
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@ViewBag.Paid"/>
 
                                     }
                                     else
@@ -346,7 +358,7 @@
                                     <!-- /btn-group -->
                                     @if (Model != null)
                                     {
-                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.discountamount,2))">
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@ViewBag.Balance">
 
                                     }
                                     else

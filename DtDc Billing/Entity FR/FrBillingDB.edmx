@@ -70,6 +70,7 @@
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="tempinserteddate" Type="datetime" />
           <Property Name="tempch_date" Type="datetime" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="Cheque">
           <Key>
@@ -86,6 +87,7 @@
           <Property Name="Firm_Id" Type="bigint" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="tempch_date" Type="datetime" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -119,6 +121,7 @@
           <Property Name="Username" Type="varchar" MaxLength="200" />
           <Property Name="G_Docket" Type="float" />
           <Property Name="DueDays" Type="int" />
+          <Property Name="B_Docket" Type="float" />
         </EntityType>
         <EntityType Name="Complaint">
           <Key>
@@ -144,6 +147,7 @@
           <Property Name="Firm_Id" Type="bigint" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="tempch_date" Type="datetime" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="deliverydata">
           <Key>
@@ -331,6 +335,52 @@
           <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
           <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
         </EntityType>
+        <EntityType Name="GSTInvoice">
+          <Key>
+            <PropertyRef Name="IN_Id" />
+          </Key>
+          <Property Name="IN_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="invoiceno" Type="varchar" MaxLength="23" />
+          <Property Name="invoicedate" Type="datetime" />
+          <Property Name="periodfrom" Type="datetime" />
+          <Property Name="periodto" Type="datetime" />
+          <Property Name="total" Type="float" />
+          <Property Name="fullsurchargetax" Type="float" />
+          <Property Name="fullsurchargetaxtotal" Type="float" />
+          <Property Name="servicetax" Type="float" />
+          <Property Name="servicetaxtotal" Type="float" />
+          <Property Name="othercharge" Type="float" />
+          <Property Name="netamount" Type="float" />
+          <Property Name="Customer_Id" Type="varchar" MaxLength="50" />
+          <Property Name="annyear" Type="varchar" MaxLength="20" />
+          <Property Name="paid" Type="float" />
+          <Property Name="status" Type="varchar" MaxLength="20" />
+          <Property Name="discount" Type="varchar" MaxLength="20" />
+          <Property Name="discountper" Type="float" />
+          <Property Name="discountamount" Type="float" />
+          <Property Name="servicecharges" Type="float" />
+          <Property Name="Royalty_charges" Type="float" />
+          <Property Name="Docket_charges" Type="float" />
+          <Property Name="Tempdatefrom" Type="varchar" MaxLength="100" />
+          <Property Name="TempdateTo" Type="varchar" MaxLength="100" />
+          <Property Name="tempInvoicedate" Type="varchar" MaxLength="100" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="Invoice_Lable" Type="varchar(max)" />
+          <Property Name="Total_Lable" Type="varchar(max)" />
+          <Property Name="Royalti_Lable" Type="varchar(max)" />
+          <Property Name="Docket_Lable" Type="varchar(max)" />
+          <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
+          <Property Name="isDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="GSTInvoiceConsignments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Consignment_no" Type="varchar" MaxLength="20" />
+          <Property Name="InvoiceNo" Type="varchar" MaxLength="40" />
+          <Property Name="Pfcode" Type="varchar" MaxLength="20" />
+        </EntityType>
         <EntityType Name="Holiday">
           <Key>
             <PropertyRef Name="Holiday_ID" />
@@ -431,6 +481,7 @@
           <Property Name="Firm_Id" Type="bigint" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="tempneftdate" Type="datetime" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="NewNotification">
           <Key>
@@ -877,6 +928,7 @@
           <Property Name="compaddress" Type="varchar" MaxLength="500" />
           <Property Name="isRTO" Type="bit" />
           <Property Name="isDelete" Type="bit" />
+          <Property Name="IsGSTConsignment" Type="bit" />
         </EntityType>
         <EntityType Name="UserModuleList">
           <Key>
@@ -1022,6 +1074,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="receivedby" Type="varchar" MaxLength="100" />
           <Property Name="remarks" Type="varchar" MaxLength="100" />
           <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
+          <Property Name="IsGSTConsignment" Type="bit" />
         </EntityType>
         <Association Name="Emp_Fk">
           <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
@@ -2149,6 +2202,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="express_cargo" EntityType="Self.express_cargo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FirmDetails" EntityType="Self.FirmDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Franchisee" EntityType="Self.Franchisee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GSTInvoice" EntityType="Self.GSTInvoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GSTInvoiceConsignments" EntityType="Self.GSTInvoiceConsignments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Holiday" EntityType="Self.Holiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Holidays" EntityType="Self.Holidays" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
@@ -2273,7 +2328,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     [TransactionView].[tempdelivereddate] AS [tempdelivereddate], 
     [TransactionView].[receivedby] AS [receivedby], 
     [TransactionView].[remarks] AS [remarks], 
-    [TransactionView].[tempdeliveredtime] AS [tempdeliveredtime]
+    [TransactionView].[tempdeliveredtime] AS [tempdeliveredtime], 
+    [TransactionView].[IsGSTConsignment] AS [IsGSTConsignment]
     FROM [dbo].[TransactionView] AS [TransactionView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">
@@ -2640,6 +2696,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempch_date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Cash__Firm_Id__2180FB33" FromRole="Cash" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Cash__Firm_Id__2334397B" FromRole="Cash" ToRole="FirmDetails" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <EntityType Name="Cheque">
           <Key>
@@ -2658,6 +2715,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempch_date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FirmDetail" Relationship="Self.FK__Cheque__Firm_Id__22751F6C" FromRole="Cheque" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Cheque__Firm_Id__24285DB4" FromRole="Cheque" ToRole="FirmDetails" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -2708,6 +2766,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Dtdc_Ptp" Relationship="Self.fk_ptp" FromRole="Company" ToRole="Dtdc_Ptp" />
           <NavigationProperty Name="express_cargo" Relationship="Self.fk_ptpexp" FromRole="Company" ToRole="express_cargo" />
           <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction" FromRole="Company" ToRole="Transactions" />
+          <Property Name="B_Docket" Type="Double" />
         </EntityType>
         <EntityType Name="Complaint">
           <Key>
@@ -2739,6 +2798,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempch_date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FirmDetail" Relationship="Self.FK__CreditNot__Firm___245D67DE" FromRole="CreditNote" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__CreditNot__Firm___251C81ED" FromRole="CreditNote" ToRole="FirmDetails" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <EntityType Name="deliverydata">
           <Key>
@@ -3088,6 +3148,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempneftdate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FirmDetail" Relationship="Self.FK__NEFT__Firm_Id__318258D2" FromRole="NEFT" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__NEFT__Firm_Id__367C1819" FromRole="NEFT" ToRole="FirmDetails" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <EntityType Name="NewNotification">
           <Key>
@@ -3579,6 +3640,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="isDelete" Type="Boolean" />
           <NavigationProperty Name="Company" Relationship="Self.fk_Tansaction" FromRole="Transactions" ToRole="Company" />
           <NavigationProperty Name="Franchisee" Relationship="Self.fk_Tansaction1" FromRole="Transactions" ToRole="Franchisee" />
+          <Property Name="IsGSTConsignment" Type="Boolean" />
         </EntityType>
         <EntityType Name="UserModuleList">
           <Key>
@@ -3732,6 +3794,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsGSTConsignment" Type="Boolean" />
         </EntityType>
         <Association Name="FK__Cash__Firm_Id__2180FB33">
           <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
@@ -5188,6 +5251,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="GSTInvoiceConsignments" EntityType="db_a92afa_frbillingModel.GSTInvoiceConsignment" />
+          <EntitySet Name="GSTInvoices" EntityType="db_a92afa_frbillingModel.GSTInvoice" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5309,6 +5374,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
           <Property Type="Double" Name="TdsAmount" Nullable="true" />
           <Property Type="Double" Name="TotalAmount" Nullable="true" />
+          <Property Type="Double" Name="discountper" Nullable="true" />
+          <Property Type="Double" Name="discountamount" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getInvoice_Result">
           <Property Type="Int32" Name="IN_Id" Nullable="false" />
@@ -5467,6 +5534,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="remark" Nullable="false" MaxLength="1" />
           <Property Type="Int64" Name="Firm_Id" Nullable="true" />
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getPaymentTrackCheque_Result">
           <Property Type="Double" Name="Amount" Nullable="true" />
@@ -5480,6 +5548,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="remark" Nullable="true" MaxLength="200" />
           <Property Type="Int64" Name="Firm_Id" Nullable="true" />
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getPaymentTrackCreditNote_Result">
           <Property Type="Double" Name="Amount" Nullable="true" />
@@ -5493,6 +5562,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="remark" Nullable="true" MaxLength="50" />
           <Property Type="Int64" Name="Firm_Id" Nullable="true" />
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getPaymentTrackNEFT_Result">
           <Property Type="Double" Name="Amount" Nullable="true" />
@@ -5506,6 +5576,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="remark" Nullable="true" />
           <Property Type="Int64" Name="Firm_Id" Nullable="true" />
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getReceiptDetails_Result">
           <Property Type="String" Name="Consignment_No" Nullable="true" MaxLength="20" />
@@ -5718,6 +5789,52 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="remarks" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="tempdeliveredtime" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="GSTInvoiceConsignment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Consignment_no" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Pfcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GSTInvoice">
+          <Key>
+            <PropertyRef Name="IN_Id" />
+          </Key>
+          <Property Name="IN_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="invoiceno" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+          <Property Name="invoicedate" Type="DateTime" Precision="3" />
+          <Property Name="periodfrom" Type="DateTime" Precision="3" />
+          <Property Name="periodto" Type="DateTime" Precision="3" />
+          <Property Name="total" Type="Double" />
+          <Property Name="fullsurchargetax" Type="Double" />
+          <Property Name="fullsurchargetaxtotal" Type="Double" />
+          <Property Name="servicetax" Type="Double" />
+          <Property Name="servicetaxtotal" Type="Double" />
+          <Property Name="othercharge" Type="Double" />
+          <Property Name="netamount" Type="Double" />
+          <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="annyear" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="paid" Type="Double" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="discount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="discountper" Type="Double" />
+          <Property Name="discountamount" Type="Double" />
+          <Property Name="servicecharges" Type="Double" />
+          <Property Name="Royalty_charges" Type="Double" />
+          <Property Name="Docket_charges" Type="Double" />
+          <Property Name="Tempdatefrom" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TempdateTo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="tempInvoicedate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Invoice_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Total_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Royalti_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Docket_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isDelete" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5783,6 +5900,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Cashes">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Cash">
               <MappingFragment StoreEntitySet="Cash">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Cash_id" ColumnName="Cash_id" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="inserteddate" ColumnName="inserteddate" />
@@ -5799,6 +5917,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Cheques">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Cheque">
               <MappingFragment StoreEntitySet="Cheque">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Cheque_id" ColumnName="Cheque_id" />
                 <ScalarProperty Name="C_Amount" ColumnName="C_Amount" />
                 <ScalarProperty Name="ch_date" ColumnName="ch_date" />
@@ -5816,6 +5935,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="B_Docket" ColumnName="B_Docket" />
                 <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
                 <ScalarProperty Name="c_id" ColumnName="c_id" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
@@ -5863,6 +5983,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="CreditNotes">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.CreditNote">
               <MappingFragment StoreEntitySet="CreditNote">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Cr_id" ColumnName="Cr_id" />
                 <ScalarProperty Name="Cr_Amount" ColumnName="Cr_Amount" />
                 <ScalarProperty Name="cr_date" ColumnName="cr_date" />
@@ -6167,6 +6288,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="NEFTs">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.NEFT">
               <MappingFragment StoreEntitySet="NEFT">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Neft_id" ColumnName="Neft_id" />
                 <ScalarProperty Name="NeftAmount" ColumnName="NeftAmount" />
                 <ScalarProperty Name="neftdate" ColumnName="neftdate" />
@@ -6602,6 +6724,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
                 <ScalarProperty Name="T_id" ColumnName="T_id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="booking_date" ColumnName="booking_date" />
@@ -6745,6 +6868,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="TransactionViews">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.TransactionView">
               <MappingFragment StoreEntitySet="TransactionView">
+                <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
                 <ScalarProperty Name="T_id" ColumnName="T_id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="booking_date" ColumnName="booking_date" />
@@ -6951,6 +7075,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
                 <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="discountper" ColumnName="discountper" />
+                <ScalarProperty Name="discountamount" ColumnName="discountamount" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7145,6 +7271,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7162,6 +7289,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7179,6 +7307,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7196,6 +7325,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="remark" ColumnName="remark" />
                 <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -7455,6 +7585,54 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
+          <EntitySetMapping Name="GSTInvoiceConsignments">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GSTInvoiceConsignment">
+              <MappingFragment StoreEntitySet="GSTInvoiceConsignments">
+                <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GSTInvoices">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GSTInvoice">
+              <MappingFragment StoreEntitySet="GSTInvoice">
+                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+                <ScalarProperty Name="Docket_Lable" ColumnName="Docket_Lable" />
+                <ScalarProperty Name="Royalti_Lable" ColumnName="Royalti_Lable" />
+                <ScalarProperty Name="Total_Lable" ColumnName="Total_Lable" />
+                <ScalarProperty Name="Invoice_Lable" ColumnName="Invoice_Lable" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="tempInvoicedate" ColumnName="tempInvoicedate" />
+                <ScalarProperty Name="TempdateTo" ColumnName="TempdateTo" />
+                <ScalarProperty Name="Tempdatefrom" ColumnName="Tempdatefrom" />
+                <ScalarProperty Name="Docket_charges" ColumnName="Docket_charges" />
+                <ScalarProperty Name="Royalty_charges" ColumnName="Royalty_charges" />
+                <ScalarProperty Name="servicecharges" ColumnName="servicecharges" />
+                <ScalarProperty Name="discountamount" ColumnName="discountamount" />
+                <ScalarProperty Name="discountper" ColumnName="discountper" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="annyear" ColumnName="annyear" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="netamount" ColumnName="netamount" />
+                <ScalarProperty Name="othercharge" ColumnName="othercharge" />
+                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
+                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
+                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
+                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="periodto" ColumnName="periodto" />
+                <ScalarProperty Name="periodfrom" ColumnName="periodfrom" />
+                <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
+                <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+                <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

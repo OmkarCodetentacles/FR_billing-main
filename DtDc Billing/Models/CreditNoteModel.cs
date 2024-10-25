@@ -23,8 +23,9 @@ namespace DtDc_Billing.Models
             public Nullable<long> Firm_Id { get; set; }
             public string Pfcode { get; set; }
             [Required(ErrorMessage = "Date must be Required")]
+        public Nullable<double> Balance { get; set; }
 
-            public Nullable<System.DateTime> tempch_date { get; set; }
+        public Nullable<System.DateTime> tempch_date { get; set; }
             public string FormattedTempCrInsertedDate
             {
                 get

@@ -749,12 +749,16 @@
 
 
     var array = new Array()
-
+    var finalarray = new Array();
 
 
 
     $(document).ready(function () {
 
+
+        $("#consiaddno").focusout(function () {
+            $('#consiaddno').val($(this).val().toUpperCase());
+        })
         $('input[type="number"]').on('keypress', function (e) {
             // Allow only numbers and prevent the default action for other characters
             if (e.key === 'e' || e.key === 'E' || e.key === '+' || e.key === '-') {
@@ -779,7 +783,7 @@
 
             var str = array.join(',');
 
-            $('#consignments').val(str);
+            //$('#consignments').val(str);
 
 
             showtable();
@@ -804,7 +808,7 @@
 
             var str = array.join(',');
 
-            $('#consignments').val(str);
+      //    $('#consignments').val(str);
 
 
             showtable();
@@ -884,12 +888,14 @@
 
         var rows;
 
-        $.each(data, function (i, item) {
+             $.each(data, function (i, item) {
+                 
             if (i == 0) {
 
                 $("#generate-invoice tbody").empty();
             }
-
+                 finalarray = [];
+                 $('#consignments').val('');
 
             rows += "<tr>"
                 + "<td>" + (i + 1) + "</td>"
@@ -910,8 +916,7 @@
 
                 + "</tr>";
 
-
-
+              
 
             ///////Calculating Docket amount
             var str = item.Transaction.Consignment_no;
@@ -944,10 +949,17 @@
 
             total = total + (item.Transaction.Risksurcharge + item.Transaction.Amount + item.Transaction.loadingcharge);
 
+               
+                 finalarray.push(item.Transaction.Consignment_no);
 
+                 // $('#consiaddno').val('');
+
+                 
         });
 
+             var str = finalarray.join(',');
 
+             $('#consignments').val(str);
              $('#total').val(total.toFixed());
              $('#total').keyup();
              $('#Docket_charges').val(Docket_Charge);

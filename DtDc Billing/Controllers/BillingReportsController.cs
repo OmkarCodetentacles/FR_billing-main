@@ -1,8 +1,10 @@
 ﻿using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Reporting.WebForms;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Razorpay.Api;
 using System;
 using System.Collections.Generic;
@@ -233,36 +235,86 @@ namespace DtDc_Billing.Controllers
             List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
 
 
-            
+
             Pfsum = (from student in db.Transactions
                      join ab in db.Companies on
                      student.Customer_Id equals ab.Company_Id
-                     where (ab.Pf_code == PfCode && student.Pf_Code==PfCode)
-                     && student.Customer_Id != null
-                     group   student  by student.Customer_Id into studentGroup
-                     
+                     where (ab.Pf_code == PfCode && student.Pf_Code == PfCode)
+                  && student.Customer_Id != null
+                  && (student.IsGSTConsignment == null || student.IsGSTConsignment == false)
+                        && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(student.Consignment_no)
+                            && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(student.Consignment_no)
+                     group student by student.Customer_Id into studentGroup
+
                      select new DisplayPFSum
                      {
-                         CustomerId=studentGroup.FirstOrDefault().Customer_Id,
-                         CustomerName=(from comp in db.Companies
-                                       where comp.Company_Id==studentGroup.FirstOrDefault().Customer_Id
-                                       select comp.Company_Name
+                         CustomerId = studentGroup.FirstOrDefault().Customer_Id,
+                         CustomerName = (from comp in db.Companies
+                                         where comp.Company_Id == studentGroup.FirstOrDefault().Customer_Id
+                                         select comp.Company_Name
                                        ).FirstOrDefault(),
                          Sum = db.TransactionViews.Where(m =>
                (m.Customer_Id == studentGroup.Key)
+                     && m.status_t==null
+                                && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+                                && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
-                           .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0))??0,
+                           .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0)) ?? 0,
 
                          Branchname = db.TransactionViews.Where(m =>
                  (m.Customer_Id == studentGroup.Key)
+                       && m.status_t==null
+                                && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+                                && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
                            .Count().ToString(),
+                         Count = studentGroup.Select(x => x.Consignment_no).Count() != null ? studentGroup.Select(x => x.Consignment_no).Count() : 0,
 
-                        Count=studentGroup.Select(x=>x.Consignment_no).Count()!=null? studentGroup.Select(x => x.Consignment_no).Count():0,
-                      
                      }
-                    
+
                     ).ToList();
+            //var pfsumData = (from student in db.Transactions
+            //                join ab in db.Companies on student.Customer_Id equals ab.Company_Id
+            //                 where ab.Pf_code == PfCode && student.Pf_Code == PfCode
+            //                    && student.Customer_Id != null
+            //                    && student.status_t!=null
+            //                    && (student.IsGSTConsignment == null || student.IsGSTConsignment == false)
+            //                    && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(student.Consignment_no)
+            //                    && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(student.Consignment_no)
+            //                 select new
+            //                 {
+            //                     CustomerId = student.Customer_Id,
+            //                     CustomerName = (from comp in db.Companies
+            //                                     where comp.Company_Id == student.Customer_Id
+            //                                     select comp.Company_Name).FirstOrDefault(),
+            //                    Amount=student.codAmount,
+            //                     Risksurcharge=student.Risksurcharge,
+            //                     loadingcharge=student.loadingcharge,
+            //                     Consignment_no=student.Consignment_no,
+
+            //                 }).Distinct().ToList();
+
+            // Now perform the calculation after retrieving the base data
+            // Pfsum = pfsumData.Select(data => new DisplayPFSum
+            //{
+            //    CustomerId = data.CustomerId,
+            //    CustomerName = data.CustomerName,
+            //     Sum = db.TransactionViews.Where(m =>
+            //   (m.Customer_Id == studentGroup.Key)
+            //         && (m.IsGSTConsignment == null || m.IsGSTConsignment == false)
+            //                    && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+            //                    && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+            //        ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
+            //               .Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0)) ?? 0,
+
+            //                  Branchname = db.TransactionViews.Where(m =>
+            //          (m.Customer_Id == studentGroup.Key)
+            //                && (m.IsGSTConsignment == null || m.IsGSTConsignment == false)
+            //                         && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+            //                         && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
+            //             ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
+            //                    .Count().ToString(),
+            //}).ToList();
 
 
             if (Submit == "Export to Excel")
@@ -498,7 +550,7 @@ namespace DtDc_Billing.Controllers
         public ActionResult CreditorsReport()
         {
             List<CreditorsInvoiceModel> inc = new List<CreditorsInvoiceModel>();
-
+           // List<Invoice> inc=new List<Invoice>();
             return View(inc);
         }
 
@@ -547,15 +599,16 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Custid = Custid;
             }
                
-        List<Invoice> obj = new List<Invoice>();
+        //List<Invoice> obj = new List<Invoice>();
 
-            List<CreditorsInvoiceModel> newObj=new List<CreditorsInvoiceModel>();
+            List<CreditorsInvoiceModel> newObj = new List<CreditorsInvoiceModel>();
+
             // List<Invoice> collectionAmount = new List<Invoice>();
             string customerid = Custid != null ? Custid : null;
             string pfcode = PfCode;
             if (status == "Paid")
             {
-                
+
                 newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
                 {
                     invoicedate = x.invoicedate,
@@ -572,11 +625,13 @@ namespace DtDc_Billing.Controllers
 
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
-                    discountamount =Math.Round((double)x.netamount - (x.paid ?? 0)) ,
-                    TdsAmount=x.TdsAmount??0,
-                    TotalAmount=x.TotalAmount??0
+                    discountper= x.discountper??0,
+                    discountamount=x.discountamount??0,
+                     balanceamount= Math.Round((double)x.netamount - (x.paid ?? 0)),
+                    TdsAmount = x.TdsAmount ?? 0,
+                    TotalAmount = x.TotalAmount ?? 0
 
-                }).ToList().Where(x => x.discountamount <= 0).ToList();
+                }).ToList().Where(x => x.balanceamount <= 0).ToList();
 
 
                 //if (Custid == "")
@@ -597,10 +652,10 @@ namespace DtDc_Billing.Controllers
                 //        netamount = x.netamount,
                 //        paid = x.paid ?? 0,
                 //        discountamount = x.netamount - (x.paid ?? 0)
-                        
+
                 //    }).ToList().Where(x => x.discountamount <= 0).ToList();
 
-                   
+
 
                 //}
                 //else
@@ -686,14 +741,16 @@ namespace DtDc_Billing.Controllers
                     servicetax = x.servicetax,
                     servicetaxtotal = x.servicetaxtotal,
                     Customer_Id = x.Customer_Id,
-                    CustomerName=db.Companies.Where(m=>m.Company_Id==x.Customer_Id).Select(m=>m.Company_Name).FirstOrDefault(),
+                    CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
-                    discountamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
-                    TdsAmount = x.TdsAmount??0,
-                    TotalAmount = x.TotalAmount??0
-                    
-                }).ToList().Where(x => x.discountamount > 0 || x.paid == null).ToList();
+                    discountper = x.discountper ?? 0,
+                    discountamount = x.discountamount ?? 0,
+                   balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                    TdsAmount = x.TdsAmount ?? 0,
+                    TotalAmount = x.TotalAmount ?? 0
+
+                }).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
 
 
             }
@@ -724,8 +781,8 @@ namespace DtDc_Billing.Controllers
                 //    }).ToList();
                 //}
                 //else
-                //{ 
-                //    obj = db.getCreditorsInvoice(fromdate,todate, Custid, PfCode).Select(x => new Invoice
+                //{
+                //    obj = db.getCreditorsInvoice(fromdate, todate, Custid, PfCode).Select(x => new Invoice
                 //    {
 
                 //        invoicedate = x.invoicedate,
@@ -745,7 +802,7 @@ namespace DtDc_Billing.Controllers
                 //    }).ToList();
 
                 //}
-               
+
                 using (var db = new db_a92afa_frbillingEntities())
                 {
                     newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode)
@@ -762,14 +819,15 @@ namespace DtDc_Billing.Controllers
                             servicetaxtotal = x.servicetaxtotal,
                             Customer_Id = x.Customer_Id,
                             CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
-
-                            netamount = x.netamount??0,
+                            discountper = x.discountper ?? 0,
+                            discountamount = x.discountamount ?? 0,
+                            netamount = x.netamount ?? 0,
                             paid = x.paid ?? 0,
-                            discountamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
-                            TdsAmount = x.TdsAmount??0,
-                            TotalAmount = x.TotalAmount??0
+                           balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                            TdsAmount = x.TdsAmount ?? 0,
+                            TotalAmount = x.TotalAmount ?? 0
                         })
-                    
+
                         .ToList();
                 }
 
@@ -794,12 +852,15 @@ namespace DtDc_Billing.Controllers
                         FullSurChargeTotal = x.fullsurchargetaxtotal,
                         ServiceTax = x.servicetax,
                         ServiceTaxTotal = x.servicetaxtotal,
+                        DiscountPer=x.discountper,
+                        DiscountAmount=x.discountamount,
                         CustomerId = x.Customer_Id,
                         NetAmount = x.netamount ?? 0,
                         Paid = x.paid ?? 0,
-                        DiscountAmount = x.netamount - (x.paid ?? 0),
-                        TDSAmount = x.TotalAmount ?? 0,
-                        TotalAmount = x.TotalAmount ?? 0
+                       
+                        Balance = x.balanceamount,
+                     //   TDSAmount = x.TotalAmount ?? 0,
+                      //  TotalAmount = x.TotalAmount ?? 0
 
                     }).ToList();
                 if (newObj.Count() <= 0 || newObj == null)
@@ -817,7 +878,9 @@ namespace DtDc_Billing.Controllers
                 {
                     if (Custid != null && Custid != "")
                     {
-                        var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
+                        var DataSet1 = newObj.Where(x=>customerid == x.Customer_Id).OrderBy(x => x.invoiceno).ToList();
+                    if (DataSet1.Count()>0)
+                    {
                         var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
                         var pfcode1 = DataSet2.FirstOrDefault().Pf_code;
                         var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode1).ToList();//Remove static url https://frbilling.com
@@ -883,68 +946,75 @@ namespace DtDc_Billing.Controllers
 
                         if (Submit == "Send mail")
                         {
-                        try
-                        {
-                            if (DataSet2.FirstOrDefault().Email != null || DataSet2.FirstOrDefault().Email != "")
+                            try
                             {
-                                MemoryStream memoryStream = new MemoryStream(renderByte);
-
-
-
-                                using (MailMessage mm = new MailMessage(DataSet3.FirstOrDefault().Sendermail, DataSet2.FirstOrDefault().Email))
+                                if (DataSet2.FirstOrDefault().Email != null || DataSet2.FirstOrDefault().Email != "")
                                 {
-                                    mm.Subject = "Payment Outstanding from " + Fromdatetime + " to " + ToDatetime;
-
-                                    string Bodytext = "<html><body>Please Find Attachment</body></html>";
-                                    Attachment attachment = new Attachment(memoryStream, "PaymentOutstanding.pdf");
-
-                                    mm.IsBodyHtml = true;
+                                    MemoryStream memoryStream = new MemoryStream(renderByte);
 
 
 
-                                    mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+                                    using (MailMessage mm = new MailMessage(DataSet3.FirstOrDefault().Sendermail, DataSet2.FirstOrDefault().Email))
+                                    {
+                                        mm.Subject = "Payment Outstanding from " + Fromdatetime + " to " + ToDatetime;
 
-                                    AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
-                                    // mm.Body = Bodytext;
-                                    mm.Body = Bodytext;
+                                        string Bodytext = "<html><body>Please Find Attachment</body></html>";
+                                        Attachment attachment = new Attachment(memoryStream, "PaymentOutstanding.pdf");
 
-                                    //Add Byte array as Attachment.
+                                        mm.IsBodyHtml = true;
 
-                                    mm.Attachments.Add(attachment);
 
-                                    SmtpClient smtp = new SmtpClient();
-                                    smtp.Host = "smtp.gmail.com";
-                                    smtp.EnableSsl = true;
-                                    System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                                    credentials.UserName = DataSet3.FirstOrDefault().Sendermail;
-                                    credentials.Password = DataSet3.FirstOrDefault().password;
-                                    smtp.UseDefaultCredentials = true;
-                                    smtp.Credentials = credentials;
-                                    smtp.Port = 587;
-                                    smtp.Send(mm);
+
+                                        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+
+                                        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+                                        // mm.Body = Bodytext;
+                                        mm.Body = Bodytext;
+
+                                        //Add Byte array as Attachment.
+
+                                        mm.Attachments.Add(attachment);
+
+                                        SmtpClient smtp = new SmtpClient();
+                                        smtp.Host = "smtp.gmail.com";
+                                        smtp.EnableSsl = true;
+                                        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+                                        credentials.UserName = DataSet3.FirstOrDefault().Sendermail;
+                                        credentials.Password = DataSet3.FirstOrDefault().password;
+                                        smtp.UseDefaultCredentials = true;
+                                        smtp.Credentials = credentials;
+                                        smtp.Port = 587;
+                                        smtp.Send(mm);
+                                    }
+                                }
+                                {
+                                    TempData["error"] = "Select Company";
+                                    return View(newObj);
+
                                 }
                             }
+                            catch (Exception ex)
                             {
-                                TempData["error"] = "Select Company";
+
+                                TempData["error"] = "Something Went Wrong To send the E-mail,Please Check Your Franchisee E-Mail Id and Company E-Mail Id";
                                 return View(newObj);
-
                             }
-                        }
-                        catch (Exception ex)
-                        {
-
-                            TempData["error"] = "Something Went Wrong To send the E-mail,Please Check Your Franchisee E-Mail Id and Company E-Mail Id";
-                            return View(newObj);
-                        }
 
                         }
 
                         return File(renderByte, mimeType);
+                    }
+                    else
+                    {
+
+                    }
 
                     }
                     else
                     {
                         var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
+                    if (DataSet1.Count()>0)
+                    {
                         LocalReport lr = new LocalReport();
 
                         string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstandingWComppany.rdlc");
@@ -1005,12 +1075,21 @@ namespace DtDc_Billing.Controllers
                         return File(renderByte, mimeType);
 
                     }
+                    else
+                    {
+                        TempData["error"] = "Dat Not Found";
+                     
+
+                    }
                 }
-            
+                }
 
 
-            //  return View(obj);
-            
+
+            // return View(obj);
+            ViewBag.NetAmountSum = newObj.Distinct().Select(x => new { x.netamount,x.invoiceno}).GroupBy(x => x.invoiceno).Sum(x=>x.FirstOrDefault().netamount);
+            ViewBag.Balance= newObj.Distinct().Select(x => new { x.balanceamount, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().balanceamount);
+            ViewBag.Paid = newObj.Distinct().Select(x => new { x.paid, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().paid);
             return View(newObj);
         }
 
@@ -2063,6 +2142,8 @@ namespace DtDc_Billing.Controllers
                         servicecharges = i.servicecharges!=null?Math.Round((double)i.servicecharges):0,
                         Royalty_charges = i.Royalty_charges!=null?Math.Round((double)i.Royalty_charges):0,
                         Docket_charges = i.Docket_charges!=null ? Math.Round((double)i.Docket_charges):0,
+                        discount=i.discount!=null?i.discount:"0",
+                        discountamount=i.discountamount!=null?Math.Round((double)i.discountamount):0,
                         Tempdatefrom = i.Tempdatefrom,
                         TempdateTo = i.TempdateTo,
                         tempInvoicedate = i.tempInvoicedate,
@@ -2108,6 +2189,8 @@ namespace DtDc_Billing.Controllers
                                                     //servicetax = i.servicetax,
                                                     //servicetaxtotal = i.servicetaxtotal,
                                                     //othercharge = i.othercharge,
+                                                    DiscountPer=i.discountper,
+                                                    DiscountAmt=i.discountamount,
                                                     netamount = i.netamount,
                                                     Customer_Id = i.Customer_Id,
                                                    // fid = i.fid,
@@ -2184,7 +2267,7 @@ namespace DtDc_Billing.Controllers
                                  Sales_Ledger = "Advertising Service",
                                  Amt = i.discountamount > 0 ? i.total + i.fullsurchargetaxtotal + i.Royalty_charges + i.Docket_charges + i.discountamount : i.total + i.fullsurchargetaxtotal + i.Royalty_charges,
                                  Additional_Ledger = "Discount",
-                                 Amount = i.discountamount > 0 ? "-" + i.discountamount.ToString() : null,
+                                 Amount = i.discountamount > 0 ? i.discountamount : null,
                                  CGST_Ledger = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
                                  //CGST_Amt = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0,
                                  CGST_Amt = Math.Round((double)(i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0), 2),

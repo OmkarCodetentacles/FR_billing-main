@@ -1,7 +1,9 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using Microsoft.SqlServer.Management.Smo;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -111,21 +113,21 @@ namespace DtDc_Billing.Controllers
                 transactions =
                    db.Transactions.Where(m =>
                   (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete==false
-                       ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
+                       ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
             }
             else if (status == "Unbilled")
             {
                 transactions =
                   db.Transactions.Where(m =>
                  (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
-                      ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
+                      ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
             }
             else
             {
                 transactions =
                  db.Transactions.Where(m =>
                 (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
-                     ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
+                     ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
             }
 
@@ -137,8 +139,8 @@ namespace DtDc_Billing.Controllers
                 {
 
                     var import = db.Transactions.Where(m =>
-                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0,ChargableWeight=x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
+                    ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && m.status_t != "0" && m.status_t != null).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new {x.Consignment_no, ActualWeight = x.Actual_weight??0,ChargableWeight=x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                    if(import.Count()==0 || import == null)
                     {
                         ViewBag.Nodata = "No Data Found";
@@ -154,8 +156,8 @@ namespace DtDc_Billing.Controllers
                 else if (status == "Unbilled")
                 {
                     var import = db.Transactions.Where(m =>
-              (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
-                  ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+              (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
+                  ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date && (m.status_t == "0" || m.status_t == null)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                   if(import.Count()==0 || import == null)
                     {
                         ViewBag.Nodata = "No Data Found";
@@ -171,8 +173,8 @@ namespace DtDc_Billing.Controllers
                 {
 
                     var import = db.Transactions.Where(m =>
-                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode || PfCode == "") && m.isDelete == false
-                    ).OrderBy(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
+                (m.Customer_Id != null && m.Customer_Id != "") && (m.Pf_Code == PfCode) && m.isDelete == false
+                    ).OrderByDescending(m => m.booking_date).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, ActualWeight = x.Actual_weight??0, ChargableWeight = x.chargable_weight??0, x.Pincode, x.Amount, x.tembookingdate, x.Customer_Id }).ToList();
                 if(import.Count()<=0 || import == null)
                     {
                         ViewBag.Nodata = "No Data Found";
@@ -192,25 +194,64 @@ namespace DtDc_Billing.Controllers
         }
 
         [SessionAdmin]
-        public ActionResult SaleReports()
+        public ActionResult SaleReports(string ToDatetime=null, string Fromdatetime=null)
         {
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            int cumonth = DateTime.Now.Month;
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+            DateTime fromdate= DateTime.Now;
+            DateTime todate= DateTime.Now;
 
-            var rc = db.getReceiptDetails(PfCode).Select(x => new Receipt_details
+            var rc =  db.Receipt_details.Where(x => x.Pf_Code == PfCode).Where(x=>x.Datetime_Cons.Value.Month ==cumonth && x.Pf_Code==PfCode).ToList();
+            if (Fromdatetime!=null && ToDatetime != null)
             {
+                ViewBag.Fromdatetime = Fromdatetime;
+                ViewBag.ToDatetime = ToDatetime;
 
-                Consignment_No = x.Consignment_No,
-                Destination = x.Destination,
-                sender_phone = x.sender_phone,
-                SenderCity = x.SenderCity,
-                SenderPincode = x.SenderPincode,
-                Reciepents_phone = x.Reciepents_phone,
-                Reciepents = x.Reciepents,
-                ReciepentsPincode = x.ReciepentsPincode,
-                Pf_Code = x.Pf_Code,
-                Datetime_Cons = x.Datetime_Cons,
-                Charges_Total = x.Charges_Total,
-            }).OrderByDescending(x => x.Datetime_Cons).ToList();
+                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+
+                 fromdate = Convert.ToDateTime(bdatefrom);
+                 todate = Convert.ToDateTime(bdateto);
+                 rc = db.getReceiptDetails(PfCode).Select(x => new Receipt_details
+                {
+
+                    Consignment_No = x.Consignment_No,
+                    Destination = x.Destination,
+                    sender_phone = x.sender_phone,
+                    SenderCity = x.SenderCity,
+                    SenderPincode = x.SenderPincode,
+                    Reciepents_phone = x.Reciepents_phone,
+                    Reciepents = x.Reciepents,
+                    ReciepentsPincode = x.ReciepentsPincode,
+                    Pf_Code = x.Pf_Code,
+                    Datetime_Cons = x.Datetime_Cons,
+                    Charges_Total = x.Charges_Total,
+                }).Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0).OrderByDescending(x => x.Datetime_Cons).ToList();
+
+            }
+            else
+            {
+                 rc = db.getReceiptDetails(PfCode).Select(x => new Receipt_details
+                {
+
+                    Consignment_No = x.Consignment_No,
+                    Destination = x.Destination,
+                    sender_phone = x.sender_phone,
+                    SenderCity = x.SenderCity,
+                    SenderPincode = x.SenderPincode,
+                    Reciepents_phone = x.Reciepents_phone,
+                    Reciepents = x.Reciepents,
+                    ReciepentsPincode = x.ReciepentsPincode,
+                    Pf_Code = x.Pf_Code,
+                    Datetime_Cons = x.Datetime_Cons,
+                    Charges_Total = x.Charges_Total,
+                }).OrderByDescending(x => x.Datetime_Cons).ToList();
+
+            }
+
 
             // ViewBag.Employees = new SelectList(db.Users.Take(0), "Name", "Name");
 
@@ -228,7 +269,6 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult SaleReports(string Employees, string ToDatetime, string Fromdatetime, string Submit)
         {
-
 
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -435,12 +475,11 @@ namespace DtDc_Billing.Controllers
             DateTime todate = Convert.ToDateTime(bdateto);
 
 
-            if (rc != null)
+            if (!string.IsNullOrEmpty(Fromdatetime) && !string.IsNullOrEmpty(ToDatetime))
             {
 
 
                 rc = db.Receipt_details.Where(m => m.Datetime_Cons != null)
-                          .ToList()
                           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0 && x.Pf_Code == PfCode)
                           .ToList();
             }
@@ -473,7 +512,7 @@ namespace DtDc_Billing.Controllers
             string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             db.Configuration.ProxyCreationEnabled = false;
 
-            List<User> lstuser = new List<User>();
+            List<DtDc_Billing.Entity_FR.User> lstuser = new List<DtDc_Billing.Entity_FR.User>();
 
             lstuser = db.Users.Where(m => m.PF_Code == Pfcode).ToList();
 

@@ -163,7 +163,7 @@ namespace DtDc_Billing.Controllers
                     c.Pfcode=strpf;
                     c.tempinserteddate= cash.tempinserteddate;
                     c.tempch_date= cash.tempch_date;
-
+                    c.Balance = balance - cash.C_Total_Amount;
                     
                     db.Cashes.Add(c);
                     db.SaveChanges();
@@ -214,7 +214,7 @@ namespace DtDc_Billing.Controllers
                     c.Tds_amount = cheque.Tds_amount;
                     c.Pfcode = strpf;
                     c.tempch_date =cheque.tempch_date;
-
+                    c.Balance=(balance - cheque.totalAmount);
 
                     db.Cheques.Add(c);
                     db.SaveChanges();
@@ -259,7 +259,7 @@ namespace DtDc_Billing.Controllers
                     n.N_Total_Amount=nEFT.N_Total_Amount;
                     n.Pfcode= strpf;
                     n.tempneftdate = nEFT.tempneftdate;
-
+                    n.Balance= balance-nEFT.N_Total_Amount;
                     db.NEFTs.Add(n);
                     db.SaveChanges();
                     TempData["remainingAmount"] = balance - Convert.ToDouble(nEFT.N_Total_Amount);
@@ -313,6 +313,7 @@ namespace DtDc_Billing.Controllers
                     cn.Invoiceno = creditNote.Invoiceno;
                     cn.tempch_date = creditNote.tempch_date;
                     cn.Pfcode = strpf;
+                    cn.Balance = balance - creditNote.Cr_Amount;
                     db.CreditNotes.Add(cn);
                     db.SaveChanges();
 
@@ -690,6 +691,7 @@ Select(e => new
                             Modeofpayment = "Cash",
                             netamount = inv.netamount,
                             tempinserteddate = ca.tempinserteddate,
+                            Balance=ca.Balance??0,
                             id = ca.Cash_id,
                             remark="",
                             
@@ -711,6 +713,7 @@ Select(e => new
                               tempinserteddate = ch.tempch_date,
                               id = ch.Cheque_id,
                               remark=ch.branch_Name,
+                              Balance=ch.Balance,
                               
                           }).ToList();
 
@@ -729,7 +732,7 @@ Select(e => new
                             tempinserteddate = ne.tempneftdate,
                             id = ne.Neft_id,
                             remark=ne.Transaction_Id,
-                           
+                           Balance= ne.Balance
                         }).ToList();
 
             var CreditNote = (from inv in db.Invoices
@@ -747,7 +750,7 @@ Select(e => new
                                   tempinserteddate = cn.tempch_date,
                                   id = cn.Cr_id,
                                   remark=cn.Creditnoteno,
-                                  
+                                  Balance= cn.Balance
                               }).ToList();
            
             track.AddRange(cash);
@@ -791,6 +794,7 @@ Select(e => new
                     id = x.id,
                     remark = x.remark,
                     isDelete = x.isDelete,
+                  Balance=x.Balance
 
                 }).ToList();
 
@@ -807,8 +811,9 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
-                isDelete= x.isDelete
-                
+                isDelete= x.isDelete,
+                Balance= x.Balance
+               
                
             }).ToList();
 
@@ -825,7 +830,8 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
-                isDelete= x.isDelete
+                isDelete= x.isDelete,
+                Balance= x.Balance
 
               
             }).ToList();
@@ -843,7 +849,8 @@ Select(e => new
                 tempinserteddate = x.tempinserteddate,
                 id = x.id,
                 remark = x.remark,
-                isDelete = x.isDelete
+                isDelete = x.isDelete,
+                Balance=x.Balance,
 
             }).ToList();
 
@@ -890,13 +897,14 @@ Select(e => new
 
            
             var invoicedetails = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
             if (ModelState.IsValid)
             {
                 if (cash.C_Total_Amount > 0)
                 {
                     if (cash.C_Total_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
                     {
-
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + cash.C_Total_Amount;
                         string[] formats = { "dd-MM-yyyy" };
 
                         //string bdate = DateTime.ParseExact(Convert.ToString(cash.tempinserteddate), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -911,11 +919,12 @@ Select(e => new
                         cash1.Pfcode= strpf;
                         //Date will not able to modify
                        cash1.tempinserteddate=cash.tempinserteddate;
+                        cash1.Balance = invoicedetails.netamount - invoicedetails.paid;
                         db.Entry(cash1).State = EntityState.Modified;
                        
                          
                         
-                        invoicedetails.paid = (invoicedetails.paid - amountval) + cash.C_Total_Amount;
+                    
 
                         db.Entry(invoicedetails).State = EntityState.Modified;
                         db.SaveChanges();
@@ -973,6 +982,7 @@ Select(e => new
                         //string bdate = DateTime.ParseExact(cheque.tempch_date.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
                         //cheque.ch_date = Convert.ToDateTime(bdate);
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + cheque.totalAmount;
 
                         Cheque cm = new Cheque();
                         cm.Cheque_id = cheque.Cheque_id;
@@ -985,9 +995,10 @@ Select(e => new
                         cm.Tds_amount = cheque.Tds_amount;
                        cm.tempch_date = cheque.tempch_date;
                         cheque.Pfcode = strpf;
+                        cm.Balance = (invoicedetails.netamount- invoicedetails.paid);
+
                         db.Entry(cm).State = EntityState.Modified;
                         db.SaveChanges();
-                        invoicedetails.paid =( invoicedetails.paid - amountval) + cheque.totalAmount;
 
                         db.Entry(invoicedetails).State = EntityState.Modified;
                         db.SaveChanges();
@@ -1044,6 +1055,7 @@ Select(e => new
                         string[] formats = { "dd-MM-yyyy" };
 
                         //string bdate = DateTime.ParseExact(nEFT.tempneftdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + nEFT.N_Total_Amount;
 
                         //nEFT.neftdate = Convert.ToDateTime(bdate);
                         nEFT.Pfcode = strpf;
@@ -1056,10 +1068,10 @@ Select(e => new
                         model.N_Tds_Amount = nEFT.N_Tds_Amount;
                         model.N_Total_Amount = nEFT.N_Total_Amount;
                        model.tempneftdate = nEFT.tempneftdate;
+                        model.Balance= invoicedetails.netamount -invoicedetails.paid;
                         db.Entry(model).State = EntityState.Modified;
                         db.SaveChanges();
                         
-                            invoicedetails.paid = (invoicedetails.paid - amountval) + nEFT.N_Total_Amount;
                         
                        
 
@@ -1118,6 +1130,7 @@ Select(e => new
                         //string bdate = DateTime.ParseExact(credit.tempch_date.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
                         //credit.cr_date = Convert.ToDateTime(bdate);
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + credit.Cr_Amount;
 
                         CreditNote model = new CreditNote();
                         model.Cr_id = credit.Cr_id;
@@ -1127,10 +1140,9 @@ Select(e => new
                         model.Cr_Amount = credit.Cr_Amount;
                         model.Creditnoteno = credit.Creditnoteno;
                         model.tempch_date = credit.tempch_date;
-
+                        model.Balance = invoicedetails.netamount - invoicedetails.paid;
                         db.Entry(model).State = EntityState.Modified;
                         db.SaveChanges();
-                        invoicedetails.paid = (invoicedetails.paid - amountval) + credit.Cr_Amount;
                         db.Entry(invoicedetails).State = EntityState.Modified;
                         db.SaveChanges();
                         TempData["Updatedsuccss"] = "Updated successfully!";

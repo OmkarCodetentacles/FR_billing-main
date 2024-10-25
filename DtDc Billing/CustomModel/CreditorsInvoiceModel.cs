@@ -23,8 +23,9 @@ namespace DtDc_Billing.CustomModel
         public string Customer_Id { get; set; }
         public string CustomerName { get; set; }
         public Nullable<double> paid { get; set; }
-       
+        public Nullable<double> discountper { get; set; }
         public Nullable<double> discountamount { get; set; }
+        public Nullable<double> balanceamount { get; set; }
         
 
         public Nullable<double> TdsAmount { get; set; }

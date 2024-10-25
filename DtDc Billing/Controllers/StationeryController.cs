@@ -390,11 +390,51 @@ namespace DtDc_Billing.Controllers
             List<BarcodeAndPath> Consignmentswithbarcode = new List<BarcodeAndPath>();
             List<string> Consignments = new List<string>();
 
-            char stch = startno[0];
-            char Endch = endno[0];
+            //char stch = startno[0];
+            //char Endch = endno[0];
 
-            long startConsignment = Convert.ToInt64(startno.Substring(1));
-            long EndConsignment = Convert.ToInt64(endno.Substring(1));
+            //long startConsignment = Convert.ToInt64(startno.Substring(1));
+            //long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+
+
+            //for (long i = startConsignment; i <= EndConsignment; i++)
+            //{
+            //    string updateconsignment = stch + i.ToString();
+
+
+            //    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+
+
+
+            //    if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
+            //    {
+            //        Consignments.Add(updateconsignment);
+            //    }
+
+            //}
+
+            string stch = startno[0].ToString();
+            string Endch = endno[0].ToString();
+            long startConsignment;
+            long EndConsignment;
+            if (startno.ToLower().StartsWith("7x") || endno.ToLower().StartsWith("7d"))
+            {
+                stch = startno.Substring(0, 2);
+                Endch = endno.Substring(0, 2);
+                startConsignment = Convert.ToInt64(startno.Substring(2));
+                EndConsignment = Convert.ToInt64(endno.Substring(2));
+            }
+            else
+            {
+                startConsignment = Convert.ToInt64(startno.Substring(1));
+                EndConsignment = Convert.ToInt64(endno.Substring(1));
+            }
+
+            //long startConsignment = Convert.ToInt64(startno.Substring(1));
+            //long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+
 
 
 
@@ -402,10 +442,7 @@ namespace DtDc_Billing.Controllers
             {
                 string updateconsignment = stch + i.ToString();
 
-
-                var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
-
-
+                DtDc_Billing.Entity_FR.Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
 
                 if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
                 {
@@ -413,57 +450,56 @@ namespace DtDc_Billing.Controllers
                 }
 
             }
-
-            foreach(var getConsignement in Consignments)
-            {
-                //////if barcode is not generated/////////
-                string imageName = getConsignement + "." + ImageType.Png;
-                string imagePath = "/BarcodeImages/" + imageName;
+     //       foreach (var getConsignement in Consignments)
+     //       {
+     //           //////if barcode is not generated/////////
+     //           string imageName = getConsignement + "." + ImageType.Png;
+     //           string imagePath = "/BarcodeImages/" + imageName;
               
 
-                //string baseUrl = "https://frbilling.com/"; use Dynamic url rather than static url
-                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
-     Request.ApplicationPath.TrimEnd('/');
-                string imageServerPath = Server.MapPath("~" + imagePath);
+     //           //string baseUrl = "https://frbilling.com/"; use Dynamic url rather than static url
+     //           string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     //Request.ApplicationPath.TrimEnd('/');
+     //           string imageServerPath = Server.MapPath("~" + imagePath);
 
 
-                // Usage 
-                string data1 = getConsignement; // Your barcode data
-                Image barcodeImage = GenerateBarcode(data1);
+     //           // Usage 
+     //           string data1 = getConsignement; // Your barcode data
+     //           Image barcodeImage = GenerateBarcode(data1);
 
-                // Save the barcode image
-                // string imageServerPath = Server.MapPath("~" + imagePath);
-                barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
+     //           // Save the barcode image
+     //           // string imageServerPath = Server.MapPath("~" + imagePath);
+     //           barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
 
-                // Dispose of the image
-                barcodeImage.Dispose();
+     //           // Dispose of the image
+     //           barcodeImage.Dispose();
 
-                var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getConsignement).FirstOrDefault();
-                if (getRecipt == null)
-                {
-                    BarcodeAndPath addBarcode = new BarcodeAndPath();
-                    addBarcode.ConsignmentNo = getConsignement;
-                    addBarcode.FilePath = baseUrl + imagePath;
-                    db.BarcodeAndPaths.Add(addBarcode);
-                    db.SaveChanges();
-                }
-                else
-                {
-                    getRecipt.FilePath = baseUrl + imagePath;
-                    db.SaveChanges();
-                }
-                //////if barcode is not generated end/////////
+     //           var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getConsignement).FirstOrDefault();
+     //           if (getRecipt == null)
+     //           {
+     //               BarcodeAndPath addBarcode = new BarcodeAndPath();
+     //               addBarcode.ConsignmentNo = getConsignement;
+     //               addBarcode.FilePath = baseUrl + imagePath;
+     //               db.BarcodeAndPaths.Add(addBarcode);
+     //               db.SaveChanges();
+     //           }
+     //           else
+     //           {
+     //               getRecipt.FilePath = baseUrl + imagePath;
+     //               db.SaveChanges();
+     //           }
+     //           //////if barcode is not generated end/////////
 
 
 
-                BarcodeAndPath addSingle = new BarcodeAndPath();
-                addSingle.ConsignmentNo = getConsignement;
-                addSingle.FilePath = baseUrl + imagePath;
-                Consignmentswithbarcode.Add(addSingle);
+     //           BarcodeAndPath addSingle = new BarcodeAndPath();
+     //           addSingle.ConsignmentNo = getConsignement;
+     //           addSingle.FilePath = baseUrl + imagePath;
+     //           Consignmentswithbarcode.Add(addSingle);
 
-            }
+     //       }
 
-            return Json(Consignmentswithbarcode, JsonRequestBehavior.AllowGet);
+            return Json(Consignments, JsonRequestBehavior.AllowGet);
 
         }
 

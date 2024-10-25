@@ -24,6 +24,7 @@ namespace DtDc_Billing.Entity_FR
         public string Pfcode { get; set; }
         public Nullable<System.DateTime> tempinserteddate { get; set; }
         public Nullable<System.DateTime> tempch_date { get; set; }
+        public Nullable<double> Balance { get; set; }
     
         public virtual FirmDetail FirmDetail { get; set; }
         public virtual FirmDetail FirmDetail1 { get; set; }

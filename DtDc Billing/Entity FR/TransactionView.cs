@@ -64,5 +64,6 @@ namespace DtDc_Billing.Entity_FR
         public string receivedby { get; set; }
         public string remarks { get; set; }
         public string tempdeliveredtime { get; set; }
+        public Nullable<bool> IsGSTConsignment { get; set; }
     }
 }

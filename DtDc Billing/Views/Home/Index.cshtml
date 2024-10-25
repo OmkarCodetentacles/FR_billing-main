@@ -464,11 +464,11 @@
                                                         @*<a href="@Url.Action("PfReportDaily","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>*@
                                                         @if (ViewBag.Date != null)
                                                         {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            <a href="@Url.Action("SaleReports", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                         }
                                                         else
                                                         {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            <a href="@Url.Action("SaleReports", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                         }
                                                     </div>
                                                 </div>
@@ -540,13 +540,21 @@
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
                                                         @*<a href="@Url.Action("PfReportDaily","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>*@
+                                                        @*@if (ViewBag.Date != null)
+        {
+            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+        }
+        else
+        {
+            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+        }*@
                                                         @if (ViewBag.Date != null)
                                                         {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            <a href="@Url.Action("SaleReports", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                         }
                                                         else
                                                         {
-                                                            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            <a href="@Url.Action("SaleReports", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
                                                         }
 
                                                     </div>

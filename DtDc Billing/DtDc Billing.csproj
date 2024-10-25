@@ -682,6 +682,12 @@
     <Compile Include="Entity FR\getUserModuleList_Result.cs">
       <DependentUpon>FRBillingDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity FR\GSTInvoice.cs">
+      <DependentUpon>FRBillingDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity FR\GSTInvoiceConsignment.cs">
+      <DependentUpon>FRBillingDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity FR\Holiday.cs">
       <DependentUpon>FRBillingDB.tt</DependentUpon>
     </Compile>
@@ -823,6 +829,11 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="GSTInvoicedata.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GSTInvoicedata.xsd</DependentUpon>
     </Compile>
     <Compile Include="invo.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -4172,6 +4183,17 @@
     <Content Include="invo.xsc">
       <DependentUpon>invo.xsd</DependentUpon>
     </Content>
+    <Content Include="GSTInvoicedata.xsc">
+      <DependentUpon>GSTInvoicedata.xsd</DependentUpon>
+    </Content>
+    <None Include="GSTInvoicedata.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GSTInvoicedata.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="GSTInvoicedata.xss">
+      <DependentUpon>GSTInvoicedata.xsd</DependentUpon>
+    </Content>
     <None Include="invo.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4595,6 +4617,9 @@
     <Content Include="Views\Booking\RecycleConsignment.cshtml" />
     <Content Include="Views\Invoice\RecycleInvoice.cshtml" />
     <Content Include="Views\Booking\UploadPincodeFromExcel.cshtml" />
+    <Content Include="Views\Invoice\GenerateInvoiceWithoutGST.cshtml" />
+    <Content Include="Views\Invoice\GnerateInoviceWithoutGSTPartial.cshtml" />
+    <Content Include="Views\Invoice\ViewInvoiceWithoutGST.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -4625,6 +4650,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="RdlcReport\DpPrintInvoiceIGST.rdlc" />
+    <EmbeddedResource Include="RdlcReport\InvoiceWithoutGST.rdlc" />
     <EmbeddedResource Include="RdlcReport\Invoice.rdlc" />
     <EmbeddedResource Include="RdlcReport\PaymentOutstanding.rdlc" />
     <EmbeddedResource Include="RdlcReport\PaymentOutstandingWComppany.rdlc" />
@@ -4657,7 +4683,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57723</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57723/</IISUrl>
+          <IISUrl>http://localhost:57223/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
