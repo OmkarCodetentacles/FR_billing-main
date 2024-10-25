@@ -3710,8 +3710,7 @@ Select(e => new
                      && joined.transaction.Pf_Code == strpfcode
                      && joined.transaction.Customer_Id == Customerid
                      && joined.transaction.isDelete == false
-                        && joined.transaction.status_t==null
-                                             && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(i.Trim()) // Moved to the right position
+                                        
 
                      && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(i.Trim()))// Moved to the right position
     .Select(joined => new { Transaction = joined.transaction, Name = joined.destination.Name })
