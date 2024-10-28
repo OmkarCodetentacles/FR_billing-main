@@ -26,9 +26,9 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> netamount { get; set; }
         public Nullable<double> paid { get; set; }
         public Nullable<bool> isDelete { get; set; }
-        public Nullable<double> TdsAmount { get; set; }
-        public Nullable<double> TotalAmount { get; set; }
         public Nullable<double> discountper { get; set; }
         public Nullable<double> discountamount { get; set; }
+        public Nullable<double> TdsAmount { get; set; }
+        public Nullable<double> TotalAmount { get; set; }
     }
 }

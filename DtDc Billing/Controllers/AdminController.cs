@@ -3297,7 +3297,11 @@ namespace DtDc_Billing.Controllers
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(list.Select(x => new { Amount = x.Amount, Reason=x.Rason, x.Category,DateTime=x.Datetime_Exp!=null? x.Datetime_Exp.Value.ToString("dd/MM/yyyy"):"" }));
+                if (list.Count() > 0)
+                {
+                    ExportToExcelAll.ExportToExcelAdmin(list.Select(x => new { Amount = x.Amount, Reason = x.Rason, x.Category, DateTime = x.Datetime_Exp != null ? x.Datetime_Exp.Value.ToString("dd/MM/yyyy") : "" }));
+
+                }
             }
             return View(list);
         }

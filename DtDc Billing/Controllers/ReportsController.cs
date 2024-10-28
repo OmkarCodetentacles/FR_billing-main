@@ -1291,6 +1291,7 @@ namespace DtDc_Billing.Controllers
                                && od.Customer_Id != null
                                && (!od.Customer_Id.StartsWith("Cash"))
                                && od.Customer_Id != "BASIC_TS"
+                               && (od.isDelete==null || od.isDelete == false)
                                && od.Pf_Code != null
                                select new { od.Amount, od.Risksurcharge, od.loadingcharge }).Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0))) ?? 0,
                          Count =
@@ -1569,6 +1570,7 @@ namespace DtDc_Billing.Controllers
                                && (!od.Customer_Id.StartsWith("Cash"))
                                && od.Customer_Id != "BASIC_TS"
                                && od.Pf_Code != null
+                               && (od.isDelete==null || od.isDelete==false)
                                select new { od.Amount, od.Risksurcharge, od.loadingcharge }).Sum(m => m.Amount + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0))) ?? 0,
                          Count =
                              ((from od in db.TransactionViews
@@ -1576,6 +1578,8 @@ namespace DtDc_Billing.Controllers
                                && DbFunctions.TruncateTime(od.booking_date) >= DbFunctions.TruncateTime(fromdate)
                                && DbFunctions.TruncateTime(od.booking_date) <= DbFunctions.TruncateTime(todate)
                                && od.Customer_Id != null
+                               && (od.isDelete == null || od.isDelete == false)
+
                                && (!od.Customer_Id.StartsWith("Cash"))
                                && od.Customer_Id != "BASIC_TS"
                                && od.Pf_Code != null

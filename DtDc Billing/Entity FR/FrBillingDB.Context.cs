@@ -50,6 +50,8 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<express_cargo> express_cargo { get; set; }
         public virtual DbSet<FirmDetail> FirmDetails { get; set; }
         public virtual DbSet<Franchisee> Franchisees { get; set; }
+        public virtual DbSet<GSTInvoice> GSTInvoices { get; set; }
+        public virtual DbSet<GSTInvoiceConsignment> GSTInvoiceConsignments { get; set; }
         public virtual DbSet<Holiday> Holidays { get; set; }
         public virtual DbSet<Holiday1> Holidays1 { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
@@ -87,8 +89,6 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<WalletPoint> WalletPoints { get; set; }
         public virtual DbSet<InvoiceView> InvoiceViews { get; set; }
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
-        public virtual DbSet<GSTInvoiceConsignment> GSTInvoiceConsignments { get; set; }
-        public virtual DbSet<GSTInvoice> GSTInvoices { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
         {
@@ -886,6 +886,27 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("FirmName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
+        }
+    
+        public virtual ObjectResult<getSP_NewCreditorsInvoiceWithTDSAmount_Result> getSP_NewCreditorsInvoiceWithTDSAmount(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSP_NewCreditorsInvoiceWithTDSAmount_Result>("getSP_NewCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
         }
     }
 }

@@ -222,7 +222,15 @@
                                                 @Html.DisplayFor(modelItem => item.netamount)
                                             </td>
                                             <td>
-                                                @Html.DisplayFor(modelItem => item.CalculatedAmount)
+                                                @if (item.Balance != null)
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.Balance)
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(modelItem => item.CalculatedAmount)
+
+                                                }
                                             </td>
                                         </tr>
 

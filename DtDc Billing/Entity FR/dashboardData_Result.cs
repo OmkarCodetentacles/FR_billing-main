@@ -22,6 +22,9 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<int> countOfBilling { get; set; }
         public Nullable<double> avgOfBillingSum { get; set; }
         public Nullable<double> sumOfBillingCurrentMonth { get; set; }
+        public Nullable<double> avgOfBillingCount { get; set; }
+        public Nullable<double> SumOfBillingCurrentDay { get; set; }
+        public Nullable<double> CountOfBillingCurrentDay { get; set; }
         public Nullable<double> countofbillingcurrentmonth { get; set; }
         public Nullable<double> todayExp { get; set; }
         public Nullable<double> monthexp { get; set; }

@@ -651,7 +651,7 @@
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">Todays Sale</p>
                                                     <span class="info-box-number text-truncate">
-                                                        <strong>@Math.Round(Model.sumOfBilling)</strong>
+                                                        <strong>@Math.Round(Model.SumOfBillingCurrentDay.Value)</strong>
                                                     </span>
 
                                                 </div>
@@ -701,7 +701,7 @@
 
                                             <div class="info-box-content">
                                                 <p class="info-box-text text-truncate">Todays No of Bookings</p>
-                                                <span class="info-box-number text-truncate"> <strong>@Model.countOfBilling</strong></span>
+                                                <span class="info-box-number text-truncate"> <strong>@Model.CountOfBillingCurrentDay</strong></span>
 
 
 
@@ -739,8 +739,8 @@
 
 
                                             <div class="info-box-content">
-                                                <p class="info-box-text text-truncate">Avg No. of Bookings</p>
-                                                <span class="info-box-number text-truncate"> <strong>@ViewBag.avgofbillingcount</strong></span>
+                                                <p class="info-box-text text-truncate">Avg No. of Bookings Per Month</p>
+                                                <span class="info-box-number text-truncate"> <strong>@Model.avgOfBillingCount</strong></span>
 
 
 
@@ -757,7 +757,7 @@
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">Total Sale</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="totalsale">Loading...</strong></span>
+                                                    <span class="info-box-number text-truncate"> <strong id="totalsale">@Model.sumOfBilling</strong></span>
 
 
 
@@ -777,7 +777,7 @@
 
                                                 <div class="info-box-content">
                                                     <p class="info-box-text text-truncate">Total No of Bookings</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="totalnoofbook">Loading...</strong></span>
+                                                    <span class="info-box-number text-truncate"> <strong id="totalnoofbook">@Model.countOfBilling</strong></span>
 
 
 
@@ -960,8 +960,8 @@
                 $("#lastbooking").text(data.Count);
                 var totalthismonthsale = parseInt($("#sumofbillingcurrentmonth").text());
                 var thismonthnoofbooking = parseInt($("#countofbillingcurrentmonth").text());
-                $("#totalsale").text(data.Amount + totalthismonthsale);
-                $("#totalnoofbook").text(data.Count + thismonthnoofbooking);
+             //   $("#totalsale").text(data.Amount + totalthismonthsale);
+               // $("#totalnoofbook").text(data.Count + thismonthnoofbooking);
 
 
                 },

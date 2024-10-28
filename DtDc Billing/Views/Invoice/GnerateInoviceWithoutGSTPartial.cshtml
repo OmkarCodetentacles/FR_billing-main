@@ -219,7 +219,7 @@
                                             <th>Amount</th>
                                             <th>Booking</th>
                                             <th>Insurance</th>
-                                            <th>Claim Amount</th>
+                                            <th>Bill Amount</th>
                                             <th>Percentage</th>
                                             <th>Other Charges</th>
                                             <th>Risk Surcharge</th>
@@ -360,7 +360,7 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-3">
-                                                            <label for="fuelsurcharge" class=" control-label" style="text-align:left">FuelSurcharge Tax</label>
+                                                            <label for="fuelsurcharge" class=" control-label" style="text-align:left">FuelSurcharge Tax(%)</label>
                                                         </div>
                                                         <div class="col-md-9" style="display:flex;gap:2px">
                                                             @Html.EditorFor(model => model.fullsurchargetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
@@ -610,7 +610,7 @@
 <script>
 
     var total = 0;
-    var D_Docket = 0, P_Docket = 0, E_Docket = 0, V_Docket = 0, I_Docket = 0, N_Docket = 0, G_Docket = 0;
+    var D_Docket = 0, P_Docket = 0, E_Docket = 0, V_Docket = 0, I_Docket = 0, N_Docket = 0, G_Docket = 0,B_Docket=0;
     var Docket_Charge = 0;
             var Royalty_Per = 0;
 
@@ -676,6 +676,7 @@
                     V_Docket = Data.V_Docket;
                     N_Docket = Data.N_Docket;
                     G_Docket = Data.G_Docket;
+                    B_Docket = Data.B_Docket;
                     Royalty_Per = Data.Royalty_Charges;
 
                 }
@@ -725,7 +726,7 @@
                 + "<td>" + item.Amount + "</td>"
                 + "<td>" + item.tembookingdate + "</td>"
                 + "<td>" + item.Insurance + "</td>"
-                + "<td>" + item.Claimamount + "</td>"
+                + "<td>" + (item.BillAmount||0) + "</td>"
                 + "<td>" + item.Percentage + "</td>"
                 + "<td>" + item.loadingcharge + "</td>"
                 + "<td>" + item.Risksurcharge+ "</td>"
@@ -761,6 +762,9 @@
             }
             else if (res.toLowerCase() == "g") {
                 Docket_Charge = Docket_Charge + G_Docket;
+            }
+            else if (res.toLowerCase() == "b") {
+                Docket_Charge = Docket_Charge + B_Docket;
             }
             //////////////////
 
@@ -975,7 +979,7 @@ if ('@ViewBag.disc' == "yes") {
                 + "<td>" + item.Amount + "</td>"
                 + "<td>" + item.tembookingdate + "</td>"
                 + "<td>" + item.Insurance + "</td>"
-                + "<td>" + item.Claimamount + "</td>"
+                + "<td>" + (item.BillAmount||0) + "</td>"
                 + "<td>" + item.Percentage + "</td>"
                 + "<td>" + item.loadingcharge + "</td>"
                 + "<td>" + item.Risksurcharge+ "</td>"
@@ -1013,6 +1017,9 @@ if ('@ViewBag.disc' == "yes") {
             }
             else if (res.toLowerCase() == "g") {
                 Docket_Charge = Docket_Charge + G_Docket;
+            }
+            else if (res.toLowerCase() == "b") {
+                Docket_Charge = Docket_Charge + B_Docket;
             }
             //////////////////
 

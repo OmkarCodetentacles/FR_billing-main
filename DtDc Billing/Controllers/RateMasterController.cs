@@ -64,6 +64,7 @@ namespace DtDc_Billing.Controllers
             Comp.V_Docket = company.V_Docket;
             Comp.I_Docket = company.I_Docket;
             Comp.N_Docket = company.N_Docket;
+            Comp.B_Docket=company.B_Docket;
             //Comp.Password = company.Password;
            //Comp.Username = company.Username;
             Comp.G_Docket = company.G_Docket;
@@ -561,7 +562,7 @@ namespace DtDc_Billing.Controllers
                 //comp.Password = empmodel.Password;
                 //comp.Username = empmodel.Username;
                 comp.G_Docket = empmodel.G_Docket;
-
+                comp.B_Docket = empmodel.B_Docket;
                 ViewBag.Message = "Sucess or Failure Message";
                 ModelState.Clear();
                 TempData["CompanyId"] = empmodel.Company_Id;
@@ -902,6 +903,7 @@ namespace DtDc_Billing.Controllers
                 //comp.Password = empmodel.Password;
                 //comp.Username = empmodel.Username;
                 comp.G_Docket = empmodel.G_Docket;
+                comp.B_Docket = empmodel.B_Docket;
 
             
                 ModelState.Clear();

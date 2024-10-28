@@ -100,6 +100,7 @@ namespace DtDc_Billing.Models
                                         comp.I_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 22]?.Value ?? 0);
                                         comp.N_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 23]?.Value ?? 0);
                                         comp.G_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 24]?.Value ?? 0);
+                                    comp.B_Docket = Convert.ToDouble(workSheet.Cells[rowIterator,25]?.Value ?? 0);
                                         comp.Datetime_Comp = DateTime.Now;
                                         comp.Pf_code=getPfcode.Trim();
 

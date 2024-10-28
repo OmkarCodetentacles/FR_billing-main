@@ -36,7 +36,7 @@ namespace DtDc_Billing.Controllers
     public class InvoiceController : Controller
     {
         /*https://frbilling.com     currently we have remove the static link done its dynamic by applying the baseUrl property*/
-        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities  db = new db_a92afa_frbillingEntities();
 
        
         // string invstart = "INV/2022-23/";
@@ -698,7 +698,8 @@ namespace DtDc_Billing.Controllers
                                Percentage=t.Percentage??"0",
                                loadingcharge=t.loadingcharge ?? 0,
                                Risksurcharge=t.Risksurcharge??0,
-                               booking_date=t.booking_date
+                               booking_date=t.booking_date,
+                               BillAmount = t.BillAmount??0
 
                            }
                            ).ToList().Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
@@ -761,7 +762,8 @@ namespace DtDc_Billing.Controllers
                                  Percentage = t.Percentage ?? "0",
                                  loadingcharge = t.loadingcharge ?? 0,
                                  Risksurcharge = t.Risksurcharge ?? 0,
-                                 booking_date = t.booking_date
+                                 booking_date = t.booking_date,
+                                 BillAmount=t.BillAmount??0
 
                              }
                            ).ToList().Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
@@ -838,10 +840,17 @@ Select(e => new
                 if (comapnycheck == null)
                 {
                     ModelState.AddModelError("comapnycheck", "Customer Id Does Not Exist");
+                    return PartialView("GenerateInvoicePartial", invoice);
                 }
+                var checkInvocie=db.singleinvoiceconsignments.Where(x=>x.Invoice_no==invoice.invoiceno).FirstOrDefault();
+                if (checkInvocie != null)
+                {
+                    ModelState.AddModelError("InvoiceCheck", "Invoice Number Already Exist");
+                    return PartialView("GenerateInvoicePartial", invoice);
 
+                }
                 Invoice inv = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode).FirstOrDefault();
-
+               
 
                 if (inv != null)
                 {
@@ -2301,6 +2310,10 @@ Select(e => new
                         else if (j.Consignment_no.ToLower().StartsWith("g"))
                         {
                             inv.Docket_charges = inv.Docket_charges + Convert.ToDouble(cm.G_Docket);
+                        }
+                        else if (j.Consignment_no.ToLower().StartsWith("b"))
+                        {
+                            inv.Docket_charges = inv.Docket_charges + Convert.ToDouble(cm.B_Docket);
                         }
                     }
 

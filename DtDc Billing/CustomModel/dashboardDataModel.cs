@@ -42,6 +42,13 @@ namespace DtDc_Billing.CustomModel
         public   List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
 
         //public IEnumerable<DestinationModel> dest { get; set; }
+        
+        public Nullable<int> complaintcount { get; set; }
+        
+        public Nullable<double> avgOfBillingCount { get; set; }
+        public Nullable<double> SumOfBillingCurrentDay { get; set; }
+        public Nullable<double> CountOfBillingCurrentDay { get; set; }
+        
 
     }
 }

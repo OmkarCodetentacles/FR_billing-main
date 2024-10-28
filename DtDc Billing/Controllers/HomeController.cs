@@ -64,10 +64,13 @@ namespace DtDc_Billing.Controllers
                 invalidCon = x.invalidCon ?? 0,
                 complaintCount = x.complaintcount ?? 0,
                 sumOfBilling = x.sumOfBilling ?? 0,
+                avgOfBillingCount=x.avgOfBillingCount ?? 0,
                 countOfBilling = x.countOfBilling ?? 0,
                 avgOfBillingSum = x.avgOfBillingSum ?? 0,
                 sumOfBillingCurrentMonth = x.sumOfBillingCurrentMonth ?? 0,
                 countofbillingcurrentmonth = x.countofbillingcurrentmonth ?? 0,
+                SumOfBillingCurrentDay = x.SumOfBillingCurrentDay ??0,
+                CountOfBillingCurrentDay= x.CountOfBillingCurrentDay ??0,
                 todayExp = x.todayExp ?? 0,
                 monthexp = x.monthexp ?? 0
 
@@ -113,25 +116,25 @@ namespace DtDc_Billing.Controllers
 
 
             //  double avgsum = db.TransactionViews.Select(m => new { m.Customer_Id, m.Amount, m.Risksurcharge, m.loadingcharge, m.booking_date, m.Pf_Code, month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date) }).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null).GroupBy(m => m.month).Average(m => m.Sum(x => (x.Amount + (x.loadingcharge ?? 0) + (x.Risksurcharge ?? 0)))) ?? 0;
-            double? data = db.TransactionViews.Select(m => new
-            {
-                Customer_Id = m.Customer_Id,
-                Amount = m.Amount ?? 0,
-                Pf_Code = m.Pf_Code,
-                booking_date = m.booking_date,
-                month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date)
-            }).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && m.Pf_Code == PfCode).GroupBy(m => m.month).Average(m => (double?)m.Count());
+            //double? data = db.TransactionViews.Select(m => new
+            //{
+            //    Customer_Id = m.Customer_Id,
+            //    Amount = m.Amount ?? 0,
+            //    Pf_Code = m.Pf_Code,
+            //    booking_date = m.booking_date,
+            //    month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date)
+            //}).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && m.Pf_Code == PfCode).GroupBy(m => m.month).Average(m => (double?)m.Count());
 
-            //  ViewBag.avgofbillingsum = avgsum.ToString("##");
-            if (data != null)
-            {
-                double avgofbillingcount = (double)data;
-                ViewBag.avgofbillingcount = avgofbillingcount.ToString("##");
-            }
-            else
-            {
-                ViewBag.avgofbillingcount = 0;
-            }
+            ////  ViewBag.avgofbillingsum = avgsum.ToString("##");
+            //if (data != null)
+            //{
+            //    double avgofbillingcount = (double)data;
+            //    ViewBag.avgofbillingcount = avgofbillingcount.ToString("##");
+            //}
+            //else
+            //{
+            //    ViewBag.avgofbillingcount = 0;
+            //}
 
             //  double sumofbillingcurrentmonthd = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Sum(m => (m.Amount + (m.loadingcharge ?? 0) + (m.Risksurcharge ?? 0))) ?? 0;
             //  ViewBag.sumofbillingcurrentmonth = sumofbillingcurrentmonthd.ToString("##");

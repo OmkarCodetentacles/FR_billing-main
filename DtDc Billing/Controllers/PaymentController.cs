@@ -140,7 +140,7 @@ namespace DtDc_Billing.Controllers
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
-                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid);
+                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid??0);
 
                 if (cash.C_Total_Amount >balance)
                 {

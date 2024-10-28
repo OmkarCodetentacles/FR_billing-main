@@ -86,6 +86,7 @@ namespace DtDc_Billing.Models
         public Nullable<System.DateTime> Datetime_Comp { get; set; }
 
         public Nullable<int> DueDays { get; set; }
+        [Required]
         public string Gst_No { get; set; }
 
         
@@ -98,6 +99,8 @@ namespace DtDc_Billing.Models
         public Nullable<double> V_Docket { get; set; }
         public Nullable<double> I_Docket { get; set; }
         public Nullable<double> N_Docket { get; set; }
+        public Nullable<double> B_Docket { get; set; }
+
 
         //[Required(ErrorMessage = "Please Enter Password")]
         //public string Password { get; set; }
