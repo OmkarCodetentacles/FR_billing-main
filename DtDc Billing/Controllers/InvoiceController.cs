@@ -5,12 +5,14 @@ using DtDc_Billing.Models;
 using Ionic.Zip;
 using Microsoft.Ajax.Utilities;
 using Microsoft.Reporting.WebForms;
+using Newtonsoft.Json;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
@@ -31,14 +33,14 @@ using static System.Net.WebRequestMethods;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdminold]
-   // [SessionUserModule]
+    // [SessionUserModule]
     //[OutputCache(CacheProfile = "Cachefast")]
     public class InvoiceController : Controller
     {
         /*https://frbilling.com     currently we have remove the static link done its dynamic by applying the baseUrl property*/
-        private db_a92afa_frbillingEntities  db = new db_a92afa_frbillingEntities();
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
-       
+
         // string invstart = "INV/2022-23/";
         string invstart = "INV/2023-24/";
 
@@ -50,15 +52,15 @@ namespace DtDc_Billing.Controllers
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.currentPfcode = strpfcode;
 
-            var franchisee=db.Franchisees.Where(x=>x.PF_Code == strpfcode).FirstOrDefault();
+            var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
             var gst = franchisee.GstNo;
-            ViewBag.GST = gst;  
+            ViewBag.GST = gst;
             //if (Firm_Id == 1)
             //{
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
-           
+
             // INV/1411/2024-25/001
             // PF2214
 
@@ -66,17 +68,17 @@ namespace DtDc_Billing.Controllers
             string invstart1 = dataInvStart + "/2023-24/";
             string no = "";
             string finalstring = "";
-            if (strpfcode == "PF2214" || strpfcode=="PF934" || strpfcode== "PF1958" || strpfcode== "CF2024" || strpfcode=="PF2213" || strpfcode== "PF2046"|| strpfcode== "PF857" || strpfcode=="1")
+            if (strpfcode == "PF2214" || strpfcode == "PF934" || strpfcode == "PF1958" || strpfcode == "CF2024" || strpfcode == "PF2213" || strpfcode == "PF2046" || strpfcode == "PF857" || strpfcode == "1")
             {
                 dataInvStart = (from d in db.Franchisees
-                                    where d.PF_Code == strpfcode
-                                    select d.InvoiceStart).FirstOrDefault();
+                                where d.PF_Code == strpfcode
+                                select d.InvoiceStart).FirstOrDefault();
 
-              invstart1 = dataInvStart + "/2024-25/";
+                invstart1 = dataInvStart + "/2024-25/";
 
 
             }
-            if(strpfcode == "PF1649")
+            if (strpfcode == "PF1649")
             {
                 dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -84,8 +86,8 @@ namespace DtDc_Billing.Controllers
 
                 invstart1 = dataInvStart + "/2024-25/";
             }
-          
-            if(strpfcode== "MF868")
+
+            if (strpfcode == "MF868")
             {
                 dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
@@ -101,32 +103,32 @@ namespace DtDc_Billing.Controllers
 
                 invstart1 = dataInvStart + "/2024-25/";
             }
-            string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode ).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
+            string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
             string lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + "00";
 
             if (strpfcode == "CF2024")
             {
-                lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ;
+                lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
                 lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart + "/" + "00" + "/2024-25";
 
             }
-            else if(strpfcode== "CF2567")
+            else if (strpfcode == "CF2567")
             {
                 dataInvStart = "NGR";
                 lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
-                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart+" " + 120;
+                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart + " " + 120;
 
             }
             if (lastInvoiceno == null)
             {
                 string[] strarrinvno = lastInvoiceno1.Split('/');
-                if(franchisee.PF_Code== "PF2214")
+                if (franchisee.PF_Code == "PF2214")
                 {
                     strarrinvno = lastInvoiceno1.Split('/');
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
-                else if(franchisee.PF_Code == "PF975")
+                else if (franchisee.PF_Code == "PF975")
                 {
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
                     if (strarrinvno[2] == "00")
@@ -141,7 +143,7 @@ namespace DtDc_Billing.Controllers
 
                 }
 
-                 else if(franchisee.PF_Code == "UF2679")
+                else if (franchisee.PF_Code == "UF2679")
                 {
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[2] + 1);
                     if (strarrinvno[2] == "00")
@@ -160,30 +162,30 @@ namespace DtDc_Billing.Controllers
                     ViewBag.lastInvoiceno = invstart1 + "" + (strarrinvno[3] + 1);
 
                 }
-                else if(franchisee.PF_Code== "CF2024")
+                else if (franchisee.PF_Code == "CF2024")
                 {
                     string incrementedNumber = "00";
                     strarrinvno = lastInvoiceno1.Split('/');
                     int number = int.Parse(strarrinvno[1]) + 1;
-                
+
                     if (number < 10)
                     {
-                         incrementedNumber = number.ToString().PadLeft(2, '0');
+                        incrementedNumber = number.ToString().PadLeft(2, '0');
 
                     }
                     else
                     {
-                         incrementedNumber = number.ToString();
+                        incrementedNumber = number.ToString();
                     }
-                    ViewBag.lastInvoiceno = dataInvStart+"/" + incrementedNumber+"/2024-25";
+                    ViewBag.lastInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
                 }
-               else if(franchisee.PF_Code== "CF2567")
+                else if (franchisee.PF_Code == "CF2567")
                 {
                     strarrinvno = lastInvoiceno1.Split(' ');
                     int number = int.Parse(strarrinvno[1]) + 1;
 
-                   
-                    ViewBag.lastInvoiceno = dataInvStart + " "+number;
+
+                    ViewBag.lastInvoiceno = dataInvStart + " " + number;
                 }
                 else
                 {
@@ -197,7 +199,7 @@ namespace DtDc_Billing.Controllers
 
                 string[] strarrinvno = lastInvoiceno1.Split('/');
                 //string val = lastInvoiceno.Substring(19, lastInvoiceno.Length - 19);
-                int newnumber=0;
+                int newnumber = 0;
                 string incrementedNumber = "00";
                 if (franchisee.PF_Code == "PF2214")
                 {
@@ -208,7 +210,7 @@ namespace DtDc_Billing.Controllers
                 else if (franchisee.PF_Code == "CF2024")
                 {
                     newnumber = Convert.ToInt32(int.Parse(strarrinvno[1]) + 1);
-                   
+
                     if (newnumber < 10)
                     {
                         incrementedNumber = newnumber.ToString().PadLeft(2, '0');
@@ -218,13 +220,13 @@ namespace DtDc_Billing.Controllers
                     {
                         incrementedNumber = newnumber.ToString();
                     }
-                
+
                     //string incrementedNumber = newnumber.ToString().PadLeft(2, '0');
-                    ViewBag.lastInvoiceno = dataInvStart+"/" + incrementedNumber + "/2024-25";
+                    ViewBag.lastInvoiceno = dataInvStart + "/" + incrementedNumber + "/2024-25";
                 }
                 else if (franchisee.PF_Code == "CF2567")
                 {
-                     strarrinvno = lastInvoiceno1.Split(' ');
+                    strarrinvno = lastInvoiceno1.Split(' ');
                     int number = int.Parse(strarrinvno[1]) + 1;
 
 
@@ -237,13 +239,13 @@ namespace DtDc_Billing.Controllers
                     ViewBag.lastInvoiceno = invstart1 + "" + finalstring;
                 }
 
-              
+
             }
 
             var data = (from d in db.Invoices
                         where d.Pfcode == strpfcode
-                        && d.invoiceno == Invoiceno 
-                        && d.isDelete!=true
+                        && d.invoiceno == Invoiceno
+                        && d.isDelete != true
                         select d).FirstOrDefault();
 
             if (data != null)
@@ -258,7 +260,7 @@ namespace DtDc_Billing.Controllers
                 Inv.total = data.total;
                 Inv.fullsurchargetax = data.fullsurchargetax;
                 Inv.fullsurchargetaxtotal = data.fullsurchargetaxtotal;
-                Inv.servicetax = data.servicetax??0;
+                Inv.servicetax = data.servicetax ?? 0;
                 Inv.servicetaxtotal = data.servicetaxtotal;
                 Inv.othercharge = data.othercharge;
                 Inv.netamount = data.netamount;
@@ -298,7 +300,7 @@ namespace DtDc_Billing.Controllers
         public JsonResult CheckComapnyGST(string Customerid)
         {
             var data = db.Companies.Where(x => x.Company_Id == Customerid).FirstOrDefault();
-            if (string.IsNullOrEmpty(data.Gst_No) || data.Gst_No=="0")
+            if (string.IsNullOrEmpty(data.Gst_No) || data.Gst_No == "0")
             {
                 return Json("0", JsonRequestBehavior.AllowGet);
             }
@@ -323,7 +325,7 @@ namespace DtDc_Billing.Controllers
             if (Firm_Id == 1)
             {
                 string invstart1 = "IFS/21-22/";
-                string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Firm_Id == Firm_Id ).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 000;
+                string lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(invstart1) && m.Firm_Id == Firm_Id).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 000;
                 int number = Convert.ToInt32(lastInvoiceno.Substring(10));
 
                 ViewBag.lastInvoiceno = invstart1 + "" + (number + 1);
@@ -383,13 +385,14 @@ namespace DtDc_Billing.Controllers
 
         //}
         [HttpGet]
-        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo,string invoiceNotoDelete, bool isDelete = false)
+        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo, string invoiceNotoDelete, bool isDelete = false)
         {
             List<InvoiceModel> list = new List<InvoiceModel>();
-      
+
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
-           
+
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -397,13 +400,19 @@ namespace DtDc_Billing.Controllers
             string fromdate = "";
 
             string todate = "";
+            DateTime today = DateTime.Now;
+
+            DateTime yearBack = today.AddYears(-1);
+
+
+            var monthsInRange = Enumerable.Range(0, 12).Select(i => yearBack.AddMonths(i)).ToList();
+
 
             ViewBag.invfromdate = invfromdate;
             ViewBag.invtodate = invtodate;
             ViewBag.invoiceno = invoiceNo;
             if (isDelete)
             {
-                string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNotoDelete && x.Pfcode == pfcode).FirstOrDefault();
                 if (checkInvoiceNo == null)
                 {
@@ -412,8 +421,8 @@ namespace DtDc_Billing.Controllers
                 }
 
                 //db.Invoices.Remove(checkInvoiceNo);
-                checkInvoiceNo.isDelete=true;
-                db.Entry(checkInvoiceNo).State=EntityState.Modified;
+                checkInvoiceNo.isDelete = true;
+                db.Entry(checkInvoiceNo).State = EntityState.Modified;
 
 
                 db.SaveChanges();
@@ -421,14 +430,23 @@ namespace DtDc_Billing.Controllers
                 ViewBag.invoiceno = "";
                 invoiceNo = "";
             }
-            if ((invfromdate != null && invfromdate!="") && (invtodate!=null && invtodate!=""))
+            if ((invfromdate != null && invfromdate != "") && (invtodate != null && invtodate != ""))
             {
                 fromdate = DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
                 todate = DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
             }
+            DateTime? fdate = !string.IsNullOrEmpty(invfromdate) ? DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
+            DateTime? tdate = !string.IsNullOrEmpty(invtodate) ? DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
 
 
-            
+            var invoices = (from t in db.Invoices
+                            where t.Pfcode == pfcode
+                                  && t.isDelete == false
+                                  && (string.IsNullOrEmpty(fromdate) || SqlFunctions.DatePart("Month", t.invoicedate) == fdate.Value.Month)
+                                 && (string.IsNullOrEmpty(todate) || SqlFunctions.DatePart("Month", t.invoicedate) == tdate.Value.Month)
+                                 && (string.IsNullOrEmpty(Companydetails) || t.Customer_Id==Companydetails)
+                            select t).ToList();
+
             ViewBag.Companydetails = Companydetails;//new SelectList(db.Companies, "Company_Id", "Company_Name");
             
             if (strpf != null && strpf!="")
@@ -446,9 +464,7 @@ namespace DtDc_Billing.Controllers
                     invno = db.Invoices.Where(m => m.invoiceno == invoiceNo ).Select(m => m.invoiceno).FirstOrDefault();
                     
                 }
-                DateTime? fdate = !string.IsNullOrEmpty(invfromdate) ? DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
-                DateTime? tdate = !string.IsNullOrEmpty(invtodate) ? DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
- 
+              
 
                 list = db.getInvoiceWithapplyFilter( fdate,tdate, companyid, strpf, invoiceNo)
                 .Select(x => new InvoiceModel
@@ -480,7 +496,29 @@ namespace DtDc_Billing.Controllers
                     isDelete=x.isDelete
                    
                 }).Where(x=>(isDelete==false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
+
+                var invoiceDashboardData = new InvoiceDataForDashBoard
+                {
+                    Paid = invoices.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                    Unpaid = invoices.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
+                    TotalInvoice = invoices.Count,
+                    PaidCount = invoices.Count(t => t.netamount == t.paid),
+                    UnpaidCount = invoices.Count(t => t.paid == null),
+                    TotalNetAmount = invoices.Sum(t => t.netamount) ?? 0,
+                    PattialPaid = invoices.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
+                    Pattialpaidcount = invoices.Count(t => t.paid > 0 && t.paid < t.netamount)
+                };
+
+
+
+                // Serialize the data points for use in the view
+                ViewBag.DataPoints = JsonConvert.SerializeObject(invoiceDashboardData);
                 return View(list);
+
+              
+
+                // Calculate the data for InvoiceDataForDashBoard
+           
             }
             //if (Companydetails != "" && Companydetails != null)
             //{
@@ -552,7 +590,29 @@ namespace DtDc_Billing.Controllers
 
             //    return View(list);
             //}
+           // string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            //   var InviceData = db.Invoices.Where(x => x.Pfcode == pfcode).ToList();
+
+
+
+            // Calculate the data for InvoiceDataForDashBoard
+             var shboardData = new InvoiceDataForDashBoard
+            {
+                Paid = invoices.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                Unpaid = invoices.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
+                TotalInvoice = invoices.Count,
+                PaidCount = invoices.Count(t => t.netamount == t.paid),
+                UnpaidCount = invoices.Count(t => t.paid == null),
+                TotalNetAmount = invoices.Sum(t => t.netamount) ?? 0,
+                PattialPaid = invoices.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
+                Pattialpaidcount = invoices.Count(t => t.paid > 0 && t.paid < t.netamount)
+            };
+
+
+
+            // Serialize the data points for use in the view
+            ViewBag.DataPoints = JsonConvert.SerializeObject(shboardData);
             return View(list);
         }
 
@@ -4954,11 +5014,51 @@ Select(e => new
                     return Redirect(savePath);
                 }
                
-
             }
             return Redirect("ViewInvoiceWithoutGST");
 
         }
+        [HttpGet]
+        public ActionResult GetInvoiceDataForDashboard()
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+         //   var InviceData = db.Invoices.Where(x => x.Pfcode == pfcode).ToList();
+         
+            DateTime today = DateTime.Now;
+
+            DateTime yearBack = today.AddYears(-1);
+
+            
+            var monthsInRange = Enumerable.Range(0, 12).Select(i => yearBack.AddMonths(i)).ToList();
+
+
+            var invoices = (from t in db.Invoices
+                            where t.Pfcode == pfcode
+                                  && t.isDelete == false
+                                  && SqlFunctions.DatePart("Month",t.invoicedate)==today.Month
+                            select t).ToList();
+
+            // Calculate the data for InvoiceDataForDashBoard
+            var invoiceDashboardData = new InvoiceDataForDashBoard
+            {
+                Paid = invoices.Where(t => t.netamount==t.paid).Sum(t => t.netamount) ?? 0,
+                Unpaid = invoices.Where(t => t.paid==null).Sum(t => t.netamount) ?? 0,
+                TotalInvoice = invoices.Count,
+                PaidCount = invoices.Count(t => t.netamount==t.paid),
+                UnpaidCount = invoices.Count(t => t.paid==null),
+                TotalNetAmount = invoices.Sum(t => t.netamount) ?? 0,
+                PattialPaid = invoices.Where(t => t.paid>0 && t.paid<t.netamount).Sum(t => t.netamount) ?? 0,
+                Pattialpaidcount = invoices.Count(t => t.paid > 0 && t.paid < t.netamount)
+            };
+
+            
+
+            // Serialize the data points for use in the view
+            ViewBag.DataPoints = JsonConvert.SerializeObject(invoiceDashboardData);
+
+            return View();
+
+        }
     }
 }

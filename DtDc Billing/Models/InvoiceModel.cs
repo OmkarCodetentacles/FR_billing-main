@@ -63,4 +63,19 @@ namespace DtDc_Billing.Models
         public string customerId { get; set; }
         public Nullable<double> NetAmount { get; set; }
     }
+    public class InvoiceDataForDashBoard
+    {
+        public double? Paid { get; set; }
+        public Nullable<double> Unpaid { get; set; }
+
+        public int TotalInvoice { get; set; }
+        public int PaidCount { get; set; }
+        public int UnpaidCount { get; set; }    
+        public double? TotalNetAmount { get; set; }
+
+        public double? PattialPaid { get; set; }
+        public int Pattialpaidcount { get;set; }
+       
+
+    }
 }
