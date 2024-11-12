@@ -48,5 +48,6 @@ namespace DtDc_Billing.Entity_FR
         public string Remark { get; set; }
         public Nullable<System.DateTime> FirstTimeLoginTime { get; set; }
         public Nullable<int> LoginCount { get; set; }
+        public string ChangePassToken { get; set; }
     }
 }

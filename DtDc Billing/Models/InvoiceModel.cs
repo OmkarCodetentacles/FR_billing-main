@@ -78,4 +78,18 @@ namespace DtDc_Billing.Models
        
 
     }
+    public class FinancialSummary
+    {
+        public double? TotalRevenue { get; set; }
+        public double? OutstandingInvoicesAmount { get; set; }
+        public int OutstandingInvoicesCount { get; set; }
+        public double? InvoicesPaidAmount { get; set; }
+        public int InvoicesPaidCount { get; set; }
+        public double? InvoicesUnpaidAmount { get; set; }
+        public int InvoicesUnpaidCount { get; set; }
+        public double? TotalExpense { get; set; }
+        public string pfcode { get; set; }
+        public string FranchiseeName { get; set; }
+    }
+
 }

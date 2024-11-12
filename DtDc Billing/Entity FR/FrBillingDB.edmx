@@ -766,6 +766,7 @@
           <Property Name="Remark" Type="varchar" MaxLength="100" />
           <Property Name="FirstTimeLoginTime" Type="datetime" />
           <Property Name="LoginCount" Type="int" />
+          <Property Name="ChangePassToken" Type="varchar" MaxLength="400" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -3503,6 +3504,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Remark" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FirstTimeLoginTime" Type="DateTime" Precision="3" />
           <Property Name="LoginCount" Type="Int32" />
+          <Property Name="ChangePassToken" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReplyAdmin">
           <Key>
@@ -5491,6 +5493,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Int64" Name="Firm_Id" Nullable="true" />
           <Property Type="Boolean" Name="isDelete" Nullable="true" />
           <Property Type="Int32" Name="totalCount" Nullable="true" />
+          <Property Type="Double" Name="discountper" Nullable="true" />
+          <Property Type="Double" Name="discountamount" Nullable="true" />
         </ComplexType>
         <ComplexType Name="getInvoiceWithoutCompany_Result">
           <Property Type="Int32" Name="IN_Id" Nullable="false" />
@@ -6648,6 +6652,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="registrations">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.registration">
               <MappingFragment StoreEntitySet="registration">
+                <ScalarProperty Name="ChangePassToken" ColumnName="ChangePassToken" />
                 <ScalarProperty Name="registrationId" ColumnName="registrationId" />
                 <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
                 <ScalarProperty Name="franchiseName" ColumnName="franchiseName" />
@@ -7226,6 +7231,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
                 <ScalarProperty Name="isDelete" ColumnName="isDelete" />
                 <ScalarProperty Name="totalCount" ColumnName="totalCount" />
+                <ScalarProperty Name="discountper" ColumnName="discountper" />
+                <ScalarProperty Name="discountamount" ColumnName="discountamount" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

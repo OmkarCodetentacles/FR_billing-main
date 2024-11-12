@@ -38,5 +38,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<long> Firm_Id { get; set; }
         public Nullable<bool> isDelete { get; set; }
         public Nullable<int> totalCount { get; set; }
+        public Nullable<double> discountper { get; set; }
+        public Nullable<double> discountamount { get; set; }
     }
 }

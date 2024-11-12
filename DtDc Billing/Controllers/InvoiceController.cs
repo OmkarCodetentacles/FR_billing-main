@@ -484,6 +484,8 @@ namespace DtDc_Billing.Controllers
                     Customer_Id=x.Customer_Id,
                     paid=x.paid,
                     discount=x.discount,
+                 discountper=x.discountper,
+                 discountamount=x.discountamount,
                     Royalty_charges=x.Royalty_charges,
                     Docket_charges=x.Docket_charges,
                     Tempdatefrom=x.Tempdatefrom,

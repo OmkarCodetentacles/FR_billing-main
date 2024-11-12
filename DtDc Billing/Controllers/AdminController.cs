@@ -24,6 +24,13 @@ using System.Net.Http;
 using WebGrease.Css.ImageAssemblyAnalysis.LogModel;
 using DocumentFormat.OpenXml.Drawing;
 using PagedList;
+using System.Runtime.Remoting.Messaging;
+using SixLabors.ImageSharp;
+using System.Windows;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Newtonsoft.Json;
+using ClosedXML;
 
 namespace DtDc_Billing.Controllers
 {
@@ -622,79 +629,79 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-        public ActionResult NewpasswordSave()
-        {
+        //public ActionResult NewpasswordSave()
+        //{
 
-            using (MailMessage mm = new MailMessage("codetentacles@gmail.com", "nileshveer17@gmail.com"))
-            {
+        //    using (MailMessage mm = new MailMessage("codetentacles@gmail.com", "nileshveer17@gmail.com"))
+        //    {
 
-                mm.Subject = "Token Verification for Change Password";
-                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                var stringChars = new char[6];
-                var random = new Random();
+        //        mm.Subject = "Token Verification for Change Password";
+        //        var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        //        var stringChars = new char[6];
+        //        var random = new Random();
 
-                for (int i = 0; i < stringChars.Length; i++)
-                {
-                    stringChars[i] = chars[random.Next(chars.Length)];
-                }
+        //        for (int i = 0; i < stringChars.Length; i++)
+        //        {
+        //            stringChars[i] = chars[random.Next(chars.Length)];
+        //        }
 
-                var Tokne = new String(stringChars);
+        //        var Tokne = new String(stringChars);
 
-                string Bodytext = "<html><body>Your Verification Token is -" + "<strong>"+Tokne+"<strong>" + " </body></html>";
+        //        string Bodytext = "<html><body>Your Verification Token is -" + "<strong>"+Tokne+"<strong>" + " </body></html>";
 
-                mm.IsBodyHtml = true;
-
-
-
-                mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
-
-                AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
-                // mm.Body = Bodytext;
-                mm.Body = Bodytext;
-
-                //Add Byte array as Attachment.
-
-                SmtpClient smtp = new SmtpClient();
-                smtp.Host = "smtp.gmail.com";
-                smtp.EnableSsl = true;
-                System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
-                credentials.UserName = "codetentacles@gmail.com";
-                credentials.Password = "Codeadmin";
-                smtp.UseDefaultCredentials = true;
-                smtp.Credentials = credentials;
-                smtp.Port = 587;
-                smtp.Send(mm);
-
-                Admin admin = db.Admins.FirstOrDefault();
-                if (admin != null)
-                {
-                    admin.Token = Tokne;
-                    db.Admins.Attach(admin);
-                    db.Entry(admin).Property(x => x.Token).IsModified = true;
-                    db.SaveChanges();
-                }
+        //        mm.IsBodyHtml = true;
 
 
-                ViewBag.sendmail = "Mail send to Your Emailid";
-            }
-            return Json("chamara", JsonRequestBehavior.AllowGet);
-        }
 
-        [HttpPost]
-        public ActionResult NewpasswordSave(string currentpass, string newpass, string Token)
-        {
-            var obj = db.Admins.Where(m => m.Token == Token).FirstOrDefault();
-            Admin admin = db.Admins.FirstOrDefault();
-            if (obj != null)
-            {
-                admin.A_Password = newpass;
-                db.Admins.Attach(admin);
-                db.Entry(admin).Property(x => x.A_Password).IsModified = true;
-                db.SaveChanges();
-                ViewBag.changepass = "Password Change Successfullly";
-            }
-            return RedirectToAction("AdminChangePass", "Admin");
-        }
+        //        mm.BodyEncoding = System.Text.Encoding.GetEncoding("utf-8");
+
+        //        AlternateView plainView = System.Net.Mail.AlternateView.CreateAlternateViewFromString(System.Text.RegularExpressions.Regex.Replace(Bodytext, @"<(.|\n)*?>", string.Empty), null, "text/plain");
+        //        // mm.Body = Bodytext;
+        //        mm.Body = Bodytext;
+
+        //        //Add Byte array as Attachment.
+
+        //        SmtpClient smtp = new SmtpClient();
+        //        smtp.Host = "smtp.gmail.com";
+        //        smtp.EnableSsl = true;
+        //        System.Net.NetworkCredential credentials = new System.Net.NetworkCredential();
+        //        credentials.UserName = "codetentacles@gmail.com";
+        //        credentials.Password = "Codeadmin";
+        //        smtp.UseDefaultCredentials = true;
+        //        smtp.Credentials = credentials;
+        //        smtp.Port = 587;
+        //        smtp.Send(mm);
+
+        //        Admin admin = db.Admins.FirstOrDefault();
+        //        if (admin != null)
+        //        {
+        //            admin.Token = Tokne;
+        //            db.Admins.Attach(admin);
+        //            db.Entry(admin).Property(x => x.Token).IsModified = true;
+        //            db.SaveChanges();
+        //        }
+
+
+        //        ViewBag.sendmail = "Mail send to Your Emailid";
+        //    }
+        //    return Json("chamara", JsonRequestBehavior.AllowGet);
+        //}
+
+        //[HttpPost]
+        //public ActionResult NewpasswordSave(string currentpass, string newpass, string Token)
+        //{
+        //    var obj = db.Admins.Where(m => m.Token == Token).FirstOrDefault();
+        //    Admin admin = db.Admins.FirstOrDefault();
+        //    if (obj != null)
+        //    {
+        //        admin.A_Password = newpass;
+        //        db.Admins.Attach(admin);
+        //        db.Entry(admin).Property(x => x.A_Password).IsModified = true;
+        //        db.SaveChanges();
+        //        ViewBag.changepass = "Password Change Successfullly";
+        //    }
+        //    return RedirectToAction("AdminChangePass", "Admin");
+        //}
 
 
         public ActionResult DeliveryFile()
@@ -1392,6 +1399,7 @@ namespace DtDc_Billing.Controllers
                     Console.WriteLine(error.ErrorMessage);
                 }
             }
+
 
 
             if (ModelState.IsValid)
@@ -5317,9 +5325,330 @@ namespace DtDc_Billing.Controllers
 
 
 
+        [HttpGet]
+        public ActionResult EmailTemplateModel(EmailTemplateModel emailTemplateModel)
+        {
+           
+            return View();
+        }
+        public string RenderPartialViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+
+            using (var sw = new System.IO.StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+        public async Task< FinancialSummary> GetMonthlyFinancialSummary(int month, int year,string pfcode)
+        {
+            var summary = new FinancialSummary();
+           // string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var franchiseeName = db.Franchisees.Where(x => x.PF_Code == pfcode).Select(x => x.Franchisee_Name).FirstOrDefault();
+
+            // Assuming your DbContext is named 'DbContext'
+            using (var db = new db_a92afa_frbillingEntities())
+            {
+                // Get all invoices for the given month and year
+                var invoices = db.Invoices
+                    .Where(i =>i.Pfcode==pfcode && i.invoicedate.Value.Month == month && i.invoicedate.Value.Year == year && (i.isDelete==null || i.isDelete==false))
+                    .ToList();
+
+                // Total Revenue: sum of all invoice amounts
+                summary.TotalRevenue = invoices.Sum(i => i.netamount)??0;
+
+                // Outstanding Invoices: sum of unpaid invoices
+                summary.OutstandingInvoicesAmount = invoices
+                    .Where(i => i.paid !=null && i.paid<i.netamount)
+                    .Sum(i => i.netamount)??0;
+
+                // Outstanding Invoices Count
+                summary.OutstandingInvoicesCount = invoices
+                    .Count(i => i.paid != null && i.paid < i.netamount);
+
+                // Paid Invoices: sum of all paid invoices
+                summary.InvoicesPaidAmount = invoices
+                    .Where(i => i.netamount == i.paid)
+                    .Sum(i => i.netamount)??0;
+
+                // Paid Invoices Count
+                summary.InvoicesPaidCount = invoices
+                    .Count(i => i.netamount ==i.paid);
+
+                // Invoices Unpaid: sum of unpaid invoices (another way to calculate unpaid)
+                summary.InvoicesUnpaidAmount = invoices
+                    .Where(i => i.paid == null)
+                    .Sum(i => i.netamount)??0;
+
+                // Invoices Unpaid Count
+                summary.InvoicesUnpaidCount = invoices
+                    .Count(i => i.paid == null);
+
+                // Total Expense: let's assume this comes from an 'Expenses' table
+                summary.TotalExpense = db.Expenses
+                    .Where(e => e.Pf_Code==pfcode &&  e.Datetime_Exp.Value.Month == month && e.Datetime_Exp.Value.Year == year)
+                    .Sum(e => e.Amount)??0;
+            }
+            summary.pfcode = pfcode;
+            summary.FranchiseeName=franchiseeName;
+            return summary;
+        }
+
+        // Example usage in your controller
+        [HttpGet]
+       
+        public async Task<ActionResult> SendEmailMessageTotheOwner()
+        {
+            var data = await (from r in db.registrations
+                              join f in db.Franchisees
+                              on r.Pfcode equals f.PF_Code
+                              orderby f.Datetime_Fr
+                              select new
+                              {
+                                  r,
+                                  f
+                              }).ToListAsync();
+
+            foreach (var r in data)
+            {
+                DateTime newDate = r.r.paymentDate.Value.AddDays(r.r.subscriptionForInDays ?? 0);
+                if (newDate >=DateTime.Now)
+                {
+                    var summary = await GetMonthlyFinancialSummary(DateTime.Now.Month, DateTime.Now.Year, r.f.PF_Code);
+
+                    var model = new EmailTemplateModel();
+                    string emailBody = RenderPartialViewToString("_EmailTemplate", summary);
+
+                      string email = "navlakheprajkta23@gmail.com";
+                  //  string email = "pratikshacodetechnology@gmail.com";
+                    string subject = "Key Metrics from FR-Billing for " + summary.FranchiseeName.ToUpper();
+                    string body = emailBody;
+
+                    SendEmailModel sm = new SendEmailModel();
+                    string result = await sm.SendEmail(email, subject, body);
+
+                    if (result != "Email sent successfully!")
+                    {   
+                        // Log the error or handle it as needed
+                        Console.WriteLine($"Failed to send email to {email}. Moving to next record.");
+                        continue; // Skip to the next record if email sending fails
+                    }
+                }
+            }
+
+            return RedirectToAction("EmailTemplateModel");
+        }
+
+      
+        [HttpGet]
+        public ActionResult ShowFinancialChart(string pfcode)
+        {
+           
+            var summary = new FinancialSummary();
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+
+            var franchiseeName=db.Franchisees.Where(x=>x.PF_Code==pfcode).Select(x=>x.Franchisee_Name).FirstOrDefault();
+            // Assuming your DbContext is named 'DbContext'
+            using (var db = new db_a92afa_frbillingEntities())
+            {
+                var invoices = db.Invoices
+                    .Where(i => i.Pfcode == pfcode && i.invoicedate.Value.Month == month && i.invoicedate.Value.Year == year && (i.isDelete == null || i.isDelete == false))
+                    .ToList();
+
+                summary.TotalRevenue = invoices.Sum(i => i.netamount);
+
+                summary.OutstandingInvoicesAmount = invoices
+                    .Where(i => i.paid != null && i.paid < i.netamount)
+                    .Sum(i => i.netamount);
+
+                // Outstanding Invoices Count
+                summary.OutstandingInvoicesCount = invoices
+                    .Count(i => i.paid != null && i.paid < i.netamount);
+
+                // Paid Invoices: sum of all paid invoices
+                summary.InvoicesPaidAmount = invoices
+                    .Where(i => i.netamount == i.paid)
+                    .Sum(i => i.netamount);
+                
+                // Paid Invoices Count
+                summary.InvoicesPaidCount = invoices
+                    .Count(i => i.netamount == i.paid);
+
+                // Invoices Unpaid: sum of unpaid invoices (another way to calculate unpaid)
+                summary.InvoicesUnpaidAmount = invoices
+                    .Where(i => i.paid == null)
+                    .Sum(i => i.netamount);
+
+                // Invoices Unpaid Count
+                summary.InvoicesUnpaidCount = invoices
+                    .Count(i => i.paid == null);
+
+                // Total Expense: let's assume this comes from an 'Expenses' table
+                summary.TotalExpense = db.Expenses
+                    .Where(e => e.Datetime_Exp.Value.Month == month && e.Datetime_Exp.Value.Year == year)
+                    .Sum(e => e.Amount);
+            }
+            summary.pfcode = pfcode;
+            summary.FranchiseeName = franchiseeName;
+            ViewBag.DataPoints = JsonConvert.SerializeObject(new {
+                TotalRevenue = summary.TotalRevenue,
+                OutstandingInvoicesAmount = summary.OutstandingInvoicesAmount,
+                InvoicesPaidAmount = summary.InvoicesPaidAmount,
+                InvoicesUnpaidAmount = summary.InvoicesUnpaidAmount,
+                TotalExpense = summary.TotalExpense
 
 
+            });
 
+
+           return View();
+        }
+
+        public byte[] GenerateFinancialPieChart(FinancialSummary model)
+        {
+            // Define the chart data
+            float[] data = new float[]
+            {
+        (float)(model.TotalRevenue ?? 0),
+        (float)(model.OutstandingInvoicesAmount ?? 0),
+        (float)(model.InvoicesPaidAmount ?? 0),
+        (float)(model.InvoicesUnpaidAmount ?? 0),
+        (float)(model.TotalExpense ?? 0)
+            };
+
+            // Define colors for each section
+            System.Drawing.Color[] colors = new System.Drawing.Color[]
+            {
+        System.Drawing.Color.Red,
+        System.Drawing.Color.Blue,
+        System.Drawing.Color.Yellow,
+        System.Drawing.Color.Green,
+        System.Drawing.Color.Purple
+            };
+
+            int width = 400;
+            int height = 400;
+
+            using (Bitmap bitmap = new Bitmap(width, height))
+            {
+                using (Graphics graphics = Graphics.FromImage(bitmap))
+                {
+                    graphics.Clear(System.Drawing.Color.White);
+
+                    // Calculate the total sum of the data
+                    float total = data.Sum();
+
+                    // Define the starting angle
+                    float startAngle = 0f;
+
+                    // Draw each slice of the pie chart
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        float sweepAngle = 360f * (data[i] / total);  // Calculate the angle for each slice
+                        using (Brush brush = new SolidBrush(colors[i]))
+                        {
+                            graphics.FillPie(brush, 50, 50, 300, 300, startAngle, sweepAngle);
+                        }
+                        startAngle += sweepAngle;
+                    }
+                }
+
+                // Save the image to a byte array
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return ms.ToArray();
+                }
+            }
+           
 
         }
+
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordModel changePassword)
+        {
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            if (ModelState.IsValid)
+            {
+                var obj = db.registrations.Where(m =>m.Pfcode==PfCode && m.password.Trim() == changePassword.oldpass.Trim()).FirstOrDefault();
+
+                if (obj != null)
+                {
+                    obj.password = changePassword.newpass.Trim();
+                    db.registrations.Attach(obj);
+                    db.Entry(obj).Property(x => x.password).IsModified = true;
+                    db.SaveChanges();
+                  
+                    TempData["changeSuccess"] = "Your password has been successfully changed. Please Sign in again";
+                    return RedirectToAction("Adminlogin", "Admin");
+                }
+                else
+                {
+                    TempData["error"] = "Invalid Old Password";
+                }
+            }
+
+            return View(changePassword);
+        }
+
+
+        public ActionResult NewpasswordSave(string pfcode)
+        {
+
+
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[6];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+            var senderemail = db.Franchisees.Where(x => x.PF_Code == pfcode).Select(x => x.Sendermail).FirstOrDefault();
+            var Token = new String(stringChars);
+
+            //string Bodytext = "<html><body>Your Verification Token is -" + Tokne + " </body></html>";
+
+            string Bodytext = "<html><body><h1>Verification Required</h1><p>Dear User,</p><p>Your Verification Token is - <strong>" + Token + "</strong></p><p>Please use this token to complete your verification process.</p><p>If you did not request this verification, please ignore this email or contact support.</p><br><p>Best Regards,</p><p><strong>Fr-Billing</strong></p><img src='https://frbilling.com/assets/Home/assets/images/logo.png' alt='Fr-Billing Logo' width='120' height='70'/></body></html>";
+
+
+            SendModel model = new SendModel();
+            model.subject = "Token verification for change password";
+            model.toEmail = senderemail;
+            model.body = Bodytext;
+            SendEmailModel send = new SendEmailModel();
+            send.SendEmail("pratikshacodetechnology@gmail.com",model.subject,model.body);
+
+
+
+            registration reg = db.registrations.Where(x=>x.Pfcode==pfcode).FirstOrDefault();
+            if (reg != null)
+            {
+                reg.ChangePassToken= Token;
+              
+                db.Entry(reg).Property(x => x.ChangePassToken).IsModified = true;
+                db.SaveChanges();
+            }
+
+
+            ViewBag.sendmail = "The token ID has been sent to your registered email address; please check your inbox for it.";
+
+            return Json("chamara", JsonRequestBehavior.AllowGet);
+        }
+
     }
+}

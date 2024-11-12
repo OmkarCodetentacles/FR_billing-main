@@ -1,25 +1,21 @@
 ﻿<!DOCTYPE HTML>
-<meta charset="utf-8">
 <html>
 
 <head>
+    <meta charset="utf-8">
     <style>
         .chart {
-            border: 3px solid #94ccb5!important;
+            border: 3px solid #94ccb5 !important;
         }
     </style>
 </head>
 
-
 <body>
 
-
-
-    <div class="col-md-12 " style="">
-        <div class="box box-info box-collapsed" style="width: 100%;" >
+    <div class="col-md-12">
+        <div class="box box-info box-collapsed" style="width: 100%;">
             <div class="box-header box-header-collapsed with-border">
-                @*<h3 class="box-title">Admin Daily Sales Chart</h3>*@
-                <p><strong style="color: #0049af; font-size: 20px;">Daily Sales Chart</strong> </p>
+                <p><strong style="color: #0049af; font-size: 20px;">Financial Summary Pie Chart</strong> </p>
 
                 <div class="box-tools box-tools-collapsed pull-right">
                     <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -28,108 +24,65 @@
                     <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
             </div>
+
             <div class="box-body box-body-collapsed">
-                <canvas id="myChart" class="chart" width="400" height="200"></canvas>
+                <canvas id="myChart" class="chart" width="400" height="400"></canvas>
+
+                <!-- Include Chart.js -->
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0-rc.1/Chart.bundle.js"></script>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
-
                 <script>
-                 var result = @Html.Raw(ViewBag.DataPoints);
-        var dps =[];
-        for (var i = 0; i < result.length; i++){
+                    var result = @Html.Raw(ViewBag.DataPoints); // Make sure your ViewBag.DataPoints is correctly formatted
+                    var labels = ['Total Revenue', 'Outstanding Invoices', 'Invoices Paid', 'Invoices Unpaid', 'Total Expense'];
+                    var data = [
+                        result.TotalRevenue,
+                        result.OutstandingInvoicesAmount,
+                        result.InvoicesPaidAmount,
+                        result.InvoicesUnpaidAmount,
+                        result.TotalExpense
+                    ];
 
-            //dps.push({ "x": new Date(result[i].year, result[i].month - 1).toLocaleString('en-us', { month: 'short', year: "numeric" }), "y": result[i].netamount });
-            dps.push({ "x": new Date(result[i].year, result[i].month-1, result[i].day).toLocaleString('en-us', { day: 'numeric', month: 'short', year: "numeric" }), "y": result[i].netamount });
+                    var chartData = {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: ['#FF6347', '#FFCC00', '#32CD32', '#FFD700', '#6A5ACD'], // Color for each segment
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }]
+                    };
 
-        }
-
-                    console.log(dps);
-                    console.log("");
-                var timeFormat = 'moment.ISO_8601';
-                var lineChart = document.getElementById('myChart').getContext('2d');
-
-                var config = {
-                    type: 'line',
-                    data: {
-                        datasets: [
-
-                            {
-                                label: "Total Sale",
-                                backgroundColor: 'lightblue',
-                                borderColor: 'royalblue',
-                                pointStyle: 'circle',
-                                //pointRadius: 5,
-                                //pointHoverRadius: 10,
-                                tension: 0.4,
-                                data: dps
-
-
-                            }
-                        ]
-                    },
-                    options: {
-                        animations: {
-                            tension: {
-                                duration: 1200,
-                                easing: 'linear',
-                                from: 1,
-                                to: 0,
-                                loop: true
-                            }
-                        },
-                        legend: {
-                            display: true,
-                            labels: {
-                                usePointStyle: true,
-                            },
-                            onClick: () => { }, // disable legend onClick functionality that filters datasets
-                        },
-                        responsive: true,
-                        title: {
-                            display: true,
-                            text: "Month Vs Total Sale"
-                        },
-                        //elements: {
-                        //    point: {
-                        //        radius: 0,
-                        //        hitRadius: 5,
-                        //        hoverRadius: 3,
-                        //    },
-                        //},
-                        scales: {
-                            x: [{
-                                //type: "time",
-                                //time: {
-                                //    displayFormats: {
-
-                                //       'day': 'MM DD',
-                                //        'year': 'MM DD'
-                                //    }
-                                //},
-
-
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: dps
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myPieChart = new Chart(ctx, {
+                        type: 'pie',  // Change to 'pie' for Pie Chart
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(tooltipItem) {
+                                            var label = tooltipItem.label || '';
+                                            if (label) {
+                                                label += ': ' + tooltipItem.raw.toLocaleString();
+                                            }
+                                            return label;
+                                        }
+                                    }
                                 }
-                            }],
-                            y: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Total Billed(₹)'
-                                }
-                            }]
-                        },
-
-                    }
-                };
-
-                var myLineChart = new Chart(lineChart, config);
+                            }
+                        }
+                    });
                 </script>
             </div>
         </div>
     </div>
+
 </body>
-</html>   
+
+</html>

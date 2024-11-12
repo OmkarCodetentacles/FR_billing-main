@@ -35,12 +35,13 @@ namespace DtDc_Billing.Controllers
             {
                 return HttpNotFound();
             }
-            return View(company);
+            return View(company);   
         }
 
         // GET: Companies/Create
         public ActionResult Create()
         {
+           
             ViewBag.Pf_code = new SelectList(db.Franchisees, "PF_Code", "F_Address");
             return View();
         }
@@ -117,13 +118,13 @@ namespace DtDc_Billing.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
