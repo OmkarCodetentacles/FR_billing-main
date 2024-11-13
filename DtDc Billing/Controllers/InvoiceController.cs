@@ -501,14 +501,14 @@ namespace DtDc_Billing.Controllers
 
                 var invoiceDashboardData = new InvoiceDataForDashBoard
                 {
-                    Paid = invoices.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
-                    Unpaid = invoices.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
-                    TotalInvoice = invoices.Count,
-                    PaidCount = invoices.Count(t => t.netamount == t.paid),
-                    UnpaidCount = invoices.Count(t => t.paid == null),
-                    TotalNetAmount = invoices.Sum(t => t.netamount) ?? 0,
-                    PattialPaid = invoices.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
-                    Pattialpaidcount = invoices.Count(t => t.paid > 0 && t.paid < t.netamount)
+                    Paid = list.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                    Unpaid = list.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
+                    TotalInvoice = list.Count,
+                    PaidCount = list.Count(t => t.netamount == t.paid),
+                    UnpaidCount = list.Count(t => t.paid == null),
+                    TotalNetAmount = list.Sum(t => t.netamount) ?? 0,
+                    PattialPaid = list.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
+                    Pattialpaidcount = list.Count(t => t.paid > 0 && t.paid < t.netamount)
                 };
 
 
@@ -601,14 +601,14 @@ namespace DtDc_Billing.Controllers
             // Calculate the data for InvoiceDataForDashBoard
              var shboardData = new InvoiceDataForDashBoard
             {
-                Paid = invoices.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
-                Unpaid = invoices.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
-                TotalInvoice = invoices.Count,
-                PaidCount = invoices.Count(t => t.netamount == t.paid),
-                UnpaidCount = invoices.Count(t => t.paid == null),
-                TotalNetAmount = invoices.Sum(t => t.netamount) ?? 0,
-                PattialPaid = invoices.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
-                Pattialpaidcount = invoices.Count(t => t.paid > 0 && t.paid < t.netamount)
+                Paid = list.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                Unpaid = list.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
+                TotalInvoice = list.Count,
+                PaidCount = list.Count(t => t.netamount == t.paid),
+                UnpaidCount = list.Count(t => t.paid == null),
+                TotalNetAmount = list.Sum(t => t.netamount) ?? 0,
+                PattialPaid = list.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
+                Pattialpaidcount = list.Count(t => t.paid > 0 && t.paid < t.netamount)
             };
 
 

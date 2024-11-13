@@ -202,12 +202,24 @@
         <div class="login-box " id="formloginbox">
 
             <div class="logo-lg logo-text">
-                @*    <h1 class="logomxp"><strong>Welcome to Fr-Billing</strong></h1>*@
+
                 <img src="~/assets/images/goeasy.png" class="logomxp" style=" height: 100px; margin:0px 0px 19px 0px;">
-                @*<h4>Manage all your billing's with ease..!!</h4>*@
+
+
+                @*//////////////START DIWALI LOGO////////////////*@
+                @*<img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" class="logomxp" style=" height: 125px; margin:0px 0px 19px 0px;">*@
+                @*//////////////END DIWALI LOGO////////////////*@
+
             </div>
 
+            @{
+                var message = TempData["changeSuccess"] as string;
+            }
+            @if (!string.IsNullOrEmpty(message))
+            {
 
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", message))
+            }
 
             @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
             {
@@ -237,10 +249,10 @@
                         </div>
 
                         @*<div class="form-group has-feedback">
-                                @Html.EditorFor(model => model.PFCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "PFCode" } })
-                                @Html.ValidationMessageFor(model => model.PFCode, "", new { @class = "text-danger" })
-                                <span class="glyphicon glyphicon-option-vertical form-control-feedback"></span>
-                            </div>*@
+                        @Html.EditorFor(model => model.PFCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "PFCode" } })
+                        @Html.ValidationMessageFor(model => model.PFCode, "", new { @class = "text-danger" })
+                        <span class="glyphicon glyphicon-option-vertical form-control-feedback"></span>
+                    </div>*@
 
                         <span class="text-danger">@Html.ValidationMessage("freedome", new { @class = "text-danger" })</span>
                         <span class="text-danger">@Html.ValidationMessage("LoginAuth")</span>
@@ -261,14 +273,14 @@
                             </div>
 
                             @*<div class="col-xs-12">
-                                    <p class="login-box-msg mymsg">
-                                        <b>
+                            <p class="login-box-msg mymsg">
+                                <b>
 
 
-                                        </b>
-                                    </p>
+                                </b>
+                            </p>
 
-                                </div>*@
+                        </div>*@
 
 
 

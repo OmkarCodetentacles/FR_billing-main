@@ -64,7 +64,12 @@
 
         </div>
         <div class="box-body">
-
+            <div class="row">
+                <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @*@Html.Partial("GetInvoiceDataForDashboard", "Invoice", (DtDc_Billing.Models.InvoiceDataForDashBoard)@ViewBag.DataPoints))*@
+                    @Html.Partial("GetInvoiceDataForDashboard")
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     @{
@@ -82,28 +87,29 @@
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
                     }
 
-                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get, new {id="FormSubmit"}))
+
+                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get, new { id = "FormSubmit" }))
                     {
 
                         <!--<label for="cars">Size:</label>
-                        <select name="size">
-                            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
-                            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-                            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
+                <select name="size">
+                    <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
+                    <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
+                    <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
                         @*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@
 
                         <!--</select>-->
 
 
                         @*<div class="col-md-5">
-                                <div class="form-group">
-                                    <div class="pf-code">
-                                        <label>Firm Name</label>
-                                        <label class="Reqired">*</label>
-                                        @Html.DropDownList("FirmDetails", "-Please select-")
-                                    </div>
-                                </div>
-                            </div>*@
+                        <div class="form-group">
+                            <div class="pf-code">
+                                <label>Firm Name</label>
+                                <label class="Reqired">*</label>
+                                @Html.DropDownList("FirmDetails", "-Please select-")
+                            </div>
+                        </div>
+                    </div>*@
 
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
@@ -245,10 +251,10 @@
                                             @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem =>item.discountper)
+                                            @Html.DisplayFor(modelItem => item.discountper)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem =>item.discountamount)
+                                            @Html.DisplayFor(modelItem => item.discountamount)
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.servicetax)
@@ -275,22 +281,22 @@
                     </table>
 
                     @*<div class="pagination">
-                            @{
-                                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+                    @{
+                        var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                                if (getTotalCount > 10)
-                                {
+                        if (getTotalCount > 10)
+                        {
 
-                                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                                    {
+                            for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                            {
 
-                                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                                <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
-                                    }
-                                }
                             }
-                        </div>*@
+                        }
+                    }
+                </div>*@
                 </div>
 
                 <!-- /.box-body -->
