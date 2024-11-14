@@ -1,4 +1,5 @@
 ﻿using CustomerModel;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
@@ -19,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection.Emit;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -385,7 +387,7 @@ namespace DtDc_Billing.Controllers
 
         //}
         [HttpGet]
-        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo, string invoiceNotoDelete, bool isDelete = false)
+        public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo, string invoiceNotoDelete)
         {
             List<InvoiceModel> list = new List<InvoiceModel>();
 
@@ -411,25 +413,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.invfromdate = invfromdate;
             ViewBag.invtodate = invtodate;
             ViewBag.invoiceno = invoiceNo;
-            if (isDelete)
-            {
-                var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNotoDelete && x.Pfcode == pfcode).FirstOrDefault();
-                if (checkInvoiceNo == null)
-                {
-                    TempData["error"] = "Invalid Invoice No";
-
-                }
-
-                //db.Invoices.Remove(checkInvoiceNo);
-                checkInvoiceNo.isDelete = true;
-                db.Entry(checkInvoiceNo).State = EntityState.Modified;
-
-
-                db.SaveChanges();
-                TempData["success"] = invoiceNotoDelete + " Delete successfully!";
-                ViewBag.invoiceno = "";
-                invoiceNo = "";
-            }
+           
             if ((invfromdate != null && invfromdate != "") && (invtodate != null && invtodate != ""))
             {
                 fromdate = DateTime.ParseExact(invfromdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("yyyy-MM-dd");
@@ -497,7 +481,7 @@ namespace DtDc_Billing.Controllers
                     totalCount=x.totalCount??0,
                     isDelete=x.isDelete
                    
-                }).Where(x=>(isDelete==false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
+                }).Where(x=>(x.isDelete==false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
 
                 var invoiceDashboardData = new InvoiceDataForDashBoard
                 {
@@ -626,7 +610,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo, bool isDelete = false)
+        public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo)
         
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -635,32 +619,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.todate=invtodate;
             ViewBag.Companydetails = Companydetails;
             ViewBag.invoiceNo = invoiceNo;
-            if (isDelete)
-            {
-                var checkInvoiceNo = db.Invoices.Where(x => x.invoiceno == invoiceNo && x.Pfcode == strpf).FirstOrDefault();
-                if (checkInvoiceNo == null)
-                {
-                    TempData["error"] = "Invalid Invoice No";
-
-                }
-
-                 db.Invoices.Remove(checkInvoiceNo);
-                db.SaveChanges();
-
-                //checkInvoiceNo.isDelete=true;
-                //  db.Entry(checkInvoiceNo).State = EntityState.Modified;
-                var signle =db.singleinvoiceconsignments.Where(x => x.Invoice_no== invoiceNo).ToList();
-                foreach(var i in signle)
-                {
-                    db.singleinvoiceconsignments.Remove(i);
-                    db.SaveChanges();
-                }
-
-                TempData["success"] = "Invoice Number "+invoiceNo+"  Deleted successfully";
-                ViewBag.invoiceno = "";
-                invoiceNo = "";
-            }
-
+         
             var temp = db.singleinvoiceconsignments.Select(m => m.Invoice_no).ToList();
 
 
@@ -5060,6 +5019,65 @@ Select(e => new
             ViewBag.DataPoints = JsonConvert.SerializeObject(invoiceDashboardData);
 
             return View();
+        }
+
+        public ActionResult DeleteInvoice(int invoiceid, string invfromdate, string Companydetails, string invtodate, string invoiceNo)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                var checkInvoiceNo = db.Invoices.Where(x => x.IN_Id == invoiceid && x.Pfcode == pfcode).FirstOrDefault();
+                if (checkInvoiceNo == null)
+                {
+                    TempData["error"] = "Invalid Invoice No";
+                //    public ActionResult ViewInvoice(string invfromdate, string Companydetails, string invtodate, string invoiceNo)
+
+                return RedirectToAction("ViewInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = invoiceNo, Companydetails=Companydetails });
+                }
+         
+
+                //db.Invoices.Remove(checkInvoiceNo);
+                checkInvoiceNo.isDelete = true;
+                db.Entry(checkInvoiceNo).State = EntityState.Modified;
+
+
+                db.SaveChanges();
+                TempData["success"] = checkInvoiceNo.invoiceno + " Delete successfully!";
+
+            return RedirectToAction("ViewInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = invoiceNo });
+
+
+        }
+        public ActionResult DeleteSingleInvoice(int invoiceid, string invfromdate, string Companydetails, string invtodate, string invoiceNo)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var checkInvoiceNo = db.Invoices.Where(x => x.IN_Id == invoiceid && x.Pfcode == pfcode).FirstOrDefault();
+            if (checkInvoiceNo == null)
+            {
+                TempData["error"] = "Invalid Invoice No";
+
+             //   public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo)
+
+
+                return RedirectToAction("ViewSingleInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = invoiceNo, Companydetails=Companydetails });
+            }
+
+
+            db.Invoices.Remove(checkInvoiceNo);
+            db.SaveChanges();
+
+            //checkInvoiceNo.isDelete=true;
+            //  db.Entry(checkInvoiceNo).State = EntityState.Modified;
+            var signle = db.singleinvoiceconsignments.Where(x => x.Invoice_no == invoiceNo).ToList();
+            foreach (var i in signle)
+            {
+                db.singleinvoiceconsignments.Remove(i);
+                db.SaveChanges();
+            }
+
+            TempData["success"] = "Invoice Number " + invoiceNo + "  Deleted successfully";
+         
+
+            return RedirectToAction("ViewSingleInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = invoiceNo, Companydetails=Companydetails });
+
 
         }
     }
