@@ -534,6 +534,7 @@ namespace DtDc_Billing.Controllers
                                               join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno into neftGroup
                                               join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno into creditNoteGroup
                                               where inv.invoiceno==l.invoiceno &&
+                                             
                                               inv.Pfcode == pfcode && (inv.isDelete == null || inv.isDelete == false)
                                               select new
                                               {
@@ -552,7 +553,7 @@ namespace DtDc_Billing.Controllers
                 var invoiceDashboardData = new InvoiceDataForDashBoard
                 {
                     Paid = list.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
-                    Unpaid =  list.Where(t => t.paid == null || t.paid < t.netamount).Sum(t => t.netamount - t.paid) ?? 0,
+                    Unpaid =  list.Where(t => t.paid == null || t.paid < t.netamount).Sum(t => t.netamount - (t.paid??0)) ?? 0,
                     TotalInvoice = list.Count,
                     PaidCount = list.Count(t => t.netamount == t.paid),
                     UnpaidCount = list.Count(t => t.paid == null),
@@ -642,22 +643,48 @@ namespace DtDc_Billing.Controllers
 
             //    return View(list);
             //}
-           // string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            // string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
             //   var InviceData = db.Invoices.Where(x => x.Pfcode == pfcode).ToList();
 
 
 
             // Calculate the data for InvoiceDataForDashBoard
-             var shboardData = new InvoiceDataForDashBoard
+            double partialtotalView = 0;
+            foreach (var l in list)
+            {
+              
+                var PartialtotalAmount = (from inv in db.Invoices
+                                          join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno into cashGroup
+                                          join ch in db.Cheques on inv.invoiceno equals ch.Invoiceno into chequeGroup
+                                          join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno into neftGroup
+                                          join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno into creditNoteGroup
+                                          where inv.invoiceno == l.invoiceno &&
+
+                                          inv.Pfcode == pfcode && (inv.isDelete == null || inv.isDelete == false)
+                                          select new
+                                          {
+                                              TotalAmount =
+                                                  (cashGroup.Sum(x => x.C_Total_Amount) ?? 0) +
+                                                  (chequeGroup.Sum(x => x.totalAmount) ?? 0) +
+                                                  (neftGroup.Sum(x => x.N_Total_Amount) ?? 0) +
+                                                  (creditNoteGroup.Sum(x => x.Cr_Amount) ?? 0)
+                                          }).Sum(x => x.TotalAmount);
+
+                partialtotalView += (double)PartialtotalAmount;
+
+            }
+
+            var shboardData = new InvoiceDataForDashBoard
             {
                 Paid = list.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
-                Unpaid = list.Where(t => t.paid == null).Sum(t => t.netamount) ?? 0,
-                TotalInvoice = list.Count,
+                Unpaid = list.Where(t => t.paid == null || t.paid < t.netamount).Sum(t => t.netamount - (t.paid ?? 0)) ?? 0,
+
+                 TotalInvoice = list.Count,
                 PaidCount = list.Count(t => t.netamount == t.paid),
                 UnpaidCount = list.Count(t => t.paid == null),
                 TotalNetAmount = list.Sum(t => t.netamount) ?? 0,
-                PattialPaid = list.Where(t => t.paid > 0 && t.paid < t.netamount).Sum(t => t.netamount) ?? 0,
+                PattialPaid = partialtotalView,
                 Pattialpaidcount = list.Count(t => t.paid > 0 && t.paid < t.netamount)
             };
 

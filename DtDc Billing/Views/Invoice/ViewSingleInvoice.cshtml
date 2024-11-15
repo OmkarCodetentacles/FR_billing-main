@@ -337,17 +337,17 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.netamount)
                                     </td>
-                                    <td>@(item.paid)  </td>
+                                    <td>@(item.paid!=null?item.paid:0)  </td>
                                     <td>
                                         @if (item.paid >= item.netamount)
                                         {
                                             <span class="btn btn-success status-button">Paid</span>
                                         }
-                                        else if (item.paid == null)
+                                        else if (item.paid == null || item.paid==0)
                                         {
                                             <span class="btn btn-danger status-button">Unpaid</span>
                                         }
-                                        else if (item.paid != null && item.paid < item.netamount)
+                                        else if (item.paid != 0 && item.paid < item.netamount)
                                         {
                                             <span class="btn btn-warning status-button">Partial Paid</span>
                                         }
