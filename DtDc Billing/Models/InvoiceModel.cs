@@ -66,8 +66,8 @@ namespace DtDc_Billing.Models
     public class InvoiceDataForDashBoard
     {
         public double? Paid { get; set; }
-        public Nullable<double> Unpaid { get; set; }
-
+        public Nullable<double> Unpaid { get; set; }    
+         
         public int TotalInvoice { get; set; }
         public int PaidCount { get; set; }
         public int UnpaidCount { get; set; }    

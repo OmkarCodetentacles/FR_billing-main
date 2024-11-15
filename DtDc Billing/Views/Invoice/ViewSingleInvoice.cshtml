@@ -16,6 +16,62 @@
     .Viewsingleinvoice th {
         width: 7.14% !important
     }
+    .status-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .btn-success {
+        background-color: #28a745; /* Green */
+        color: white;
+        align-content: center;
+        justify-content: center;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 14px;
+        border-left: 6px solid #28a745;
+        border-top: 1px solid #f39c12;
+        margin: 20px 20px 20px 30px !important;
+        transition: transform 0.2s ease; /* Add a hover effect */
+        border-radius: 50px; /* Make corners circular */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Red */
+        color: white;
+        align-content: center;
+        justify-content: center;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 14px;
+        border-top: 1px solid #dc2a4b;
+        margin: 20px 20px 20px 30px !important;
+        transition: transform 0.2s ease; /* Add a hover effect */
+        border-radius: 50px; /* Make corners circular */
+    }
+
+    .btn-warning {
+        background-color: #ffc107; /* Yellow */
+        color: black;
+        align-content: center;
+        justify-content: center;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 14px;
+        border-top: 1px solid #ffc107;
+        margin: 20px 20px 20px 30px !important;
+        transition: transform 0.2s ease; /* Add a hover effect */
+        border-radius: 50px; /* Make corners circular */
+    }
+
+    .status-button:hover {
+        transform: scale(1.05); /* Slightly enlarge the button on hover */
+    }
+
+    .status-button:active {
+        transform: scale(0.95); /* Slightly shrink the button when clicked */
+    }
 </style>
 <!-- Main content -->
 
@@ -35,23 +91,31 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+            @{
+                var successMessage = @TempData["success"] as string;
+                var errorMessage = TempData["error"] as string;
+            }
 
+            @if (!string.IsNullOrEmpty(successMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+            }
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
+
+            }
             <div class="row">
-                @{
-                    var successMessage = @TempData["success"] as string;
-                    var errorMessage = TempData["error"] as string;
-                }
+                <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    @*@Html.Partial("GetInvoiceDataForDashboard", "Invoice", (DtDc_Billing.Models.InvoiceDataForDashBoard)@ViewBag.DataPoints))*@
+                    @Html.Partial("GetInvoiceDataForDashboard")
+                </div>
+            </div>
+            <div class="row">
 
-                @if (!string.IsNullOrEmpty(successMessage))
-                {
-                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                }
-                @if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
 
-                }
-                @using (Html.BeginForm("ViewSingleInvoice", "Invoice", FormMethod.Get, new {id= "FormSubmitSingle" }))
+
+                @using (Html.BeginForm("ViewSingleInvoice", "Invoice", FormMethod.Get, new { id = "FormSubmitSingle" }))
                 {
 
 
@@ -154,9 +218,9 @@
                 <div class="col-xs-12">
 
                     @*<div class="col-md-4">
-                            <label for="departmentsDropdown">Firm Name</label>
-                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
-                        </div>*@
+                    <label for="departmentsDropdown">Firm Name</label>
+                    <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+                </div>*@
                     <table id="table_display_block" class="table Viewsingleinvoice">
                         <thead>
                             <tr>
@@ -203,8 +267,8 @@
                                 <th>
                                     @*@Html.DisplayNameFor(model => model.netamount)*@  Net Amount
                                 </th>
-
-
+                                <th>Paid Amount</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -217,18 +281,18 @@
                                         @Html.ActionLink("Edit", "GenerateInvoiceSingle", new { Invoiceno = item.invoiceno, Firm_Id = item.Firm_Id }, new { @class = "edit-btn" })
                                     </td>
                                     <td>
-                                        @Html.ActionLink("Delete", "DeleteInvoiceSingle", "Invoice", new
-                                        {
-                                            invoiceNo = item.invoiceno,
-                                            invfromdate = ViewBag.invfromdate,
-                                            Companydetails = ViewBag.Companydetails,
-                                            invtodate = ViewBag.invtodate,
-                                            isDelete = true
-                                        }, new
-                                        {
-                                            onclick = "return confirm('Are you sure you want to delete this invoice? This action is permanent, and the invoice will be permanently deleted.')",
-                                            @class = "delete-btn"
-                                        })
+                                        @Html.ActionLink("Delete", "DeleteSingleInvoice", "Invoice", new
+                                   {
+                                       invoiceid = item.IN_Id,
+                                       invoiceNo = item.invoiceno,
+                                       invfromdate = ViewBag.fromdate,
+                                       Companydetails = ViewBag.Companydetails,
+                                       invtodate = ViewBag.todate,
+                                   }, new
+                                   {
+                                       onclick = "return confirm('Are you sure you want to delete this invoice? This action is permanent, and the invoice will be permanently deleted.')",
+                                       @class = "delete-btn"
+                                   })
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.invoiceno)
@@ -250,22 +314,22 @@
                                         @Html.DisplayFor(modelItem => item.total)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                        @(item.fullsurchargetax!=null?item.fullsurchargetax:0)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                        @(item.fullsurchargetaxtotal!=null?item.fullsurchargetaxtotal:0)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.discountper)
+                                        @( item.discountper!=null?item.discountper:0)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.discountamount)
+                                        @( item.discountamount!=null?item.discountamount:0)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.servicetax)
+                                        @(item.servicetax!=null?item.servicetax:0)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                        @( item.servicetaxtotal!=null? item.servicetaxtotal:0)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.othercharge)
@@ -273,7 +337,21 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.netamount)
                                     </td>
-
+                                    <td>@(item.paid)  </td>
+                                    <td>
+                                        @if (item.paid >= item.netamount)
+                                        {
+                                            <span class="btn btn-success status-button">Paid</span>
+                                        }
+                                        else if (item.paid == null)
+                                        {
+                                            <span class="btn btn-danger status-button">Unpaid</span>
+                                        }
+                                        else if (item.paid != null && item.paid < item.netamount)
+                                        {
+                                            <span class="btn btn-warning status-button">Partial Paid</span>
+                                        }
+                                    </td>
 
                                 </tr>
                             }
