@@ -908,5 +908,10 @@ namespace DtDc_Billing.Entity_FR
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSP_NewCreditorsInvoiceWithTDSAmount_Result>("getSP_NewCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
         }
+    
+        public virtual ObjectResult<getLiveData_Result> getLiveData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getLiveData_Result>("getLiveData");
+        }
     }
 }

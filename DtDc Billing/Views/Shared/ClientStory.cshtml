@@ -1,103 +1,148 @@
-﻿<style>
-    body, html {
-        height: 100%;
-        background-color: white;
-    }
-
-    .containerLogo {
+﻿
+<style>
+    .client-section {
         overflow: hidden;
+        position: relative;
+        padding: 60px 0;
+        background: #f8f9fa;
     }
 
-    .containerLogo .slider {
-        animation: slidein 30s linear infinite;
-        white-space: nowrap;
+    .client-track {
+        display: flex;
+        animation: scroll 20s linear infinite;
+        width: calc(250px * 10);
     }
 
-    .containerLogo .slider .logos {
-        width: 100%;
-        display: inline-block;
-        margin: 0;
+    .client-slide {
+        width: 250px;
+        padding: 20px;
+        flex-shrink: 0;
+        transition: transform 0.3s;
     }
 
-        .containerLogo .slider .logos img {
-            width: 100px;
-            height: 70px;
-            margin-right: 34px;
+        .client-slide:hover {
+            transform: scale(1.1);
         }
 
-    @@keyframes slidein {
-        from { 
+    .client-image {
+        width: 100%;
+        height: 100px;
+        object-fit: contain;
+        filter: grayscale(100%);
+        transition: filter 0.3s;
+    }
+
+    .client-slide:hover .client-image {
+        filter: grayscale(0%);
+    }
+
+    .client-container:hover .client-track {
+        animation-play-state: paused;
+    }
+
+    @@keyframes scroll {
+        0% {
             transform: translateX(0);
         }
-        to {
-            transform: translateX(-100%);
-        }
-    }
 
-    @@keyframes fade-in {
-        0% {
-            opacity: 0;
-        }
         100% {
-            opacity: 1;
+            transform: translateX(calc(-250px * 5));
         }
     }
 
-    span.logotxt1 {
-        color: #a94442;
-        font-size: 48px;
-        font-weight: 900;
+    /* Gradient overlays for smooth transition */
+    .overlay-left, .overlay-right {
+        position: absolute;
+        top: 0;
+        width: 100px;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
     }
 
-    .logotxt2 {
-        font-size: 48px;
-        font-weight: 100;
-        color: black;
-        margin-right: 36px;
+    .overlay-left {
+        left: 0;
+        background: linear-gradient(to right, #f8f9fa 0%, transparent 100%);
     }
 
-    .logo-text {
-        font-size: 1.3em;
-        text-align: center;
-        color: #3c8cbd;
-        font-family: 'Roboto Slab', serif;
+    .overlay-right {
+        right: 0;
+        background: linear-gradient(to left, #f8f9fa 0%, transparent 100%);
+    }
+
+    .text-muted-t {
+        color: #05844f;
     }
 </style>
 
-<div class="containerLogo">
-    <div class="slider">
-        <div class="logos">
-            <img src="assets/ClientLogo/atk.png" alt="Image 1">
-            @*<img src="assets/ClientLogo/veerexpress1.png" alt="Image 2">*@
-            <span class="logotxt1" style="color: #a94442; font-size: 30px; font-weight: 900;">Veer</span>
-            <span class="logotxt2" style="font-size: 25px; font-weight: 200; color: black;">Express</span>
-            <img src="assets/ClientLogo/globex.png" alt="Image 3">
-            <img src="assets/ClientLogo/IJS.png" alt="Image 4">
-            <img src="assets/ClientLogo/Mexpress.png" alt="Image 5">
-
-            <img src="~/assets/ClientLogo/VBExpress.png" alt="Image 1">
-            <img src="~/assets/ClientLogo/Ontrack.png" alt="Image 2">
-            <img src="~/assets/ClientLogo/GlobalWorldwideexpress.jpg" alt="Image 3">
-            <span class="logotxt1" style="color: #065ab5; font-size: 30px; font-weight: 900;">Shubham</span>
-            <span class="logotxt2" style="font-size: 25px; font-weight: 200; color: black;">Ex</span>
-
-        </div>
-        <div class="logos">
-            <img src="assets/ClientLogo/atk.png" alt="Image 1">
-            @*<img src="assets/ClientLogo/veerexpress1.png" alt="Image 2">*@
-            <span class="logotxt1" style="color: #a94442; font-size: 30px; font-weight: 900;">Veer</span>
-            <span class="logotxt2" style="font-size: 25px; font-weight: 200; color: black;">Express</span>
-            <img src="assets/ClientLogo/globex.png" alt="Image 3">
-            <img src="assets/ClientLogo/IJS.png" alt="Image 4">
-            <img src="assets/ClientLogo/Mexpress.png" alt="Image 5">
-
-            <img src="~/assets/ClientLogo/VBExpress.png" alt="Image 1">
-            <img src="~/assets/ClientLogo/Ontrack.png" alt="Image 2">
-            <img src="~/assets/ClientLogo/GlobalWorldwideexpress.jpg" alt="Image 3">
-            <span class="logotxt1" style="color: #065ab5; font-size: 30px; font-weight: 900;">Shubham</span>
-            <span class="logotxt2" style="font-size: 25px; font-weight: 200; color: black;">Ex</span>
 
 
+
+
+
+<section class="client-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold">Our Trusted Clients</h2>
+                <p class="text-muted-t">Proud to work with industry leaders worldwide</p>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="client-container position-relative">
+        <div class="overlay-left"></div>
+        <div class="overlay-right"></div>
+
+        <div class="client-track">
+            <!-- First set of clients -->
+            <div class="client-slide">
+                <img src="assets/ClientLogo/globex.png" alt="Client 1" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/IJS.png" alt="Client 2" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/Mexpress.png" alt="Client 3" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/VBExpress.png" alt="Client 4" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/veerexpress.png" alt="Client 8" class="client-image">
+            </div>
+
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/Ontrack.png" alt="Client 5" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/atk.png" alt="Client 6" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/SHUBHAM EXPRESS.png" alt="Client 7" class="client-image">
+            </div>
+
+
+
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/GlobalWorldwideexpress.jpg" alt="Client 9" class="client-image">
+            </div>
+
+
+            <div class="client-slide">
+                <img src="assets/ClientLogo/globex.png" alt="Client 1" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/IJS.png" alt="Client 2" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/Mexpress.png" alt="Client 3" class="client-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+

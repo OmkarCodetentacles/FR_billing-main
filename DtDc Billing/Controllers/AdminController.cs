@@ -49,6 +49,19 @@ namespace DtDc_Billing.Controllers
         }
 
 
+        public ActionResult LiveData()
+        {
+            var getData = db.getLiveData().Select(x => new LiveDataModel
+            {
+                TotalNoOfInvoice = x.TotalNoOfInvoice ?? 0,
+                TotalInvoiceAmount = x.TotalInvoiceAmount ?? 0,
+                TotalUser = x.TotalUser ?? 0,
+                TotalConsignmentBooked = x.TotalConsignmentBooked ?? 0
+
+            }).FirstOrDefault();
+            return PartialView("LiveData", getData);
+        }
+
         public ActionResult Index()
         {
             return View();

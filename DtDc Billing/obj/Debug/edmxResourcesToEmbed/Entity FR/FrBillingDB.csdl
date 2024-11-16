@@ -2677,6 +2677,7 @@
       <Parameter Name="Customerid" Mode="In" Type="String" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="getLiveData" ReturnType="Collection(db_a92afa_frbillingModel.getLiveData_Result)" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3238,5 +3239,11 @@
     <Property Type="Double" Name="TdsAmount" Nullable="true" />
     <Property Type="Double" Name="TotalAmount" Nullable="true" />
     <Property Type="String" Name="PaymentType" Nullable="false" MaxLength="12" />
+  </ComplexType>
+  <ComplexType Name="getLiveData_Result">
+    <Property Type="Int64" Name="TotalNoOfInvoice" Nullable="true" />
+    <Property Type="Double" Name="TotalInvoiceAmount" Nullable="true" />
+    <Property Type="Int64" Name="TotalUser" Nullable="true" />
+    <Property Type="Int64" Name="TotalConsignmentBooked" Nullable="true" />
   </ComplexType>
 </Schema>

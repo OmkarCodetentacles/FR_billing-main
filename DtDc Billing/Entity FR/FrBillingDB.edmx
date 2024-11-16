@@ -2037,6 +2037,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
         <Function Name="getIssueList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Pfcode" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="getLiveData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="getLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="varchar" Mode="In" />
           <Parameter Name="password" Type="varchar" Mode="In" />
@@ -5313,6 +5314,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="Customerid" Mode="In" Type="String" />
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="getLiveData" ReturnType="Collection(db_a92afa_frbillingModel.getLiveData_Result)" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5874,6 +5876,12 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Double" Name="TdsAmount" Nullable="true" />
           <Property Type="Double" Name="TotalAmount" Nullable="true" />
           <Property Type="String" Name="PaymentType" Nullable="false" MaxLength="12" />
+        </ComplexType>
+        <ComplexType Name="getLiveData_Result">
+          <Property Type="Int64" Name="TotalNoOfInvoice" Nullable="true" />
+          <Property Type="Double" Name="TotalInvoiceAmount" Nullable="true" />
+          <Property Type="Int64" Name="TotalUser" Nullable="true" />
+          <Property Type="Int64" Name="TotalConsignmentBooked" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7701,6 +7709,16 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
                 <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getLiveData" FunctionName="db_a92afa_frbillingModel.Store.getLiveData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getLiveData_Result">
+                <ScalarProperty Name="TotalNoOfInvoice" ColumnName="TotalNoOfInvoice" />
+                <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
+                <ScalarProperty Name="TotalUser" ColumnName="TotalUser" />
+                <ScalarProperty Name="TotalConsignmentBooked" ColumnName="TotalConsignmentBooked" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
