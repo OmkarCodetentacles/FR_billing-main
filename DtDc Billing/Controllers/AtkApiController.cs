@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Newtonsoft.Json;
@@ -21,6 +22,21 @@ namespace DtDc_Billing.Controllers
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         // GET: AtkApi
+
+        public JsonResult LiveData()
+        {
+            var getData = db.getLiveData().Select(x => new LiveDataModel
+            {
+                TotalNoOfInvoice = x.TotalNoOfInvoice ?? 0,
+                TotalInvoiceAmount = x.TotalInvoiceAmount ?? 0,
+                TotalUser = x.TotalUser ?? 0,
+                TotalConsignmentBooked = x.TotalConsignmentBooked ?? 0
+
+            }).FirstOrDefault();
+
+            return Json(getData, JsonRequestBehavior.AllowGet);
+        }
+
 
         public JsonResult Datewise(string Date)
         {
