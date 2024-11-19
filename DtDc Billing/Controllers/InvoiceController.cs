@@ -468,10 +468,10 @@ namespace DtDc_Billing.Controllers
                     othercharge=x.othercharge??0,
                     netamount=x.netamount,
                     Customer_Id=x.Customer_Id,
-                    paid=x.paid,
+                    paid=x.paid??0,
                     discount=x.discount,
-                 discountper=x.discountper??0,
-                 discountamount=x.discountamount??0,
+                    discountper=x.discountper??0,
+                    discountamount=x.discountamount??0,
                     Royalty_charges=x.Royalty_charges,
                     Docket_charges=x.Docket_charges,
                     Tempdatefrom=x.Tempdatefrom,
@@ -481,7 +481,8 @@ namespace DtDc_Billing.Controllers
                     Invoice_Lable=x.Invoice_Lable,
                     Firm_Id=x.Firm_Id,
                     totalCount=x.totalCount??0,
-                    isDelete=x.isDelete
+                    isDelete=x.isDelete,
+
                    
                 }).Where(x=>(x.isDelete==false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
 
@@ -536,7 +537,7 @@ namespace DtDc_Billing.Controllers
                                               where inv.invoiceno==l.invoiceno &&
                                              
                                               inv.Pfcode == pfcode && (inv.isDelete == null || inv.isDelete == false)
-                                              select new
+                                              select new    
                                               {
                                                   TotalAmount =
                                                       (cashGroup.Sum(x => x.C_Total_Amount) ?? 0) +
@@ -552,10 +553,10 @@ namespace DtDc_Billing.Controllers
 
                 var invoiceDashboardData = new InvoiceDataForDashBoard
                 {
-                    Paid = list.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                    Paid = list.Where(t => t.paid>=t.netamount).Sum(t => t.netamount) ?? 0,
                     Unpaid =  list.Where(t => t.paid == null || t.paid < t.netamount).Sum(t => t.netamount - (t.paid??0)) ?? 0,
                     TotalInvoice = list.Count,
-                    PaidCount = list.Count(t => t.netamount == t.paid),
+                    PaidCount = list.Count(t => t.paid >= t.netamount),
                     UnpaidCount = list.Count(t => t.paid == null),
                     TotalNetAmount = list.Sum(t => t.netamount) ?? 0,
                     PattialPaid = partialtotal,
@@ -829,14 +830,16 @@ namespace DtDc_Billing.Controllers
             }
             var invoiceDashboardData = new InvoiceDataForDashBoard
             {
-                Paid = a.Where(t => t.netamount == t.paid).Sum(t => t.netamount) ?? 0,
+                Paid = a.Where(t => t.paid >=t.netamount).Sum(t => t.netamount) ?? 0,
                 Unpaid = a.Where(t => t.paid == null || t.paid<t.netamount).Sum(t => t.netamount-t.paid) ?? 0,
                 TotalInvoice = a.Count,
-                PaidCount = a.Count(t => t.netamount == t.paid),
+                PaidCount = a.Count(t => t.paid>= t.netamount),
                 UnpaidCount = a.Count(t => t.paid == null),
                 TotalNetAmount = a.Sum(t => t.netamount) ?? 0,
                 PattialPaid =partialtotal,
                 Pattialpaidcount = a.Count(t => t.paid > 0 && t.paid < t.netamount)
+
+             
             };
             // Serialize the data points for use in the view
             ViewBag.DataPoints = JsonConvert.SerializeObject(invoiceDashboardData);

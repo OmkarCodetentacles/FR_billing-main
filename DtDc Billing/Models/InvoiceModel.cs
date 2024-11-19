@@ -37,6 +37,7 @@ namespace DtDc_Billing.Models
         public Nullable<double> servicecharges { get; set; }
         public Nullable<double> Royalty_charges { get; set; }
         public Nullable<double> Docket_charges { get; set; }
+        public Nullable<double> balanceamount { get; set; }
         [Required(ErrorMessage = "Date Required")]
         public string Tempdatefrom { get; set; }
         [Required(ErrorMessage ="Date Required")]
