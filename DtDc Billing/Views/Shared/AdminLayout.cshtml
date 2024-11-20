@@ -121,95 +121,102 @@
                     <ul class="nav navbar-nav">
                         @*<li class="logincss">
 
-                                            @{
+                        @{
 
-                                                var UserType = new SelectList(new[]
-                                                {
-                                new SelectListItem { Text = "CashCounter", Value = "CashCounter", Selected = true },
-                                new SelectListItem { Text = "Billing", Value = "Billing"},
-                            }, "Value", "Text");
-                                            }
+                            var UserType = new SelectList(new[]
+                            {
+            new SelectListItem { Text = "CashCounter", Value = "CashCounter", Selected = true },
+            new SelectListItem { Text = "Billing", Value = "Billing"},
+        }, "Value", "Text");
+                        }
 
-                                            <a <span="">UserType :<span>@Html.DropDownList("UserType", UserType, new { style = "width: 120px; background-color: DeepSkyBlue;" })
-                                                  </span> </a>
+                        <a <span="">UserType :<span>@Html.DropDownList("UserType", UserType, new { style = "width: 120px; background-color: DeepSkyBlue;" })
+                              </span> </a>
 
 
-                                        </li>*@
+                    </li>*@
                         @*<li class="logincss">
-                                <a <span="">UserType :<span> @Html.DropDownList("UserType",null, new { style = "width: 120px; background-color: DeepSkyBlue;" }) </span> </a>
-                            </li>*@
+            <a <span="">UserType :<span> @Html.DropDownList("UserType",null, new { style = "width: 120px; background-color: DeepSkyBlue;" }) </span> </a>
+        </li>*@
                         @*<li class="logincss">
-                                <a>
-                                    <span>
-                                        UserType : CashCounter
-                                        @Html.Label((string)ViewBag.CurrentUserType)
-                                    </span>
+            <a>
+                <span>
+                    UserType : CashCounter
+                    @Html.Label((string)ViewBag.CurrentUserType)
+                </span>
 
 
-                                    @if (@Session["UserType"] != null)
-                                    {
-                                        <span>@Html.Label((string)@Session["UserType"]) </span>
+                @if (@Session["UserType"] != null)
+                {
+                    <span>@Html.Label((string)@Session["UserType"]) </span>
 
-                                    }
-                                </a>
+                }
+            </a>
 
-                                @ViewBag.CurrentUserType
-                            </li>*@
+            @ViewBag.CurrentUserType
+        </li>*@
 
                         @*@if (@ViewBag.CurrentUserType == "")
-                                {
+            {
 
-                            <li class="logincss">
-                                @{
-                                    int count = Convert.ToInt32(@Session["CountUserType"]);
+        <li class="logincss">
+            @{
+                int count = Convert.ToInt32(@Session["CountUserType"]);
 
-                                    if (count > 1)
-                                    {
-                                        <a href="@Url.Action("ChangeUserType","Booking",new { strcurrentuser = Session["UserType"] })"> Change UserType </a>
-                                    }
-                                    else
-                                    {
+                if (count > 1)
+                {
+                    <a href="@Url.Action("ChangeUserType","Booking",new { strcurrentuser = Session["UserType"] })"> Change UserType </a>
+                }
+                else
+                {
 
-                                    }
+                }
 
-                                }
-                            </li>
-                                }
-                                else
-                                {
+            }
+        </li>
+            }
+            else
+            {
 
-                            <li class="logincss">
-                                @{
-                                    int count = Convert.ToInt32(@Session["CountUserType"]);
+        <li class="logincss">
+            @{
+                int count = Convert.ToInt32(@Session["CountUserType"]);
 
-                                    if (count > 1)
-                                    {
-                                        <a href="@Url.Action("ChangeUserType", "Booking", new { strcurrentuser = ViewBag.CurrentUserType })"> Change UserType </a>
-                                    }
-                                    else
-                                    {
+                if (count > 1)
+                {
+                    <a href="@Url.Action("ChangeUserType", "Booking", new { strcurrentuser = ViewBag.CurrentUserType })"> Change UserType </a>
+                }
+                else
+                {
 
-                                    }
+                }
 
-                                }
-
-
+            }
 
 
-                            </li>
-                                    }*@
+
+
+        </li>
+                }*@
 
 
                         <!-- User Account Menu -->
-
-
                         <li class="logincss">
+                            <a>
+                                <span>Fr-Billing Support No:</span>
+                                <i aria-hidden="true"></i>
+                                <span class="text-primary"><strong>9209764995</strong></span>
+                            </a>
+                        </li>
+
+
+                        @*<li class="logincss">
                             <a>
                                 <span>Your Referral Code :</span>
                                 <i aria-hidden="true"></i>
                                 <span class="text-primary"><strong>@Request.Cookies["Cookies"]["referalCode"].ToString()</strong></span>
                             </a>
-                        </li>
+                        </li>*@
 
                         <li class="logincss">
                             <a>
@@ -256,8 +263,8 @@
 
 
                         @*<li>
-                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                            </li>*@
+            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+        </li>*@
                     </ul>
                 </div>
             </nav>

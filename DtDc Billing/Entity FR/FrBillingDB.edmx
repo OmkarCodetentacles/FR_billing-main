@@ -5139,12 +5139,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="getCreditorsInvoiceWithTDSAmount" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSAmount_Result)">
-            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="toDate" Mode="In" Type="DateTime" />
-            <Parameter Name="Customerid" Mode="In" Type="String" />
-            <Parameter Name="pfcode" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="getInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getInvoice_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
@@ -5308,13 +5302,13 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="getSP_NewCreditorsInvoiceWithTDSAmount" ReturnType="Collection(db_a92afa_frbillingModel.getSP_NewCreditorsInvoiceWithTDSAmount_Result)">
+          <FunctionImport Name="getLiveData" ReturnType="Collection(db_a92afa_frbillingModel.getLiveData_Result)" />
+          <FunctionImport Name="getCreditorsInvoiceWithTDSAmount" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSAmount_Result1)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
             <Parameter Name="Customerid" Mode="In" Type="String" />
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="getLiveData" ReturnType="Collection(db_a92afa_frbillingModel.getLiveData_Result)" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5882,6 +5876,25 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Double" Name="TotalInvoiceAmount" Nullable="true" />
           <Property Type="Int64" Name="TotalUser" Nullable="true" />
           <Property Type="Int64" Name="TotalConsignmentBooked" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getCreditorsInvoiceWithTDSAmount_Result1">
+          <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+          <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+          <Property Type="Double" Name="total" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="servicetax" Nullable="true" />
+          <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+          <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="netamount" Nullable="true" />
+          <Property Type="Double" Name="paid" Nullable="true" />
+          <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="discountper" Nullable="true" />
+          <Property Type="Double" Name="discountamount" Nullable="true" />
+          <Property Type="Double" Name="TdsAmount" Nullable="true" />
+          <Property Type="Double" Name="TotalAmount" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7157,29 +7170,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getCreditorsInvoiceWithTDSAmount" FunctionName="db_a92afa_frbillingModel.Store.getCreditorsInvoiceWithTDSAmount">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSAmount_Result">
-                <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
-                <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
-                <ScalarProperty Name="periodfrom" ColumnName="periodfrom" />
-                <ScalarProperty Name="periodto" ColumnName="periodto" />
-                <ScalarProperty Name="total" ColumnName="total" />
-                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
-                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
-                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
-                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
-                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
-                <ScalarProperty Name="netamount" ColumnName="netamount" />
-                <ScalarProperty Name="paid" ColumnName="paid" />
-                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-                <ScalarProperty Name="discountper" ColumnName="discountper" />
-                <ScalarProperty Name="discountamount" ColumnName="discountamount" />
-                <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="getInvoice" FunctionName="db_a92afa_frbillingModel.Store.getInvoice">
             <ResultMapping>
               <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getInvoice_Result">
@@ -7688,9 +7678,19 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
-          <FunctionImportMapping FunctionImportName="getSP_NewCreditorsInvoiceWithTDSAmount" FunctionName="db_a92afa_frbillingModel.Store.getSP_NewCreditorsInvoiceWithTDSAmount">
+          <FunctionImportMapping FunctionImportName="getLiveData" FunctionName="db_a92afa_frbillingModel.Store.getLiveData">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getSP_NewCreditorsInvoiceWithTDSAmount_Result">
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getLiveData_Result">
+                <ScalarProperty Name="TotalNoOfInvoice" ColumnName="TotalNoOfInvoice" />
+                <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
+                <ScalarProperty Name="TotalUser" ColumnName="TotalUser" />
+                <ScalarProperty Name="TotalConsignmentBooked" ColumnName="TotalConsignmentBooked" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getCreditorsInvoiceWithTDSAmount" FunctionName="db_a92afa_frbillingModel.Store.getCreditorsInvoiceWithTDSAmount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSAmount_Result1">
                 <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
                 <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
                 <ScalarProperty Name="periodfrom" ColumnName="periodfrom" />
@@ -7708,17 +7708,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="discountamount" ColumnName="discountamount" />
                 <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="getLiveData" FunctionName="db_a92afa_frbillingModel.Store.getLiveData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getLiveData_Result">
-                <ScalarProperty Name="TotalNoOfInvoice" ColumnName="TotalNoOfInvoice" />
-                <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
-                <ScalarProperty Name="TotalUser" ColumnName="TotalUser" />
-                <ScalarProperty Name="TotalConsignmentBooked" ColumnName="TotalConsignmentBooked" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

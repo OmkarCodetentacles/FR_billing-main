@@ -609,7 +609,7 @@ namespace DtDc_Billing.Controllers
             if (status == "Paid")
             {
 
-                newObj = db.getSP_NewCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
                 {
                     invoicedate = x.invoicedate,
                     invoiceno = x.invoiceno,
@@ -729,7 +729,7 @@ namespace DtDc_Billing.Controllers
                 //    }).ToList().Where(x => x.discountamount > 0 || x.paid == null).ToList();
                 //}
 
-                newObj = db.getSP_NewCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
                 {
                     invoicedate = x.invoicedate,
                     invoiceno = x.invoiceno,
@@ -805,7 +805,7 @@ namespace DtDc_Billing.Controllers
 
                 using (var db = new db_a92afa_frbillingEntities())
                 {
-                    newObj = db.getSP_NewCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode)
+                    newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode)
                         .Select(x => new CreditorsInvoiceModel
                         {
                             invoicedate = x.invoicedate,
