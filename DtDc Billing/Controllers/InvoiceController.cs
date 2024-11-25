@@ -425,13 +425,13 @@ namespace DtDc_Billing.Controllers
             DateTime? tdate = !string.IsNullOrEmpty(invtodate) ? DateTime.ParseExact(invtodate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None) : (DateTime?)null;
 
 
-            var invoices = (from t in db.Invoices
-                            where t.Pfcode == pfcode
-                                  && t.isDelete == false
-                                  && (string.IsNullOrEmpty(fromdate) || SqlFunctions.DatePart("Month", t.invoicedate) == fdate.Value.Month)
-                                 && (string.IsNullOrEmpty(todate) || SqlFunctions.DatePart("Month", t.invoicedate) == tdate.Value.Month)
-                                 && (string.IsNullOrEmpty(Companydetails) || t.Customer_Id==Companydetails)
-                            select t).ToList();
+            //var invoices = (from t in db.Invoices
+            //                where t.Pfcode == pfcode
+            //                      && t.isDelete == false
+            //                      && (string.IsNullOrEmpty(fromdate) || SqlFunctions.DatePart("Month", t.invoicedate) == fdate.Value.Month)
+            //                     && (string.IsNullOrEmpty(todate) || SqlFunctions.DatePart("Month", t.invoicedate) == tdate.Value.Month)
+            //                     && (string.IsNullOrEmpty(Companydetails) || t.Customer_Id==Companydetails)
+            //                select t).ToList();
 
             ViewBag.Companydetails = Companydetails;//new SelectList(db.Companies, "Company_Id", "Company_Name");
             

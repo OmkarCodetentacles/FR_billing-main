@@ -28,6 +28,8 @@ namespace DtDc_Billing.Entity_FR
         public string Customer_Id { get; set; }
         public Nullable<double> paid { get; set; }
         public string discount { get; set; }
+        public Nullable<double> discountper { get; set; }
+        public Nullable<double> discountamount { get; set; }
         public Nullable<double> Royalty_charges { get; set; }
         public Nullable<double> Docket_charges { get; set; }
         public string Tempdatefrom { get; set; }
@@ -38,7 +40,5 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<long> Firm_Id { get; set; }
         public Nullable<bool> isDelete { get; set; }
         public Nullable<int> totalCount { get; set; }
-        public Nullable<double> discountper { get; set; }
-        public Nullable<double> discountamount { get; set; }
     }
 }

@@ -250,9 +250,15 @@ namespace DtDc_Billing.Controllers
             DateTime before15days = newDate.AddDays(-15);
             DateTime before1day = newDate.AddDays(-1);
             DateTime  before30days= newDate.AddDays(-30);
-            DateTime before10days=newDate.AddDays(-10);  
+            DateTime before10days=newDate.AddDays(-10);
             //int totalDaysDifference = date_difference.Days;
             var mobileno = Date.mobileNo;
+
+
+            ViewBag.subscriptionExpiredOnDate = newDate.ToString("dd/MM/yyyy");
+            ViewBag.subscriptionExpiredOnDays = (newDate - currentDate).Days;
+            
+
             if (currentDate >= before10days && currentDate < newDate)
             {
                 ViewBag.ExpiryMessage = "Your subscription is expiring on " + newDate + ". Please Renew to continue enjoying our services.";
@@ -339,22 +345,7 @@ namespace DtDc_Billing.Controllers
             var Duedysexpires=Duedaysdata.Where(x=>x.DueDays>0 && x.DueDays<5).Count();
 
             ViewBag.DueDaysExpire = Duedysexpires;
-           //var DueDays = invoiceData.Where(data => data != null).Select(data => new DueDaysModel
-
-           //{
-           //    Date = data.InvoiceDate.Value.AddDays(data.DueDaydata),
-
-
-           //    DueDays = (data.InvoiceDate.Value.AddDays(data.DueDaydata).Date - DateTime.Now.Date).Days,
-
-
-           //    Company_Id = data.Company_Iddata
-           //}).ToList();
-
-
-
-            //Backup();
-            //Session["EndDate"] = After1Year.ToString("dd/MM/yyyy");
+          
             return View(obj);
         }
         
@@ -389,7 +380,7 @@ namespace DtDc_Billing.Controllers
                 City = x.Destination,
                 Count = x.DestCount ?? 0
 
-            }).Take(20).ToList();
+            }).OrderByDescending(x=>x.Count).Take(5).ToList();
 
             ViewBag.DestinationCount = Convert.ToInt32(obj.DestinationList.Count());
 

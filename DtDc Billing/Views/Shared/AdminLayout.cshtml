@@ -2,12 +2,14 @@
 @{
     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
      Request.ApplicationPath.TrimEnd('/');
+    Layout = null;
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." data-target="Unlock unparalleled efficiency with Fr-Billing - Your Ultimate Billing Solution. Discover how our cutting-edge platform revolutionizes billing processes, elevates user experience, and turbocharges productivity. Streamline operations effortlessly and stay ahead in today's dynamic business landscape. Click now to explore the future of billing">
@@ -81,7 +83,8 @@
 
 </head>
 
-<body class="hold-transition skin-red  ">
+<body class="hold-transition skin-red">
+    <div class="elfsight-app-38ff4384-1e40-4eca-b963-69e2e25bccfc" data-elfsight-app-lazy></div>
     <div class="wrapper">
         <!-- Main Header -->
         <header class="main-header">
@@ -121,89 +124,89 @@
                     <ul class="nav navbar-nav">
                         @*<li class="logincss">
 
-                        @{
+                                            @{
 
-                            var UserType = new SelectList(new[]
-                            {
-            new SelectListItem { Text = "CashCounter", Value = "CashCounter", Selected = true },
-            new SelectListItem { Text = "Billing", Value = "Billing"},
-        }, "Value", "Text");
-                        }
+                                                var UserType = new SelectList(new[]
+                                                {
+                                new SelectListItem { Text = "CashCounter", Value = "CashCounter", Selected = true },
+                                new SelectListItem { Text = "Billing", Value = "Billing"},
+                            }, "Value", "Text");
+                                            }
 
-                        <a <span="">UserType :<span>@Html.DropDownList("UserType", UserType, new { style = "width: 120px; background-color: DeepSkyBlue;" })
-                              </span> </a>
+                                            <a <span="">UserType :<span>@Html.DropDownList("UserType", UserType, new { style = "width: 120px; background-color: DeepSkyBlue;" })
+                                                  </span> </a>
 
 
-                    </li>*@
+                                        </li>*@
                         @*<li class="logincss">
-            <a <span="">UserType :<span> @Html.DropDownList("UserType",null, new { style = "width: 120px; background-color: DeepSkyBlue;" }) </span> </a>
-        </li>*@
+                                <a <span="">UserType :<span> @Html.DropDownList("UserType",null, new { style = "width: 120px; background-color: DeepSkyBlue;" }) </span> </a>
+                            </li>*@
                         @*<li class="logincss">
-            <a>
-                <span>
-                    UserType : CashCounter
-                    @Html.Label((string)ViewBag.CurrentUserType)
-                </span>
+                                <a>
+                                    <span>
+                                        UserType : CashCounter
+                                        @Html.Label((string)ViewBag.CurrentUserType)
+                                    </span>
 
 
-                @if (@Session["UserType"] != null)
-                {
-                    <span>@Html.Label((string)@Session["UserType"]) </span>
+                                    @if (@Session["UserType"] != null)
+                                    {
+                                        <span>@Html.Label((string)@Session["UserType"]) </span>
 
-                }
-            </a>
+                                    }
+                                </a>
 
-            @ViewBag.CurrentUserType
-        </li>*@
+                                @ViewBag.CurrentUserType
+                            </li>*@
 
                         @*@if (@ViewBag.CurrentUserType == "")
-            {
+                                {
 
-        <li class="logincss">
-            @{
-                int count = Convert.ToInt32(@Session["CountUserType"]);
+                            <li class="logincss">
+                                @{
+                                    int count = Convert.ToInt32(@Session["CountUserType"]);
 
-                if (count > 1)
-                {
-                    <a href="@Url.Action("ChangeUserType","Booking",new { strcurrentuser = Session["UserType"] })"> Change UserType </a>
-                }
-                else
-                {
+                                    if (count > 1)
+                                    {
+                                        <a href="@Url.Action("ChangeUserType","Booking",new { strcurrentuser = Session["UserType"] })"> Change UserType </a>
+                                    }
+                                    else
+                                    {
 
-                }
+                                    }
 
-            }
-        </li>
-            }
-            else
-            {
+                                }
+                            </li>
+                                }
+                                else
+                                {
 
-        <li class="logincss">
-            @{
-                int count = Convert.ToInt32(@Session["CountUserType"]);
+                            <li class="logincss">
+                                @{
+                                    int count = Convert.ToInt32(@Session["CountUserType"]);
 
-                if (count > 1)
-                {
-                    <a href="@Url.Action("ChangeUserType", "Booking", new { strcurrentuser = ViewBag.CurrentUserType })"> Change UserType </a>
-                }
-                else
-                {
+                                    if (count > 1)
+                                    {
+                                        <a href="@Url.Action("ChangeUserType", "Booking", new { strcurrentuser = ViewBag.CurrentUserType })"> Change UserType </a>
+                                    }
+                                    else
+                                    {
 
-                }
+                                    }
 
-            }
-
-
+                                }
 
 
-        </li>
-                }*@
+
+
+                            </li>
+                                    }*@
 
 
                         <!-- User Account Menu -->
                         <li class="logincss">
                             <a>
-                                <span>Fr-Billing Support No:</span>
+                                <span> Support No:</span>
                                 <i aria-hidden="true"></i>
                                 <span class="text-primary"><strong>9209764995</strong></span>
                             </a>
@@ -211,16 +214,16 @@
 
 
                         @*<li class="logincss">
-                            <a>
-                                <span>Your Referral Code :</span>
-                                <i aria-hidden="true"></i>
-                                <span class="text-primary"><strong>@Request.Cookies["Cookies"]["referalCode"].ToString()</strong></span>
-                            </a>
-                        </li>*@
+                                <a>
+                                    <span>Your Referral Code :</span>
+                                    <i aria-hidden="true"></i>
+                                    <span class="text-primary"><strong>@Request.Cookies["Cookies"]["referalCode"].ToString()</strong></span>
+                                </a>
+                            </li>*@
 
                         <li class="logincss">
                             <a>
-                                <span>PFCode :</span>
+                                <span>Franchise Code :</span>
                                 <i aria-hidden="true"></i>
                                 <span class="text-primary"><strong>@Request.Cookies["Cookies"]["AdminValue"].ToString()</strong></span>
                             </a>
@@ -263,8 +266,8 @@
 
 
                         @*<li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-        </li>*@
+                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                            </li>*@
                     </ul>
                 </div>
             </nav>
@@ -299,10 +302,10 @@
                         </a>
                     </li>
                     @*<li id="user-list" class="">
-            <a href="@Url.Action("UserList","Admin")">
-                <i class="fa fa-users"></i> <span>User</span>
-            </a>
-        </li>*@
+                            <a href="@Url.Action("UserList","Admin")">
+                                <i class="fa fa-users"></i> <span>User</span>
+                            </a>
+                        </li>*@
 
                     <li class="treeview">
                         <a href="javascript:;">
@@ -322,8 +325,8 @@
 
                     @*@{
 
-            Html.RenderPartial("UserModelPartial");
-        }*@
+                            Html.RenderPartial("UserModelPartial");
+                        }*@
 
                     <li class="treeview">
                         <a href="javascript:;">
@@ -361,8 +364,8 @@
                             <li><a href="@Url.Action("importTextFile","Booking")"><i class="fa fa-circle-o"></i> Import From Text</a></li>
                             <li><a href="@Url.Action("importFromExcel","Booking")"><i class="fa fa-circle-o"></i> Import From Excel</a></li>
                             @*<li><a href="@Url.Action("weightdiffModify","Booking")"><i class="fa fa-circle-o"></i> Weight Difference</a></li>
-                <li><a href="@Url.Action("BulkUpdation","Booking")"><i class="fa fa-circle-o"></i> Bulk Updation</a></li>
-                <li><a href="@Url.Action("ViewConsignment","Booking")"><i class="fa fa-circle-o"></i> View Consignment</a></li>*@
+                                <li><a href="@Url.Action("BulkUpdation","Booking")"><i class="fa fa-circle-o"></i> Bulk Updation</a></li>
+                                <li><a href="@Url.Action("ViewConsignment","Booking")"><i class="fa fa-circle-o"></i> View Consignment</a></li>*@
                             <li><a href="@Url.Action("DeleteConsignment","Admin")"><i class="fa fa-circle-o"></i> Delete Consignment</a></li>
 
 
@@ -382,7 +385,7 @@
                             <li><a href="@Url.Action("MultipleInvoice","Invoice")"><i class="fa fa-circle-o"></i> Multiple Invoice</a></li>
                             <li><a href="@Url.Action("ViewInvoice","Invoice")"><i class="fa fa-circle-o"></i> View Invoice</a></li>
                             @*<li><a href="@Url.Action("DpInvoice","Invoice",new { Firm_Id = 1 })"> <i class="fa fa-circle-o"></i> Generate DP Invoice</a></li>
-                <li><a href="@Url.Action("ViewDPInvoice","Invoice",new { Firm_Id = 1 })"> <i class="fa fa-circle-o"></i> View DP Invoice</a></li>*@
+                                <li><a href="@Url.Action("ViewDPInvoice","Invoice",new { Firm_Id = 1 })"> <i class="fa fa-circle-o"></i> View DP Invoice</a></li>*@
                             <li><a href="@Url.Action("GenerateInvoiceSingle","Invoice")"> <i class="fa fa-circle-o"></i> Generate Single Invoice</a></li>
                             <li><a href="@Url.Action("ViewSingleInvoice","Invoice")"> <i class="fa fa-circle-o"></i> View Single Invoice</a></li>
                             <li><a href="@Url.Action("GenerateInvoiceWithoutGST","Invoice")"> <i class="fa fa-circle-o"></i> Generate  Invoice Without GST</a></li>
@@ -416,31 +419,31 @@
                         </a>
                     </li>
                     @*<li class="treeview">
-            <a href="javascript:;">
-                <i class="fa fa-truck"></i> <span>Track</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="@Url.Action("DeliveryFile","Admin")"><i class="fa fa-circle-o"></i> Upload TXT</a></li>
-                <li><a href="@Url.Action("Dreport","DeliveryReport")"><i class="fa fa-circle-o"></i> Delivery Report</a></li>
-            </ul>
-        </li>*@
+                            <a href="javascript:;">
+                                <i class="fa fa-truck"></i> <span>Track</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("DeliveryFile","Admin")"><i class="fa fa-circle-o"></i> Upload TXT</a></li>
+                                <li><a href="@Url.Action("Dreport","DeliveryReport")"><i class="fa fa-circle-o"></i> Delivery Report</a></li>
+                            </ul>
+                        </li>*@
 
                     @*<li class="treeview">
-            <a href="javascript:;">
-                <i class="fa fa-edit"></i> <span>CashCounter</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="@Url.Action("ConsignmentDetails","CashBooking")"><i class="fa fa-circle-o"></i> Cash Consignment Details</a></li>
-                <li><a href="@Url.Action("DeleteCons","Admin")"><i class="fa fa-circle-o"></i>Delete Cashcounter Consignment</a></li>
-                <li><a href="@Url.Action("ExpensesList","Admin")"><i class="fa fa-circle-o"></i>Expenses</a></li>
-            </ul>
-        </li>*@
+                            <a href="javascript:;">
+                                <i class="fa fa-edit"></i> <span>CashCounter</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("ConsignmentDetails","CashBooking")"><i class="fa fa-circle-o"></i> Cash Consignment Details</a></li>
+                                <li><a href="@Url.Action("DeleteCons","Admin")"><i class="fa fa-circle-o"></i>Delete Cashcounter Consignment</a></li>
+                                <li><a href="@Url.Action("ExpensesList","Admin")"><i class="fa fa-circle-o"></i>Expenses</a></li>
+                            </ul>
+                        </li>*@
 
 
 
@@ -473,8 +476,8 @@
                     </li>
 
                     @*<div class="sidebar-menu">
-            <label style="background-color:cornflowerblue;font-size:medium;text-align:center ">CashCounter Menu</label>
-        </div>*@
+                            <label style="background-color:cornflowerblue;font-size:medium;text-align:center ">CashCounter Menu</label>
+                        </div>*@
 
                     <li class="treeview">
                         <a href="javascript:;">
@@ -563,10 +566,10 @@
                     </li>
                     @*<li id="">
 
-            <a href="https://web.whatsapp.com/" target="_blank" onclick="myFunction()">
-                <i class="fa fa-share"></i> <span>Refer and Earn</span>
-            </a>
-        </li>*@
+                            <a href="https://web.whatsapp.com/" target="_blank" onclick="myFunction()">
+                                <i class="fa fa-share"></i> <span>Refer and Earn</span>
+                            </a>
+                        </li>*@
                     @if (@Session["AccessPage"] != null && @Session["AccessPage"].ToString() == "1")
                     {
                         <li class="treeview">
@@ -584,101 +587,101 @@
                         </li>
                     }
                     @*<li class="treeview">
-                <a href="#">
-                    <i class="fa fa-line-chart"></i> <span>Reports</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-circle-o"></i> Cashcounter Reports
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="@Url.Action("SaleReports","Reports")"><i class="fa fa-circle-o"></i> Sale Report</a></li>
-                            <li><a href="@Url.Action("DailySaleReport","Reports")"><i class="fa fa-circle-o"></i> Datewise Sale Report</a></li>
-                            <li><a href="@Url.Action("UniqueReport","Reports")"><i class="fa fa-circle-o"></i> Customer Report</a></li>
-                            <li><a href="@Url.Action("AdminDailyReport","Reports")"><i class="fa fa-circle-o"></i> Daily Sale Report</a></li>
-                            <li><a href="@Url.Action("Chart","Reports")"><i class="fa fa-circle-o"></i> Sale Report Chart</a></li>
-                            <li><a href="@Url.Action("DayWiseCharts","Reports")"><i class="fa fa-circle-o"></i> Daily Sale  Report Chart</a></li>
-                            <li><a href="@Url.Action("PercantagePIChart","Reports")"><i class="fa fa-circle-o"></i>  All Over Sale Report Chart</a></li>
-                            <li><a href="@Url.Action("Consignmentlist","Admin")"><i class="fa fa-circle-o"></i>  Consignments</a></li>
-                            <li><a href="@Url.Action("PfReportDaily","Reports")"><i class="fa fa-circle-o"></i>  Daily Collection Report</a></li>
-                            <li><a href="@Url.Action("WalletReportsAdmin","Reports")"><i class="fa fa-circle-o"></i>  Membership Report</a></li>
-                            <li><a href="@Url.Action("creditorsreport","Reports")"><i class="fa fa-circle-o"></i>  Creditors Report</a></li>
-                        </ul>
-                    </li>
+                                <a href="#">
+                                    <i class="fa fa-line-chart"></i> <span>Reports</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-circle-o"></i> Cashcounter Reports
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Action("SaleReports","Reports")"><i class="fa fa-circle-o"></i> Sale Report</a></li>
+                                            <li><a href="@Url.Action("DailySaleReport","Reports")"><i class="fa fa-circle-o"></i> Datewise Sale Report</a></li>
+                                            <li><a href="@Url.Action("UniqueReport","Reports")"><i class="fa fa-circle-o"></i> Customer Report</a></li>
+                                            <li><a href="@Url.Action("AdminDailyReport","Reports")"><i class="fa fa-circle-o"></i> Daily Sale Report</a></li>
+                                            <li><a href="@Url.Action("Chart","Reports")"><i class="fa fa-circle-o"></i> Sale Report Chart</a></li>
+                                            <li><a href="@Url.Action("DayWiseCharts","Reports")"><i class="fa fa-circle-o"></i> Daily Sale  Report Chart</a></li>
+                                            <li><a href="@Url.Action("PercantagePIChart","Reports")"><i class="fa fa-circle-o"></i>  All Over Sale Report Chart</a></li>
+                                            <li><a href="@Url.Action("Consignmentlist","Admin")"><i class="fa fa-circle-o"></i>  Consignments</a></li>
+                                            <li><a href="@Url.Action("PfReportDaily","Reports")"><i class="fa fa-circle-o"></i>  Daily Collection Report</a></li>
+                                            <li><a href="@Url.Action("WalletReportsAdmin","Reports")"><i class="fa fa-circle-o"></i>  Membership Report</a></li>
+                                            <li><a href="@Url.Action("creditorsreport","Reports")"><i class="fa fa-circle-o"></i>  Creditors Report</a></li>
+                                        </ul>
+                                    </li>
 
-                    <li class="treeview">
-            <a href="#">
-                <i class="fa fa-circle-o"></i> Membership Reports
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="@Url.Action("MemberShipreport","BillingReports")"><i class="fa fa-circle-o"></i> All over Report</a></li>
-                <li><a href="@Url.Action("MembershipPfWiseReport","BillingReports")"><i class="fa fa-circle-o"></i> PF Wise Report</a></li>
-               <li><a href="@Url.Action("PFwisemembershipsummary","BillingReports")"><i class="fa fa-circle-o"></i> IFwise Summary Report</a></li>
-            </ul>
-        </li>
+                                    <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-circle-o"></i> Membership Reports
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("MemberShipreport","BillingReports")"><i class="fa fa-circle-o"></i> All over Report</a></li>
+                                <li><a href="@Url.Action("MembershipPfWiseReport","BillingReports")"><i class="fa fa-circle-o"></i> PF Wise Report</a></li>
+                               <li><a href="@Url.Action("PFwisemembershipsummary","BillingReports")"><i class="fa fa-circle-o"></i> IFwise Summary Report</a></li>
+                            </ul>
+                        </li>
 
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-circle-o"></i> Billing Reports
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="@Url.Action("DatewiseReport","BillingReports")"><i class="fa fa-circle-o"></i> Datewise Report</a></li>
-                            <li><a href="@Url.Action("PfWiseReport","BillingReports")"><i class="fa fa-circle-o"></i> MFwise Report</a></li>
-                <li><a href="@Url.Action("SaleReportBeforeInvoice","BillingReports")"><i class="fa fa-circle-o"></i> SalesReport Before Invoice</a></li>
-                            <li><a href="@Url.Action("CreditorsReport","BillingReports")"><i class="fa fa-circle-o"></i> Creditor's Report</a></li>
-                            <li><a href="@Url.Action("PfwiseCreditorsReport","BillingReports")"><i class="fa fa-circle-o"></i>Mfwise Creditor's Report </a></li>
-                <li><a href="@Url.Action("BusinessAnalysis","BillingReports")"><i class="fa fa-circle-o"></i> Business Analysis</a></li>
-                <li><a href="@Url.Action("Destinations","BillingReports")"><i class="fa fa-circle-o"></i>  New Destination</a></li>
-                <li><a href="@Url.Action("InvalidConsignment","BillingReports")"><i class="fa fa-circle-o"></i>  Invalid Consignment</a></li>
-                            <li><a href="@Url.Action("TaxReport","BillingReports")"><i class="fa fa-circle-o"></i> Tax Report</a></li>
-                            <li><a href="@Url.Action("EmployeeWiseConsigmentReport","BillingReports")"><i class="fa fa-circle-o"></i>Employee Wise Consigment Report </a></li>
-                            <li><a href="@Url.Action("billedunbilled","Reports")"><i class="fa fa-circle-o"></i>Billed Unbilled Report </a></li>
-                            <li><a href="@Url.Action("Topayreport","Reports")"><i class="fa fa-circle-o"></i>Topay Report </a></li>
-                <li><a href="@Url.Action("Codreport","Reports")"><i class="fa fa-circle-o"></i>Cod Report </a></li>
-                <li><a href="@Url.Action("PfwiseTaxReport","BillingReports")"><i class="fa fa-circle-o"></i>Mfwise Tax Report </a></li>
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="fa fa-circle-o"></i> Billing Reports
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li><a href="@Url.Action("DatewiseReport","BillingReports")"><i class="fa fa-circle-o"></i> Datewise Report</a></li>
+                                            <li><a href="@Url.Action("PfWiseReport","BillingReports")"><i class="fa fa-circle-o"></i> MFwise Report</a></li>
+                                <li><a href="@Url.Action("SaleReportBeforeInvoice","BillingReports")"><i class="fa fa-circle-o"></i> SalesReport Before Invoice</a></li>
+                                            <li><a href="@Url.Action("CreditorsReport","BillingReports")"><i class="fa fa-circle-o"></i> Creditor's Report</a></li>
+                                            <li><a href="@Url.Action("PfwiseCreditorsReport","BillingReports")"><i class="fa fa-circle-o"></i>Mfwise Creditor's Report </a></li>
+                                <li><a href="@Url.Action("BusinessAnalysis","BillingReports")"><i class="fa fa-circle-o"></i> Business Analysis</a></li>
+                                <li><a href="@Url.Action("Destinations","BillingReports")"><i class="fa fa-circle-o"></i>  New Destination</a></li>
+                                <li><a href="@Url.Action("InvalidConsignment","BillingReports")"><i class="fa fa-circle-o"></i>  Invalid Consignment</a></li>
+                                            <li><a href="@Url.Action("TaxReport","BillingReports")"><i class="fa fa-circle-o"></i> Tax Report</a></li>
+                                            <li><a href="@Url.Action("EmployeeWiseConsigmentReport","BillingReports")"><i class="fa fa-circle-o"></i>Employee Wise Consigment Report </a></li>
+                                            <li><a href="@Url.Action("billedunbilled","Reports")"><i class="fa fa-circle-o"></i>Billed Unbilled Report </a></li>
+                                            <li><a href="@Url.Action("Topayreport","Reports")"><i class="fa fa-circle-o"></i>Topay Report </a></li>
+                                <li><a href="@Url.Action("Codreport","Reports")"><i class="fa fa-circle-o"></i>Cod Report </a></li>
+                                <li><a href="@Url.Action("PfwiseTaxReport","BillingReports")"><i class="fa fa-circle-o"></i>Mfwise Tax Report </a></li>
 
-                        </ul>
-                    </li>
+                                        </ul>
+                                    </li>
 
 
 
-                </ul>
-            </li>*@
+                                </ul>
+                            </li>*@
 
 
                     @*<li class="treeview">
-            <a href="#">
-                <i class="fa fa-line-chart"></i> <span>Manage Customer</span>
-                <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                </span>
-            </a>
-            <ul class="treeview-menu">
+                            <a href="#">
+                                <i class="fa fa-line-chart"></i> <span>Manage Customer</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
 
-                <li><a href="@Url.Action("AddImage","Customer")"><i class="fa fa-circle-o"></i>Add Advertisement Image</a></li>
-                <li><a href="@Url.Action("Complaint","Customer")"><i class="fa fa-circle-o"></i>Complaint Handling</a></li>
-                <li><a href="@Url.Action("Holidays","Customer")"><i class="fa fa-circle-o"></i> Holiday Management</a></li>
-                <li><a href="@Url.Action("AddHoliday","Customer")"><i class="fa fa-circle-o"></i>Add  Holiday</a></li>
-                <li><a href="@Url.Action("RaiseIssue","Customer")"><i class="fa fa-circle-o"></i>Raise Issue</a></li>
-                <li><a href="@Url.Action("RaiseIssueStatus","Customer")"><i class="fa fa-circle-o"></i>Raise Issue Management</a></li>
-                <li><a href="@Url.Action("Notification","Customer")"><i class="fa fa-circle-o"></i>Notification Management</a></li>
+                                <li><a href="@Url.Action("AddImage","Customer")"><i class="fa fa-circle-o"></i>Add Advertisement Image</a></li>
+                                <li><a href="@Url.Action("Complaint","Customer")"><i class="fa fa-circle-o"></i>Complaint Handling</a></li>
+                                <li><a href="@Url.Action("Holidays","Customer")"><i class="fa fa-circle-o"></i> Holiday Management</a></li>
+                                <li><a href="@Url.Action("AddHoliday","Customer")"><i class="fa fa-circle-o"></i>Add  Holiday</a></li>
+                                <li><a href="@Url.Action("RaiseIssue","Customer")"><i class="fa fa-circle-o"></i>Raise Issue</a></li>
+                                <li><a href="@Url.Action("RaiseIssueStatus","Customer")"><i class="fa fa-circle-o"></i>Raise Issue Management</a></li>
+                                <li><a href="@Url.Action("Notification","Customer")"><i class="fa fa-circle-o"></i>Notification Management</a></li>
 
 
-            </ul>
-        </li>*@
+                            </ul>
+                        </li>*@
 
 
 
@@ -691,7 +694,7 @@
                         </li>
 
                     </ul>
-</section>
+            </section>
             <!-- /.sidebar -->
         </aside>
         <!-- Content Wrapper. Contains page content -->

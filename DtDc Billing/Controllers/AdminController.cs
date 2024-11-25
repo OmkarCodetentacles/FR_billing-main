@@ -40,6 +40,27 @@ namespace DtDc_Billing.Controllers
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Adminsss
 
+
+        public ActionResult test()
+        {
+
+            var getSummary = db.MonthlyDataAnalysis().ToList().Select(x => new MonthlyDataAnalysisModel
+            {
+                PFCode = x.PFCode,
+                InvoiceCount = x.InvoiceCount ?? 0,
+                TotalInvoiceAmount = x.TotalInvoiceAmount ?? 0,
+                PaidAmount = x.PaidAmount ?? 0,
+                UnpaidAmount = x.UnpaidAmount ?? 0,
+                FranchiseName = x.FranchiseName,
+                OwnerName = x.OwnerName,
+                // EmailId = x.EmailId,
+                LastMonth = x.LastMonth,
+                CashAmount = x.CashAmount ?? 0
+            }).FirstOrDefault();
+
+            return View(getSummary);
+        }
+
       //  [SessionUserModule]
         public ActionResult AdminLogin(string ReturnUrl)
         {
@@ -5357,6 +5378,29 @@ namespace DtDc_Billing.Controllers
                 return sw.GetStringBuilder().ToString();
             }
         }
+
+
+        public async Task<List<MonthlyDataAnalysisModel>> getMonthlyDataAnalysisModel()
+        {
+
+            List<MonthlyDataAnalysisModel> getSummary = new List<MonthlyDataAnalysisModel>();
+
+             getSummary = db.MonthlyDataAnalysis().Take(1).Select(x=> new MonthlyDataAnalysisModel
+            {
+                 PFCode = x.PFCode,
+                 InvoiceCount = x.InvoiceCount ?? 0,
+                 TotalInvoiceAmount = x.TotalInvoiceAmount ?? 0,
+                 PaidAmount = x.PaidAmount ?? 0,
+                FranchiseName = x.FranchiseName,
+                 OwnerName = x.OwnerName,
+                // EmailId = x.EmailId,
+                 LastMonth = x.LastMonth,
+                 CashAmount = x.CashAmount ?? 0
+            }).ToList();
+
+            return getSummary;
+        }
+
         public async Task< FinancialSummary> GetMonthlyFinancialSummary(int month, int year,string pfcode)
         {
             var summary = new FinancialSummary();
@@ -5416,29 +5460,18 @@ namespace DtDc_Billing.Controllers
        
         public async Task<ActionResult> SendEmailMessageTotheOwner()
         {
-            var data = await (from r in db.registrations
-                              join f in db.Franchisees
-                              on r.Pfcode equals f.PF_Code
-                              orderby f.Datetime_Fr
-                              select new
-                              {
-                                  r,
-                                  f
-                              }).ToListAsync();
+            var data = await getMonthlyDataAnalysisModel();
 
-            foreach (var r in data)
+            foreach (var singleFranchise in data)
             {
-                DateTime newDate = r.r.paymentDate.Value.AddDays(r.r.subscriptionForInDays ?? 0);
-                if (newDate >=DateTime.Now)
-                {
-                    var summary = await GetMonthlyFinancialSummary(DateTime.Now.Month, DateTime.Now.Year, r.f.PF_Code);
-
+                
                     var model = new EmailTemplateModel();
-                    string emailBody = RenderPartialViewToString("_EmailTemplate", summary);
+                    string emailBody = RenderPartialViewToString("MonthlyStaticEmailTemplate", singleFranchise);
 
-                      string email = "navlakheprajkta23@gmail.com";
+                      //string email = "survasesainath999@gmail.com";
+                      string email = singleFranchise.EmailId;
                   //  string email = "pratikshacodetechnology@gmail.com";
-                    string subject = "Key Metrics from FR-Billing for " + summary.FranchiseeName.ToUpper();
+                    string subject = "FR-Billing - Monthly Highlights: " + singleFranchise.FranchiseName.ToUpper() + " Metrics for "+ singleFranchise.LastMonth;
                     string body = emailBody;
 
                     SendEmailModel sm = new SendEmailModel();
@@ -5450,7 +5483,7 @@ namespace DtDc_Billing.Controllers
                         Console.WriteLine($"Failed to send email to {email}. Moving to next record.");
                         continue; // Skip to the next record if email sending fails
                     }
-                }
+                
             }
 
             return RedirectToAction("EmailTemplateModel");

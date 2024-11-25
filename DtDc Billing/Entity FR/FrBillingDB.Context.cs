@@ -284,6 +284,27 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithoutCompany_Result>("getCreditorsInvoiceWithoutCompany", fromDateParameter, toDateParameter, pfcodeParameter);
         }
     
+        public virtual ObjectResult<getCreditorsInvoiceWithTDSAmount_Result> getCreditorsInvoiceWithTDSAmount(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithTDSAmount_Result>("getCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+        }
+    
         public virtual ObjectResult<getInvoice_Result> getInvoice(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
         {
             var fromDateParameter = fromDate.HasValue ?
@@ -354,6 +375,11 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("Pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getIssueList_Result>("getIssueList", pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<getLiveData_Result> getLiveData()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getLiveData_Result>("getLiveData");
         }
     
         public virtual ObjectResult<getLogin_Result> getLogin(string username, string password, string pFCode)
@@ -509,6 +535,27 @@ namespace DtDc_Billing.Entity_FR
         public virtual ObjectResult<getRemainingAll_Result> getRemainingAll()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getRemainingAll_Result>("getRemainingAll");
+        }
+    
+        public virtual ObjectResult<getSP_NewCreditorsInvoiceWithTDSAmount_Result> getSP_NewCreditorsInvoiceWithTDSAmount(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getSP_NewCreditorsInvoiceWithTDSAmount_Result>("getSP_NewCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
         }
     
         public virtual ObjectResult<getUserModuleList_Result> getUserModuleList()
@@ -867,30 +914,9 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
         }
     
-        public virtual ObjectResult<getLiveData_Result> getLiveData()
+        public virtual ObjectResult<MonthlyDataAnalysis_Result> MonthlyDataAnalysis()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getLiveData_Result>("getLiveData");
-        }
-    
-        public virtual ObjectResult<getCreditorsInvoiceWithTDSAmount_Result1> getCreditorsInvoiceWithTDSAmount(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("fromDate", fromDate) :
-                new ObjectParameter("fromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("toDate", toDate) :
-                new ObjectParameter("toDate", typeof(System.DateTime));
-    
-            var customeridParameter = customerid != null ?
-                new ObjectParameter("Customerid", customerid) :
-                new ObjectParameter("Customerid", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithTDSAmount_Result1>("getCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result>("MonthlyDataAnalysis");
         }
     }
 }
