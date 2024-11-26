@@ -531,22 +531,31 @@ namespace DtDc_Billing.Controllers
                     //                      }).Sum(x=>x.Amount)??0;
                     var PartialtotalAmount = (from inv in db.Invoices
                                               join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno into cashGroup
+                                              from ca in cashGroup.DefaultIfEmpty()
                                               join ch in db.Cheques on inv.invoiceno equals ch.Invoiceno into chequeGroup
+                                              from ch in chequeGroup.DefaultIfEmpty()
                                               join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno into neftGroup
+                                              from ne in neftGroup.DefaultIfEmpty()
                                               join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno into creditNoteGroup
-                                              where inv.invoiceno==l.invoiceno &&
-                                             
-                                              inv.Pfcode == pfcode && (inv.isDelete == null || inv.isDelete == false)
-                                              select new    
+                                              from cn in creditNoteGroup.DefaultIfEmpty()
+                                              where inv.invoiceno == l.invoiceno &&
+                                                    inv.Pfcode == pfcode 
+                                                    && inv.paid<inv.netamount
+                                              select new
                                               {
                                                   TotalAmount =
-                                                      (cashGroup.Sum(x => x.C_Total_Amount) ?? 0) +
-                                                      (chequeGroup.Sum(x => x.totalAmount) ?? 0) +
-                                                      (neftGroup.Sum(x => x.N_Total_Amount) ?? 0) +
-                                                      (creditNoteGroup.Sum(x => x.Cr_Amount) ?? 0)
-                                              }).Sum(x => x.TotalAmount);
+                                                  ((ca != null ? ca.C_Total_Amount : 0) +
+                                                   (ch != null ? ch.totalAmount : 0) +
+                                                   (ne != null ? ne.N_Total_Amount : 0) +
+                                                   (cn != null ? cn.Cr_Amount : 0)) ?? 0
+                                              }).FirstOrDefault();
 
-                    partialtotal += (double)PartialtotalAmount ;
+                    if (PartialtotalAmount != null)
+                    {
+                        partialtotal += PartialtotalAmount.TotalAmount != null ? (double)PartialtotalAmount.TotalAmount : 0;
+                    }
+
+                   // partialtotal += PartialtotalAmount.TotalAmount!=null?(double)PartialtotalAmount.TotalAmount:0 ;
 
                 }
                 
@@ -812,20 +821,30 @@ namespace DtDc_Billing.Controllers
                 //                     }).Sum(x => x.Amount) ?? 0;
                 var PartialtotalAmount = (from inv in db.Invoices
                                           join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno into cashGroup
+                                          from ca in cashGroup.DefaultIfEmpty()
                                           join ch in db.Cheques on inv.invoiceno equals ch.Invoiceno into chequeGroup
+                                          from ch in chequeGroup.DefaultIfEmpty()
                                           join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno into neftGroup
+                                          from ne in neftGroup.DefaultIfEmpty()
                                           join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno into creditNoteGroup
-                                          where inv.invoiceno==l.invoiceno &&
-                                          inv.Pfcode == strpf && (inv.isDelete == null || inv.isDelete == false)
+                                          from cn in creditNoteGroup.DefaultIfEmpty()
+                                          where inv.invoiceno == l.invoiceno &&
+                                                inv.Pfcode == strpf
+                                                && inv.paid < inv.netamount
                                           select new
                                           {
                                               TotalAmount =
-                                                  (cashGroup.Sum(x => x.C_Total_Amount) ?? 0) +
-                                                  (chequeGroup.Sum(x => x.totalAmount) ?? 0) +
-                                                  (neftGroup.Sum(x => x.N_Total_Amount) ?? 0) +
-                                                  (creditNoteGroup.Sum(x => x.Cr_Amount) ?? 0)
-                                          }).Sum(x => x.TotalAmount);
-                partialtotal += (double)PartialtotalAmount;
+                                              ((ca != null ? ca.C_Total_Amount : 0) +
+                                               (ch != null ? ch.totalAmount : 0) +
+                                               (ne != null ? ne.N_Total_Amount : 0) +
+                                               (cn != null ? cn.Cr_Amount : 0)) ?? 0
+                                          }).FirstOrDefault();
+
+                if (PartialtotalAmount != null)
+                {
+                    partialtotal += PartialtotalAmount.TotalAmount != null ? (double)PartialtotalAmount.TotalAmount : 0;
+                }
+
 
             }
             var invoiceDashboardData = new InvoiceDataForDashBoard
@@ -5205,14 +5224,35 @@ Select(e => new
 
                 return RedirectToAction("ViewInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo ="", Companydetails=Companydetails });
                 }
-         
+            var cash = db.Cashes.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var cheque = db.Cheques.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var NEFT = db.NEFTs.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var CreditNote = db.CreditNotes.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+                foreach(var inv in cash)
+            {
+                db.Cashes.Remove(inv);
 
+            }
+                foreach (var inv in cheque)
+            {
+                db.Cheques.Remove(inv);
+            }
+                foreach(var inv in NEFT)
+            {
+                db.NEFTs.Remove(inv);
+            }
+                foreach(var inv in CreditNote)
+            {
+                db.CreditNotes.Remove(inv);
+            }
                 //db.Invoices.Remove(checkInvoiceNo);
-                checkInvoiceNo.isDelete = true;
+                  checkInvoiceNo.isDelete = true;
+                 checkInvoiceNo.paid = 0;
                 db.Entry(checkInvoiceNo).State = EntityState.Modified;
 
 
                 db.SaveChanges();
+          
                 TempData["success"] = checkInvoiceNo.invoiceno + " Delete successfully!";
 
             return RedirectToAction("ViewInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = "", Companydetails = Companydetails });
@@ -5231,6 +5271,27 @@ Select(e => new
 
 
                 return RedirectToAction("ViewSingleInvoice", new { invfromdate = invfromdate, invtodate = invtodate, invoiceNo = "", Companydetails=Companydetails });
+            }
+            var cash = db.Cashes.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var cheque = db.Cheques.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var NEFT = db.NEFTs.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            var CreditNote = db.CreditNotes.Where(x => x.Invoiceno == checkInvoiceNo.invoiceno && x.Pfcode == pfcode).ToList();
+            foreach (var inv in cash)
+            {
+                db.Cashes.Remove(inv);
+
+            }
+            foreach (var inv in cheque)
+            {
+                db.Cheques.Remove(inv);
+            }
+            foreach (var inv in NEFT)
+            {
+                db.NEFTs.Remove(inv);
+            }
+            foreach (var inv in CreditNote)
+            {
+                db.CreditNotes.Remove(inv);
             }
 
 

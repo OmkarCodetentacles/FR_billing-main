@@ -140,7 +140,7 @@ namespace DtDc_Billing.Controllers
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
-                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid??0);
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid??0);
 
                 if (cash.C_Total_Amount >balance)
                 {
@@ -191,7 +191,7 @@ namespace DtDc_Billing.Controllers
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
-                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid);
+                double balance = Convert.ToDouble(cashb.netamount)- Convert.ToDouble(cashb.paid);
 
                 if (cheque.totalAmount > balance)
                 {
@@ -239,7 +239,7 @@ namespace DtDc_Billing.Controllers
 
                 var cashb = db.Invoices.Where(m => m.invoiceno == nEFT.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
-                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid);
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid);
 
                 if (nEFT.N_Total_Amount > balance)
                 {
@@ -295,7 +295,7 @@ namespace DtDc_Billing.Controllers
             {
 
 
-                double balance = Math.Round(Convert.ToDouble(cashb.netamount)) - Convert.ToDouble(cashb.paid);
+                double balance =Convert.ToDouble(cashb.netamount)- Convert.ToDouble(cashb.paid);
 
                 if (creditNote.Cr_Amount > balance)
                 {
