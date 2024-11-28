@@ -1216,6 +1216,8 @@ $("#Customer_Id").autocomplete({
 
 @if (ViewBag.invoiceno != null)
 {
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/') + "/";
+
     <script>
         var print = '@ViewBag.pdf';
         $("#overlayBlock").hide();
@@ -1232,7 +1234,7 @@ $("#Customer_Id").autocomplete({
         console.log(data);
         $("#overlayBlock").hide();
 
-        $('#saveinv').attr('href', "@baseurl/PDF/" +strpfcode+"/" + data);
+        $('#saveinv').attr('href', "@baseurl/CashPDF/" + @ViewBag.Fid +"/" + data);
 
                 document.getElementById('saveinv').click();
 
