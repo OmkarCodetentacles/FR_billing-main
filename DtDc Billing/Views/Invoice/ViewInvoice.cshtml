@@ -163,13 +163,7 @@
                 <select name="size">
                     <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
                     <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-                    <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->
-                        @*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@
-
-                        <!--</select>-->
-
-
-                        @*<div class="col-md-5">
+                    <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->@*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@<!--</select>-->@*<div class="col-md-5">
                         <div class="form-group">
                             <div class="pf-code">
                                 <label>Firm Name</label>
@@ -177,17 +171,25 @@
                                 @Html.DropDownList("FirmDetails", "-Please select-")
                             </div>
                         </div>
-                    </div>*@
+                    </div>*@<div class="col-md-3" style="margin-top:10px;padding-left:0">
 
-                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
+                        <label>Company Name</label>
 
-                            <label>Company Name</label>
+                        <select name="Companydetails" id="Companydetails" class="form-control" multiple="multiple">
+                            <!-- Options will be dynamically populated -->
+                            @if (ViewBag.CompanyList!=null)
+                            {
+                                foreach (var icom in ViewBag.CompanyList)
+                                {
+                                    <option value="@icom" selected>@icom</option>
 
-                            <input type="text" name="Companydetails" id="Companydetails" class="form-control" value="@ViewBag.Companydetails">
+                                }
+                            }
 
-                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
+                        </select>
+                        @*@Html.DropDownList("Companydetails", "-Please select-")*@
 
-                        </div>
+                    </div>
                         <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
                             <label>Invoice Number</label>
@@ -542,6 +544,11 @@
     .table-scroll {
         height: 400px;
     }
+    #Companydetails {
+        max-height: 200px; /* Set maximum height */
+        min-height: 100px; /* Optional: Set minimum height */
+        overflow-y: auto; /* Add scrollbar when content overflows */
+    }
 </style>
 
 <script>
@@ -552,7 +559,7 @@
 $(function () {
 
 
-    $.ajax({
+    @*$.ajax({
         type: 'GET',
                 url: '@Url.Action("CustomerIdAutocompleteForViewInvocie")',
         data: { },
@@ -562,16 +569,32 @@ $(function () {
                         company_idarr.push(item.Company_Id);
             });
                 }
+            });*@
+      $.ajax({
+        type: 'GET',
+        url: '@Url.Action("CustomerIdAutocompleteForViewInvocie")',
+        dataType: 'json',
+        success: function(data) {
+            // Populate the select dropdown with options
+            $.each(data, function(i, item) {
+                $("#Companydetails").append(
+                    $("<option>", {
+                        value: item.Company_Id,
+                        text: item.Company_Id // Assuming "Company_Name" is available
+                    })
+                );
             });
-
-    $("#Companydetails").autocomplete({
-        source: company_idarr,
-select: function(event, ui) {
-    $("#Companydetails").val(ui.item.value);
-
-    $("#Companydetails").trigger("focusout");
         }
     });
+   
+//    $("#Companydetails").autocomplete({
+//        source: company_idarr,
+//select: function(event, ui) {
+//    $("#Companydetails").val(ui.item.value);
+
+//    $("#Companydetails").trigger("focusout");
+//        }
+//    });
 
     //$("#Companydetails").autocomplete({
     //    source: company_idarr,
@@ -592,7 +615,7 @@ select: function(event, ui) {
                 success: function (Data) {
 
                     if (Data == "0") {
-                        alert("Please Enter Valid Company Id");
+                        //alert("Please Enter Valid Company Id");
                         $('#Companydetails').val('');
                     }
 
