@@ -440,7 +440,7 @@ namespace DtDc_Billing.Controllers
                 var companyid = "";
                 var invno = "";
                 var companyidList = new List<string>();
-                if (Companydetails != null && Companydetails != null)
+                if ( Companydetails != null)
                 {
                     var company = "";
                     foreach(var C in Companydetails)
@@ -457,10 +457,9 @@ namespace DtDc_Billing.Controllers
                     invno = db.Invoices.Where(m => m.invoiceno == invoiceNo ).Select(m => m.invoiceno).FirstOrDefault();
                     
                 }
-             foreach(var coma in companyidList)
+                if (companyidList.Count() == 0)
                 {
-
-                    list = db.getInvoiceWithapplyFilter(fdate, tdate, companyid, strpf, invoiceNo)
+                    list = db.getInvoiceWithapplyFilter(fdate, tdate, null, strpf, invoiceNo)
                     .Select(x => new InvoiceModel
                     {
                         IN_Id = x.IN_Id,
@@ -495,6 +494,48 @@ namespace DtDc_Billing.Controllers
                     }).Where(x => (x.isDelete == false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
                     list.AddRange(list);
                 }
+                else if (companyidList.Count() > 0)
+                {
+                    foreach(var com in companyidList)
+                    {
+                        list = db.getInvoiceWithapplyFilter(fdate, tdate, com, strpf, invoiceNo)
+                    .Select(x => new InvoiceModel
+                    {
+                        IN_Id = x.IN_Id,
+                        invoiceno = x.invoiceno,
+                        invoicedate = x.invoicedate,
+                        periodfrom = x.periodfrom,
+                        periodto = x.periodto,
+                        total = x.total,
+                        fullsurchargetax = x.fullsurchargetax ?? 0,
+                        fullsurchargetaxtotal = x.fullsurchargetaxtotal ?? 0,
+                        servicetax = x.servicetax ?? 0,
+                        servicetaxtotal = x.servicetaxtotal ?? 0,
+                        othercharge = x.othercharge ?? 0,
+                        netamount = x.netamount,
+                        Customer_Id = x.Customer_Id,
+                        paid = x.paid ?? 0,
+                        discount = x.discount,
+                        discountper = x.discountper ?? 0,
+                        discountamount = x.discountamount ?? 0,
+                        Royalty_charges = x.Royalty_charges,
+                        Docket_charges = x.Docket_charges,
+                        Tempdatefrom = x.Tempdatefrom,
+                        TempdateTo = x.TempdateTo,
+                        tempInvoicedate = x.tempInvoicedate,
+                        Address = x.Address,
+                        Invoice_Lable = x.Invoice_Lable,
+                        Firm_Id = x.Firm_Id,
+                        totalCount = x.totalCount ?? 0,
+                        isDelete = x.isDelete,
+
+
+                    }).Where(x => (x.isDelete == false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
+                        list.AddRange(list);
+                    }
+                }
+                    
+                
                 list = list.GroupBy(x => x.invoiceno)
            .Select(g => g.First()) // Take the first record for each unique invoiceno
            .ToList();
@@ -555,83 +596,7 @@ namespace DtDc_Billing.Controllers
                 // Calculate the data for InvoiceDataForDashBoard
            
             }
-            //if (Companydetails != "" && Companydetails != null)
-            //{
-            //    var comp = db.Companies.Where(m => m.Company_Id == Companydetails).FirstOrDefault();
-            //    ViewBag.Companyid = comp.Company_Id;
-
-
-
-            //    list = db.getInvoice(DateTime.Parse(fromdate), DateTime.Parse(todate), comp.Company_Id, strpf).Select(x => new InvoiceModel
-            //    {
-
-            //        IN_Id = x.IN_Id,
-            //        invoiceno = x.invoiceno,
-            //        invoicedate = x.invoicedate,
-            //        periodfrom = x.periodfrom,
-            //        periodto = x.periodto,
-            //        total = x.total,
-            //        fullsurchargetax = x.fullsurchargetax,
-            //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-            //        servicetax = x.servicetax,
-            //        servicetaxtotal = x.servicetaxtotal,
-            //        othercharge = x.othercharge,
-            //        netamount = x.netamount,
-            //        Customer_Id = x.Customer_Id,
-            //        paid = x.paid,
-            //        discount = x.discount,
-            //        Royalty_charges = x.Royalty_charges,
-            //        Docket_charges = x.Docket_charges,
-            //        Tempdatefrom = x.Tempdatefrom,
-            //        TempdateTo = x.TempdateTo,
-            //        tempInvoicedate = x.tempInvoicedate,
-            //        Address = x.Address,
-            //        Invoice_Lable = x.Invoice_Lable,
-            //        Firm_Id = x.Firm_Id,
-            //        totalCount = x.totalCount ?? 0
-            //    }).ToList();
-            //    return View(list);
-            //}
-            //else
-            //{
-            //    list = db.getInvoiceWithoutCompany(DateTime.Parse(fromdate), DateTime.Parse(todate), strpf).Select(x => new InvoiceModel
-            //    {
-
-            //        IN_Id = x.IN_Id,
-            //        invoiceno = x.invoiceno,
-            //        invoicedate = x.invoicedate,
-            //        periodfrom = x.periodfrom,
-            //        periodto = x.periodto,
-            //        total = x.total,
-            //        fullsurchargetax = x.fullsurchargetax,
-            //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-            //        servicetax = x.servicetax,
-            //        servicetaxtotal = x.servicetaxtotal,
-            //        othercharge = x.othercharge,
-            //        netamount = x.netamount,
-            //        Customer_Id = x.Customer_Id,
-            //        paid = x.paid,
-            //        discount = x.discount,
-            //        Royalty_charges = x.Royalty_charges,
-            //        Docket_charges = x.Docket_charges,
-            //        Tempdatefrom = x.Tempdatefrom,
-            //        TempdateTo = x.TempdateTo,
-            //        tempInvoicedate = x.tempInvoicedate,
-            //        Address = x.Address,
-            //        Invoice_Lable = x.Invoice_Lable,
-            //        Firm_Id = x.Firm_Id,
-            //        totalCount = x.totalCount ?? 0
-            //    }).ToList();
-
-            //    return View(list);
-            //}
-            // string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-            //   var InviceData = db.Invoices.Where(x => x.Pfcode == pfcode).ToList();
-
-
-
-            // Calculate the data for InvoiceDataForDashBoard
+        
             double partialtotalView = 0;
             foreach (var l in list)
             {
@@ -685,11 +650,11 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, string Companydetails, string invoiceNo)
+        public ActionResult ViewSingleInvoice(string invfromdate, string invtodate, List<string> Companydetails, string invoiceNo)
         
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
+            ViewBag.CompanyList = Companydetails;
             ViewBag.fromdate = invfromdate;
             ViewBag.todate=invtodate;
             ViewBag.Companydetails = Companydetails;
@@ -697,7 +662,7 @@ namespace DtDc_Billing.Controllers
          
             var temp = db.singleinvoiceconsignments.Select(m => m.Invoice_no).ToList();
 
-
+            List<Invoice> a = new List<Invoice>();
             DateTime? fromdate = null;
             DateTime? todate = null;
 
@@ -729,68 +694,64 @@ namespace DtDc_Billing.Controllers
             {
                 fromdate = null;
             }
-            if (Companydetails != "")
+            //if (Companydetails != "")
+            //{
+            //    ViewBag.Custid = Companydetails;
+            //}
+            var companyidList = new List<string>();
+            var companyid = "";
+          
+            if (Companydetails != null)
             {
-                ViewBag.Custid = Companydetails;
+                var company = "";
+                foreach (var C in Companydetails)
+                {
+                    company = C;
+                    companyidList.Add(C);
+                }
+                var comp = db.Companies.Where(m => m.Company_Id == company).FirstOrDefault();
+               
+                companyid = comp.Company_Id;
             }
-            
-            var a = (from m in db.Invoices
+            if (companyidList.Count() != 0)
+            {
+                foreach(var comp in companyidList)
+                {
+                    a = (from m in db.Invoices
+                         where temp.Contains(m.invoiceno) &&
+                         m.Pfcode == strpf
+                         && (m.isDelete == false || m.isDelete == null)
+                         && (string.IsNullOrEmpty(invfromdate) || m.invoicedate >= fromdate.Value)
+                         && (string.IsNullOrEmpty(invtodate) || m.invoicedate <= todate.Value)
+                         && ( m.Customer_Id == comp)
+                         && (invoiceNo == null || invoiceNo == "" || m.invoiceno == invoiceNo)
+                         select m).OrderByDescending(x => x.invoicedate).ToList();
+                    a.AddRange(a);                }
+              
+            }
+            else
+            {
+                a = (from m in db.Invoices
                      where temp.Contains(m.invoiceno) &&
                      m.Pfcode == strpf
-                     && (m.isDelete==false || m.isDelete==null)
-                     && ( string.IsNullOrEmpty(invfromdate) || m.invoicedate >= fromdate.Value)
-                     && (string.IsNullOrEmpty(invtodate) ||  m.invoicedate <= todate.Value)
-                     && ( string.IsNullOrEmpty(Companydetails) || m.Customer_Id== Companydetails)
-                     && (invoiceNo==null || invoiceNo=="" || m.invoiceno== invoiceNo)
-                     select m).OrderByDescending(x=>x.invoicedate).ToList();
+                     && (m.isDelete == false || m.isDelete == null)
+                     && (string.IsNullOrEmpty(invfromdate) || m.invoicedate >= fromdate.Value)
+                     && (string.IsNullOrEmpty(invtodate) || m.invoicedate <= todate.Value)
+                     //&& (string.IsNullOrEmpty(Companydetails) || m.Customer_Id == Companydetails.FirstOrDefault())
+                     && (invoiceNo == null || invoiceNo == "" || m.invoiceno == invoiceNo)
+                     select m).OrderByDescending(x => x.invoicedate).ToList();
 
-          
+            }
 
+
+            a = a.GroupBy(x => x.invoiceno)
+   .Select(g => g.First()) // Take the first record for each unique invoiceno
+   .ToList();
 
             double partialtotal = 0;
             foreach (var l in a)
             {
-                //double cash = (from inv in db.Invoices
-                //               join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno
-                //               where 
-                //               inv.invoiceno==l.invoiceno &&
-                //               ca.Pfcode == strpf
-                //               && inv.Pfcode == strpf
-                //               select new
-                //               {
-                //                   Amount = ca.C_Total_Amount,
-                //               }).Sum(x => x.Amount) ?? 0;
-                //double cheque = (from inv in db.Invoices
-                //                 join ch in db.Cheques on inv.invoiceno equals ch.Invoiceno
-                //                 where inv.invoiceno == l.invoiceno &&
-                //                 ch.Pfcode == strpf
-                //                  && inv.Pfcode == strpf
-                //                 select new
-                //                 {
-                //                     Amount = ch.totalAmount,
-
-                //                 }).Sum(x => x.Amount) ?? 0;
-                //double NEFT = (from inv in db.Invoices
-                //               join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno
-                //               where inv.invoiceno == l.invoiceno &&
-                //               ne.Pfcode == strpf
-                //                && inv.Pfcode == strpf
-                //               select new
-                //               {
-                //                   Amount = ne.N_Total_Amount,
-
-                //               }).Sum(x => x.Amount) ?? 0;
-
-                //double CreditNote = (from inv in db.Invoices
-                //                     join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno
-                //                     where inv.invoiceno == l.invoiceno &&
-                //                     cn.Pfcode == strpf
-                //                      && inv.Pfcode == strpf
-                //                     select new
-                //                     {
-                //                         Amount = cn.Cr_Amount,
-
-                //                     }).Sum(x => x.Amount) ?? 0;
+                
                 var PartialtotalAmount = (from inv in db.Invoices
                                           join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno into cashGroup
                                           from ca in cashGroup.DefaultIfEmpty()

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "DeleteCons";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="content-wrapper">
+    <div class="row" style="padding-left:16px;">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Delete Cashcounter Consignment</h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+
+                                @{
+                                    var message = ViewBag.Message as string;
+                                    var failMessage = ViewBag.FailMessage as string;
+                                }
+                                @if (!string.IsNullOrEmpty(message))
+                                {
+
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", message))
+                                }
+                                @if (!string.IsNullOrEmpty(failMessage))
+                                {
+
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", failMessage))
+                                }
+
+                                @using (Html.BeginForm("DeleteCashConsignment", "AdminCashBooking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <div class="box-body">
+
+                                            @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.F_Id, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.F_Id, "", new { @class = "text-danger" })
+
+
+                    @Html.HiddenFor(model => model.PF_Code)*@
+
+                                            <div class="form-group">
+                                                <label class="col-md-2"> Consignment No</label>
+                                                <div class="col-md-5">
+                                                    <input type="text" class="form-control" name="Consignment_No" id="Consignment_No">
+                                                </div>
+
+
+
+
+                                                <div class="col-md-2">
+                                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*@if (TempData["fail"] != null)
+{
+    <script>
+        alert('@TempData["fail"]');
+    </script>
+}*@

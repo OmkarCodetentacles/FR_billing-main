@@ -8,6 +8,26 @@
 }
 
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection--single {
+        height: 38px !important;
+        padding: 6px 12px !important;
+    }
+
+    .select2-selection__rendered {
+        line-height: 26px !important;
+    }
+</style>
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <style>
     .pagination {
         display: inline-block;
@@ -31,6 +51,7 @@
             .pagination a:hover:not(.active) {
                 background-color: #ddd;
             }
+
     .status-button {
         display: inline-block;
         padding: 10px 20px;
@@ -49,7 +70,6 @@
         font-size: 14px;
         border-left: 6px solid #28a745;
         border-top: 1px solid #f39c12;
-      
         margin: 20px 20px 20px 30px !important;
         transition: transform 0.2s ease; /* Add a hover effect */
         border-radius: 50px; /* Make corners circular */
@@ -62,9 +82,7 @@
         justify-content: center;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         font-size: 14px;
-       
         border-top: 1px solid #dc2a4b;
-        
         margin: 20px 20px 20px 30px !important;
         transition: transform 0.2s ease; /* Add a hover effect */
         border-radius: 50px; /* Make corners circular */
@@ -77,9 +95,7 @@
         justify-content: center;
         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         font-size: 14px;
-      
         border-top: 1px solid #ffc107;
-     
         margin: 20px 20px 20px 30px !important;
         transition: transform 0.2s ease; /* Add a hover effect */
         border-radius: 50px; /* Make corners circular */
@@ -106,8 +122,8 @@
 
     .Viewinvoice th {
         width: 11.69% !important;
-        
     }
+
     .btn-info {
         background-color: #0049af;
         border-color: #0049af;
@@ -160,73 +176,73 @@
                     {
 
                         <!--<label for="cars">Size:</label>
-                <select name="size">
-                    <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
-                    <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
-                    <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->@*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@<!--</select>-->@*<div class="col-md-5">
-                        <div class="form-group">
-                            <div class="pf-code">
-                                <label>Firm Name</label>
-                                <label class="Reqired">*</label>
-                                @Html.DropDownList("FirmDetails", "-Please select-")
+                        <select name="size">
+                            <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
+                            <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
+                            <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->@*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@<!--</select>-->@*<div class="col-md-5">
+                                    <div class="form-group">
+                                        <div class="pf-code">
+                                            <label>Firm Name</label>
+                                            <label class="Reqired">*</label>
+                                            @Html.DropDownList("FirmDetails", "-Please select-")
+                                        </div>
+                                    </div>
+                                </div>*@<div class="col-md-3" style="margin-top:10px;padding-left:0">
+
+                                <label>Company Name</label>
+
+                                <select name="Companydetails" id="Companydetails" class="form-control" multiple="multiple">
+                                    <!-- Options will be dynamically populated -->
+                                    @if (ViewBag.CompanyList != null)
+                                    {
+                                        foreach (var icom in ViewBag.CompanyList)
+                                        {
+                                            <option value="@icom" selected>@icom</option>
+
+                                        }
+                                    }
+
+                                </select>
+                                @*@Html.DropDownList("Companydetails", "-Please select-")*@
+
                             </div>
-                        </div>
-                    </div>*@<div class="col-md-3" style="margin-top:10px;padding-left:0">
+                            <div class="col-md-3" style="margin-top:10px;padding-left:0">
 
-                        <label>Company Name</label>
+                                <label>Invoice Number</label>
 
-                        <select name="Companydetails" id="Companydetails" class="form-control" multiple="multiple">
-                            <!-- Options will be dynamically populated -->
-                            @if (ViewBag.CompanyList!=null)
-                            {
-                                foreach (var icom in ViewBag.CompanyList)
-                                {
-                                    <option value="@icom" selected>@icom</option>
+                                <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceno">
 
-                                }
-                            }
+                                @*@Html.DropDownList("Companydetails", "-Please select-")*@
 
-                        </select>
-                        @*@Html.DropDownList("Companydetails", "-Please select-")*@
+                            </div>
 
-                    </div>
-                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
-
-                            <label>Invoice Number</label>
-
-                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceno">
-
-                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
-
-                        </div>
-
-                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
-                            <label>From Date</label>
-                            @*<label class="Reqired">*</label>*@
-                            <input type="text" name="invfromdate" id="invfromdate" class="form-control" value="@ViewBag.invfromdate">
-                        </div>
+                            <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                                <label>From Date</label>
+                                @*<label class="Reqired">*</label>*@
+                                <input type="text" name="invfromdate" id="invfromdate" class="form-control" value="@ViewBag.invfromdate">
+                            </div>
 
 
-                        <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
-                            <label>To Date</label>
-                            @*<label class="Reqired">*</label>*@
-                            <input type="text" name="invtodate" id="invtodate" class="form-control" value="@ViewBag.invtodate">
-                        </div>
+                            <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
+                                <label>To Date</label>
+                                @*<label class="Reqired">*</label>*@
+                                <input type="text" name="invtodate" id="invtodate" class="form-control" value="@ViewBag.invtodate">
+                            </div>
 
-                        <input type="hidden" value="@ViewBag.firmid">
-                        <input type="hidden" value="@ViewBag.Companyid">
+                            <input type="hidden" value="@ViewBag.firmid">
+                            <input type="hidden" value="@ViewBag.Companyid">
 
-                        @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+                            @*  @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
 
-                        <div class="col-md-1" style="padding:0">
-                            <input type="submit" class="btn btn-primary sbmt" name="submit" id="submitbook" value="Submit" style="margin:33px auto;width:100%" />
-                        </div>
+                            <div class="col-md-1" style="padding:0">
+                                <input type="submit" class="btn btn-primary sbmt" name="submit" id="submitbook" value="Submit" style="margin:33px auto;width:100%" />
+                            </div>
 
-                        <br /><br /><br /><br />
-                    }
+                            <br /><br /><br /><br />
+                        }
                     <!-- /.box-header -->
 
-                    <table id="table_display_block" class="table Viewinvoice">
+                    <table id="table_display_block" class="table Viewinvoice" style="margin-top:100px">
                         <thead>
                             <tr>
 
@@ -345,11 +361,11 @@
                                             {
                                                 <span class="btn btn-success status-button">Paid</span>
                                             }
-                                            else if (item.paid == null || item.paid==0 )
+                                            else if (item.paid == null || item.paid == 0)
                                             {
                                                 <span class="btn btn-danger status-button">Unpaid</span>
                                             }
-                                            else if (item.paid != null  && item.paid < item.netamount)
+                                            else if (item.paid != null && item.paid < item.netamount)
                                             {
                                                 <span class="btn btn-warning status-button">Partial Paid</span>
                                             }
@@ -365,22 +381,22 @@
                     </table>
 
                     @*<div class="pagination">
-                    @{
-                        var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+                            @{
+                                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
 
-                        if (getTotalCount > 10)
-                        {
+                                if (getTotalCount > 10)
+                                {
 
-                            for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
-                            {
+                                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                                    {
 
-                                <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+                                        <a href="@Url.Action("ViewInvoice","Invoice", new { invfromdate = ViewBag.invfromdate ,invtodate = ViewBag.invtodate,size = ViewBag.size, pageNo = ii,Firm_Id = ViewBag.firmid})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
 
+                                    }
+                                }
                             }
-                        }
-                    }
-                </div>*@
+                        </div>*@
                 </div>
 
                 <!-- /.box-body -->
@@ -533,6 +549,17 @@
 </style>
 
 <style>
+    .select2-container {
+        width: 100% !important;
+
+    }
+    .select2-search--inline .select2-search__field {
+        width: 115em !important; /* Adjust width */
+    }
+    .select2-selection--multiple {
+        min-height: 38px;
+    }
+
     .Reqired {
         color: red;
     }
@@ -544,11 +571,11 @@
     .table-scroll {
         height: 400px;
     }
-    #Companydetails {
-        max-height: 200px; /* Set maximum height */
-        min-height: 100px; /* Optional: Set minimum height */
-        overflow-y: auto; /* Add scrollbar when content overflows */
-    }
+    /*#Companydetails {
+        max-height: 200px;*/ /* Set maximum height */
+    /*min-height: 100px;*/ /* Optional: Set minimum height */
+    /*overflow-y: auto;*/ /* Add scrollbar when content overflows */
+    /*}*/
 </style>
 
 <script>
@@ -556,7 +583,7 @@
     var availableTutorials = [];
     var company_idarr = [];
 /////Sender Autocomplete
-$(function () {
+
 
 
     @*$.ajax({
@@ -570,7 +597,7 @@ $(function () {
             });
                 }
             });*@
-      $.ajax({
+      @*$.ajax({
         type: 'GET',
         url: '@Url.Action("CustomerIdAutocompleteForViewInvocie")',
         dataType: 'json',
@@ -585,8 +612,8 @@ $(function () {
                 );
             });
         }
-    });
-   
+    });*@
+
 //    $("#Companydetails").autocomplete({
 //        source: company_idarr,
 //select: function(event, ui) {
@@ -602,6 +629,52 @@ $(function () {
 
     //    }
     //});
+
+
+
+$(function () {
+    // Fetch data via AJAX
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("CustomerIdAutocompleteForViewInvocie")',
+        dataType: 'json',
+        success: function (data) {
+            var companySelect = $('#Companydetails');
+            companySelect.empty(); // Clear existing options
+
+            // Populate the dropdown with only Company_Id
+            $.each(data, function (i, item) {
+                companySelect.append(
+                    $('<option>', {
+                        value: item.Company_Id,
+                        text: item.Company_Id
+                    })
+                );
+            });
+
+             // Get selected company IDs from ViewBag
+            var selectedCompanies = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CompanyList ?? new List<string>()));
+
+            // Preselect options based on ViewBag.CompanyList
+            companySelect.val(selectedCompanies).trigger('change');
+            // Initialize Select2
+            companySelect.select2({
+                placeholder: "Select Companies",
+                allowClear: true,
+                width: '125px',
+                multiple: true // Allow multiple selections
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Failed to fetch company data:', error);
+        }
+    });
+
+    // Handle selection change
+    $('#Companydetails').on('change', function () {
+        var selectedCompanies = $(this).val(); // Get all selected values
+        console.log('Selected Companies:', selectedCompanies);
+    });
 });
 
     $('#Companydetails').focusout(function () {
@@ -662,57 +735,147 @@ $(function () {
 
 <script>
 
-    $('#Companydetails').change(function () {
-        var Customerid = $('#Companydetails').val();
+    //////////$('#Companydetails').change(function () {
+    //////////    var Customerid = $('#Companydetails').val();
 
-        if (Customerid.length >= 3) {
-            availableinvoicesarr = [];
+    //////////    if (Customerid.length >= 3) {
+    //////////        availableinvoicesarr = [];
 
-            $("#invoiceno").autocomplete({
-                source: availableinvoicesarr,
-                select: function (event, ui) {
-                    $("#invoiceno").val(ui.item.value);
+    //////////        $("#invoiceno").autocomplete({
+    //////////            source: availableinvoicesarr,
+    //////////            select: function (event, ui) {
+    //////////                $("#invoiceno").val(ui.item.value);
 
-                    $("#invoiceno").trigger("focusout");
-                }
-            });
+    //////////                $("#invoiceno").trigger("focusout");
+    //////////            }
+    //////////        });
 
-            $.ajax({
-                type: 'Get',
-                dataType: 'json',
-                url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
-                data: { Customer_Id: Customerid },
-                success: function (Data) {
-                    $.each(Data, function (i, item) {
-                        availableinvoicesarr.push(item.invoiceno);
-                    })
+    //////////        $.ajax({
+    //////////            type: 'Get',
+    //////////            dataType: 'json',
+    //////////            url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
+    //////////            data: { Customer_Id: Customerid },
+    //////////            success: function (Data) {
+    //////////                $.each(Data, function (i, item) {
+    //////////                    availableinvoicesarr.push(item.invoiceno);
+    //////////                })
 
-                }
-            });
-        }
+    //////////            }
+    //////////        });
+    //////////    }
+    //////////    $("#invoiceno").autocomplete({
+    //////////        source: availableinvoicesarr,
+    //////////        select: function (event, ui) {
+    //////////            $("#invoiceno").val(ui.item.value);
+
+    //////////            $("#invoiceno").trigger("focusout");
+    //////////        }
+    //////////    });
+
+
+    //////////});
+    //////////$("#invoiceno").focusout(function () {
+    //////////    availableinvoicesarr = [];
+    //////////    $("#invoiceno").autocomplete({
+    //////////        source: availableinvoicesarr,
+    //////////        select: function (event, ui) {
+    //////////            $("#invoiceno").val(ui.item.value);
+
+    //////////            $("#invoiceno").trigger("focusout");
+    //////////        }
+    //////////    });
+
+    //////////});
+    ////$('#Companydetails').change(function () {
+////    var Customerid = $('#Companydetails').val();
+
+////    if (Customerid.length >= 3) {
+////        availableinvoicesarr = [];
+
+////        $("#invoiceno").autocomplete({
+////            source: availableinvoicesarr,
+////            select: function (event, ui) {
+////                $("#invoiceno").val(ui.item.value);
+
+////                $("#invoiceno").trigger("focusout");
+////            }
+////        });
+
+////        $.ajax({
+////            type: 'Get',
+////            dataType: 'json',
+////            url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
+////            data: { Customer_Id: Customerid },
+////            success: function (Data) {
+////                $.each(Data, function (i, item) {
+////                    availableinvoicesarr.push(item.invoiceno);
+////                })
+
+////            }
+////        });
+////    }
+////    $("#invoiceno").autocomplete({
+////        source: availableinvoicesarr,
+////        select: function (event, ui) {
+////            $("#invoiceno").val(ui.item.value);
+
+////            $("#invoiceno").trigger("focusout");
+////        }
+////    });
+
+
+////});
+////$("#invoiceno").focusout(function () {
+////    availableinvoicesarr = [];
+////    $("#invoiceno").autocomplete({
+////        source: availableinvoicesarr,
+////        select: function (event, ui) {
+////            $("#invoiceno").val(ui.item.value);
+
+////            $("#invoiceno").trigger("focusout");
+////        }
+////    });
+
+    ////});
+
+    $(document).ready(function () {
+        $('#Companydetails').change(function () {
+            var Customerid = $('#Companydetails').val();
+
+            if (Customerid.length >= 3) {
+                availableinvoicesarr = []; // Clear the array before fetching new data
+
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
+                    data: { Customer_Id: Customerid },
+                    success: function (Data) {
+                        availableinvoicesarr = Data.map(item => item.invoiceno); // Populate the array
+                        $("#invoiceno").autocomplete('option', 'source', availableinvoicesarr); // Update autocomplete source
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to fetch invoice numbers:', error);
+                    }
+                });
+            }
+        });
+
+        // Initialize autocomplete for the first time
         $("#invoiceno").autocomplete({
             source: availableinvoicesarr,
             select: function (event, ui) {
                 $("#invoiceno").val(ui.item.value);
-
                 $("#invoiceno").trigger("focusout");
             }
         });
 
-
-    });
-    $("#invoiceno").focusout(function () {
-        availableinvoicesarr = [];
-        $("#invoiceno").autocomplete({
-            source: availableinvoicesarr,
-            select: function (event, ui) {
-                $("#invoiceno").val(ui.item.value);
-
-                $("#invoiceno").trigger("focusout");
-            }
+        $("#invoiceno").focusout(function () {
+            availableinvoicesarr = []; // Clear array on focusout
+            $("#invoiceno").autocomplete('option', 'source', availableinvoicesarr); // Reset source
         });
-
     });
+
 
 </script>
 
@@ -783,7 +946,7 @@ $(function () {
     $(document).ready(function () {
         $('#submitbook').on('click', function (e) {
             // Prevent form submission
-         
+
 
             // Get values of the fields
             var companyDetails = $('#Companydetails').val().trim();
@@ -797,7 +960,7 @@ $(function () {
                 e.preventDefault();
                 return false; // Stop the form submission
             }
-          
+
             // If validation passes, submit the form
             $("#FormSubmit").submit();
         });

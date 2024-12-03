@@ -468,7 +468,7 @@ namespace DtDc_Billing.CustomModel
 
                                          CalculateAmount ca = new CalculateAmount();
                                             double? amt = 0;
-                                            if (tran.Amount==null || tran.Amount==0.0)
+                                            if (tran.Amount==null || tran.Amount==0)
                                             {
                                                amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
                                                 transaction.Amount =Math.Round( (double)amt);
@@ -501,13 +501,16 @@ namespace DtDc_Billing.CustomModel
                                     else
                                     {
                                         CalculateAmount ca = new CalculateAmount();
-                                            if(tran.Amount == null || tran.Amount == 0)
-                                            {
-                                                double? amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+                                            double? amt = 0;
 
-                                                tran.Amount = Math.Round((double)amt);
+                                            if (tran.Amount == null || tran.Amount == 0)
+                                            {
+                                                amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+                                                transaction.Amount = Math.Round((double)amt);
+
                                             }
-                                       tran.Amount = Convert.ToDouble(tran.Amount);
+                                           
+                                            tran.Amount = Convert.ToDouble(tran.Amount);
                                         tran.Customer_Id = tran.Customer_Id;
 
                                         tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();

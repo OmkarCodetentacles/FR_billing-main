@@ -2133,5 +2133,30 @@ Select(e => new
 
         }
 
+        [HttpGet]
+        public ActionResult DeleteCashConsignment()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult DeleteCashConsignment(string Consignment_No)
+        {
+            var cash = db.Receipt_details.Where(m => m.Consignment_No.Trim().TrimStart().TrimEnd() == Consignment_No.Trim().TrimStart().TrimEnd()).FirstOrDefault();
+
+            if (cash != null)
+            {
+                db.Receipt_details.Remove(cash);
+                db.SaveChanges();
+                ViewBag.Message = "Consignment No Deleted Successfully!";
+                return View();
+            }
+
+            //  public ActionResult Checkbookinglist(List<TransactionView> trans, string Fromdatetime, string ToDatetime, string Custid, string Submit)
+
+            ViewBag.FailMessage = "Consignment Number Does not Exists!";
+
+            return View();
+        }
+
     }
 }
