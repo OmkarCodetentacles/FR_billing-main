@@ -5391,11 +5391,12 @@ namespace DtDc_Billing.Controllers
                  InvoiceCount = x.InvoiceCount ?? 0,
                  TotalInvoiceAmount = x.TotalInvoiceAmount ?? 0,
                  PaidAmount = x.PaidAmount ?? 0,
-                FranchiseName = x.FranchiseName,
+                 FranchiseName = x.FranchiseName,
                  OwnerName = x.OwnerName,
-                // EmailId = x.EmailId,
+                 EmailId = x.Email,
                  LastMonth = x.LastMonth,
                  CashAmount = x.CashAmount ?? 0
+
             }).ToList();
 
             return getSummary;

@@ -5316,7 +5316,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result)" />
+          <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5895,6 +5895,18 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Decimal" Name="CashAmount" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="FranchiseName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="MonthlyDataAnalysis_Result1">
+          <Property Type="String" Name="PFCode" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="InvoiceCount" Nullable="true" />
+          <Property Type="Decimal" Name="TotalInvoiceAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="PaidAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="UnpaidAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="LastMonth" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="CashAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="FranchiseName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7737,7 +7749,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
           <FunctionImportMapping FunctionImportName="MonthlyDataAnalysis" FunctionName="db_a92afa_frbillingModel.Store.MonthlyDataAnalysis">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.MonthlyDataAnalysis_Result">
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1">
                 <ScalarProperty Name="PFCode" ColumnName="PFCode" />
                 <ScalarProperty Name="InvoiceCount" ColumnName="InvoiceCount" />
                 <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
@@ -7747,6 +7759,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="CashAmount" ColumnName="CashAmount" />
                 <ScalarProperty Name="FranchiseName" ColumnName="FranchiseName" />
                 <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

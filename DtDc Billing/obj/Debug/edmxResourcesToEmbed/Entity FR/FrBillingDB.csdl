@@ -2678,7 +2678,7 @@
       <Parameter Name="FirmId" Mode="In" Type="Int64" />
       <Parameter Name="FirmName" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result)" />
+    <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3257,5 +3257,17 @@
     <Property Type="Decimal" Name="CashAmount" Nullable="true" Precision="18" Scale="2" />
     <Property Type="String" Name="FranchiseName" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="MonthlyDataAnalysis_Result1">
+    <Property Type="String" Name="PFCode" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="InvoiceCount" Nullable="true" />
+    <Property Type="Decimal" Name="TotalInvoiceAmount" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="PaidAmount" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="Decimal" Name="UnpaidAmount" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="LastMonth" Nullable="true" MaxLength="20" />
+    <Property Type="Decimal" Name="CashAmount" Nullable="true" Precision="18" Scale="2" />
+    <Property Type="String" Name="FranchiseName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
   </ComplexType>
 </Schema>

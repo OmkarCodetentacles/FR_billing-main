@@ -914,9 +914,9 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
         }
     
-        public virtual ObjectResult<MonthlyDataAnalysis_Result> MonthlyDataAnalysis()
+        public virtual ObjectResult<MonthlyDataAnalysis_Result1> MonthlyDataAnalysis()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result>("MonthlyDataAnalysis");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result1>("MonthlyDataAnalysis");
         }
     }
 }
