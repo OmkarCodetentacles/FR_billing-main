@@ -390,7 +390,7 @@ namespace DtDc_Billing.Controllers
         //}
         [HttpGet]
         public ActionResult ViewInvoice(string invfromdate,List<string> Companydetails, string invtodate, string invoiceNo, string invoiceNotoDelete)
-        {
+    {
             List<InvoiceModel> list = new List<InvoiceModel>();
             ViewBag.CompanyList = Companydetails;
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -492,13 +492,13 @@ namespace DtDc_Billing.Controllers
 
 
                     }).Where(x => (x.isDelete == false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
-                    list.AddRange(list);
+                   
                 }
                 else if (companyidList.Count() > 0)
                 {
                     foreach(var com in companyidList)
                     {
-                        list = db.getInvoiceWithapplyFilter(fdate, tdate, com, strpf, invoiceNo)
+                      var  compin = db.getInvoiceWithapplyFilter(fdate, tdate, com, strpf, invoiceNo)
                     .Select(x => new InvoiceModel
                     {
                         IN_Id = x.IN_Id,
@@ -531,7 +531,7 @@ namespace DtDc_Billing.Controllers
 
 
                     }).Where(x => (x.isDelete == false || x.isDelete == null)).OrderByDescending(x => x.invoicedate).ToList();
-                        list.AddRange(list);
+                        list.AddRange(compin);
                     }
                 }
                     
@@ -717,7 +717,7 @@ namespace DtDc_Billing.Controllers
             {
                 foreach(var comp in companyidList)
                 {
-                    a = (from m in db.Invoices
+                    var comainv = (from m in db.Invoices
                          where temp.Contains(m.invoiceno) &&
                          m.Pfcode == strpf
                          && (m.isDelete == false || m.isDelete == null)
@@ -726,7 +726,7 @@ namespace DtDc_Billing.Controllers
                          && ( m.Customer_Id == comp)
                          && (invoiceNo == null || invoiceNo == "" || m.invoiceno == invoiceNo)
                          select m).OrderByDescending(x => x.invoicedate).ToList();
-                    a.AddRange(a);                }
+                    a.AddRange(comainv);                }
               
             }
             else

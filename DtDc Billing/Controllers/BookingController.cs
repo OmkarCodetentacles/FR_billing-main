@@ -1367,7 +1367,23 @@ Select(e => new
 
             return Json(suggestions, JsonRequestBehavior.AllowGet);
         }
+        public string DeleteCons(string Consignment_No, string FromDate, string ToDate, string CustomerId)
+        {
+            Transaction cash = db.Transactions.Where(m => m.Consignment_no.Trim() == Consignment_No.Trim()).FirstOrDefault();
 
+            if (cash != null)
+            {
+                db.Transactions.Remove(cash);
+                db.SaveChanges();
+                return "Consignment No Deleted Successfully!";
+            }
+
+            //  public ActionResult Checkbookinglist(List<TransactionView> trans, string Fromdatetime, string ToDatetime, string Custid, string Submit)
+
+            return "Something Went Wrong!";
+
+
+        }
 
         public string DeleteConsignment(string Consignment_No)
         {

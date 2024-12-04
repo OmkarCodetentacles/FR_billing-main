@@ -8,7 +8,6 @@
 }
 
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
     .select2-container {
         width: 100% !important;
@@ -27,6 +26,8 @@
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
     .pagination {
@@ -247,7 +248,7 @@
                             <tr>
 
                                 <th>Sr.No</th>
-                                <th></th>
+
                                 <th></th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.invoiceno)
@@ -306,11 +307,12 @@
                                             <div style="display:flex; gap:5px">
                                                 <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank" class="view-btn">View</a>
                                                 @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno }, new { @class = "edit-btn" })
+                                                @Html.ActionLink("Delete", "DeleteInvoice", "Invoice", new { invoiceid = item.IN_Id, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate }, new { onclick = "return confirm('Are you sure you want to delete this invoice? Please note that this invoice number cannot be reused in the future, and all associated payment details will be permanently deleted.')", @class = "delete-btn" })
+
                                             </div>
 
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Delete", "DeleteInvoice", "Invoice", new { invoiceid = item.IN_Id, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate }, new { onclick = "return confirm('Are you sure you want to delete this invoice? Please note that this invoice number cannot be reused in the future, and all associated payment details will be permanently deleted.')", @class = "delete-btn" })
+                                            @*</td>
+                                                <td>*@
                                         </td>
 
                                         <td>
@@ -551,11 +553,12 @@
 <style>
     .select2-container {
         width: 100% !important;
-
     }
+
     .select2-search--inline .select2-search__field {
         width: 115em !important; /* Adjust width */
     }
+
     .select2-selection--multiple {
         min-height: 38px;
     }
@@ -787,54 +790,54 @@ $(function () {
 
     //////////});
     ////$('#Companydetails').change(function () {
-////    var Customerid = $('#Companydetails').val();
+    ////    var Customerid = $('#Companydetails').val();
 
-////    if (Customerid.length >= 3) {
-////        availableinvoicesarr = [];
+    ////    if (Customerid.length >= 3) {
+    ////        availableinvoicesarr = [];
 
-////        $("#invoiceno").autocomplete({
-////            source: availableinvoicesarr,
-////            select: function (event, ui) {
-////                $("#invoiceno").val(ui.item.value);
+    ////        $("#invoiceno").autocomplete({
+    ////            source: availableinvoicesarr,
+    ////            select: function (event, ui) {
+    ////                $("#invoiceno").val(ui.item.value);
 
-////                $("#invoiceno").trigger("focusout");
-////            }
-////        });
+    ////                $("#invoiceno").trigger("focusout");
+    ////            }
+    ////        });
 
-////        $.ajax({
-////            type: 'Get',
-////            dataType: 'json',
-////            url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
-////            data: { Customer_Id: Customerid },
-////            success: function (Data) {
-////                $.each(Data, function (i, item) {
-////                    availableinvoicesarr.push(item.invoiceno);
-////                })
+    ////        $.ajax({
+    ////            type: 'Get',
+    ////            dataType: 'json',
+    ////            url: '/Invoice/InvoiceNumberAutocompleteForViewInvocie',
+    ////            data: { Customer_Id: Customerid },
+    ////            success: function (Data) {
+    ////                $.each(Data, function (i, item) {
+    ////                    availableinvoicesarr.push(item.invoiceno);
+    ////                })
 
-////            }
-////        });
-////    }
-////    $("#invoiceno").autocomplete({
-////        source: availableinvoicesarr,
-////        select: function (event, ui) {
-////            $("#invoiceno").val(ui.item.value);
+    ////            }
+    ////        });
+    ////    }
+    ////    $("#invoiceno").autocomplete({
+    ////        source: availableinvoicesarr,
+    ////        select: function (event, ui) {
+    ////            $("#invoiceno").val(ui.item.value);
 
-////            $("#invoiceno").trigger("focusout");
-////        }
-////    });
+    ////            $("#invoiceno").trigger("focusout");
+    ////        }
+    ////    });
 
 
-////});
-////$("#invoiceno").focusout(function () {
-////    availableinvoicesarr = [];
-////    $("#invoiceno").autocomplete({
-////        source: availableinvoicesarr,
-////        select: function (event, ui) {
-////            $("#invoiceno").val(ui.item.value);
+    ////});
+    ////$("#invoiceno").focusout(function () {
+    ////    availableinvoicesarr = [];
+    ////    $("#invoiceno").autocomplete({
+    ////        source: availableinvoicesarr,
+    ////        select: function (event, ui) {
+    ////            $("#invoiceno").val(ui.item.value);
 
-////            $("#invoiceno").trigger("focusout");
-////        }
-////    });
+    ////            $("#invoiceno").trigger("focusout");
+    ////        }
+    ////    });
 
     ////});
 

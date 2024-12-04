@@ -135,7 +135,8 @@
                                         <th>
                                             Sr No
                                         </th>
-                                        <th>Check Is RTO</th>
+                                        @*<th>Check Is RTO</th>*@
+                                        <th>Action</th>
                                         @if (ViewBag.Custid == null)
                                         {
                                                 <th>
@@ -211,33 +212,37 @@
 
                                                                             <td>@i</td>
 
-                                                                            <td>@Html.CheckBox("items[" + j + "].isRTO", (bool)(items[j].isRTO == null ? false : items[j].isRTO))</td>
+                                                                            @*<td>@Html.CheckBox("items[" + j + "].isRTO", (bool)(items[j].isRTO == null ? false : items[j].isRTO))</td>*@
+                                                                            <td>
+                                                                                <input type="button" id="DeleteBtn" onclick="DeleteConsignment('@item.Consignment_no')" value="Delete" class="btn btn-danger btn-sm" />
+
+                                                                            </td>
                                                                             @if (ViewBag.Custid == null)
                                                                             {
                                                                                 <td>@Html.DisplayFor(m => items[j].Customer_Id)</td>
                                                                             }
-                                                                                <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Name)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Pincode)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].compaddress)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Type_t)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Mode)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Amount)</td>
-                                                                                <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Insurance)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Percentage)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
-                                                                                <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
-                                                                                <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
-                                                                            </tr>
+                                                                            <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Name)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Pincode)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].compaddress)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Type_t)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Mode)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Amount)</td>
+                                                                            <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Insurance)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Percentage)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
+                                                                            <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
+                                                                            <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
+                                                                        </tr>
                                         }
                                     }
                                 </tbody>
                             </table>
-                            <input type="button" value="Set RTO"  class="btn btn-primary"  onclick="getCheckedConsignments()" />
+                            @*<input type="button" value="Set RTO"  class="btn btn-primary"  onclick="getCheckedConsignments()" />*@
                         
 
                         <!-- /input-group -->
@@ -265,6 +270,46 @@
     </div>
 </div>
 <script>
+    function DeleteConsignment(consignmentno) {
+        // Get the consignment number from the input field or some other source
+        const consignmentNo = consignmentno;
+        var customerId = $('#custid').val();
+        var fromDate = $('#datepicker').val();
+        var toDate = $('#datepicker1').val();
+        if (!consignmentNo) {
+            alert("Please provide a consignment number.");
+            return;
+        }
+
+        // Confirm deletion
+        if (!confirm(`Are you sure you want to delete consignment number ${consignmentNo}?`)) {
+            return false;
+        }
+
+        // Prepare the data
+        const data = {
+            Consignment_No: consignmentNo,
+            FromDate: fromDate,
+            ToDate: toDate,
+            CustomerId: customerId
+        };
+
+        // Perform AJAX request
+        $.ajax({
+            url: '/Booking/DeleteCons', // Replace with your controller's actual name
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                alert(response);
+                // Optionally refresh the page or update the UI
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("Something went wrong while deleting the consignment. Please try again.");
+            }
+        });
+    }
 $(document).ready(function () {
     $(function () {
         var company_name = [];
