@@ -591,131 +591,150 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                 $('#intpincode').show();
                 initializeAutocomplete();
             }
+              else if (/^\d{11}$/.test(Type_t)) {
+                $('#intpincode').show(); // Show the element if condition is true
+                initializeAutocomplete();
+   }
+   else {
+       $('#intpincode').hide();
+   }
+        });
+
+
+
+
+  //      $('#Consignment_no').keyup(function () {
+  //          // alert("Keyup");
+  //          var consno = $("#Consignment_no").val();
+  //          var flag = 0;
+  //          var consval = consno.toLowerCase();
+
+  //          if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
+
+  //              flag = 1;
+
+  //          }
+  //          else {
+  //              //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
+  //              if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
+
+
+  //                  flag = 1;
+  //              }
+  //          }
+  //          if (flag===1) {
+  //              $('#Consignment_no').val($(this).val().toUpperCase());
+  //              $('#Consignment_no').focusout();
+  //              ShowRadios(); //calling function
+
+  //              $.ajax({
+  //                  type: 'Get',
+  //                  dataType: 'json',
+  //                  url: '/Booking/Consignmentdetails',
+  //                  data: { Cosignmentno: consno },
+  //                  success: function (Data) {
+
+  //                      //$('#Customer_Id').val(Data.Customer_Id);
+  //                      var companyid = Data.Customer_Id;
+
+  //                      //<----------IF Consignment Is Booked--------->
+  //                      if (companyid != null) {
+
+  //                          alert("Consignment No" + " " + consno + " " + "is Already Booked");
+  //                          //Hide If already Company Exists
+  //                          $("#compaddress").val('');
+  //                          $('#booking_date').val('');
+  //                          $('#Pincode').val("");
+  //                          $('#chargable_weight').val('');
+  //                          $('#Quanntity').val('');
+  //                          $('#Type_t').val("");
+
+  //                          $('#Mode').val("");
+
+
+
+  //                          $('#form-Cons').find('input:text,textarea').val('');
+  //                          $('#form-Cons').find('select').val('D');
+  //                          $('#Quanntity').val('');
+  //                          $("#Receiver").val(Data.Receiver);
+
+  //                          $('#Consignment_no').focus();
+  //                          $("#insdiv").hide();
+  //                          $('#Topaydiv').hide();
+  //                          $('#coddiv').hide();
+
+  //                          $('#insshow').hide();
+  //                          $('#topayradio').hide();
+  //                          $('#codradio').hide();
+
+  //                      }
+  //                      else {
+
+  //                          $('#compaddress').val(Data.compaddress);
+  //                          $('#booking_date').val(Data.booking_date);
+  //                          $('#Pincode').val(Data.Pincode);
+
+  //                          $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+
+
+  //                          if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+  //                              $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+  //                              $('#Mode').val(Data.Mode);
+  //                          }
+  //                          else {
+
+  //                              $('#Mode').val(Data.Mode);
+  //                          }
+
+  //                          $('#Actual_weight').val(Data.Actual_weight);
+  //                          $('#Pincode').val(Data.Pincode);
+
+
+  //                          $('#chargable_weight').val(Data.chargable_weight);
+  //                          $('#Quanntity').val(Data.Quanntity);
+  //                          $('#Type_t').val(Data.Type_t);
+
+  //                          if (Data.Type_t == "N") {
+  //                              $('#insshow').show();
+  //                          }
+  //                          $("#dtdcamount").val(Data.dtdcamount);
+  //                          $('#Amount').val(Data.Amount);
+  //                          $('#Quanntity').val(Data.Quanntity);
+
+
+
+
+
+  //                      }
+  //                  }
+  ////<---------------------------------------->
+
+  //              });
+  //          }
+
+  //      });
+        function CheckInternational() {
+            var Type_t = $('#Consignment_no').val();
+
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+                initializeAutocomplete();
+            }
+            // Check if it contains only numbers and is 11 digits long
+            else if (/^\d{11}$/.test(Type_t)) {
+                $('#intpincode').show(); // Show the element if condition is true
+                initializeAutocomplete();
+            }
             else {
                 $('#intpincode').hide();
             }
-        });
-
-
-
-
-        $('#Consignment_no').keyup(function () {
-            // alert("Keyup");
-            var consno = $("#Consignment_no").val();
-            var flag = 0;
-            var consval = consno.toLowerCase();
-
-            if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
-
-                flag = 1;
-
-            }
-            else {
-                //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
-                if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
-
-
-                    flag = 1;
-                }
-            }
-            if (flag===1) {
-                $('#Consignment_no').val($(this).val().toUpperCase());
-                $('#Consignment_no').focusout();
-                ShowRadios(); //calling function
-
-                $.ajax({
-                    type: 'Get',
-                    dataType: 'json',
-                    url: '/Booking/Consignmentdetails',
-                    data: { Cosignmentno: consno },
-                    success: function (Data) {
-
-                        //$('#Customer_Id').val(Data.Customer_Id);
-                        var companyid = Data.Customer_Id;
-
-                        //<----------IF Consignment Is Booked--------->
-                        if (companyid != null) {
-
-                            alert("Consignment No" + " " + consno + " " + "is Already Booked");
-                            //Hide If already Company Exists
-                            $("#compaddress").val('');
-                            $('#booking_date').val('');
-                            $('#Pincode').val("");
-                            $('#chargable_weight').val('');
-                            $('#Quanntity').val('');
-                            $('#Type_t').val("");
-
-                            $('#Mode').val("");
-
-
-
-                            $('#form-Cons').find('input:text,textarea').val('');
-                            $('#form-Cons').find('select').val('D');
-                            $('#Quanntity').val('');
-                            $("#Receiver").val(Data.Receiver);
-
-                            $('#Consignment_no').focus();
-                            $("#insdiv").hide();
-                            $('#Topaydiv').hide();
-                            $('#coddiv').hide();
-
-                            $('#insshow').hide();
-                            $('#topayradio').hide();
-                            $('#codradio').hide();
-
-                        }
-                        else {
-
-                            $('#compaddress').val(Data.compaddress);
-                            $('#booking_date').val(Data.booking_date);
-                            $('#Pincode').val(Data.Pincode);
-
-                            $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
-
-
-                            if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
-
-                                $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
-                                $('#Mode').val(Data.Mode);
-                            }
-                            else {
-
-                                $('#Mode').val(Data.Mode);
-                            }
-
-                            $('#Actual_weight').val(Data.Actual_weight);
-                            $('#Pincode').val(Data.Pincode);
-
-
-                            $('#chargable_weight').val(Data.chargable_weight);
-                            $('#Quanntity').val(Data.Quanntity);
-                            $('#Type_t').val(Data.Type_t);
-
-                            if (Data.Type_t == "N") {
-                                $('#insshow').show();
-                            }
-                            $("#dtdcamount").val(Data.dtdcamount);
-                            $('#Amount').val(Data.Amount);
-                            $('#Quanntity').val(Data.Quanntity);
-
-
-
-
-
-                        }
-                    }
-  //<---------------------------------------->
-
-                });
-            }
-
-        });
-
+        }
 
         $('#Consignment_no').focusout(function () {
             // alert("Keyup");
             var consno = $("#Consignment_no").val();
-            var flag = 0;
+            var flag = 1;
             var consval = consno.toLowerCase();
 
             //if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
@@ -731,9 +750,9 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
             //        flag = 1;
             //    }
             //}
-            if (consval.length>=9) {
+            if (flag==1) {
                 $('#Consignment_No').val($(this).val().toUpperCase());
-                $('#Customer_Id').focus();
+            //   $('#Customer_Id').focus();
                 ShowRadios(); //calling function
                 $.ajax({
                     type: 'Get',
@@ -773,6 +792,146 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                         $('#Quanntity').val(Data.Quanntity);
 
 
+                        var companyid = Data.Customer_Id;
+
+                        if (Data.Insurance == 'ownerrisk' || Data.Insurance == 'yes') {
+                            $('input:radio[id=Insurance][value=ownerrisk]').prop('checked', true);
+                        }
+                        else if (Data.Insurance == 'carrierrisk') {
+                            $('input:radio[id=Insurance][value=carrierrisk]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[id=Insurance][value=nocoverage]').prop('checked', true);
+                        }
+
+
+
+                        $('#BillAmount').val(Data.BillAmount);
+                        $('#Percentage').val(Data.Percentage);
+                        $('#Risksurcharge').val(Data.Risksurcharge);
+                        $('#Invoice_No').val(Data.Invoice_No);
+                        $('#Packingcharges').val(Data.Packingcharges);
+                        $('#Handlingcharges').val(Data.Handlingcharges);
+                        $('#GEC3Additioncharges').val(Data.GEC3Additioncharges);
+                        var consv = $("#Consignment_No").val();
+
+                        if (consv && consno.toLowerCase() == "i") {
+                            if (Data.topay == 'yes') {
+                                $('input:radio[name=topay][value=yes]').prop('checked', true);
+                            }
+                            else {
+                                $('input:radio[name=topay][value=no]').prop('checked', true);
+                            }
+
+                            $('#topayradio').css("display", "block");
+                        }
+                        else {
+                            $('#topayradio').hide();
+                            $('#Topaydiv').hide();
+                            $('#codradio').hide();
+                        }
+
+
+                        $('#Topaycharges').val(Data.Topaycharges);
+                        $('#consignee').val(Data.consignee);
+                        $('#TopayAmount').val(Data.TopayAmount);
+
+
+
+                        if (Data.cod == 'yes') {
+                            $('input:radio[name=cod][value=yes]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[name=cod][value=no]').prop('checked', true);
+                        }
+
+
+
+                        $('#codAmount').val(Data.codAmount);
+                        $('#codcharges').val(Data.codcharges);
+                        $('#consigner').val(Data.consigner);
+                        $('#codtotalamount').val(Data.codtotalamount);
+
+
+                        ////<----------IF Consignment Is Booked--------->
+                        var companyid = Data.Customer_Id;
+                        if (companyid != null) {
+
+                            alert("Consignment No" + " " + consno + " " + "is Allready Booked");
+
+                            $('#form-Cons').find('input:text,textarea').val('');
+                            $('#form-Cons').find('select').val('D');
+                            $('#Quanntity').val('');
+
+
+                            $('#Consignment_no').focus();
+                            $("#insdiv").hide();
+                            $('#Topaydiv').hide();
+                            $('#coddiv').hide();
+
+                            $('#insshow').hide();
+                            $('#topayradio').hide();
+                            $('#codradio').hide();
+
+                        }
+                        else {
+                            if (Data.Type_t == "N") {
+                                $('#insshow').show();
+                                $('#insdiv').show();
+                            }
+                            else if (Data.Type_t == "Lap") {
+                                $('#insshow').show();
+                            }
+                            else if (Data.Type_t == "RevLap") {
+                                $('#insshow').show();
+                            }
+                            else {
+                                $('#insshow').hide();
+                                $('#insdiv').hide();
+                            }
+
+                            var str = consno;
+                            var res = str.charAt(0);
+
+                            if (res.toLowerCase() == "i") {
+
+                                $('#topayradio').show();
+                                $('#codradio').show();
+
+
+                                if (Data.topay == "yes") {
+                                    $('#topayradio').show();
+                                    $('#Topaydiv').show();
+                                    $('#Amount').val(0);
+                                }
+                                else {
+                                    //  $('#topayradio').hide();
+                                    $('#Topaydiv').hide();
+                                }
+                            }
+                            if (Data.cod == "yes") {
+                                $('#codradio').show();
+                                $('#coddiv').show();
+                            }
+                            else {
+                                //$('#codradio').hide();
+                                $('#coddiv').hide();
+                            }
+                            if (Data.Insurance == "ownerrisk" || Data.Insurance == "yes") {
+                                $('#insdiv').show();
+                            }
+                            else if (Data.Insurance == "carrierrisk") {
+                                $('#insdiv').show();
+                            }
+                            else {
+                                $('#insdiv').hide();
+                            }
+
+
+
+                        }
+                        ////<---------------------------------------->
+                        CheckInternational();
 
                     }
                 });

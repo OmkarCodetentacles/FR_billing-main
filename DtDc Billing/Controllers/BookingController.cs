@@ -1921,124 +1921,130 @@ Select(e => new
                     continue;
                 }
 
-                if (!string.IsNullOrEmpty(row))
+                try
                 {
+                    if (!string.IsNullOrEmpty(row))
+                    {
 
-                    string[] values = row.Split('"');
+                        string[] values = row.Split('"');
 
 
-                    Transaction tr = new Transaction();
+                        Transaction tr = new Transaction();
 
-                    string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                        string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-                    string bdate = DateTime.ParseExact(values[10].Replace("~", "").Trim('\''), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                        string bdate = DateTime.ParseExact(values[10].Replace("~", "").Trim('\''), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
 
 
-                    tr.Consignment_no = values[1].Trim('\'').Trim();
-                    tr.Pf_Code = values[3].Trim('\'');
-                    tr.Actual_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
-                    tr.Mode = values[5].Trim('\'');
-                    tr.Quanntity = Convert.ToInt16(values[8].Trim('\''));
-                    tr.Pincode = values[9].Trim('\'');
-                    tr.booking_date = Convert.ToDateTime(bdate);
-                    tr.tembookingdate = values[10].Trim('\'');
-                    tr.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
-                    tr.chargable_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
-                    tr.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
-                    tr.topay = "no";
-                    tr.cod = "no";
-                    //tr.Insurance = "no";
-                    tr.Type_t = values[16].Trim('\'');
-                    tr.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
-                    tr.isDelete = false;
-                    if (tr.BillAmount == 0.00)
-                    {
-                        tr.Insurance = "nocoverage";
-                    }
-                    else
-                    {
-                        tr.Insurance = "ownerrisk";
-                    }
-
-
-                    Transaction insertupdate = db.Transactions.Where(m => m.Consignment_no == tr.Consignment_no && m.Pf_Code == PfCode).FirstOrDefault();
-
-
-
-
-
-                    if (insertupdate == null)
-                    {
-                        // db.Entry(insertupdate).State = EntityState.Detached;
-
-                        db.Transactions.Add(tr);
-                        try
+                        tr.Consignment_no = values[1].Trim('\'').Trim();
+                        tr.Pf_Code = values[3].Trim('\'');
+                        tr.Actual_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
+                        tr.Mode = values[5].Trim('\'');
+                        tr.Quanntity = Convert.ToInt16(values[8].Trim('\''));
+                        tr.Pincode = values[9].Trim('\'');
+                        tr.booking_date = Convert.ToDateTime(bdate);
+                        tr.tembookingdate = values[10].Trim('\'');
+                        tr.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
+                        tr.chargable_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
+                        tr.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
+                        tr.topay = "no";
+                        tr.cod = "no";
+                        //tr.Insurance = "no";
+                        tr.Type_t = values[16].Trim('\'');
+                        tr.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
+                        tr.isDelete = false;
+                        if (tr.BillAmount == 0.00)
                         {
-                            // Your code...
-                            // Could also be before try if you know the exception occurs in SaveChanges
-
-                            db.SaveChanges();
+                            tr.Insurance = "nocoverage";
                         }
-                        catch (DbEntityValidationException e)
+                        else
                         {
-                            foreach (var eve in e.EntityValidationErrors)
+                            tr.Insurance = "ownerrisk";
+                        }
+
+
+                        Transaction insertupdate = db.Transactions.Where(m => m.Consignment_no == tr.Consignment_no && m.Pf_Code == PfCode).FirstOrDefault();
+
+
+
+
+
+                        if (insertupdate == null)
+                        {
+                            // db.Entry(insertupdate).State = EntityState.Detached;
+
+                            db.Transactions.Add(tr);
+                            try
                             {
-                                Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                                foreach (var ve in eve.ValidationErrors)
-                                {
-                                    Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage);
-                                }
+                                // Your code...
+                                // Could also be before try if you know the exception occurs in SaveChanges
+
+                                db.SaveChanges();
                             }
-                            throw;
-                        }
-
-                    }
-                    else
-                    {
-                        insertupdate.Pf_Code = values[3].Trim('\'');
-                        insertupdate.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
-                        insertupdate.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
-                        insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
-
-                        insertupdate.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
-                        insertupdate.Insurance = tr.Insurance;
-                        insertupdate.isDelete = false;
-                        db.Entry(insertupdate).State = EntityState.Modified;
-
-                        try
-                        {
-                            // Your code...
-                            // Could also be before try if you know the exception occurs in SaveChanges
-
-                            db.SaveChanges();
-                        }
-                        catch (DbEntityValidationException e)
-                        {
-                            foreach (var eve in e.EntityValidationErrors)
+                            catch (DbEntityValidationException e)
                             {
-                                Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                                    eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                                foreach (var ve in eve.ValidationErrors)
+                                foreach (var eve in e.EntityValidationErrors)
                                 {
-                                    Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                                        ve.PropertyName, ve.ErrorMessage);
+                                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                    foreach (var ve in eve.ValidationErrors)
+                                    {
+                                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                            ve.PropertyName, ve.ErrorMessage);
+                                    }
                                 }
+                                throw;
                             }
-                            throw;
+
+                        }
+                        else
+                        {
+                            insertupdate.Pf_Code = values[3].Trim('\'');
+                            insertupdate.dtdcamount = Convert.ToDouble(values[11].Replace("~", "").Trim('\''));
+                            insertupdate.diff_weight = Convert.ToDouble(values[4].Replace("~", "").Trim('\''));
+                            insertupdate.Consignment_no = insertupdate.Consignment_no.Trim();
+
+                            insertupdate.BillAmount = Convert.ToDouble(values[21].Replace("~", "").Trim('\''));
+                            insertupdate.Insurance = tr.Insurance;
+                            insertupdate.isDelete = false;
+                            db.Entry(insertupdate).State = EntityState.Modified;
+
+                            try
+                            {
+                                // Your code...
+                                // Could also be before try if you know the exception occurs in SaveChanges
+
+                                db.SaveChanges();
+                            }
+                            catch (DbEntityValidationException e)
+                            {
+                                foreach (var eve in e.EntityValidationErrors)
+                                {
+                                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                    foreach (var ve in eve.ValidationErrors)
+                                    {
+                                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                            ve.PropertyName, ve.ErrorMessage);
+                                    }
+                                }
+                                throw;
+                            }
+
+                            // db.SaveChanges();
+
                         }
 
-                        // db.SaveChanges();
+
+
 
                     }
-
-
-
-
                 }
-
+                catch(Exception ex)
+                {
+                    continue;
+                }
 
             }
 

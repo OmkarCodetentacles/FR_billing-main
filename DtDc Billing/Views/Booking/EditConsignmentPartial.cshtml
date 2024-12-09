@@ -606,7 +606,20 @@ $.ajax({
         $('#topayradio').hide();
         $('#codradio').hide();
 
+        function CheckInternational() {
+            var Type_t = $('#Consignment_no').val();
 
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+            }
+            // Check if it contains only numbers and is 11 digits long
+            else if (/^\d{11}$/.test(Type_t)) {
+                $('#intpincode').show(); // Show the element if condition is true
+            }
+            else {
+                $('#intpincode').hide();
+            }
+        }
 
 
 
@@ -643,16 +656,16 @@ $.ajax({
 
 
 
-        $('#Consignment_no').keyup(function () {
-            // alert("Keyup");
-            var consno = $("#Consignment_no").val();
-            currentConsignmentno = consno;
-            if (consno.length >= 9) {
-                $('#Consignment_no').val($(this).val().toUpperCase());
+        //$('#Consignment_no').keyup(function () {
+        //    // alert("Keyup");
+        //    var consno = $("#Consignment_no").val();
+        //    currentConsignmentno = consno;
+        //    if (consno.length >= 9) {
+        //        $('#Consignment_no').val($(this).val().toUpperCase());
 
-                $('#Customer_Id').focus();
-            }
-        });
+        //        $('#Customer_Id').focus();
+        //    }
+        //});
 
 
         $('#Consignment_no').focusout(function () {
@@ -765,7 +778,7 @@ $.ajax({
                         $('#consigner').val(Data.consigner);
                         $('#codtotalamount').val(Data.codtotalamount);
 
-
+                        CheckInternational();
 
 
 
