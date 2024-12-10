@@ -2318,6 +2318,7 @@ namespace DtDc_Billing.Controllers
                             str.BillEcomPrio = BillEcomPrioValues[i];
                             str.BillEcomGE = BillEcomGEValues[i];
                             db.Entry(str).State = EntityState.Modified;
+
                         }
                     }
 

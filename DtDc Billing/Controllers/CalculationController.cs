@@ -26,7 +26,7 @@ namespace DtDc_Billing.Controllers
             List<Sector> sector = new List<Sector>();
             if (type == "N")
             {
-                 sector = db.Sectors.Where(m => m.Pf_code == pfcode && m.BillN == true).OrderBy(m=>m.Priority).ToList();
+                 sector = db.Sectors.Where(m => m.Pf_code == pfcode && (m.BillNonAir==true || m.BillNonSur==true)).OrderBy(m=>m.Priority).ToList();
             }
             else
             {
@@ -582,7 +582,7 @@ namespace DtDc_Billing.Controllers
 
                 // return Json(new { DoxAmount = Amount });
             }
-            else if (type == "N")
+            else    if (type == "N")
             {
                 Nondox nondox = db.Nondoxes.Where(m => m.Sector_Id == sectorfound && m.Company_id == CashRate).FirstOrDefault();
 
