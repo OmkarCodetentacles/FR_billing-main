@@ -472,33 +472,45 @@
     {
         long diff = 0;
 
-        if (startno.ToLower().StartsWith("7d") && endno.ToLower().StartsWith("7d"))
-        {
-            long startConsignment = Convert.ToInt64(startno.Substring(2));
-            long EndConsignment = Convert.ToInt64(endno.Substring(2));
 
-            diff = EndConsignment - startConsignment;
+        //if (startno.ToLower().StartsWith("7d") && endno.ToLower().StartsWith("7d"))
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(2));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(2));
 
-        }
-        else if (startno.ToLower().StartsWith("7x") && endno.ToLower().StartsWith("7x"))
-        {
-            long startConsignment = Convert.ToInt64(startno.Substring(2));
-            long EndConsignment = Convert.ToInt64(endno.Substring(2));
+        //    diff = EndConsignment - startConsignment;
 
-            diff = EndConsignment - startConsignment;
+        //}
+        //else if (startno.ToLower().StartsWith("7x") && endno.ToLower().StartsWith("7x"))
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(2));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(2));
 
-        }
-        else
-        {
-            long startConsignment = Convert.ToInt64(startno.Substring(1));
-            long EndConsignment = Convert.ToInt64(endno.Substring(1));
+        //    diff = EndConsignment - startConsignment;
 
-            diff = EndConsignment - startConsignment;
+        //}
+        //else
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(1));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+        //    diff = EndConsignment - startConsignment;
 
 
-        }
+        //}
 
+        //  return diff + 1;
+
+        // Extract the numeric part of the consignment number
+        var matchst = System.Text.RegularExpressions.Regex.Match(startno, @"(\d+)(?!.*\d)").ToString();
+        var matchen = System.Text.RegularExpressions.Regex.Match(endno, @"(\d+)(?!.*\d)").ToString();
+        string startNumeric = matchst;
+        string endNumeric = matchen;
+
+        diff = Convert.ToInt64(endNumeric) - Convert.ToInt64(startNumeric);
         return diff + 1;
+
+
     }
 
 
