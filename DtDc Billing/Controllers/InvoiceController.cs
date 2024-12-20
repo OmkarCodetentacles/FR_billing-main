@@ -4481,7 +4481,7 @@ Select(e => new
 
                     // Generate the next invoice number (e.g., "AN066")
                     string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    lastInvoice = nextInvoiceNo;
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
