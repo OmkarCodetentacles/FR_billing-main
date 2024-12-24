@@ -51,6 +51,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<bool> BillPriority { get; set; }
         public Nullable<bool> BillEcomPrio { get; set; }
         public Nullable<bool> BillEcomGE { get; set; }
+        public Nullable<bool> BillGecSec { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dtdc_Ecommerce> Dtdc_Ecommerce { get; set; }

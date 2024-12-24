@@ -408,6 +408,7 @@
     <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
     <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
     <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
+    <Property Name="IsGECSector" Type="Boolean" />
   </EntityType>
   <EntityType Name="GSTInvoice">
     <Key>
@@ -941,6 +942,7 @@
     <NavigationProperty Name="Priorities" Relationship="Self.FK__Priority__Sector__3552E9B6" FromRole="Sectors" ToRole="Priority" />
     <NavigationProperty Name="Priorities1" Relationship="Self.FK__Priority__Sector__3D2915A8" FromRole="Sectors" ToRole="Priority" />
     <NavigationProperty Name="Ratems" Relationship="Self.fk_rateamaster" FromRole="Sectors" ToRole="Ratem" />
+    <Property Name="BillGecSec" Type="Boolean" />
   </EntityType>
   <EntityType Name="Sendmessage">
     <Key>
@@ -2679,6 +2681,8 @@
       <Parameter Name="FirmName" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
+    <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
+    <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3270,4 +3274,34 @@
     <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
   </ComplexType>
+  <EntityType Name="GECrate">
+    <Key>
+      <PropertyRef Name="GECrateId" />
+    </Key>
+    <Property Name="GECrateId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Slab1" Type="Double" />
+    <Property Name="Slab2" Type="Double" />
+    <Property Name="Slab3" Type="Double" />
+    <Property Name="Slab4" Type="Double" />
+    <Property Name="Uptosl1" Type="Double" />
+    <Property Name="Uptosl2" Type="Double" />
+    <Property Name="Uptosl3" Type="Double" />
+    <Property Name="Uptosl4" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Sector_Id" Type="Int32" />
+    <Property Name="SectorName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="PFcode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GECNoOfSlab" Type="Int32" />
+  </EntityType>
+  <EntityType Name="GECSector">
+    <Key>
+      <PropertyRef Name="GECSectorId" />
+    </Key>
+    <Property Name="GECSectorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SectorName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="Priority" Type="Int32" />
+    <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

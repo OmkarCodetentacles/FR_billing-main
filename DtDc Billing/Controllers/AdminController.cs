@@ -31,6 +31,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Newtonsoft.Json;
 using ClosedXML;
+using OfficeOpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1438,6 +1440,7 @@ namespace DtDc_Billing.Controllers
 
             if (ModelState.IsValid)
             {
+                franchisee.IsGECSector = false;
                 db.Franchisees.Add(franchisee);
 
                 try
@@ -1909,7 +1912,7 @@ namespace DtDc_Billing.Controllers
 
             db.SaveChanges();
 
-            var getSector = db.Sectors.Where(x => x.Sector_Id == sectorId && x.Pf_code == pfcode).FirstOrDefault();
+            var getSector = db.Sectors.Where(x => x.Sector_Id == sectorId && x.Pf_code == pfcode && x.BillGecSec==null).FirstOrDefault();
 
             if (getSector != null)
             {
@@ -1938,7 +1941,7 @@ namespace DtDc_Billing.Controllers
 
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            var checkExist = db.Sectors.Where(x => x.Sector_Name.ToUpper() == Sector_Name.ToUpper() && x.Pf_code == pfcode).FirstOrDefault();
+            var checkExist = db.Sectors.Where(x => x.Sector_Name.ToUpper() == Sector_Name.ToUpper() && x.Pf_code == pfcode ).FirstOrDefault();
 
             if (checkExist != null)
             {
@@ -2003,7 +2006,9 @@ namespace DtDc_Billing.Controllers
                       BillExpCargo = u.BillExpCargo ?? false,
                       BillPriority = u.BillPriority ?? false,
                       BillEcomPrio = u.BillEcomPrio ?? false,
-                      BillEcomGE = u.BillEcomGE ?? false
+                      BillEcomGE = u.BillEcomGE ?? false,
+                      BillGecSec=null
+                     
                   }).OrderBy(x => x.Priority).ToList();
 
 
@@ -2239,6 +2244,8 @@ namespace DtDc_Billing.Controllers
 
             datasector = (from u in db.Sectors
                           where u.Pf_code == franchisee.Pfcode
+                           && u.BillGecSec == null
+
                           select new SectorNewModel
                           {
                               Sector_Id = u.Sector_Id,
@@ -2343,6 +2350,8 @@ namespace DtDc_Billing.Controllers
                 string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 List<SectorNewModel> secct1 = (from u in db.Sectors
                                                where u.Pf_code == pfcode
+                                                                                      && u.BillGecSec == null
+
                                                select new SectorNewModel
                                                {
                                                    Sector_Id = u.Sector_Id,
@@ -2546,6 +2555,7 @@ namespace DtDc_Billing.Controllers
 
             List<Sector> st = (from u in db.Sectors
                                where u.Pf_code == Pf
+                               && u.BillGecSec==null
                                orderby u.Priority
                                select u).ToList();
             ViewBag.pfcode = PfCode;//stored in hidden format on the view
@@ -2626,8 +2636,9 @@ namespace DtDc_Billing.Controllers
             if (ModelState.IsValid)
             {
                 var PF_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-                Franchisee Fr =db.Franchisees.Where(x => x.PF_Code == PF_Code).FirstOrDefault();
+                try
+                {
+                    Franchisee Fr =db.Franchisees.Where(x => x.PF_Code == PF_Code).FirstOrDefault();
 
                 Fr.F_Address = franchisee.F_Address;
                 Fr.OwnerName = franchisee.OwnerName;
@@ -2647,7 +2658,7 @@ namespace DtDc_Billing.Controllers
                 Fr.Branch = franchisee.Branch;
                 Fr.Accounttype = franchisee.Accounttype;
                 Fr.InvoiceStart = franchisee.InvoiceStart;
-
+                Fr.IsGECSector=franchisee.IsGECSector;
                 //var getNewFilePath = "";
                 //if (franchisee.StampFilePath == null)
                 //{
@@ -2679,16 +2690,73 @@ namespace DtDc_Billing.Controllers
                 Reg.AccountName = franchisee.AccountName;
                 Reg.BankName = franchisee.Bankname;
                 Reg.AccountName = franchisee.AccountName;
+                Reg.AccountName = franchisee.AccountName;
                 Reg.IFSC_Code = franchisee.IFSCcode;
                 Reg.Branch = franchisee.Branch;
                 Reg.AccountType = franchisee.Accounttype;
-                Reg.InvoiceStart = franchisee.InvoiceStart;
+              //  Reg.InvoiceStart = franchisee.InvoiceStart.ToString();
 
 
                 db.Entry(Reg).State = EntityState.Modified;
-                try
-                {
-                    db.SaveChanges();
+                db.SaveChanges();
+                    if (franchisee.IsGECSector == true)
+                    {
+                        var gecrate = db.Sectors.Where(m => m.Pf_code == PF_Code && m.BillGecSec==true).ToList();
+
+                        if (gecrate.Count == 0)
+                        {
+                            string[] sectornamelist = new string[]
+                                   {    
+                            "CENTRAL I",
+                            "CENTRAL II",
+                            "EAST I",
+                            "EAST II",
+                            "NORTH EAST I",
+                            "NORTH EAST II",
+                            "NORTH EAST III",
+                            "NORTH I",
+                            "NORTH II",
+                            "NORTH III",
+                            "SOUTH I",
+                            "SOUTH II",
+                            "SOUTH III",
+                            "WEST I",
+                            "WEST II"
+                                   };
+                            var sector = db.Sectors.Where(m => m.Pf_code ==PF_Code && m.BillGecSec == true).ToList();
+                            if (sector.Count == 0)
+                            {
+                                var p = 1;
+                                foreach (var i in sectornamelist)
+                                {
+                                    Sector sn = new Sector();
+
+                                    sn.Pf_code =PF_Code;
+                                    sn.CashD = null;
+                                    sn.CashN = null;
+                                    sn.BillD = null;
+                                    sn.BillN = null;
+                                    sn.BillNonAir = null;
+                                    sn.BillNonSur = null;
+                                    sn.BillEcomGE = null;
+                                    sn.BillEcomPrio = null;
+                                    sn.Sector_Name = i;
+                                    sn.Priority = p;
+                                    sn.BillGecSec = true;
+
+                                    db.Sectors.Add(sn);
+                                    db.SaveChanges();
+                                    p++;
+
+                                }
+                            }
+
+                        }
+
+
+
+                    }
+
                 }
                 catch(Exception ex) {
                 
@@ -2958,7 +3026,7 @@ namespace DtDc_Billing.Controllers
             Fr.Accounttype = data.Accounttype;  
             Fr.InvoiceStart = data.InvoiceStart;
             Fr.StampFilePath = data.StampFilePath;
-
+            Fr.IsGECSector = data.IsGECSector??false;
 
             if (Fr == null)
             {
@@ -2970,6 +3038,7 @@ namespace DtDc_Billing.Controllers
 
             List<SectorNewModel> st = (from u in db.Sectors
                                        where u.Pf_code == strpf
+                                       && u.BillGecSec==null
                                        select new SectorNewModel
                                        {
                                            Sector_Id = u.Sector_Id,
@@ -2984,6 +3053,7 @@ namespace DtDc_Billing.Controllers
                                            BillPriority = u.BillPriority ?? false,
                                            BillEcomPrio = u.BillEcomPrio ?? false,
                                            BillEcomGE = u.BillEcomGE ?? false
+
                                        }).OrderBy(x => x.Priority).ToList();
             ViewBag.pfcode = strpf;//stored in hidden format on the view
             ViewBag.DataSector = st;
@@ -3114,6 +3184,7 @@ namespace DtDc_Billing.Controllers
             List<Priority> pra = db.Priorities.Where(m => m.Company_id == id).ToList();
             Company comp = db.Companies.Where(m => m.Company_Id == id).FirstOrDefault();
             List<Dtdc_Ecommerce> dtdc_Ecom = db.Dtdc_Ecommerce.Where(m => m.Company_id == id).ToList();
+            List<GECrate> getGec = db.GECrates.Where(m => m.Company_id == id).ToList();
             List<Transaction> dtdc_tran=db.Transactions.Where(m=>m.Customer_Id.ToUpper()==id.ToUpper()).ToList();
             List<Entity_FR.Invoice> invoice = db.Invoices.Where(m => m.Customer_Id == id).ToList();
             if (dtdc_Ptps.Count>0)
@@ -3160,6 +3231,13 @@ namespace DtDc_Billing.Controllers
                 foreach (var i in dtdc_Ecom)
                 {
                     db.Dtdc_Ecommerce.Remove(i);
+                }
+            }
+            if (getGec.Count > 0)
+            {
+                foreach (var i in getGec)
+                {
+                    db.GECrates.Remove(i);
                 }
             }
            if(dtdc_tran.Count > 0)
@@ -4485,6 +4563,7 @@ namespace DtDc_Billing.Controllers
                     fr.Datetime_Fr=DateTime.Now;
                     fr.password = Pfcheck.password;
                     fr.ContactNo = Pfcheck.mobileNo;
+                    fr.IsGECSector = false;
                     var franchisee=db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault(); 
                     if(franchisee == null)
                     {
@@ -4514,7 +4593,7 @@ namespace DtDc_Billing.Controllers
                             sn.CashN = true;
                             sn.BillD = true;
                             sn.BillN = true;
-
+                            sn.BillGecSec = null;
 
                             if (sn.Sector_Name == "Within city")
                             {
@@ -4525,7 +4604,7 @@ namespace DtDc_Billing.Controllers
                                 sn.CashN = true;
                                 sn.BillD = true;
                                 sn.BillN = true;
-
+                                sn.BillGecSec = null;
                             }
 
                             else if (sn.Sector_Name == "Within state")
@@ -4535,7 +4614,7 @@ namespace DtDc_Billing.Controllers
                                 sn.CashN = false;
                                 sn.BillD = true;
                                 sn.BillN = false;
-
+                                sn.BillGecSec = null;
                                 sn.Priority = 2;
                                 sn.Pincode_values = "400000-403000,404000-450000";
                             }
@@ -4550,7 +4629,7 @@ namespace DtDc_Billing.Controllers
                                 sn.CashN = true;
                                 sn.BillD = false;
                                 sn.BillN = true;
-
+                                sn.BillGecSec = null;
                             }
 
                             else if (sn.Sector_Name == "Metro")
@@ -4562,7 +4641,7 @@ namespace DtDc_Billing.Controllers
                                 sn.CashN = true;
                                 sn.BillD = true;
                                 sn.BillN = true;
-
+                                sn.BillGecSec = null;
                             }
 
 
@@ -4571,7 +4650,7 @@ namespace DtDc_Billing.Controllers
                             {
                                 sn.Priority = 5;
                                 sn.Pincode_values = "780000-800000,170000-180000";
-
+                                sn.BillGecSec = null;
                                 sn.CashD = true;
                                 sn.CashN = true;
                                 sn.BillD = true;
@@ -4590,7 +4669,7 @@ namespace DtDc_Billing.Controllers
                                 sn.CashN = true;
                                 sn.BillD = true;
                                 sn.BillN = true;
-
+                                sn.BillGecSec = null;
                             }
                             else
                             {
@@ -4611,7 +4690,7 @@ namespace DtDc_Billing.Controllers
                     var Companyid = "Cash_" + Pfcode.ToUpper();
 
 
-                    var secotrs = db.Sectors.Where(m => m.Pf_code == Pfcode.ToUpper()).ToList();
+                    var secotrs = db.Sectors.Where(m => m.Pf_code == Pfcode.ToUpper() ).ToList();
 
                     Company cm = new Company();
                     cm.Company_Id = Companyid;
@@ -5696,6 +5775,84 @@ namespace DtDc_Billing.Controllers
             ViewBag.sendmail = "The token ID has been sent to your registered email address; please check your inbox for it.";
 
             return Json("chamara", JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult GECimportFromExcel()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GECimportFromExcel(HttpPostedFileBase httpPostedFileBase)
+        {
+
+            var task = Task.Run(async () => await InsertGECDataAsync(httpPostedFileBase));
+            return View();
+        }
+        public async Task InsertGECDataAsync(HttpPostedFileBase httpPostedFileBase)
+        {
+            if (httpPostedFileBase != null)
+            {
+                HttpPostedFileBase file = httpPostedFileBase;
+                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                {
+                    string fileName = file.FileName;
+                    string fileContentType = file.ContentType;
+                    byte[] fileBytes = new byte[file.ContentLength];
+                    var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+
+
+                    using (var package = new ExcelPackage(file.InputStream))
+                    {
+                        var currentSheet = package.Workbook.Worksheets;
+                        var workSheet = currentSheet.First();
+                        var noOfCol = workSheet.Dimension.End.Column;
+                        var noOfRow = workSheet.Dimension.End.Row;
+                        for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                        {
+
+                            var pincode = workSheet.Cells[rowIterator, 1].Value.ToString().Trim();
+                            var city = workSheet.Cells[rowIterator, 2].Value.ToString();
+                            var sectorName = workSheet.Cells[rowIterator, 3].Value.ToString();
+                            GECSector addnew = new GECSector();
+
+                            addnew.Pincode = pincode;
+                            addnew.City = city;
+                            addnew.SectorName = sectorName;
+                            addnew.Priority = null;
+                            addnew.Pf_code = null;
+                            db.GECSectors.Add(addnew);
+                            try
+                            {
+                                db.SaveChanges();
+                            }
+                            catch (DbEntityValidationException e)
+                            {
+
+                                foreach (var eve in e.EntityValidationErrors)
+                                {
+                                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                                    foreach (var ve in eve.ValidationErrors)
+                                    {
+                                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                            ve.PropertyName, ve.ErrorMessage);
+                                    }
+                                }
+                                throw;
+
+                            }
+
+
+
+                        }
+                    }
+
+                }
+            }
         }
 
     }

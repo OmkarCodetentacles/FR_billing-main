@@ -27,6 +27,8 @@ namespace DtDc_Billing.Models
         
         public bool BillEcomPrio { get; set; }
         public bool BillEcomGE { get; set; }
+        public Nullable<bool> BillGecSec { get; set; }
+
 
     }
 }

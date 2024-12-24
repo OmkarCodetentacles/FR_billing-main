@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.CustomModel;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
@@ -126,8 +127,66 @@ namespace DtDc_Billing.Controllers
 
 
             ViewBag.Dtdc_Ecommerce = getEcom;
-            
 
+            ///Add Gec Data 
+            var companyPfCode = company.Pf_code;
+            var getGEC = (from GECr in db.GECrates
+                          join s in db.Sectors on GECr.Sector_Id equals s.Sector_Id
+                          where GECr.Company_id == CompanyId
+                                && s.Pf_code == companyPfCode
+                                && s.BillGecSec == true
+                          select GECr
+
+                          //// Directly checking if s.GECrates is true
+                          //select new
+                          //{
+                          //    SectorName = s.Sector_Name,
+                          //    GECrateId = GECr.GECrateId,
+                          //    Slab1 = GECr.Slab1,
+                          //    Slab2 = GECr.Slab2,
+                          //    Slab3 = GECr.Slab3,
+                          //    Slab4 = GECr.Slab4,
+                          //    Uptosl1 = GECr.Uptosl1,
+                          //    Uptosl2 = GECr.Uptosl2,
+                          //    Uptosl3 = GECr.Uptosl3,
+                          //    Uptosl4 = GECr.Uptosl4,
+                          //    Company_id = GECr.Company_id,
+                          //    PFCode=GECr.PFcode,
+                          //    NoOfSlab = GECr.NoOfSlab,
+                          //    Priority = s.Priority, // Include Priority for ordering
+                          //    Sector_Id = GECr.Sector_Id
+                          //}
+
+                          )
+             .ToList();// Execute the query and bring the results into memory
+           //  .OrderBy(x => x.Priority) // Order by Priority after the selection
+             //.Select(x => new GECrate
+             //{
+             //    SectorName = x.SectorName,
+             //    GECrateId = x.GECrateId,
+             //    PFcode=x.PFCode,
+             //    Slab1 = x.Slab1,
+             //    Slab2 = x.Slab2,
+             //    Slab3 = x.Slab3,
+             //    Slab4 = x.Slab4,
+             //    Uptosl1 = x.Uptosl1,
+             //    Uptosl2 = x.Uptosl2,
+             //    Uptosl3 = x.Uptosl3,
+             //    Uptosl4 = x.Uptosl4,
+             //    Company_id = x.Company_id,
+             //    Sector_Id = x.Sector_Id,
+             //    NoOfSlab = x.NoOfSlab
+             //})
+           // .ToList();
+
+
+
+            ViewBag.GECratemaster = getGEC;
+            ViewBag.SlabGEC = getGEC.FirstOrDefault();
+
+
+
+            ///////////////////////////////////////////////////////////////////////////
 
             //<-------------risk surch charge dropdown--------------->
             double? selectedval = db.Companies.Where(m => m.Company_Id == CompanyId).Select(m => m.Minimum_Risk_Charge).FirstOrDefault();
@@ -185,7 +244,10 @@ namespace DtDc_Billing.Controllers
 
         public string saveMissingSectors(string pfCode, string companyId)
         {
-            var secotrs = db.Sectors.Where(m => m.Pf_code == pfCode).ToList();
+            var secotrs = db.Sectors.Where(m => m.Pf_code == pfCode && m.BillGecSec==null).ToList();
+
+            var gecsectors = db.Sectors.Where(m => m.Pf_code == pfCode && m.BillGecSec == true).ToList();
+
 
             var getDoxList = db.Ratems.Where(x => x.Company_id == companyId).ToList();
             var getNonDoxList = db.Nondoxes.Where(x => x.Company_id == companyId).ToList();
@@ -195,6 +257,8 @@ namespace DtDc_Billing.Controllers
             var getExpress_cargoList = db.express_cargo.Where(x => x.Company_id == companyId).ToList();
             var getDtdc_EcommerceList = db.Dtdc_Ecommerce.Where(x => x.Company_id == companyId).ToList();
 
+            ///
+            var getGECList = db.GECrates.Where(x => x.Company_id == companyId).ToList();
             //DOX table start
             // Find sector IDs present in secotrs but not in getDoxList
             var sectorsToAdd = secotrs.Where(x => x.BillD == true).Select(s => s.Sector_Id).Where(sectorId => !getDoxList.Select(d => d.Sector_Id).Contains(sectorId));
@@ -397,6 +461,64 @@ namespace DtDc_Billing.Controllers
             db.SaveChanges();
 
             //Ecommerce table end
+
+
+            //GEC Sector table start
+            // Find sector IDs present in secotrs but not in getGECList
+            var sectorsToAddGEC = secotrs
+       .Where(x => x.BillGecSec == true) // Filter sectors with BillGecSec == true
+       .Select(s => new { s.Sector_Id, s.Sector_Name }) // Select required properties
+       .Where(sector => !getGECList.Select(d => d.Sector_Id).Contains(sector.Sector_Id)).ToList(); // Exclude already existing Sector_Id
+
+            var noOfSlabGEC = getGECList.Count() == 0 ? 2 : getGECList.FirstOrDefault().GECNoOfSlab;
+
+            // Add new entries to Ratems table
+            foreach (var sectorId in sectorsToAddGEC)
+            {
+                var newGECEntry = new GECrate
+                {
+                    Sector_Id = sectorId.Sector_Id,
+                    Slab1 = 1,
+                    Slab2 = 1,
+                    Slab3 = 1,
+                    Slab4 = 1,
+                    Uptosl1 = 1,
+                    Uptosl2 = 1,
+                    Uptosl3 = 1,
+                    Uptosl4 = 1,
+                    Company_id = companyId,
+                    GECNoOfSlab = noOfSlabGEC,
+                   
+                    SectorName=sectorId.Sector_Name,
+                    PFcode=pfCode
+                    // Set other properties as needed
+                };
+
+                db.GECrates.Add(newGECEntry);
+            }
+
+     //       // Find sector IDs present in getDoxList but not in secotrs
+     //       var sectorsToRemoveGEC = getGECList
+     //.Select(d => d.Sector_Id)
+     //.Where(sectorId => sectorId.HasValue && !secotrs.Where(x => x.BillGecSec == true).Select(s => s.Sector_Id).Contains(sectorId.Value))
+     //.ToList();
+
+
+
+     //       // Remove entries from Ratems table
+     //       foreach (var sectorId in sectorsToRemoveGEC)
+     //       {
+     //           var GECRemove = db.GECrates.FirstOrDefault(x => x.Sector_Id == sectorId);
+     //           if (GECRemove != null)
+     //           {
+     //               db.GECrates.Remove(GECRemove);
+     //           }
+     //       }
+
+            // Save changes to the database
+            db.SaveChanges();
+
+            //DOX table end 
             return "";
         }
 
@@ -412,7 +534,7 @@ namespace DtDc_Billing.Controllers
 
             if (prio.Count() == 0)
             {
-                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && m.BillPriority == true).ToList();
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && m.BillPriority == true && m.BillGecSec==null).ToList();
                 foreach (var i in secotrs)
                 {
                     Priority pr = new Priority();
@@ -449,7 +571,7 @@ namespace DtDc_Billing.Controllers
 
             if (ecom.Count == 0)
             {
-                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && (m.BillEcomGE == true || m.BillEcomPrio == true)).ToList();
+                var secotrs = db.Sectors.Where(m => m.Pf_code == pfcode.Pf_code && (m.BillEcomGE == true || m.BillEcomPrio == true)&& m.BillGecSec==null ).ToList();
                 foreach (var i in secotrs)
                 {
                     Dtdc_Ecommerce rm = new Dtdc_Ecommerce();
@@ -481,6 +603,40 @@ namespace DtDc_Billing.Controllers
                     db.SaveChanges();
                 }
             }
+            var Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+
+            var sector = db.Sectors.Where(m => m.Pf_code == Pf_code && m.BillGecSec == true).OrderBy(x=>x.Priority).ToList();
+            if(sector.Count != 0)
+            {
+
+                var gecrate = db.GECrates.Where(m => m.Company_id == Id).ToList();
+                if (gecrate.Count == 0)
+                {
+                    foreach (var i in sector)
+                    {
+                        GECrate ge = new GECrate();
+                        ge.Slab1 = 1;
+                        ge.Slab2 = 1;
+                        ge.Slab3 = 1;
+                        ge.Slab4 = 1;
+                        ge.Uptosl1 = 1;
+                        ge.Uptosl2 = 1;
+                        ge.Uptosl3 = 1;
+                        ge.Uptosl4 = 1;
+                        ge.Company_id = Id;
+                        ge.GECNoOfSlab = 2;
+                        ge.PFcode = Pf_code;
+                        ge.Sector_Id = i.Sector_Id;
+                        ge.SectorName = i.Sector_Name;
+                        db.GECrates.Add(ge);
+                        db.SaveChanges();
+                    }
+                }
+             
+
+
+            }
+
 
             saveMissingSectors(pfcode.Pf_code, Idd);
             return RedirectToAction("Index", "RateMaster", new { id = Id });
@@ -572,7 +728,7 @@ namespace DtDc_Billing.Controllers
 
             
 
-                var secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code).ToList();            
+                var secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code && m.BillGecSec==null).ToList();            
 
                
 
@@ -761,6 +917,38 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Company = new Company();
 
                 ViewBag.Dox = db.Ratems.Where(m => m.Company_id == empmodel.Company_Id).ToList();
+                var gecsector = db.Sectors.Where(m => m.Pf_code == strpfcode && m.BillGecSec == true).OrderBy(x => x.Priority).ToList();
+                if (gecsector.Count != 0)
+                {
+
+                    var gecrate = db.GECrates.Where(m => m.Company_id == empmodel.Company_Id).ToList();
+                    if (gecrate.Count == 0)
+                    {
+                        foreach (var i in gecsector)
+                        {
+                            GECrate ge = new GECrate();
+                            ge.Slab1 = 1;
+                            ge.Slab2 = 1;
+                            ge.Slab3 = 1;
+                            ge.Slab4 = 1;
+                            ge.Uptosl1 = 1;
+                            ge.Uptosl2 = 1;
+                            ge.Uptosl3 = 1;
+                            ge.Uptosl4 = 1;
+                            ge.Company_id =empmodel.Company_Id;
+                            ge.GECNoOfSlab = 2;
+                            ge.PFcode = strpfcode;
+                            ge.Sector_Id = i.Sector_Id;
+                            ge.SectorName = i.Sector_Name;
+                            db.GECrates.Add(ge);
+                            db.SaveChanges();
+                        }
+                    }
+
+
+
+                }
+
 
 
 
@@ -2236,6 +2424,152 @@ namespace DtDc_Billing.Controllers
                 TempData["error"] = "Please upload file";
             }
             return RedirectToAction("AddCompany");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [HandleError]
+        public ActionResult RateMasterGEC(int? only, FormCollection fc, float[] slab1, string comppid)
+        {
+            comppid = comppid.Replace("__", "&").Replace("xdotx", ".");
+            var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var CompanyId = comppid;
+            var company = db.Companies.Where(x => x.Company_Id == comppid).FirstOrDefault();
+            ViewBag.companyid = comppid;
+
+            if (ModelState.IsValid)
+            {
+
+                var rateidarray = fc.GetValues("item.GECrateId");
+                var slab1arayy = fc.GetValues("item.Slab1");
+                var slab2arayy = fc.GetValues("item.Slab2");
+                var slab3arayy = fc.GetValues("item.Slab3");
+                var slab4arayy = fc.GetValues("item.Slab4");
+                var uptoarray = fc.GetValues("Upto");
+                var noofslab = fc.GetValues("item.GECNoOfSlab");
+
+                var sectoridarray = fc.GetValues("item.Sector_Id");
+
+                for (int i = 0; i < rateidarray.Count(); i++)
+                {
+                    if (slab1arayy[i] == "")
+                    {
+                        slab1arayy[i] = "0";
+                    }
+                    if (slab2arayy[i] == "")
+                    {
+                        slab2arayy[i] = "0";
+                    }
+                    if (slab3arayy[i] == "")
+                    {
+                        slab3arayy[i] = "0";
+                    }
+                    if (slab4arayy[i] == "")
+                    {
+                        slab4arayy[i] = "0";
+                    }
+                }
+                for (int i = 0; i < uptoarray.Count(); i++)
+                {
+                    if (uptoarray[i] == "")
+                    {
+                        uptoarray[i] = "0";
+                    }
+                }
+
+
+
+                for (int i = 0; i < rateidarray.Count(); i++)
+                {
+
+                    GECrate rm = db.GECrates.Find(Convert.ToInt16(rateidarray[i]));
+
+                    rm.Slab1 = Convert.ToDouble(slab1arayy[i]);
+                    rm.Slab2 = Convert.ToDouble(slab2arayy[i]);
+                    rm.Slab3 = Convert.ToDouble(slab3arayy[i]);
+                    rm.Slab4 = Convert.ToDouble(slab4arayy[i]);
+                    rm.Uptosl1 = Convert.ToDouble(uptoarray[0]);
+                    rm.Uptosl2 = Convert.ToDouble(uptoarray[1]);
+                    rm.Uptosl3 = Convert.ToDouble(uptoarray[2]);
+                    rm.Uptosl4 = Convert.ToDouble(uptoarray[3]);
+                    rm.PFcode = PfCode;
+                    rm.GECNoOfSlab = Convert.ToInt16(noofslab[0]);
+                    rm.Company_id = CompanyId;
+                    rm.Sector_Id = Convert.ToInt32(sectoridarray[i]);
+
+
+
+                    db.Entry(rm).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                }
+
+                var compid = comppid;
+
+                ViewBag.Message = "GEC updated successfully";
+
+                var companyPfCode = company.Pf_code;
+
+
+
+                //  var getGEC = (from GECr in db.GECrates
+
+                //                join s in db.Sectors on GECr.Sector_Id equals s.Sector_Id
+                //                where GECr.Company_id == CompanyId
+                //                      && s.Pf_code == companyPfCode
+                //                      && s.BillGecSec == true
+                //                // Directly checking if s.GECrates is true
+                //                select new
+                //                {
+                //                    SectorName = s.Sector_Name,
+                //                    GECrateId = GECr.GECrateId,
+                //                    Slab1 = GECr.Slab1,
+                //                    Slab2 = GECr.Slab2,
+                //                    Slab3 = GECr.Slab3,
+                //                    Slab4 = GECr.Slab4,
+                //                    Uptosl1 = GECr.Uptosl1,
+                //                    Uptosl2 = GECr.Uptosl2,
+                //                    Uptosl3 = GECr.Uptosl3,
+                //                    Uptosl4 = GECr.Uptosl4,
+                //                    Company_id = GECr.Company_id,
+                //                    Sector_id = GECr.Sector_Id,
+                //                    NoOfSlab = GECr.NoOfSlab,
+                //                    Priority = s.Priority // Include Priority for ordering
+                //                })
+                //.ToList() // Execute the query and bring the results into memory
+                //.OrderBy(x => x.Priority) // Order by Priority after the selection
+                //.Select(x => new GECrateModel
+                //{
+                //    SectorName = x.SectorName,
+                //    GECrateId = x.GECrateId,
+                //    Slab1 = x.Slab1,
+                //    Slab2 = x.Slab2,
+                //    Slab3 = x.Slab3,
+                //    Slab4 = x.Slab4,
+                //    Uptosl1 = x.Uptosl1,
+                //    Uptosl2 = x.Uptosl2,
+                //    Uptosl3 = x.Uptosl3,
+                //    Uptosl4 = x.Uptosl4,
+                //    Company_id = x.Company_id,
+                //    Sector_Id = x.Sector_id,
+                //    NoOfSlab = x.NoOfSlab
+                //}).ToList();
+
+                var getGEC = (from GECr in db.GECrates
+                              join s in db.Sectors on GECr.Sector_Id equals s.Sector_Id
+                              where GECr.Company_id == CompanyId
+                                    && s.Pf_code == companyPfCode
+                                    && s.BillGecSec == true
+                              select GECr).ToList();
+                ViewBag.GECratemaster = getGEC;
+
+                ViewBag.SlabGEC = getGEC.FirstOrDefault();
+
+                return PartialView("RatemasterGEC", getGEC);
+            }
+            return PartialView("RatemasterGEC", fc);
         }
 
     }

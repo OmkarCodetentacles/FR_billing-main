@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -48,7 +49,9 @@ namespace DtDc_Billing.Models
         public string StampFilePath { get; set; }
         public string LogoFilePath { get; set; }
         public string QrCodeFilePath { get; set; }
+        public bool IsGECSector { get; set; }
 
-       
+
+
     }
 }

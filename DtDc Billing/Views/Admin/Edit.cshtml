@@ -14,9 +14,9 @@
 {
     @Html.AntiForgeryToken()
     <input type="hidden" name="StampFilePath" value="@Model.StampFilePath">
-    <form enctype="multipart/form-data">
-
-        <div class="" style="padding: 0px 15px">
+    
+     
+        <div class="col-sm-12" style="padding: 0px 15px">
             <div class="box box-info" style="border:1px solid #dbdbdb !important;background:white ">
                 <div class="box-header with-border" style="background:none; border:none">
                     <h4>
@@ -146,7 +146,7 @@
                                                     <label class=""> GST No </label>
                                                 </div>
                                                 <div class="col-md-9">
-                                                    @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm",@value="0" } })
+                                                    @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm", @value = "0" } })
                                                     @Html.ValidationMessageFor(model => model.GstNo, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -257,6 +257,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-12 col-sm-12 col-md-7">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for="IsGECSectorCheckbox">GEC Service (Applicable/Not)</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @Html.CheckBoxFor(model => model.IsGECSector, new { @class = "form-check-input", @id = "IsGECSectorCheckbox" })
+                                                    @Html.ValidationMessageFor(model => model.IsGECSector, "", new { @class = "text-danger" })
+
+                                                    <!-- Note section -->
+                                                    <br/>
+                                                    <small class="form-text text-muted">
+                                                        Select this option if the GEC service is applicable for this entry. Leave it unchecked if not applicable.
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
 
                                     <div class="form-group">
                                         <div class="col-md-7" style="text-align: right;">
@@ -272,133 +293,133 @@
 
                             </div>
                             @*<div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> GST No </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.GstNo, "", new { @class = "text-danger" })
-                                            </div>
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> GST No </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.GstNo, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.GstNo, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
 
-                                                @Html.LabelFor(model => model.Pan_No, htmlAttributes: new { })
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
-                                            </div>
+                                            @Html.LabelFor(model => model.Pan_No, htmlAttributes: new { })
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Pan_No, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Pan_No, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Contact No</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control input-sm", @readonly = "readonly" })
-                                                @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Contact No</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.TextBoxFor(model => model.ContactNo, new { @class = "form-control input-sm", @readonly = "readonly" })
+                                            @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Account Name </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Account Name </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Bank Name  </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.Bankname, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.Bankname, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Bank Name  </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Bankname, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Bankname, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Account No </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.Accountno, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.Accountno, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Account No </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Accountno, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Accountno, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> IFSC Code </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.IFSCcode, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.IFSCcode, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> IFSC Code </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.IFSCcode, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.IFSCcode, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Branch </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.Branch, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Branch </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Branch, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Branch, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-12 col-sm-12 col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <label class=""> Account Type </label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                @Html.EditorFor(model => model.Accounttype, new { htmlAttributes = new { @class = "form-control input-sm" } })
-                                                @Html.ValidationMessageFor(model => model.Accounttype, "", new { @class = "text-danger" })
-                                            </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class=""> Account Type </label>
                                         </div>
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.Accounttype, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                            @Html.ValidationMessageFor(model => model.Accounttype, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-7" style="text-align: right;">
+
+                                    <div class="">
+                                        <input type="submit" value="Save" class="btn btn-success" id="uploadBtn" />
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-7" style="text-align: right;">
-
-                                        <div class="">
-                                            <input type="submit" value="Save" class="btn btn-success" id="uploadBtn" />
-                                        </div>
-                                    </div>
-
-                                </div>*@
+                            </div>*@
 
                         </div>
 
@@ -410,7 +431,7 @@
         </div>
 
 
-    </form>
+  
 
 }
 

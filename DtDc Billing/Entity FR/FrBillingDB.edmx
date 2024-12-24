@@ -334,6 +334,37 @@
           <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
           <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
           <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
+          <Property Name="IsGECSector" Type="bit" />
+        </EntityType>
+        <EntityType Name="GECrate">
+          <Key>
+            <PropertyRef Name="GECrateId" />
+          </Key>
+          <Property Name="GECrateId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Slab1" Type="float" />
+          <Property Name="Slab2" Type="float" />
+          <Property Name="Slab3" Type="float" />
+          <Property Name="Slab4" Type="float" />
+          <Property Name="Uptosl1" Type="float" />
+          <Property Name="Uptosl2" Type="float" />
+          <Property Name="Uptosl3" Type="float" />
+          <Property Name="Uptosl4" Type="float" />
+          <Property Name="Company_id" Type="varchar" MaxLength="100" />
+          <Property Name="GECNoOfSlab" Type="int" />
+          <Property Name="Sector_Id" Type="int" />
+          <Property Name="SectorName" Type="varchar" MaxLength="200" />
+          <Property Name="PFcode" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="GECSector">
+          <Key>
+            <PropertyRef Name="GECSectorId" />
+          </Key>
+          <Property Name="GECSectorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectorName" Type="varchar" MaxLength="200" />
+          <Property Name="Pf_code" Type="varchar" MaxLength="20" />
+          <Property Name="Pincode" Type="varchar" MaxLength="1000" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="City" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="GSTInvoice">
           <Key>
@@ -815,6 +846,7 @@
           <Property Name="BillPriority" Type="bit" />
           <Property Name="BillEcomPrio" Type="bit" />
           <Property Name="BillEcomGE" Type="bit" />
+          <Property Name="BillGecSec" Type="bit" />
         </EntityType>
         <EntityType Name="Sendmessage">
           <Key>
@@ -2211,6 +2243,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="express_cargo" EntityType="Self.express_cargo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FirmDetails" EntityType="Self.FirmDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Franchisee" EntityType="Self.Franchisee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GECrate" EntityType="Self.GECrate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GECSector" EntityType="Self.GECSector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GSTInvoice" EntityType="Self.GSTInvoice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GSTInvoiceConsignments" EntityType="Self.GSTInvoiceConsignments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Holiday" EntityType="Self.Holiday" Schema="dbo" store:Type="Tables" />
@@ -3046,6 +3080,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
           <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
           <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
+          <Property Name="IsGECSector" Type="Boolean" />
         </EntityType>
         <EntityType Name="GSTInvoice">
           <Key>
@@ -3579,6 +3614,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Priorities" Relationship="Self.FK__Priority__Sector__3552E9B6" FromRole="Sectors" ToRole="Priority" />
           <NavigationProperty Name="Priorities1" Relationship="Self.FK__Priority__Sector__3D2915A8" FromRole="Sectors" ToRole="Priority" />
           <NavigationProperty Name="Ratems" Relationship="Self.fk_rateamaster" FromRole="Sectors" ToRole="Ratem" />
+          <Property Name="BillGecSec" Type="Boolean" />
         </EntityType>
         <EntityType Name="Sendmessage">
           <Key>
@@ -5317,6 +5353,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
+          <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
+          <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5908,6 +5946,36 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="OwnerName" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Email" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="GECrate">
+          <Key>
+            <PropertyRef Name="GECrateId" />
+          </Key>
+          <Property Name="GECrateId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Slab1" Type="Double" />
+          <Property Name="Slab2" Type="Double" />
+          <Property Name="Slab3" Type="Double" />
+          <Property Name="Slab4" Type="Double" />
+          <Property Name="Uptosl1" Type="Double" />
+          <Property Name="Uptosl2" Type="Double" />
+          <Property Name="Uptosl3" Type="Double" />
+          <Property Name="Uptosl4" Type="Double" />
+          <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sector_Id" Type="Int32" />
+          <Property Name="SectorName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PFcode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="GECNoOfSlab" Type="Int32" />
+        </EntityType>
+        <EntityType Name="GECSector">
+          <Key>
+            <PropertyRef Name="GECSectorId" />
+          </Key>
+          <Property Name="GECSectorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectorName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Pf_code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Pincode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6238,6 +6306,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Franchisees">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Franchisee">
               <MappingFragment StoreEntitySet="Franchisee">
+                <ScalarProperty Name="IsGECSector" ColumnName="IsGECSector" />
                 <ScalarProperty Name="F_Id" ColumnName="F_Id" />
                 <ScalarProperty Name="PF_Code" ColumnName="PF_Code" />
                 <ScalarProperty Name="F_Address" ColumnName="F_Address" />
@@ -6757,6 +6826,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Sectors">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Sector">
               <MappingFragment StoreEntitySet="Sectors">
+                <ScalarProperty Name="BillGecSec" ColumnName="BillGecSec" />
                 <ScalarProperty Name="Sector_Id" ColumnName="Sector_Id" />
                 <ScalarProperty Name="Sector_Name" ColumnName="Sector_Name" />
                 <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
@@ -7763,6 +7833,38 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="GECrates">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECrate">
+              <MappingFragment StoreEntitySet="GECrate">
+                <ScalarProperty Name="GECNoOfSlab" ColumnName="GECNoOfSlab" />
+                <ScalarProperty Name="PFcode" ColumnName="PFcode" />
+                <ScalarProperty Name="SectorName" ColumnName="SectorName" />
+                <ScalarProperty Name="Sector_Id" ColumnName="Sector_Id" />
+                <ScalarProperty Name="Company_id" ColumnName="Company_id" />
+                <ScalarProperty Name="Uptosl4" ColumnName="Uptosl4" />
+                <ScalarProperty Name="Uptosl3" ColumnName="Uptosl3" />
+                <ScalarProperty Name="Uptosl2" ColumnName="Uptosl2" />
+                <ScalarProperty Name="Uptosl1" ColumnName="Uptosl1" />
+                <ScalarProperty Name="Slab4" ColumnName="Slab4" />
+                <ScalarProperty Name="Slab3" ColumnName="Slab3" />
+                <ScalarProperty Name="Slab2" ColumnName="Slab2" />
+                <ScalarProperty Name="Slab1" ColumnName="Slab1" />
+                <ScalarProperty Name="GECrateId" ColumnName="GECrateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GECSectors">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECSector">
+              <MappingFragment StoreEntitySet="GECSector">
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
+                <ScalarProperty Name="SectorName" ColumnName="SectorName" />
+                <ScalarProperty Name="GECSectorId" ColumnName="GECSectorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

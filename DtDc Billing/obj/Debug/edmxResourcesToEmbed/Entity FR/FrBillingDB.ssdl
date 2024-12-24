@@ -329,6 +329,37 @@
     <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
     <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
     <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
+    <Property Name="IsGECSector" Type="bit" />
+  </EntityType>
+  <EntityType Name="GECrate">
+    <Key>
+      <PropertyRef Name="GECrateId" />
+    </Key>
+    <Property Name="GECrateId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Slab1" Type="float" />
+    <Property Name="Slab2" Type="float" />
+    <Property Name="Slab3" Type="float" />
+    <Property Name="Slab4" Type="float" />
+    <Property Name="Uptosl1" Type="float" />
+    <Property Name="Uptosl2" Type="float" />
+    <Property Name="Uptosl3" Type="float" />
+    <Property Name="Uptosl4" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="GECNoOfSlab" Type="int" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="SectorName" Type="varchar" MaxLength="200" />
+    <Property Name="PFcode" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="GECSector">
+    <Key>
+      <PropertyRef Name="GECSectorId" />
+    </Key>
+    <Property Name="GECSectorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SectorName" Type="varchar" MaxLength="200" />
+    <Property Name="Pf_code" Type="varchar" MaxLength="20" />
+    <Property Name="Pincode" Type="varchar" MaxLength="1000" />
+    <Property Name="Priority" Type="int" />
+    <Property Name="City" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="GSTInvoice">
     <Key>
@@ -810,6 +841,7 @@
     <Property Name="BillPriority" Type="bit" />
     <Property Name="BillEcomPrio" Type="bit" />
     <Property Name="BillEcomGE" Type="bit" />
+    <Property Name="BillGecSec" Type="bit" />
   </EntityType>
   <EntityType Name="Sendmessage">
     <Key>
@@ -2206,6 +2238,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="express_cargo" EntityType="Self.express_cargo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FirmDetails" EntityType="Self.FirmDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Franchisee" EntityType="Self.Franchisee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GECrate" EntityType="Self.GECrate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GECSector" EntityType="Self.GECSector" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GSTInvoice" EntityType="Self.GSTInvoice" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GSTInvoiceConsignments" EntityType="Self.GSTInvoiceConsignments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Holiday" EntityType="Self.Holiday" Schema="dbo" store:Type="Tables" />
