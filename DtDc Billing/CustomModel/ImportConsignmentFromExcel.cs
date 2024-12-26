@@ -505,13 +505,23 @@ namespace DtDc_Billing.CustomModel
 
                                             if (tran.Amount == null || tran.Amount == 0)
                                             {
-                                                amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
-                                                transaction.Amount = Math.Round((double)amt);
+                                                // Calculate the amount using the CalulateAmt method
+                                                var calculatedAmt = ca.CalulateAmt(
+                                                    tran.Consignment_no,
+                                                    tran.Customer_Id,
+                                                    tran.Pincode,
+                                                    tran.Mode,
+                                                    Convert.ToDouble(tran.chargable_weight),
+                                                    tran.Type_t
+                                                ) ?? 0;
 
+                                                // Round the calculated amount and assign it to the transaction and tran
+                                                var roundedAmt = Math.Round(calculatedAmt);
+
+                                                tran.Amount = roundedAmt;
                                             }
-                                           
-                                            tran.Amount = Convert.ToDouble(tran.Amount);
-                                        tran.Customer_Id = tran.Customer_Id;
+
+                                            tran.Customer_Id = tran.Customer_Id;
 
                                         tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                         tran.AdminEmp = 000;

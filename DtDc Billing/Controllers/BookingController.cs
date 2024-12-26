@@ -26,6 +26,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System.Web.Util;
 using System.EnterpriseServices;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+using OfficeOpenXml;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1809,6 +1810,21 @@ Select(e => new
                 try
                 {
                     var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+                    // Step 1: Validate the Excel File
+                    var validationResult = ValidateExcelFile(httpPostedFileBase);
+                    if (!validationResult.IsValid)
+                    {
+                        TempData["ErrorMessages"] = validationResult.Errors; // Ensure this is a List<string>
+                        foreach (var error in validationResult.Errors)
+                        {
+                            System.Diagnostics.Debug.WriteLine(error); // Log each error for debugging
+                        }
+                        return RedirectToAction("importFromExcel");
+                    }
+
+
                     ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
                     var damageResult = importConsignmentFromExcel.Import3Async(httpPostedFileBase, PfCode);
                     if (damageResult == "1")
@@ -2316,5 +2332,94 @@ Select(e => new
             return View();
 
         }
+
+        private static (bool IsValid, List<string> Errors) ValidateExcelFile(HttpPostedFileBase httpPostedFileBase)
+        {
+            var errorMessages = new List<string>();
+            string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+
+            using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
+            {
+                var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (currentSheet == null)
+                {
+                    errorMessages.Add("The uploaded file does not contain a valid worksheet.");
+                    return (false, errorMessages);
+                }
+
+                var noOfRow = currentSheet.Dimension.End.Row;
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    var errors = new List<string>();
+
+                    string consignmentNo = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
+                    string chargableWeight = currentSheet.Cells[rowIterator, 3]?.Value?.ToString();
+                    string mode = currentSheet.Cells[rowIterator, 4]?.Value?.ToString();
+                    string companyAddress = currentSheet.Cells[rowIterator, 5]?.Value?.ToString();
+                    string quantity = currentSheet.Cells[rowIterator, 6]?.Value?.ToString();
+                    string pincode = currentSheet.Cells[rowIterator, 7]?.Value?.ToString();
+                    string dateValue = currentSheet.Cells[rowIterator, 8]?.Value?.ToString();
+                    string type = currentSheet.Cells[rowIterator, 9]?.Value?.ToString();
+                    string customerId = currentSheet.Cells[rowIterator, 10]?.Value?.ToString();
+
+                    if (string.IsNullOrEmpty(consignmentNo)) errors.Add("Consignment No is required.");
+                    if (string.IsNullOrEmpty(chargableWeight) || !double.TryParse(chargableWeight, out _))
+                        errors.Add("Chargeable Weight is required and must be a valid number.");
+                    if (string.IsNullOrEmpty(mode)) errors.Add("Mode is required.");
+                    //  if (string.IsNullOrEmpty(companyAddress)) errors.Add("Company Address is required.");
+                    if (string.IsNullOrEmpty(quantity) || !int.TryParse(quantity, out _))
+                        errors.Add("Quantity is required and must be a valid integer.");
+                    if (string.IsNullOrEmpty(pincode)) errors.Add("Pincode is required.");
+                    if (!ValidateDateFormat(dateValue, dateFormats))
+                        errors.Add($"Invalid Date Format. Expected formats: {string.Join(", ", dateFormats)}.");
+                    if (string.IsNullOrEmpty(type)) errors.Add("Type is required.");
+                    if (string.IsNullOrEmpty(customerId)) errors.Add("Customer ID is required.");
+
+                    if (errors.Any())
+                        errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
+                }
+            }
+
+            return (errorMessages.Count == 0, errorMessages);
+        }
+        private static bool ValidateDateFormat(string dateValue, string[] formats)
+        {
+            if (string.IsNullOrEmpty(dateValue))
+                return false;
+
+            DateTime parsedDate;
+
+            try
+            {
+                if (double.TryParse(dateValue, out double excelDateNumber))
+                {
+
+                    parsedDate = DateTime.FromOADate(excelDateNumber);
+                    return true;
+
+                }
+
+                if (DateTime.TryParse(dateValue, out parsedDate))
+                    return true;
+
+                if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+                    return true;
+
+                if (Convert.ToDateTime(dateValue) is DateTime objDate)
+                {
+                    parsedDate = objDate;
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
+
+
     }
 }
