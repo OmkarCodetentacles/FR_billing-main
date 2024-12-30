@@ -2764,9 +2764,10 @@ namespace DtDc_Billing.Controllers
                 
                 }
                 TempData["Success"] = "franchisee Updated  Successfully!";
-                return View(franchisee);
+                return PartialView("Edit",franchisee);
+               //RedirectToAction("")
             }
-            return View(franchisee);
+            return PartialView("Edit",franchisee);
         }
 
         public ActionResult AddLogo()
