@@ -67,7 +67,7 @@ namespace DtDc_Billing.CustomModel
                             {
 
 
-                                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no).FirstOrDefault();
+                                Transaction transaction = db.Transactions.Where(m => m.Consignment_no.ToLower() == tran.Consignment_no.ToLower()).FirstOrDefault();
 
                                 var validcomp = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code == getPfcode).FirstOrDefault();
                                 var Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id && m.Pf_code == getPfcode).Select(m => m.Pf_code).FirstOrDefault();
@@ -79,9 +79,10 @@ namespace DtDc_Billing.CustomModel
 
                                         CalculateAmount ca = new CalculateAmount();
                                         double? amt = 0;
-                                        if (transaction.Pincode != null && transaction.Pincode != "NULL " && validcomp != null)
+                                        if (transaction.Pincode != null && validcomp != null)
                                         {
-                                            amt = ca.CalulateAmt(transaction.Consignment_no, tran.Customer_Id, transaction.Pincode, transaction.Mode, Convert.ToDouble(transaction.chargable_weight), transaction.Type_t);
+                                            double weight = transaction.chargable_weight != null ? Convert.ToDouble(transaction.chargable_weight) : 0;
+                                            amt = ca.CalulateAmt(transaction.Consignment_no, tran.Customer_Id, transaction.Pincode, transaction.Mode, weight, transaction.Type_t);
 
                                             transaction.Amount = amt;
 

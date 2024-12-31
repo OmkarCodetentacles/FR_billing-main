@@ -11,6 +11,100 @@ namespace DtDc_Billing.Models
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
 
+        public double getGCEAmount(string Consignment, string custid, string Pincode, double charweight)
+        {
+            double? Amount = 0.0;
+            double highwaight = charweight;
+            string sectorfound = db.GECSectors.Where(m => m.Pincode == Pincode).Select(m => m.SectorName).FirstOrDefault();
+
+
+
+            var dox = (from s in db.Sectors
+                       join gecsector in db.GECrates on s.Sector_Id equals gecsector.Sector_Id
+                       where gecsector.Company_id == custid && gecsector.SectorName == sectorfound
+                       select new GECrateDTO // Replace GECrateDTO with the name of your DTO or ViewModel
+                       {
+                           GECrateId = gecsector.GECrateId,
+                           Slab1 = gecsector.Slab1,
+                           Slab2 = gecsector.Slab2,
+                           Slab3 = gecsector.Slab3,
+                           Slab4 = gecsector.Slab4,
+                           Uptosl1 = gecsector.Uptosl1,
+                           Uptosl2 = gecsector.Uptosl2,
+                           Uptosl3 = gecsector.Uptosl3,
+                           Uptosl4 = gecsector.Uptosl4,
+                           Company_id = gecsector.Company_id,
+                           NoOfSlab = gecsector.GECNoOfSlab,
+                       }).FirstOrDefault();
+
+            if (dox.NoOfSlab == 2)
+            {
+                if (charweight <= dox.Uptosl1)
+                {
+                    Amount = Convert.ToDouble(dox.Slab1);
+                }
+                else
+                {
+                    // 0.500 /  (2 - 0.25)
+
+                    double weightmod = (highwaight - Convert.ToDouble(dox.Uptosl1)) / Convert.ToDouble(dox.Uptosl4);
+
+                    weightmod = Math.Ceiling(weightmod);
+
+                    Amount = Convert.ToDouble(dox.Slab1 + (dox.Slab4 * weightmod));
+                }
+            }
+            else if (dox.NoOfSlab == 3)
+            {
+                if (highwaight <= dox.Uptosl1)
+                {
+                    Amount = Convert.ToDouble(dox.Slab1);
+                }
+                else if (highwaight <= dox.Uptosl2)
+                {
+                    Amount = Convert.ToDouble(dox.Slab2);
+                }
+                else
+                {
+                    double weightmod = (highwaight - Convert.ToDouble(dox.Uptosl2)) / Convert.ToDouble(dox.Uptosl4);
+
+                    weightmod = Math.Ceiling(weightmod);
+
+                    Amount = Convert.ToDouble(dox.Slab2 + (dox.Slab4 * weightmod));
+                }
+
+            }
+            else if (dox.NoOfSlab == 4)
+            {
+
+                if (highwaight <= dox.Uptosl1)
+                {
+                    Amount = Convert.ToDouble(dox.Slab1);
+                }
+
+                else if (highwaight <= dox.Uptosl2)
+                {
+                    Amount = Convert.ToDouble(dox.Slab2);
+                }
+
+                else if (highwaight <= dox.Uptosl3)
+                {
+                    Amount = Convert.ToDouble(dox.Slab3);
+                }
+                else
+                {
+                    double weightmod = (highwaight - Convert.ToDouble(dox.Uptosl3)) / Convert.ToDouble(dox.Uptosl4);
+
+                    weightmod = Math.Ceiling(weightmod);
+
+                    Amount = Convert.ToDouble(dox.Slab3 + (dox.Slab4 * weightmod));
+                }
+
+            }
+
+
+            return Amount ?? 0;
+        }
 
         public Nullable<double>  CalulateAmt(string Consignment, string custid, string Pincode, string mode, double charweight, string type)
         {
@@ -24,7 +118,7 @@ namespace DtDc_Billing.Models
             List<Sector> sector = new List<Sector>();
             if (type == "N")
             {
-                sector = db.Sectors.Where(m => m.Pf_code == pfcode && m.BillN == true).OrderBy(m => m.Priority).ToList();
+                sector = db.Sectors.Where(m => m.Pf_code == pfcode && (m.BillNonAir == true || m.BillNonSur == true)).OrderBy(m => m.Priority).ToList();
             }
             else
             {
@@ -41,7 +135,7 @@ namespace DtDc_Billing.Models
             string CashRate = custid;
 
 
-            int sectorfound = (db.Sectors.Where(m => m.Sector_Name == "Rest Of India" && m.Pf_code == pfcode).Select(m => m.Sector_Id).FirstOrDefault());
+            int sectorfound = (db.Sectors.Where(m => (m.Sector_Name.ToLower() == "Rest Of India".ToLower() || m.Sector_Name == "ROI" || m.Sector_Name == "ROI (B)") && m.Pf_code == pfcode).Select(m => m.Sector_Id).FirstOrDefault());
 
             int flag = 0;
             foreach (var i in sector)
@@ -78,6 +172,13 @@ namespace DtDc_Billing.Models
 
 
 
+            if (Consignment.ToLower().StartsWith("g"))
+            {
+                var getAmount = getGCEAmount(Consignment, custid, Pincode, charweight);
+
+
+                Amount=getAmount;
+            }
             if (Consignment.ToLower().StartsWith("e"))
             {
                 if (mode!=null &&( mode == "CP2" || mode == "D2Z" || mode == "D12"))

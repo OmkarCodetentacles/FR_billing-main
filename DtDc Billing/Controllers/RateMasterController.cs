@@ -132,9 +132,11 @@ namespace DtDc_Billing.Controllers
             var companyPfCode = company.Pf_code;
             var getGEC = (from GECr in db.GECrates
                           join s in db.Sectors on GECr.Sector_Id equals s.Sector_Id
+                          join f in db.Franchisees on s.Pf_code equals f.PF_Code
                           where GECr.Company_id == CompanyId
                                 && s.Pf_code == companyPfCode
                                 && s.BillGecSec == true
+                                && f.IsGECSector==true
                           select GECr
 
                           //// Directly checking if s.GECrates is true

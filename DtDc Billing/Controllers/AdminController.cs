@@ -2338,7 +2338,7 @@ namespace DtDc_Billing.Controllers
 
                     List<SectorNewModel> stt = datasector.Where(x => x.Pincode_values == null).ToList();
                     ViewBag.DataSector = stt;
-                    return View(stt);
+                    return PartialView("Add_SectorPin", stt);
                 }
                 else
                 {
@@ -2370,7 +2370,7 @@ namespace DtDc_Billing.Controllers
 
 
                 ViewBag.DataSector = secct1;
-                return View("Add_SectorPin", secct1);
+                return PartialView("Add_SectorPin", secct1);
 
             }
             else
@@ -2486,7 +2486,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.pfcode = franchisee.Pfcode;//stored in hidden format on the view
             ViewBag.DataSector = datasector;
 
-            return View(datasector);
+            return PartialView("Add_SectorPin", datasector);
             //return View();
 
             //////////////////////////////////////////////
@@ -2561,7 +2561,7 @@ namespace DtDc_Billing.Controllers
             ViewBag.pfcode = PfCode;//stored in hidden format on the view
             ViewBag.DataSector = st;
 
-            return View("Add_SectorPin", st);
+            return PartialView("Add_SectorPin", st);
         }
 
 
