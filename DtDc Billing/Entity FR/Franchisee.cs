@@ -57,6 +57,7 @@ namespace DtDc_Billing.Entity_FR
         public string InvoiceStartNumber { get; set; }
         public string QrCodeImage { get; set; }
         public Nullable<bool> IsGECSector { get; set; }
+        public Nullable<long> Template { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }

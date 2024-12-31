@@ -1225,7 +1225,7 @@ Select(e => new
                   
                     if (discount == "no")
                     {
-                        if (strpfcode == "LF959")
+                        if (franchisee.FirstOrDefault().Template==2)
                         {
                             
                                   string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
@@ -1235,6 +1235,7 @@ Select(e => new
                                 lr.ReportPath = path;
                             }
                         }
+
 
                       else  if (clientGst != null && clientGst.Length > 4)
                         {
@@ -1931,9 +1932,19 @@ Select(e => new
 
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = dataset2.FirstOrDefault().GstNo;
+                if (dataset2.FirstOrDefault().Template == 2)
+                {
+
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+                }
 
 
-                if (clientGst != null && clientGst.Length > 4)
+              else  if (clientGst != null && clientGst.Length > 4)
                 {
                     if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                     {
@@ -2608,9 +2619,19 @@ Select(e => new
 
             string clientGst = dataset4.FirstOrDefault().Gst_No;
             string frgst = dataset2.FirstOrDefault().GstNo;
+            if (dataset2.FirstOrDefault().Template == 2)
+            {
+
+                string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                if (System.IO.File.Exists(path))
+                {
+                    lr.ReportPath = path;
+                }
+            }
 
 
-            if (clientGst != null && clientGst.Length > 4)
+             else  if (clientGst != null && clientGst.Length > 4)
             {
                 if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                 {
@@ -2875,7 +2896,18 @@ Select(e => new
 
                 if (discount == "no")
                 {
-                    if (clientGst != null && clientGst.Length > 4)
+                    if (dataset2.FirstOrDefault().Template == 2)
+                    {
+
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+                    }
+
+                   else if (clientGst != null && clientGst.Length > 4)
                     {
                         if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                         {
@@ -3746,8 +3778,18 @@ Select(e => new
                 if (discount=="no")
                 {
 
+                    if (dataset2.FirstOrDefault().Template == 2)
+                    {
 
-                    if (clientGst != null && clientGst.Length > 4)
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+                    }
+
+                   else if (clientGst != null && clientGst.Length > 4)
                     {
                         if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                         {
@@ -4002,8 +4044,19 @@ Select(e => new
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = dataset2.FirstOrDefault().GstNo;
 
+                if (dataset2.FirstOrDefault().Template == 2)
+                {
 
-                if (clientGst != null && clientGst.Length > 4)
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+                }
+
+
+              else  if (clientGst != null && clientGst.Length > 4)
                 {
                     if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                     {
@@ -4140,9 +4193,19 @@ Select(e => new
 
                 string clientGst = dataset4.FirstOrDefault().Gst_No;
                 string frgst = dataset2.FirstOrDefault().GstNo;
+                if (dataset2.FirstOrDefault().Template == 2)
+                {
+
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+                }
 
 
-                if (clientGst != null && clientGst.Length > 4)
+              else  if (clientGst != null && clientGst.Length > 4)
                 {
                     if (frgst.Substring(0, 2) == clientGst.Substring(0, 2))
                     {

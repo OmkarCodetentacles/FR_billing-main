@@ -335,6 +335,7 @@
           <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
           <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
           <Property Name="IsGECSector" Type="bit" />
+          <Property Name="Template" Type="bigint" />
         </EntityType>
         <EntityType Name="GECrate">
           <Key>
@@ -3081,6 +3082,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
           <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
           <Property Name="IsGECSector" Type="Boolean" />
+          <Property Name="Template" Type="Int64" />
         </EntityType>
         <EntityType Name="GSTInvoice">
           <Key>
@@ -6306,6 +6308,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Franchisees">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Franchisee">
               <MappingFragment StoreEntitySet="Franchisee">
+                <ScalarProperty Name="Template" ColumnName="Template" />
                 <ScalarProperty Name="IsGECSector" ColumnName="IsGECSector" />
                 <ScalarProperty Name="F_Id" ColumnName="F_Id" />
                 <ScalarProperty Name="PF_Code" ColumnName="PF_Code" />

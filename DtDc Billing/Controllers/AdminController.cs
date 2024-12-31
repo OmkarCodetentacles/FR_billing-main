@@ -2659,6 +2659,7 @@ namespace DtDc_Billing.Controllers
                 Fr.Accounttype = franchisee.Accounttype;
                 Fr.InvoiceStart = franchisee.InvoiceStart;
                 Fr.IsGECSector=franchisee.IsGECSector;
+                    Fr.Template = franchisee.Template;
                 //var getNewFilePath = "";
                 //if (franchisee.StampFilePath == null)
                 //{
@@ -3028,7 +3029,7 @@ namespace DtDc_Billing.Controllers
             Fr.InvoiceStart = data.InvoiceStart;
             Fr.StampFilePath = data.StampFilePath;
             Fr.IsGECSector = data.IsGECSector??false;
-
+            Fr.Template = data.Template??1;
             if (Fr == null)
             {
                 return HttpNotFound();
@@ -4565,6 +4566,7 @@ namespace DtDc_Billing.Controllers
                     fr.password = Pfcheck.password;
                     fr.ContactNo = Pfcheck.mobileNo;
                     fr.IsGECSector = false;
+                    fr.Template = 1;
                     var franchisee=db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault(); 
                     if(franchisee == null)
                     {

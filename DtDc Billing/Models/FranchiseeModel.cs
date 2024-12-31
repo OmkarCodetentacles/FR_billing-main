@@ -51,6 +51,7 @@ namespace DtDc_Billing.Models
         public string QrCodeFilePath { get; set; }
         public bool IsGECSector { get; set; }
 
+        public Nullable<long> Template { get; set; }
 
 
     }

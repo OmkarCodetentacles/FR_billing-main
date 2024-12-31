@@ -1,5 +1,5 @@
 ﻿@model DtDc_Billing.Models.FranchiseeModel
-@{ 
+@{
     ViewBag.Title = "Edit";
     Html.EnableClientValidation(true);
 }
@@ -9,7 +9,25 @@
         text-align: left;
     }
 </style>
+<style>
+    .template-item {
+        margin: 10px;
+        cursor: pointer;
+        text-align: center;
+        border: 2px solid transparent;
+        border-radius: 5px;
+    }
 
+        .template-item.selected {
+            border: 2px solid #007bff;
+            background-color: #f0f8ff;
+        }
+
+        .template-item img {
+            max-width: 170px;
+            max-height: 200px;
+        }
+</style>
 
 
 
@@ -260,6 +278,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <div class="col-12 col-sm-12 col-md-7">
                                         <div class="row">
@@ -279,6 +298,66 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-12 col-sm-12 col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label>Select Template For the Invoice</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <!-- Dropdown for selecting template -->
+                                                @Html.DropDownListFor(model => model.Template,
+                                                    new List<SelectListItem>
+                                                    {
+                                                        new SelectListItem { Text = "Template 1", Value = "1" },
+                                                        new SelectListItem { Text = "Template 2", Value = "2" }
+                                                    },
+                                                    new { @class = "form-control input-sm", id = "templateDropdown" })
+                                                @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
+
+                                                <!-- Template images -->
+                                                <div id="templateImages">
+                                                    <div class="template-item" data-value="1" style="display: block;">
+
+                                                        <img src="~/admin-lte/img/Template1FR.png" alt="Template 1" class="img-thumbnail" style="width: 170px; height: 200px;" />
+                                                        <p class="text-center">Template 1</p>
+                                                    </div>
+                                                    <div class="template-item" data-value="2" style="display: none;">
+                                                        <img src="~/admin-lte/img/Templete2FR.png" alt="Template 2" class="img-thumbnail" style="width: 170px; height: 200px;" />
+                                                        <p class="text-center">Template 2</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--<div class="form-group">
+                                <div class="col-12 col-sm-12 col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Select Template For the Invoice</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div id="templateSelection" class="d-flex flex-wrap">-->
+                                <!-- Dynamically generated templates -->
+                                <!--<div class="template-item" data-value="1">
+                                                        <img src="~/assets/Home/imgs/ContractUs.png" alt="Template 1" class="img-thumbnail" style="width: 100px; height: auto;" />
+                                                        <p class="text-center">Template 1</p>
+                                                    </div>
+                                                    <div class="template-item" data-value="2">
+                                                        <img src="~/assets/Home/imgs/caleb-ruiter-EmEQ6kK_5P0-unsplash.jpg" alt="Template 2" class="img-thumbnail" style="width: 100px; height: auto;" />
+                                                        <p class="text-center">Template 2</p>
+                                                    </div>
+                                                </div>
+                                                @Html.HiddenFor(model => model.Template)
+                                                @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
 
 
 
@@ -438,6 +517,30 @@
 
 }
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.getElementById("templateDropdown"); // Dropdown element
+        const templateItems = document.querySelectorAll(".template-item"); // Template image containers
+
+        // Function to update the displayed image based on the selected dropdown value
+        function updateTemplateImages() {
+            const selectedValue = dropdown.value; // Get selected dropdown value
+            
+            templateItems.forEach(item => {
+                item.style.display = item.getAttribute("data-value") === selectedValue ? "block" : "none";
+            });
+        }
+
+        // Attach change event listener to the dropdown
+        dropdown.addEventListener("change", updateTemplateImages);
+
+        // Initialize the display based on the default selected value
+        updateTemplateImages();
+    });
+
+    
+
+</script>
 
 <script>
     $(function () {
@@ -461,6 +564,23 @@
         // Hide the loader
         scrollToTop();
         document.getElementById('overlayBlock').style.display = 'none';
+        const drp = document.getElementById("templateDropdown"); // Dropdown element
+        const templates = document.querySelectorAll(".template-item"); // Template image containers
+
+        // Function to update the displayed image based on the selected dropdown value
+        function updateTemplateImages() {
+            const selectedValue = drp.value; // Get selected dropdown value
+
+            templates.forEach(item => {
+                item.style.display = item.getAttribute("data-value") === selectedValue ? "block" : "none";
+            });
+        }
+
+        // Attach change event listener to the dropdown
+        drp.addEventListener("change", updateTemplateImages);
+
+        // Initialize the display based on the default selected value
+        updateTemplateImages();
     }
 </script>
 
