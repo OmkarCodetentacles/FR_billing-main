@@ -2778,102 +2778,16 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpPost]
-        public ActionResult UploadFile()
-        {
-            string Pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            for (int i = 0; i < Request.Files.Count; i++)
-            {
-                var myFile = Request.Files[i];
-                if (myFile == null)
-                {
-                    return Json(new {  FailureReason= true });
-                }
-                string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
-                           Request.ApplicationPath.TrimEnd('/');
-                if (myFile != null && myFile.ContentLength != 0)
-                {
-                    var file = Request.Files[0];
-                    if (file != null)
-                    {
-                        var fileName = System.IO.Path.GetFileName(file.FileName);
-                        var newFileName = Pfcode;
-
-                        var path = System.IO.Path.Combine(Server.MapPath("~/Stamps"), fileName);
-                        // Get the file extension
-                        string fileExtension = System.IO.Path.GetExtension(path);
-                        string newFilePath = System.IO.Path.Combine(Server.MapPath("~/Stamps"), newFileName + "" + fileExtension); ;
-                        // Rename the file
-                        //if (System.IO.File.Exists(newFilePath))
-                        //{
-                        //    System.IO.File.Delete(newFilePath);
-
-                        //}
-
-                        string folderPath = System.IO.Path.Combine(Server.MapPath("~/Stamps")); // Specify the folder path here
-                        string imageName = Pfcode; // Specify the image name here
-
-                        // Check if the folder exists
-                        if (Directory.Exists(folderPath))
-                        {
-                            // Get all files in the folder
-                            string[] allFiles = Directory.GetFiles(folderPath);
-
-                            // Filter files with the same name
-                            var filesWithSameName = allFiles.Where(file123 =>
-                                System.IO.Path.GetFileNameWithoutExtension(file123) == imageName);
-
-                            // Delete each file with the same name
-                            foreach (string file1 in filesWithSameName)
-                            {
-                                System.IO.File.Delete(file1);
-                                Console.WriteLine($"Deleted: {file1}");
-                            }
-
-                            Console.WriteLine($"All files with the name '{imageName}' deleted successfully.");
-                        }
-
-
-                        file.SaveAs(path);
-
-
-                        string originalFilePath = path;
-
-                        
-                       
-                        System.IO.File.Move(originalFilePath, newFilePath);
-
-
-                        // Save file path in database
-                        try
-                        {
-
-                            var franchises = db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault();
-                            franchises.StampFilePath = baseurl+"/Stamps/" + newFileName + "" + fileExtension;//create dynamic
-                           // franchises.StampFilePath=newFilePath;
-                            db.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-
-                        }
-                    }
-                }
-            }
-        TempData["Success"] = "Updated Successfully";
-            return Json(new { success = true});
-        }
-
-        [HttpPost]
-        public ActionResult AddLogo(AddlogoModel logo)
+        public ActionResult UploadFile(AddQrCodeModel stamp)
         {
 
-            if(logo.file == null)
+            if (stamp.StampFile == null)
             {
                 TempData["Error"] = " Image file Not Uploaded!";
                 return RedirectToAction("Franchiseelist");
             }
             // Get the file extension in lowercase
-            string extension = System.IO.Path.GetExtension(logo.file.FileName)?.ToLower();
+            string extension = System.IO.Path.GetExtension(stamp.StampFile.FileName)?.ToLower();
 
             if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
             {
@@ -2887,18 +2801,78 @@ namespace DtDc_Billing.Controllers
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 string _FileName = "";
                 string _path = "";
-                if (logo.file.ContentLength > 0)
+                if (stamp.StampFile.ContentLength > 0)
                 {
-                    _FileName = System.IO.Path.GetFileName(logo.file.FileName);
-                    _path = Server.MapPath("~/UploadedLogo/" + _FileName);
+                    _FileName = System.IO.Path.GetFileName(stamp.StampFile.FileName);
+                    _path = Server.MapPath("~/Stamps/" + _FileName);
 
-                    logo.file.SaveAs(_path);
+                    stamp.StampFile.SaveAs(_path);
                 }
 
                 var lo = (from d in db.Franchisees
                           where d.PF_Code == strpf
                           select d).FirstOrDefault();
-                var LogoFilePath = "https://frbilling.com/UploadedLogo/" + _FileName;
+
+
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+               Request.ApplicationPath.TrimEnd('/') + "/";
+
+                var StampFilePath = baseUrl + "Stamps/" + _FileName;
+
+
+                // lo.LogoFilePath =_path;
+                lo.StampFilePath = StampFilePath;
+
+                db.Entry(lo).State = EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["Success1"] = "Stamp Added Successfully!";
+                return RedirectToAction("Franchiseelist");
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult AddLogo(AddQrCodeModel logo)
+        {
+
+            if(logo.LogoFile == null)
+            {
+                TempData["Error"] = " Image file Not Uploaded!";
+                return RedirectToAction("Franchiseelist");
+            }
+            // Get the file extension in lowercase
+            string extension = System.IO.Path.GetExtension(logo.LogoFile.FileName)?.ToLower();
+
+            if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
+            {
+                // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+                TempData["Error"] = "Only Image files allowed!";
+                return RedirectToAction("Franchiseelist");
+
+            }
+            else
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                string _FileName = "";
+                string _path = "";
+                if (logo.LogoFile.ContentLength > 0)
+                {
+                    _FileName = System.IO.Path.GetFileName(logo.LogoFile.FileName);
+                    _path = Server.MapPath("~/UploadedLogo/" + _FileName);
+
+                    logo.LogoFile.SaveAs(_path);
+                }
+
+                var lo = (from d in db.Franchisees
+                          where d.PF_Code == strpf
+                          select d).FirstOrDefault();
+
+
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+               Request.ApplicationPath.TrimEnd('/') + "/";
+
+                var LogoFilePath = baseUrl + "UploadedLogo/" + _FileName;
 
 
                 // lo.LogoFilePath =_path;
@@ -2911,10 +2885,6 @@ namespace DtDc_Billing.Controllers
                 return RedirectToAction("Franchiseelist");
             }
 
-           // return View("AddLogo");
-           // return RedirectToAction("Franchiseelist");
-            //return PartialView(logo);
-
         }
         public ActionResult UploadQrCode()
         {
@@ -2924,7 +2894,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult AddQrCode(AddQrCodeModel qrcode)
         {
-            if (qrcode.file== null)
+            if (qrcode.QrFile == null)
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
                 TempData["Error"] = " Image file Not Upload!";
@@ -2932,8 +2902,8 @@ namespace DtDc_Billing.Controllers
 
             }
             // Get the file extension in lowercase
-            string extension = System.IO.Path.GetExtension(qrcode.file.FileName)?.ToLower();
-            string baseUrl = Request.Url.Authority + "://";
+            string extension = System.IO.Path.GetExtension(qrcode.QrFile.FileName)?.ToLower();
+       
             if (extension != ".png" && extension != ".jpg" && extension != ".jpeg")
             {
                 // ModelState.AddModelError("fileerr", "Only Image files allowed.");
@@ -2945,23 +2915,28 @@ namespace DtDc_Billing.Controllers
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
                 string _FileName = "";
                 string _path = "";
-                if (qrcode.file.ContentLength > 0)
+                if (qrcode.QrFile.ContentLength > 0)
                 {
-                    _FileName = strpf+ System.IO.Path.GetExtension(qrcode.file.FileName);
+                    _FileName = strpf + System.IO.Path.GetExtension(qrcode.QrFile.FileName);
                     string qrpath = Server.MapPath("~/UploadedQrCode/");
                     if (!Directory.Exists(qrpath))
                     {
                         Directory.CreateDirectory(qrpath);
                     }
+
                     _path = Server.MapPath("~/UploadedQrCode/" + _FileName);
-                  
-                    qrcode.file.SaveAs(_path);
+
+                    qrcode.QrFile.SaveAs(_path);
                 }
 
                 var lo = (from d in db.Franchisees
                           where d.PF_Code == strpf
                           select d).FirstOrDefault();
-                var QrFilePath = "https://frbilling.com/" +"UploadedQrCode/" + _FileName;
+
+                string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+               Request.ApplicationPath.TrimEnd('/') + "/";
+
+                var QrFilePath = baseUrl + "UploadedQrCode/" + _FileName;
 
 
                 // lo.LogoFilePath =_path;
@@ -2970,13 +2945,9 @@ namespace DtDc_Billing.Controllers
                 db.Entry(lo).State = EntityState.Modified;
                 db.SaveChanges();
 
-                TempData["Success1"] = "QrCode Added Successfully!";
+                TempData["Success1"] = "QRCode Added Successfully!";
                 return RedirectToAction("Franchiseelist");
             }
-
-         //   return View("UploadQrCode");
-            // return RedirectToAction("Franchiseelist");
-            //return PartialView(logo);
 
         }
 

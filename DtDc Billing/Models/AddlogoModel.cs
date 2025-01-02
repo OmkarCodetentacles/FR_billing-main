@@ -15,10 +15,9 @@ namespace DtDc_Billing.Models
     }
     public class AddQrCodeModel
     {
-
-        [Required(ErrorMessage = "Please Select File")]
-        // [RegularExpression(@"(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.jpg|.JPG|.gif|.GIF|.png|.PNG)$", ErrorMessage = "Only Image files allowed.")]
-        public HttpPostedFileBase file { get; set; }
+        public HttpPostedFileBase LogoFile { get; set; }
+        public HttpPostedFileBase StampFile { get; set; }
+        public HttpPostedFileBase QrFile { get; set; }
     }
     public class AddPincoodeModel
     {

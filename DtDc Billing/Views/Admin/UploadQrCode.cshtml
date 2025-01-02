@@ -13,7 +13,7 @@
 </style>
 
 
-@using (Html.BeginForm("AddQrCode", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromQrCode" }))
+@using (Html.BeginForm("AddLogo", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromQrCode" }))
 {
     @Html.AntiForgeryToken()
 
@@ -23,43 +23,29 @@
             <div class="" style="padding: 0px 15px">
                 <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
                     <div class="box-header with-border" style="background:none;border:none">
-                        <h4>Upload QrCode</h4>
+                        <small>  Note : It will appear on invoice & Image must be .png or .jpg or .jpeg format</small>
 
                     </div>
                     <div class="" style="padding:0 20px">
                         <div class="row">
                             <div class="col-md-12 ">
-                                @*@{
-                                    var successMessage = TempData["Success1"] as string;
-                                    var errorMessage = TempData["Error"] as string;
-                                }
-
-                                @if (!string.IsNullOrEmpty(successMessage))
-                                {
-                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                                }
-                                @if (!string.IsNullOrEmpty(errorMessage))
-                                {
-                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
-                                }*@
 
                                 <div class="form-horizontal">
                                     <div class="box-body">
 
                                         <div class="form-group">
-                                            <label class="col-md-3 control-label">Upload QrCode<br /><small>(It will appear on invoice & Image must be .png or .jpg or .jpeg format)</small></label>
+                                            <label class="col-md-3 control-label">Upload Logo</label>
                                             <div class="col-md-5">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="file" name="file" id="qrfile" class="form-control" />
-                                                        <span id="fileErrorqr" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+                                                        <input type="file" name="LogoFile" id="LogoFile" class="form-control" />
+                                                        <span id="fileErrorLogo" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
 
-                                                        @Html.ValidationMessage("fileerr")
                                                     </div>
                                                     <div class="col-md-5">
-                                                        @if (ViewBag.QrCodeImage != null)
+                                                        @if (ViewBag.logoimg != null)
                                                         {
-                                                            <img src="@ViewBag.QrCodeImage" style="height:100px;width:100px" />
+                                                            <img src="@ViewBag.logoimg" style="height:100px;width:100px" />
 
                                                         }
                                                         else
@@ -68,23 +54,12 @@
                                                         }
                                                     </div>
                                                     <div class="col-md-1 col-sm-12" style="margin-top:20px">
-                                                        <input type="submit" value="Save" id="submitBtnqr" class="btn btn-primary" />
+                                                        <input type="submit" value="Add" id="submitBtnLogo" class="btn btn-primary" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!--<div class="form-group">
-                                            <div class="col-md-5">-->
-                                                <!-- Optional content in the middle of the form -->
-                                            <!--</div>
-                                        </div>-->
-
-                                        @*<div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Save" id="submitBtnqr" class="btn btn-primary" />
-                                            </div>
-                                        </div>*@
 
                                     </div>
                                 </div>
@@ -103,47 +78,213 @@
 
 }
 
+
+
+@using (Html.BeginForm("UploadFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromQrCode" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <form enctype="multipart/form-data">
+
+            <div class="" style="padding: 0px 15px">
+                <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
+                    @*<div class="box-header with-border" style="background:none;border:none">
+                        <h4>Upload QrCode</h4>
+
+                    </div>*@
+                    <div class="" style="padding:0 20px">
+                        <div class="row">
+                            <div class="col-md-12 ">
+
+                                <div class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Upload Stamp</label>
+                                            <div class="col-md-5">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="file" name="StampFile" id="StampFile" class="form-control" />
+                                                        <span id="fileErrorStamp" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
+                                                       
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        @if (ViewBag.stampImage != null)
+                                                        {
+                                                            <img src="@ViewBag.stampImage" style="height:100px;width:100px" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Image not Uploaded</span>
+                                                        }
+                                                    </div>
+                                                    <div class="col-md-1 col-sm-12" style="margin-top:20px">
+                                                        <input type="submit" value="Add" id="submitBtnStamp" class="btn btn-primary" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </section>
+
+}
+
+@using (Html.BeginForm("AddQrCode", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromQrCode" }))
+{
+    @Html.AntiForgeryToken()
+
+    <section>
+        <form enctype="multipart/form-data">
+
+            <div class="" style="padding: 0px 15px">
+                <div class="box box-info" style="background: none;  border: 1px solid #dbdbdb !important;background:white">
+                    @*<div class="box-header with-border" style="background:none;border:none">
+                        <h4>Upload QrCode</h4>
+
+                    </div>*@
+                    <div class="" style="padding:0 20px">
+                        <div class="row">
+                            <div class="col-md-12 ">
+
+                                <div class="form-horizontal">
+                                    <div class="box-body">
+
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">Upload QRCode</label>
+                                            <div class="col-md-5">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="file" name="QrFile" id="QrFile" class="form-control" />
+                                                        <span id="fileErrorQRcode" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        @if (ViewBag.QrCodeImage != null)
+                                                        {
+                                                            <img src="@ViewBag.QrCodeImage" style="height:100px;width:100px" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Image not Uploaded</span>
+                                                        }
+                                                    </div>
+                                                    <div class="col-md-1 col-sm-12" style="margin-top:20px">
+                                                        <input type="submit" value="Add" id="submitBtnQRcode" class="btn btn-primary" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </section>
+
+}
 <script src="jquery-3.6.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-<script>
-
-        @*$(document).ready(function () {
-            var data = '@TempData["Success1"]';
-
-
-            if (data != null && data!="")
-            {
-
-               alert(data);
-            }
-
-
-        });*@
-
-</script>
 
 
 <script>
 
     $(document).ready(function () {
 
-        $("#fileError").hide();
-        $('#submitBtnqr').on('click', function (e) {
+        $("#fileErrorLogo").hide();
+        $("#fileErrorStamp").hide();
+        $("#fileErrorQRcode").hide();
 
+        $('#submitBtnLogo').on('click', function (e) {
 
             // Get the file input value
-            var file = $("#qrfile").val();
+            var file = $("#LogoFile").val();
 
             // Check if file input is empty
             if (file == "" || file == NaN || file == null) {
-                $("#fileErrorqr").show();
-                return false;            // Sto
+                $("#fileErrorLogo").show();
+                return false;           
             }
 
-           
+            // Extract the file extension
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorLogo").text("Invalid file type. Please upload a .png, .jpg, or .jpeg file").show();
+                return false;
+            }
 
 
+        });
+
+
+        $('#submitBtnStamp').on('click', function (e) {
+
+            // Get the file input value
+            var file = $("#StampFile").val();
+
+            // Check if file input is empty
+            if (file == "" || file == NaN || file == null) {
+                $("#fileErrorStamp").show();
+                return false;           
+            }
+
+            // Extract the file extension
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorStamp").text("Invalid file type. Please upload a .png, .jpg, or .jpeg file").show();
+                return false;
+            }
+        });
+
+        $('#submitBtnQRcode').on('click', function (e) {
+
+            // Get the file input value
+            var file = $("#QrFile").val();
+
+            // Check if file input is empty
+            if (file == "" || file == NaN || file == null) {
+                $("#fileErrorQRcode").show();
+                return false;           
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorQRcode").text("Invalid file type. Please upload a .png, .jpg, or .jpeg file").show();
+                return false;
+            }
         });
     })
 </script>
