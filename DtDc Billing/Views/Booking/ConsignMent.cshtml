@@ -53,10 +53,10 @@
 
                     <div class="col-md-6">
                         <div class="col-sm-8">
-                            <input id="File1" required type="file" name="ImportText" class="choosefile" />
+                            <input id="File1" required type="file"  name="ImportText" class="choosefile" />
                         </div>
                         <div class="col-sm-4">
-                            <input type="submit" class="btn btn-primary pull-right btn-submitt" value="Import From text" />
+                            <input type="submit" class="btn btn-primary pull-right btn-submitt" id="textsubmitBtn" value="Import From text" />
                         </div>
                     </div>
 
@@ -87,9 +87,34 @@
 
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#textsubmitBtn').on('click', function (e) {
+            var fileInput = $('#File1');
+            var filePath = fileInput.val();
+            var allowedExtensions = /(\.txt)$/i; // Regex to allow only .txt files
+
+            // Check if the file is selected
+            if (!filePath) {
+                alert("Please select a file before submitting.");
+                return false;
+            }
+
+            // Validate the file extension
+            if (!allowedExtensions.exec(filePath)) {
+                alert("Invalid file type. Please upload a DTDC  .txt file.");
+                fileInput.val(''); // Clear the file input
+                return false;
+            }
+
+            // If validation passes, submit the form
+            $(this).closest('importtext').submit();
+        });
+    });
+</script>
 @*@if (TempData["Upload"] != null)
-{
-    <script>
-      // alert('@TempData["Upload"]');
-    </script>
-}*@
+    {
+        <script>
+          // alert('@TempData["Upload"]');
+        </script>
+    }*@

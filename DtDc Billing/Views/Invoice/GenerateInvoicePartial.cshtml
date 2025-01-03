@@ -440,10 +440,18 @@
                                                             <label for="gst-total" class=" control-label">GST%</label>
                                                         </div>
                                                         <div class="col-md-9" style="display:flex;gap:2px">
-                                                           
-                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } }) 
+                                                            @if (Model != null && Model.servicetax != null)
+                                                            {
+                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} })
 
-                                                            
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+
+                                                            }
+
+
                                                             @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "", @class = "form-control", @readonly = "readonly" } })
                                                         </div>
                                                     </div>
@@ -1230,11 +1238,11 @@ $("#Customer_Id").autocomplete({
 
         var myParamether = '@ViewBag.invoiceno';
         var data = myParamether + ".pdf";
-         var strpfcode = '@ViewBag.strpfcode';
-        console.log(data);
+        var strpfcode = '@ViewBag.strpfcode';
+        console.log('@ViewBag.Path')
         $("#overlayBlock").hide();
 
-        $('#saveinv').attr('href', "@baseurl/PDF/" + @ViewBag.strpfcode +"/" + data);
+        $('#saveinv').attr('href', "@baseurl/PDF/" + '@ViewBag.strpfcode' +"/" + data);
 
                 document.getElementById('saveinv').click();
 

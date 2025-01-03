@@ -1348,10 +1348,11 @@ Select(e => new
                     var invoicefile = dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
                     string savePath = Path.Combine(pdfPath,invoicefile );
 
+                    var path1 = baseUrl + "/PDF/" + strpfcode + "/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
 
-                   //  savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
+                    //  savePath = Server.MapPath("~/PDF/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf");
                     ViewBag.savePath = savePath;
-                    
+                    ViewBag.Path = path1;
                     using (FileStream stream = new FileStream(savePath, FileMode.Create))
                     {
                         stream.Write(renderByte, 0, renderByte.Length);
@@ -1359,8 +1360,7 @@ Select(e => new
 
                     if (submit == "Email")
                     {
-                        var path1 = baseUrl + "/PDF/"+strpfcode+"/" + dataset3.FirstOrDefault().Firm_Id + dataset3.FirstOrDefault().invoiceno.Replace("/", "-") + ".pdf";
-
+                        
                         string emailBody = $@"
                         <html>
                         <head>

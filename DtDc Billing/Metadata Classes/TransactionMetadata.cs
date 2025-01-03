@@ -37,7 +37,7 @@ namespace DtDc_Billing.Metadata_Classes
 
 
         [Required]
-        [Range(0, double.MaxValue, ErrorMessage = "Please enter a value bigger than {0}")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Please enter a value bigger than {0}")]
         public Nullable<double> Amount { get; set; }
 
         [Display(Name = "Company Id")]

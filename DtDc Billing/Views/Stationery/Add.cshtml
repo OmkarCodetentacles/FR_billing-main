@@ -54,9 +54,9 @@
                     @if (TempData["duplicateError"] != null)
                     {
 
-                      <div class="alert alert-danger">
-                         <span class="text-danger"> <strong>Error!</strong> @TempData["duplicateError"]</span>
-                      </div>
+                        <div class="alert alert-danger">
+                            <span class="text-danger"> <strong>Error!</strong> @TempData["duplicateError"]</span>
+                        </div>
 
                     }
 
@@ -167,13 +167,13 @@
 
                             <!-- select -->
                             @*<div class="form-group">
-                    <label class=" control-label">MF Code</label>
-                    <div class="">
-                        @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly"})
-                        @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
-                        @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                                    <label class=" control-label">MF Code</label>
+                                    <div class="">
+                                        @Html.TextBox("Pf_code", (string)ViewBag.Pf_code, new { @class = "form-control", @readonly = "readonly"})
+                                        @Html.DropDownList("Pf_code", null, htmlAttributes: new { @class = "form-control input-sm" })
+                                        @Html.ValidationMessageFor(model => model.Pf_code, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
 
                             <!-- /.box-body -->
                             <!-- /.box-footer -->
@@ -193,7 +193,7 @@
 
             </div>
         </div>
-      
+
     </div>
 
 
@@ -204,96 +204,180 @@
 
 
 
+@*<script>
+        $(document).ready(function () {
+
+            lblError1.innerHTML = "";
+            $('#startno').keyup(function () {
+                //alert("Keyup");
+                $('#endno').val('');
+                $('#startno').val($(this).val().toUpperCase());
+                var startno = $("#startno").val();
+                if (startno.length >= 9) {
+                    $('#endno').focus();
+                }
+
+            });
+
+            $('#endno').keyup(function () {
+                //alert("Keyup");
+
+                $('#endno').val($(this).val().toUpperCase());
+
+                var endno = $("#endno").val();
+                var startno = $("#startno").val();
+
+                var firstchastart = startno.charAt(0);
+                var firstcharend = endno.charAt(0);
+
+                if (firstchastart != firstcharend) {
+                    $('#endno').val('');
+                }
+                else if (endno.length >= 9) {
+                    $('#noofleafs').focus();
+                    setleaf();
+                }
+
+                var total = $('#noofleafs').val();
+                if (total > 1000) {
+                    lblError1.innerHTML = "Max limit is 1000";
+                }
+                else {
+                    lblError1.innerHTML = "";
+                }
+
+            });
+
+
+            function setleaf() {
+
+                var startno = $("#startno").val();
+                var endno = $("#endno").val();
+                calstart = startno.substring(1);
+                calend = endno.substring(1);
+                if (startno.toUpperCase().startsWith("7X") && endno.toUpperCase().startsWith("7X")) {
+                    // Extract substring starting from the third character
+                    calstart = startno.substring(2);
+                    calend = endno.substring(2);
+                }
+                else if (startno.toUpperCase().startsWith("7D") && endno.toUpperCase().startsWith("7D")) {
+                    // Extract substring starting from the third character
+                    calstart = startno.substring(2);
+                    calend = endno.substring(2);
+                }
+                else {
+                    calstart = startno.substring(1);
+                    calend = endno.substring(1);
+                }
+
+
+
+                var leafs = parseInt("0" + calend) - parseInt("0" + calstart) + 1;
+
+                $('#noofleafs').val(leafs);
+
+                var noofleafs = Math.ceil(leafs / 50);
+
+                $('#noofbooks').val(noofleafs);
+
+
+
+            }
+        });
+
+
+
+        $('#temprecdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy',
+
+        });
+        var currentDate = new Date();
+        $("#temprecdate").datepicker("setDate", currentDate);
+
+
+    </script>*@
+
+
 <script>
     $(document).ready(function () {
 
         lblError1.innerHTML = "";
+
+        // Handle keyup for the start number input
         $('#startno').keyup(function () {
-            //alert("Keyup");
             $('#endno').val('');
             $('#startno').val($(this).val().toUpperCase());
             var startno = $("#startno").val();
-            if (startno.length >= 9) {
-                $('#endno').focus();
-            }
-
+          
         });
 
-        $('#endno').keyup(function () {
-            //alert("Keyup");
-
+        // Handle keyup for the end number input
+        $('#endno').focusout(function () {
             $('#endno').val($(this).val().toUpperCase());
 
             var endno = $("#endno").val();
             var startno = $("#startno").val();
 
+            // Check if the first characters match
             var firstchastart = startno.charAt(0);
             var firstcharend = endno.charAt(0);
 
-            if (firstchastart != firstcharend) {
+            // Reset the end number if the first characters don't match
+            if (firstchastart !== firstcharend) {
                 $('#endno').val('');
             }
-            else if (endno.length >= 9) {
-                $('#noofleafs').focus();
+           
                 setleaf();
-            }
+            
 
             var total = $('#noofleafs').val();
             if (total > 1000) {
                 lblError1.innerHTML = "Max limit is 1000";
-            }
-            else {
+            } else {
                 lblError1.innerHTML = "";
             }
-
         });
 
-
+        // Function to calculate leafs and books
         function setleaf() {
-
             var startno = $("#startno").val();
             var endno = $("#endno").val();
-            calstart = startno.substring(1);
-            calend = endno.substring(1);
-            if (startno.toUpperCase().startsWith("7X") && endno.toUpperCase().startsWith("7X")) {
-                // Extract substring starting from the third character
-                calstart = startno.substring(2);
-                calend = endno.substring(2);
-            }
-            else if (startno.toUpperCase().startsWith("7D") && endno.toUpperCase().startsWith("7D")) {
-                // Extract substring starting from the third character
-                calstart = startno.substring(2);
-                calend = endno.substring(2);
-            }
-            else {
-                calstart = startno.substring(1);
-                calend = endno.substring(1);
-            }
 
+            // Handle if the input starts with "7X" or "7D"
+            var calstart = getSubstring(startno);
+            var calend = getSubstring(endno);
 
+            // Calculate the number of leafs
+            var leafs = parseInt(calend, 10) - parseInt(calstart, 10) + 1;
 
-            var leafs = parseInt("0" + calend) - parseInt("0" + calstart) + 1;
-
+            // Set the value for leafs and books
             $('#noofleafs').val(leafs);
 
             var noofleafs = Math.ceil(leafs / 50);
-
             $('#noofbooks').val(noofleafs);
-
-
-
         }
+
+        // Function to handle substring extraction
+        function getSubstring(input) {
+            if (input.toUpperCase().startsWith("7X") || input.toUpperCase().startsWith("7D")) {
+                return input.substring(2); // Extract from the third character
+            } else if (/^[A-Za-z0-9]/.test(input.charAt(0))) {
+                return input.substring(1); // Extract from the second character
+            }
+            return input; // Default case for numbers or other patterns
+        }
+
     });
 
-
-
+    // Initialize datepicker for the date field
     $('#temprecdate').datepicker({
         autoclose: true,
         format: 'dd-mm-yyyy',
-
     });
+
+    // Set current date on page load
     var currentDate = new Date();
     $("#temprecdate").datepicker("setDate", currentDate);
-
 
 </script>

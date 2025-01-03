@@ -280,7 +280,7 @@ namespace DtDc_Billing.Controllers
 
             items.Add(new SelectListItem { Text = "Remaining", Value = "Remaining" });
 
-            items.Add(new SelectListItem { Text = "RemainingDone", Value = "RemainingDone" });
+            items.Add(new SelectListItem { Text = "Expired", Value = "Expired" });
 
             ViewBag.RemainingType = items;
     
@@ -299,7 +299,7 @@ namespace DtDc_Billing.Controllers
                 temprecdate = x.temprecdate,
                 totalCount = x.totalCOUNTER ?? 0
 
-            }).OrderByDescending(x=>x.temprecdate).ToList();
+            }).ToList();
 
 
             ViewBag.type = RemainingType;

@@ -1,4 +1,9 @@
-﻿
+﻿<style>
+    #alertMessage{
+        color:red !important;
+        font-size:14px;
+    }
+</style>
 @model DtDc_Billing.Metadata_Classes.TransactionMetadata
 
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -14,6 +19,7 @@
                alert('@notvalid')
     </script>
 }
+<div id="alertMessage" class="alert alert-danger" style="display:none; color:red;"></div>
 
 @using (Ajax.BeginForm("EditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
 {
@@ -679,7 +685,8 @@ $.ajax({
 
                 currentConsignmentno = str;
                 var res = str.charAt(0);
-                // alert(res);
+
+
                 if (res.toLowerCase() == "i") {
                     ShowRadios(); //calling function
                 }
@@ -688,18 +695,32 @@ $.ajax({
                     dataType: 'json',
                     url: '/Booking/Consignmentdetails',
                     data: { Cosignmentno: consno },
-                    success: function (Data) {
-                        console.log(Data)
-                        $('#Customer_Id').val(Data.Customer_Id);
-                        if (Data.Customer_Id == null) {
-                            alert('Consignment Not Booked');
-                            return false;
+                    success: function (response) {
+
+                        if (!response.success) {
+                           // alert(response.message);
+                            $('#alertMessage').text(response.message).show();
+                            return;
+                          
                         }
+                        else {
+                        // Assuming the returned data contains the following properties
+                        var Data = response.data;
+                        //// Check if Data is null, undefined, or has no content
+                        //if (!Data || (Array.isArray(Data) && Data.length === 0)) {
+                        //    alert('No data found for the provided consignment number.');
+                        //    return;
+                        //}
+                        //$('#Customer_Id').val(Data.Customer_Id);
+                        //if (Data.Customer_Id == null) {
+                        //    alert('Consignment Not Booked');
+                        //    return false;
+                        //}
                         $('#compaddress').val(Data.compaddress);
                         $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
                         $('#Pincode').val(Data.Pincode);
 
-
+                            $("#Customer_Id").val(Data.Customer_Id);
                         if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
 
                             $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
@@ -783,7 +804,7 @@ $.ajax({
 
 
                     }
-
+                    }
                 });
             }
 
@@ -1000,19 +1021,19 @@ $.ajax({
 
         $('#submitbook').click(function () {
 
-            var Amount = $('#Amount').val();
+           // var Amount = $('#Amount').val();
 
             var Insuranceval = $('input[name="topay"]:checked').val();
 
             if (Insuranceval == "yes") {
                 return true;
             }
-            else {
-                if (Amount <= 0) {
-                    alert("Amount Should be greater than zero");
-                    return false;
-                }
-            }
+            //else {
+            //    if (Amount <= 0) {
+            //        alert("Amount Should be greater than zero");
+            //        return false;
+            //    }
+            //}
 
         });
            $('#Pincode').change(function () {

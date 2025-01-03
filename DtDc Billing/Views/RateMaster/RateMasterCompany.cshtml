@@ -49,7 +49,7 @@
                                 <label class="">Company Id<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Company_Id, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                @Html.EditorFor(model => model.Company_Id, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
                                 <span style="color:red"> @Html.ValidationMessage("C_IdError")</span>
                                 @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
                             </div>
@@ -63,7 +63,7 @@
                                 <label class="">Company Name<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Company_Name, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                @Html.EditorFor(model => model.Company_Name, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
                                 @Html.ValidationMessageFor(model => model.Company_Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                 <label class="">Company Address<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.TextAreaFor(model => model.Company_Address, new { @class = "form-control input-sm", @required = "required", @rows = 1 })
+                                @Html.TextAreaFor(model => model.Company_Address, new { @class = "form-control input-sm"@*, @required = "required"*@, @rows = 1 })
                                 @Html.ValidationMessageFor(model => model.Company_Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                                 <label class="">Phone Number<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required", pattern = "^[0-9]{10}$" }, oninput = "validatePhoneNumber(this)" })
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@, pattern = "^[0-9]{10}$" }, oninput = "validatePhoneNumber(this)" })
                                 @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                                 <label class="">Email<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm", @required = "required" } })
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -426,30 +426,30 @@
 
  }
     $(document).ready(function () {
-        $('#uploadBtn').on('click', function () {
-            scrollToTop();
-            var companyId = document.getElementById("Company_Id").value;
-            var companyName = document.getElementById("Company_Name").value;
-            var companyAddress = $("#Company_Address").val();
-            var phone = $("#Phone").val();
-            var Email = $("#Email").val();
+        //$('#uploadBtn').on('click', function () {
+        //    scrollToTop();
+        //    var companyId = document.getElementById("Company_Id").value;
+        //    var companyName = document.getElementById("Company_Name").value;
+        //    var companyAddress = $("#Company_Address").val();
+        //    var phone = $("#Phone").val();
+        //    var Email = $("#Email").val();
 
-            if (companyId.trim() === "" || companyName.trim() === "" || companyAddress.trim() === "" || phone.trim() === "" || Email.trim() === "") {
-                alert("Please fill in all the required fields.");
-                return false; // Prevent form submission
+        //    if (companyId.trim() === "" || companyName.trim() === "" || companyAddress.trim() === "" || phone.trim() === "" || Email.trim() === "") {
+        //        alert("Please fill in all the required fields.");
+        //        return false; // Prevent form submission
                 
-            }
-            if (phone.length !== 10) {
-                alert("Please enter a valid 10-digit phone number.");
-                return false; // Prevent form submission
-            }
-                showLoader('overlayBlock');
-                // Get the form element
-                var form = $('#frmEmp');
-            // Submit the form
-            form.submit();
+        //    }
+        //    if (phone.length !== 10) {
+        //        alert("Please enter a valid 10-digit phone number.");
+        //        return false; // Prevent form submission
+        //    }
+        //        showLoader('overlayBlock');
+        //        // Get the form element
+        //        var form = $('#frmEmp');
+        //    // Submit the form
+        //    form.submit();
 
-        });
+        //});
 
 
 

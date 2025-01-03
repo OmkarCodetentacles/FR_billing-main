@@ -58,7 +58,14 @@ namespace DtDc_Billing.Controllers
 
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
-            return Json(suggestions, JsonRequestBehavior.AllowGet);
+            //return Json(suggestions, JsonRequestBehavior.AllowGet);
+            if (suggestions== null)
+            {
+                return Json(new { success = false, message = "No data found for the provided consignment number." }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { success = true, data = suggestions }, JsonRequestBehavior.AllowGet);
+
         }
 
         [HttpPost]
@@ -1897,14 +1904,23 @@ Select(e => new
             if (ImportText != null)
             {
                 string path = Server.MapPath("~/UploadsText/");
+                string extension = System.IO.Path.GetExtension(ImportText.FileName)?.ToLower();
 
+                if (extension != ".txt")
+                {
+                    // ModelState.AddModelError("fileerr", "Only Image files allowed.");
+                    TempData["Error"] = "Only Text files allowed!";
+
+                    return View();
+
+                }
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
 
                 filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + Path.GetFileName(ImportText.FileName);
-                string extension = Path.GetExtension(ImportText.FileName);
+                 extension = Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
                 Task.Run(() => InsertRecords(filePath, ImportText.FileName));

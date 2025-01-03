@@ -193,6 +193,10 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         <label>
             Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.ValidationMessageFor(x => x.Amount,"", new
+       {
+           @class = "text-danger"
+       })*@
 
         </label>
 
@@ -1151,19 +1155,19 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         $('#submitbook').click(function () {
 
-            var Amount = $('#Amount').val();
+           // var Amount = $('#Amount').val();
 
             var Insuranceval = $('input[name="topay"]:checked').val();
 
             if (Insuranceval == "yes") {
                 return true;
             }
-            else {
-                if (Amount <= 0) {
-                    alert("Amount Should be greater than zero");
-                    return false;
-                }
-            }
+            //else {
+            //    if (Amount <= 0) {
+            //        alert("Amount Should be greater than zero");
+            //        return false;
+            //    }
+            //}
 
         });
 

@@ -501,8 +501,16 @@
 
                                                     </div>
                                                     <div class="col-md-9" style="display: flex; gap: 3px">
+                                                        @if (Model != null && Model.servicetax != null)
+                                                        {
+                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} })
 
-                                                        @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+
+                                                        }
 
 
 
@@ -1393,7 +1401,7 @@ $("#Customer_Id").autocomplete({
             $("#overlayBlock").show();
 
             var print = '@ViewBag.pdf';
-            var strpfcode=@ViewBag.strpfcode;
+            var strpfcode='@ViewBag.strpfcode';
             if (print == "True") {
                 var myParameter = '@ViewBag.invoiceno';
                 var baseUrl = '@baseurl';
