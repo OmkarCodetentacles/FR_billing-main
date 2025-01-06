@@ -1,5 +1,8 @@
 ﻿@model DtDc_Billing.Models.InvoiceModel
+@{
 
+    Layout = null;
+}
 @{
     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
      Request.ApplicationPath.TrimEnd('/');
@@ -23,7 +26,7 @@
 </style>
 @if (ViewBag.invoiceno != null)
 {
-  
+
     <script>
 
         // Pass the pdf value correctly as a boolean
@@ -38,7 +41,7 @@
         var myParamether = '@ViewBag.invoiceno';
         var data = myParamether + ".pdf";
         var strpfcode = '@ViewBag.strpfcode';
-  
+
 
         $("#overlayBlock").hide();
 
@@ -478,8 +481,8 @@
                                             <button type="submit" name="submit" value="Save" class="btn btn-success pull-right" style="margin-top:10px" id="Generate">Save</button>
                                         </div>
                                         <!-- /.box-footer -->
-                                </div>
-                                        </form>
+                                    </div>
+                                </form>
                             </div>
                             <!-- /.box -->
                             @*</div>*@

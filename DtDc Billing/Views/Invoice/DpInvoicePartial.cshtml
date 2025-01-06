@@ -1,6 +1,9 @@
 ﻿@model DtDc_Billing.Entity_FR.Invoice
 
+@{
 
+    Layout = null;
+}
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
@@ -16,9 +19,9 @@
                             <h4>Generate DP Invoice</h4>
                         </div>
                         <!-- /.box-header -->
-                       
 
-                        @if (ViewBag.success!=null)
+
+                        @if (ViewBag.success != null)
                         {
                             var successMessage = "Invoice Added SuccessFully";
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
@@ -205,15 +208,15 @@
                                                                         </div>
                                                                     </div>
                                                                     @*<div class="form-group">
-                                                        <div class="col-sm-12">
-                                                            <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
+                                                                            <div class="col-sm-12">
+                                                                                <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
 
-                                                            <div class="col-sm-8">
-                                                                @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                                                <div class="col-sm-8">
+                                                                                    @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
 
-                                                            </div>
-                                                        </div>
-                                                    </div>*@
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>*@
                                                                     <div class="form-group">
                                                                         <div class="col-sm-12">
                                                                             <label for="net-amount" class="col-sm-7 control-label">Net Amount</label>
@@ -250,39 +253,39 @@
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
         </section>
-</div>
-        }
-        <style>
-            #generate-invoice {
-                display: block;
-                height: 400px;
-            }
+    </div>
+}
+<style>
+    #generate-invoice {
+        display: block;
+        height: 400px;
+    }
 
-            .radio {
-                display: inline-block;
-                padding-right: 20px;
-            }
-        </style>
-
-
-        <style>
-            .input-validation-error {
-                border: 1px solid #ff0000 !important;
-            }
-        </style>
+    .radio {
+        display: inline-block;
+        padding-right: 20px;
+    }
+</style>
 
 
-        @*if (ViewBag.success != null)
-        {
-            <script>
-                alert("Invoice Added SuccessFully");
-            </script>
-        }*@
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
 
 
+@*if (ViewBag.success != null)
+    {
         <script>
+            alert("Invoice Added SuccessFully");
+        </script>
+    }*@
+
+
+<script>
     var a =@Request.Params["Firm_Id"];
 
     $(document).ready(function () {
@@ -309,67 +312,67 @@
     });
 
 
-        </script>
+</script>
 
-        <script>
-            $("#departmentsDropdown").change(function () {
-                //var selectedStudentVal = $("#ddlStudent").val();
-                //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
+<script>
+    $("#departmentsDropdown").change(function () {
+        //var selectedStudentVal = $("#ddlStudent").val();
+        //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
 
-                var departmentsDropdown = $("#departmentsDropdown").val();
-                // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
-                window.location.replace("/Invoice/DpInvoice?Firm_Id=" + departmentsDropdown);
+        var departmentsDropdown = $("#departmentsDropdown").val();
+        // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
+        window.location.replace("/Invoice/DpInvoice?Firm_Id=" + departmentsDropdown);
 
-                $("#departmentsDropdown").html(departmentsDropdown);
+        $("#departmentsDropdown").html(departmentsDropdown);
+    });
+
+
+
+
+</script>
+
+<script>
+
+    var total = 0;
+    var D_Docket = 0, P_Docket = 0, E_Docket = 0, V_Docket = 0, I_Docket = 0, N_Docket = 0, G_Docket = 0;
+    var Docket_Charge = 0;
+    var Royalty_Per = 0;
+
+
+
+
+
+    $(document).ready(function () {
+
+
+        set_subtotal();
+
+
+
+
+        $('#Customer_Id').keyup(function () {
+            // alert("Keyup");
+            var custid = $("#Customer_Id").val();
+
+
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Invoice/Invoicedetails',
+                data: { CustomerId: custid },
+                success: function (Data) {
+
+                    $('#Address').val(Data.Company_Address);
+
+
+
+
+                }
             });
 
 
-
-
-        </script>
-
-        <script>
-
-            var total = 0;
-            var D_Docket = 0, P_Docket = 0, E_Docket = 0, V_Docket = 0, I_Docket = 0, N_Docket = 0, G_Docket = 0;
-            var Docket_Charge = 0;
-            var Royalty_Per = 0;
-
-
-
-
-
-            $(document).ready(function () {
-
-
-                set_subtotal();
-
-
-
-
-                $('#Customer_Id').keyup(function () {
-                    // alert("Keyup");
-                    var custid = $("#Customer_Id").val();
-
-
-
-                    $.ajax({
-                        type: 'Get',
-                        dataType: 'json',
-                        url: '/Invoice/Invoicedetails',
-                        data: { CustomerId: custid },
-                        success: function (Data) {
-
-                            $('#Address').val(Data.Company_Address);
-
-
-
-
-                        }
-                    });
-
-
-                });
+        });
 
 
 
@@ -381,134 +384,134 @@
 
 
 
-                $('#total,#Royalty_charges,#Docket_charges,#servicetax,#Amount4').keyup(function () {
-                    var total = $('#total').val();
-                    set_subtotal();
-                    Gst_Amount();
-                    Net_Amount();
-                });
+        $('#total,#Royalty_charges,#Docket_charges,#servicetax,#Amount4').keyup(function () {
+            var total = $('#total').val();
+            set_subtotal();
+            Gst_Amount();
+            Net_Amount();
+        });
 
 
 
 
 
 
-                function set_subtotal() {
+        function set_subtotal() {
 
-                    var total = $('#total').val();
-                    var Royalty_charges = $('#Royalty_charges').val();
-                    var Docket_charges = $('#Docket_charges').val();
-                    var Amount4 = $('#Amount4').val();
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Docket_charges').val();
+            var Amount4 = $('#Amount4').val();
 
 
-                    $('#subtotal').val(parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4));
+            $('#subtotal').val(parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4));
+        }
+
+
+
+
+        function Net_Amount() {
+
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Docket_charges').val();
+            var Amount4 = $('#Amount4').val();
+            var Gst = $('#servicetaxtotal').val();
+
+
+
+
+            var netamt = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4) + parseFloat("0" + Gst);
+
+            // alert(netamt);
+            $('#netamount').val(netamt.toFixed(2));
+        }
+
+
+        function Gst_Amount() {
+
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Docket_charges').val();
+            var Amount4 = $('#Amount4').val();
+
+            var gst = $('#servicetax').val();
+
+            var gst_total = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4);
+
+            var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
+
+            $('#servicetaxtotal').val(percamount.toFixed(2));
+
+        }
+
+
+
+
+
+
+
+
+
+
+        $('#Tempdatefrom').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#tempInvoicedate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#TempdateTo').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+
+        /**/
+
+
+
+
+
+
+
+        $(function () {
+
+
+            $(".tag-check").keydown(function (event) {
+                var tb = $(this).get(0);
+                var start = tb.selectionStart;
+
+                var end = tb.selectionEnd;
+                var reg = new RegExp("(<.+?>)", "g");
+                var amatch = null;
+                while ((amatch = reg.exec(tb.value)) != null) {
+                    var thisMatchStart = amatch.index - 1;
+                    var thisMatchEnd = amatch.index + amatch[0].length + 1;
+                    if (start <= thisMatchStart && end > thisMatchStart) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    else if (start > thisMatchStart && start < thisMatchEnd) {
+                        event.preventDefault();
+                        return false;
+                    }
                 }
-
-
-
-
-                function Net_Amount() {
-
-                    var total = $('#total').val();
-                    var Royalty_charges = $('#Royalty_charges').val();
-                    var Docket_charges = $('#Docket_charges').val();
-                    var Amount4 = $('#Amount4').val();
-                    var Gst = $('#servicetaxtotal').val();
-
-
-
-
-                    var netamt = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4) + parseFloat("0" + Gst);
-
-                    // alert(netamt);
-                    $('#netamount').val(netamt.toFixed(2));
-                }
-
-
-                function Gst_Amount() {
-
-                    var total = $('#total').val();
-                    var Royalty_charges = $('#Royalty_charges').val();
-                    var Docket_charges = $('#Docket_charges').val();
-                    var Amount4 = $('#Amount4').val();
-
-                    var gst = $('#servicetax').val();
-
-                    var gst_total = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4);
-
-                    var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
-
-                    $('#servicetaxtotal').val(percamount.toFixed(2));
-
-                }
-
-
-
-
-
-
-
-
-
-
-                $('#Tempdatefrom').datepicker({
-                    autoclose: true,
-                    format: 'dd-mm-yyyy'
-                });
-
-                $('#tempInvoicedate').datepicker({
-                    autoclose: true,
-                    format: 'dd-mm-yyyy'
-                });
-
-                $('#TempdateTo').datepicker({
-                    autoclose: true,
-                    format: 'dd-mm-yyyy'
-                });
-
-
-                /**/
-
-
-
-
-
-
-
-                $(function () {
-
-
-                    $(".tag-check").keydown(function (event) {
-                        var tb = $(this).get(0);
-                        var start = tb.selectionStart;
-
-                        var end = tb.selectionEnd;
-                        var reg = new RegExp("(<.+?>)", "g");
-                        var amatch = null;
-                        while ((amatch = reg.exec(tb.value)) != null) {
-                            var thisMatchStart = amatch.index - 1;
-                            var thisMatchEnd = amatch.index + amatch[0].length + 1;
-                            if (start <= thisMatchStart && end > thisMatchStart) {
-                                event.preventDefault();
-                                return false;
-                            }
-                            else if (start > thisMatchStart && start < thisMatchEnd) {
-                                event.preventDefault();
-                                return false;
-                            }
-                        }
-                    });
-                });
-
             });
-        </script>
+        });
+
+    });
+</script>
 
 
 
 
 
 
-        <script>
+<script>
     $(function () {
         var availableTutorials = [
 
@@ -550,11 +553,11 @@ $("#Customer_Id").autocomplete({
 
 });
 
-        </script>
+</script>
 
-        @if (ViewBag.invoiceno != null)
-        {
-            <script>
+@if (ViewBag.invoiceno != null)
+{
+    <script>
 
     var print = '@ViewBag.pdf';
 
@@ -569,9 +572,9 @@ $("#Customer_Id").autocomplete({
             document.getElementById('saveinv').click();
         });
     }
-            </script>
-        }
+    </script>
+}
 
 
-        <a id="saveinv" style="" href="" download>
-        </a>
+<a id="saveinv" style="" href="" download>
+</a>

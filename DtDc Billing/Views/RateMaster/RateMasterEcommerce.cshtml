@@ -1,4 +1,7 @@
-﻿
+﻿@{
+
+    Layout = null;
+}
 @model IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ecommerce>
 <section style="padding: 20px; border: 1px solid #dddddd;">
     <div class="">
@@ -23,61 +26,61 @@
 
 
             @*if (ViewBag.EcomPCount > 0)
-            {
-                foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
                 {
-                    var Ecommerce_NoOfSlabN = item.NoOfSlabN;
-                    if (item.NoOfSlabN != null)
+                    foreach (var item in Model.Where(x => x != null && x.Sector.BillEcomPrio == true))
                     {
-                        <div class="col-sm-6 col-sm-offset-3">
-                            <div class="box-header">
-                                <div class="col-sm-4">
-                                    <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                        var Ecommerce_NoOfSlabN = item.NoOfSlabN;
+                        if (item.NoOfSlabN != null)
+                        {
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <div class="box-header">
+                                    <div class="col-sm-4">
+                                        <label>  @Html.RadioButtonFor(m => item.NoOfSlabN, 2) Slab 2</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        break;
-                    }
-                    else
-                    {
-                        <div class="col-sm-6">
-                            <div class="box-header">
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
-                                </div>
+                            break;
+                        }
+                        else
+                        {
+                            <div class="col-sm-6">
+                                <div class="box-header">
+                                    <div class="col-sm-4">
+                                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 2, new { @checked = "checked" }) Slab 2</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 3)  Slab 3</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label> @Html.RadioButtonFor(m => item.NoOfSlabN, 4)  Slab 4</label>
+                                    </div>
 
+                                </div>
                             </div>
-                        </div>
-                        break;
+                            break;
 
 
+                        }
                     }
+
                 }
+                else if (ViewBag.EcomPCount == 0)
+                {
 
-            }
-            else if (ViewBag.EcomPCount == 0)
-            {
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="box-header">
 
-                <div class="col-sm-6 col-sm-offset-3">
-                    <div class="box-header">
+                            <h4> No Data Found</h4>
 
-                        <h4> No Data Found</h4>
-
+                        </div>
                     </div>
-                </div>
-            }*@
+                }*@
             if (ViewBag.EcomPCount != null && ViewBag.EcomPCount > 0)
             {
                 <div class="col-sm-12 text-center">
@@ -369,8 +372,8 @@
             }
         }
     </div>
-    </section>
-    <script>
+</section>
+<script>
     $(document).ready(function () {
 
 
@@ -444,17 +447,17 @@
 
         });
     });
-    </script>
+</script>
 
-    @{
-        var ENtest = 0;
-        if (ViewBag.EcomPCount > 0 && ViewBag.comP != null)
-        {
-            ENtest = ViewBag.comP.NoOfSlabN;
-        }
+@{
+    var ENtest = 0;
+    if (ViewBag.EcomPCount > 0 && ViewBag.comP != null)
+    {
+        ENtest = ViewBag.comP.NoOfSlabN;
     }
+}
 
-    <script>
+<script>
     $(document).ready(function () {
         var ENtest = '@ENtest';
 
@@ -524,22 +527,22 @@
 
         });
     });
-    </script>
-    <script type="text/javascript">
-        function scrollToTop() {
-            window.scrollTo(0, 0);
-        }
+</script>
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
 
 
-        function onBegin() {
+    function onBegin() {
 
-            // Show the loader
-            document.getElementById('overlayBlock').style.display = 'block';
-        }
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
 
-        function onComplete() {
-            // Hide the loader
-            scrollToTop();
-            document.getElementById('overlayBlock').style.display = 'none';
-        }
-    </script>
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>

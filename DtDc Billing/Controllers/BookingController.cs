@@ -58,8 +58,26 @@ namespace DtDc_Billing.Controllers
 
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
-            //return Json(suggestions, JsonRequestBehavior.AllowGet);
-            if (suggestions== null)
+            return Json(suggestions, JsonRequestBehavior.AllowGet);
+            //if (suggestions== null)
+            //{
+            //    return Json(new { success = false, message = "No data found for the provided consignment number." }, JsonRequestBehavior.AllowGet);
+            //}
+
+            //return Json(new { success = true, data = suggestions }, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult EditConsignmentdetails(string Cosignmentno)
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            db.Configuration.ProxyCreationEnabled = false;
+
+
+            var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
+
+           // return Json(suggestions, JsonRequestBehavior.AllowGet);
+            if (suggestions == null)
             {
                 return Json(new { success = false, message = "No data found for the provided consignment number." }, JsonRequestBehavior.AllowGet);
             }

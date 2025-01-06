@@ -1,6 +1,10 @@
 ﻿@model DtDc_Billing.Models.CompanyModel
+@{
 
-@using (Html.BeginForm("RatemasterCompany", "Ratemaster" , new { id = "frmEmp"}))
+    Layout = null;
+}
+
+@using (Html.BeginForm("RatemasterCompany", "Ratemaster", new { id = "frmEmp" }))
 {
     @Html.AntiForgeryToken()
     <style>
@@ -24,7 +28,7 @@
         }
     </style>
     <section>
-       
+
 
 
         <div class="form-horizontal" style=" padding: 20px; border: 1px solid #dddddd;">
@@ -49,7 +53,12 @@
                                 <label class="">Company Id<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Company_Id, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
+                                @Html.EditorFor(model => model.Company_Id, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-sm"@*, @required = "required"*@ }
+                                })
                                 <span style="color:red"> @Html.ValidationMessage("C_IdError")</span>
                                 @Html.ValidationMessageFor(model => model.Company_Id, "", new { @class = "text-danger" })
                             </div>
@@ -63,7 +72,12 @@
                                 <label class="">Company Name<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Company_Name, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
+                                @Html.EditorFor(model => model.Company_Name, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-sm"@*, @required = "required"*@ }
+                                })
                                 @Html.ValidationMessageFor(model => model.Company_Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -77,7 +91,11 @@
                                 <label class="">Company Address<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.TextAreaFor(model => model.Company_Address, new { @class = "form-control input-sm"@*, @required = "required"*@, @rows = 1 })
+                                @Html.TextAreaFor(model => model.Company_Address, new
+                                {
+                                    @class = "form-control input-sm"@*, @required = "required"*@,
+@rows = 1
+})
                                 @Html.ValidationMessageFor(model => model.Company_Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -90,7 +108,15 @@
                                 <label class="">Phone Number<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@, pattern = "^[0-9]{10}$" }, oninput = "validatePhoneNumber(this)" })
+                                @Html.EditorFor(model => model.Phone, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-sm"@*, @required = "required"*@,
+pattern = "^[0-9]{10}$"
+},
+oninput = "validatePhoneNumber(this)"
+})
                                 @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -103,7 +129,12 @@
                                 <label class="">Email<span style="color:red">*</span></label>
                             </div>
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm"@*, @required = "required"*@ } })
+                                @Html.EditorFor(model => model.Email, new
+                                {
+                                    htmlAttributes = new
+                                    {
+                                        @class = "form-control input-sm"@*, @required = "required"*@ }
+                                })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -437,7 +468,7 @@
         //    if (companyId.trim() === "" || companyName.trim() === "" || companyAddress.trim() === "" || phone.trim() === "" || Email.trim() === "") {
         //        alert("Please fill in all the required fields.");
         //        return false; // Prevent form submission
-                
+
         //    }
         //    if (phone.length !== 10) {
         //        alert("Please enter a valid 10-digit phone number.");
@@ -469,7 +500,7 @@
 
 
 </script>
-   
+
 <script>
     //$(document).ready(function () {
     //    // Show loader when a tab is clicked

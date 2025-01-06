@@ -1,12 +1,15 @@
 ﻿@model DtDc_Billing.Models.CashModel
 
+@{
 
+    Layout = null;
+}
 @*@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success" id="successmsg">
-        <strong>Success! </strong>@TempData["Message"]
-    </div>
-}*@
+    {
+        <div class="alert alert-success" id="successmsg">
+            <strong>Success! </strong>@TempData["Message"]
+        </div>
+    }*@
 
 @{
     var sMessage = TempData["Message"] as string;
@@ -14,15 +17,15 @@
 @if (!string.IsNullOrEmpty(sMessage))
 {
     @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
-<script>
-       setTimeout(function () {
-        window.location.reload();
+    <script>
+        setTimeout(function () {
+            window.location.reload();
 
-        
-       
-    }, 2000); // 3000 milliseconds = 3 seconds
-</script>
-   
+
+
+        }, 2000); // 3000 milliseconds = 3 seconds
+    </script>
+
 }
 
 @using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
@@ -32,7 +35,7 @@
     <div class="form-horizontal">
 
         <hr />
-        @Html.ValidationMessage("InvAmt", new { @class = "text-danger"  })
+        @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <input type="hidden" class="Firm_Id" name="Firm_Id">
         <div class="form-group">

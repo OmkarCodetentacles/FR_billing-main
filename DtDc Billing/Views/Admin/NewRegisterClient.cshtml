@@ -1,4 +1,8 @@
 ﻿@model IEnumerable<DtDc_Billing.Models.NewRegisterUser>
+@{
+
+    Layout = null;
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -151,7 +155,7 @@
                                                                new SelectListItem() {Text = "Select Subscription", Value=""},
                                                                new SelectListItem() {Text = "1 Month", Value="1"},
                                                                new SelectListItem() {Text = "1 Year", Value="2"},
-                                                            }, new { @class = "form-control", id = "pid_"+ srno1 })
+                                                            }, new { @class = "form-control", id = "pid_" + srno1 })
                                                             <a href="#" class="btn btn-success" onclick="renewSubscription('@item.Pfcode','@srno1')">Renew</a>
                                                         </td>
                                                     </tr>
@@ -180,8 +184,8 @@
 
     <!-- Your custom scripts -->
     <script>
-        function renewSubscription(pfcode,srno) {
-            var selectedValue = document.getElementById('pid_'+ srno).value;
+        function renewSubscription(pfcode, srno) {
+            var selectedValue = document.getElementById('pid_' + srno).value;
             alert(selectedValue)
             if (selectedValue == "" || selectedValue == null) {
                 alert("Select Payment Subscription");
@@ -192,12 +196,12 @@
             }
         }
     </script>
-    @if (TempData["SuccessMessage"]as string != null)
-            {
-                <script>
+    @if (TempData["SuccessMessage"] as string != null)
+    {
+        <script>
                     alert('@TempData["SuccessMessage"]')
-                </script>
-            }
+        </script>
+    }
     <!-- Initialize DataTables -->
     <script>
         $(document).ready(function () {

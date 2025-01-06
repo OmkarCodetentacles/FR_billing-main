@@ -1,4 +1,7 @@
-﻿
+﻿@{
+
+    Layout = null;
+}
 @model IEnumerable<DtDc_Billing.Entity_FR.Nondox>
 
 
@@ -119,7 +122,7 @@
 
 
                 @*@Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                 if (ViewBag.nonDoxAirCount > 0)
                 {
@@ -370,11 +373,11 @@
                                         <input type="hidden" name="item.NonIDS" value="@item.Non_ID" />
                                     </td>
                                     @*<td class="hidden">
-            @Html.HiddenFor(modelItem => item.Non_ID)
-        </td>
-        <td class="hidden">
-            @Html.HiddenFor(modelItem => item.Sector_Id)
-        </td>*@
+                                            @Html.HiddenFor(modelItem => item.Non_ID)
+                                        </td>
+                                        <td class="hidden">
+                                            @Html.HiddenFor(modelItem => item.Sector_Id)
+                                        </td>*@
                                 </tr>
                             }
 
@@ -399,11 +402,11 @@
                                     </td>
 
                                     @*<td class="hidden">
-                                    @Html.HiddenFor(modelItem => item.Non_ID)
-                                </td>
-                                <td class="hidden">
-                                    @Html.HiddenFor(modelItem => item.Sector_Id)
-                                </td>*@
+                                            @Html.HiddenFor(modelItem => item.Non_ID)
+                                        </td>
+                                        <td class="hidden">
+                                            @Html.HiddenFor(modelItem => item.Sector_Id)
+                                        </td>*@
                                 </tr>
                             }
 
@@ -455,17 +458,17 @@
 <!-- /.box-body -->
 
 @{
-    var testAir=0;
+    var testAir = 0;
     if (ViewBag.nonDoxAirCount > 0)
     {
-         testAir = ViewBag.NonDoxAir.NoOfSlabN;
+        testAir = ViewBag.NonDoxAir.NoOfSlabN;
     }
 }
 <script>
     $(document).ready(function () {
-       
+
                testAir = '@testAir'
-      
+
 
 
           //  var testAir = '@*@Model.Where(x=>x.Sector.BillNonSur==true).Select(x=>x.NoOfSlabN).FirstOrDefault()*@';
@@ -560,15 +563,15 @@
     var testSur = 0;
     if (ViewBag.nonDoxSurCount > 0)
     {
-        testSur =ViewBag.NonDoxSur.NoOfSlabS;
+        testSur = ViewBag.NonDoxSur.NoOfSlabS;
     }
 }
 <script>
         $(document).ready(function () {
             var testSur='@testSur';
-          
-                
-           
+
+
+
 
 
           //  var testSur='@*@ViewBag.NonDoxSur.NoOfSlabS*@';

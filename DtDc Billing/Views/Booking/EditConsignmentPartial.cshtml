@@ -1,7 +1,12 @@
-﻿<style>
-    #alertMessage{
-        color:red !important;
-        font-size:14px;
+﻿
+@{
+
+    Layout = null;
+}
+<style>
+    #alertMessage {
+        color: red !important;
+        font-size: 14px;
     }
 </style>
 @model DtDc_Billing.Metadata_Classes.TransactionMetadata
@@ -693,7 +698,7 @@ $.ajax({
                 $.ajax({
                     type: 'Get',
                     dataType: 'json',
-                    url: '/Booking/Consignmentdetails',
+                    url: '/Booking/EditConsignmentdetails',
                     data: { Cosignmentno: consno },
                     success: function (response) {
 
@@ -701,7 +706,7 @@ $.ajax({
                            // alert(response.message);
                             $('#alertMessage').text(response.message).show();
                             return;
-                          
+
                         }
                         else {
                         // Assuming the returned data contains the following properties

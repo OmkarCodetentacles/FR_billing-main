@@ -1,314 +1,322 @@
 ﻿@{
+
+    Layout = null;
+}
+@{
     ViewBag.Title = "Invoice Dashboard";
     var indiaCulture = new System.Globalization.CultureInfo("hi-IN");
     var invoiceData = Newtonsoft.Json.JsonConvert.DeserializeObject<DtDc_Billing.Models.InvoiceDataForDashBoard>(ViewBag.DataPoints);
 }
 
 @*<!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 
-<head>*@
-    @*<meta charset="UTF-8">
+    <head>*@
+@*<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>*@
 
-    <!-- Bootstrap CSS -->
-    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">*@
+<!-- Bootstrap CSS -->
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">*@
 
-    <!-- Optional: Custom CSS for additional styling -->
-    <style>
-        .card {
-            border-radius: 10px;
-            overflow: hidden;
+<!-- Optional: Custom CSS for additional styling -->
+<style>
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        font-weight: bold;
+        font-size: 1.25rem;
+        border-radius: 0px;
+    }
+
+    .card-body h5 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    /* Custom style for the Paid Amount card */
+    .note3 {
+        padding: 25px 20px 15px 20px;
+        border-right: 6px solid #f44336; /* Modified border color */
+        background-color: #ceebeb;
+        border-left: 6px solid #f44336;
+        border-top: 1px solid #f39c12;
+        border-bottom: 1px solid #444;
+        margin: 20px 20px 20px 30px !important;
+        transition: transform 0.2s ease; /* Add a hover effect */
+        border-radius: 50px; /* Make corners circular */
+    }
+
+        .note3:hover {
+            transform: scale(1.03); /* Slightly enlarges the card on hover */
         }
 
-        .card-header {
-            font-weight: bold;
-            font-size: 1.25rem;
-           border-radius:0px;
+    .note5 {
+        padding: 25px 20px 15px 20px;
+        border-right: 6px solid #dc97f1; /* Modified border color */
+        background-color: #f1edf0;
+        border-left: 6px solid #dc97f1;
+        border-top: 1px solid #72e68c;
+        border-bottom: 1px solid #ffd800;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease; /* Add a hover effect */
+        border-radius: 50px; /* Make corners circular */
+    }
+
+        .note5:hover {
+            transform: scale(1.03); /* Slightly enlarges the card on hover */
+        }
+    /* Example for the next note style */
+    .note4 {
+        padding: 20px;
+        border-right: 4px solid #4cff00;
+        background-color: #e1bdc2;
+        border-left: 4px solid #4cff00;
+        border-top: 1px solid #27a844;
+        border-bottom: 1px solid #444;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
+
+        .note4:hover {
+            transform: scale(1.03);
         }
 
-        .card-body h5 {
-            font-size: 1.5rem;
-            color: #333;
+    /* Example for the next note style */
+    .note6 {
+        padding: 20px;
+        border-right: 4px solid #ee48ae;
+        background-color: #c7e69f;
+        border-left: 4px solid #ee48ae;
+        border-top: 1px solid #72e68c;
+        border-bottom: 1px solid #d8ed23;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
+
+        .note6:hover {
+            transform: scale(1.03);
         }
 
-        /* Custom style for the Paid Amount card */
-        .note3 {
-            padding: 25px 20px 15px 20px;
-            border-right: 6px solid #f44336; /* Modified border color */
-            background-color: #ceebeb;
-            border-left: 6px solid #f44336;
-            border-top: 1px solid #f39c12;
-            border-bottom: 1px solid #444;
-            margin: 20px 20px 20px 30px !important;
-            transition: transform 0.2s ease; /* Add a hover effect */
-            border-radius: 50px; /* Make corners circular */
-        }
+    .note7 {
+        padding: 20px;
+        border-right: 4px solid #72e68c;
+        background-color: #f3a265;
+        border-left: 4px solid #72e68c;
+        border-top: 1px solid #27a844;
+        border-bottom: 1px solid #27a844;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
 
-            .note3:hover {
-                transform: scale(1.03); /* Slightly enlarges the card on hover */
-            }
-        .note5 {
-            padding: 25px 20px 15px 20px;
-            border-right: 6px solid #dc97f1; /* Modified border color */
-            background-color: #f1edf0;
-            border-left: 6px solid #dc97f1;
-            border-top: 1px solid #72e68c;
-            border-bottom: 1px solid #ffd800;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease; /* Add a hover effect */
-            border-radius: 50px; /* Make corners circular */
-        }
-
-            .note5:hover {
-                transform: scale(1.03); /* Slightly enlarges the card on hover */
-            }
-        /* Example for the next note style */
-        .note4 {
-            padding: 20px;
-            border-right: 4px solid #4cff00;
-            background-color: #e1bdc2;
-            border-left: 4px solid #4cff00;
-            border-top: 1px solid #27a844;
-            border-bottom: 1px solid #444;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
-
-            .note4:hover {
-                transform: scale(1.03);
-            }
-
-        /* Example for the next note style */
-        .note6 {
-            padding: 20px;
-            border-right: 4px solid #ee48ae;
-            background-color: #c7e69f;
-            border-left: 4px solid #ee48ae;
-            border-top: 1px solid #72e68c;
-            border-bottom: 1px solid #d8ed23;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
-
-            .note6:hover {
-                transform: scale(1.03);
-            }
-        .note7 {
-            padding: 20px;
-            border-right: 4px solid #72e68c;
-            background-color: #f3a265;
-            border-left: 4px solid #72e68c;
-            border-top: 1px solid #27a844;
-            border-bottom: 1px solid #27a844;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
         .note7:hover {
             transform: scale(1.03);
         }
 
-        .note8 {
-            padding: 20px;
-            border-right: 4px solid #e296a1;
-            background-color: #ee12c1;
-            border-left: 4px solid #e296a1;
-            border-top: 1px solid #27a844;
-            border-bottom: 1px solid #f39c12;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
+    .note8 {
+        padding: 20px;
+        border-right: 4px solid #e296a1;
+        background-color: #ee12c1;
+        border-left: 4px solid #e296a1;
+        border-top: 1px solid #27a844;
+        border-bottom: 1px solid #f39c12;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
 
-            .note8:hover {
-                transform: scale(1.03);
-            }
-
-        .note9 {
-            padding: 20px;
-            border-right: 4px solid #f6cc57;
-            background-color: #c5c3ee;
-            border-left: 4px solid #f6cc57;
-            border-top: 1px solid #f44336;
-            border-bottom: 1px solid #f44336;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
-
-            .note9:hover {
-                transform: scale(1.03);
-            }
-        .note10 {
-            padding: 20px;
-            border-right: 4px solid #a3e6a6;
-            background-color: #75dbd1;
-            border-left: 4px solid #a3e6a6;
-            border-top: 1px solid #f16a7e;
-            border-bottom: 1px solid #f16a7e;
-            margin-bottom: 25px !important;
-            margin: 20px 20px 20px 30px;
-            transition: transform 0.2s ease;
-            border-radius: 50px;
-        }
-        .bg-success {
-            background-color: #0ee24d;
-        }
-        .bg-danger{
-            background-color:red;
-        }
-        .note10:hover {
+        .note8:hover {
             transform: scale(1.03);
         }
-        .bg-warning{
-            background-color:yellow;
-        }
-        .info-box-text {
-            font-size: 14px;
-            font-weight: normal;
+
+    .note9 {
+        padding: 20px;
+        border-right: 4px solid #f6cc57;
+        background-color: #c5c3ee;
+        border-left: 4px solid #f6cc57;
+        border-top: 1px solid #f44336;
+        border-bottom: 1px solid #f44336;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
+
+        .note9:hover {
+            transform: scale(1.03);
         }
 
-        /* Card styling */
-        .employee-details-card {
-            border: 1px solid #f0f0f0; /* Soft border */
-            background-color: #ed9bb2; /* White background */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0 4px 10px red; /* Subtle shadow */
-            padding: 20px;
-        }
+    .note10 {
+        padding: 20px;
+        border-right: 4px solid #a3e6a6;
+        background-color: #75dbd1;
+        border-left: 4px solid #a3e6a6;
+        border-top: 1px solid #f16a7e;
+        border-bottom: 1px solid #f16a7e;
+        margin-bottom: 25px !important;
+        margin: 20px 20px 20px 30px;
+        transition: transform 0.2s ease;
+        border-radius: 50px;
+    }
 
-          
+    .bg-success {
+        background-color: #0ee24d;
+    }
 
-    </style>
+    .bg-danger {
+        background-color: red;
+    }
+
+    .note10:hover {
+        transform: scale(1.03);
+    }
+
+    .bg-warning {
+        background-color: yellow;
+    }
+
+    .info-box-text {
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    /* Card styling */
+    .employee-details-card {
+        border: 1px solid #f0f0f0; /* Soft border */
+        background-color: #ed9bb2; /* White background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 10px red; /* Subtle shadow */
+        padding: 20px;
+    }
+</style>
 @*</head>
 
-<body>*@
-    <!--<div class="col-md-12 " style="">
-        <div class="box box-info box-collapsed" style="width: 100%;">
-            <div class="box-header box-header-collapsed with-border">-->
-                @*<h3 class="box-title">Admin Daily Sales Chart</h3>*@
-                <!--<p><strong style="color: #0049af; font-size: 20px;">Monthly Invoice Report</strong> </p>
+    <body>*@
+<!--<div class="col-md-12 " style="">
+    <div class="box box-info box-collapsed" style="width: 100%;">
+        <div class="box-header box-header-collapsed with-border">-->
+@*<h3 class="box-title">Admin Daily Sales Chart</h3>*@
+<!--<p><strong style="color: #0049af; font-size: 20px;">Monthly Invoice Report</strong> </p>
 
-                <div class="box-tools box-tools-collapsed pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    <div class="box-tools box-tools-collapsed pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div>
+</div>
+<div class="box-body box-body-collapsed">-->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5 col-sm-6 mb-4 note3">
+            <div class="card text-center shadow">
+                <div class="card-header">
+                    Paid Amount
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.Paid)</strong></h5>
                 </div>
             </div>
-            <div class="box-body box-body-collapsed">-->
-                <div class="container my-5">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-6 mb-4 note3">
-                            <div class="card text-center shadow">
-                                <div class="card-header">
-                                    Paid Amount
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.Paid)</strong></h5>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Unpaid Amount Card -->
-                        <div class="col-md-5 col-sm-6 mb-4 note5">
-                            <div class="card text-center shadow">
-                                <div class="card-header">
-                                    Unpaid Amount
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.Unpaid)</strong></h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Total Invoices Card -->
-                        <div class="col-md-5 col-sm-6 mb-4 note4">
-                            <div class="card text-center shadow">
-                                <div class="card-header">
-                                    Total Sale
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", @invoiceData.TotalNetAmount)</strong></h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Paid Invoices Count Card -->
-                        <!--<div class="col-md-3 col-sm-6 mb-4 note6">
-                            <div class="card text-center shadow">
-                                <div class="card-header bg-success text-white">
-                                    Paid Count
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@invoiceData.PaidCount</strong></h5>
-                                </div>
-                            </div>
-                        </div>-->
-
-                        <!-- Unpaid Invoices Count Card -->
-                        <!--<div class="col-md-3 col-sm-6 mb-4 note7">
-                            <div class="card text-center shadow">
-                                <div class="card-header bg-danger text-white">
-                                    Unpaid Count
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@invoiceData.UnpaidCount</strong></h5>
-                                </div>
-                            </div>
-                        </div>-->
-
-                        <!-- Total Invoices Count Card -->
-                        <!--<div class="col-md-3 col-sm-6 mb-4 note8">
-                            <div class="card text-center shadow">
-                                <div class="card-header bg-primary text-white">
-                                    Total Invoice Count
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@invoiceData.TotalInvoice</strong></h5>
-                                </div>
-                            </div>
-                        </div>-->
-                        <!-- Partially Paid Amount Card -->
-                        <div class="col-md-5 col-sm-6 mb-4 note9">
-                            <div class="card text-center shadow">
-                                <div class="card-header">
-                                    Partial Paid Amount
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.PattialPaid)</strong></h5>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Partially Paid Count Card -->
-                        @*<div class="col-md-3 col-sm-6 mb-4 note10">
-                            <div class="card text-center shadow">
-                                <div class="card-header bg-secondary text-white">
-                                    Partial Paid Count
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title"><strong>@string.Format("{0:C}", invoiceData.Pattialpaidcount)</strong></h5>
-                                </div>
-                            </div>
-                        </div>*@
-                    </div>
+        </div>
+        <!-- Unpaid Amount Card -->
+        <div class="col-md-5 col-sm-6 mb-4 note5">
+            <div class="card text-center shadow">
+                <div class="card-header">
+                    Unpaid Amount
                 </div>
-                <!--</div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.Unpaid)</strong></h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Invoices Card -->
+        <div class="col-md-5 col-sm-6 mb-4 note4">
+            <div class="card text-center shadow">
+                <div class="card-header">
+                    Total Sale
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", @invoiceData.TotalNetAmount)</strong></h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paid Invoices Count Card -->
+        <!--<div class="col-md-3 col-sm-6 mb-4 note6">
+            <div class="card text-center shadow">
+                <div class="card-header bg-success text-white">
+                    Paid Count
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@invoiceData.PaidCount</strong></h5>
+                </div>
             </div>
         </div>-->
-                <!-- Bootstrap JS and dependencies -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Unpaid Invoices Count Card -->
+        <!--<div class="col-md-3 col-sm-6 mb-4 note7">
+            <div class="card text-center shadow">
+                <div class="card-header bg-danger text-white">
+                    Unpaid Count
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@invoiceData.UnpaidCount</strong></h5>
+                </div>
+            </div>
+        </div>-->
+        <!-- Total Invoices Count Card -->
+        <!--<div class="col-md-3 col-sm-6 mb-4 note8">
+            <div class="card text-center shadow">
+                <div class="card-header bg-primary text-white">
+                    Total Invoice Count
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@invoiceData.TotalInvoice</strong></h5>
+                </div>
+            </div>
+        </div>-->
+        <!-- Partially Paid Amount Card -->
+        <div class="col-md-5 col-sm-6 mb-4 note9">
+            <div class="card text-center shadow">
+                <div class="card-header">
+                    Partial Paid Amount
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@string.Format(indiaCulture, "{0:C}", invoiceData.PattialPaid)</strong></h5>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Partially Paid Count Card -->
+        @*<div class="col-md-3 col-sm-6 mb-4 note10">
+                <div class="card text-center shadow">
+                    <div class="card-header bg-secondary text-white">
+                        Partial Paid Count
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>@string.Format("{0:C}", invoiceData.Pattialpaidcount)</strong></h5>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+</div>
+<!--</div>
+    </div>
+</div>-->
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @*</body>
 
-</html>*@
+    </html>*@

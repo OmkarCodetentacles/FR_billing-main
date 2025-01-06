@@ -1,14 +1,17 @@
 ﻿
 @model IEnumerable<DtDc_Billing.Models.Top5data>
+@{
 
+    Layout = null;
+}
 
 <div class="col-md-12" style="margin-top:30px">
     <div class="box box-info" style=" width: 98%; ">
         <div class="box-header with-border">
-          
+
             <p><strong style="color: #0049af; font-size: 18px;">Last 3 Months’ Best 5 Customers</strong> </p>
 
-          
+
         </div>
         <!-- /.box-header -->
         <div class="box-body box-body-collapsed">
@@ -23,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{ 
+                        @{
                             int i = 1;
                         }
                         @foreach (var item in Model)
@@ -32,7 +35,7 @@
                                 <td>@i</td>
                                 <td>
                                     @item.customerId
-                                          
+
                                 </td>
                                 <td>@(item.NetAmount != null ? Math.Round((double)item.NetAmount):0)</td>
                             </tr>

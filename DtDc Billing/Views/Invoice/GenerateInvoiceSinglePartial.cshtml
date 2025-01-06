@@ -1,4 +1,7 @@
-﻿
+﻿@{
+
+    Layout = null;
+}
 @model DtDc_Billing.Models.InvoiceModel
 @{
     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
@@ -108,64 +111,64 @@
 
                                         <div class="col-md-12">
                                             <label for="email">Invoice No:</label>
-                                          @if (ViewBag.currentPfcode == "cf2567")
-                                          {
-                                              if (Model != null && Model.invoiceno.Length >= 4)
-                                              {
-                                            @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
-                                              }
-                                              else if (ViewBag.nextinvoice != null)
-                                              {
-                                            @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
-                                              }
-                                              else if (ViewBag.lastInvoiceno != null)
-                                              {
-                                            @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
-                                              }
-                                              else
-                                              {
-                                            @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control" } })
-                                              }
-                                          }
+                                            @if (ViewBag.currentPfcode == "cf2567")
+                                            {
+                                                if (Model != null && Model.invoiceno.Length >= 4)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
+                                                }
+                                                else if (ViewBag.nextinvoice != null)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
+                                                }
+                                                else if (ViewBag.lastInvoiceno != null)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
+                                                }
+                                                else
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+                                                }
+                                            }
 
-                                        else if (ViewBag.currentPfcode == "PF857")
-                                          {
+                                            else if (ViewBag.currentPfcode == "PF857")
+                                            {
 
-                                              if (Model != null && Model.invoiceno.Length > 10)
-                                              {
-                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno } })
-                                                 }
-                                              else if (ViewBag.nextinvoice != null)
-                                              {
-                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice } })
-                                                  }
-                                              else if (ViewBag.lastInvoiceno != null)
-                                              {
-                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno } })
-                                                  }
-                                              else
-                                              {
-                                                  @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control" } })
-                                                  }
-                                          }
+                                                if (Model != null && Model.invoiceno.Length > 10)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno } })
+                                                }
+                                                else if (ViewBag.nextinvoice != null)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice } })
+                                                }
+                                                else if (ViewBag.lastInvoiceno != null)
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno } })
+                                                }
+                                                else
+                                                {
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+                                                }
+                                            }
 
-                                          else if (Model != null && Model.invoiceno.Length > 10)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
-                                                                      }
+                                            else if (Model != null && Model.invoiceno.Length > 10)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
+                                            }
 
-                                          else if (ViewBag.nextinvoice != null)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
-                                              }
-                                          else if (ViewBag.lastInvoiceno != null)
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
-                                              }
-                                          else
-                                          {
-                                              @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                              }
+                                            else if (ViewBag.nextinvoice != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
+                                            }
+                                            else if (ViewBag.lastInvoiceno != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            }
                                         </div>
 
                                     </div>
@@ -369,33 +372,33 @@
 
                                                     </div>
                                                 </div>
-                                                </div>
                                             </div>
-                                            <div class="form-group">
-
-                                                <label for="amount" class=" control-label">Reverse Charge</label>
-
-
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked>
-                                                        <span style="margin-left:21px">Yes</span>
-                                                    </label>
-                                                </div>
-
-
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no">
-                                                        <span style="margin-left:21px">No</span>
-                                                    </label>
-                                                </div>
-
-
-
-                                            </div>
-                                            <!-- radio -->
                                         </div>
+                                        <div class="form-group">
+
+                                            <label for="amount" class=" control-label">Reverse Charge</label>
+
+
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="reverse-charge" id="reverse-charge-yes" value="rev-yes" checked>
+                                                    <span style="margin-left:21px">Yes</span>
+                                                </label>
+                                            </div>
+
+
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="reverse-charge" id="reverse-charge-no" value="cod-no">
+                                                    <span style="margin-left:21px">No</span>
+                                                </label>
+                                            </div>
+
+
+
+                                        </div>
+                                        <!-- radio -->
+                                    </div>
                                     <div class="col-md-6">
 
                                         <div class="col-sm-12 col-xs-12">
@@ -409,11 +412,11 @@
 
                                                     </div>
                                                 </div>
-                                                    
-                                                </div>
-
 
                                             </div>
+
+
+                                        </div>
                                         <div class="col-sm-12 col-xs-12">
                                             <div id="two-block-inline" class="form-group">
                                                 <div class="row">
@@ -434,17 +437,17 @@
                                         </div>
                                         <div class="col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <label for="subtotal" class=" control-label">SubTotal</label>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="subtotal" class=" control-label">SubTotal</label>
 
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" id="subtotal" readonly="readonly" placeholder="0">
-                                                        </div>
                                                     </div>
-                                                
-                                           
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control" id="subtotal" readonly="readonly" placeholder="0">
+                                                    </div>
+                                                </div>
+
+
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-xs-12">
@@ -462,8 +465,8 @@
                                                             htmlAttributes = new
                                                             {
                                                                 @type = "text",
-                                                                @class = "form-control"@*, @readonly = "readonly"*@ }
-                                                        })
+                                                                @class = "form-control"@*, @readonly = "readonly"*@}
+    })
 
                                                     </div>
                                                 </div>
@@ -484,11 +487,11 @@
                                                             htmlAttributes = new
                                                             {
                                                                 @type = "text",
-                                                                @class = "form-control"@*, @readonly = "readonly"*@ }
-                                                        })
+                                                                @class = "form-control"@*, @readonly = "readonly"*@}
+    })
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
 
@@ -503,7 +506,7 @@
                                                     <div class="col-md-9" style="display: flex; gap: 3px">
                                                         @if (Model != null && Model.servicetax != null)
                                                         {
-                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control"} })
+                                                            @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
 
                                                         }
                                                         else
@@ -533,7 +536,7 @@
 
                                                     </div>
                                                 </div>
-                                              
+
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -900,7 +903,7 @@
         var rows;
 
              $.each(data, function (i, item) {
-                 
+
             if (i == 0) {
 
                 $("#generate-invoice tbody").empty();
@@ -927,7 +930,7 @@
 
                 + "</tr>";
 
-              
+
 
             ///////Calculating Docket amount
             var str = item.Transaction.Consignment_no;
@@ -963,12 +966,12 @@
 
             total = total + (item.Transaction.Risksurcharge + item.Transaction.Amount + item.Transaction.loadingcharge);
 
-               
+
                  finalarray.push(item.Transaction.Consignment_no);
 
                  // $('#consiaddno').val('');
 
-                 
+
         });
 
              var str = finalarray.join(',');

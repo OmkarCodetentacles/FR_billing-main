@@ -1,17 +1,23 @@
 ﻿@model IEnumerable<DtDc_Billing.Models.PaymentTrack>
 
 @{
+
+    Layout = null;
+}
+
+@{
     ViewBag.Title = "PaymentTrack";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <style>
-    .padding-left-0{
-        padding-left:0
+    .padding-left-0 {
+        padding-left: 0
     }
+
     .PaymentDetails th, td {
-       
         width: 11%;
     }
+
     table {
         max-height: 400px !important;
         display: list-item !important;
@@ -35,7 +41,7 @@
                 <div class="col-sm-12">
 
                     <div class="form-horizontal">
-                        @{ 
+                        @{
 
                             var smessage = ViewBag.DeletedMessage as string;
                         }
@@ -45,7 +51,7 @@
                             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", smessage))
                         }
                         @*<div class="row">
-        <div class="col-md-12">*@
+                            <div class="col-md-12">*@
                         <div class="form-group">
 
 
@@ -125,7 +131,7 @@
 
                         </div>
                         @*</div>
-        </div>*@
+                            </div>*@
 
 
                         <table id="check-booking-list" class="table PaymentDetails">
@@ -270,121 +276,121 @@
     </div>
 
 </div>
-    <script>
-        $(function () {
-            $('#check-booking-list').dataTable({
-                "bPaginate": true,
-                "bLengthChange": true,
-                "bFilter": true,
-                "bSort": true,
-                "bInfo": true,
-                "bAutoWidth": false
-            });
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
         });
-    </script>
+    });
+</script>
 
 
 
-    @*@if (ViewBag.invoiceno != null)
-        {
-            <script>
-                $("#overlayBlock").show();
+@*@if (ViewBag.invoiceno != null)
+    {
+        <script>
+            $("#overlayBlock").show();
+        /**/
+        var print = '@ViewBag.pdf';
+        /**/
+
+        if (print == "True") {
             /**/
-            var print = '@ViewBag.pdf';
-            /**/
+            var myParamether = '@ViewBag.invoiceno';
+            var firmid='@Model.Firm_Id'
 
-            if (print == "True") {
-                /**/
-                var myParamether = '@ViewBag.invoiceno';
-                var firmid='@Model.Firm_Id'
+        /**/
 
-            /**/
-
-            //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
-                $.get("/Invoice/SavepdInvoice", { myParameter: myParamether, firmid:firmid }, function (data) {
-                    $('#saveinv').attr('href', "http://admin.infantjesussolutions.in/PDF/" + data);
-
-                    document.getElementById('saveinv').click();
-                    $("#overlayBlock").hide();
-
-
-                });
-        }
-            </script>
-        }*@
-
-
-    <style>
-        .overlay {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: #00000052;
-            top: 0;
-            left: 0;
-            z-index: 9999;
-            display: none;
-        }
-
-        .loader {
-            position: absolute;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid blue;
-            border-bottom: 16px solid blue;
-            width: 120px;
-            height: 120px;
-            -webkit-animation: spin 2s linear infinite;
-            top: 40%;
-            animation: spin 2s linear infinite;
-            bottom: 50%;
-            left: 50%;
-            right: 50%;
-        }
-
-        .box-body {
-            overflow: auto;
-        }
-
-        @@-webkit-keyframes spin {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
-        }
-
-        @@keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
-
-    <script>
-        function Print(id) {
-
-
-            var base_url = window.location.origin;
-
-            $.get("/Payment/PrintReceipt", { id: id }, function (data) {
-                $('#saveinv').attr('href', base_url + "/PDF/" + data);
+        //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
+            $.get("/Invoice/SavepdInvoice", { myParameter: myParamether, firmid:firmid }, function (data) {
+                $('#saveinv').attr('href', "http://admin.infantjesussolutions.in/PDF/" + data);
 
                 document.getElementById('saveinv').click();
                 $("#overlayBlock").hide();
+
+
             });
-            $("#overlayBlock").show();
+    }
+        </script>
+    }*@
+
+
+<style>
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+    .box-body {
+        overflow: auto;
+    }
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
         }
 
-    </script>
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
 
-    <script>
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    function Print(id) {
+
+
+        var base_url = window.location.origin;
+
+        $.get("/Payment/PrintReceipt", { id: id }, function (data) {
+            $('#saveinv').attr('href', base_url + "/PDF/" + data);
+
+            document.getElementById('saveinv').click();
+            $("#overlayBlock").hide();
+        });
+        $("#overlayBlock").show();
+    }
+
+</script>
+
+<script>
 
 /////Sender Autocomplete
 $(function () {
@@ -432,47 +438,47 @@ select: function(event, ui) {
         }
     });
 });
-    </script>
+</script>
 
-    <script>
-        $(function () {
-            $('#datepicker').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
-
-            $('#datepicker1').datepicker({
-                autoclose: true,
-                format: 'dd-mm-yyyy'
-            })
+<script>
+    $(function () {
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
         })
-    </script>
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+    })
+</script>
 
 
-    <script>
-        $(document).ready(function () {
-            $('.sbmt').click(function () {
-                var frmdate = $('#datepicker').val();
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
 
-                var todate = $('#datepicker1').val();
+            var todate = $('#datepicker1').val();
 
-                if (frmdate == "") {
-                    alert("Please Enter Start Date");
-                    return false;
-                }
-                else if (todate == "") {
-                    alert("Please Enter End Date");
-                    return false;
-                }
-                else {
-                    return true;
-                }
-
-            });
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
 
         });
-    </script>
-    <a id="saveinv" style="" href="" target="_blank" download>
-    </a>
 
- 
+    });
+</script>
+<a id="saveinv" style="" href="" target="_blank" download>
+</a>
+
+
