@@ -27,6 +27,7 @@ using System.Web.Util;
 using System.EnterpriseServices;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 using OfficeOpenXml;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace DtDc_Billing.Controllers
 {
@@ -907,6 +908,62 @@ Select(e => new
 
         }
 
+        public ActionResult PrintCheckBookingList(List<TransactionView> obj,string Custid)
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            if (obj != null)
+            {
+                LocalReport lr = new LocalReport();
+                var checkBookinglist = obj;
+            
+                var company = db.Companies.Where(x => x.Company_Id == Custid);
+
+                var path = System.IO.Path.Combine(Server.MapPath("~/RdlcReport"), "CheckBookingList.rdlc");
+
+                lr.ReportPath = path;
+                lr.EnableExternalImages = true;
+                ReportDataSource rd = new ReportDataSource("CheckBookingList", checkBookinglist);
+                ReportDataSource rd1 = new ReportDataSource("Company",company);
+                lr.DataSources.Add(rd);
+                lr.DataSources.Add(rd1);
+
+                string reportType = "pdf";
+                string mimeType;
+                string encoding;
+                string fileNameExte;
+
+                string deviceInfo =
+                    "<DeviceInfo>" +
+                    "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                    "<PageHeight>11in</PageHeight>" +
+                   "<Margintop>0.1in</Margintop>" +
+                     "<Marginleft>0.1in</Marginleft>" +
+                      "<Marginright>0.1in</Marginright>" +
+                       "<Marginbottom>0.5in</Marginbottom>" +
+                       "</DeviceInfo>";
+
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderByte;
+
+
+                renderByte = lr.Render
+              (reportType,
+              deviceInfo,
+              out mimeType,
+              out encoding,
+              out fileNameExte,
+              out streams,
+              out warnings
+              );
+
+
+                return File(renderByte, mimeType);
+
+            }
+            return null;
+        }
 
         [HttpPost]
         public ActionResult Checkbookinglist(List<TransactionView> trans, string Fromdatetime, string ToDatetime, string Custid, string Submit)
@@ -1008,7 +1065,11 @@ Select(e => new
                     ExportToExcelAll.ExportToExcelAdmin(data);
                 }
 
+                if (Submit == "Print")
+                {
+                    return PrintCheckBookingList(obj, Custid);
 
+                }
                 return View(obj);
 
             }
@@ -1068,7 +1129,10 @@ Select(e => new
                     }).ToList();
                     ExportToExcelAll.ExportToExcelAdmin(data);
                 }
-
+                if (Submit == "Print")
+                {
+                  return  PrintCheckBookingList(obj,Custid);
+                }
                 return View(obj);
             }
 
@@ -1778,6 +1842,25 @@ Select(e => new
             if (httpPostedFileBase != null)
             {
                 var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                // Step 1: Validate the Excel File
+                var validationResult = ValidateFirstExcelFormat(httpPostedFileBase);
+                if (!validationResult.IsValid)
+                {
+                    TempData["ErrorMessages"] = validationResult.Errors; // Ensure this is a List<string>
+                    foreach (var error in validationResult.Errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine(error); // Log each error for debugging
+                    }
+                    if (validationResult.ignoreConsignmentExcels.Count() > 0)
+                    {
+                        TempData["ConErrorMessages"] = "Some consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
+                        ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
+                    }
+
+
+                }
+
+
                 ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
                 var damageResult = importConsignmentFromExcel.Import1Async(httpPostedFileBase, PfCode);
 
@@ -1791,7 +1874,57 @@ Select(e => new
             return View();
         }
 
+        public  (bool IsValid, List<string> Errors,List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateFirstExcelFormat(HttpPostedFileBase httpPostedFileBase)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString(); 
+            var errorMessages = new List<string>();
+            var IgnoreConsignment = new List<IgnoreConsignmentExcel>();
+            string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+            bool IsValid = true;
+            using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
+            {
+                var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (currentSheet == null)
+                {
+                    errorMessages.Add("The uploaded file does not contain a valid worksheet.");
+                    return (false, errorMessages,IgnoreConsignment);
+                }
 
+                var noOfRow = currentSheet.Dimension.End.Row;
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    var errors = new List<string>();
+
+                    string consignmentNo = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
+                    string customerId = currentSheet.Cells[rowIterator, 3]?.Value?.ToString();
+                    var trans=db.Transactions.Where(x=>x.Consignment_no.Trim().TrimStart().TrimEnd() == consignmentNo.Trim().TrimStart().TrimEnd() && x.Pf_Code==pfcode).FirstOrDefault();
+                    if (trans == null)
+                    {
+                        IgnoreConsignmentExcel ec = new IgnoreConsignmentExcel()
+                        {
+                            Consignment_no=consignmentNo,
+                            Customer_Id=customerId
+                        };
+                        IgnoreConsignment.Add(ec);
+
+                    }
+                    if (string.IsNullOrEmpty(consignmentNo)) 
+                        errors.Add("Consignment No is required.");
+                    if (string.IsNullOrEmpty(customerId) || !double.TryParse(customerId, out _))
+                        errors.Add("Customer Id is Required.");
+                   
+                    if (errors.Any())
+                        errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
+
+                }
+            }
+            if(errorMessages.Count>0 || IgnoreConsignment.Count > 0)
+            {
+                IsValid=false;
+            }
+            return (IsValid, errorMessages,IgnoreConsignment);
+        }
 
 
         [HttpGet]
@@ -1806,6 +1939,27 @@ Select(e => new
             if (httpPostedFileBase != null)
             {
                 var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+                // Step 1: Validate the Excel File
+                var validationResult = ValidateExcelForSecondFormat(httpPostedFileBase);
+                if (!validationResult.IsValid)
+                {
+                    TempData["ErrorMessages"] = validationResult.Errors; // Ensure this is a List<string>
+                    foreach (var error in validationResult.Errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine(error); // Log each error for debugging
+                    }
+                    if (validationResult.ignoreConsignmentExcels.Count() > 0)
+                    {
+                        TempData["ConErrorMessages"] = "Some consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
+                        ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
+                    }
+
+
+                }
+
+
+
+
                 ImportConsignmentFromExcel importConsignmentFromExcel = new ImportConsignmentFromExcel();
                 var damageResult = importConsignmentFromExcel.Import2Async(httpPostedFileBase, PfCode);
 
@@ -1819,7 +1973,72 @@ Select(e => new
 
             return RedirectToAction("importFromExcel");
         }
+        public  (bool IsValid, List<string> Errors,List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateExcelForSecondFormat(HttpPostedFileBase httpPostedFileBase)
+        {
+            var pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
+            var errorMessages = new List<string>();
+            var IgnoreConsignment = new List<IgnoreConsignmentExcel>();
+            bool IsValid = true;
+
+            string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+
+            using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
+            {
+                var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (currentSheet == null)
+                {
+                    errorMessages.Add("The uploaded file does not contain a valid worksheet.");
+                    return (false, errorMessages,IgnoreConsignment);
+                }
+
+                var noOfRow = currentSheet.Dimension.End.Row;
+
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+                {
+                    var errors = new List<string>();
+
+                    string consignmentNo = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
+                    string customerId = currentSheet.Cells[rowIterator, 3]?.Value?.ToString();
+                        
+                    string chargableWeight = currentSheet.Cells[rowIterator, 4]?.Value?.ToString();
+                    string insuranceamt = currentSheet.Cells[rowIterator, 5]?.Value?.ToString();
+                    string FOVamt = currentSheet.Cells[rowIterator, 6]?.Value?.ToString();
+                    string fovper = currentSheet.Cells[rowIterator, 7]?.Value?.ToString();
+                    string loadingcharge = currentSheet.Cells[rowIterator, 8]?.Value?.ToString();
+                    var trans = db.Transactions.Where(x => x.Consignment_no.Trim().TrimStart().TrimEnd() == consignmentNo.Trim().TrimStart().TrimEnd() && x.Pf_Code == pfcode).FirstOrDefault();
+                    if (trans == null)
+                    {
+                        IgnoreConsignmentExcel ec = new IgnoreConsignmentExcel()
+                        {
+                            Consignment_no = consignmentNo,
+                            Customer_Id = customerId
+                        };
+                        IgnoreConsignment.Add(ec);
+
+                    }
+
+                    if (string.IsNullOrEmpty(consignmentNo)) errors.Add("Consignment No is required.");
+                    if (string.IsNullOrEmpty(customerId)) errors.Add("Customer Id No is required.");
+                    if (string.IsNullOrEmpty(chargableWeight))
+                        errors.Add("Chargeable Weight is required and must be a valid number.");
+                    if (string.IsNullOrEmpty(insuranceamt)) errors.Add("Insurance is required.");
+                    //  if (string.IsNullOrEmpty(companyAddress)) errors.Add("Company Address is required.");
+                    if (string.IsNullOrEmpty(fovper) || !int.TryParse(fovper, out _))
+                        errors.Add("FOV Amount is required and must be a valid integer.");
+                    if (string.IsNullOrEmpty(loadingcharge)) errors.Add("Loading Charge is required.");
+                   
+                    if (errors.Any())
+                        errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
+                }
+            }
+            if (errorMessages.Count > 0 || IgnoreConsignment.Count > 0)
+            {
+                IsValid = false;
+            }
+            return (IsValid, errorMessages,IgnoreConsignment);
+        }
+       
 
         [HttpGet]
         public ActionResult AddNewimporFromExcel()
@@ -1937,8 +2156,8 @@ Select(e => new
                     Directory.CreateDirectory(path);
                 }
 
-                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + Path.GetFileName(ImportText.FileName);
-                 extension = Path.GetExtension(ImportText.FileName);
+                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + System.IO.Path.GetFileName(ImportText.FileName);
+                 extension =System.IO. Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
                 Task.Run(() => InsertRecords(filePath, ImportText.FileName));
@@ -2117,8 +2336,8 @@ Select(e => new
                     Directory.CreateDirectory(path);
                 }
 
-                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + Path.GetFileName(ImportText.FileName);
-                string extension = Path.GetExtension(ImportText.FileName);
+                filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + System.IO.Path.GetFileName(ImportText.FileName);
+                string extension = System.IO.Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
                 Task.Run(() => InsertRecords(filePath, ImportText.FileName));
