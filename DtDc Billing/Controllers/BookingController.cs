@@ -1911,7 +1911,7 @@ Select(e => new
                     }
                     if (string.IsNullOrEmpty(consignmentNo)) 
                         errors.Add("Consignment No is required.");
-                    if (string.IsNullOrEmpty(customerId) || !double.TryParse(customerId, out _))
+                    if (string.IsNullOrEmpty(customerId))
                         errors.Add("Customer Id is Required.");
                    
                     if (errors.Any())
@@ -2024,7 +2024,7 @@ Select(e => new
                         errors.Add("Chargeable Weight is required and must be a valid number.");
                     if (string.IsNullOrEmpty(insuranceamt)) errors.Add("Insurance is required.");
                     //  if (string.IsNullOrEmpty(companyAddress)) errors.Add("Company Address is required.");
-                    if (string.IsNullOrEmpty(fovper) || !int.TryParse(fovper, out _))
+                    if (string.IsNullOrEmpty(fovper) /*|| !int.TryParse(fovper, out _)*/)
                         errors.Add("FOV Amount is required and must be a valid integer.");
                     if (string.IsNullOrEmpty(loadingcharge)) errors.Add("Loading Charge is required.");
                    
