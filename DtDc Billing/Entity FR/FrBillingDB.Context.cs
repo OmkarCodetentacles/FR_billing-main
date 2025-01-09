@@ -91,6 +91,7 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
         public virtual DbSet<GECrate> GECrates { get; set; }
         public virtual DbSet<GECSector> GECSectors { get; set; }
+        public virtual DbSet<NewPaymentdetail> NewPaymentdetails { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
         {

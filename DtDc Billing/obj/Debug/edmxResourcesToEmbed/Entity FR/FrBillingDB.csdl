@@ -2684,6 +2684,7 @@
     <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
     <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
     <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
+    <EntitySet Name="NewPaymentdetails" EntityType="db_a92afa_frbillingModel.NewPaymentdetail" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3304,5 +3305,25 @@
     <Property Name="Pincode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
     <Property Name="Priority" Type="Int32" />
     <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="NewPaymentdetail">
+    <Key>
+      <PropertyRef Name="Payment_Id" />
+    </Key>
+    <Property Name="Payment_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Payment_Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="InvoiceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Tds_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Total_Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Payment_Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Bank_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Branch_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Transaction_Id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CheckNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreditNoteNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Created_Date" Type="DateTime" Precision="3" />
   </EntityType>
 </Schema>

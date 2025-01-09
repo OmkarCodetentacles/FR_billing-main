@@ -526,6 +526,26 @@
           <Property Name="FromDate" Type="datetime" />
           <Property Name="ToDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="NewPaymentdetails">
+          <Key>
+            <PropertyRef Name="Payment_Id" />
+          </Key>
+          <Property Name="Payment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Payment_Mode" Type="varchar" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="InvoiceNo" Type="varchar" MaxLength="50" />
+          <Property Name="Tds_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Total_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Pfcode" Type="varchar" MaxLength="50" />
+          <Property Name="Payment_Date" Type="date" Nullable="false" />
+          <Property Name="Bank_Name" Type="varchar" MaxLength="100" />
+          <Property Name="Branch_Name" Type="varchar" MaxLength="100" />
+          <Property Name="Transaction_Id" Type="varchar" MaxLength="100" />
+          <Property Name="CheckNo" Type="varchar" MaxLength="100" />
+          <Property Name="CreditNoteNo" Type="varchar" MaxLength="50" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Created_Date" Type="datetime" />
+        </EntityType>
         <EntityType Name="Nondox">
           <Key>
             <PropertyRef Name="Non_ID" />
@@ -2255,6 +2275,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="LoginDev" EntityType="Self.LoginDev" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NEFT" EntityType="Self.NEFT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NewNotification" EntityType="Self.NewNotification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewPaymentdetails" EntityType="Self.NewPaymentdetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
@@ -5357,6 +5378,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <FunctionImport Name="MonthlyDataAnalysis" ReturnType="Collection(db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1)" />
           <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
           <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
+          <EntitySet Name="NewPaymentdetails" EntityType="db_a92afa_frbillingModel.NewPaymentdetail" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -5977,6 +5999,26 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Pincode" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="Priority" Type="Int32" />
           <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NewPaymentdetail">
+          <Key>
+            <PropertyRef Name="Payment_Id" />
+          </Key>
+          <Property Name="Payment_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Payment_Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tds_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Total_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Payment_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Bank_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Branch_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Transaction_Id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CheckNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreditNoteNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Created_Date" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -7865,6 +7907,27 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
                 <ScalarProperty Name="SectorName" ColumnName="SectorName" />
                 <ScalarProperty Name="GECSectorId" ColumnName="GECSectorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewPaymentdetails">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.NewPaymentdetail">
+              <MappingFragment StoreEntitySet="NewPaymentdetails">
+                <ScalarProperty Name="Created_Date" ColumnName="Created_Date" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="CreditNoteNo" ColumnName="CreditNoteNo" />
+                <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
+                <ScalarProperty Name="Transaction_Id" ColumnName="Transaction_Id" />
+                <ScalarProperty Name="Branch_Name" ColumnName="Branch_Name" />
+                <ScalarProperty Name="Bank_Name" ColumnName="Bank_Name" />
+                <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
+                <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+                <ScalarProperty Name="Total_Amount" ColumnName="Total_Amount" />
+                <ScalarProperty Name="Tds_Amount" ColumnName="Tds_Amount" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Payment_Mode" ColumnName="Payment_Mode" />
+                <ScalarProperty Name="Payment_Id" ColumnName="Payment_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

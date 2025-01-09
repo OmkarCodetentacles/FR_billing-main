@@ -1,0 +1,199 @@
+﻿
+@model DtDc_Billing.Models.NewPaymentModel
+
+@{
+
+    Layout = null;
+}
+
+@{
+    var sMessage = TempData["Message"] as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+    <script>
+        setTimeout(function () {
+            window.location.reload();
+
+
+
+        }, 2000); // 3000 milliseconds = 3 seconds
+    </script>
+
+}
+
+@using (Ajax.BeginForm("PaymodeModePartial", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "PaymentData", OnSuccess = "createsuccess" }, new {id= "paymentForm" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <input type="hidden" class="Firm_Id" name="Firm_Id">
+    <div class="form-group">
+        <label class="col-md-4">Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label class="col-md-4">Date</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.temppaymentdate, new { htmlAttributes = new { @class = "form-control", @id = "temppaymentdate" } })
+            @Html.ValidationMessageFor(model => model.temppaymentdate, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group bankname" style="display:none;">
+        <label class="col-md-4">Bank Name</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Bank_Name, new { htmlAttributes = new { @class = "form-control ",} })
+            @Html.ValidationMessageFor(model => model.Bank_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group branchname" style="display:none;">
+        <label class="col-md-4">Branch Name</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Branch_Name, new { htmlAttributes = new { @class = "form-control"} })
+            @Html.ValidationMessageFor(model => model.Branch_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group  transactionId" style="display:none;">
+        <label class="col-md-4">Transaction Id</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Transaction_Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Transaction_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group checknumber" style="display:none;">
+        <label class="col-md-4">Check Number</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CheckNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CheckNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group creditNoteNumber" style="display:none;">
+        <label class="col-md-4">Credit Note Number</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CreditNoteNo, new { htmlAttributes = new { @class = "form-control Invoiceno"} })
+            @Html.ValidationMessageFor(model => model.CreditNoteNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group tdsamount">
+        <label class="col-md-4">Tds Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Tds_Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Tds_Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4">Total Amt</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control",} })
+            @Html.ValidationMessageFor(model => model.Total_Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4">Invoice No</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.InvoiceNo, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.InvoiceNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Save" id="btnSubmit" class="btn btn-success pull-right " />
+        </div>
+    </div>
+</div>
+}
+
+
+
+
+<script>
+    // Function to clear form fields
+    function clearFormFields() {
+        $(".bankname input").val(''); // Clear Bank Name field
+        $(".branchname input").val(''); // Clear Branch Name field
+        $(".transactionId input").val(''); // Clear Transaction ID field
+        $(".checknumber input").val(''); // Clear Check Number field
+    }
+    $('#temppaymentdate').datepicker({
+        autoclose: true,
+        format: 'mm-dd-yyyy'
+    })
+    function createsuccess() {
+        $('#Amount').removeAttr('value');
+        $('#temppaymentdate').removeAttr('value');
+        $('#C_Tds_Amount').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
+
+
+    }
+
+    $(document).ready(function () {
+
+        $("#Amount,#C_Tds_Amount").keyup(function () {
+
+            var Amount = $('#Amount').val();
+
+            var C_Tds_Amount = $('#C_Tds_Amount').val();
+
+
+            var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+            $('#C_Total_Amount').val(addition);
+
+        });
+        $('input[name="paymentMode"]').change(function () {
+            var selectedMode = $(this).val();
+            alert(selectedMode)
+            // Clear all fields before updating visibility
+             clearFormFields();
+          //  $("#paymentForm")[0].reset(); // Reset the form
+            if (selectedMode == "Cash") {
+
+            }
+            else if (selectedMode == "Cheque") {
+                alert("Chhide")
+
+                $(".bankname").show();
+                $(".branchname").show();
+                $(".transactionId").hide();
+                $(".checknumber").show();
+            }
+            else if (selectedMode == "NEFT") {
+                alert("hide")
+                $(".bankname").hide();
+                $(".branchname").hide();
+                $(".transactionId").show();
+                $(".checknumber").hide();
+            }
+            else if (selectedMode == "CreditNote") {
+                $(".bankname").hide();
+                $(".branchname").hide();
+                $(".transactionId").hide();
+                $(".checknumber").hide();
+            }
+        });
+        $
+
+    });
+</script>

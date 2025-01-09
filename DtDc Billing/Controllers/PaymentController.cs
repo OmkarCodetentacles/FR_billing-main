@@ -80,6 +80,49 @@ namespace DtDc_Billing.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult NewPaymentList()
+        {
+            List<PaymentModel> list = new List<PaymentModel>();
+           ViewBag.AllModePaymentModel=new NewPaymentModel();
+            return View(list);
+        }
+        [HttpPost]
+        public ActionResult NewPaymentList(string status)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.status = status;
+
+            ViewBag.AllModePaymentModel = new NewPaymentModel();
+          
+
+            var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
+            {
+                invoiceno = x.invoiceno,
+                total = x.total,
+                fullsurchargetax = x.fullsurchargetax,
+                fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                servicetax = x.servicetax,
+                servicetaxtotal = x.servicetaxtotal,
+                othercharge = x.othercharge,
+                netamount = x.netamount,
+                Firm_Id = x.Firm_Id,
+                Customer_Id = x.Customer_Id,
+                paid = x.paid ?? 0,
+                tempInvoicedate = x.tempInvoicedate,
+                Royalty_charges = x.Royalty_charges,
+                Docket_charges = x.Docket_charges,
+                Balance = Math.Round(x.Balance, 2)
+                // discount = x.discount,
+                // totalCount = x.totalCount ?? 0
+            }).ToList();
+
+
+
+            return View(obj);
+
+        }
 
         public ActionResult MakePayment(MakePaymentModel payment)
         {
