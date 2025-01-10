@@ -1,0 +1,462 @@
+﻿
+@{
+    ViewBag.Title = "NewPaymentTrack";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@model IEnumerable<DtDc_Billing.Models.PaymentInvoiceModel>
+
+<style>
+    .padding-left-0 {
+        padding-left: 0
+    }
+
+    .PaymentDetails th, td {
+        width: 11%;
+    }
+
+    table {
+        max-height: 400px !important;
+        display: list-item !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
+
+<div class="overlay" id="overlayBlock">
+    <div class="loader"></div>
+</div>
+
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>Payment Details</h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="form-horizontal">
+                        @{
+
+                            var smessage = ViewBag.DeletedMessage as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(smessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", smessage))
+                        }
+                        @*<div class="row">
+        <div class="col-md-12">*@
+                        <div class="form-group">
+
+
+                            @using (Html.BeginForm())
+                            {
+
+                                if (ViewBag.Custid != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
+
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
+
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red"> *</span>: </label>
+
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red"> *</span>:</label>
+
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text">
+                                        </div>
+                                    </div>
+                                }
+
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red"> *</span>:</label>
+
+                                            <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                        </div>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red"> *</span>:</label>
+
+                                            <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text">
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-1" style="margin-top:22px">
+                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" style="width:100%" />
+                                </div>
+
+                            }
+
+
+
+                        </div>
+                        @*</div>
+        </div>*@
+
+
+                        <table id="check-booking-list" class="table PaymentDetails">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+
+                                    <th style="width:140px">Action</th>
+                                    <th>
+                                        Invoiceno
+                                    </th>
+                                    <th>
+                                        invoicedate
+                                    </th>
+                                    <th>
+                                        Customer_Id
+                                    </th>
+                                    <th>
+                                        Modeofpayment
+                                    </th>
+
+                                    <th>Payment date</th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Net Amount
+                                    </th>
+                                    <th>
+                                        Balance
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>@i</td>
+
+                                            <td style="width:140px">
+
+                                                <a href="@Url.Action("NewPaymentEdit", "Payment", new { id = item.Payment_Id})">Edit</a>
+
+
+                                                <div>
+                                                    <a style="margin-right:5px" href="@Url.Action("DeletePayment", "Payment", new { id = item.Payment_Id })" onclick="return confirm('Are you sure you want to delete this payment?');">Delete</a>
+                                                    @*<a class="  btn-primary sbmt" href="#" onClick="Print(@item.id)" ; style="padding:6px "> Print </a>*@
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.InvoiceNo)
+                                            </td>
+                                            <td>
+                                                @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Payment_Mode)
+                                            </td>
+
+
+                                            <td>
+                                                @item.Payment_Date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.netamount)
+                                            </td>
+                                            <td>
+
+                                                @Html.DisplayFor(modelItem => item.Balance)
+
+
+                                            </td>
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <br>
+                        <!-- /input-group -->
+
+                        <div class="col-sm-3 " style="float: right; padding-right: 0" ;>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger total-label">Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" value="@Model.Sum(m=>m.Amount)">
+                            </div>
+                        </div>
+                        @{
+                            var distinctInvoiceSum = Model
+                                .GroupBy(m => m.invoiceno) // Group by invoiceno
+                                .Select(g => g.First())   // Take the first entry for each invoiceno
+                                .Sum(m => m.netamount);   // Sum the netamount
+                        }
+                        <div class="col-sm-3 " style="float: right;padding-right:0" ;>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger total-label">Net Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" value="@distinctInvoiceSum">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+
+
+@*@if (ViewBag.invoiceno != null)
+    {
+        <script>
+            $("#overlayBlock").show();
+        /**/
+        var print = '@ViewBag.pdf';
+        /**/
+
+        if (print == "True") {
+            /**/
+            var myParamether = '@ViewBag.invoiceno';
+            var firmid='@Model.Firm_Id'
+
+        /**/
+
+        //window.open('/Invoice/ReportPrinterMethod?report=reportview&myParameter=' + myParamether, 'ReportView', '');
+            $.get("/Invoice/SavepdInvoice", { myParameter: myParamether, firmid:firmid }, function (data) {
+                $('#saveinv').attr('href', "http://admin.infantjesussolutions.in/PDF/" + data);
+
+                document.getElementById('saveinv').click();
+                $("#overlayBlock").hide();
+
+
+            });
+    }
+        </script>
+    }*@
+
+
+<style>
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+    .box-body {
+        overflow: auto;
+    }
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<script>
+    function Print(id) {
+
+
+        var base_url = window.location.origin;
+
+        $.get("/Payment/PrintReceipt", { id: id }, function (data) {
+            $('#saveinv').attr('href', base_url + "/PDF/" + data);
+
+            document.getElementById('saveinv').click();
+            $("#overlayBlock").hide();
+        });
+        $("#overlayBlock").show();
+    }
+
+</script>
+
+<script>
+
+/////Sender Autocomplete
+$(function () {
+    var availableTutorials = [
+
+    ];
+    var company_idarr = [
+
+
+
+    ];
+
+    $.ajax({
+        type: 'GET',
+        /**/
+        /**/
+        /**/
+        url: '@Url.Action("CustomerIdAutocomplete","Payment")',
+/**/
+/**/
+/**/
+data: { },
+dataType: 'json',
+success: function(data) {
+    $.each(data, function(i, item) {
+                company_idarr.push(item.Company_Id);
+            });
+
+        }
+    });
+
+    $("#Custid").autocomplete({
+        source: company_idarr,
+select: function(event, ui) {
+    $("#Custid").val(ui.item.value);
+
+    $("#Custid").trigger("focusout");
+        }
+    });
+
+    $("#custid").autocomplete({
+        source: company_idarr,
+        select: function(event, ui) {
+
+        }
+    });
+});
+</script>
+
+<script>
+    $(function () {
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
+
+            var todate = $('#datepicker1').val();
+
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+    });
+</script>
+<a id="saveinv" style="" href="" target="_blank" download>
+</a>
+
+

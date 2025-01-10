@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Globalization;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -85,6 +86,8 @@ namespace DtDc_Billing.Controllers
         {
             List<PaymentModel> list = new List<PaymentModel>();
            ViewBag.AllModePaymentModel=new NewPaymentModel();
+            ViewBag.Message = TempData["Message"];
+            TempData["remainingAmount"] = TempData["remainingAmount"];
             return View(list);
         }
         [HttpPost]
@@ -171,6 +174,60 @@ namespace DtDc_Billing.Controllers
             
            
             return PartialView("MakePaymentPartial", payment);
+        }
+
+
+        [HttpPost]
+        public ActionResult PaymodeModePartial(NewPaymentModel newPaymentModel)
+        {
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var invoice = db.Invoices.Where(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(invoice.netamount) - Convert.ToDouble(invoice.paid ?? 0);
+
+                if (newPaymentModel.Total_Amount > balance)
+                {
+                    TempData["remainingAmount"] = balance;
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                    invoice.paid = Convert.ToDouble(invoice.paid) + Convert.ToDouble(newPaymentModel.Total_Amount);
+                    invoice.Balance =Math.Round((double)invoice.netamount - (double)(invoice.paid??0));
+                    db.Entry(invoice).State = EntityState.Modified;
+                    db.SaveChanges();
+                    newPaymentModel.Pfcode = strpf;
+                    string[] formats = { "dd-MM-yyyy" };
+                    string tempdate = DateTime.ParseExact(newPaymentModel.temppaymentdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                    DateTime PaymentDate = Convert.ToDateTime(tempdate);
+
+                    NewPaymentdetail NP = new NewPaymentdetail();
+                    NP.Payment_Mode = newPaymentModel.Payment_Mode;
+                    NP.Amount = newPaymentModel.Amount;
+                    NP.Payment_Date = PaymentDate;
+                    NP.InvoiceNo = newPaymentModel.InvoiceNo;
+                    NP.Tds_Amount = newPaymentModel.Tds_Amount;
+                    NP.Total_Amount = newPaymentModel.Total_Amount;
+                    NP.Pfcode = strpf;
+                    NP.Bank_Name = newPaymentModel.Bank_Name;
+                    NP.Branch_Name = newPaymentModel.Branch_Name;
+                    NP.Transaction_Id = newPaymentModel.Transaction_Id;
+                    NP.Created_Date = DateTime.Now;
+                    NP.CreditNoteNo = newPaymentModel.CreditNoteNo;
+                    NP.Balance = balance-newPaymentModel.Total_Amount; 
+
+                    db.NewPaymentdetails.Add(NP);
+                    db.SaveChanges();
+                    TempData["Message"] = "Payment added successfully";
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(newPaymentModel.Total_Amount);
+                    return PartialView("PaymodeModePartial");
+
+                }
+            }
+            return PartialView("PaymodeModePartial");
         }
 
         [HttpPost]
@@ -804,6 +861,104 @@ Select(e => new
 
 
             return View(track.OrderBy(m => m.Invoiceno).ToList());
+        }
+
+        [HttpGet]
+        public ActionResult NewPaymentTrack()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.DeletedMessage = TempData["Deletedsuccss"];
+          
+
+            var Paymentdata = (from inv in db.Invoices
+                               join pay in db.NewPaymentdetails on inv.invoiceno equals pay.InvoiceNo
+                               where inv.Pfcode == strpfcode
+                               && pay.Pfcode == strpfcode
+                               select new PaymentInvoiceModel
+                               {
+                                   Payment_Id = pay.Payment_Id,
+                                   Payment_Date=pay.Payment_Date,
+                                   Payment_Mode=pay.Payment_Mode,
+                                   Amount=pay.Amount,
+                                   InvoiceNo=pay.InvoiceNo, 
+                                   Tds_Amount=pay.Tds_Amount,
+                                   Total_Amount=pay.Total_Amount,
+                                   Pfcode=pay.Pfcode,
+                                   Bank_Name=pay.Bank_Name,
+                                   Branch_Name=pay.Branch_Name,
+                                   Transaction_Id=pay.Transaction_Id,
+                                   CheckNo=pay.CheckNo,
+                                   CreditNoteNo=pay.CreditNoteNo,
+                                   Balance=pay.Balance,
+                                   Created_Date=pay.Created_Date,
+                                   invoicedate=inv.invoicedate,
+                                   Customer_Id=inv.Customer_Id,
+                                   netamount=inv.netamount
+                                   
+
+
+                               }).OrderByDescending(x=>x.Payment_Date).ToList();
+
+
+
+       
+
+
+            return View(Paymentdata);
+        }
+        [HttpPost]
+        public ActionResult NewPaymentTrack(string Custid, DateTime Fromdatetime, DateTime ToDatetime)
+        {
+          
+
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.fromdate = Fromdatetime.ToString("MM/dd/yyyy");
+            ViewBag.todate = ToDatetime.ToString("MM/dd/yyyy");
+            ViewBag.Custid = Custid;
+
+
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+
+            var Paymentdata = (from inv in db.Invoices
+                               join pay in db.NewPaymentdetails on inv.invoiceno equals pay.InvoiceNo
+                               where inv.Pfcode == strpfcode
+                               && pay.Pfcode == strpfcode
+                               && inv.Customer_Id == Custid
+                               select new PaymentInvoiceModel
+                               {
+                                   Payment_Id = pay.Payment_Id,
+                                   Payment_Date = pay.Payment_Date,
+                                   Payment_Mode = pay.Payment_Mode,
+                                   Amount = pay.Amount,
+                                   InvoiceNo = pay.InvoiceNo,
+                                   Tds_Amount = pay.Tds_Amount,
+                                   Total_Amount = pay.Total_Amount,
+                                   Pfcode = pay.Pfcode,
+                                   Bank_Name = pay.Bank_Name,
+                                   Branch_Name = pay.Branch_Name,
+                                   Transaction_Id = pay.Transaction_Id,
+                                   CheckNo = pay.CheckNo,
+                                   CreditNoteNo = pay.CreditNoteNo,
+                                   Balance = pay.Balance,
+                                   Created_Date = pay.Created_Date,
+                                   invoicedate = inv.invoicedate,
+                                   Customer_Id = inv.Customer_Id,
+                                   netamount = inv.netamount
+                               }).ToList() // Fetch data to memory
+                   .Where(x => x.Payment_Date.HasValue &&
+                               x.Payment_Date.Value.Date >= Fromdatetime.Date &&
+                               x.Payment_Date.Value.Date <= ToDatetime.Date) // Perform in-memory filtering
+                   .OrderByDescending(x => x.Payment_Date)
+                   .ToList();
+
+
+
+
+            return View(Paymentdata);
+
         }
 
 

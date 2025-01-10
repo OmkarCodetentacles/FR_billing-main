@@ -13,6 +13,23 @@
 </style>
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+@*@{
+    var SuccessMessage = ViewBag.Message as string;
+}
+@if (!string.IsNullOrEmpty(SuccessMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", SuccessMessage));
+    <script>
+        setTimeout(function () {
+            window.location.reload();
+
+
+
+        }, 5000); // 3000 milliseconds = 3 seconds
+        $("#modal-default").model('hide');
+    </script>
+
+}*@
 
 <!-- Main content -->
 <div class="overlay" id="overlayBlock">
@@ -34,41 +51,43 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <form id="paymentForm">
-                            <div class="form-group">
-                                <label>Payment Mode:</label>
-                                <div>
-                                    <label>
-                                        <input type="radio" name="paymentMode" value="Cash" checked>
-                                        Cash
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="paymentMode" value="Cheque">
-                                        Cheque
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="paymentMode" value="NEFT">
-                                        RTGS
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="paymentMode" value="CreditNote">
-                                        Credit Note
-                                    </label>
-                                </div>
-                            </div>
 
-                            <div class="payment-content">
-                                <h5>
-                                    <span class="Netamount text-info"></span>
-                                    <span class="Balance text-danger pull-right"></span>
-                                    <input type="hidden" class="Firm_Id">
-                                </h5>
-                                <div id="paymentPartial">
-                                    <!-- Partial View Content Will Load Here -->
-                                    @{ Html.RenderPartial("PaymodeModePartial", (DtDc_Billing.Models.NewPaymentModel)ViewBag.AllModePaymentModel); }
-                                </div>
+
+
+                        <div class="form-group">
+                            <label>Payment Mode:</label>
+                            <div>
+                                <label>
+                                    <input type="radio" name="paymentMode" value="Cash" checked>
+                                    Cash
+                                </label>
+                                <label>
+                                    <input type="radio" name="paymentMode" value="Cheque">
+                                    Cheque
+                                </label>
+                                <label>
+                                    <input type="radio" name="paymentMode" value="NEFT">
+                                    RTGS
+                                </label>
+                                <label>
+                                    <input type="radio" name="paymentMode" value="CreditNote">
+                                    Credit Note
+                                </label>
                             </div>
-                        </form>
+                        </div>
+
+                        <div class="payment-content">
+                            <h5>
+                                <span class="Netamount text-info"></span>
+                                <span class="Balance text-danger pull-right"></span>
+                                <input type="hidden" class="Firm_Id">
+                            </h5>
+                            <div id="paymentPartial">
+                                <!-- Partial View Content Will Load Here -->
+                                @{ Html.RenderPartial("PaymodeModePartial", (DtDc_Billing.Models.NewPaymentModel)ViewBag.AllModePaymentModel); }
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -94,6 +113,9 @@
                     </a>
                 </h4>
             </div><!-- /.box-header -->
+            <div class="SuccessMessage" style="display:none; background-color:forestgreen; color:black; padding: 15px; border: 1px solid #377e12; border-radius: 5px;">
+                Payment Added SuccessFully!
+            </div>
             @using (Html.BeginForm())
             {
 
@@ -142,20 +164,20 @@
                                 Invoicedate
                             </th>
                             @*<th>
-                                @Html.DisplayNameFor(model => model.periodfrom)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.periodto)
-                            </th>*@
+                            @Html.DisplayNameFor(model => model.periodfrom)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.periodto)
+                        </th>*@
                             @*<th>
-                                @Html.DisplayNameFor(model => model.total)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Royalty_charges)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Docket_charges)
-                            </th>*@
+                            @Html.DisplayNameFor(model => model.total)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Royalty_charges)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Docket_charges)
+                        </th>*@
                             <th>Sub Total</th>
                             <th>
                                 FSC
@@ -170,7 +192,7 @@
                                 GST Total
                             </th>
                             <th>
-                              Net Amount
+                                Net Amount
                             </th>
                             <th>Paid</th>
                             <th>Balance</th>
@@ -205,20 +227,20 @@
                                     @Html.DisplayFor(modelItem => item.tempInvoicedate)
                                 </td>
                                 @*<td>
-                                    @Html.DisplayFor(modelItem => item.Tempdatefrom)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TempdateTo)
-                                </td>*@
+                                @Html.DisplayFor(modelItem => item.Tempdatefrom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TempdateTo)
+                            </td>*@
                                 @*<td>
-                                    @Html.DisplayFor(modelItem => item.total)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Royalty_charges)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Docket_charges)
-                                </td>*@
+                                @Html.DisplayFor(modelItem => item.total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Royalty_charges)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Docket_charges)
+                            </td>*@
                                 <td>
                                     @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
                                 </td>
@@ -337,6 +359,10 @@
 <script>
 
     $(document).ready(function () {
+        $('#modal-default').find('form').each(function () {
+            this.reset();
+        });
+        $(".text-danger").empty();
 
         $(".addpmt").click(function () {
 

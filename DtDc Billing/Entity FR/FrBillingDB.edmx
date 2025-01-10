@@ -476,6 +476,7 @@
           <Property Name="Firm_Id" Type="bigint" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="isDelete" Type="bit" />
+          <Property Name="Balance" Type="float" />
         </EntityType>
         <EntityType Name="Issue">
           <Key>
@@ -532,18 +533,18 @@
           </Key>
           <Property Name="Payment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Payment_Mode" Type="varchar" MaxLength="50" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Amount" Type="float" />
           <Property Name="InvoiceNo" Type="varchar" MaxLength="50" />
-          <Property Name="Tds_Amount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Total_Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Tds_Amount" Type="float" />
+          <Property Name="Total_Amount" Type="float" />
           <Property Name="Pfcode" Type="varchar" MaxLength="50" />
-          <Property Name="Payment_Date" Type="date" Nullable="false" />
+          <Property Name="Payment_Date" Type="datetime" />
           <Property Name="Bank_Name" Type="varchar" MaxLength="100" />
           <Property Name="Branch_Name" Type="varchar" MaxLength="100" />
           <Property Name="Transaction_Id" Type="varchar" MaxLength="100" />
           <Property Name="CheckNo" Type="varchar" MaxLength="100" />
           <Property Name="CreditNoteNo" Type="varchar" MaxLength="50" />
-          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="float" />
           <Property Name="Created_Date" Type="datetime" />
         </EntityType>
         <EntityType Name="Nondox">
@@ -3222,6 +3223,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Invoice__Firm_Id__308E3499" FromRole="Invoice" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail2" Relationship="Self.FK__Invoice__Firm_Id__3493CFA7" FromRole="Invoice" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail3" Relationship="Self.FK__Invoice__Firm_Id__3587F3E0" FromRole="Invoice" ToRole="FirmDetails" />
+          <Property Name="Balance" Type="Double" />
         </EntityType>
         <EntityType Name="Issue">
           <Key>
@@ -6006,18 +6008,18 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           </Key>
           <Property Name="Payment_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Payment_Mode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Amount" Type="Double" />
           <Property Name="InvoiceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Tds_Amount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Total_Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Tds_Amount" Type="Double" />
+          <Property Name="Total_Amount" Type="Double" />
           <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Payment_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Payment_Date" Type="DateTime" Precision="3" />
           <Property Name="Bank_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Branch_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Transaction_Id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CheckNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CreditNoteNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Balance" Type="Double" />
           <Property Name="Created_Date" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -6457,6 +6459,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Invoices">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Invoice">
               <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
                 <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
                 <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
