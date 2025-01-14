@@ -175,8 +175,13 @@
                 var StartingCons = $('#StartingCons').val();
                 var EndingCons = $('#EndingCons').val();
                 var Companyid = $('#Companyid').val();
-
-                if (StartingCons == "") {
+                if (StartingCons == "" && EndingCons == "" && Companyid=="") {
+                    $("#startconserror").show();
+                    $("#endconserror").show();
+                    $("#companyiderror").show();
+                    return false;
+                }
+              else  if (StartingCons == "") {
                     // alert("Please Enter Starting Consignment");
                     $("#startconserror").show();
                     $("#endconserror").hide();
