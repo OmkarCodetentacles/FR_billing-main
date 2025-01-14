@@ -21,6 +21,9 @@
     .select2-selection__rendered {
         line-height: 26px !important;
     }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #0d4c76 !important;
+    }
 </style>
 
 <!-- JavaScript -->
@@ -151,44 +154,46 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    @*@Html.Partial("GetInvoiceDataForDashboard", "Invoice", (DtDc_Billing.Models.InvoiceDataForDashBoard)@ViewBag.DataPoints))*@
                     @Html.Partial("GetInvoiceDataForDashboard")
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    @{
-                        var successMessage = TempData["success"] as string;
-                        var errorMessage = TempData["error"] as string;
-                    }
+            </div>  
+            <div class="box-body">
+               
+                <div class="row">
+                    <div class="col-xs-12">
+                        @{
+                            var successMessage = TempData["success"] as string;
+                            var errorMessage = TempData["error"] as string;
+                        }
 
 
-                    @if (!string.IsNullOrEmpty(successMessage))
-                    {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
-                    }
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
-                    }
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                        }
 
 
-                    @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get, new { id = "FormSubmit" }))
-                    {
+                        @using (Html.BeginForm("ViewInvoice", "Invoice", FormMethod.Get, new { id = "FormSubmit" }))
+                        {
 
-                        <!--<label for="cars">Size:</label>
+                            <!--<label for="cars">Size:</label>
                         <select name="size">
                             <option value="100" @((ViewBag.size == 100) ? "selected" : "")>100</option>
                             <option value="500" @((ViewBag.size == 500) ? "selected" : "")>500</option>
                             <option value="1000" @((ViewBag.size == 1000) ? "selected" : "")>1000</option>-->@*<option value="200" @((ViewBag.size == 200) ? "selected" : "")>200</option>*@<!--</select>-->@*<div class="col-md-5">
-                                    <div class="form-group">
-                                        <div class="pf-code">
-                                            <label>Firm Name</label>
-                                            <label class="Reqired">*</label>
-                                            @Html.DropDownList("FirmDetails", "-Please select-")
-                                        </div>
+                                <div class="form-group">
+                                    <div class="pf-code">
+                                        <label>Firm Name</label>
+                                        <label class="Reqired">*</label>
+                                        @Html.DropDownList("FirmDetails", "-Please select-")
                                     </div>
-                                </div>*@<div class="col-md-3" style="margin-top:10px;padding-left:0">
+                                </div>
+                            </div>*@<div class="col-md-3" style="margin-top:10px;padding-left:0">
 
                                 <label>Company Name</label>
 
@@ -241,148 +246,148 @@
 
                             <br /><br /><br /><br />
                         }
-                    <!-- /.box-header -->
+                        <!-- /.box-header -->
 
-                    <table id="table_display_block" class="table Viewinvoice" style="margin-top:100px">
-                        <thead>
-                            <tr>
+                        <table id="table_display_block" class="table Viewinvoice" style="margin-top:100px">
+                            <thead>
+                                <tr>
 
-                                <th>Sr.No</th>
+                                    <th>Sr.No</th>
 
-                                <th></th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.invoiceno)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Customer_Id)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.invoicedate)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodfrom)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodto)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.total)
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.fullsurchargetax)*@  FuelSurchargetax(%)
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.fullsurchargetaxtotal)*@ FuelSurchargetax Total
-                                </th>
-                                <th>
-                                    Discount(%)
-                                </th>
-                                <th>Discount Amount</th>
-                                <th>
-                                    GST(%)
-                                </th>
-                                <th>
-                                    GST Amount
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.othercharge)
-                                </th>
-                                <th>
-                                    @*@Html.DisplayNameFor(model => model.netamount)*@ Net Amount
-                                </th>
-                                <th>Paid Amount</th>
-                                <th>Status</th>
+                                    <th></th>
+                                    <th>
+                                        Invoice No
+                                    </th>
+                                    <th>
+                                        Customer Id
+                                    </th>
+                                    <th>
+                                        Invoice date
+                                    </th>
+                                    <th>
+                                        Period From
+                                    </th>
+                                    <th>
+                                        Period To
+                                    </th>
+                                    <th>
+                                        Total
+                                    </th>
+                                    <th>
+                                        Fuel Surcharge(%)
+                                    </th>
+                                    <th>
+                                        Fuel Surcharge Total
+                                    </th>
+                                    <th>
+                                        Discount(%)
+                                    </th>
+                                    <th>Discount Amount</th>
+                                    <th>
+                                        GST(%)
+                                    </th>
+                                    <th>
+                                        GST Amount
+                                    </th>
+                                    <th>
+                                        Other charge
+                                    </th>
+                                    <th>
+                                        Net Amount
+                                    </th>
+                                    <th>Paid Amount</th>
+                                    <th>Status</th>
 
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{ var i = 1;
-                                foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>
-                                            @*   @Html.ActionLink("View", "ReportPrinterMethod", new { myParameter = item.invoiceno, firmid = item.Firm_Id })*@
-                                            <div style="display:flex; gap:5px">
-                                                <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank" class="view-btn">View</a>
-                                                @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno }, new { @class = "edit-btn" })
-                                                @Html.ActionLink("Delete", "DeleteInvoice", "Invoice", new { invoiceid = item.IN_Id, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate }, new { onclick = "return confirm('Are you sure you want to delete this invoice? Please note that this invoice number cannot be reused in the future, and all associated payment details will be permanently deleted.')", @class = "delete-btn" })
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>
+                                                @*   @Html.ActionLink("View", "ReportPrinterMethod", new { myParameter = item.invoiceno, firmid = item.Firm_Id })*@
+                                                <div style="display:flex; gap:5px">
+                                                    <a href="@Url.Action("Download", "Invoice", new { id = item.IN_Id })" target="_blank" class="view-btn">View</a>
+                                                    @Html.ActionLink("Edit", "GenerateInvoice", new { Invoiceno = item.invoiceno }, new { @class = "edit-btn" })
+                                                    @Html.ActionLink("Delete", "DeleteInvoice", "Invoice", new { invoiceid = item.IN_Id, invfromdate = ViewBag.invfromdate, Companydetails = ViewBag.Companydetails, invtodate = ViewBag.invtodate }, new { onclick = "return confirm('Are you sure you want to delete this invoice? Please note that this invoice number cannot be reused in the future, and all associated payment details will be permanently deleted.')", @class = "delete-btn" })
 
-                                            </div>
+                                                </div>
 
-                                            @*</td>
+                                                @*</td>
                                                 <td>*@
-                                        </td>
+                                            </td>
 
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.invoiceno)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Customer_Id)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.tempInvoicedate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Tempdatefrom)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TempdateTo)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.total)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.discountper)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.discountamount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetax)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.othercharge)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.netamount)
-                                        </td>
-                                        <td>@(item.paid!=null?item.paid:0)  </td>
-                                        <td>
-                                            @if (item.paid >= item.netamount)
-                                            {
-                                                <span class="btn btn-success status-button">Paid</span>
-                                            }
-                                            else if (item.paid == null || item.paid == 0)
-                                            {
-                                                <span class="btn btn-danger status-button">Unpaid</span>
-                                            }
-                                            else if (item.paid != null && item.paid < item.netamount)
-                                            {
-                                                <span class="btn btn-warning status-button">Partial Paid</span>
-                                            }
-                                        </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.invoiceno)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.tempInvoicedate)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Tempdatefrom)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TempdateTo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountper)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.othercharge)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.netamount)
+                                            </td>
+                                            <td>@(item.paid!=null?item.paid:0)  </td>
+                                            <td>
+                                                @if (item.paid >= item.netamount)
+                                                {
+                                                    <span class="btn btn-success status-button">Paid</span>
+                                                }
+                                                else if (item.paid == null || item.paid == 0)
+                                                {
+                                                    <span class="btn btn-danger status-button">Unpaid</span>
+                                                }
+                                                else if (item.paid != null && item.paid < item.netamount)
+                                                {
+                                                    <span class="btn btn-warning status-button">Partial Paid</span>
+                                                }
+                                            </td>
 
-                                    </tr>
+                                        </tr>
 
-                                    i++;
+                                        i++;
+                                    }
                                 }
-                            }
-                        </tbody>
+                            </tbody>
 
-                    </table>
+                        </table>
 
-                    @*<div class="pagination">
+                        @*<div class="pagination">
                             @{
                                 var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
 
@@ -399,17 +404,17 @@
                                 }
                             }
                         </div>*@
+                    </div>
+
+                    <!-- /.box-body -->
                 </div>
-
-                <!-- /.box-body -->
+                <!-- /.box -->
             </div>
-            <!-- /.box -->
+            <!-- /.col -->
         </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
+        <!-- /.row -->
 
-</div>
+    </div>
 <!-- /.content -->
 <script>
 

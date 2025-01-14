@@ -23,7 +23,7 @@
     <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
             <h4>
-                VIEW SINGLE INVOICE
+                View Invoice Without GST
                 <a href="https://www.youtube.com/watch?v=_5jj1ozy0I0&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=27"
                    target="_blank"
                    data-toggle="tooltip"
@@ -79,30 +79,7 @@
 
                         </div>
                     }
-                    <!--if (ViewBag.invoiceNo != null)
-                    {
-                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
-
-                            <label>Invoice Number</label>
-
-                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control" value="@ViewBag.invoiceNo">-->
-
-                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
-
-                        <!--</div>
-                    }
-                    else
-                    {
-                        <div class="col-md-3" style="margin-top:10px;padding-left:0">
-
-                            <label>Invoice Number</label>
-
-                            <input type="text" name="invoiceNo" id="invoiceNo" class="form-control">-->
-
-                            @*@Html.DropDownList("Companydetails", "-Please select-")*@
-
-                        <!--</div>
-                    }-->
+                  
                     if (ViewBag.fromdate != null)
                     {
                         <div class="col-md-2" style="margin-top: 10px; padding-left: 0">
@@ -153,39 +130,33 @@
                 }
                 <div class="col-xs-12">
 
-                    @*<div class="col-md-4">
-                            <label for="departmentsDropdown">Firm Name</label>
-                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
-                        </div>*@
+                  
                     <table id="table_display_block" class="table Viewsingleinvoice">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th></th>
-                                @*<th>
-            @Html.DisplayNameFor(model => model.invoiceno)
-        </th>*@
+                               
                                 <th>
-                                    @Html.DisplayNameFor(model => model.invoicedate)
+                                    Invoice Date
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Customer_Id)
+                                    Customer Id
                                 </th>
 
                                 <th>
-                                    @Html.DisplayNameFor(model => model.periodfrom)
+                                    Period From
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.periodto)
+                                    Period To
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.total)
+                                    Total
                                 </th>
                                 <th>
-                                    @*@Html.DisplayNameFor(model => model.fullsurchargetax)*@  FuelSurchargetax(%)
+                                    Fuel Surcharge(%)
                                 </th>
                                 <th>
-                                    @*@Html.DisplayNameFor(model => model.fullsurchargetaxtotal)*@ FuelSurchargetax Total
+                                    Fuel Surcharge Total
                                 </th>
                                 <th>
                                     Discount(%)
@@ -198,10 +169,10 @@
                                     GST Amount
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.othercharge)
+                                    Other Charge
                                 </th>
                                 <th>
-                                    @*@Html.DisplayNameFor(model => model.netamount)*@ Net Amount
+                                    Net Amount
                                 </th>
 
 
@@ -212,11 +183,10 @@
                             {
                                 <tr>
                                     <td style="display:flex; gap:2px;">
-                                        @*@Html.ActionLink("View", "ReportsinglePrinterMethod", new { myParameter = item.invoiceno }) |*@
+                                      
                                         <a class="view-btn" href="@Url.Action("DownloadGSTInvoice","Invoice",new {id = item.IN_Id })" target="_blank">View</a>
                                         @Html.ActionLink("Edit", "GenerateInvoiceWithoutGST", new { InvoiceID = item.IN_Id }, new { @class = "edit-btn" })
-                                    </td>
-                                    <td>
+                                   
                                         @Html.ActionLink("Delete", "ViewInvoiceWithoutGST", "Invoice", new
                                         {
                                             invoiceNo = item.invoiceno,
@@ -231,9 +201,7 @@
                                             @class = "delete-btn"
                                         })
                                     </td>
-                                    @*<td>
-            @Html.DisplayFor(modelItem => item.invoiceno)
-        </td>*@
+                                  
                                     <td>
                                         @Html.DisplayFor(modelItem => item.tempInvoicedate)
                                     </td>
