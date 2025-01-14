@@ -47,10 +47,11 @@
 
                     <div class="form-horizontal">
 
-                        <div id="alertContainer" style="color:black;background-color:green; display: none;"></div></div>
-                    <div id="ErrorMessage">
+                        <div id="alertContainer" style="color:black;background-color:green; display: none;"></div>
 
-                    </div>
+                        <div id="ErrorMessage">
+
+                        </div>
                         <div class="row">
                             <div class="">
                                 <div class="form-group">
@@ -136,7 +137,7 @@
                                     }
                                 </div>
                                 <div class="row" id="ErrorMessage" style="display:none;color:red;">
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -220,8 +221,8 @@
                                         i = j + 1;
                                         <tr>
                                             @*@{
-                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
-                            }*@
+                                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+                                            }*@
 
                                             <td>@i</td>
 
@@ -279,7 +280,7 @@
         </div>
 
 
-
+    </div>
     </div>
 
 <script>
@@ -324,7 +325,7 @@
             },
             error: function (xhr, status, error) {
               
-                $('#alertContainer').text('Something went wrong while deleting the consignment. Please try again');
+                $('#alertContainer').text('Something went wrong while deleting the consignment. Please try again').css('background-color', 'red'); // Set red background for errors;
                 $("#alertContainer").show();
                 //// Automatically hide the alert after 10 seconds
                 //$('#alertContainer').fadeOut('slow', function () {

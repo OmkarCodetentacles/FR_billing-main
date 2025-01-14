@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -33,6 +34,7 @@ namespace DtDc_Billing.Models
         public Nullable<int> fid { get; set; }
         public string Invoiceno { get; set; }
         [Required]
+        [DisplayName("Date")]
         public string temprecdate { get; set; }
         public string tempExpiry_Date { get; set; }
         public string Pf_code { get; set; }

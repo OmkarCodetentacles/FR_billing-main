@@ -285,11 +285,9 @@ namespace DtDc_Billing.Controllers
             ViewBag.RemainingType = items;
     
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            ViewBag.PfCode = new SelectList(db.Franchisees.Where(d=>d.PF_Code == pfcode), "PF_Code", "PF_Code");
-            //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
-            //return View(st);
+            ViewBag.PfCode = pfcode;
 
-            var obj = db.getRemaining(PfCode).Select(x => new RemainingModel
+            list = db.getRemaining(PfCode).Select(x => new RemainingModel
             {
 
                 S_id = x.S_id,
@@ -299,15 +297,12 @@ namespace DtDc_Billing.Controllers
                 temprecdate = x.temprecdate,
                 totalCount = x.totalCOUNTER ?? 0
 
-            }).OrderByDescending(x=>x.S_id).ToList();
+            }).ToList();
 
 
             ViewBag.type = RemainingType;
 
-            if (obj != null)
-            {
-                return View(obj);
-            }
+            
             return View(list);
           
         }

@@ -128,13 +128,14 @@
                     <thead>
                         <tr>
                             
+                            
                             <th>Receipt Date</th>
                             <th>Expiring in</th>
                             <th>Start No</th>
                             <th>End No </th>
                             <th>No Of Consignment</th>
                             <th>Used</th>
-                            <th>Remining</th>Action
+                            <th>Remining</th>
                             <th style="width:500px;">Action</th>
                         </tr>
                     </thead>
@@ -156,7 +157,7 @@
                                     {
 
                                         <tr>
-                                            <td>@i.temprecdate</td>
+                                           <td>@i.temprecdate</td>
 
                                             <td>
 
@@ -302,6 +303,7 @@
                                     long remainig = (Convert.ToInt64(NoofConsignments(i.startno, i.endno)) - Convert.ToInt64(i.totalCount));
 
                                     <tr>
+                                      
                                         <td>@i.temprecdate</td>
 
                                         <td>
@@ -356,16 +358,7 @@
                                             <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /><br /><br />
                                             @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isdelete = true, type = "All" }, new { onclick = "return confirm('do you really want to delete this Stationary?')", @class = "delete-btn" })
 
-                                            @*@using (Html.BeginForm("DeleteStationary", "Stationery", FormMethod.Post))
-                                                {
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="stationary_id" value="@i.S_id" />
-                                                    <input type="hidden" name="isdelete" value="true" />
-                                                    <input type="hidden" name="type" value="All" />
-
-                                                    <button type="submit" onclick="return confirm('Do you really want to delete this Stationary?')" class="delete-btn">Delete</button>
-                                                }*@
-
+                                            
                                         </td>
                                     </tr>
                                     j++;
@@ -613,9 +606,9 @@
     $(function () {
         $('#table_display_block').dataTable({
             "bPaginate": true,
-            "bLengthChange": true,
+            "bLengthChange": false,
             "bFilter": true,
-            "bSort": true,
+            "bSort": false,
             "bInfo": false,
             "bAutoWidth": false
         });
