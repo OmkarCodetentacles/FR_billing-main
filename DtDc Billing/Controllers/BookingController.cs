@@ -699,7 +699,7 @@ Select(e => new
             string input2 = "";
             string stch = "";
             string Endch = "";
-
+            int count = 0;
             // Check if the first character is a digit
             if (char.IsDigit(StartingCons[0]))
             {
@@ -762,7 +762,7 @@ Select(e => new
                         db.Entry(transaction).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-
+                    count++;
 
                     countconsigmnets++;
 
@@ -775,7 +775,7 @@ Select(e => new
             }
 
 
-
+            ViewBag.Count = count;
             ViewBag.Message = "Booking Completed Successfully";
 
             return View();

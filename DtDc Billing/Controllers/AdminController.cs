@@ -3277,57 +3277,64 @@ namespace DtDc_Billing.Controllers
             return View();
         }
 
-        public ActionResult ExpensesList(string ToDatetime, string Fromdatetime)
-        {
-            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
-            ViewBag.Pf_Code=pfcode;
+    //    public ActionResult ExpensesList(string ToDatetime, string Fromdatetime)
+    //    {
+    //        string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
+    //        ViewBag.Pf_Code=pfcode;
 
-            var Cat = new List<SelectListItem>
-    {
-                   new SelectListItem{ Text="Select All", Value = "" },
-        new SelectListItem{ Text="Load Connecting exp 1st and 2nd", Value = "Load Connecting exp 1st and 2nd" },
-        new SelectListItem{ Text="Load connecting exp - Night load", Value = "Load connecting exp - Night load" },
-        new SelectListItem{ Text="Pick up expenses", Value = "Pick up expenses"},
-        new SelectListItem{ Text="Patpedhi Deposit", Value = "Patpedhi Deposit"},
-        new SelectListItem{ Text="Salary Advance", Value = "Salary Advance"},
-        new SelectListItem{ Text="Office Expenses", Value = "Office Expenses"},
-        new SelectListItem{ Text="Fuel Exp", Value = "Fuel Exp"},
-        new SelectListItem{ Text="Tea and refreshments exp", Value = "Tea and refreshments exp"},
-        new SelectListItem{ Text="Packing Expenses", Value = "Packing Expenses"},
-        new SelectListItem{ Text="Others", Value = "Others"},
-    };
+    //        var Cat = new List<SelectListItem>
+    //{
+    //               new SelectListItem{ Text="Select All", Value = "" },
+    //    new SelectListItem{ Text="Load Connecting exp 1st and 2nd", Value = "Load Connecting exp 1st and 2nd" },
+    //    new SelectListItem{ Text="Load connecting exp - Night load", Value = "Load connecting exp - Night load" },
+    //    new SelectListItem{ Text="Pick up expenses", Value = "Pick up expenses"},
+    //    new SelectListItem{ Text="Patpedhi Deposit", Value = "Patpedhi Deposit"},
+    //    new SelectListItem{ Text="Salary Advance", Value = "Salary Advance"},
+    //    new SelectListItem{ Text="Office Expenses", Value = "Office Expenses"},
+    //    new SelectListItem{ Text="Fuel Exp", Value = "Fuel Exp"},
+    //    new SelectListItem{ Text="Tea and refreshments exp", Value = "Tea and refreshments exp"},
+    //    new SelectListItem{ Text="Packing Expenses", Value = "Packing Expenses"},
+    //    new SelectListItem{ Text="Others", Value = "Others"},
+    //};
 
-            ViewData["Category"] = Cat;
+    //        ViewData["Category"] = Cat;
 
-            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
-                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-            DateTime fromdate = DateTime.Now;
-            DateTime todate = DateTime.Now;
-            var obj = new List<Expense>();
-            if (ToDatetime != null && Fromdatetime != null)
-            {
-                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+    //        string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+    //               "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+    //        DateTime fromdate = DateTime.Now;
+    //        DateTime todate = DateTime.Now;
+    //        var obj = new List<Expense>();
+    //        if (ToDatetime != null && Fromdatetime != null)
+    //        {
+    //            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
-                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+    //            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
 
-                 fromdate = Convert.ToDateTime(bdatefrom);
-                 todate = Convert.ToDateTime(bdateto);
+    //             fromdate = Convert.ToDateTime(bdatefrom);
+    //             todate = Convert.ToDateTime(bdateto);
 
-                ViewBag.Fromdatetime = Fromdatetime;
-                ViewBag.ToDatetime = ToDatetime;
+    //            ViewBag.Fromdatetime = Fromdatetime;
+    //            ViewBag.ToDatetime = ToDatetime;
 
-            }
-            obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate) && m.Pf_Code == pfcode).ToList();
+    //        }
+    //        obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate) && m.Pf_Code == pfcode).ToList();
 
-            return View(obj);
-        }
+    //        return View(obj);
+    //    }
 
-        [HttpPost]
+       
         public ActionResult ExpensesList(string Category, string ToDatetime, string Fromdatetime, string Submit)
         {
+            if(string.IsNullOrEmpty(Fromdatetime) && string.IsNullOrEmpty(ToDatetime))
+            {
+                Fromdatetime = DateTime.Now.ToString("dd-MM-yyyy");
+                ToDatetime = DateTime.Now.ToString("dd-MM-yyyy");
+            }
+
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
+            ViewBag.SelectedCategory = Category;
         string    Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.Pf_Code = Pf_Code; //new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
@@ -3365,29 +3372,7 @@ namespace DtDc_Billing.Controllers
 
 
             List<Expense> list = new List<Expense>();
-            //if ((Pf_Code != null && Pf_Code != "") && (Category != null && Category != ""))
-            //{
-            //    list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            //}
-            //else if ((Pf_Code != null && Pf_Code != "") || (Category == null && Category == ""))
-            //{
-            //    list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            //}
-            //else if ((Pf_Code == null && Pf_Code == "") || (Category != null && Category != ""))
-            //{
-            //    list = db.Expenses.Where(m => m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            //}
-            //else if ((Pf_Code == null && Pf_Code == "") || (Category == null && Category == "") || (ToDatetime != "" && Fromdatetime != null))
-            //{
-            //    list = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            //}
-            //else
-            //{
-            //    list = db.Expenses.ToList();
-            //}
-             //list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-
-            list = db.Expenses.Where(m => m.Pf_Code==Pf_Code &&((fromdate==null || DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate)) && (todate==null || DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)))).ToList();
+                 list = db.Expenses.Where(m => m.Pf_Code==Pf_Code &&(string.IsNullOrEmpty(Category) || m.Category==Category) &&((fromdate==null || DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate)) && (todate==null || DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)))).ToList();
 
             if (Submit == "Export to Excel")
             {
@@ -3442,7 +3427,7 @@ namespace DtDc_Billing.Controllers
             }
 
             ViewData["Category"] = expe;
-
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -3473,7 +3458,7 @@ namespace DtDc_Billing.Controllers
         }
 
 
-        public ActionResult DeleteExpenses(long? id)
+        public ActionResult DeleteExpenses(long? id,string fromdate,string todate,string Categary)
         {
             if (id == null)
             {
@@ -3483,7 +3468,9 @@ namespace DtDc_Billing.Controllers
             db.Expenses.Remove(expense);
             db.SaveChanges();
             TempData["delete"] = "Deleted successfully";
-            return RedirectToAction("ExpensesList");
+           // return RedirectToAction("ExpensesList");
+            return RedirectToAction("ExpensesList", new { Category = Categary, ToDatetime = todate, Fromdatetime = fromdate });
+
         }
 
 
