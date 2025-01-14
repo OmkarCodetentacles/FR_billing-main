@@ -178,10 +178,16 @@
         $('#temppaymentdate').removeAttr('value');
         $('#Tds_Amount').removeAttr('value');
         $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
-
+      
         $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
 
+        var Amount = $('#Amount').val();
 
+        var C_Tds_Amount = $('#Tds_Amount').val();
+
+
+        var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+        $('#Total_Amount').val(addition);
         }
         $(document).ready(function () {
 

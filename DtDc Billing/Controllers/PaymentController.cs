@@ -226,6 +226,9 @@ namespace DtDc_Billing.Controllers
                 {
 
                     ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                    newPaymentModel.Amount = 0;
+                    newPaymentModel.Tds_Amount = 0;
+                    newPaymentModel.Total_Amount = 0;
                     return PartialView("PaymodeModePartial", newPaymentModel);
                 }
                 else
