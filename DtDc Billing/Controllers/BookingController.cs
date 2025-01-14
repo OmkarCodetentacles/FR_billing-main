@@ -776,7 +776,7 @@ Select(e => new
 
 
             ViewBag.Count = count;
-            ViewBag.Message = "Booking Completed Successfully";
+            ViewBag.Message ="File Uploaded Successfully! and "+ count+ " Booked Successfully";
 
             return View();
         }

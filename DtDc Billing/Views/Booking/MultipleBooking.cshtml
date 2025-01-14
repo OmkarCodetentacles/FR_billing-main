@@ -35,13 +35,10 @@
 
                                     @if (!string.IsNullOrEmpty(successMessage))
                                     {
+                                       
                                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                                     }
-                                    @if (!string.IsNullOrEmpty(BookedConsignments))
-                                    {
-                                        var message = BookedConsignments + "    Consignment Booked Successfully!";
-                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", BookedConsignments))
-                                    }
+                                   
                                     <div class="form-horizontal">
                                         <div id="form-Cons">
                                             @using (Html.BeginForm("MultipleBooking", "Booking"))
