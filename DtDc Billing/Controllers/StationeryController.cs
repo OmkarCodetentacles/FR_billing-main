@@ -208,7 +208,7 @@ namespace DtDc_Billing.Controllers
                     {
                         stream.Write(renderByte, 0, renderByte.Length);
                     }
-
+                    ModelState.Clear();
                     var pdfFileName = namefile + ".pdf";
 
                     if (!string.IsNullOrEmpty(pdfFileName))
@@ -378,125 +378,176 @@ namespace DtDc_Billing.Controllers
 
         //    }
 
-
         public JsonResult RemainingConsignments(string startno, string endno)
         {
-
-            List<BarcodeAndPath> Consignmentswithbarcode = new List<BarcodeAndPath>();
             List<string> Consignments = new List<string>();
 
-            //char stch = startno[0];
-            //char Endch = endno[0];
-
-            //long startConsignment = Convert.ToInt64(startno.Substring(1));
-            //long EndConsignment = Convert.ToInt64(endno.Substring(1));
-
-
-
-            //for (long i = startConsignment; i <= EndConsignment; i++)
-            //{
-            //    string updateconsignment = stch + i.ToString();
-
-
-            //    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
-
-
-
-            //    if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
-            //    {
-            //        Consignments.Add(updateconsignment);
-            //    }
-
-            //}
-
-            string stch = startno[0].ToString();
-            string Endch = endno[0].ToString();
-            long startConsignment;
-            long EndConsignment;
-            if (startno.ToLower().StartsWith("7x") || endno.ToLower().StartsWith("7d"))
+            // Validate input lengths
+            if (startno.Length < 2 || endno.Length < 2)
             {
-                stch = startno.Substring(0, 2);
-                Endch = endno.Substring(0, 2);
-                startConsignment = Convert.ToInt64(startno.Substring(2));
-                EndConsignment = Convert.ToInt64(endno.Substring(2));
-            }
-            else
-            {
-                startConsignment = Convert.ToInt64(startno.Substring(1));
-                EndConsignment = Convert.ToInt64(endno.Substring(1));
+                return Json(new { Error = "Invalid consignment number length." }, JsonRequestBehavior.AllowGet);
             }
 
-            //long startConsignment = Convert.ToInt64(startno.Substring(1));
-            //long EndConsignment = Convert.ToInt64(endno.Substring(1));
+            // Extract prefix and numeric parts
+            string startPrefix = new string(startno.TakeWhile(c => !char.IsDigit(c)).ToArray());
+            string endPrefix = new string(endno.TakeWhile(c => !char.IsDigit(c)).ToArray());
 
-
-
-
-
-            for (long i = startConsignment; i <= EndConsignment; i++)
+            if (startPrefix != endPrefix)
             {
-                string updateconsignment = stch + i.ToString();
+                return Json(new { Error = "Prefixes of start and end consignment numbers do not match." }, JsonRequestBehavior.AllowGet);
+            }
 
-                DtDc_Billing.Entity_FR.Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+            string startNumericPart = new string(startno.SkipWhile(c => !char.IsDigit(c)).ToArray());
+            string endNumericPart = new string(endno.SkipWhile(c => !char.IsDigit(c)).ToArray());
 
-                if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
+            if (!long.TryParse(startNumericPart, out long startConsignment) ||
+                !long.TryParse(endNumericPart, out long endConsignment) ||
+                startConsignment > endConsignment)
+            {
+                return Json(new { Error = "Invalid numeric parts in consignment numbers." }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Determine the numeric part length for zero padding
+            int numericPartLength = startNumericPart.Length;
+
+            // Generate consignment numbers
+            for (long i = startConsignment; i <= endConsignment; i++)
+            {
+                // Format the numeric part to include leading zeros
+                string formattedNumericPart = i.ToString().PadLeft(numericPartLength, '0');
+                string generatedConsignment = $"{startPrefix}{formattedNumericPart}";
+
+                var transaction = db.Transactions
+                    .Where(m => m.Consignment_no == generatedConsignment && m.isDelete == false)
+                    .FirstOrDefault();
+
+                if (transaction == null || string.IsNullOrEmpty(transaction.Customer_Id))
                 {
-                    Consignments.Add(updateconsignment);
+                    Consignments.Add(generatedConsignment);
                 }
-
             }
-     //       foreach (var getConsignement in Consignments)
-     //       {
-     //           //////if barcode is not generated/////////
-     //           string imageName = getConsignement + "." + ImageType.Png;
-     //           string imagePath = "/BarcodeImages/" + imageName;
-              
-
-     //           //string baseUrl = "https://frbilling.com/"; use Dynamic url rather than static url
-     //           string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
-     //Request.ApplicationPath.TrimEnd('/');
-     //           string imageServerPath = Server.MapPath("~" + imagePath);
-
-
-     //           // Usage 
-     //           string data1 = getConsignement; // Your barcode data
-     //           Image barcodeImage = GenerateBarcode(data1);
-
-     //           // Save the barcode image
-     //           // string imageServerPath = Server.MapPath("~" + imagePath);
-     //           barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
-
-     //           // Dispose of the image
-     //           barcodeImage.Dispose();
-
-     //           var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getConsignement).FirstOrDefault();
-     //           if (getRecipt == null)
-     //           {
-     //               BarcodeAndPath addBarcode = new BarcodeAndPath();
-     //               addBarcode.ConsignmentNo = getConsignement;
-     //               addBarcode.FilePath = baseUrl + imagePath;
-     //               db.BarcodeAndPaths.Add(addBarcode);
-     //               db.SaveChanges();
-     //           }
-     //           else
-     //           {
-     //               getRecipt.FilePath = baseUrl + imagePath;
-     //               db.SaveChanges();
-     //           }
-     //           //////if barcode is not generated end/////////
-
-
-
-     //           BarcodeAndPath addSingle = new BarcodeAndPath();
-     //           addSingle.ConsignmentNo = getConsignement;
-     //           addSingle.FilePath = baseUrl + imagePath;
-     //           Consignmentswithbarcode.Add(addSingle);
-
-     //       }
 
             return Json(Consignments, JsonRequestBehavior.AllowGet);
-
         }
+
+        //   public JsonResult RemainingConsignments(string startno, string endno)
+        //   {
+
+        //       List<BarcodeAndPath> Consignmentswithbarcode = new List<BarcodeAndPath>();
+        //       List<string> Consignments = new List<string>();
+
+        //       //char stch = startno[0];
+        //       //char Endch = endno[0];
+
+        //       //long startConsignment = Convert.ToInt64(startno.Substring(1));
+        //       //long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+
+
+        //       //for (long i = startConsignment; i <= EndConsignment; i++)
+        //       //{
+        //       //    string updateconsignment = stch + i.ToString();
+
+
+        //       //    var transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+
+
+
+        //       //    if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
+        //       //    {
+        //       //        Consignments.Add(updateconsignment);
+        //       //    }
+
+        //       //}
+
+        //       string stch = startno[0].ToString();
+        //       string Endch = endno[0].ToString();
+        //       long startConsignment;
+        //       long EndConsignment;
+        //       if (startno.ToLower().StartsWith("7x") || endno.ToLower().StartsWith("7d"))
+        //       {
+        //           stch = startno.Substring(0, 2);
+        //           Endch = endno.Substring(0, 2);
+        //           startConsignment = Convert.ToInt64(startno.Substring(2));
+        //           EndConsignment = Convert.ToInt64(endno.Substring(2));
+        //       }
+        //       else
+        //       {
+        //           startConsignment = Convert.ToInt64(startno.Substring(1));
+        //           EndConsignment = Convert.ToInt64(endno.Substring(1));
+        //       }
+
+        //       //long startConsignment = Convert.ToInt64(startno.Substring(1));
+        //       //long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+
+
+
+
+        //       for (long i = startConsignment; i <= EndConsignment; i++)
+        //       {
+        //           string updateconsignment = stch + i.ToString();
+
+        //           DtDc_Billing.Entity_FR.Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment).FirstOrDefault();
+
+        //           if (transaction == null || transaction.Customer_Id == null || transaction.Customer_Id.Length == 0)
+        //           {
+        //               Consignments.Add(updateconsignment);
+        //           }
+
+        //       }
+        ////       foreach (var getConsignement in Consignments)
+        ////       {
+        ////           //////if barcode is not generated/////////
+        ////           string imageName = getConsignement + "." + ImageType.Png;
+        ////           string imagePath = "/BarcodeImages/" + imageName;
+
+
+        ////           //string baseUrl = "https://frbilling.com/"; use Dynamic url rather than static url
+        ////           string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+        ////Request.ApplicationPath.TrimEnd('/');
+        ////           string imageServerPath = Server.MapPath("~" + imagePath);
+
+
+        ////           // Usage 
+        ////           string data1 = getConsignement; // Your barcode data
+        ////           Image barcodeImage = GenerateBarcode(data1);
+
+        ////           // Save the barcode image
+        ////           // string imageServerPath = Server.MapPath("~" + imagePath);
+        ////           barcodeImage.Save(imageServerPath, System.Drawing.Imaging.ImageFormat.Png);
+
+        ////           // Dispose of the image
+        ////           barcodeImage.Dispose();
+
+        ////           var getRecipt = db.BarcodeAndPaths.Where(x => x.ConsignmentNo == getConsignement).FirstOrDefault();
+        ////           if (getRecipt == null)
+        ////           {
+        ////               BarcodeAndPath addBarcode = new BarcodeAndPath();
+        ////               addBarcode.ConsignmentNo = getConsignement;
+        ////               addBarcode.FilePath = baseUrl + imagePath;
+        ////               db.BarcodeAndPaths.Add(addBarcode);
+        ////               db.SaveChanges();
+        ////           }
+        ////           else
+        ////           {
+        ////               getRecipt.FilePath = baseUrl + imagePath;
+        ////               db.SaveChanges();
+        ////           }
+        ////           //////if barcode is not generated end/////////
+
+
+
+        ////           BarcodeAndPath addSingle = new BarcodeAndPath();
+        ////           addSingle.ConsignmentNo = getConsignement;
+        ////           addSingle.FilePath = baseUrl + imagePath;
+        ////           Consignmentswithbarcode.Add(addSingle);
+
+        ////       }
+
+        //       return Json(Consignments, JsonRequestBehavior.AllowGet);
+
+        //   }
 
 
         public ActionResult IsseueRemaining()
