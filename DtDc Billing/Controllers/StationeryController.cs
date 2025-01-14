@@ -299,7 +299,7 @@ namespace DtDc_Billing.Controllers
                 temprecdate = x.temprecdate,
                 totalCount = x.totalCOUNTER ?? 0
 
-            }).ToList();
+            }).OrderByDescending(x=>x.S_id).ToList();
 
 
             ViewBag.type = RemainingType;

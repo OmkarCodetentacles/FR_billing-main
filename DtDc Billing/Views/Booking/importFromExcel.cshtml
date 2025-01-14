@@ -602,7 +602,14 @@
                 $("#fileErrorF2").show();
                 return false; // Stop the form submission
             }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
 
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $(".fileErrorF2").text("Invalid file type. Please upload a .XLX or .XLSX file").show();
+                return false;
+            }
             // Show the loader after validation
             showLoader('overlayBlock');
 
@@ -629,7 +636,7 @@
 
             // Validate file extension
             if (!allowedExtensions.exec(file)) {
-                $(".fileErrorF1").text("Invalid file type. Please upload a .XLX or .XLSX file").show();
+                $(".fileErrorF3").text("Invalid file type. Please upload a .XLX or .XLSX file").show();
                 return false;
             }
 
