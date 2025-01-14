@@ -11,7 +11,7 @@ namespace DtDc_Billing.Models
 
         public int S_id { get; set; }
 
-       
+      
         public Nullable<System.DateTime> recieptdate { get; set; }
 
         [Required(ErrorMessage = "Please Enter Start No")]
@@ -32,6 +32,7 @@ namespace DtDc_Billing.Models
         public Nullable<System.DateTime> Expiry_Date { get; set; }
         public Nullable<int> fid { get; set; }
         public string Invoiceno { get; set; }
+        [Required]
         public string temprecdate { get; set; }
         public string tempExpiry_Date { get; set; }
         public string Pf_code { get; set; }

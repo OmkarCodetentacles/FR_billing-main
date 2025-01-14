@@ -196,6 +196,7 @@
                                                 <div class="col-sm-4">
                                                     <label for="file"><strong id="up-txt">First Format </strong></label>
                                                     <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                    <span id="fileErrorF1" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
 
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
                                                     <a href="@baseUrl/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Download Format1</a><!--CREAte Dynamic http://frbilling.com-->
@@ -268,6 +269,8 @@
                                                 <div class="col-sm-4">
                                                     <label for="file"><strong id="up-txt">Second Format  </strong></label>
                                                     <input type="file" name="httpPostedFileBase" id="file2" class="form-control" />
+                                                    <span id="fileErrorF2" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn2" />
                                                     <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Download Format2</a>
                                                 </div>
@@ -362,6 +365,8 @@
                                                     <div class="col-sm-4">
                                                         <label for="file"><strong id="up-txt">Third Format  </strong></label>
                                                         <input type="file" name="httpPostedFileBase" id="file3" class="form-control" />
+                                                        <span id="fileErrorF3" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
                                                         <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn3" />
                                                         <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Download Format3</a><!--Create Dynamic url-->
                                                     </div>
@@ -561,8 +566,17 @@
             // Check if file input is empty
             if (file == "" || file == NaN) {
                 e.preventDefault();
-                alert("Please select a file before Uploading.");
+                $("#fileErrorF1").show();
+               // alert("Please select a file before Uploading.");
                 return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $(".fileErrorF1").text("Invalid file type. Please upload a .XLS or .XLSX file").show();
+                return false;
             }
 
             // Show the loader after validation
@@ -584,7 +598,8 @@
             // Check if file input is empty
             if (file == "" || file == NaN) {
                 e.preventDefault();
-                alert("Please select a file before Uploading.");
+                //    alert("Please select a file before Uploading.");
+                $("#fileErrorF2").show();
                 return false; // Stop the form submission
             }
 
@@ -605,9 +620,17 @@
             // Check if file input is empty
             if (file == "" || file == NaN) {
                 e.preventDefault();
-
-                alert("Please select a file before Uploading.");
+                $("#fileErrorF3").show();
+             //   alert("Please select a file before Uploading.");
                 return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $(".fileErrorF1").text("Invalid file type. Please upload a .XLX or .XLSX file").show();
+                return false;
             }
 
             // Show the loader after validation
