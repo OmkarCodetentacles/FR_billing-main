@@ -53,7 +53,9 @@
 
                     <div class="col-md-6">
                         <div class="col-sm-8">
-                            <input id="File1" required type="file"  name="ImportText" class="choosefile" />
+                            <input id="File1" required type="file" name="ImportText" class="choosefile" />
+                            <span class="fileError" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
                         </div>
                         <div class="col-sm-4">
                             <input type="submit" class="btn btn-primary pull-right btn-submitt" id="textsubmitBtn" value="Import From text" />
@@ -96,13 +98,14 @@
 
             // Check if the file is selected
             if (!filePath) {
-                alert("Please select a file before submitting.");
+                $(".fileError").show();
                 return false;
             }
 
             // Validate the file extension
             if (!allowedExtensions.exec(filePath)) {
-                alert("Invalid file type. Please upload a DTDC  .txt file.");
+                $(".fileError").text("Invalid file type. Please upload a DTDC  .txt file.");
+            
                 fileInput.val(''); // Clear the file input
                 return false;
             }

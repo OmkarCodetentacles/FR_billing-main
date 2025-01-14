@@ -47,7 +47,8 @@
 
                     <div class="form-horizontal">
 
-                        <div id="alertContainer" style="color:black;background-color:green; display: none;"></div>
+                        <div id="alertContainer" style="display: none; color: white; background-color: green; padding: 10px; border-radius: 5px;"></div>
+
 
                         <div id="ErrorMessage">
 
@@ -221,8 +222,8 @@
                                         i = j + 1;
                                         <tr>
                                             @*@{
-                                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
-                                            }*@
+                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+                            }*@
 
                                             <td>@i</td>
 
@@ -284,6 +285,28 @@
     </div>
 
 <script>
+
+    function showAlert(message, isSuccess = true) {
+        const $alertContainer = $("#alertContainer");
+
+        // Set the message
+        $alertContainer.text(message);
+
+        // Update styles based on success or error
+        if (isSuccess) {
+            $alertContainer.css({ "background-color": "green", "color": "black" });
+        } else {
+            $alertContainer.css({ "background-color": "red", "color": "black" });
+        }
+
+        // Show the div
+        $alertContainer.show();
+
+        // Hide the div automatically after 10 seconds
+        setTimeout(function () {
+            $alertContainer.fadeOut();
+        }, 6000); // 10 seconds
+    }
     function DeleteConsignment(consignmentno) {
         // Get the consignment number from the input field or some other source
         const consignmentNo = consignmentno;
@@ -314,26 +337,25 @@
             type: 'POST',
             data: data,
             success: function (response) {
-                alert(response);
-                $('#alertContainer').text(response);
-                $("#alertContainer").show();
+                showAlert(response, true);
                 setTimeout(function () {
                   
                     location.reload();
-                }, 6000); // 6 seconds = 6000 milliseconds
+                }, 10000); // 6 seconds = 6000 milliseconds
                
             },
             error: function (xhr, status, error) {
               
-                $('#alertContainer').text('Something went wrong while deleting the consignment. Please try again').css('background-color', 'red'); // Set red background for errors;
-                $("#alertContainer").show();
+                //$('#alertContainer').text('Something went wrong while deleting the consignment. Please try again').css('background-color', 'red'); // Set red background for errors;
+                //$("#alertContainer").show();
+                showAlert("Something went wrong while deleting the consignment. Please try again", true);
                 //// Automatically hide the alert after 10 seconds
                 //$('#alertContainer').fadeOut('slow', function () {
                 //    $(this).html('').show(); // Clear and reset the container
                 //});
                 setTimeout(function () {
                    
-                }, 6000); // 6 seconds = 6000 milliseconds
+                }, 10000); // 6 seconds = 6000 milliseconds
 
                 // alert("Something went wrong while deleting the consignment. Please try again.");
             }
