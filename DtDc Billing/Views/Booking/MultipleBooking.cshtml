@@ -39,8 +39,8 @@
                                     }
                                     @if (!string.IsNullOrEmpty(BookedConsignments))
                                     {
-                                        var message = BookedConsignments + "   Consignment Booked Successfully!";
-                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", message))
+                                        var message = BookedConsignments + "    Consignment Booked Successfully!";
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", BookedConsignments))
                                     }
                                     <div class="form-horizontal">
                                         <div id="form-Cons">
@@ -75,7 +75,7 @@
                                                                     </div>
                                                                     <div class="col-md-9">
                                                                         <input id="EndingCons" type="text" class="form-control input-sm" name="EndingCons" />
-                                                                        <span id="endconserror" style="color: red; display: none;">Please Enter Starting Consignment.</span> <!-- Error message -->
+                                                                        <span id="endconserror" style="color: red; display: none;">Please Enter End Consignment Number.</span> <!-- Error message -->
 
                                                                     </div>
                                                                 </div>
@@ -93,7 +93,7 @@
                                                                     <div class="col-md-9">
 
                                                                         <input type="text" id="Companyid" class="form-control input-sm" name="Companyid" />
-                                                                        <span id="companyiderror" style="color: red; display: none;">Please Enter Starting Consignment.</span> <!-- Error message -->
+                                                                        <span id="companyiderror" style="color: red; display: none;">Please Select Comapny Id.</span> <!-- Error message -->
 
                                                                     </div>
                                                                 </div>
@@ -180,19 +180,21 @@
                     // alert("Please Enter Starting Consignment");
                     $("#startconserror").show();
                     $("#endconserror").hide();
+                    $("#companyiderror").hide();
                     return false;
                 }
                 else if (EndingCons == "") {
                     //   alert("Please Enter Ending Consignment");
                     $("#endconserror").show();
                     $("#startconserror").hide();
+                    $("#companyiderror").hide();
                     return false;
                 }
                 else if (Companyid == "") {
                     //  alert("Please Enter Company Id");
+                    $("#companyiderror").show();
                     $("#endconserror").hide();
                     $("#startconserror").hide();
-                    $("#companyiderror").show();
                     return false;
                 }
                 else {
@@ -204,7 +206,7 @@
 
                     if (conscount > 100) {
                         $("#companyiderror").text("Selected consignment are over 100");
-                      //  alert("Selected consignment are over 100");
+                        //alert("Selected consignment are over 100");
                         return false;
                     }
                     else {
@@ -226,7 +228,9 @@
                 $('#EndingCons').val('');
                 $('#StartingCons').val($(this).val().toUpperCase());
                 var startno = $("#StartingCons").val();
-             
+                //if (startno.length >= 9) {
+                //    $('#EndingCons').focus();
+                //}
 
             });
 
