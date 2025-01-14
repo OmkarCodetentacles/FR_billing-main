@@ -16,6 +16,62 @@
 </script>
 
 <style>
+    /* Excel-like table styles */
+    .excel-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+
+        .excel-table th {
+            background-color: #E6E6E6;
+            border: 1px solid #C0C0C0;
+            font-weight: bold;
+            padding: 8px;
+            position: relative;
+        }
+
+        .excel-table td {
+            border: 1px solid #C0C0C0;
+            padding: 6px 8px;
+            background-color: white;
+        }
+
+    /* Column headers like Excel */
+    .excel-header {
+        display: flex;
+        background-color: #F8F9FA;
+        border: 1px solid #C0C0C0;
+        margin-bottom: -1px;
+    }
+
+        .excel-header div {
+            padding: 4px 8px;
+            border-right: 1px solid #C0C0C0;
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+        }
+
+    /* Excel-like row numbers */
+    .row-number {
+        background-color: #F8F9FA;
+        border-right: 1px solid #C0C0C0;
+        color: #666;
+        text-align: center;
+        width: 40px;
+    }
+
+    .table-container {
+        border: 1px solid #C0C0C0;
+        background: white;
+        padding: 0;
+        margin: 10px 0;
+        overflow-x: auto;
+    }
+
     .template-item {
         margin: 10px;
         cursor: pointer;
@@ -33,6 +89,19 @@
             max-width: 170px;
             max-height: 200px;
         }
+
+    .step-number {
+        width: 25px;
+        height: 25px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+    }
 </style>
 
 <div class="content-wrapper">
@@ -123,26 +192,66 @@
                                     <div class="form-group">
                                         @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form1" }))
                                         {
-                                            <div class="col-md-6 no-padding">
-                                                <label for="file"><strong id="up-txt">First Format </strong></label>
-                                                <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
-                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4">
+                                                    <label for="file"><strong id="up-txt">First Format </strong></label>
+                                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
-                                                    <a href="@baseUrl/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Export Excel</a><!--CREAte Dynamic http://frbilling.com-->
+                                                    <a href="@baseUrl/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Download Format1</a><!--CREAte Dynamic http://frbilling.com-->
+
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <h6><strong id="up-txt">Steps:</strong></h6>
+                                                    <p><span class="step-number">1</span>Download the format1</p>
+                                                    <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                    <p><span class="step-number">3</span>You need to upload a .txt file for this format</p>
+                                                    <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
                                                 </div>
 
-                                            </div>
-                                            <div class="template-item col-md-4" data-value="1" style="display: block;">
 
-                                                <a href="~/admin-lte/img/ExcelFormat1.png" target="_blank"><img src="~/admin-lte/img/ExcelFormat1.png" alt="Template 1" class="img-thumbnail" style="width: 170px; height: 200px;" /></a>
-                                                <p class="text-center">First Format</p>
+                                            </div>
+                                            <div class="col-sm-12">
+
+                                                <div class="preview-section">
+
+                                                    <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                    <div class="table-container">
+                                                        <div class="excel-header">
+                                                            <div style="width: 40px">&nbsp;</div>
+                                                            <div style="width: 135px">A</div>
+                                                            <div style="width: 104px">B</div>
+
+                                                        </div>
+                                                        <table class="excel-table">
+                                                            <tr>
+                                                                <td class="row-number">1</td>
+                                                                <th>Consignment No<span class="text-danger">*</span></th>
+                                                                <th>Customer Id<span class="text-danger">*</span></th>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">2</td>
+                                                                <td>T12300345</td>
+                                                                <td>Test Logistic</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">3</td>
+                                                                <td></td>
+                                                                <td></td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         }
                                     </div>
                                 </div>
                             </div>
-                            <hr />
+
                         </div>
                     </div>
 
@@ -155,18 +264,81 @@
                                     <div class="form-group">
                                         @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form2" }))
                                         {
-                                            <div class="col-md-6 no-padding">
-                                                <label for="file"><strong id="up-txt">Second Format  </strong></label>
-                                                <input type="file" name="httpPostedFileBase" id="file2" class="form-control" />
-                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4">
+                                                    <label for="file"><strong id="up-txt">Second Format  </strong></label>
+                                                    <input type="file" name="httpPostedFileBase" id="file2" class="form-control" />
                                                     <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn2" />
-                                                    <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Export Excel</a>
+                                                    <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Download Format2</a>
                                                 </div>
-                                            </div>
-                                            <div class="template-item col-md-4" data-value="1" style="display: block;">
 
-                                                <a href="~/admin-lte/img/ExcelFormat2.png" target="_blank"><img src="~/admin-lte/img/ExcelFormat2.png" alt="Template 1" class="img-thumbnail" style="width: 170px; height: 200px;" /></a>
-                                                <p class="text-center">Second Format</p>
+                                                <div class="col-sm-8">
+                                                    <h6><strong id="up-txt">Steps:</strong></h6>
+                                                    <p><span class="step-number">1</span>Download the format1</p>
+                                                    <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                    <p><span class="step-number">3</span>You need to upload a .txt file for this format</p>
+                                                    <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-12">
+
+                                                <div class="preview-section">
+
+                                                    <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                    <div class="table-container">
+                                                        <div class="excel-header">
+                                                            <div style="width: 40px">&nbsp;</div>
+                                                            <div style="width: 54px">A</div>
+                                                            <div style="width: 135px;">B</div>
+                                                            <div style="width: 105px;">C</div>
+                                                            <div style="width: 136px;">D</div>
+                                                            <div style="width: 115px;">E</div>
+                                                            <div style="width: 77px;">F</div>
+                                                            <div style="width: 73px;">G</div>
+                                                            <div style="width: 112px;">H</div>
+                                                        </div>
+                                                        <table class="excel-table">
+                                                            <tr>
+                                                                <td class="row-number">1</td>
+                                                                <th>Sr.No</th>
+                                                                <th>Consignment No<span class="text-danger">*</span></th>
+                                                                <th>Customer Id<span class="text-danger">*</span></th>
+                                                                <th>Chargable Weight</th>
+                                                                <th>Insurance Amt</th>
+                                                                <th>FOV Amt</th>
+                                                                <th>FOV Per</th>
+                                                                <th>Other charges</th>
+
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="row-number">2</td>
+                                                                <td>1</td>
+                                                                <td>T12300345</td>
+                                                                <td>Test Logistic</td>
+                                                                <td>1.1</td>
+                                                                <td>100</td>
+                                                                <td>0.2</td>
+                                                                <td>2</td>
+                                                                <td>50</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">3</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         }
@@ -186,18 +358,115 @@
                                         <div class="form-group">
                                             @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form3" }))
                                             {
-                                                <div class="col-md-6 no-padding">
-                                                    <label for="file"><strong id="up-txt">Third Format  </strong></label>
-                                                    <input type="file" name="httpPostedFileBase" id="file3" class="form-control" />
-                                                    <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                <div class="col-md-12">
+                                                    <div class="col-sm-4">
+                                                        <label for="file"><strong id="up-txt">Third Format  </strong></label>
+                                                        <input type="file" name="httpPostedFileBase" id="file3" class="form-control" />
                                                         <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn3" />
-                                                        <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Export Excel</a><!--Create Dynamic url-->
+                                                        <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Download Format3</a><!--Create Dynamic url-->
                                                     </div>
-                                                </div>
-                                                <div class="template-item col-md-4" data-value="1" style="display: block;">
+                                                    <div class="col-sm-8">
+                                                        <h6><strong id="up-txt">Steps:</strong></h6>
+                                                        <p><span class="step-number">1</span>Download the format3</p>
+                                                        <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                        <p><span class="step-number">3</span>If you enter the amount, it will be saved. If left blank, the amount will be calculated based on the ratemaster</p>
+                                                        <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
 
-                                                    <a href="~/admin-lte/img/ExcelFormat3.png" target="_blank"><img src="~/admin-lte/img/ExcelFormat3.png" alt="Template 1" class="img-thumbnail" style="width: 170px; height: 200px;" /></a>
-                                                    <p class="text-center">Third Format</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-12">
+
+                                                    <div class="preview-section">
+
+                                                        <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                        <div class="table-container">
+                                                            <div class="excel-header">
+                                                                <div style="width: 40px">&nbsp;</div>
+                                                                <div style="width: 54px;">A</div>
+                                                                <div style="width: 110px;">B</div>
+                                                                <div style="width: 90px;">C</div>
+                                                                <div style="width: 59px;">D</div>
+                                                                <div style="width: 87px;">E</div>
+                                                                <div style="width: 80px;">F</div>
+                                                                <div style="width: 77px;">G</div>
+                                                                <div style="width: 147px;">H</div>
+                                                                <div style="width: 67px;">I</div>
+                                                                <div style="width: 85px;">J</div>
+                                                                <div style="width: 77px;">K</div>
+                                                                <div style="width: 76px;">L</div>
+                                                                <div style="width: 88px;">M</div>
+                                                            </div>
+                                                            <table class="excel-table">
+                                                                <tr>
+                                                                    <td class="row-number">1</td>
+                                                                    <th>Sr.No</th>
+                                                                    <th>Consignment No<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Chargable Weight
+                                                                    </th>
+                                                                    <th>Mode<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Company Address
+                                                                    </th>
+                                                                    <th>Quantity<span class="text-danger">*</span></th>
+                                                                    <th>Pincode<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Booking Date(dd/MM/yyyy Or dd-MM-YYYY)<span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th>Type(D or N)</th>
+                                                                    <th>
+                                                                        Customer Id<span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th>
+                                                                        Other Charges
+
+                                                                    </th>
+                                                                    <th>
+                                                                        Receiver
+                                                                    </th>
+                                                                    <th>
+                                                                        Amount (Optional)
+                                                                    </th>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="row-number">2</td>
+                                                                    <td>1</td>
+                                                                    <td>T12300345</td>
+                                                                    <td>1.1</td>
+                                                                    <td>AR</td>
+                                                                    <td>Pune</td>
+                                                                    <td>2</td>
+                                                                    <td>400001</td>
+                                                                    <td>30/05/2000</td>
+                                                                    <td>D</td>
+                                                                    <td>Test Logistic</td>
+                                                                    <td>50</td>
+                                                                    <td>Bob</td>
+                                                                    <td>50</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="row-number">3</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                             }

@@ -3,7 +3,7 @@
 @model IEnumerable<DtDc_Billing.Models.PaymentModel>
 
 @{
-    ViewBag.Title = "Add";
+   
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 <style>
@@ -31,6 +31,7 @@
 
 }*@
 
+
 <!-- Main content -->
 <div class="overlay" id="overlayBlock">
     <div class="loader"></div>
@@ -51,6 +52,21 @@
                         </h4>
                     </div>
                     <div class="modal-body">
+
+
+                 
+                        @*@if (!string.IsNullOrEmpty(sMessage))
+                        {
+
+                            <script>
+
+
+                                window.location.href = "/Payment/NewPaymentList";
+                                //document.querySelector(".SuccessMessage").style.display = "block";
+
+                            </script>
+                        }*@
+
 
 
 
@@ -119,6 +135,10 @@
             @using (Html.BeginForm())
             {
 
+              
+
+            
+
                 <div class="form-group">
                     <div class="col-sm-3">
                         <label>Payment Status</label>
@@ -132,7 +152,7 @@
 
                     </div>
                     <div class="col-md-1">
-                        <input type="submit" class="btn btn-primary " name="Show" value="Show" style="margin: 22px 0;width:100%" />
+                        <input type="submit" class="btn btn-primary " name="Show" id="PaymentFilter" value="Show" style="margin: 22px 0;width:100%" />
                     </div>
                 </div>
 
@@ -142,6 +162,7 @@
                 <br /><br />
 
             }
+        
 
 
             <div class="box-body">
@@ -373,12 +394,14 @@
 
             var Firm_Id = $(this).data('datafirmid');
 
+            var getbalance = (netamt - paid);
+
             $('.Invoiceno').val(d);
             $('.Firm_Id').val(Firm_Id);
             $('.Netamount').text('Net Amount Is' + " : " + netamt);
-            $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
+            $('.Balance').text('Balance Amount Is' + " : " + getbalance);
 
-
+            alert()
         });
         $("#modal-default .close").click(function () {
             // Clear all forms inside the modal

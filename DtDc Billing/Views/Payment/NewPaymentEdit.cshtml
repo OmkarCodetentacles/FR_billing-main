@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "NewPaymentEdit";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@model DtDc_Billing.Models.NewPaymentModel
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+@{
+    var sMessage = TempData["Message"] as string;
+    var balance = TempData["remainingAmount"];
+}
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>Edit</h4>
+
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    @if (!string.IsNullOrEmpty(sMessage))
+                    {
+                       
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                        
+               
+                }
+
+                    @using (Html.BeginForm("NewPaymentEdit", "Payment", FormMethod.Post,
+                       new { id = "paymentForm", data_success = "createsuccess" }))
+
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="messagediv" style="display:none;color: #ff0000; padding: 15px; border: 1px solid #f5c6cb; border-radius: 5px;">
+                            All Fields Are Required!
+                        </div>
+
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
+                                <input type="hidden" id="Firm_Id" value="@ViewBag.firmid" name="Firm_Id" />
+                                <div class="col-md-3">
+                                    <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5>
+                                        Balance :  <strong class="text-danger">
+                                            @(Math.Round((decimal)(ViewBag.netamount - (ViewBag.paidamt != null ? ViewBag.paidamt : 0)), 2))
+
+                                        </strong>
+                                    </h5>
+                                </div>
+                            </div>
+                            <hr />
+                            @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" class="Firm_Id" name="Firm_Id">
+                            <div class="form-group" style="display:none;">
+                                <label class="col-md-4">Payment Mode</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Payment_Mode, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Payment_Mode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4">Amount</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.Payment_Id)
+
+                            <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
+                            <div class="form-group">
+                                <label class="col-md-4">Date</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.temppaymentdate, new { htmlAttributes = new { @class = "form-control", @id = "temppaymentdate" } })
+                                    @Html.ValidationMessageFor(model => model.temppaymentdate, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="form-group bankname" style="display:none;">
+                                <label class="col-md-4">Bank Name</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Bank_Name, new { htmlAttributes = new { @class = "form-control ", } })
+                                    @Html.ValidationMessageFor(model => model.Bank_Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group branchname" style="display:none;">
+                                <label class="col-md-4">Branch Name</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Branch_Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Branch_Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group  transactionId" style="display:none;">
+                                <label class="col-md-4">Transaction Id</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Transaction_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Transaction_Id, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group checknumber" style="display:none;">
+                                <label class="col-md-4">Check Number</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.CheckNo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CheckNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group creditNoteNumber" style="display:none;">
+                                <label class="col-md-4">Credit Note Number</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.CreditNoteNo, new { htmlAttributes = new { @class = "form-control Invoiceno" } })
+                                    @Html.ValidationMessageFor(model => model.CreditNoteNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group tdsamount">
+                                <label class="col-md-4">Tds Amount</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Tds_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Tds_Amount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4">Total Amt</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control", } })
+                                    @Html.ValidationMessageFor(model => model.Total_Amount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4">Invoice No</label>
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.InvoiceNo, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.InvoiceNo, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Save" id="btnSubmit" class="btn btn-success pull-right " />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="savecredit" style="" href="" target="_blank" download>
+</a>
+@if (ViewBag.FileName != null)
+{
+    var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                        Request.ApplicationPath.TrimEnd('/');
+
+    <script>
+     var data = '@ViewBag.FileName';
+       var baseurl = '@baseurl';
+    document.getElementById('overlayBlock').style.display = 'none';
+
+    $('#savecredit').attr('href', baseurl + "/PDF/" + data);
+
+    document.getElementById('savecredit').click();
+
+    </script>
+
+
+
+}
+
+<script>
+    // Function to handle visibility of fields based on Payment Mode
+    function handlePaymentMode(selectedMode) {
+
+        if (selectedMode === "Cash") {
+            $(".bankname").hide();
+            $(".branchname").hide();
+            $(".transactionId").hide();
+            $(".checknumber").hide();
+            $(".creditNoteNumber").hide();
+        } else if (selectedMode === "Cheque") {
+            $(".bankname").show();
+            $(".branchname").show();
+            $(".transactionId").hide();
+            $(".checknumber").show();
+            $(".creditNoteNumber").hide();
+        } else if (selectedMode === "NEFT") {
+            $(".bankname").hide();
+            $(".branchname").hide();
+            $(".transactionId").show();
+            $(".checknumber").hide();
+            $(".creditNoteNumber").hide();
+        } else if (selectedMode === "CreditNote") {
+            $(".bankname").hide();
+            $(".branchname").hide();
+            $(".transactionId").hide();
+            $(".checknumber").hide();
+            $(".creditNoteNumber").show();
+        }
+    }
+
+    $(document).ready(function () {
+        // Get the initial Payment Mode from the model or hidden field
+        var initialPaymentMode = '@Model.Payment_Mode';
+
+        // Initialize the form based on the initial Payment Mode
+        handlePaymentMode(initialPaymentMode);
+
+
+
+        // Datepicker initialization
+        $('#temppaymentdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+        $("#Amount,#Tds_Amount").keyup(function () {
+
+            var Amount = $('#Amount').val();
+
+            var C_Tds_Amount = $('#Tds_Amount').val();
+
+
+            var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+            $('#Total_Amount').val(addition);
+
+        });
+
+        // Input fields validation and submission handling
+        $("#btnSubmit").click(function () {
+
+            var bankname = $("#Bank_Name").val();
+            var branchname = $("#Branch_Name").val();
+            var transactionid = $("#Transaction_Id").val();
+            var checkNumber = $("#CheckNo").val();
+            var creditnotnumber = $("#CreditNoteNo").val();
+            var amount = $("#Amount").val();
+            var invoiceno = $("#InvoiceNo").val();
+            var tdsamount = $("#Tds_Amount").val();
+            var totalamount = $("#Total_Amount").val();
+            var temppaymentdate = $("#temppaymentdate").val();
+            var selectedValue = $('input[name="paymentMode"]:checked').val();
+            var selectedValue = '@Model.Payment_Mode';
+
+            alert(selectedValue)
+            if (selectedValue === "Cash") {
+                if (!amount || !invoiceno || !tdsamount || !totalamount) {
+                    $(".messagediv").show();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            } else if (selectedValue === "Cheque") {
+                if (!amount || !invoiceno || !tdsamount || !totalamount || !branchname || !bankname || !checkNumber) {
+                    $(".messagediv").show();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            } else if (selectedValue === "NEFT") {
+                if (!amount || !invoiceno || !tdsamount || !totalamount || !transactionid) {
+                    $(".messagediv").show();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            } else if (selectedValue === "CreditNote") {
+                if (!amount || !invoiceno) {
+                    $(".messagediv").show();
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            return false;
+        });
+    });
+</script>
+
+
+
+
+

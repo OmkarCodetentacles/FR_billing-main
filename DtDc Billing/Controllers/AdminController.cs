@@ -3301,7 +3301,8 @@ namespace DtDc_Billing.Controllers
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-
+            DateTime fromdate = DateTime.Now;
+            DateTime todate = DateTime.Now;
             var obj = new List<Expense>();
             if (ToDatetime != null && Fromdatetime != null)
             {
@@ -3310,27 +3311,24 @@ namespace DtDc_Billing.Controllers
                 string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
 
-                DateTime fromdate = Convert.ToDateTime(bdatefrom);
-                DateTime todate = Convert.ToDateTime(bdateto);
+                 fromdate = Convert.ToDateTime(bdatefrom);
+                 todate = Convert.ToDateTime(bdateto);
 
                 ViewBag.Fromdatetime = Fromdatetime;
                 ViewBag.ToDatetime = ToDatetime;
 
-                obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate) && m.Pf_Code==pfcode).ToList();
             }
-            else
-            {
-                obj = db.Expenses.Where(x=>x.Pf_Code==pfcode).ToList();
-            }
+            obj = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate) && m.Pf_Code == pfcode).ToList();
+
             return View(obj);
         }
 
         [HttpPost]
-        public ActionResult ExpensesList(string Pf_Code, string Category, string ToDatetime, string Fromdatetime, string Submit)
+        public ActionResult ExpensesList(string Category, string ToDatetime, string Fromdatetime, string Submit)
         {
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
-            Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        string    Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.Pf_Code = Pf_Code; //new SelectList(db.Franchisees, "Pf_Code", "Pf_Code");
 
 
@@ -3367,27 +3365,29 @@ namespace DtDc_Billing.Controllers
 
 
             List<Expense> list = new List<Expense>();
-            if ((Pf_Code != null && Pf_Code != "") && (Category != null && Category != ""))
-            {
-                list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            }
-            else if ((Pf_Code != null && Pf_Code != "") || (Category == null && Category == ""))
-            {
-                list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            }
-            else if ((Pf_Code == null && Pf_Code == "") || (Category != null && Category != ""))
-            {
-                list = db.Expenses.Where(m => m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            }
-            else if ((Pf_Code == null && Pf_Code == "") || (Category == null && Category == "") || (ToDatetime != "" && Fromdatetime != null))
-            {
-                list = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
-            }
-            else
-            {
-                list = db.Expenses.ToList();
-            }
+            //if ((Pf_Code != null && Pf_Code != "") && (Category != null && Category != ""))
+            //{
+            //    list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+            //}
+            //else if ((Pf_Code != null && Pf_Code != "") || (Category == null && Category == ""))
+            //{
+            //    list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+            //}
+            //else if ((Pf_Code == null && Pf_Code == "") || (Category != null && Category != ""))
+            //{
+            //    list = db.Expenses.Where(m => m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+            //}
+            //else if ((Pf_Code == null && Pf_Code == "") || (Category == null && Category == "") || (ToDatetime != "" && Fromdatetime != null))
+            //{
+            //    list = db.Expenses.Where(m => DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
+            //}
+            //else
+            //{
+            //    list = db.Expenses.ToList();
+            //}
+             //list = db.Expenses.Where(m => m.Pf_Code == Pf_Code && m.Category == Category && DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)).ToList();
 
+            list = db.Expenses.Where(m => m.Pf_Code==Pf_Code &&((fromdate==null || DbFunctions.TruncateTime(m.Datetime_Exp) >= DbFunctions.TruncateTime(fromdate)) && (todate==null || DbFunctions.TruncateTime(m.Datetime_Exp) <= DbFunctions.TruncateTime(todate)))).ToList();
 
             if (Submit == "Export to Excel")
             {

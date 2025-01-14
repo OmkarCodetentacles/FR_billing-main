@@ -647,17 +647,17 @@ namespace DtDc_Billing.Controllers
         public ActionResult AddCompany()
         {
             ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
-
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             TempData["ShowLoader"] = true;
-        
+            var franchisee = db.Franchisees.Where(x => x.PF_Code == pfcode).FirstOrDefault();
             List<SelectListItem> items = new List<SelectListItem>();
 
             items.Add(new SelectListItem { Text = "0", Value = "0", Selected = true });
             items.Add(new SelectListItem { Text = "50", Value = "50" });
             items.Add(new SelectListItem { Text = "100", Value = "100" });
-
+            ViewBag.IsGECSector = franchisee.IsGECSector;
             ViewBag.Minimum_Risk_Charge = items;
-
+            
             return View();
         }
 
@@ -2275,8 +2275,28 @@ namespace DtDc_Billing.Controllers
                                 }
                                 
                                 ).ToList();
-               
-               
+
+                var DataSet11 = (from a in db.Sectors join
+                               ab in db.GECrates on a.Sector_Id equals ab.Sector_Id
+                                 where ab.Company_id == CompanyId && a.BillGecSec == true
+                                 select new {
+                                     ab.GECrateId,
+                                     ab.Slab1,
+                                     ab.Slab2,
+                                     ab.Slab3,
+                                     ab.Slab4,
+                                     ab.Uptosl1,
+                                     ab.Uptosl2,
+                                     ab.Uptosl3,
+                                     ab.Uptosl4,
+                                     ab.Company_id,
+                                     ab.Sector_Id,
+                                     ab.SectorName,
+                                     ab.PFcode,
+                                     ab.GECNoOfSlab
+                            }
+
+                     ).ToList();
                 string Pfcode = company.Pf_code;
 
                 //var logo = db.Franchisees.Where(m => m.PF_Code == Pfcode).FirstOrDefault();
@@ -2311,6 +2331,7 @@ namespace DtDc_Billing.Controllers
                 ReportDataSource rd8 = new ReportDataSource("DataSet8", DataSet8);
                 ReportDataSource rd9 = new ReportDataSource("DataSet9", DataSet9);
                 ReportDataSource rd10 = new ReportDataSource("DataSet10", DataSet10);
+                ReportDataSource rd11 = new ReportDataSource("DataSet11", DataSet11);
 
                 //if (logo.LogoFilePath == null)
                 //{
@@ -2340,7 +2361,7 @@ namespace DtDc_Billing.Controllers
                 lr.DataSources.Add(rd8);
                 lr.DataSources.Add(rd9);
                 lr.DataSources.Add(rd10);
-
+                lr.DataSources.Add(rd11);
                 string reportType = "PDF";
                 string mimeType;
                 string encoding;

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
@@ -16,6 +17,7 @@ using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Microsoft.Reporting.WebForms;
+using Razorpay.Api;
 
 namespace DtDc_Billing.Controllers
 {
@@ -176,10 +178,40 @@ namespace DtDc_Billing.Controllers
             return PartialView("MakePaymentPartial", payment);
         }
 
-
+        //[HttpGet]
+        //public ActionResult PaymodeModePartial(int id)
+        //{
+        //    string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    NewPaymentModel newPaymentdetail = new NewPaymentModel();
+        //    var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+        //    if (data != null)
+        //    {
+        //        var invoice = db.Invoices.Where(x => x.invoiceno == data.InvoiceNo && x.Pfcode == pfcode).FirstOrDefault();
+             
+        //        newPaymentdetail.InvoiceNo = data.InvoiceNo;
+        //        newPaymentdetail.Pfcode = pfcode;
+        //        newPaymentdetail.Amount = data.Amount;
+        //        newPaymentdetail.Payment_Mode = data.Payment_Mode;
+        //        newPaymentdetail.Tds_Amount = data.Tds_Amount;
+        //        newPaymentdetail.Total_Amount = data.Total_Amount;
+        //        newPaymentdetail.Payment_Date= data.Payment_Date;
+        //        newPaymentdetail.Bank_Name = data.Bank_Name;
+        //        newPaymentdetail.Branch_Name = data.Branch_Name;
+        //        newPaymentdetail.Transaction_Id = data.Transaction_Id;
+        //        newPaymentdetail.CheckNo = data.CheckNo;
+        //        newPaymentdetail.CreditNoteNo=data.CreditNoteNo;
+        //        newPaymentdetail.Balance = data.Balance;
+        //        newPaymentdetail.Created_Date = data.Created_Date;
+        //        newPaymentdetail.temppaymentdate = data.Created_Date.Value.ToString("dd-MM-yyyy");
+               
+        //        return PartialView("PaymodeModePartial",newPaymentdetail);
+        //    }
+        //    return PartialView("PaymodeModePartial");
+        //}
         [HttpPost]
-        public ActionResult PaymodeModePartial(NewPaymentModel newPaymentModel)
-        {
+        public ActionResult PaymodeModePartial(NewPaymentModel newPaymentModel,string status)
+            {
+            ViewBag.status = status;
             if (ModelState.IsValid)
             {
                 string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -188,10 +220,13 @@ namespace DtDc_Billing.Controllers
 
                 double balance = Convert.ToDouble(invoice.netamount) - Convert.ToDouble(invoice.paid ?? 0);
 
+                TempData["remainingAmount"] = balance;
+
                 if (newPaymentModel.Total_Amount > balance)
                 {
-                    TempData["remainingAmount"] = balance;
+
                     ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                    return PartialView("PaymodeModePartial", newPaymentModel);
                 }
                 else
                 {
@@ -217,17 +252,133 @@ namespace DtDc_Billing.Controllers
                     NP.Transaction_Id = newPaymentModel.Transaction_Id;
                     NP.Created_Date = DateTime.Now;
                     NP.CreditNoteNo = newPaymentModel.CreditNoteNo;
-                    NP.Balance = balance-newPaymentModel.Total_Amount; 
-
+                    NP.Balance = balance-newPaymentModel.Total_Amount;
+                    NP.CheckNo = newPaymentModel.CheckNo;
                     db.NewPaymentdetails.Add(NP);
                     db.SaveChanges();
                     TempData["Message"] = "Payment added successfully";
                     TempData["remainingAmount"] = balance - Convert.ToDouble(newPaymentModel.Total_Amount);
-                    return PartialView("PaymodeModePartial");
+
+                    
+
+                    if (newPaymentModel.Payment_Mode== "CreditNote")
+                    {
+                        LocalReport lr = new LocalReport();
+
+                        var DataSet1 = db.Franchisees.Where(x => x.PF_Code == strpf).FirstOrDefault();
+
+                        var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno ==newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                        var DataSet3 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id && m.Pf_code == strpf).FirstOrDefault();
+
+                        DataSet2.Amount4_Lable = AmountTowords.changeToWords(newPaymentModel.Total_Amount.ToString());
+                        DataSet2.Address = newPaymentModel.CreditNoteNo;
+                        DataSet2.Tempdatefrom=newPaymentModel.temppaymentdate;
+                        DataSet2.Amount4 = newPaymentModel.Total_Amount;
+
+
+                        // Convert single objects to lists
+                        var DataSet1List = new List<Franchisee> { DataSet1 };
+                        var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
+                        var DataSet3List = new List<Company> { DataSet3 };
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+
+
+
+                        lr.EnableExternalImages = true;
+
+                        // Create report data sources
+                        ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1List);
+                        ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2List);
+                        ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3List);
+
+                        lr.DataSources.Add(rd);
+                        lr.DataSources.Add(rd1);
+                        lr.DataSources.Add(rd2);
+
+
+                        string reportType = "pdf";
+                        string mimeType;
+                        string encoding;
+                        string fileNameExte;
+
+                        string deviceInfo =
+                            "<DeviceInfo>" +
+                            "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                            "<PageHeight>11in</PageHeight>" +
+                           "<Margintop>0.1in</Margintop>" +
+                             "<Marginleft>0.1in</Marginleft>" +
+                              "<Marginright>0.1in</Marginright>" +
+                               "<Marginbottom>0.5in</Marginbottom>" +
+                               "</DeviceInfo>";
+
+                        Warning[] warnings;
+                        string[] streams;
+                        byte[] renderByte;
+
+
+                        renderByte = lr.Render
+                      (reportType,
+                      deviceInfo,
+                      out mimeType,
+                      out encoding,
+                      out fileNameExte,
+                      out streams,
+                      out warnings
+                      );
+                        //return File(renderByte, mimeType);
+
+
+                        string savePath = Server.MapPath("~/PDF/"+strpf+"/" + DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+                        using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                        {
+                            stream.Write(renderByte, 0, renderByte.Length);
+
+                        }
+                     
+                     
+                        ViewBag.FileName = DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf";
+                        ViewBag.pfcode = strpf;
+
+                    }
+                    List<PaymentModel> p = new List<PaymentModel>();
+                    ViewBag.AllModePaymentModel = newPaymentModel;
+                    return PartialView("PaymodeModePartial", newPaymentModel);
 
                 }
             }
-            return PartialView("PaymodeModePartial");
+            List<PaymentModel> pm = new List<PaymentModel>();
+            ViewBag.AllModePaymentModel = newPaymentModel;
+            return PartialView("PaymodeModePartial", newPaymentModel);
+        }
+
+        public ActionResult DeleteNewPayment(int id)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+            if (data != null)
+            {
+                var invoice = db.Invoices.Where(m => m.invoiceno == data.InvoiceNo && m.Pfcode == pfcode).FirstOrDefault();
+
+                invoice.paid = Convert.ToDouble(invoice.paid) - Convert.ToDouble(data.Total_Amount);
+                invoice.Balance = Math.Round((double)invoice.netamount - (double)(invoice.paid ?? 0));
+                db.Entry(invoice).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.NewPaymentdetails.Remove(data);
+                db.SaveChanges();
+                TempData["Deletedsuccss"] = "Payment Details Deleted Successfully!";
+                return RedirectToAction("NewPaymentTrack");
+
+            }
+            TempData["Deletedsuccss"] = "Something Went Wrong";
+            return RedirectToAction("NewPaymentTrack");   
         }
 
         [HttpPost]
@@ -433,7 +584,7 @@ namespace DtDc_Billing.Controllers
 
                     // Convert single objects to lists
                     var DataSet1List = new List<Franchisee> { DataSet1 };
-                    var DataSet2List = new List<Invoice> { DataSet2 };
+                    var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
                     var DataSet3List = new List<Company> { DataSet3 };
                     string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
 
@@ -900,11 +1051,6 @@ Select(e => new
 
                                }).OrderByDescending(x=>x.Payment_Date).ToList();
 
-
-
-       
-
-
             return View(Paymentdata);
         }
         [HttpPost]
@@ -1064,6 +1210,184 @@ Select(e => new
 
 
 
+        }
+
+        [HttpGet]
+        public ActionResult NewPaymentEdit(int id)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var obj = db.NewPaymentdetails.Where(m => m.Payment_Id == id && m.Pfcode==pfcode).FirstOrDefault();
+        
+            NewPaymentModel newPaymentdetail = new NewPaymentModel();
+            var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+            if (data != null)
+            {
+                var invoice = db.Invoices.Where(x => x.invoiceno == data.InvoiceNo && x.Pfcode == pfcode).FirstOrDefault();
+
+                newPaymentdetail.Payment_Id = data.Payment_Id;
+
+                newPaymentdetail.InvoiceNo = data.InvoiceNo;
+                newPaymentdetail.Pfcode = pfcode;
+                newPaymentdetail.Amount = data.Amount;
+                newPaymentdetail.Payment_Mode = data.Payment_Mode;
+                newPaymentdetail.Tds_Amount = data.Tds_Amount;
+                newPaymentdetail.Total_Amount = data.Total_Amount;
+                newPaymentdetail.Payment_Date = data.Payment_Date;
+                newPaymentdetail.Bank_Name = data.Bank_Name;
+                newPaymentdetail.Branch_Name = data.Branch_Name;
+                newPaymentdetail.Transaction_Id = data.Transaction_Id;
+                newPaymentdetail.CheckNo = data.CheckNo;
+                newPaymentdetail.CreditNoteNo = data.CreditNoteNo;
+                newPaymentdetail.Balance = data.Balance;
+                newPaymentdetail.Created_Date = data.Created_Date;
+                newPaymentdetail.temppaymentdate = data.Created_Date.Value.ToString("dd-MM-yyyy");
+                ViewBag.netamount = invoice.netamount;
+                ViewBag.existingvalue = obj.Total_Amount ?? 0;
+                ViewBag.paidamt = invoice.paid;
+                ViewBag.ctotalamt = obj.Total_Amount;
+                return View(newPaymentdetail);
+            }
+            return View("NewPaymentTrack");
+        }
+
+        [HttpPost]
+        public ActionResult NewPaymentEdit(NewPaymentModel newPaymentModel, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
+       
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+            if (ModelState.IsValid)
+            {
+                if (newPaymentModel.Total_Amount > 0)
+                {
+                    if (newPaymentModel.Total_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+
+                        if (!string.IsNullOrEmpty(newPaymentModel.temppaymentdate))
+                        {
+                            string paymentdate = DateTime.ParseExact(newPaymentModel.temppaymentdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                            newPaymentModel.Payment_Date = Convert.ToDateTime(paymentdate);
+
+                        }
+                        invoicedetails.paid = (invoicedetails.paid - amountval) +newPaymentModel.Total_Amount;
+                       
+                        var paymentdetails = db.NewPaymentdetails.Where(x => x.Payment_Id == newPaymentModel.Payment_Id && x.Pfcode == strpf).FirstOrDefault();
+                        paymentdetails.InvoiceNo = newPaymentModel.InvoiceNo;
+                        paymentdetails.Pfcode = strpf;
+                        paymentdetails.Amount = newPaymentModel.Amount;
+                        paymentdetails.Payment_Date = newPaymentModel.Payment_Mode!=null?newPaymentModel.Payment_Date:paymentdetails.Payment_Date;
+                        paymentdetails.Tds_Amount = newPaymentModel.Tds_Amount;
+                        paymentdetails.Total_Amount = newPaymentModel.Total_Amount;
+                    
+                        paymentdetails.Bank_Name = newPaymentModel.Bank_Name;
+                        paymentdetails.Branch_Name = newPaymentModel.Branch_Name;
+                        paymentdetails.Transaction_Id = newPaymentModel.Transaction_Id;
+                        paymentdetails.CheckNo = newPaymentModel.CheckNo;
+                        paymentdetails.CreditNoteNo = newPaymentModel.CreditNoteNo;
+                        paymentdetails.Balance = newPaymentModel.Balance;
+                        paymentdetails.Created_Date =DateTime.Now;
+                       
+
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Message"] = "Updated successfully!";
+                        if (newPaymentModel.Payment_Mode == "CreditNote")
+                        {
+                            LocalReport lr = new LocalReport();
+
+                            var DataSet1 = db.Franchisees.Where(x => x.PF_Code == strpf).FirstOrDefault();
+
+                            var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                            var DataSet3 = db.Companies.Where(m => m.Company_Id == invoicedetails.Customer_Id && m.Pf_code == strpf).FirstOrDefault();
+
+                            DataSet2.Amount4_Lable = AmountTowords.changeToWords(newPaymentModel.Total_Amount.ToString());
+                            DataSet2.Address = newPaymentModel.CreditNoteNo;
+                            DataSet2.Tempdatefrom = newPaymentModel.Payment_Date.Value.ToString("dd/MM/yyyy");
+                            DataSet2.Amount4 = newPaymentModel.Total_Amount;
+
+
+                            // Convert single objects to lists
+                            var DataSet1List = new List<Franchisee> { DataSet1 };
+                            var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
+                            var DataSet3List = new List<Company> { DataSet3 };
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+                            if (System.IO.File.Exists(path))
+                            {
+                                lr.ReportPath = path;
+                            }
+
+
+
+                            lr.EnableExternalImages = true;
+
+                            // Create report data sources
+                            ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1List);
+                            ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2List);
+                            ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3List);
+
+                            lr.DataSources.Add(rd);
+                            lr.DataSources.Add(rd1);
+                            lr.DataSources.Add(rd2);
+
+
+                            string reportType = "pdf";
+                            string mimeType;
+                            string encoding;
+                            string fileNameExte;
+
+                            string deviceInfo =
+                                "<DeviceInfo>" +
+                                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                                "<PageHeight>11in</PageHeight>" +
+                               "<Margintop>0.1in</Margintop>" +
+                                 "<Marginleft>0.1in</Marginleft>" +
+                                  "<Marginright>0.1in</Marginright>" +
+                                   "<Marginbottom>0.5in</Marginbottom>" +
+                                   "</DeviceInfo>";
+
+                            Warning[] warnings;
+                            string[] streams;
+                            byte[] renderByte;
+
+
+                            renderByte = lr.Render
+                          (reportType,
+                          deviceInfo,
+                          out mimeType,
+                          out encoding,
+                          out fileNameExte,
+                          out streams,
+                          out warnings
+                          );
+                            //return File(renderByte, mimeType);
+
+
+                            string savePath = Server.MapPath("~/PDF/" + DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+                            using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                            {
+                                stream.Write(renderByte, 0, renderByte.Length);
+
+                            }
+
+
+                            ViewBag.FileName = DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf";
+
+                        }
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+        
+
+
+            return View(newPaymentModel);
         }
 
         public ActionResult CashEdit(int id)
@@ -1424,5 +1748,7 @@ Select(e => new
             }
             return RedirectToAction("PaymentTrack");
         }
+
+       
     }
 }

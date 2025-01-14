@@ -32,16 +32,17 @@
                                 {
                                     <div class="col-md-6">
                                         @*<label for="file"><strong id="up-txt"> Upload Excel </strong></label>*@
-                                        <input type="file" name="httpPostedFileBase" id="file" class="form-control" required />
+                                        <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                        <span id="fileErrorLogo" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
 
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-3" style=" margin-top: 28px; ">
-                                            <input type="submit" value="Upload" class="btn btn-primary" style="width:100%" />
+                                            <input type="submit" value="Upload" id="submitBtn" class="btn btn-primary" style="width:100%" />
 
                                         </div>
                                         <div class="col-md-3" style=" margin-top: 28px; ">
-                                            <a href="https://frbilling.com/excelformat/BarcodeFormat.xlsx" class="btn btn-success btn-block  col-sm-12 "> Export Excel</a>
+                                            <a href="https://frbilling.com/excelformat/BarcodeFormat.xlsx"  class="btn btn-success btn-block  col-sm-12 "> Export Excel</a>
 
                                         </div>
 
@@ -81,4 +82,31 @@
 
     </script>
 }
+<script>
+    $(document).ready(function () {
+        $("#fileErrorLogo").hide();
+        $('#submitBtn').on('click', function (e) {
 
+            // Get the file input value
+            var file = $("#file").val();
+
+            // Check if file input is empty
+            if (file == "" || file == NaN || file == null) {
+                $("#fileErrorLogo").show();
+                return false;
+            }
+
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorLogo").text("Invalid file type. Please upload a .xls or .xlsx  file").show();
+                return false;
+            }
+
+
+        })
+    });
+
+</script>
