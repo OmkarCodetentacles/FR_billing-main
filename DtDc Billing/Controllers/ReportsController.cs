@@ -248,7 +248,7 @@ namespace DtDc_Billing.Controllers
                     Pf_Code = x.Pf_Code,
                     Datetime_Cons = x.Datetime_Cons,
                     Charges_Total = x.Charges_Total,
-                }).OrderByDescending(x => x.Datetime_Cons).ToList();
+                }).Where(x=>x.Datetime_Cons.Value.Month==DateTime.Now.Month).OrderByDescending(x => x.Datetime_Cons).ToList();
 
             }
 
@@ -525,22 +525,39 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionAdmin]
-        public ActionResult DailyReport(DateTime? dateTime,string Submit)
+        public ActionResult DailyReport(string dateTime,string Submit)
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             ViewBag.Consignment = TempData["Consignment"] == null ? null : TempData["Consignment"].ToString();
-            DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
-            DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
+            ViewBag.datetime = dateTime;
+            DateTime localTime = DateTime.Now;
+            if (string.IsNullOrEmpty(dateTime))
+                {
+                DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
+                DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
 
-            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
+                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+                 localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-            var finalDate = (dateTime != null ? dateTime : localTime);
+            }
+            else
+            {
+                string[] formats = { "dd-MM-yyyy" };
+                string date = DateTime.ParseExact(dateTime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                localTime = Convert.ToDateTime(date);
 
-            List<Receipt_details> rc = db.Receipt_details.Where(m =>  m.Datetime_Cons.Value.Day == finalDate.Value.Day
+            }
+           
+
+
+
+
+      
+
+            List<Receipt_details> rc = db.Receipt_details.Where(m =>  m.Datetime_Cons.Value.Day == localTime.Day
             
-            && (m.Datetime_Cons.Value.Month == finalDate.Value.Month)
-            && (m.Datetime_Cons.Value.Year == finalDate.Value.Year)
+            && (m.Datetime_Cons.Value.Month == localTime.Month)
+            && (m.Datetime_Cons.Value.Year == localTime.Year)
             && m.Pf_Code == pfcode
             ).OrderByDescending(x => x.Datetime_Cons).ToList();
 
@@ -566,7 +583,7 @@ namespace DtDc_Billing.Controllers
                             select online.Credit_Amount).Sum();
 
 
-            ViewBag.sum = sum;
+      
             ViewBag.bycard = bycard;
             ViewBag.bycheque = bycheque;
             ViewBag.bycredit = bycredit;
@@ -582,28 +599,28 @@ namespace DtDc_Billing.Controllers
             ).ToList();
 
 
-            ViewBag.expenseCount = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == localTime.Day
+           double expensesum = Convert.ToDouble(db.Expenses.Where(m => m.Datetime_Exp.Value.Day == localTime.Day
                && m.Datetime_Exp.Value.Month == localTime.Month
                && m.Datetime_Exp.Value.Year == localTime.Year
                && m.Pf_Code == pfcode
-            ).Select(m => m.Amount).Sum();
+            ).Select(m => m.Amount).Sum());
 
-
-
+            ViewBag.expenseCount = expensesum;
+          
             ViewBag.Payment = db.Payments.Where(m => m.Datetime_Pay.Value.Day == localTime.Day
             && m.Datetime_Pay.Value.Month == localTime.Month
             && m.Datetime_Pay.Value.Year == localTime.Year
             && m.Pf_Code == pfcode
           ).ToList();
 
-            ViewBag.PaymentCount = db.Payments.Where(m => m.Datetime_Pay.Value.Day == localTime.Day
+       double paymentsum    = Convert.ToDouble(db.Payments.Where(m => m.Datetime_Pay.Value.Day == localTime.Day
          && m.Datetime_Pay.Value.Month == localTime.Month
          && m.Datetime_Pay.Value.Year == localTime.Year
          && m.Pf_Code == pfcode
-       ).Select(m => m.amount).Sum();
+       ).Select(m => m.amount).Sum());
 
-
-
+            ViewBag.PaymentCount = paymentsum;
+            ViewBag.sum = Math.Round(Convert.ToDouble(sum - expensesum)+paymentsum, 2);
 
             ViewBag.Savings = db.Savings.Where(m => m.Datetime_Sav.Value.Day == localTime.Day
           && m.Datetime_Sav.Value.Month == localTime.Month
@@ -762,7 +779,7 @@ namespace DtDc_Billing.Controllers
 
 
             }
-            ViewBag.Fdate = finalDate;
+            ViewBag.Fdate = localTime;
 
             return View(rc);
 
@@ -3216,5 +3233,33 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         }
 
         JsonSerializerSettings _jsonSetting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
+
+
+        [HttpGet]
+        public ActionResult CustomerSalesComparison()
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var customerreport = db.GetCustomerSalesComparison(pfcode).Select(x=>new GetCustomerSalesReportModel {
+                Company_Id=x.Company_Id,
+                Company_Name=x.Company_Name,
+                Pf_code=x.Pf_code,
+                LastMonth=x.LastMonth,
+                PrevMonth=x.PrevMonth,
+                LastMonthSales=x.LastMonthSales,
+                PrevMonthSales=x.PrevMonthSales,
+                SalesDifference=x.SalesDifference,
+                PercentageChange=x.PercentageChange,
+                ChangeIndicator=x.ChangeIndicator
+
+            }).ToList();
+            return View(customerreport);
+        }
+
+    
+
+
     }
+
+
+  
 }

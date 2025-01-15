@@ -2686,6 +2686,9 @@
     <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
     <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
     <EntitySet Name="NewPaymentdetails" EntityType="db_a92afa_frbillingModel.NewPaymentdetail" />
+    <FunctionImport Name="GetCustomerSalesComparison" ReturnType="Collection(db_a92afa_frbillingModel.GetCustomerSalesComparison_Result)">
+      <Parameter Name="PFCode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3327,4 +3330,16 @@
     <Property Name="Balance" Type="Double" />
     <Property Name="Created_Date" Type="DateTime" Precision="3" />
   </EntityType>
+  <ComplexType Name="GetCustomerSalesComparison_Result">
+    <Property Type="String" Name="Company_Id" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Company_Name" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Pf_code" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="LastMonth" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="PrevMonth" Nullable="true" MaxLength="30" />
+    <Property Type="Double" Name="LastMonthSales" Nullable="false" />
+    <Property Type="Double" Name="PrevMonthSales" Nullable="false" />
+    <Property Type="Double" Name="SalesDifference" Nullable="false" />
+    <Property Type="Double" Name="PercentageChange" Nullable="true" />
+    <Property Type="String" Name="ChangeIndicator" Nullable="false" MaxLength="9" />
+  </ComplexType>
 </Schema>

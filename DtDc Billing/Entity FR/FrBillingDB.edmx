@@ -2070,6 +2070,9 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Parameter Name="Customerid" Type="varchar" Mode="In" />
           <Parameter Name="pfcode" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="GetCustomerSalesComparison" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PFCode" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="getInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fromDate" Type="datetime" Mode="In" />
           <Parameter Name="toDate" Type="datetime" Mode="In" />
@@ -5381,6 +5384,9 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="GECrates" EntityType="db_a92afa_frbillingModel.GECrate" />
           <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
           <EntitySet Name="NewPaymentdetails" EntityType="db_a92afa_frbillingModel.NewPaymentdetail" />
+          <FunctionImport Name="GetCustomerSalesComparison" ReturnType="Collection(db_a92afa_frbillingModel.GetCustomerSalesComparison_Result)">
+            <Parameter Name="PFCode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -6022,6 +6028,18 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Balance" Type="Double" />
           <Property Name="Created_Date" Type="DateTime" Precision="3" />
         </EntityType>
+        <ComplexType Name="GetCustomerSalesComparison_Result">
+          <Property Type="String" Name="Company_Id" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Company_Name" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Pf_code" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="LastMonth" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="PrevMonth" Nullable="true" MaxLength="30" />
+          <Property Type="Double" Name="LastMonthSales" Nullable="false" />
+          <Property Type="Double" Name="PrevMonthSales" Nullable="false" />
+          <Property Type="Double" Name="SalesDifference" Nullable="false" />
+          <Property Type="Double" Name="PercentageChange" Nullable="true" />
+          <Property Type="String" Name="ChangeIndicator" Nullable="false" MaxLength="9" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7934,6 +7952,22 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetCustomerSalesComparison" FunctionName="db_a92afa_frbillingModel.Store.GetCustomerSalesComparison">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.GetCustomerSalesComparison_Result">
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
+                <ScalarProperty Name="LastMonth" ColumnName="LastMonth" />
+                <ScalarProperty Name="PrevMonth" ColumnName="PrevMonth" />
+                <ScalarProperty Name="LastMonthSales" ColumnName="LastMonthSales" />
+                <ScalarProperty Name="PrevMonthSales" ColumnName="PrevMonthSales" />
+                <ScalarProperty Name="SalesDifference" ColumnName="SalesDifference" />
+                <ScalarProperty Name="PercentageChange" ColumnName="PercentageChange" />
+                <ScalarProperty Name="ChangeIndicator" ColumnName="ChangeIndicator" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

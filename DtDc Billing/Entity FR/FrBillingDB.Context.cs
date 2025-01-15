@@ -921,5 +921,14 @@ namespace DtDc_Billing.Entity_FR
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result1>("MonthlyDataAnalysis");
         }
+    
+        public virtual ObjectResult<GetCustomerSalesComparison_Result> GetCustomerSalesComparison(string pFCode)
+        {
+            var pFCodeParameter = pFCode != null ?
+                new ObjectParameter("PFCode", pFCode) :
+                new ObjectParameter("PFCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerSalesComparison_Result>("GetCustomerSalesComparison", pFCodeParameter);
+        }
     }
 }

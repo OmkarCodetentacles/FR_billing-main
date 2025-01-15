@@ -78,8 +78,16 @@
                                                     <div class="input-group-addon" style="border-radius:0 !important">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
+                                                    @if (ViewBag.datetime != null)
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@ViewBag.datetime" type="text">
 
-                                                    <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("MM/dd/yyyy")" type="text">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("dd-MM-yyyy")" type="text">
+
+                                                    }
 
                                                 </div>
                                             </div>
@@ -489,7 +497,7 @@
     
     $('#datepicker').datepicker({
         autoclose: true,
-        format: 'mm/dd/yyyy'
+        format: 'dd-mm-yyyy'
     })
 
     $(function () {
