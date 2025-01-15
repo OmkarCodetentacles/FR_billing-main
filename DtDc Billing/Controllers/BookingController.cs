@@ -1853,8 +1853,11 @@ Select(e => new
                     }
                     if (validationResult.ignoreConsignmentExcels.Count() > 0)
                     {
-                        TempData["ConErrorMessages"] = "Some consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
-                        ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
+                       // TempData["ConErrorMessages"] = validationResult.ignoreConsignmentExcels.Count()+"  consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
+
+                        TempData["ConErrorMessages"] = $"{validationResult.ignoreConsignmentExcels.Count()} consignments are not in our system and cannot be booked.";
+
+                        // ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
                     }
 
 
@@ -1881,6 +1884,7 @@ Select(e => new
             var IgnoreConsignment = new List<IgnoreConsignmentExcel>();
             string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
             bool IsValid = true;
+
             using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
             {
                 var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
@@ -1950,8 +1954,8 @@ Select(e => new
                     }
                     if (validationResult.ignoreConsignmentExcels.Count() > 0)
                     {
-                        TempData["ConErrorMessages"] = "Some consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
-                        ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
+                        TempData["ConErrorMessages"] = $"{validationResult.ignoreConsignmentExcels.Count()} consignments are not in our system and cannot be booked.";
+                        //   ExportToExcelAll.ExportToExcelAdmin(validationResult.ignoreConsignmentExcels);
                     }
 
 

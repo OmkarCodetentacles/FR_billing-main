@@ -5,15 +5,7 @@
     string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
                    Request.ApplicationPath.TrimEnd('/');
 }
-<script>
-    $(document).ready(function () {
-        var errorMessage = '@TempData["ConErrorMessages"]';
-            if (errorMessage && errorMessage.trim() !== '') {
-                alert(errorMessage)
-    }
-});
 
-</script>
 
 <style>
     /* Excel-like table styles */
@@ -124,7 +116,7 @@
                     @if (TempData["ErrorMessages"] != null)
                     {
                         var errorMessages = TempData["ErrorMessages"] as List<string>;
-                        if (errorMessages != null)
+                        if (errorMessages.Count()>0)
                         {
                             <div class="alert alert-danger">
                                 <ul>
@@ -149,24 +141,24 @@
 
                     @if (!string.IsNullOrEmpty(successMessage))
                     {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        string mainmessage = successMessage +" "+ ConsErrorMessage;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", mainmessage))
                     }
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
                     }
-                    @if (!string.IsNullOrEmpty(ConsErrorMessage))
+                    @*@if (!string.IsNullOrEmpty(ConsErrorMessage))
                     {
                         <script>
-                            alert(@ConsErrorMessage)
+                        
 
                         </script>
                         <div id="alertMessage" class="alert alert-danger" style="display: none;">
                             <strong>Error!</strong><strong style="color:red;">@ConsErrorMessage</strong>
                         </div>
 
-                        @*@Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", ConsErrorMessage))*@
-                    }
+                                   }*@
 
                     @*@if (TempData["Success"] != null)
                         {
@@ -175,12 +167,12 @@
                             </div>
                         }*@
 
-                    @if (TempData["ConErrorMessages"] != null)
+                    @*@if (TempData["ConErrorMessages"] != null)
                     {
                         <div class="alert alert-danger">
                             <strong>Error!</strong>  @TempData["ConErrorMessages"]
                         </div>
-                    }
+                    }*@
 
 
 
