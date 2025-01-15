@@ -329,6 +329,38 @@
     <Property Name="InvoiceYear" Type="varchar" MaxLength="20" />
     <Property Name="InvoiceStartNumber" Type="varchar" MaxLength="20" />
     <Property Name="QrCodeImage" Type="varchar" MaxLength="300" />
+    <Property Name="IsGECSector" Type="bit" />
+    <Property Name="Template" Type="bigint" />
+  </EntityType>
+  <EntityType Name="GECrate">
+    <Key>
+      <PropertyRef Name="GECrateId" />
+    </Key>
+    <Property Name="GECrateId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Slab1" Type="float" />
+    <Property Name="Slab2" Type="float" />
+    <Property Name="Slab3" Type="float" />
+    <Property Name="Slab4" Type="float" />
+    <Property Name="Uptosl1" Type="float" />
+    <Property Name="Uptosl2" Type="float" />
+    <Property Name="Uptosl3" Type="float" />
+    <Property Name="Uptosl4" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="GECNoOfSlab" Type="int" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="SectorName" Type="varchar" MaxLength="200" />
+    <Property Name="PFcode" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="GECSector">
+    <Key>
+      <PropertyRef Name="GECSectorId" />
+    </Key>
+    <Property Name="GECSectorId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SectorName" Type="varchar" MaxLength="200" />
+    <Property Name="Pf_code" Type="varchar" MaxLength="20" />
+    <Property Name="Pincode" Type="varchar" MaxLength="1000" />
+    <Property Name="Priority" Type="int" />
+    <Property Name="City" Type="varchar" MaxLength="200" />
   </EntityType>
   <EntityType Name="GSTInvoice">
     <Key>
@@ -439,6 +471,7 @@
     <Property Name="Firm_Id" Type="bigint" />
     <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
     <Property Name="isDelete" Type="bit" />
+    <Property Name="Balance" Type="float" />
   </EntityType>
   <EntityType Name="Issue">
     <Key>
@@ -488,6 +521,26 @@
     <Property Name="Date" Type="datetime" />
     <Property Name="FromDate" Type="datetime" />
     <Property Name="ToDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="NewPaymentdetails">
+    <Key>
+      <PropertyRef Name="Payment_Id" />
+    </Key>
+    <Property Name="Payment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Payment_Mode" Type="varchar" MaxLength="50" />
+    <Property Name="Amount" Type="float" />
+    <Property Name="InvoiceNo" Type="varchar" MaxLength="50" />
+    <Property Name="Tds_Amount" Type="float" />
+    <Property Name="Total_Amount" Type="float" />
+    <Property Name="Pfcode" Type="varchar" MaxLength="50" />
+    <Property Name="Payment_Date" Type="datetime" />
+    <Property Name="Bank_Name" Type="varchar" MaxLength="100" />
+    <Property Name="Branch_Name" Type="varchar" MaxLength="100" />
+    <Property Name="Transaction_Id" Type="varchar" MaxLength="100" />
+    <Property Name="CheckNo" Type="varchar" MaxLength="100" />
+    <Property Name="CreditNoteNo" Type="varchar" MaxLength="50" />
+    <Property Name="Balance" Type="float" />
+    <Property Name="Created_Date" Type="datetime" />
   </EntityType>
   <EntityType Name="Nondox">
     <Key>
@@ -798,7 +851,7 @@
     <Property Name="Sector_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Sector_Name" Type="varchar" MaxLength="100" />
     <Property Name="Pf_code" Type="varchar" MaxLength="20" />
-    <Property Name="Pincode_values" Type="varchar" MaxLength="1500" />
+    <Property Name="Pincode_values" Type="varchar(max)" />
     <Property Name="Priority" Type="int" />
     <Property Name="CashD" Type="bit" />
     <Property Name="CashN" Type="bit" />
@@ -810,6 +863,7 @@
     <Property Name="BillPriority" Type="bit" />
     <Property Name="BillEcomPrio" Type="bit" />
     <Property Name="BillEcomGE" Type="bit" />
+    <Property Name="BillGecSec" Type="bit" />
   </EntityType>
   <EntityType Name="Sendmessage">
     <Key>
@@ -2011,6 +2065,9 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Parameter Name="Customerid" Type="varchar" Mode="In" />
     <Parameter Name="pfcode" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="GetCustomerSalesComparison" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="PFCode" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="getInvoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="fromDate" Type="datetime" Mode="In" />
     <Parameter Name="toDate" Type="datetime" Mode="In" />
@@ -2032,6 +2089,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
   <Function Name="getIssueList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Pfcode" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="getLiveData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="getLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="username" Type="varchar" Mode="In" />
     <Parameter Name="password" Type="varchar" Mode="In" />
@@ -2084,6 +2142,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Parameter Name="pfcode" Type="varchar" Mode="In" />
   </Function>
   <Function Name="getUserModuleList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="MonthlyDataAnalysis" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="PaymentDetailsSave" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="PaymentType" Type="varchar" Mode="In" />
     <Parameter Name="Amount" Type="float" Mode="In" />
@@ -2204,6 +2263,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="express_cargo" EntityType="Self.express_cargo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FirmDetails" EntityType="Self.FirmDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Franchisee" EntityType="Self.Franchisee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GECrate" EntityType="Self.GECrate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GECSector" EntityType="Self.GECSector" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GSTInvoice" EntityType="Self.GSTInvoice" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GSTInvoiceConsignments" EntityType="Self.GSTInvoiceConsignments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Holiday" EntityType="Self.Holiday" Schema="dbo" store:Type="Tables" />
@@ -2213,6 +2274,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="LoginDev" EntityType="Self.LoginDev" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NEFT" EntityType="Self.NEFT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NewNotification" EntityType="Self.NewNotification" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NewPaymentdetails" EntityType="Self.NewPaymentdetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />

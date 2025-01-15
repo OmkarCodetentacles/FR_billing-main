@@ -78,8 +78,16 @@
                                                     <div class="input-group-addon" style="border-radius:0 !important">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
+                                                    @if (ViewBag.datetime != null)
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@ViewBag.datetime" type="text">
 
-                                                    <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("MM/dd/yyyy")" type="text">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("dd-MM-yyyy")" type="text">
+
+                                                    }
 
                                                 </div>
                                             </div>
@@ -108,7 +116,7 @@
                                         <div class="box box-info">
                                             <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
                                                 <h3 class="box-title titlnew" style="margin:0">Consignment Report</h3>
-                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(ViewBag.paidamount ?? 0)</p>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(Model.Sum(x=>x.Paid_Amount))</p>
                                             </div><!-- /.box-header -->
                                             <script>
 
@@ -120,13 +128,15 @@
                                                             <th>Sr.No</th>
                                                             <th>Action</th>
                                                             <th>
-                                                                @Html.DisplayNameFor(model => model.Consignment_No)
+                                                                @*@Html.DisplayNameFor(model => model.Consignment_No)*@
+                                                                Consignment No
                                                             </th>
                                                             <th>
                                                                 @Html.DisplayNameFor(model => model.Sender)
                                                             </th>
                                                             <th>
-                                                                @Html.DisplayNameFor(model => model.sender_phone)
+                                                                @*@Html.DisplayNameFor(model => model.sender_phone)*@
+                                                                Sender Phone
                                                             </th>
 
                                                             <th>
@@ -135,17 +145,20 @@
 
 
                                                             <th>
-                                                                @Html.DisplayNameFor(model => model.Actual_Weight)
+                                                                @*@Html.DisplayNameFor(model => model.Actual_Weight)*@
+                                     Actual Weight                                              
                                                             </th>
 
                                                             <th>
-                                                                @Html.DisplayNameFor(model => model.volumetric_Weight)
+                                                                @*@Html.DisplayNameFor(model => model.volumetric_Weight)*@
+                                                                Volumetric Weight
                                                             </th>
                                                             <th>
                                                                 Payment Mode
                                                             </th>
                                                             <th>
-                                                                @Html.DisplayNameFor(model => model.Paid_Amount)
+                                                                @*@Html.DisplayNameFor(model => model.Paid_Amount)*@
+                                                                Paid Amount
                                                             </th>
 
                                                         </tr>
@@ -489,7 +502,7 @@
     
     $('#datepicker').datepicker({
         autoclose: true,
-        format: 'mm/dd/yyyy'
+        format: 'dd-mm-yyyy'
     })
 
     $(function () {

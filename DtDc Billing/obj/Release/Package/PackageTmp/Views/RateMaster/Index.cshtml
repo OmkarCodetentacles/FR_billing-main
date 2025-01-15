@@ -41,53 +41,60 @@
                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage))
                     }
 
-                    <ul id="Tab" class="nav nav-tabs nav-index" style=" margin-bottom: -14px;">
-                        <li class="active"><a data-toggle="tab" href="#home">Add Company</a></li>
-                        @{
-                            var getDox = (IEnumerable<DtDc_Billing.Entity_FR.Ratem>)ViewBag.Dox;
+                <ul id="Tab" class="nav nav-tabs nav-index" style=" margin-bottom: -14px;">
+                    <li class="active"><a data-toggle="tab" href="#home">Add Company</a></li>
+                    @{
+                        var getDox = (IEnumerable<DtDc_Billing.Entity_FR.Ratem>)ViewBag.Dox;
 
-                            var getNonDox = (IEnumerable<DtDc_Billing.Entity_FR.Nondox>)ViewBag.NonDox;
+                        var getNonDox = (IEnumerable<DtDc_Billing.Entity_FR.Nondox>)ViewBag.NonDox;
 
-                            var getPlus = (IEnumerable<DtDc_Billing.Entity_FR.dtdcPlu>)ViewBag.Plus;
+                        var getPlus = (IEnumerable<DtDc_Billing.Entity_FR.dtdcPlu>)ViewBag.Plus;
 
-                            var getPTP = (IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ptp>)ViewBag.Ptp;
+                        var getPTP = (IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ptp>)ViewBag.Ptp;
 
-                            var getEC = (IEnumerable<DtDc_Billing.Entity_FR.express_cargo>)ViewBag.Cargo;
+                        var getEC = (IEnumerable<DtDc_Billing.Entity_FR.express_cargo>)ViewBag.Cargo;
 
-                            var getPri = (IEnumerable<DtDc_Billing.Entity_FR.Priority>)ViewBag.Priority;
+                        var getPri = (IEnumerable<DtDc_Billing.Entity_FR.Priority>)ViewBag.Priority;
 
-                            var getECom = (IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ecommerce>)ViewBag.Dtdc_Ecommerce;
-
-                            if (getDox.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu1">Dox</a></li>
-                            }
-                            if (getNonDox.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu2">NonDox</a></li>
-                            }
-                            if (getPlus.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu3">Dtdc PLUS</a></li>
-                            }
-                            if (getPTP.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu4">Dtdc PTP</a></li>
-                            }
-                            if (getEC.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu5">Express Cargo</a></li>
-                            }
-                            if (getPri.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu6">Priority</a></li>
-                            }
-                            if (getECom.Count() > 0)
-                            {
-                                <li><a data-toggle="tab" href="#menu7">E-Commerce</a></li>
-                            }
+                        var getECom = (IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ecommerce>)ViewBag.Dtdc_Ecommerce;
+                        var getGEC = (IEnumerable<DtDc_Billing.Entity_FR.GECrate>)ViewBag.GECratemaster;
+                        if (getDox.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu1">Dox</a></li>
                         }
-                    </ul>
+                        if (getNonDox.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu2">NonDox</a></li>
+                        }
+                        if (getPlus.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu3">Dtdc PLUS</a></li>
+                        }
+                        if (getPTP.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu4">Dtdc PTP</a></li>
+                        }
+                        if (getEC.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu5">Express Cargo</a></li>
+                        }
+                        if (getPri.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu6">Priority</a></li>
+                        }
+                        if (getECom.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu7">E-Commerce</a></li>
+                        }
+                        if (getGEC != null && getGEC.Count() > 0)
+                        {
+                            <li><a data-toggle="tab" href="#menu8">GEC</a></li>
+
+
+                        }
+
+                    }
+                </ul>
                     <div class="tab-content" style="background: white">
                         <div id="home" class="tab-pane fade in active">
                             <div id="frmEmp">
@@ -152,7 +159,16 @@
                                         @{ Html.RenderPartial("RateMasterEcommerce", getECom);}
                                     </div>
                                 </div>
-                            }
+                                            }
+                                            if(getGEC!=null &&  getGEC.Count()>0)
+            {
+                            <div id="menu8" class="tab-pane fade">
+                                <div id="frmEmp8">
+                                    @{ Html.RenderPartial("RateMasterGEC", getGEC);}
+
+                                </div>
+                                </div>
+            }
                         }
                         <input type="hidden" id="tabbb" name="tab" />
                     </div>

@@ -1,12 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 @{
+    Layout = null;
     string robotsTxtPath = Server.MapPath("~/excelformat/robots.txt");
     string robotsTxtContent = System.IO.File.ReadAllText(robotsTxtPath);
 }
 
 
 <head>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+
+
     @{
         string context = null;
         string type = null;
@@ -16,7 +20,8 @@
         string phoneNumber = "+91 8208668841";
         string facebookUrl = "https://www.facebook.com/profile.php?id=61555152457829";
         string instagramUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
-        string linkedinUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        //   string linkedinUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        string linkedinUrl = "https://www.linkedin.com/company/fr-billing";
     }
     <script type="application/ld+json">
 {
@@ -40,20 +45,26 @@
 
     <meta charset="UTF-8">
 
+    @*<meta name="robots" content="index,follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta property="og:title" content="Your Blog Post Title" />
+        <meta property="og:description" content="Your blog post description" />
+        <meta property="og:image" content="URL to your blog post image" />
+        <meta property="og:url" content="URL to your blog post" />*@
     <meta name="robots" content="index,follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="Your Blog Post Title" />
-    <meta property="og:description" content="Your blog post description" />
-    <meta property="og:image" content="URL to your blog post image" />
-    <meta property="og:url" content="URL to your blog post" />
-
+    <meta property="og:title" content="FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!" />
+    <meta property="og:description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." />
+    <meta property="og:image" content="https://frbilling.com/assets/Home/assets/images/logo.png" />
+    <meta property="og:url" content="https://frbilling.com/" />
     <meta name="description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." data-target="Unlock unparalleled efficiency with Fr-Billing - Your Ultimate Billing Solution. Discover how our cutting-edge platform revolutionizes billing processes, elevates user experience, and turbocharges productivity. Streamline operations effortlessly and stay ahead in today's dynamic business landscape. Click now to explore the future of billing">
 
     <meta name="author" content="CodeTentacles Technologies">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://www.fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>FR-Billing | Index</title>
+    @*<title>FR-Billing | Index</title>*@
+    <title>FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!</title>
 
     <link rel="shortcut icon" href="~/assets/images/fav.png">
     <!-- Bootstrap core CSS -->
@@ -102,9 +113,8 @@
             margin-left: 30px;
         }
 
-        .indian_wheel
-        {
-            width:20px;
+        .indian_wheel {
+            width: 20px;
         }
 
         .new-blue-button-hover {
@@ -185,6 +195,7 @@
         .diwalilogo img {
             width: 18%;
             overflow: hidden;
+           
         }
 
         .diwalilogofooter img {
@@ -192,10 +203,12 @@
             overflow: hidden;
         }
     </style>
+
+
 </head>
 
 <body>
-
+    <div class="elfsight-app-38ff4384-1e40-4eca-b963-69e2e25bccfc" data-elfsight-app-lazy></div>
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
@@ -212,19 +225,19 @@
                         <!-- ***** Logo Start ***** -->
                         <a href="#" class="logo" target="_self">
                             <img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing logo">
-                            
-                        </a> 
-    
+
+                        </a>
+
                         <!-- ***** DIWALI Logo ***** -->
-                        @*<a href="#" class="diwalilogo" target="_self">
-                            <img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing logo">
-                            
-                        </a>*@
+                        @*<img src="~/assets/Home/assets/images/newyear.gif" alt="Fr-Billing logo" style="
+    height: 165px;
+    width: 165px;
+">*@
                         <!-- *****DIWALI  Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#services">Services</a></li>
+                            <li class="scroll-to-section"><a href="#features">Features</a></li>
                             <li class="scroll-to-section"><a href="#Demos">Request Demo</a></li>
                             <li class="scroll-to-section"><a href="#portfolio">Pricing</a></li>
                             <li class="scroll-to-section"><a href="#video">About</a></li>
@@ -273,7 +286,11 @@
         </div>
     </div>
 
-    <div id="services" class="our-services section">
+
+    @Html.Action("LiveData", "Admin")
+
+
+    <div id="features" class="our-services section">
         <div class="services-right-dec">
             <img src="~/assets/Home/assets/images/services-right-dec.png" alt="Decorative element on the right side of services section">
         </div>
@@ -287,7 +304,7 @@
 
 
                         <h2>Unlock <em>Success</em> with Our <span>Powerful Features</span></h2>
-                        <span>Our Features</span>
+                        @*<span>Our Features</span>*@
                     </div>
                 </div>
             </div>
@@ -422,13 +439,14 @@
             </div>
         </div>
     </div>
+  
 
     <div id="about" class="about-us section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 align-self-center">
                     <div class="left-image">
-                        <img src="~/assets/Home/assets/images/about-left-image.png" alt="Two Girls working together">
+                        <img src="~/assets/Home/assets/images/im1.gif" alt="Two Girls working together">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -444,8 +462,8 @@
                                         <div class="icon">
                                             <img src="~/assets/Home/assets/images/clients.png" alt="Cleients Image">
                                         </div>
-                                        <div class="count-digit">70+</div>
-                                        <div class="count-title">clients</div>
+                                        <div class="count-digit">90+</div>
+                                        <div class="count-title">Clients</div>
 
                                     </div>
                                 </div>
@@ -456,8 +474,8 @@
                                         <div class="icon">
                                             <img src="~/assets/Home/assets/images/frenchiess.png" alt="Franchiseee Logo">
                                         </div>
-                                        <div class="count-digit">45+</div>
-                                        <div class="count-title">franchisee </div>
+                                        <div class="count-digit">65+</div>
+                                        <div class="count-title">Franchise </div>
 
                                     </div>
                                 </div>
@@ -468,8 +486,8 @@
                                         <div class="icon">
                                             <img src="~/assets/Home/assets/images/experiences.png" alt="Experience Logo">
                                         </div>
-                                        <div class="count-digit">4+</div>
-                                        <div class="count-title">years experience</div>
+                                        <div class="count-digit">5+</div>
+                                        <div class="count-title">Years Experience</div>
 
                                     </div>
                                 </div>
@@ -1233,14 +1251,15 @@
                         @*////////start diwali logo/////////*@
 
                         @*<div class="diwalilogofooter">
-                            <a href="#"><img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing"></a>
-                        </div>*@
+                                <a href="#"><img src="~/assets/Home/assets/images/newyear.gif" alt="Fr-Billing"></a>
+                            </div>*@
                         @*////////end diwali logo/////////*@
                         <a href="mailto:info@frbilling.com" type="email" target="_blank">info@frbilling.com</a>
                         <ul>
                             <li><a href="https://www.facebook.com/people/FrBilling-CT/pfbid0QfLDqvFXRwe4y5KcUHSwaJV6mXmmCTGzpYVy7rdTMH6DgVjgPwZeR8vmVj7DSog3l/" target="_blank"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank"><i class="fa fa-youtube"></i></a></li>
-                            <li><a href="https://www.linkedin.com/in/prajkta-navlakhe-47790613b/" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            @*<li><a href="https://www.linkedin.com/in/prajkta-navlakhe-47790613b/" target="_blank"><i class="fa fa-linkedin"></i></a></li>*@
+                            <li><a href="https://www.linkedin.com/company/fr-billing" target="_blank"><i class="fa fa-linkedin"></i></a></li>
                             <li><a href="https://www.instagram.com/fr_billing?igsh=MTF2YzM3dDFiOTB1eg%3D%3D&utm_source=qr" target="_blank"> <i class="fa fa-instagram"></i></a></li>
                         </ul>
                     </div>
@@ -1249,14 +1268,14 @@
                     <div class="services footer-item">
                         <h4>About</h4>
                         <ul>
-                            <li class="scroll-to-section"><a href="#services">Our Services</a></li>
+                            <li class="scroll-to-section"><a href="#features">Our Features</a></li>
                             <li class="scroll-to-section"><a href="#about">About</a></li>
                             <li class="scroll-to-section"><a href="#Demos">Schedule Demo</a></li>
                             <li class="scroll-to-section"><a href="#portfolio">Pricing</a></li>
                             <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
                             @*<li class="scrll-to-section">
-                                <a href="http://frbilling.com/excelformat/robots.txt" target="_blank">About Us</a>
-                            </li>*@
+                                    <a href="http://frbilling.com/excelformat/robots.txt" target="_blank">About Us</a>
+                                </li>*@
                         </ul>
                     </div>
 
@@ -1298,7 +1317,7 @@
                     <div class="copyright">
                         <p>
                             @*Copyright © @DateTime.Now.Year FR Billing, Ltd. All Rights Reserved.
-        <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>*@
+                                <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>*@
                             <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="https://frbilling.com/uploadedlogo/indiaFlag.jpg" alt="India Flag" class="indian_wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">CodeTentacles</span></a> </strong>
 
                         </p>

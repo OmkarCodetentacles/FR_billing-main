@@ -39,7 +39,7 @@
 
                     <div class="form-horizontal">
                         <div class="box-body">
-                            @using (Html.BeginForm("ExpensesList", "Admin", FormMethod.Post))
+                            @using (Html.BeginForm("ExpensesList", "Admin", FormMethod.Get))
                             {
                                 @*<div class="col-md-2">
 
@@ -118,6 +118,7 @@
                                 </div>
                             </div>
                             }
+                            
                             <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
                                 <thead>
                                     <tr>
@@ -163,8 +164,8 @@
                                                 </td>
 
                                                 <td>
-                                                    @Html.ActionLink("Edit", "EditExpenses", new { id = item.Exp_ID }) |
-                                                    @Html.ActionLink("Delete", "DeleteExpenses", new { id = item.Exp_ID }, new { onclick = "return confirm('Are you sure you wish to delete?');" })
+                                                    @Html.ActionLink("Edit", "EditExpenses", new { id = item.Exp_ID  }) |
+                                                    @Html.ActionLink("Delete", "DeleteExpenses", new { id = item.Exp_ID, fromdate = ViewBag.Fromdatetime, todate = ViewBag.ToDatetime, Categary = ViewBag.SelectedCategory }, new { onclick = "return confirm('Are you sure you wish to delete?');" })
                                                 </td>
                                             </tr>
 

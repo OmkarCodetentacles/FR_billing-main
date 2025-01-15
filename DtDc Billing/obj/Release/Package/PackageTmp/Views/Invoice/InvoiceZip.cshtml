@@ -10,7 +10,7 @@
 <!-- Main content -->
 <section class=" content-wrapper">
 
-    <div class="container">
+   
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-info" style="padding: 16px 16px !important">
@@ -34,12 +34,16 @@
 
                                             @if (ViewBag.frominv != null)
                                             {
-                                                <input type="text" class="form-control pull-right" id="datepicker" name="frominv" value="@ViewBag.frominv" required>
+                                                <input type="text" class="form-control pull-right" id="from" name="frominv" value="@ViewBag.frominv">
+
                                             }
                                             else
                                             {
-                                                <input type="text" class="form-control pull-right" name="frominv" id="datepicker" required>
+                                                <input type="text" class="form-control pull-right" name="frominv" id="from">
+
                                             }
+                                            <span class="fromINV" style="color: red; display: none;">Please Enter From Invoice Number</span> <!-- Error message -->
+
                                         </div>
                                     </div>
                                     <div class="col-sm-10 form-group mb-15">
@@ -48,16 +52,18 @@
 
                                             @if (ViewBag.toinv != null)
                                             {
-                                                <input type="text" class="form-control pull-right" id="datepicker1" value="@ViewBag.toinv" name="toinv" required>
+                                                <input type="text" class="form-control pull-right" id="to" value="@ViewBag.toinv" name="toinv">
                                             }
                                             else
                                             {
-                                                <input type="text" class="form-control pull-right" id="datepicker1" name="toinv" required>
+                                                <input type="text" class="form-control pull-right" id="to" name="toinv" required>
                                             }
+                                            <span class="toINV" style="color: red; display: none;">Please Enter From Invoice Number</span> <!-- Error message -->
+
                                         </div>
                                     </div>
                                     <div class="col-sm-10 form-group mb-15">
-                                        <input type="submit" value="Download" class="btn btn-primary pull-right sbmt" />
+                                        <input type="submit" value="Download" id="btnSubmit" class="btn btn-primary pull-right sbmt" />
                                     </div>
 
 
@@ -76,7 +82,7 @@
             </div>
             <!-- /.box -->
         </div>
-    </div>
+   
     <!-- /.col -->
 
 </section>
@@ -95,6 +101,28 @@
 
         $("#departmentsDropdown").html(departmentsDropdown);
     });
+
+    $("#btnSubmit").click(function () {
+      
+        var fromIN = $("#from").val();
+        var ToIN = $("#to").val();
+        if (fromIN == "" && ToIN == "") {
+            $(".fromINV").show();
+            $(".toINV").show();
+            return false;
+        }
+        else if (fromIN == "") {
+            $(".fromINV").show();
+            $(".toINV").hide();
+            return false;
+        }
+        else if (ToIN == "") {
+            $(".toINV").show();
+            $(".fromINV").hide();
+            return false;
+        }
+        return true;
+    })
 
 </script>
 <style>

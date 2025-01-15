@@ -1,104 +1,109 @@
 ﻿@model DtDc_Billing.CustomModel.dashboardDataModel
+@{
+
+    Layout = null;
+}
 <style>
 
     .blink {
         animation: blink-animation 1s steps(5, start) infinite;
         -webkit-animation: blink-animation 1s steps(5, start) infinite;
     }
-@@keyframes blink-animation {
-  to {
-    visibility: hidden;
-  }
-}
-@@-webkit-keyframes blink-animation {
-  to {
-    visibility: hidden;
-  }
-}
 
-    .urlpath
-    {
-        color:black;
-
+    @@keyframes blink-animation {
+        to {
+            visibility: hidden;
+        }
     }
 
-    .products-list .product-info
-    {
-        margin-left:0;
+    @@-webkit-keyframes blink-animation {
+        to {
+            visibility: hidden;
+        }
     }
+
+    .urlpath {
+        color: black;
+    }
+
+    .products-list .product-info {
+        margin-left: 0;
+    }
+
     .products-list .product-title {
         font-weight: 600;
         font-size: 14px;
     }
+
     .product-info a:hover {
         color: #3c8dbc;
     }
 </style>
 
 <div class="col-md-12">
-    @if(ViewBag.notificationCount>0)
+    @if (ViewBag.notificationCount > 0)
     {
-    <div class="box box-primary">
-        <div class="box-header with-border">
+        <div class="box box-primary">
+            <div class="box-header with-border">
 
-            <strong style="font-size: 18px; display: flex;"><i class="fa fa-bell-o" aria-hidden="true" style="margin: auto; color: #0d8b56;" ></i><span style="color: #bc3f30; font-size: 12px "> New Updates</span></strong>
+                <strong style="font-size: 18px; display: flex;"><i class="fa fa-bell-o" aria-hidden="true" style="margin: auto; color: #0d8b56;"></i><span style="color: #bc3f30; font-size: 12px "> New Updates</span></strong>
 
-            @{ var flag = 0;
-                foreach (var item in Model.notificationsList)
-                {
-                    if (DateTime.Now.Date < item.dateN.Value.AddDays(15).Date)
-                    {
-                        flag = 1;
-                    }
-                }
-
-                if (flag == 1)
-                {
-                    <span class="badge bg-blue blink">Notification</span>
-                }
-            }
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-            <!-- /.box-tools -->
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-
-            <ul class="products-list product-list-in-box">
-                @{
-                    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
-                    Request.ApplicationPath.TrimEnd('/');
-
+                @{ var flag = 0;
                     foreach (var item in Model.notificationsList)
                     {
-                        <li class="item">
+                        if (DateTime.Now.Date < item.dateN.Value.AddDays(15).Date)
+                        {
+                            flag = 1;
+                        }
+                    }
+
+                    if (flag == 1)
+                    {
+                        <span class="badge bg-blue blink">Notification</span>
+                    }
+                }
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+                <ul class="products-list product-list-in-box">
+                    @{
+                        string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                        Request.ApplicationPath.TrimEnd('/');
+
+                        foreach (var item in Model.notificationsList)
+                        {
+                            <li class="item">
 
 
-                            <div class="product-info">
-                                <a href="@baseUrl/@item.url_path" class="product-title">
-                                    @item.Message
-                                    @if (DateTime.Now.Date < item.dateN.Value.AddDays(15).Date)
-                                    {
-                                        <span class="label label-success">New</span>
-                                    }
-                                </a>
-                                <span class="product-description">
-                                    @item.description
-                                </span>
-                            </div>
+                                <div class="product-info">
+                                    <a href="@baseUrl/@item.url_path" class="product-title">
+                                        @item.Message
+                                        @if (DateTime.Now.Date < item.dateN.Value.AddDays(15).Date)
+                                        {
+                                            <span class="label label-success">New</span>
+                                        }
+                                    </a>
+                                    <span class="product-description">
+                                        @item.description
+                                    </span>
+                                </div>
 
-                        </li>
+                            </li>
+
+
+                        }
 
 
                     }
-
-
-                }
-            </ul>
+                </ul>
+            </div>
+            <!-- /.box-body -->
         </div>
-        <!-- /.box-body -->
-    </div>
     }
     <!-- /.box -->
 </div>

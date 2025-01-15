@@ -1,5 +1,8 @@
 ﻿@model DtDc_Billing.Models.userDetailsModel
+@{
 
+    Layout = null;
+}
 @using (Ajax.BeginForm("makePayment", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1", OnSuccess = "createsuccess" }))
 {
     @Html.AntiForgeryToken()
@@ -15,7 +18,7 @@
                 <div class="choice__title">
                     @if (ViewBag.SuccessMessage != null)
                     {
-                       
+
                         <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -26,7 +29,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                          @ViewBag.SuccessMessage
+                                        @ViewBag.SuccessMessage
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -61,69 +64,69 @@
                         tincidunt arcu.
                     </p>
                 </div>
-            <div class="row">
-                <div class="col-lg-6 col-xl-4">
-                    <button id="rzp-button1" class="button btn1">Make Payment</button>
-                </div>
-                @*<div class="col-lg-6 col-xl-4">
-                        <div class="pricing__item wow animate__animated animate__fadeInUp">
-                            <img src="~/Content/assets/images/pricing/basic.png" alt="Basic">
-                            <h6>Basic</h6>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                            <h2>$ 5.00 USD</h2>
-                            <p>/monthly</p>
-                            <a href="#" class="button">Learn More</a>
-                            <ul>
-                                <li><i class="fas fa-check"></i> Up to 3 credit cards</li>
-                                <li><i class="fas fa-check"></i> Invest in stocks and ETFs</li>
-                                <li><i class="fas fa-check"></i> Personal profile only</li>
-                                <li><i class="fas fa-check"></i> Normal customer support</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="row">
                     <div class="col-lg-6 col-xl-4">
-                        <div class="pricing__item pricing__item--standard wow animate__animated animate__fadeInUp"
-                             data-wow-delay="0.2s">
-                            <div class="standard__inner">
-                                <img src="~/Content/assets/images/pricing/standard.png" alt="Standard">
-                                <h6>Standard</h6>
+                        <button id="rzp-button1" class="button btn1">Make Payment</button>
+                    </div>
+                    @*<div class="col-lg-6 col-xl-4">
+                            <div class="pricing__item wow animate__animated animate__fadeInUp">
+                                <img src="~/Content/assets/images/pricing/basic.png" alt="Basic">
+                                <h6>Basic</h6>
                                 <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <h2>$ 9.00 USD</h2>
+                                <h2>$ 5.00 USD</h2>
                                 <p>/monthly</p>
-                                @*<a href="#" class="button">Learn More 1</a>
-
-                            <button id="rzp-button1" class="button btn1">Learn More 1</button>
-                            <ul>
-                                <li><i class="fas fa-check"></i> All in Basic, plus</li>
-                                <li><i class="fas fa-check"></i> Up to 10 credit cards</li>
-                                <li><i class="fas fa-check"></i> Invest in stocks and cryptos</li>
-                                <li><i class="fas fa-check"></i> Premium customer support</li>
-                            </ul>
-                        </div>
-                                </div>
+                                <a href="#" class="button">Learn More</a>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> Up to 3 credit cards</li>
+                                    <li><i class="fas fa-check"></i> Invest in stocks and ETFs</li>
+                                    <li><i class="fas fa-check"></i> Personal profile only</li>
+                                    <li><i class="fas fa-check"></i> Normal customer support</li>
+                                </ul>
                             </div>
-                            <div class="col-lg-6 col-xl-4">
-                                <div class="pricing__item pricing--three wow animate__animated animate__fadeInUp"
-                                     data-wow-delay="0.4s">
-                                    <img src="~/Content/assets/images/pricing/pro.png" alt="Pro">
-                                    <h6>Pro</h6>
+                        </div>
+                        <div class="col-lg-6 col-xl-4">
+                            <div class="pricing__item pricing__item--standard wow animate__animated animate__fadeInUp"
+                                 data-wow-delay="0.2s">
+                                <div class="standard__inner">
+                                    <img src="~/Content/assets/images/pricing/standard.png" alt="Standard">
+                                    <h6>Standard</h6>
                                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                    <h2>$ 19.00 USD</h2>
+                                    <h2>$ 9.00 USD</h2>
                                     <p>/monthly</p>
-                                    <a href="#" class="button">Learn More</a>
-                                    <ul>
-                                        <li><i class="fas fa-check"></i> All in Standard, plus</li>
-                                        <li><i class="fas fa-check"></i> Unlimited credit cards</li>
-                                        <li><i class="fas fa-check"></i> AI-powered investing system</li>
-                                        <li><i class="fas fa-check"></i> Dedicated customer support</li>
-                                    </ul>
+                                    @*<a href="#" class="button">Learn More 1</a>
+
+                                <button id="rzp-button1" class="button btn1">Learn More 1</button>
+                                <ul>
+                                    <li><i class="fas fa-check"></i> All in Basic, plus</li>
+                                    <li><i class="fas fa-check"></i> Up to 10 credit cards</li>
+                                    <li><i class="fas fa-check"></i> Invest in stocks and cryptos</li>
+                                    <li><i class="fas fa-check"></i> Premium customer support</li>
+                                </ul>
+                            </div>
+                                    </div>
                                 </div>
-                            </div>*@
+                                <div class="col-lg-6 col-xl-4">
+                                    <div class="pricing__item pricing--three wow animate__animated animate__fadeInUp"
+                                         data-wow-delay="0.4s">
+                                        <img src="~/Content/assets/images/pricing/pro.png" alt="Pro">
+                                        <h6>Pro</h6>
+                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                        <h2>$ 19.00 USD</h2>
+                                        <p>/monthly</p>
+                                        <a href="#" class="button">Learn More</a>
+                                        <ul>
+                                            <li><i class="fas fa-check"></i> All in Standard, plus</li>
+                                            <li><i class="fas fa-check"></i> Unlimited credit cards</li>
+                                            <li><i class="fas fa-check"></i> AI-powered investing system</li>
+                                            <li><i class="fas fa-check"></i> Dedicated customer support</li>
+                                        </ul>
+                                    </div>
+                                </div>*@
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- pricing section end -->
+    <!-- pricing section end -->
 
 }
 

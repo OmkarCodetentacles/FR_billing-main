@@ -22,27 +22,34 @@
             <div class="row">
                 <div class="col-md-12">
 
-                       @{
-                               var successMessage =TempData["Upload"] as string;
-                           }
+                    @{
+                        var successMessage = TempData["Upload"] as string;
+                        var errorMessage = TempData["Error"] as string;
+                    }
 
-                           @if (!string.IsNullOrEmpty(successMessage))
-                           {
-                               @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
                     }
                     <div class="form-horizontal">
 
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data",id="fromttext" }))
+                                    @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromttext" }))
                                     {
                                         <label class="">Upload Text or Csv  File </label>
                                         <div class="">
-                                            <input  id="File1" type="file" name="ImportText" />
+                                            <input id="File1" type="file" name="ImportText" />
+                                            <span class="fileError" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
                                         </div>
                                         <div style="text-align:end;">
                                             <input type="submit" class="btn btn-success mt-3" id="submitBtn" value="Upload" style="margin-top:20px" />
+                                            
                                         </div>
                                     }
                                 </div>
@@ -73,9 +80,18 @@
             // Check if file input is empty
             if (file == "" || file == NaN)
             {
-                alert("Please select a file before Uploading.");
+                // alert("Please select a file before Uploading.");
+                $(".fileError").show();
                 e.preventDefault();
                 return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.txt|\.csv)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $(".fileError").text("Invalid file type. Please upload a .TXT or .CSV file").show();
+                return false;
             }
 
             // Show the loader after validation

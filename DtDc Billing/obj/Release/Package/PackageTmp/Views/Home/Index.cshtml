@@ -147,6 +147,48 @@
         animation: glow 1s ease-in-out infinite alternate;
     }
 
+
+    /* Status Dot Animation */
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #198754;
+        border-radius: 50%;
+        display: inline-block;
+        /*margin-right: 8px;*/
+        position: relative;
+    }
+
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 14px;
+            height: 14px;
+            background-color: #198754;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+
+        50% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+    }
+
     @@-webkit-keyframes glow {
         from {
             text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
@@ -211,27 +253,27 @@
                 </a>
 
             </h4>
-           
 
-                @*<span>Change Start Year</span>
-                <i aria-hidden="true"></i>
-                <span class="text-primary">
 
-                    @Html.DropDownList("Yearstart", new SelectListItem[]
-{
-        new SelectListItem() { Text = "Financial Year", Value = "financialYear" },
+            @*<span>Change Start Year</span>
+                                <i aria-hidden="true"></i>
+                                <span class="text-primary">
 
-    new SelectListItem() { Text = "Financial Year Last Year", Value = "FinancialYearwithLast" },
-    new SelectListItem() { Text = "Financial Year With Last 2 Year", Value = "FinancialWithLast2year" },
-        new SelectListItem() { Text = "All", Value = "All" }
+                                    @Html.DropDownList("Yearstart", new SelectListItem[]
+                {
+                        new SelectListItem() { Text = "Financial Year", Value = "financialYear" },
 
-    //new SelectListItem() { Text = "Financial Year=2024,Last Year=2023,Last 3 Year=2021", Value = "2024-2021" },
+                    new SelectListItem() { Text = "Financial Year Last Year", Value = "FinancialYearwithLast" },
+                    new SelectListItem() { Text = "Financial Year With Last 2 Year", Value = "FinancialWithLast2year" },
+                        new SelectListItem() { Text = "All", Value = "All" }
 
-}, new { @class = "", @id = "yearStartDropdown" })
+                    //new SelectListItem() { Text = "Financial Year=2024,Last Year=2023,Last 3 Year=2021", Value = "2024-2021" },
 
-                </span>*@
+                }, new { @class = "", @id = "yearStartDropdown" })
 
-   
+                                </span>*@
+
+
 
         </div><!-- /.box-header -->
 
@@ -252,22 +294,22 @@
                     <div class="">
                         <h1 style=" margin: 14px; font-weight: 600; color: #000000; font-size: 20px;display:none;">Dashboard</h1>
 
-                        @if (ViewBag.before30days <= ViewBag.NowDate && ViewBag.After1Year >= ViewBag.NowDate) //|| ViewBag.NowDate <= ViewBag.After1Year)
-                        {
-                            <div class="text-center">
 
-                                @{
-
-                                    Html.RenderPartial("CompanyExpiryDatePartial");
-
-                                }
-
-                                @*<p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>*@
-                                @*<p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
-                            </div>
-                        }
                         <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="row ">
+                                <div class="col-md-3">
+                                    <div class="text-black">
+                                        <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
+                                            <div class="row" style="display:flex; align-items:center;width:100%">
+
+                                                @{ Html.RenderPartial("SubscriptionExpires"); }
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                                 <div class="col-md-3">
                                     <a class="text-black" href="@Url.Action("ShowDueDays", "Reports")">
                                         <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
@@ -356,44 +398,41 @@
                                 </div>
 
 
-                                <div class="col-md-3">
-                                    <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
-                                        <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
-                                            <div class="row" style="display:flex; align-items:center;width:100%">
-                                                <div class="col-sm-4">
-                                                    <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
-                                                </div>
-                                                <div class="col-sm-8" style="text-align:end">
-                                                    <div class="">
+                                @*<div class="col-md-3">
+                                        <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
+                                            <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
+                                                <div class="row" style="display:flex; align-items:center;width:100%">
+                                                    <div class="col-sm-4">
+                                                        <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
+                                                    </div>
+                                                    <div class="col-sm-8" style="text-align:end">
+                                                        <div class="">
 
-                                                        <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
-                                                        <span class="info-box-text" style="padding:0">Invalid Consignment Found</span>
+                                                            <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
+                                                            <span class="info-box-text" style="padding:0">Invalid Consignment Found</span>
 
 
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                             </div>
+                                        </a>
 
-
-
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </a>
-
-                                </div>
+                                    </div>*@
 
 
 
                             </div>
                             <div class="text-center notetxt">
                                 <div class="notstyl">
-                                    <p><strong style="color: #bc3f30;">Note : </strong> <span style="font-size: 15px;">No. of Consignment showing in below reports will not appear in Invoice</span></p>
+                                    <p><strong style="color: #bc3f30;">Note : </strong> <span style="font-size: 15px;">No. of Consignment showing in above reports will not appear in Invoice</span></p>
                                 </div>
                             </div>
                         </div>
                         <!-- Small boxes (Stat box) -->
                         <div class="row ">
-                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px;">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:20px;">
                                 <div style=" background: white; border-radius: 17px; width: 100%; ">
                                     <div class="text-center notetxt">
                                         <div class="notstyl">
@@ -541,13 +580,13 @@
                                                     <div class="arrow1">
                                                         @*<a href="@Url.Action("PfReportDaily","Reports",new { Fromdatetime = ViewBag.firstDayOfMonth,ToDatetime=ViewBag.currentday })" class="small-box-footer"> <i class="fa fa-arrow-circle-right"></i></a>*@
                                                         @*@if (ViewBag.Date != null)
-        {
-            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
-        }
-        else
-        {
-            <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
-        }*@
+                                                            {
+                                                                <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = DateTime.Now.ToString("dd/MM/yyyy") })">View More <i class="fa fa-solid fa-arrow-right"></i></a>
+                                                            }*@
                                                         @if (ViewBag.Date != null)
                                                         {
                                                             <a href="@Url.Action("SaleReports", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
@@ -633,7 +672,7 @@
 
                             </div>
 
-                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6" style="margin-bottom:20px ">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:20px ">
                                 <div class="row" style="  background: white; border-radius: 17px; width: 100%; ">
                                     <div class="text-center notetxt">
                                         <div class="notstyl">
@@ -679,22 +718,6 @@
 
                                     </div>
 
-
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Avg Sale per month">
-                                        <div class="info-box billing-cards">
-
-
-                                            <div class="info-box-content">
-                                                <p class="info-box-text text-truncate">Avg Sale per month</p>
-                                                <span class="info-box-number text-truncate"> <strong>@Math.Round((double)Model.avgOfBillingSum).ToString()</strong></span>
-
-
-                                            </div>
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </div>
-
-
                                     <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Todays No of Bookings">
                                         <div class="info-box billing-cards  ">
 
@@ -733,68 +756,7 @@
 
                                     </div>
 
-
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Avg No.of Bookings">
-                                        <div class="info-box  billing-cards ">
-
-
-                                            <div class="info-box-content">
-                                                <p class="info-box-text text-truncate">Avg No. of Bookings Per Month</p>
-                                                <span class="info-box-number text-truncate"> <strong>@Model.avgOfBillingCount</strong></span>
-
-
-
-                                            </div>
-                                            <!-- /.info-box-content -->
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total Sale">
-                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
-                                            <div class="info-box billing-cards ">
-
-
-
-                                                <div class="info-box-content">
-                                                    <p class="info-box-text text-truncate">Total Sale</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="totalsale">@Model.sumOfBilling</strong></span>
-
-
-
-                                                </div>
-
-                                                <!-- /.info-box-content -->
-                                            </div>
-                                        </a>
-
-                                    </div>
-
-
-                                    <div class="col-12 col-xs-12 col-sm-6  col-md-3 col-lg-3" data-toggle="tooltip" title="Total No of.Bookings">
-                                        <a href="@Url.Action("Cashtotalsale", "Reports", new { Fromdatetime = ViewBag.firstDayOfMonth, ToDatetime = ViewBag.currentday })">
-                                            <div class="info-box billing-cards">
-
-
-                                                <div class="info-box-content">
-                                                    <p class="info-box-text text-truncate">Total No of Bookings</p>
-                                                    <span class="info-box-number text-truncate"> <strong id="totalnoofbook">@Model.countOfBilling</strong></span>
-
-
-
-                                                </div>
-
-                                                <!-- /.info-box-content -->
-                                            </div>
-                                        </a>
-
-                                    </div>
-
-
-
                                 </div>
-
-
-
 
                             </div>
 
@@ -808,15 +770,15 @@
 
                                 @{Html.RenderAction("JschartforCashcounter", "Home", new { pfcode = ViewBag.PfCode });
 
-}
+                                }
                             </div>
                         </div>
                         <!-- /.row -->
                         @*<div class="row">
-                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                @{Html.RenderAction("GetInvoiceDataForDashboard", "Invoice");}
-                            </div>
-                        </div>*@
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    @{Html.RenderAction("GetInvoiceDataForDashboard", "Invoice");}
+                                </div>
+                            </div>*@
 
                         @if (ViewBag.stationary != 0)
                         {
@@ -847,16 +809,16 @@
 
 
                         @*@{Html.RenderAction("steplinechart", "Home");}*@
-                    <div class="row">
-                        <div class="col-md-6">
-                            @{Html.RenderAction("DestinationAndProductPartial", "Home");}
+                        <div class="row">
+                            <div class="col-md-6">
+                                @{Html.RenderAction("DestinationAndProductPartial", "Home");}
 
+                            </div>
+                            <div class="col-md-6">
+                                @{Html.RenderAction("GetTop5Customer", "Home");}
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            @{Html.RenderAction("GetTop5Customer", "Home");}
-                        </div>
-                    </div>
-                     
+
                     </div>
 
                 </div>

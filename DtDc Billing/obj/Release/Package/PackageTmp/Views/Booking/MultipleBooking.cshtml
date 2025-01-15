@@ -30,12 +30,15 @@
                                 <div class="col-md-12">
                                     @{
                                         var successMessage = ViewBag.Message as string;
+                                        var BookedConsignments = ViewBag.Count as string;
                                     }
 
                                     @if (!string.IsNullOrEmpty(successMessage))
                                     {
+                                       
                                         @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
                                     }
+                                   
                                     <div class="form-horizontal">
                                         <div id="form-Cons">
                                             @using (Html.BeginForm("MultipleBooking", "Booking"))
@@ -52,43 +55,49 @@
                                                                     </div>
                                                                     <div class="col-md-9">
                                                                         <input id="StartingCons" class="form-control input-sm" type="text" name="StartingCons" />
+                                                                        <span id="startconserror" style="color: red; display: none;">Please Enter Starting Consignment.</span> <!-- Error message -->
+
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   <div class="row">
-                                                       <div class="form-group">
-                                                           <div class="col-md-7">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-7">
 
-                                                               <div class="row">
-                                                                   <div class="col-md-3" style="padding:0">
-                                                                       <label class=""> End number</label>
-                                                                   </div>
-                                                                   <div class="col-md-9">
-                                                                       <input id="EndingCons" type="text" class="form-control input-sm" name="EndingCons" />
-                                                                   </div>
-                                                               </div>
-                                                           </div>
-                                                       </div>
-                                                   </div>
-                                                     <div class="row">
-                                                         <div class="form-group">
-                                                             <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-md-3" style="padding:0">
+                                                                        <label class=""> End number</label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <input id="EndingCons" type="text" class="form-control input-sm" name="EndingCons" />
+                                                                        <span id="endconserror" style="color: red; display: none;">Please Enter End Consignment Number.</span> <!-- Error message -->
 
-                                                                 <div class="row">
-                                                                     <div class="col-md-3" style="padding:0">
-                                                                         <label class=""> Company </label>
-                                                                     </div>
-                                                                     <div class="col-md-9">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-7">
 
-                                                                         <input type="text" id="Companyid" class="form-control input-sm" name="Companyid" />
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-3" style="padding:0">
+                                                                        <label class=""> Company </label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
 
-                                                         </div>
-                                                     </div>
+                                                                        <input type="text" id="Companyid" class="form-control input-sm" name="Companyid" />
+                                                                        <span id="companyiderror" style="color: red; display: none;">Please Select Comapny Id.</span> <!-- Error message -->
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
@@ -163,17 +172,31 @@
                 var StartingCons = $('#StartingCons').val();
                 var EndingCons = $('#EndingCons').val();
                 var Companyid = $('#Companyid').val();
-
-                if (StartingCons == "") {
-                    alert("Please Enter Starting Consignment");
+                if (StartingCons == "" && EndingCons == "" && Companyid=="") {
+                    $("#startconserror").show();
+                    $("#endconserror").show();
+                    $("#companyiderror").show();
+                    return false;
+                }
+              else  if (StartingCons == "") {
+                    // alert("Please Enter Starting Consignment");
+                    $("#startconserror").show();
+                    $("#endconserror").hide();
+                    $("#companyiderror").hide();
                     return false;
                 }
                 else if (EndingCons == "") {
-                    alert("Please Enter Ending Consignment");
+                    //   alert("Please Enter Ending Consignment");
+                    $("#endconserror").show();
+                    $("#startconserror").hide();
+                    $("#companyiderror").hide();
                     return false;
                 }
                 else if (Companyid == "") {
-                    alert("Please Enter Company Id");
+                    //  alert("Please Enter Company Id");
+                    $("#companyiderror").show();
+                    $("#endconserror").hide();
+                    $("#startconserror").hide();
                     return false;
                 }
                 else {
@@ -184,7 +207,8 @@
                     var conscount = parseInt("0" + calend) - parseInt("0" + calstart) + 1;
 
                     if (conscount > 100) {
-                        alert("Selected consignment are over 100");
+                        $("#companyiderror").text("Selected consignment are over 100");
+                        //alert("Selected consignment are over 100");
                         return false;
                     }
                     else {
@@ -206,9 +230,9 @@
                 $('#EndingCons').val('');
                 $('#StartingCons').val($(this).val().toUpperCase());
                 var startno = $("#StartingCons").val();
-                if (startno.length >= 9) {
-                    $('#EndingCons').focus();
-                }
+                //if (startno.length >= 9) {
+                //    $('#EndingCons').focus();
+                //}
 
             });
 
@@ -226,10 +250,10 @@
                 if (firstchastart != firstcharend) {
                     $('#EndingCons').val('');
                 }
-                else if (endno.length >= 9) {
-                    $('#Companyid').focus();
+                //else if (endno.length >= 9) {
+                //    $('#Companyid').focus();
 
-                }
+                //}
 
             });
         });
