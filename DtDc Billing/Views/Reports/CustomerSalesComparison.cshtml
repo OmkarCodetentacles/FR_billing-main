@@ -8,7 +8,7 @@
 <div class="content-wrapper">
     <div class="box box-info" style="padding: 16px 16px !important">
         <div class="box-header with-border">
-            <h4>Recipient  Report</h4>
+            <h4>Customer Sales Report Comparison</h4>
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="row">
@@ -28,18 +28,12 @@
                             <th>
                                 Comapany Name
                             </th>
-                            <th>
-                                Last Month
-                            </th>
+                           
 
-
-                            <th>   Last Month Sale </th>
+                            <th>   Last Month Sale(@Model.Select(x=>x.LastMonth).FirstOrDefault()) </th>
+                           
                             <th>
-                                Previous Month
-                            </th>
-
-                            <th>
-                                Previous Month Sale
+                                Previous Month Sale(@Model.Select(x=>x.PrevMonth).FirstOrDefault())
                             </th>
                             <th>
                                 Sales Differnce
@@ -70,17 +64,17 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Company_Name)
                                 </td>
-                                <td>
+                                @*<td>
                                     @Html.DisplayFor(modelItem => item.LastMonth)
-                                </td>
+                                </td>*@
 
                                 <td>
                                     @Html.DisplayFor(modelItem => item.LastMonthSales)
                                 </td>
 
-                                <td>
+                                @*<td>
                                     @Html.DisplayFor(modelItem => item.PrevMonth)
-                                </td>
+                                </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.PrevMonthSales)
 
@@ -89,7 +83,7 @@
                                 </td>
 
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PercentageChange)
+                                    @(item.PercentageChange??0)
                                 </td>
 
 

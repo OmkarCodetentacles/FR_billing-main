@@ -37,7 +37,7 @@ namespace DtDc_Billing.Controllers
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            List<Receipt_details> rd = db.Receipt_details.Where(m => m.Pf_Code == pfcode).OrderByDescending(m => m.Receipt_Id).ToList();
+            List<Receipt_details> rd = db.Receipt_details.Where(m => m.Pf_Code == pfcode && m.Datetime_Cons.Value.Month==DateTime.Now.Month).OrderByDescending(m => m.Receipt_Id).ToList();
             ViewBag.totalAmt = (from emp in rd
                                 select emp.Charges_Total).Sum();
             return View(rd);
@@ -234,6 +234,7 @@ namespace DtDc_Billing.Controllers
             }
             else
             {
+
                  rc = db.getReceiptDetails(PfCode).Select(x => new Receipt_details
                 {
 
