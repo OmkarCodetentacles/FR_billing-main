@@ -1361,7 +1361,7 @@ namespace DtDc_Billing.Controllers
                 ExpiredDays = x.paymentDate.HasValue ? (x.paymentDate.Value.AddDays(x.subscriptionForInDays ?? 0) - currentdate).Days : 0,
                 Remark = x.Remark
             })
-            .OrderByDescending(x => x.DaysSinceRegistration)
+            .OrderBy(x => x.DaysSinceRegistration)
             .ToList();
 
             return View(rg);
