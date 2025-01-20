@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using Ionic.Zip;
@@ -31,6 +32,7 @@ namespace DtDc_Billing.Controllers
         // [SessionUserModule]
 
 
+        [PageTitle("PrintBulkCashReceipt")]
         public ActionResult PrintBulkCashReceipt()
         {
             return View();
@@ -128,6 +130,7 @@ namespace DtDc_Billing.Controllers
             return new FileStreamResult(outputStream, fileType);
         }
 
+        [PageTitle("CashPrintreceipt")]
         public ActionResult Printreceipt()
         {
 
@@ -2134,6 +2137,7 @@ Select(e => new
         }
 
         [HttpGet]
+        [PageTitle("DeleteCashConsignment")]
         public ActionResult DeleteCashConsignment()
         {
             return View();

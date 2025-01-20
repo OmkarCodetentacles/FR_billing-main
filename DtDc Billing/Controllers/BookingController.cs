@@ -37,6 +37,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Booking
+        [PageTitle("Consignment")]
         public ActionResult ConsignMent()
         {
             // Retrieve the message from TempData
@@ -399,7 +400,7 @@ Select(e => new
             return Json(suggestions, JsonRequestBehavior.AllowGet);
         }
 
-
+        [PageTitle("EditConsignment")]
         public ActionResult EditConsignment()
         {
             ViewBag.transaction = new TransactionMetadata();
@@ -684,7 +685,7 @@ Select(e => new
             }
         }
 
-
+        [PageTitle("MultipleBooking")]
         public ActionResult MultipleBooking()
         {
 
@@ -780,7 +781,7 @@ Select(e => new
 
             return View();
         }
-
+        [PageTitle("Checkbookinglist")]
         public ActionResult Checkbookinglist(string Fromdatetime, string ToDatetime, string Custid, string Submit)
         {
             List<TransactionView> list = new List<TransactionView>();
@@ -1169,6 +1170,7 @@ Select(e => new
             }
 
         }
+        [PageTitle("Nobookinglist")]
         public ActionResult Nobookinglist()
         {
             List<Transaction> list = new List<Transaction>();
@@ -1492,7 +1494,7 @@ Select(e => new
 
         }
 
-
+        [PageTitle("UpdateRate")]
         public ActionResult UpdateRate()
         {
             List<TransactionView> list = new List<TransactionView>();
@@ -1831,6 +1833,8 @@ Select(e => new
 
 
         [HttpGet]
+            
+        [PageTitle("importFromExcel")]
         public ActionResult importFromExcel()
         {
             return View();
@@ -2130,7 +2134,7 @@ Select(e => new
             return RedirectToAction("importFromExcel");
         }
 
-
+        [PageTitle("importTextFile")]
         public ActionResult importTextFile()
         {
 
@@ -2521,6 +2525,7 @@ Select(e => new
         }
 
         [HttpGet]
+        [PageTitle("RecycleConsignment")]
         public ActionResult RecycleConsignment()
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();

@@ -2956,7 +2956,7 @@ namespace DtDc_Billing.Controllers
         {
             return View();
         }
-
+        [PageTitle("Franchisee List")]
         public ActionResult FranchiseeList(string tab = "1")
         {
             //long stradmin = Convert.ToInt64(Session["Admin"]);
@@ -5314,6 +5314,7 @@ namespace DtDc_Billing.Controllers
         {
             return View();  
         }
+        [PageTitle("GetConsignmentInfo")]
         public ActionResult GetConsignmentInfo()
         {
             return View();
@@ -5658,6 +5659,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
+        [PageTitle("ChangePassword")]
         public ActionResult ChangePassword()
         {
             var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();

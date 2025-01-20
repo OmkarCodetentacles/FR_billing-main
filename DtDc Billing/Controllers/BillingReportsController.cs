@@ -194,6 +194,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
+        [PageTitle("SaleReportBeforeInvoice")]
         public ActionResult SaleReportBeforeInvoice()
         {
 
@@ -547,6 +548,7 @@ namespace DtDc_Billing.Controllers
            
         }
 
+        [PageTitle("CreditorsReport")]
         public ActionResult CreditorsReport()
         {
             List<CreditorsInvoiceModel> inc = new List<CreditorsInvoiceModel>();
@@ -1094,6 +1096,7 @@ namespace DtDc_Billing.Controllers
         }
 
 
+        [PageTitle("BusinessAnalysis")]
         public ActionResult BusinessAnalysis()
         {
             List<TransactionView> list = new List<TransactionView>();
@@ -2074,6 +2077,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
+        [PageTitle("TaxReport")]
         public ActionResult TaxReport()
         {
             ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");

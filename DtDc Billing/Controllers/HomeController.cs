@@ -39,6 +39,8 @@ namespace DtDc_Billing.Controllers
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         //sLogger logger = LogManager.GetCurrentClassLogger();
         //[OutputCache(CacheProfile = "Cachefast")]   
+
+        [PageTitle("Home Index")]
         public ActionResult Index()
         {
             DateTime? dateTime;

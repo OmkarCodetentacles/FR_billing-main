@@ -26,9 +26,10 @@ namespace DtDc_Billing.Controllers
     public class StationeryController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
-              
+
 
         // GET: Stationery
+        [PageTitle("Stationary|Add")]
         public ActionResult Add()
         {
             return View();
@@ -265,6 +266,8 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpGet]
+        [PageTitle("Remaining")]
+
         public ActionResult Remaining(string PfCode=null, string RemainingType=null)
         {
             if (PfCode == null)
@@ -704,12 +707,14 @@ Select(e => new
         
         }
 
+        [PageTitle("BulkBarCodePrint")]
         public ActionResult BulkBarcodePrint()
         {
             return View();
         }
 
         [HttpPost]
+        [PageTitle("BulkBarcodePrint")]
         public ActionResult BulkBarcodePrint(HttpPostedFileBase httpPostedFileBase)
         {
             if (httpPostedFileBase == null)

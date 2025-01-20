@@ -52,6 +52,7 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionAdmin]
+        [PageTitle("billedunbilled")]
         public ActionResult billedunbilled()
         {
 
@@ -194,6 +195,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [SessionAdmin]
+        [PageTitle("SaleReports")]
         public ActionResult SaleReports(string ToDatetime=null, string Fromdatetime=null)
         {
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -526,6 +528,7 @@ namespace DtDc_Billing.Controllers
 
 
         [SessionAdmin]
+        [PageTitle("DailyReport")]
         public ActionResult DailyReport(string dateTime,string Submit)
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -2676,7 +2679,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
 
         }
-
+        [PageTitle("creditorsreport")]
         public ActionResult creditorsreport()
         {
             //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
@@ -3237,6 +3240,7 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
 
         [HttpGet]
+        [PageTitle("CustomerSalesComparison")]
         public ActionResult CustomerSalesComparison()
         {
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();

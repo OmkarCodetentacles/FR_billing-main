@@ -1,4 +1,5 @@
-﻿using DtDc_Billing.Entity_FR;
+﻿using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
-       
+        [PageTitle("Add_Expenses")]
         public ActionResult Add_Expenses()
         {
 
@@ -99,7 +100,7 @@ namespace DtDc_Billing.Controllers
             
         }
 
-
+        [PageTitle("Add_Payment")]
         public ActionResult Add_Payment()
         {
             ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");

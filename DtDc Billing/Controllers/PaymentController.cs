@@ -28,6 +28,7 @@ namespace DtDc_Billing.Controllers
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
         // GET: Payment
+        [PageTitle("InvoicePaymentList")]
         public ActionResult InvoicePaymentList()
         {
 
@@ -924,7 +925,7 @@ Select(e => new
             return Json(entity, JsonRequestBehavior.AllowGet);
         }
 
-
+        [PageTitle("PaymentTrack")]
         public ActionResult PaymentTrack()
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -1392,7 +1393,7 @@ Select(e => new
 
             return View(newPaymentModel);
         }
-
+        [PageTitle("CashEdit")]
         public ActionResult CashEdit(int id)
         {
             var obj = db.Cashes.Where(m => m.Cash_id == id).FirstOrDefault();
@@ -1467,6 +1468,7 @@ Select(e => new
             return View(cash);
         }
 
+        [PageTitle("ChequeEdit")]
         public ActionResult ChequeEdit(int id)
         {
             var obj = db.Cheques.Where(m => m.Cheque_id == id).FirstOrDefault();
@@ -1541,6 +1543,7 @@ Select(e => new
         }
 
         [HttpGet]
+        [PageTitle("NEFTEdit")]
         public ActionResult NEFTEdit(int id)
         {
             var obj = db.NEFTs.Where(m => m.Neft_id == id).FirstOrDefault();
@@ -1615,7 +1618,7 @@ Select(e => new
             return View(nEFT);
         }
 
-
+        [PageTitle("CreditEdit")]
         public ActionResult CreditEdit(int id)
         {
             var obj = db.CreditNotes.Where(m => m.Cr_id == id).FirstOrDefault();
@@ -1682,7 +1685,7 @@ Select(e => new
             return View(credit);
         }
 
-       
+        [PageTitle("DeletePayment")]
         public ActionResult DeletePayment(int id,string modeofpayment)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();

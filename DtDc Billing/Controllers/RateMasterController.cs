@@ -24,6 +24,7 @@ namespace DtDc_Billing.Controllers
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
         // GET: RateMaster
+        [PageTitle("RateMaster|Index")]
         public ActionResult Index(string id)
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -223,6 +224,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
+        [PageTitle("EditCompanyRatemaster")]
         public ActionResult EditCompanyRateMaster()
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -643,7 +645,7 @@ namespace DtDc_Billing.Controllers
             saveMissingSectors(pfcode.Pf_code, Idd);
             return RedirectToAction("Index", "RateMaster", new { id = Id });
         }
-
+        [PageTitle("AddComapny")]
         public ActionResult AddCompany()
         {
             ViewBag.Pf_code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code");
@@ -2406,6 +2408,7 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpGet]
+        [PageTitle("AddCompanyimporFromExcel")]
         public ActionResult AddCompanyimporFromExcel()
         {
             return View();

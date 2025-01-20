@@ -50,6 +50,7 @@ namespace DtDc_Billing.Controllers
         string invstart = "INV/2023-24/";
 
         //[OutputCache(Duration = 600, VaryByParam = "none", Location = OutputCacheLocation.Server)]
+        [PageTitle("GenerateInvoice")]
         public ActionResult GenerateInvoice(string Invoiceno = null)
         {
 
@@ -418,6 +419,7 @@ namespace DtDc_Billing.Controllers
 
         //}
         [HttpGet]
+        [PageTitle("ViewInvoice")]
         public ActionResult ViewInvoice(string invfromdate,List<string> Companydetails, string invtodate, string invoiceNo, string invoiceNotoDelete)
     {
             List<InvoiceModel> list = new List<InvoiceModel>();
@@ -2153,7 +2155,7 @@ Select(e => new
             }
 
         }
-
+        [PageTitle("MultipleInvoice")]
         public ActionResult MultipleInvoice()
         {
 
@@ -3158,6 +3160,7 @@ Select(e => new
         }
 
         [HttpGet]
+        [PageTitle("InvoiceZip")]
         public ActionResult InvoiceZip()
         {
 
@@ -3265,7 +3268,7 @@ Select(e => new
             //Dispance the stream
             return new FileStreamResult(outputStream, fileType);
         }
-
+        [PageTitle("GenerateInvoiceSingle")]
         public ActionResult GenerateInvoiceSingle(string Invoiceno = null)
         {
 
@@ -4631,6 +4634,7 @@ Select(e => new
 
 
         [HttpGet]
+        [PageTitle("RecycleInvoice")]
         public ActionResult RecycleInvoice()
         {
          
@@ -4664,6 +4668,7 @@ Select(e => new
         //Generate Invocie Withot GST
 
         [HttpGet]
+        [PageTitle("ViewInvoiceWithoutGST")]
         public ActionResult ViewInvoiceWithoutGST(string invfromdate, string invtodate, string Companydetails, string invoiceNo, int? InvoiceId, bool isDelete = false)
 
         {
@@ -4761,7 +4766,7 @@ Select(e => new
             return View(a);
 
         }
-
+        [PageTitle("GenerateInvoiceWithoutGST")]
         public ActionResult GenerateInvoiceWithoutGST(int InvoiceID = 0)
         {
 
