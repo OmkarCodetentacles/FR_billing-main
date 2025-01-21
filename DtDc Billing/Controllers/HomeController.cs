@@ -144,8 +144,8 @@ namespace DtDc_Billing.Controllers
             //  ViewBag.countofbillingcurrentmonth = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Count();
 
             //  DateTime date = DateTime.Now;
-            ViewBag.firstDayOfMonth = new DateTime(serverTime.Year, serverTime.Month, 1).ToString("dd-MM-yyyy");
-            ViewBag.currentday = DateTime.Now.ToString("dd-MM-yyyy");
+            ViewBag.firstDayOfMonth = new DateTime(localTime.Year, localTime.Month, 1).ToString("dd-MM-yyyy");
+            ViewBag.currentday = localTime.ToString("dd-MM-yyyy");
 
             //DateTime abc = DateTime.Now;
 
@@ -164,8 +164,8 @@ namespace DtDc_Billing.Controllers
 
             //int PfCount = db.Sectors.Where(m => m.Pf_code == Pf).Count();
 
-            ViewBag.firstDayOfMonth = new DateTime(serverTime.Year, serverTime.Month, 1).ToString("dd-MM-yyyy");
-            ViewBag.currentday = DateTime.Now.ToString("dd-MM-yyyy");
+            ViewBag.firstDayOfMonth = new DateTime(localTime.Year, localTime.Month, 1).ToString("dd-MM-yyyy");
+            ViewBag.currentday =localTime.ToString("dd-MM-yyyy");
             ViewBag.complaintcount = obj.complaintCount;
             ViewBag.sumofbilling = obj.sumOfBilling;
             ViewBag.sumofbillingcurrentmonth = obj.sumOfBillingCurrentMonth.ToString("##");
@@ -198,7 +198,7 @@ namespace DtDc_Billing.Controllers
                 N_ID = x.N_ID,
                 Message = x.Message,
                 description = x.description,
-                dateN = x.dateN ?? serverTime,
+                dateN = x.dateN ?? localTime,
                 url_path = x.url_path,
                 Status = x.Status
 
@@ -208,7 +208,7 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.notificationCount = datacount;
 
-            DateTime After30days = serverTime.AddDays(30);
+            DateTime After30days = localTime.AddDays(30);
 
             //List<CompanyExpiryModel> CompanyExpiry = new List<CompanyExpiryModel>();
 
@@ -245,7 +245,7 @@ namespace DtDc_Billing.Controllers
             //ViewBag.After1Year = After1Year;
             //ViewBag.NowDate = NowDate;
             //ViewBag.before30days = before30days;
-            DateTime currentDate = DateTime.Now;
+            DateTime currentDate =localTime;
 
             System.DateTime newDate = Date.paymentDate.Value.AddDays(Date.subscriptionForInDays ?? 0);
             TimeSpan date_difference = newDate - currentDate;

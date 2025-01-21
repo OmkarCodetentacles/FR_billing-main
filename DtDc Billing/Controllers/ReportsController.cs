@@ -823,26 +823,26 @@ namespace DtDc_Billing.Controllers
 
             var sum = (from emp in rc
 
-                       select emp.Credit_Amount).Sum();
+                       select emp.Charges_Total).Sum();
 
             ViewBag.bycard = (from card in rc
                               where card.Credit == "card"
-                              select card.Credit_Amount).Sum();
+                              select card.Charges_Total).Sum();
             ViewBag.bycheque = (from cheque in rc
                                 where cheque.Credit == "cheque"
-                                select cheque.Credit_Amount).Sum();
+                                select cheque.Charges_Total).Sum();
             ViewBag.bycredit = (from credit in rc
                                 where credit.Credit == "credit"
-                                select credit.Credit_Amount).Sum();
+                                select credit.Charges_Total).Sum();
             ViewBag.bycash = (from cash in rc
                               where cash.Credit == "cash"
-                              select cash.Credit_Amount).Sum();
+                              select cash.Charges_Total).Sum();
             ViewBag.byother = (from other in rc
                                where other.Credit == "other"
-                               select other.Credit_Amount).Sum();
+                               select other.Charges_Total).Sum();
             ViewBag.byOnline = (from online in rc
                                 where online.Credit == "online"
-                                select online.Credit_Amount).Sum();
+                                select online.Charges_Total).Sum();
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
              && m.Datetime_Exp.Value.Month == dateTime.Value.Month
@@ -949,22 +949,22 @@ namespace DtDc_Billing.Controllers
 
             ViewBag.bycard = (from card in rc
                               where card.Credit == "card"
-                              select card.Credit_Amount).Sum();
+                              select card.Charges_Total).Sum();
             ViewBag.bycheque = (from cheque in rc
                                 where cheque.Credit == "cheque"
-                                select cheque.Credit_Amount).Sum();
+                                select cheque.Charges_Total).Sum();
             ViewBag.bycredit = (from credit in rc
                                 where credit.Credit == "credit"
-                                select credit.Credit_Amount).Sum();
+                                select credit.Charges_Total).Sum();
             ViewBag.bycash = (from cash in rc
                               where cash.Credit == "cash"
-                              select cash.Credit_Amount).Sum();
+                              select cash.Charges_Total).Sum();
             ViewBag.byother = (from other in rc
                                where other.Credit == "other"
-                               select other.Credit_Amount).Sum();
+                               select other.Charges_Total).Sum();
             ViewBag.byOnline = (from online in rc
                                 where online.Credit == "online"
-                                select online.Credit_Amount).Sum();
+                                select online.Charges_Total).Sum();
 
             ViewBag.Expense = db.Expenses.Where(m => m.Datetime_Exp.Value.Day == dateTime.Value.Day
              && m.Datetime_Exp.Value.Month == dateTime.Value.Month

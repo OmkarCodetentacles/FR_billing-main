@@ -41,7 +41,7 @@ namespace DtDc_Billing.Controllers
         public JsonResult Datewise(string Date)
         {
 
-
+            string strpfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             DateTime? EnteredDate;
 
 
@@ -73,14 +73,16 @@ namespace DtDc_Billing.Controllers
 
 
             apiclass.Amount = ((from od in db.Receipt_details
-                                where (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
+                                where (od.Pf_Code==strpfcode) && 
+                                (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
                               && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
                               && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
 
                                 select od.Charges_Total).Sum()) ?? 0;
 
             apiclass.Count = ((from od in db.Receipt_details
-                               where (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
+                               where (od.Pf_Code==strpfcode)  &&
+                               (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
                              && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
                              && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
                                select od)).Count();
@@ -92,7 +94,7 @@ namespace DtDc_Billing.Controllers
 
         public JsonResult Consignment()
         {
-            string PfCode = Session["pfCode"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
             List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
 
@@ -578,12 +580,12 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
             DateTime? EnteredDate;
 
             Apiclass apiclass = new Apiclass();
-
+            DateTime localTime = GetLocalTime.GetDateTime();
             db.Configuration.ProxyCreationEnabled = false;
 
-            apiclass.Amount = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == DateTime.Now.Year).Sum(m => m.Charges_Total) ?? 0;
+            apiclass.Amount = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Sum(m => m.Charges_Total) ?? 0;
 
-            apiclass.Count = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == DateTime.Now.Year).Count();
+            apiclass.Count = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Count();
 
 
 
