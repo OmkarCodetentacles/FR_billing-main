@@ -146,7 +146,7 @@ namespace DtDc_Billing.Controllers
             //  DateTime date = DateTime.Now;
             ViewBag.firstDayOfMonth = new DateTime(localTime.Year, localTime.Month, 1).ToString("dd-MM-yyyy");
             ViewBag.currentday = localTime.ToString("dd-MM-yyyy");
-
+            ViewBag.Date = localTime.ToString("dd/MM/yyyy");
             //DateTime abc = DateTime.Now;
 
             //var todayexp =  ((from e in db.Expenses
