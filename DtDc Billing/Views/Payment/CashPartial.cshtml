@@ -4,13 +4,54 @@
 
     Layout = null;
 }
-@*@if (TempData["Message"] != null)
-    {
-        <div class="alert alert-success" id="successmsg">
-            <strong>Success! </strong>@TempData["Message"]
-        </div>
-    }*@
 
+<style>
+    .edittable th {
+        width: 12.5% !important;
+    }
+
+    .tableEdit {
+        display: grid;
+        align-items: center;
+    }
+
+    .invoice-container {
+        height: 50vh;
+    }
+
+    .list-group {
+        max-height: calc(50vh - 140px); /* Adjust for header and buttons */
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+
+        .list-group::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .list-group::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .list-group::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+    .invoice-option {
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .invoice-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .invoice-option.selected {
+            background-color: #e7f1ff;
+            border-color: #0d6efd;
+        }
+</style>
 @{
     var sMessage = TempData["Message"] as string;
 }
@@ -21,23 +62,41 @@
         setTimeout(function () {
             window.location.reload();
 
-
-
         }, 2000); // 3000 milliseconds = 3 seconds
     </script>
 
 }
 
-@using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "CashP", OnSuccess = "createsuccess" }))
+@using (Ajax.BeginForm("Cash", "Payment", new AjaxOptions
+{
+    HttpMethod = "Post",
+    UpdateTargetId = "CashP",
+    OnBegin = "validateForm",
+    OnSuccess = "createsuccess"
+}))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div class="form-horizontal" id="yourFormId">
 
         <hr />
+        <!-- Error Message -->
+        <div id="InvAmtError" class="text-danger"></div>
+
         @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <input type="hidden" class="Firm_Id" name="Firm_Id">
+        <input type="hidden" class="creditTotalAmt" id="creditTotalAmt" name="creditTotalAmt">
+        <input type="hidden" class="selectedTotal" id="selectedTotal" name="selectedTotal">
+
+        <div class="form-group">
+            <label class="col-md-4">Customer Id</label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.custId, new { htmlAttributes = new { @class = "form-control custId", @readonly = "readonly" } })
+
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="col-md-4">Amount</label>
             <div class="col-md-8">
@@ -46,21 +105,11 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.inserteddate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.inserteddate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.inserteddate, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
         <div class="form-group">
             <label class="col-md-4">Date</label>
             <div class="col-md-8">
                 @Html.EditorFor(model => model.tempinserteddate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate" } })
                 @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
-                @*@Html.TextBoxFor(model => model.tempinserteddate, "{ 0:dd / MM / yyyy}")
-                    @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })*@
 
             </div>
         </div>
@@ -82,10 +131,68 @@
         </div>
 
         <div class="form-group">
+            <label class="col-md-4"></label>
+            <div class="col-md-8">
+                <label>
+                    <input type="radio" name="invoiceType" value="single" onclick="toggleDivs('single')" checked>
+                    Single Invoice
+                </label>
+                <label>
+                    <input type="radio" name="invoiceType" value="multiple" onclick="toggleDivs('multiple')">
+                    Multiple Invoices
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group" id="totalcreditamountdiv" style="display:none;">
+            <label class="col-md-4">Your credit Amount </label>
+            <div class="col-md-8">
+                <label class="text-success">
+                    <b>
+                        <span class="creditamt">0</span>
+                    </b>
+                </label>
+
+            </div>
+        </div>
+
+        <div class="form-group" id="singleInvoiceDiv" style="display: block;">
             <label class="col-md-4">Invoice No</label>
             <div class="col-md-8">
                 @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="card invoice-container" id="multipleInvoicesDiv" style="display: none;">
+            <div class="card-body d-flex flex-column">
+
+
+                <label class="col-md-4">
+                    Select Multiple Invoice
+                </label>
+                <div class="col-md-8">
+                    <div class="selected-count mb-2">
+                        Selected: <span id="count" class="text-success text-bold">0 </span>
+                    </div>
+                    <div class="selected-count mb-2">
+                        Selected Invoice Amount: <span id="total" class="text-success text-bold"> 0.00₹</span>
+                    </div>
+                    <div class="selected-count mb-2">
+                        Remaining Credit Amount:<span id="remaining" class="text-success text-bold">0.00₹ </span>
+                    </div>
+
+                    <div class="list-group flex-grow-1">
+                        <div id="invoiceList" class="list-group flex-grow-1">
+                            <!-- Invoice options will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hidden field to store selected invoices -->
+                <input type="hidden" id="SelectedInvoices" name="SelectedInvoices" />
+
+
             </div>
         </div>
 
@@ -129,7 +236,287 @@
 
             $('#C_Total_Amount').val(addition);
 
+            updateCount();
+
         });
 
     });
+
+
+ function toggleDivs(selectedType) {
+
+     const singleDiv = document.getElementById('singleInvoiceDiv');
+     const multipleDiv = document.getElementById('multipleInvoicesDiv');
+
+
+     if (selectedType === 'single') {
+         singleDiv.style.display = 'block';
+         multipleDiv.style.display = 'none';
+
+         const totalcreditamountdiv = document.getElementById('totalcreditamountdiv');
+         totalcreditamountdiv.style.display = 'none';
+
+     } else if (selectedType === 'multiple') {
+         singleDiv.style.display = 'none';
+         multipleDiv.style.display = 'block';
+
+
+         // Make an AJAX call to fetch the invoice list
+         fetchInvoiceList();
+         deselectAll();
+
+     }
+ }
+
+    function fetchInvoiceList() {
+        const customerId = $("#custId").val(); // Get the customer ID
+
+        // Make an AJAX call with the customer ID as a query parameter
+        fetch('/Payment/getInvoiceList?customerId=' + customerId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Populate the invoice list dynamically
+                populateInvoiceList(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+    function populateInvoiceList(invoices) {
+        const invoiceList = document.getElementById('invoiceList');
+
+        // Clear the existing content
+        invoiceList.innerHTML = '';
+
+        // Loop through the dynamic data to generate invoice items
+        invoices.forEach(invoice => {
+            const invoiceOption = document.createElement('div');
+            invoiceOption.className = 'invoice-option list-group-item d-flex justify-content-between align-items-center';
+
+            // Attach the onclick event dynamically
+            invoiceOption.addEventListener('click', function () {
+                toggleSelection(invoiceOption);
+            });
+
+            // Add invoice number, net amount, and badge
+            invoiceOption.innerHTML = `
+            <span>${invoice.InvoiceNo}</span>
+            <span class="text-success">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${invoice.Amount.toFixed(2)}₹</span>
+            <span class="badge bg-primary d-none">✓</span>
+        `;
+
+
+            // Calculate the sum of all invoice amounts
+            const totalCreditAmount = invoices.reduce((sum, invoice) => sum + invoice.Amount, 0);
+
+
+            const multipleDiv = document.getElementById('totalcreditamountdiv');
+            totalcreditamountdiv.style.display = 'block';
+
+
+
+            $(".creditamt").text(totalCreditAmount.toFixed(2));
+
+            $("#creditTotalAmt").val(totalCreditAmount);
+            invoiceList.appendChild(invoiceOption);
+        });
+    }
+
+
+
+
+    function toggleSelection(element) {
+        element.classList.toggle('selected');
+        const checkmark = element.querySelector('.badge');
+        if (checkmark) {
+            checkmark.classList.toggle('d-none');
+        }
+        updateCount();
+    }
+
+    function updateCount() {
+        // Count the number of selected items
+        const selectedCount = document.querySelectorAll('.selected').length;
+
+        // Update the count display
+        const countElement = document.getElementById('count');
+        if (countElement) {
+            countElement.textContent = selectedCount;
+        }
+
+        // Calculate the total of selected invoice amounts
+        const totalAmount = Array.from(document.querySelectorAll('.selected'))
+            .reduce((sum, el) => {
+                const amountText = el.querySelector('span:nth-child(2)')?.textContent.trim(); // Safely get the amount span
+                const amount = parseFloat(amountText?.replace('₹', '') || 0); // Parse the amount or default to 0
+                return sum + amount; // Accumulate the amount
+            }, 0);
+
+        // Update the total display
+        const totalElement = document.getElementById('total');
+        if (totalElement) {
+            totalElement.textContent = ` ${totalAmount.toFixed(2)}₹`; // Display the total amount
+        }
+
+        $("#selectedTotal").val(totalAmount);
+
+        // Recalculate the remaining amount
+        calculateRemainingAmount(totalAmount);
+
+        // Update the hidden field for selected invoices
+        prepareSelectedData();
+    }
+
+
+
+    function calculateRemainingAmount(totalAmount) {
+        const amountField = document.querySelector('#Amount'); // Get the original amount field
+        const tdsField = document.querySelector('#C_Tds_Amount'); // Get the TDS field
+
+        const originalAmount = parseFloat(amountField.value || 0); // Get the current value of the field
+        const tdsAmount = parseFloat(tdsField?.value || 0); // Use optional chaining to avoid errors if TDS field is missing
+
+        console.log(originalAmount + "----" + tdsAmount);
+
+        const remainingAmount = (originalAmount + tdsAmount) - totalAmount; // Calculate the remaining amount
+
+        const remainingElement = document.getElementById('remaining');
+
+        if (remainingElement) {
+            remainingElement.textContent = `${remainingAmount.toFixed(2)}₹`; // Display the remaining amount
+        }
+    }
+
+
+
+    function getSelected() {
+        const selected = Array.from(document.querySelectorAll('.selected'))
+            .map(el => el.textContent.trim());
+        alert('Selected invoices:\n' + selected.join('\n'));
+    }
+
+    function clearSelection() {
+        document.querySelectorAll('.selected').forEach(el => {
+            el.classList.remove('selected');
+            const badge = el.querySelector('.badge');
+            if (badge) {
+                badge.classList.add('d-none');
+            }
+        });
+        updateCount();
+    }
+
+    function prepareSelectedData() {
+        // Collect selected invoice numbers
+        const selectedInvoices = Array.from(document.querySelectorAll('.selected'))
+            .map(el => el.querySelector('span:first-child').textContent.trim()); // Extract only the invoice number
+
+        // Convert the array into a comma-separated string
+        const commaSeparatedInvoices = selectedInvoices.join(',');
+
+        // Populate the hidden input field with the comma-separated string
+        const selectedInvoicesInput = document.getElementById('SelectedInvoices');
+        if (selectedInvoicesInput) {
+            selectedInvoicesInput.value = commaSeparatedInvoices; // Set as a comma-separated string
+        }
+
+        console.log('Prepared selected invoices for submission:', commaSeparatedInvoices.toString());
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const amountField = document.querySelector('#Amount');
+        if (amountField) {
+            amountField.addEventListener('input', () => {
+                const totalAmount = Array.from(document.querySelectorAll('.selected'))
+                    .reduce((sum, el) => {
+                        const amountText = el.querySelector('span:nth-child(2)').textContent.trim();
+                        const amount = parseFloat(amountText.replace('₹', ''));
+                        return sum + amount;
+                    }, 0);
+
+                // Recalculate the remaining amount whenever the amount field changes
+                calculateRemainingAmount(totalAmount);
+            });
+        }
+    });
+
+
+
+        function deselectAll() {
+            // Get all selected items
+            const selectedItems = document.querySelectorAll('.selected');
+
+            // Loop through each selected item and remove the 'selected' class
+            selectedItems.forEach(item => {
+                item.classList.remove('selected');
+
+                // Hide the checkmark
+                const checkmark = item.querySelector('.badge');
+                if (checkmark) {
+                    checkmark.classList.add('d-none');
+                }
+            });
+
+            // Reset the counts and totals
+            updateCount();
+        }
+
+
+        function validateForm() {
+            let errorFlag = false;
+            let errorMessage = ''; // Accumulate error messages here
+
+            console.log("enter validation");
+
+            // Get selected invoices
+            const selectedInvoices = JSON.parse($('#SelectedInvoices').val() || '[]');
+            console.log("selectedInvoices"+ selectedInvoices);
+
+            const invoiceType = $('input[name="invoiceType"]:checked').val(); // Get selected invoice type
+            console.log("invoiceType" + invoiceType);
+
+            const totalAmount = parseFloat($('#C_Total_Amount').val() || 0); // Get total amount
+            console.log("totalAmount" + totalAmount);
+
+            const creditTotalAmt = parseFloat($('#creditTotalAmt').val() || 0); // Get credit total amount
+            console.log("creditTotalAmt" + creditTotalAmt);
+
+            console.log("enter validation.............");
+
+            // Clear previous error messages
+            $('#InvAmtError').text('');
+
+            // Validation 1: At least one invoice selected
+            if (selectedInvoices.length === 0) {
+                console.log("No invoices selected.");
+                errorFlag = true;
+                errorMessage += 'Please select at least 1 invoice. ';
+            }
+
+            // Validation 2: Total amount should not exceed credit amount for multiple invoices
+            console.log(`Validation: multiple ${totalAmount} > ${creditTotalAmt}`);
+
+            if (invoiceType === 'multiple' && totalAmount > creditTotalAmt) {
+                console.log("Amount exceeds credit limit.");
+                errorFlag = true;
+                errorMessage += 'Your amount is greater than credit amount.';
+            }
+
+            // Display error message
+            if (errorFlag) {
+                $('#InvAmtError').text(errorMessage.trim()); // Trim any trailing spaces
+            }
+
+            // Return false if there are errors, true otherwise
+            return !errorFlag;
+        }
+
+
+
 </script>
