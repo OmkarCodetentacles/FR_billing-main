@@ -33,7 +33,7 @@
                         <h4 class="modal-title">
                             Add Payment
 
-
+                           
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -54,11 +54,11 @@
                         </ul>
 
 
-                        <div class="tab-content">
+                        <div class="tab-content"> 
                             <div id="home" class="tab-pane active">
                                 <br>
                                 <h5>
-                                    <span class="Netamount text-info"></span><span class="Balance text-danger pull-right"></span>
+                                    <span class="Netamount text-info "></span><span class="Balance text-danger pull-right"></span>
                                     <input type="hidden" class="Firm_Id">
                                 </h5>
                                 <div id="CashP">
@@ -161,15 +161,15 @@
                         <tr>
                             <th></th>
                             <th>
-                                Customer Id
+                                Customer_Id
                             </th>
 
                             <th>
-                                Invoice No
+                                invoiceno
 
                             </th>
                             <th>
-                                Invoice Date
+                                Invoicedate
                             </th>
                             @*<th>
                                     @Html.DisplayNameFor(model => model.periodfrom)
@@ -188,19 +188,19 @@
                                 </th>*@
                             <th>Sub Total</th>
                             <th>
-                                Fuel Surcharge(%)
+                                FSC
                             </th>
                             <th>
-                                Fuel Surcharge Total
+                                FSC Total
                             </th>
                             <th>
-                                GST(%)
+                                GST
                             </th>
                             <th>
                                 GST Total
                             </th>
                             <th>
-                                Net Amount
+                                @Html.DisplayNameFor(model => model.netamount)
                             </th>
                             <th>Paid</th>
                             <th>Balance</th>
@@ -213,13 +213,13 @@
                         {
                             <tr>
                                 <td>
-                                    @if (item.Balance == 0 || item.Balance <= 0) //
+                                    @if (item.Balance == 0 || item.Balance<=0) //
                                     {
                                         <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
                                     }
                                     else
                                     {
-                                        <button type="button" class="btn btn-success addpmt open-modal-btn" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datacustid="@item.Customer_Id" data-datafirmid="@item.Firm_Id" data-target="#modal-default" data-backdrop="static" data-keyboard="false" data-bs-target="#yourModalId">
+                                        <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default" data-backdrop="static" data-keyboard="false">
                                             Add Payments
                                         </button>
                                     }
@@ -367,13 +367,10 @@
 <script>
 
     $(document).ready(function () {
-
+     
         $(".addpmt").click(function () {
-
+           
             var d = $(this).data('datac');
-
-            var customerId = $(this).data('datacustid');
-
             var netamt = $(this).data('dataamt');
             netamt = netamt;
             var paid = $(this).data('databal');
@@ -381,18 +378,16 @@
             var Firm_Id = $(this).data('datafirmid');
 
             $('.Invoiceno').val(d);
-            $('.custId').val(customerId);
-
             $('.Firm_Id').val(Firm_Id);
             $('.Netamount').text('Net Amount Is' + " : " + netamt);
             $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
 
-
+         
         });
         $("#modal-default .close").click(function () {
             // Clear all forms inside the modal
             $('#modal-default').find('form').each(function () {
-                resetPopupValues(); // Reset the values when the modal is opened
+                this.reset();
             });
             $(".text-danger").empty();
         })
@@ -427,35 +422,3 @@
     </script>
 }
 
-
-<script>
-
-
-    $(document).ready(function () {
-        // Bind click event to the modal open button
-        $(document).on('click', '.open-modal-btn', function () {
-            // Reset form fields
-            resetModalValues();
-        });
-    });
-
-
-    function resetModalValues() {
-        // Clear all input fields in the modal
-
-        $('#Amount').val('');
-        $('#creditTotalAmt').val('');
-        $('#selectedTotal').val('');
-        $('#tempinserteddate').val('');
-        $('#C_Tds_Amount').val('');
-        $('#C_Total_Amount').val('');
-
-
-        $('#InvAmtError').text(''); // Clear error messages
-
-        deselectAll();
-        // Reset any other custom fields or logic as needed
-        console.log('Modal values reset');
-    }
-
-</script>
