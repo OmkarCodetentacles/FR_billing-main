@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Fr-Billing Main\DtDc Billing\Entity FR\FrBillingDB.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\LiveProject\Fr-Billing LIVE\DtDc Billing\Entity FR\FrBillingDB.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

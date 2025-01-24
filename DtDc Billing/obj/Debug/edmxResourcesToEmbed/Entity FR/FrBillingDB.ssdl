@@ -599,6 +599,21 @@
     <Property Name="Subcriptionforindays" Type="int" />
     <Property Name="isPaid" Type="bit" />
   </EntityType>
+  <EntityType Name="PartyPaymentDetails">
+    <Key>
+      <PropertyRef Name="PartyPaymentDetailId" />
+    </Key>
+    <Property Name="PartyPaymentDetailId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TransactionId" Type="varchar" MaxLength="50" />
+    <Property Name="CustomerId" Type="varchar" MaxLength="200" />
+    <Property Name="CreditAmount" Type="float" />
+    <Property Name="BalanceAmount" Type="float" />
+    <Property Name="PaymentDate" Type="datetime" />
+    <Property Name="Status" Type="varchar" MaxLength="100" />
+    <Property Name="InvoicePaid" Type="varchar" MaxLength="500" />
+    <Property Name="InvoicePaidCount" Type="int" />
+    <Property Name="PaidAmount" Type="float" />
+  </EntityType>
   <EntityType Name="Payment">
     <Key>
       <PropertyRef Name="Pay_ID" />
@@ -2279,6 +2294,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PartyPaymentDetails" EntityType="Self.PartyPaymentDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />

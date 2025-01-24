@@ -2689,6 +2689,7 @@
     <FunctionImport Name="GetCustomerSalesComparison" ReturnType="Collection(db_a92afa_frbillingModel.GetCustomerSalesComparison_Result)">
       <Parameter Name="PFCode" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="PartyPaymentDetails" EntityType="db_a92afa_frbillingModel.PartyPaymentDetail" />
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -3342,4 +3343,19 @@
     <Property Type="Double" Name="PercentageChange" Nullable="true" />
     <Property Type="String" Name="ChangeIndicator" Nullable="false" MaxLength="9" />
   </ComplexType>
+  <EntityType Name="PartyPaymentDetail">
+    <Key>
+      <PropertyRef Name="PartyPaymentDetailId" />
+    </Key>
+    <Property Name="PartyPaymentDetailId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TransactionId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CustomerId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CreditAmount" Type="Double" />
+    <Property Name="BalanceAmount" Type="Double" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="InvoicePaid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="InvoicePaidCount" Type="Int32" />
+    <Property Name="PaidAmount" Type="Double" />
+  </EntityType>
 </Schema>

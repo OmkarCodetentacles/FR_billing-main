@@ -15,32 +15,28 @@ namespace DtDc_Billing.Entity_FR
 using System;
     using System.Collections.Generic;
     
-public partial class SupportTicket
+public partial class PartyPaymentDetail
 {
 
-    public long SupportTicketsId { get; set; }
+    public long PartyPaymentDetailId { get; set; }
 
-    public string Subject { get; set; }
+    public string TransactionId { get; set; }
 
-    public string Url { get; set; }
+    public string CustomerId { get; set; }
 
-    public string Details { get; set; }
+    public Nullable<double> CreditAmount { get; set; }
 
-    public string ScreenshotUrl { get; set; }
+    public Nullable<double> BalanceAmount { get; set; }
 
-    public Nullable<System.DateTime> DateTime { get; set; }
+    public Nullable<System.DateTime> PaymentDate { get; set; }
 
     public string Status { get; set; }
 
-    public string Priority { get; set; }
+    public string InvoicePaid { get; set; }
 
-    public string RaiseBy { get; set; }
+    public Nullable<int> InvoicePaidCount { get; set; }
 
-    public string Pfcode { get; set; }
-
-    public Nullable<long> FirmId { get; set; }
-
-    public string FirmName { get; set; }
+    public Nullable<double> PaidAmount { get; set; }
 
 }
 

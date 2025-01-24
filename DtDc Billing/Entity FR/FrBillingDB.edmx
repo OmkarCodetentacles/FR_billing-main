@@ -604,6 +604,21 @@
           <Property Name="Subcriptionforindays" Type="int" />
           <Property Name="isPaid" Type="bit" />
         </EntityType>
+        <EntityType Name="PartyPaymentDetails">
+          <Key>
+            <PropertyRef Name="PartyPaymentDetailId" />
+          </Key>
+          <Property Name="PartyPaymentDetailId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TransactionId" Type="varchar" MaxLength="50" />
+          <Property Name="CustomerId" Type="varchar" MaxLength="200" />
+          <Property Name="CreditAmount" Type="float" />
+          <Property Name="BalanceAmount" Type="float" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="Status" Type="varchar" MaxLength="100" />
+          <Property Name="InvoicePaid" Type="varchar" MaxLength="500" />
+          <Property Name="InvoicePaidCount" Type="int" />
+          <Property Name="PaidAmount" Type="float" />
+        </EntityType>
         <EntityType Name="Payment">
           <Key>
             <PropertyRef Name="Pay_ID" />
@@ -2284,6 +2299,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Package" EntityType="Self.Package" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PartyPaymentDetails" EntityType="Self.PartyPaymentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="paymentLog" EntityType="Self.paymentLog" Schema="dbo" store:Type="Tables" />
@@ -5385,8 +5401,9 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="GECSectors" EntityType="db_a92afa_frbillingModel.GECSector" />
           <EntitySet Name="NewPaymentdetails" EntityType="db_a92afa_frbillingModel.NewPaymentdetail" />
           <FunctionImport Name="GetCustomerSalesComparison" ReturnType="Collection(db_a92afa_frbillingModel.GetCustomerSalesComparison_Result)">
-            <Parameter Name="PFCode" Mode="In" Type="String" />
+          <Parameter Name="PFCode" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="PartyPaymentDetails" EntityType="db_a92afa_frbillingModel.PartyPaymentDetail" />
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -6040,6 +6057,21 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="Double" Name="PercentageChange" Nullable="true" />
           <Property Type="String" Name="ChangeIndicator" Nullable="false" MaxLength="9" />
         </ComplexType>
+        <EntityType Name="PartyPaymentDetail">
+          <Key>
+            <PropertyRef Name="PartyPaymentDetailId" />
+          </Key>
+          <Property Name="PartyPaymentDetailId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TransactionId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerId" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreditAmount" Type="Double" />
+          <Property Name="BalanceAmount" Type="Double" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="InvoicePaid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="InvoicePaidCount" Type="Int32" />
+          <Property Name="PaidAmount" Type="Double" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7968,6 +8000,22 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="PartyPaymentDetails">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.PartyPaymentDetail">
+              <MappingFragment StoreEntitySet="PartyPaymentDetails">
+                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+                <ScalarProperty Name="InvoicePaidCount" ColumnName="InvoicePaidCount" />
+                <ScalarProperty Name="InvoicePaid" ColumnName="InvoicePaid" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+                <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="PartyPaymentDetailId" ColumnName="PartyPaymentDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
