@@ -2014,7 +2014,7 @@ Select(e => new
                 TempData["Consignment"] = "Consignment Deleted Successfully";
               
             }
-            return RedirectToAction("DailyReport", "Reports", new { dateTime = dateTime });
+            return RedirectToAction("DailyReport", "Reports", new { dateTime = dateTime.ToString("dd-MM-yyyy") });
         }
     }
 }
