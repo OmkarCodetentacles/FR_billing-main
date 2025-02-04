@@ -11,11 +11,9 @@
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 
-<section class="container">
-    <div class="row">
-        <div class="col-xs-12 no-padding">
-            <div class="box box-info">
-
+<div class="content-wrapper" style="padding-left:25px;">
+    <div class="box box-info" style="padding: 16px 16px !important">
+      
                 <div class="box-header with-border">
                     <h4>Import From CashCounter</h4>
                 </div><!-- /.box-header -->
@@ -32,23 +30,23 @@
                     @using (Html.BeginForm())
                     {
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>PF Code</label>
-                                    <div class="pf-code">
-                                        @Html.DropDownList("PfCode", "-Please select-")
+                            @*<div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>PF Code</label>
+                                        <div class="pf-code">
+                                            @Html.DropDownList("PfCode", "-Please select-")
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Employee Id</label>
-                                    <div class="emp-id">
-                                        @Html.DropDownList("Employees", "-Please select-")
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Employee Id</label>
+                                        <div class="emp-id">
+                                            @Html.DropDownList("Employees", "-Please select-")
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>*@
 
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -99,12 +97,9 @@
 
                                         @if (ViewBag.Customer_Id != null)
                                         {
-                                            <input name="Customer_Id" class="form-control pull-right" value="@ViewBag.Customer_Id" id="Customer_Id" type="text">
+                                            <input name="Customer_Id" class="form-control pull-right" value="@ViewBag.Customer_Id" id="Customer_Id" type="text" readonly>
                                         }
-                                        else
-                                        {
-                                            <input name="Customer_Id" class="form-control pull-right" id="Customer_Id" type="text">
-                                        }
+                                      
                                         @Html.ValidationMessage("Todateeror")
                                     </div>
 
@@ -130,8 +125,7 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    
 
 
 @*if (selectedemp != null) {

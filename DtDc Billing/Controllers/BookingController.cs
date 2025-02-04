@@ -1341,19 +1341,17 @@ Select(e => new
 
         public ActionResult MultipleBookingReceipt()
         {
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
-
-            ViewBag.Employees = new SelectList(db.Users.Take(0), "User_Id", "Name");
-
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.Customer_Id = "Cash_" + pfcode.ToUpper();
             return View();
         }
 
         [HttpPost]
-        public ActionResult MultipleBookingReceipt(string PfCode, long Employees, string ToDatetime, string Fromdatetime, string Customer_Id)
+        public ActionResult MultipleBookingReceipt( string ToDatetime, string Fromdatetime, string Customer_Id)
         {
 
-
-
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            ViewBag.Customer_Id = "Cash_" + PfCode.ToUpper();
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
@@ -1386,25 +1384,14 @@ Select(e => new
                 ViewBag.fromdate = Fromdatetime;
             }
 
-
             ViewBag.Customer_Id = Customer_Id;
 
-
-
-
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
-
-            ViewBag.Employees = new SelectList(db.Users, "User_Id", "Name", Employees);
-
-            ViewBag.selectedemp = Employees;
-
             List<Receipt_details> rc = (from m in db.Receipt_details
-                                        where m.Pf_Code == PfCode && m.User_Id == Employees && m.Datetime_Cons != null
+                                        where m.Pf_Code == PfCode && m.Datetime_Cons != null
                                         select m).ToList()
                              .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate.Value.Date) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate.Value.Date) <= 0)
                                 .ToList();
             int count = 0;
-            var pfcode = db.Companies.Where(m => m.Company_Id == Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
             foreach (var i in rc)
             {
                 Transaction tr = new Transaction();
@@ -1416,7 +1403,7 @@ Select(e => new
                     tr.Customer_Id = Customer_Id;
                     tr.Amount = i.Charges_Total;
                     tr.AdminEmp = 000;
-                    tr.Pf_Code = pfcode;
+                    tr.Pf_Code = PfCode;
                     db.Entry(tr).State = EntityState.Modified;
                     db.SaveChanges();
                     count++;

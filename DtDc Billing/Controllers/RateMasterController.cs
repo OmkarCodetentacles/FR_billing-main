@@ -642,6 +642,108 @@ namespace DtDc_Billing.Controllers
             }
 
 
+            var plus = db.dtdcPlus.Where(m => m.Company_id == Id).ToList();
+            var ptp = db.Dtdc_Ptp.Where(m => m.Company_id == Id).ToList();
+            if (ptp.Count() == 0)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+
+                    
+                    Dtdc_Ptp stptp = new Dtdc_Ptp();
+                    if (i == 0)
+                    {
+                        
+                        stptp.dest = "City";
+                    }
+                    else if (i == 1)
+                    {
+                        stptp.dest = "Zonal";
+
+                    }
+                    else if (i == 2)
+                    {
+                        stptp.dest = "Metro";
+                    }
+                    else if (i == 3)
+                    {
+                        stptp.dest = "National";
+                    }
+                    else if (i == 4)
+                    {
+                        stptp.dest = "Regional";
+                    }
+                    stptp.Company_id = Id;
+                    stptp.PUpto500gm =1;
+                    stptp.PAdd500gm = 1;
+                    stptp.PU10to25kg = 1;
+                    stptp.PU25to50 = 1;
+                    stptp.Padd100kg = 1;
+                    stptp.PU50to100 = 1;
+
+                    stptp.P2Upto500gm = 1;
+                    stptp.P2Add500gm = 1;
+                    stptp.P2U10to25kg = 1;
+                    stptp.P2U25to50 = 1;
+                    stptp.P2add100kg = 1;
+                    stptp.P2U50to100 = 1;
+                    db.Dtdc_Ptp.Add(stptp);
+                    db.SaveChanges();
+                }
+
+            }
+            if (plus.Count() == 0)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+
+                    dtdcPlu dtplu = new dtdcPlu();
+                  
+
+                    if (i == 0)
+                    {
+                        dtplu.destination = "City Plus";
+                    }
+                    else if (i == 1)
+                    {
+                        dtplu.destination = "Zonal Plus/Blue";
+
+                    }
+                    else if (i == 2)
+                    {
+                        dtplu.destination = "Metro Plus/Blue";
+                    }
+                    else if (i == 3)
+                    {
+                        dtplu.destination = "National Plus/Blue";
+                    }
+                    else if (i == 4)
+                    {
+                        dtplu.destination = "Regional Plus";
+                    }
+
+                    dtplu.Company_id =Id;
+
+                    dtplu.Upto500gm =1;
+                    dtplu.U10to25kg =1;
+                    dtplu.U25to50 = 1;
+                    dtplu.U50to100 = 1;
+                    dtplu.add100kg = 1;
+                    dtplu.Add500gm = 1;
+
+
+                 
+
+                    db.dtdcPlus.Add(dtplu);
+                    db.SaveChanges();
+
+                   
+
+                }
+
+            }
+
+
             saveMissingSectors(pfcode.Pf_code, Idd);
             return RedirectToAction("Index", "RateMaster", new { id = Id });
         }
@@ -732,7 +834,7 @@ namespace DtDc_Billing.Controllers
 
             
 
-                var secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code && m.BillGecSec==null).ToList();            
+                var secotrs = db.Sectors.Where(m => m.Pf_code == empmodel.Pf_code && (m.BillGecSec==null || m.BillEcomGE==false)).ToList();            
 
                
 
