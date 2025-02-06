@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
@@ -2682,13 +2683,10 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         [PageTitle("creditorsreport")]
         public ActionResult creditorsreport()
         {
-            //ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            //ViewBag.Employees = new SelectList(db.Users.Take(0), "Name", "Name");
-
-            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();//Session["pfCode"].ToString();
-
-            var rc = db.getReceiptDetails(PfCode).Select(x => new Receipt_details
+            var rc = db.getReceiptDetails(PfCode).Select(x => new ReceiptDetailsForDailyReport
             {
 
                 Consignment_No = x.Consignment_No,
@@ -2699,50 +2697,26 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                 Reciepents_phone = x.Reciepents_phone,
                 Reciepents = x.Reciepents,
                 ReciepentsPincode = x.ReciepentsPincode,
-                Pf_Code = x.Pf_Code,
                 Datetime_Cons = x.Datetime_Cons,
                 Charges_Total = x.Charges_Total,
-                Paid_Amount=x.Paid_Amount
+                Paid_Amount= x.Paid_Amount ?? 0
             }).OrderByDescending(x=>x.Datetime_Cons).ToList();
 
-           // List<Receipt_details> rc = new List<Receipt_details>();
-
-            ViewBag.sum = (from emp in db.Receipt_details
-                           where emp.Pf_Code==PfCode
-                           select emp.Charges_Total).Sum();
-
+          
             return View(rc);
         }
 
 
         [HttpPost]
-        public ActionResult creditorsreport(string Employees, string ToDatetime, string Fromdatetime, string Submit)
+        public ActionResult creditorsreport(string ToDatetime, string Fromdatetime, string Submit)
         {
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            if (Employees == null)
-            {
-                Employees = "";
-            }
-
-            List<Receipt_details> rc = new List<Receipt_details>();
-
-            rc = db.Receipt_details.ToList();
-
-            // ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
-
-            ViewBag.Employees = Employees;//new SelectList(db.Users, "Name", "Name", Employees);
-
-
+            
             ViewBag.Fromdatetime = Fromdatetime;
             ViewBag.ToDatetime = ToDatetime;
 
 
-            {
-
-
-                ViewBag.selectedemp = Employees;
-
-
+           
                 string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
@@ -2753,133 +2727,90 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
                 DateTime fromdate = Convert.ToDateTime(bdatefrom);
                 DateTime todate = Convert.ToDateTime(bdateto);
 
-
-                //if (Employees == "")
-                //{
-
-                    rc = (from m in db.Receipt_details
+                   var mainList = (from m in db.Receipt_details
                           where m.Pf_Code == PfCode && m.Datetime_Cons != null
                           select m).ToList()
                         .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
                             .ToList();
-                    //.ToList()
-                    //.Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
-                    //.ToList();
+                    
+                    var rc = (from recep in mainList
+                              select new ReceiptDetailsForDailyReport
+                              {
+                                  Consignment_No = recep.Consignment_No,
+                                  Destination = recep.Destination,
+                                  sender_phone = recep.sender_phone,
+                                  Sender_Email = recep.Sender_Email,
+                                  Sender = recep.Sender,
+                                  SenderCompany = recep.SenderCompany,
+                                  SenderAddress = recep.SenderAddress,
+                                  SenderCity = recep.SenderCity,
+                                  SenderState = recep.SenderState,
+                                  SenderPincode = recep.SenderPincode,
+                                  Reciepents_phone = recep.Reciepents_phone,
+                                  Reciepents_Email = recep.Reciepents_Email,
+                                  Reciepents = recep.Reciepents,
+                                  ReciepentCompany = recep.ReciepentCompany,
+                                  ReciepentsAddress = recep.ReciepentsAddress,
+                                  ReciepentsCity = recep.ReciepentsCity,
+                                  ReciepentsState = recep.ReciepentsState,
+                                  ReciepentsPincode = recep.ReciepentsPincode,
+                                  Shipmenttype = recep.Shipmenttype,
+                                  Shipment_Length = recep.Shipment_Length,
+                                  Shipment_Quantity = recep.Shipment_Quantity,
+                                  Shipment_Breadth = recep.Shipment_Breadth,
+                                  Shipment_Heigth = recep.Shipment_Heigth,
+                                  DivideBy = recep.DivideBy,
+                                  TotalNo = recep.TotalNo,
+                                  Actual_Weight = recep.Actual_Weight,
+                                  volumetric_Weight = recep.volumetric_Weight,
+                                  DescriptionContent1 = recep.DescriptionContent1,
+                                  DescriptionContent2 = recep.DescriptionContent2,
+                                  DescriptionContent3 = recep.DescriptionContent3,
+                                  Amount1 = recep.Amount1,
+                                  Amount2 = recep.Amount2,
+                                  Amount3 = recep.Amount3,
+                                  Total_Amount = recep.Total_Amount,
+                                  Insurance = recep.Insurance,
+                                  Insuance_Percentage = recep.Insuance_Percentage,
+                                  Insuance_Amount = recep.Insuance_Amount,
+                                  Charges_Amount = recep.Charges_Amount,
+                                  Charges_Service = recep.Charges_Service,
+                                  Risk_Surcharge = recep.Risk_Surcharge,
+                                  Service_Tax = recep.Service_Tax,
+                                  Charges_Total = recep.Charges_Total,
+                                  Cash = recep.Cash,
+                                  Credit = recep.Credit,
+                                  Credit_Amount = recep.Credit_Amount,
+                                  Shipment_Mode = recep.Shipment_Mode,
+                                  Addition_charge = recep.Addition_charge,
+                                  Addition_Lable = recep.Addition_Lable,
+                                  Discount = recep.Discount,
 
-               // }
-
-                //else if (PfComployees == "")
-                //{
-                //    rc = (from m in db.Receipt_details
-                //          where m.Pf_Code == PfCode && m.Datetime_Cons != null
-                //          select m).ToList()
-                //           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
-                //              .ToList();
+                                  CreateDateString = recep.Datetime_Cons.Value.ToString("dd-MM-yyyy"),
+                                  Paid_Amount = (recep.Paid_Amount + db.Payments.Where(x=>x.Consignment_No == recep.Consignment_No).Sum(x=>x.amount)) ?? 0
+                              }).ToList();
 
 
-                //}
-                //else if (Employees != "" )
-                //{
-                //    rc = (from m in db.Receipt_details
-                //          where m.Pf_Code == PfCode && m.Datetime_Cons != null
-                //          select m).ToList()
-                //          .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && x.Paid_Amount < x.Charges_Total && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
-                //              .ToList();
-                //}
-                //else
-                //{
-                //    var compdata = (from c in db.Companies
-                //                    where c.Company_Name == Employees
-                //                    select new { c.Company_Name }).FirstOrDefault();
-
-                //    rc = (from m in db.Receipt_details
-                //          where m.Pf_Code == PfCode
-                //          && compdata.Company_Name == Employees
-                //          && m.Datetime_Cons != null
-                //          select m).ToList()
-                //           .Where(x => DateTime.Compare(x.Datetime_Cons.Value.Date, fromdate) >= 0 && x.Paid_Amount < x.Charges_Total && DateTime.Compare(x.Datetime_Cons.Value.Date, todate) <= 0)
-                //              .ToList();
-                //}
-
-
-
-
-
-                ViewBag.sum = (from emp in rc
-
-                               select emp.Charges_Total).Sum();
-                rc = rc.OrderByDescending(m => m.Datetime_Cons).ToList();
-
-            }
 
             if (Submit == "Export to Excel")
             {
-
-                var data = (from recep in rc
-                            select new ReceiptDetailsForDailyReport
-                            {
-                                Consignment_No = recep.Consignment_No,
-                                Destination = recep.Destination,
-                                sender_phone = recep.sender_phone,
-                                Sender_Email = recep.Sender_Email,
-                                Sender = recep.Sender,
-                                SenderCompany = recep.SenderCompany,
-                                SenderAddress = recep.SenderAddress,
-                                SenderCity = recep.SenderCity,
-                                SenderState = recep.SenderState,
-                                SenderPincode = recep.SenderPincode,
-                                Reciepents_phone = recep.Reciepents_phone,
-                                Reciepents_Email = recep.Reciepents_Email,
-                                Reciepents = recep.Reciepents,
-                                ReciepentCompany = recep.ReciepentCompany,
-                                ReciepentsAddress = recep.ReciepentsAddress,
-                                ReciepentsCity = recep.ReciepentsCity,
-                                ReciepentsState = recep.ReciepentsState,
-                                ReciepentsPincode = recep.ReciepentsPincode,
-                                Shipmenttype = recep.Shipmenttype,
-                                Shipment_Length = recep.Shipment_Length,
-                                Shipment_Quantity = recep.Shipment_Quantity,
-                                Shipment_Breadth = recep.Shipment_Breadth,
-                                Shipment_Heigth = recep.Shipment_Heigth,
-                                DivideBy = recep.DivideBy,
-                                TotalNo = recep.TotalNo,
-                                Actual_Weight = recep.Actual_Weight,
-                                volumetric_Weight = recep.volumetric_Weight,
-                                DescriptionContent1 = recep.DescriptionContent1,
-                                DescriptionContent2 = recep.DescriptionContent2,
-                                DescriptionContent3 = recep.DescriptionContent3,
-                                Amount1 = recep.Amount1,
-                                Amount2 = recep.Amount2,
-                                Amount3 = recep.Amount3,
-                                Total_Amount = recep.Total_Amount,
-                                Insurance = recep.Insurance,
-                                Insuance_Percentage = recep.Insuance_Percentage,
-                                Insuance_Amount = recep.Insuance_Amount,
-                                Charges_Amount = recep.Charges_Amount,
-                                Charges_Service = recep.Charges_Service,
-                                Risk_Surcharge = recep.Risk_Surcharge,
-                                Service_Tax = recep.Service_Tax,
-                                Charges_Total = recep.Charges_Total,
-                                Cash = recep.Cash,
-                                Credit = recep.Credit,
-                                Credit_Amount = recep.Credit_Amount,
-                                Shipment_Mode = recep.Shipment_Mode,
-                                Addition_charge = recep.Addition_charge,
-                                Addition_Lable = recep.Addition_Lable,
-                                Discount = recep.Discount,
-                               
-                                CreateDateString = recep.Datetime_Cons.Value.ToString("dd-MM-yyyy"),
-                                Paid_Amount = recep.Paid_Amount
-                            }).ToList();
-                if(data.Count()<=0 || data==null)
+                var data = rc.Select(x => new
                 {
-                    ViewBag.Nodata = "No Data Found";
-                }
-                else
-                {
-                    ExportToExcelAll.ExportToExcelAdmin(data);
+                    ConsignmentNo = x.Consignment_No,
+                    Destination = x.Destination,
+                    SenderPhone = x.sender_phone,
+                    SenderCity = x.SenderCity,
+                    SenderPincode = x.SenderPincode,
+                    ReciepentsPhone = x.Reciepents_phone,
+                    ReciepentsName = x.Reciepents,
+                    ReciepentsPincode = x.ReciepentsPincode,
+                    BookingDate = x.CreateDateString,
+                    TotalCharge = x.Charges_Total,
+                    PaidAmount = x.Paid_Amount
+                }).ToList();
 
-                }
+              ExportToExcelAll.ExportToExcelAdmin(data);
+  
             }
             return View(rc);
         }
@@ -3260,11 +3191,74 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
             return View(customerreport);
         }
 
-    
+        public JsonResult GetPaymentDetails(string consignmentNo)
+        {
+            // Fetch receipt details first
+            var getPaymentDetailsFromReceipt = db.Receipt_details
+    .Where(x => x.Consignment_No == consignmentNo)
+    .Select(x => new
+    {
+        ConsignmentNo = x.Consignment_No,
+        ChargesTotal = x.Charges_Total,
+        PaidAmount = x.Paid_Amount,
+        BalanceAmount = (x.Charges_Total - x.Paid_Amount),
+        PaymentMode = x.Credit,
+        Date = DbFunctions.TruncateTime(x.Datetime_Cons) // Keep it as DateTime in EF query
+    })
+    .AsEnumerable() // Move processing to memory
+    .Select(x => new
+    {
+        x.ConsignmentNo,
+        x.ChargesTotal,
+        x.PaidAmount,
+        x.BalanceAmount,
+        x.PaymentMode,
+        Date = x.Date.HasValue ? x.Date.Value.ToString("dd/MM/yyyy") : null
+    })
+    .FirstOrDefault();
 
+
+            // Initialize payment details list
+            List<object> getPaymentDetailsFromPayment = new List<object>();
+
+            // Fetch payment details only if receipt exists
+            if (getPaymentDetailsFromReceipt != null)
+            {
+                 getPaymentDetailsFromPayment = db.Payments
+    .Where(x => x.Consignment_No == consignmentNo)
+    .Select(x => new
+    {
+        ConsignmentNo = x.Consignment_No,
+        ChargesTotal = getPaymentDetailsFromReceipt.BalanceAmount ?? 0, // Handle null case
+        PaidAmount = x.amount,
+        BalanceAmount = (getPaymentDetailsFromReceipt.BalanceAmount ?? 0) - x.amount,
+        PaymentMode = x.ModeOfPayment,
+        Date = x.Datetime_Pay // Keep it as DateTime in query
+    })
+    .AsEnumerable() // Move processing to memory
+    .Select(x => new
+    {
+        x.ConsignmentNo,
+        x.ChargesTotal,
+        x.PaidAmount,
+        x.BalanceAmount,
+        x.PaymentMode,
+        Date = x.Date.HasValue ? x.Date.Value.ToString("dd/MM/yyyy") : null
+    })
+    .ToList<object>(); // Convert to list of objects
+
+            }
+
+            // Combine receipt and payments into a structured response
+            var paymentDetails = new
+            {
+                ReceiptDetails = getPaymentDetailsFromReceipt, // Always first
+                PaymentHistory = getPaymentDetailsFromPayment // Payments come next
+            };
+
+            return Json(paymentDetails, JsonRequestBehavior.AllowGet);
+        }
 
     }
 
-
-  
 }

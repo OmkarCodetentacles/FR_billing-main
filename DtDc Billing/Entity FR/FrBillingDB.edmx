@@ -630,6 +630,7 @@
           <Property Name="Description_" Type="varchar(max)" />
           <Property Name="Datetime_Pay" Type="datetime" />
           <Property Name="User_Id" Type="bigint" />
+          <Property Name="ModeOfPayment" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="PaymentDetails">
           <Key>
@@ -3115,7 +3116,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="FirmDetail2" Relationship="Self.FK__Franchise__Firm___30C33EC3" FromRole="Franchisee" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail3" Relationship="Self.FK__Franchise__Firm___31B762FC" FromRole="Franchisee" ToRole="FirmDetails" />
           <NavigationProperty Name="Receipt_details" Relationship="Self.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
-          <NavigationProperty Name="Payments" Relationship="Self.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
           <NavigationProperty Name="Savings" Relationship="Self.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
           <NavigationProperty Name="Sectors" Relationship="Self.fk_sect" FromRole="Franchisee" ToRole="Sectors" />
           <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction1" FromRole="Franchisee" ToRole="Transactions" />
@@ -3124,6 +3124,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
           <Property Name="IsGECSector" Type="Boolean" />
           <Property Name="Template" Type="Int64" />
+          <NavigationProperty Name="Payments" Relationship="db_a92afa_frbillingModel.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
         </EntityType>
         <EntityType Name="GSTInvoice">
           <Key>
@@ -3356,20 +3357,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Despription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Subcriptionforindays" Type="Int32" />
           <Property Name="isPaid" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="Payment">
-          <Key>
-            <PropertyRef Name="Pay_ID" />
-          </Key>
-          <Property Name="Pay_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Consignment_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="amount" Type="Single" />
-          <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Datetime_Pay" Type="DateTime" Precision="3" />
-          <Property Name="User_Id" Type="Int64" />
-          <NavigationProperty Name="Franchisee" Relationship="Self.fk_Pay" FromRole="Payment" ToRole="Franchisee" />
-          <NavigationProperty Name="User" Relationship="Self.fk_emppay" FromRole="Payment" ToRole="Users" />
         </EntityType>
         <EntityType Name="PaymentDetail">
           <Key>
@@ -3807,10 +3794,10 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Holidays1" Relationship="Self.FK__Holidays__User_I__2EA5EC27" FromRole="Users" ToRole="Holidays" />
           <NavigationProperty Name="Holidays2" Relationship="Self.FK__Holidays__User_I__32AB8735" FromRole="Users" ToRole="Holidays" />
           <NavigationProperty Name="Holidays3" Relationship="Self.FK__Holidays__User_I__339FAB6E" FromRole="Users" ToRole="Holidays" />
-          <NavigationProperty Name="Payments" Relationship="Self.fk_emppay" FromRole="Users" ToRole="Payment" />
           <NavigationProperty Name="Receipt_details" Relationship="Self.fk_rece" FromRole="Users" ToRole="Receipt_details" />
           <NavigationProperty Name="Savings" Relationship="Self.fk_empsav" FromRole="Users" ToRole="Saving" />
           <NavigationProperty Name="wallet_History" Relationship="Self.fk_emeall" FromRole="Users" ToRole="wallet_History" />
+          <NavigationProperty Name="Payments" Relationship="db_a92afa_frbillingModel.fk_emppay" FromRole="User" ToRole="Payment" />
         </EntityType>
         <EntityType Name="wallet_History">
           <Key>
@@ -4582,18 +4569,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_Pay">
-          <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
-          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Franchisee">
-              <PropertyRef Name="PF_Code" />
-            </Principal>
-            <Dependent Role="Payment">
-              <PropertyRef Name="Pf_Code" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_Sav">
           <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
           <End Role="Saving" Type="Self.Saving" Multiplicity="*" />
@@ -4726,18 +4701,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_emppay">
-          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="User_Id" />
-            </Principal>
-            <Dependent Role="Payment">
-              <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Priority__Sector__3552E9B6">
           <End Role="Sectors" Type="Self.Sector" Multiplicity="0..1" />
           <End Role="Priority" Type="Self.Priority" Multiplicity="*" />
@@ -4847,7 +4810,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="Other_Service" EntityType="Self.Other_Service" />
           <EntitySet Name="Packages" EntityType="Self.Package" />
-          <EntitySet Name="Payments" EntityType="Self.Payment" />
           <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
           <EntitySet Name="paymentLogs" EntityType="Self.paymentLog" />
           <EntitySet Name="popupimages" EntityType="Self.popupimage" />
@@ -5089,10 +5051,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <End Role="Franchisee" EntitySet="Franchisees" />
             <End Role="Receipt_details" EntitySet="Receipt_details" />
           </AssociationSet>
-          <AssociationSet Name="fk_Pay" Association="Self.fk_Pay">
-            <End Role="Franchisee" EntitySet="Franchisees" />
-            <End Role="Payment" EntitySet="Payments" />
-          </AssociationSet>
           <AssociationSet Name="fk_Sav" Association="Self.fk_Sav">
             <End Role="Franchisee" EntitySet="Franchisees" />
             <End Role="Saving" EntitySet="Savings" />
@@ -5136,10 +5094,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <AssociationSet Name="fk_nod" Association="Self.fk_nod">
             <End Role="Sectors" EntitySet="Sectors" />
             <End Role="Nondox" EntitySet="Nondoxes" />
-          </AssociationSet>
-          <AssociationSet Name="fk_emppay" Association="Self.fk_emppay">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Payment" EntitySet="Payments" />
           </AssociationSet>
           <AssociationSet Name="FK__Priority__Sector__3552E9B6" Association="Self.FK__Priority__Sector__3552E9B6">
             <End Role="Sectors" EntitySet="Sectors" />
@@ -5404,6 +5358,15 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Parameter Name="PFCode" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="PartyPaymentDetails" EntityType="db_a92afa_frbillingModel.PartyPaymentDetail" />
+          <EntitySet Name="Payments" EntityType="db_a92afa_frbillingModel.Payment" />
+          <AssociationSet Name="fk_Pay" Association="db_a92afa_frbillingModel.fk_Pay">
+            <End Role="Franchisee" EntitySet="Franchisees" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="fk_emppay" Association="db_a92afa_frbillingModel.fk_emppay">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
@@ -6072,6 +6035,45 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="InvoicePaidCount" Type="Int32" />
           <Property Name="PaidAmount" Type="Double" />
         </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Pay_ID" />
+          </Key>
+          <Property Name="Pay_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Consignment_No" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="amount" Type="Single" />
+          <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description_" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Datetime_Pay" Type="DateTime" Precision="3" />
+          <Property Name="User_Id" Type="Int64" />
+          <Property Name="ModeOfPayment" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Franchisee" Relationship="db_a92afa_frbillingModel.fk_Pay" FromRole="Payment" ToRole="Franchisee" />
+          <NavigationProperty Name="User" Relationship="db_a92afa_frbillingModel.fk_emppay" FromRole="Payment" ToRole="User" />
+        </EntityType>
+        <Association Name="fk_Pay">
+          <End Type="db_a92afa_frbillingModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+          <End Type="db_a92afa_frbillingModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Franchisee">
+              <PropertyRef Name="PF_Code" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="Pf_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_emppay">
+          <End Type="db_a92afa_frbillingModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="db_a92afa_frbillingModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6660,19 +6662,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="Despription" ColumnName="Despription" />
                 <ScalarProperty Name="Subcriptionforindays" ColumnName="Subcriptionforindays" />
                 <ScalarProperty Name="isPaid" ColumnName="isPaid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Payments">
-            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Payment">
-              <MappingFragment StoreEntitySet="Payment">
-                <ScalarProperty Name="Pay_ID" ColumnName="Pay_ID" />
-                <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
-                <ScalarProperty Name="amount" ColumnName="amount" />
-                <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-                <ScalarProperty Name="Description_" ColumnName="Description_" />
-                <ScalarProperty Name="Datetime_Pay" ColumnName="Datetime_Pay" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8013,6 +8002,20 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
                 <ScalarProperty Name="PartyPaymentDetailId" ColumnName="PartyPaymentDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="ModeOfPayment" ColumnName="ModeOfPayment" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Datetime_Pay" ColumnName="Datetime_Pay" />
+                <ScalarProperty Name="Description_" ColumnName="Description_" />
+                <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
+                <ScalarProperty Name="Pay_ID" ColumnName="Pay_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,8 +1,10 @@
 ﻿using DtDc_Billing.CustomModel;
 using DtDc_Billing.Entity_FR;
 using DtDc_Billing.Models;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -103,20 +105,24 @@ namespace DtDc_Billing.Controllers
         [PageTitle("Add_Payment")]
         public ActionResult Add_Payment()
         {
+            DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
+            DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
+            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            ViewBag.date = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi).ToString("dd/MM/yyyy");
             ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address");
             return View();
         }
         [HttpPost]
         public ActionResult Add_Payment(CashCounterPaymentModel payment)
         {
+            var pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
+            DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
+
+            TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            
             if (ModelState.IsValid)
             {
-
-                DateTime serverTime = DateTime.Now; // gives you current Time in server timeZone
-                DateTime utcTime = serverTime.ToUniversalTime(); // convert it to Utc using timezone setting of server computer
-
-                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-               
                 Payment pay = new Payment();
 
                 var update = db.Receipt_details.Where(m => m.Consignment_No == payment.Consignment_No).FirstOrDefault();
@@ -130,9 +136,21 @@ namespace DtDc_Billing.Controllers
                 pay.amount = payment.amount;
                 pay.Description_ = payment.Description_;
                 pay.User_Id = payment.User_Id;
-                pay.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();
-                pay.Datetime_Pay = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
+                pay.ModeOfPayment = payment.ModeOfPayment;
+                pay.Pf_Code = pfcode;
 
+                if (!string.IsNullOrEmpty(payment.Datetime_PayString))
+                {
+                    string[] format = { "dd-MM-yyyy", "dd/MM/yyyy" };
+                    string date = DateTime.ParseExact(payment.Datetime_PayString, format, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                    pay.Datetime_Pay = Convert.ToDateTime(date);
+                }
+                else
+                {
+                    pay.Datetime_Pay = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
+                }
+
+              
                 //payment.User_Id = Convert.ToInt64(Session["EmpId"]);
                 db.Payments.Add(pay);
                 db.SaveChanges();
@@ -149,10 +167,11 @@ namespace DtDc_Billing.Controllers
              
                 ModelState.Clear();
                 return View();
-                
+
             }
 
-            ViewBag.Pf_Code = Request.Cookies["Cookies"]["AdminValue"].ToString();//new SelectList(db.Franchisees, "PF_Code", "F_Address", payment.Pf_Code);
+            ViewBag.Pf_Code = pfcode;
+            ViewBag.date = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi).ToString("dd/MM/yyyy");
             return View(payment);
         }
 
@@ -220,7 +239,8 @@ namespace DtDc_Billing.Controllers
           e.Reciepents,
           e.ReciepentsPincode,
           e.Paid_Amount,
-          e.Charges_Total
+          e.Charges_Total,
+          e.Datetime_Cons
 
       }).ToList();
 

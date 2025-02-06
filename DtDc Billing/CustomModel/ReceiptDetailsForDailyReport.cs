@@ -7,8 +7,6 @@ namespace DtDc_Billing.CustomModel
 {
     public class ReceiptDetailsForDailyReport
     {
-
-       
         public string Consignment_No { get; set; }
         public string Destination { get; set; }
         public string sender_phone { get; set; }
@@ -61,10 +59,9 @@ namespace DtDc_Billing.CustomModel
         public Nullable<float> Discount { get; set; }
        
         public string CreateDateString  { get; set; }
+        public Nullable<DateTime> Datetime_Cons { get; set; }
         public Nullable<float> Paid_Amount { get; set; }
-
-        
-
+        public Nullable<float> PaidAmountFromPayment { get; set; }
 
     }
 }

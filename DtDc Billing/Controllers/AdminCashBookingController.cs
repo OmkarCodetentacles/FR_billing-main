@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -234,9 +235,16 @@ namespace DtDc_Billing.Controllers
                 Recp_De.Addition_Lable = reciept_Details.Addition_Lable;
                 Recp_De.Discount = reciept_Details.Discount;
                 Recp_De.User_Id = reciept_Details.User_Id;
-                Recp_De.Datetime_Cons = localTime;
-
-
+                if (!string.IsNullOrEmpty(reciept_Details.CreateDateString))
+                {
+                    string[] format = { "dd-MM-yyyy", "dd/MM/yyyy" };
+                    string date = DateTime.ParseExact(reciept_Details.CreateDateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                    Recp_De.Datetime_Cons=Convert.ToDateTime(date); 
+                }
+                else
+                {
+                    Recp_De.Datetime_Cons = localTime;
+                }
                 ////credit Amount logic///
 
                 Recp_De.Paid_Amount = Convert.ToInt16(reciept_Details.Credit_Amount);

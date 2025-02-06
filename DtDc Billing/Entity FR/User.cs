@@ -32,13 +32,13 @@ public partial class User
 
         this.Holidays3 = new HashSet<Holiday1>();
 
-        this.Payments = new HashSet<Payment>();
-
         this.Receipt_details = new HashSet<Receipt_details>();
 
         this.Savings = new HashSet<Saving>();
 
         this.wallet_History = new HashSet<wallet_History>();
+
+        this.Payments = new HashSet<Payment>();
 
     }
 
@@ -85,10 +85,6 @@ public partial class User
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Payment> Payments { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
     public virtual ICollection<Receipt_details> Receipt_details { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -98,6 +94,10 @@ public partial class User
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<wallet_History> wallet_History { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Payment> Payments { get; set; }
 
 }
 

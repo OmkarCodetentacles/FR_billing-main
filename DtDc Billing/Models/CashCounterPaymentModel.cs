@@ -22,7 +22,9 @@ namespace DtDc_Billing.Models
 
         [Required(ErrorMessage = "Please Enter Description")]
         public string Description_ { get; set; }
+        public string ModeOfPayment { get; set; }
         public Nullable<System.DateTime> Datetime_Pay { get; set; }
+        public string Datetime_PayString { get; set; }
         public Nullable<long> User_Id { get; set; }
 
         public virtual User User { get; set; }

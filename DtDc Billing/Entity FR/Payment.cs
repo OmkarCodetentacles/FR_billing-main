@@ -32,6 +32,8 @@ public partial class Payment
 
     public Nullable<long> User_Id { get; set; }
 
+    public string ModeOfPayment { get; set; }
+
 
 
     public virtual Franchisee Franchisee { get; set; }

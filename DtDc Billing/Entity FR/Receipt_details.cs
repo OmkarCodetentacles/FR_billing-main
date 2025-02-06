@@ -133,6 +133,7 @@ public partial class Receipt_details
     public Nullable<float> Paid_Amount { get; set; }
 
     public string BarcodeImage { get; set; }
+    public string CreateDateString { get; set; }
 
 
 

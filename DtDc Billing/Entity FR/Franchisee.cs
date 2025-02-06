@@ -30,8 +30,6 @@ public partial class Franchisee
 
         this.Receipt_details = new HashSet<Receipt_details>();
 
-        this.Payments = new HashSet<Payment>();
-
         this.Savings = new HashSet<Saving>();
 
         this.Sectors = new HashSet<Sector>();
@@ -43,6 +41,8 @@ public partial class Franchisee
         this.wallet_History = new HashSet<wallet_History>();
 
         this.Users = new HashSet<User>();
+
+        this.Payments = new HashSet<Payment>();
 
     }
 
@@ -131,10 +131,6 @@ public partial class Franchisee
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Payment> Payments { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
     public virtual ICollection<Saving> Savings { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -156,6 +152,10 @@ public partial class Franchisee
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<User> Users { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Payment> Payments { get; set; }
 
 }
 
