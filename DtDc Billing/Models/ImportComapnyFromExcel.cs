@@ -100,7 +100,7 @@ namespace DtDc_Billing.Models
                                         comp.I_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 22]?.Value ?? 0);
                                         comp.N_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 23]?.Value ?? 0);
                                         comp.G_Docket = Convert.ToDouble(workSheet.Cells[rowIterator, 24]?.Value ?? 0);
-                                    comp.B_Docket = Convert.ToDouble(workSheet.Cells[rowIterator,25]?.Value ?? 0);
+                                        comp.B_Docket = Convert.ToDouble(workSheet.Cells[rowIterator,25]?.Value ?? 0);
                                         comp.Datetime_Comp = DateTime.Now;
                                         comp.Pf_code=getPfcode.Trim();
 
@@ -119,16 +119,15 @@ namespace DtDc_Billing.Models
                                             }
                                             else
                                             {
-                                                var secotrs = db.Sectors.Where(m => m.Pf_code == getPfcode).ToList();
-
-                                            if(abc==null)
-                                            { 
-                                                var pfcompany = db.Companies.Where(m => m.Pf_code == getPfcode).Select(x => x.Company_Id).FirstOrDefault();
+                                            
+                                            if(abc == null)
+                                            {
                                                 db.Companies.Add(comp);
                                                 db.SaveChanges();
 
-
-
+                                                var secotrs = db.Sectors.Where(m => m.Pf_code == getPfcode && m.BillGecSec != true).ToList();
+                                                var pfcompany = db.Companies.Where(m => m.Pf_code == getPfcode && (!m.Company_Id.StartsWith("Cash"))).Select(x => x.Company_Id).FirstOrDefault();
+                                                
                                                 var basicdox = db.Ratems.Where(m => m.Company_id == pfcompany).ToArray();
                                                 var basicnon = db.Nondoxes.Where(m => m.Company_id == pfcompany).ToArray();
                                                 var express = db.express_cargo.Where(m => m.Company_id == pfcompany).ToArray();
