@@ -290,9 +290,16 @@
 
     function populateInvoiceList(invoices) {
         const invoiceList = document.getElementById('invoiceList');
-
+        var finalcreditamt = 0;
         // Clear the existing content
         invoiceList.innerHTML = '';
+
+
+        // Get the LastBalanceAmount from the first invoice if available
+        let lastBalanceAmount = invoices.length > 0 ? invoices[0].LastBalanceAmount : 0;
+
+        // Print LastBalanceAmount to console
+        console.log("Last Balance Amount:", lastBalanceAmount.toFixed(2));
 
         // Loop through the dynamic data to generate invoice items
         invoices.forEach(invoice => {
@@ -319,11 +326,17 @@
             const multipleDiv = document.getElementById('totalcreditamountdiv');
             totalcreditamountdiv.style.display = 'block';
 
+            if (lastBalanceAmount == 0) {
+                finalcreditamt = totalCreditAmount.toFixed(2);
+            }
+            else {
+                finalcreditamt = lastBalanceAmount.toFixed(2)
+            }
 
 
-            $(".creditamt").text(totalCreditAmount.toFixed(2));
+            $(".creditamt").text(finalcreditamt);
 
-            $("#creditTotalAmt").val(totalCreditAmount);
+            $("#creditTotalAmt").val(finalcreditamt);
             invoiceList.appendChild(invoiceOption);
         });
     }
@@ -489,7 +502,6 @@
             console.log('Parsed SelectedInvoices:', selectedInvoices);
 
             
-            debugger;
             // Get selected invoices
           
             const invoiceType = $('input[name="invoiceType"]:checked').val(); // Get selected invoice type
@@ -507,7 +519,7 @@
             $('#InvAmtError').text('');
 
             // Validation 1: At least one invoice selected
-            if (selectedInvoices.length === 0) {
+            if (selectedInvoices.length === 0 && invoiceType === 'multiple') {
                 console.log("No invoices selected.");
                 errorFlag = true;
                 errorMessage += 'Please select at least 1 invoice. ';

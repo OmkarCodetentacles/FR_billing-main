@@ -51,5 +51,6 @@ namespace DtDc_Billing.Models
     {
         public string InvoiceNo { get; set; }
         public double Amount { get; set; }
+        public double LastBalanceAmount { get; set; }
     }
 }

@@ -61,8 +61,9 @@ namespace DtDc_Billing.Controllers
                 .Select(x => new MulInvoice
                 {
                     InvoiceNo = x.invoiceno,
-                    Amount = (x.netamount ?? 0) - (x.paid ?? 0)
-                })
+                    Amount = (x.netamount ?? 0) - (x.paid ?? 0),
+                    LastBalanceAmount = db.PartyPaymentDetails.Where(y=>y.CustomerId == customerId.Trim()).OrderByDescending(y=>y.PartyPaymentDetailId).Select(y=>y.BalanceAmount).FirstOrDefault() ?? 0
+                }).OrderBy(x=>x.Amount)
                 .ToList();
 
             // Return the data as a JSON response
@@ -440,12 +441,17 @@ namespace DtDc_Billing.Controllers
                 double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid ?? 0);
                 var errorFlag = 0;
 
-                if (cash.SelectedInvoices == null)
+                if (cash.invoiceType == "multiple" && cash.SelectedInvoices == null)
                 {
                     errorFlag = 1;
                     ModelState.AddModelError("InvAmt", "Please select at least 1 invoice");
                 }
 
+                if (cash.invoiceType == "multiple" && cash.C_Total_Amount > cash.selectedTotal)
+                {
+                    errorFlag = 1;
+                    ModelState.AddModelError("InvAmt", "Your amount is greater than selected invoice");
+                }
                 if (cash.invoiceType == "multiple" && cash.C_Total_Amount > cash.creditTotalAmt)
                 {
                     errorFlag = 1;
@@ -497,22 +503,27 @@ namespace DtDc_Billing.Controllers
 
                     /////////add transaction history details////////////
 
-                    PartyPaymentDetail addpartyPayment = new PartyPaymentDetail();
+                    if (cash.invoiceType == "multiple")
+                    {
+                        PartyPaymentDetail addpartyPayment = new PartyPaymentDetail();
 
+                        var invoiceArray = cash.SelectedInvoices.Split(',');
+                        addpartyPayment.InvoicePaidCount = invoiceArray.Length;
+                    
 
-                    var invoiceArray = cash.SelectedInvoices.Split(',');
                     addpartyPayment.TransactionId = GenerateUniqueString();
                     addpartyPayment.CustomerId = cash.custId;
                     addpartyPayment.CreditAmount = cash.creditTotalAmt;
                     addpartyPayment.PaymentDate = getIndianDate();
                     addpartyPayment.InvoicePaid = cash.SelectedInvoices;
-                    addpartyPayment.BalanceAmount = cash.creditTotalAmt - cash.Amount;
-                    addpartyPayment.InvoicePaidCount = invoiceArray.Length;
-                    addpartyPayment.PaidAmount = cash.Amount;
+                    addpartyPayment.BalanceAmount = cash.creditTotalAmt - cash.C_Total_Amount;
+                    addpartyPayment.ModeOfPayment = "CASH";
+                    
+                    addpartyPayment.PaidAmount = cash.C_Total_Amount;
 
                     db.PartyPaymentDetails.Add(addpartyPayment);
                     db.SaveChanges();
-
+                    }
                     TempData["Message"] = "Payment added successfully";
 
                 }
@@ -544,13 +555,13 @@ namespace DtDc_Billing.Controllers
                 }
                 else
                 {
-                    paidamount = Convert.ToDouble(cashb.paid) + Convert.ToDouble(cash.Amount - cashb.paid);
+                    paidamount = Convert.ToDouble((cashb.paid ?? 0) + (cash.Amount - cashb.paid ?? 0));
                 }
 
 
                 cash.Amount = cash.Amount - paidamount;
 
-                cashb.paid = cashb.paid + paidamount;
+                cashb.paid = (cashb.paid ?? 0) + paidamount;
                 db.Entry(cashb).State = EntityState.Modified;
                 db.SaveChanges();
 

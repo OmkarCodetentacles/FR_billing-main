@@ -1214,9 +1214,6 @@ Select(e => new
                 todate = DateTime.Now;
             }
 
-
-
-
             List<Transaction> transactions =
                 db.Transactions.Where(m =>
                (m.Pf_Code == PfCode) && (m.Customer_Id == null || m.Customer_Id == "")

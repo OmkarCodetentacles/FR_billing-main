@@ -38,6 +38,8 @@ public partial class PartyPaymentDetail
 
     public Nullable<double> PaidAmount { get; set; }
 
+    public string ModeOfPayment { get; set; }
+
 }
 
 }

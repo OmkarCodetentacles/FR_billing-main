@@ -163,9 +163,9 @@ public partial class db_a92afa_frbillingEntities : DbContext
 
     public virtual DbSet<NewPaymentdetail> NewPaymentdetails { get; set; }
 
-    public virtual DbSet<PartyPaymentDetail> PartyPaymentDetails { get; set; }
-
     public virtual DbSet<Payment> Payments { get; set; }
+
+    public virtual DbSet<PartyPaymentDetail> PartyPaymentDetails { get; set; }
 
 
     public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
