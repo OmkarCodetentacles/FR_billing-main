@@ -112,7 +112,7 @@ namespace DtDc_Billing.Controllers
                 netamount = x.netamount,
                 Firm_Id = x.Firm_Id,
                 Customer_Id = x.Customer_Id,
-                paid = x.paid ?? 0,
+                paid = Math.Round(x.paid ?? 0),
                 tempInvoicedate = x.tempInvoicedate,
                 Royalty_charges = x.Royalty_charges,
                 Docket_charges = x.Docket_charges,
@@ -439,6 +439,7 @@ namespace DtDc_Billing.Controllers
                 var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
 
                 double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid ?? 0);
+
                 var errorFlag = 0;
 
                 if (cash.invoiceType == "multiple" && cash.SelectedInvoices == null)
@@ -492,12 +493,12 @@ namespace DtDc_Billing.Controllers
                         c.Pfcode = strpf;
                         c.tempinserteddate = cash.tempinserteddate;
                         c.tempch_date = cash.tempch_date;
-                        c.Balance = balance - cash.C_Total_Amount;
+                        c.Balance = balance - Convert.ToDouble(cash.C_Total_Amount);
 
                         db.Cashes.Add(c);
                         db.SaveChanges();
 
-                        TempData["remainingAmount"] = balance - Convert.ToDouble(cash.C_Total_Amount);
+                        TempData["remainingAmount"] = Math.Round(balance - Convert.ToDouble(cash.C_Total_Amount));
                     }
 
 
@@ -547,15 +548,18 @@ namespace DtDc_Billing.Controllers
                 var invoiceNo = invoiceArray[i];
                 double paidamount = 0;
                 var cashb = db.Invoices.Where(m => m.invoiceno == invoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
                 double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid ?? 0);
-                if (cash.Amount >= cashb.netamount)
+               
+                if (cash.Amount >= balance)
                 {
-                    paidamount = cashb.netamount ?? 0;
+                    paidamount = balance;
 
                 }
                 else
                 {
-                    paidamount = Convert.ToDouble((cashb.paid ?? 0) + (cash.Amount - cashb.paid ?? 0));
+                    paidamount = Convert.ToDouble(cash.Amount - (cashb.paid ?? 0));
+
                 }
 
 

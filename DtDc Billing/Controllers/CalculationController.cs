@@ -165,7 +165,8 @@ namespace DtDc_Billing.Controllers
 
                         }
                     }
-                    else if (m == Pincode)
+                   // else if (m.Contains(Pincode))
+                    else if(m.Trim().Equals(Pincode, StringComparison.OrdinalIgnoreCase))
                     {
                         sectorfound = i.Sector_Id;
                     }
