@@ -1910,6 +1910,51 @@ Select(e => new
             return RedirectToAction("PaymentTrack");
         }
 
+        [HttpGet]
+        public ActionResult GetCustomerCredit()
+        {
+            var pfCodeFilter = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var groupedData = db.PartyPaymentDetails
+                .Join(db.Companies,
+                      p => p.CustomerId,
+                      c => c.Company_Id,
+                      (p, c) => new { p, c }) // Joining PartyPaymentDetails with Companies
+                .Where(joined => joined.c.Pf_code == pfCodeFilter) // Filtering by pf_code
+                .GroupBy(joined => joined.p.CustomerId)
+                .Select(g => new GetCustomerCreditModel
+                {
+                    CustomerId = g.Key,
+                    TotalCreditPayment = g.Sum(x => x.p.PaidAmount ?? 0), // Sum of payments
+                    LastBalanceAmount = g.OrderByDescending(x => x.p.PartyPaymentDetailId)
+                                          .Select(x => x.p.BalanceAmount)
+                                          .FirstOrDefault() ?? 0
+                })
+                .ToList();
+
+
+            return View(groupedData);
+        }
+
+        public ActionResult GetCustomerDetails(string customerId)
+        {
+            var customerData = db.PartyPaymentDetails
+                .Where(p => p.CustomerId == customerId).ToList()
+                .Select(p => new
+                {
+                    CustomerId = p.CustomerId,
+                    PaidAmount = p.PaidAmount ?? 0,
+                    BalanceAmount = p.BalanceAmount ?? 0,
+                    PaymentDate = p.PaymentDate != null ? p.PaymentDate.Value.ToString("dd/MM/yyyy") :"-"
+                });
+
+            if (customerData == null || !customerData.Any())
+            {
+                return Json(new { error = "Customer not found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(customerData, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

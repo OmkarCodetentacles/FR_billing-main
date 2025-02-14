@@ -1,0 +1,171 @@
+﻿@model IEnumerable<DtDc_Billing.Models.GetCustomerCreditModel>
+
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+<div class="content-wrapper">
+    <section class="" style="padding: 16px 16px !important">
+
+        <div class="box box-info">
+
+            <div class="box-header with-border">
+                <h4>Credit Payment</h4>
+            </div>
+
+            <div class="box-body">
+
+                <table id="table_display_block" class="table Addpayment">
+                    <thead>
+                        <tr>
+                            <th>
+                                Customer Id
+                            </th>
+                            <th>
+                                Total Credit
+                            </th>
+                            <th>
+                                Last Balance
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0);" data-datac="@item.CustomerId" data-toggle="modal" data-target="#customerModal" data-backdrop="static" data-keyboard="false" class="modal-link getPayDetails">
+                                        @item.CustomerId
+                                    </a>
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalCreditPayment)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastBalanceAmount)
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- /input-group -->
+                <div class="row mt-15">
+                    <div class="col-sm-4 ">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary total-label">Total Credit</button>
+                            </div>
+                            <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(x=>x.TotalCreditPayment)">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 ">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-success">Balance</button>
+                            </div>
+                            <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(x=>x.LastBalanceAmount)">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="customerModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Customer Payment Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Paid Amount</th>
+                            <th>Balance Amount</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+   $(document).ready(function () {
+    $(".getPayDetails").click(function () {
+        var customerId = $(this).data('datac'); // Get customerId
+
+        $.ajax({
+            url: '@Url.Action("GetCustomerDetails")', // Replace with your actual controller
+            type: 'GET',
+            dataType: 'json',
+            data: { customerId: customerId },
+            success: function (response) {
+                if (response.error) {
+                    alert(response.error);
+                    return;
+                }
+
+                var tableBody = $('#customerModal tbody');
+                tableBody.empty(); // Clear previous data
+
+                var totalPaidAmount = 0;
+                var lastBalanceAmount = 0;
+
+                $.each(response, function (index, item) {
+                    totalPaidAmount += item.PaidAmount; // Sum PaidAmount
+                    lastBalanceAmount = item.BalanceAmount; // Get last BalanceAmount
+
+                    var row = "<tr>"
+                        + "<td>" + item.CustomerId + "</td>"
+                        + "<td>" + item.PaidAmount.toFixed(2) + "</td>"
+                        + "<td>" + item.BalanceAmount.toFixed(2) + "</td>"
+                        + "<td>" + item.PaymentDate + "</td>"
+                        + "</tr>";
+                    tableBody.append(row);
+                });
+
+                // Append Total Row
+                var totalRow = "<tr class='table-success font-weight-bold'>"
+                    + "<td>Total</td>"
+                    + "<td class='text-success text-bold'>" + totalPaidAmount.toFixed(2) + "</td>"
+                    + "<td class='text-danger text-bold'>" + lastBalanceAmount.toFixed(2) + "</td>"
+                    + "<td>-</td>"
+                    + "</tr>";
+                tableBody.append(totalRow);
+
+                // Show the modal
+                $('#customerModal').modal('show');
+            },
+            error: function () {
+                alert('Failed to fetch customer details.');
+            }
+        });
+    });
+});
+
+</script>
