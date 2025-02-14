@@ -1,0 +1,56 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ main ]  # Trigger on main branch push
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # .NET Framework needs Windows
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore DtDcBilling.sln
+
+    - name: Build Solution
+      run: msbuild DtDcBilling.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+    - name: Compress Build Files (ZIP)
+      shell: pwsh
+      run: |
+        Compress-Archive -Path "C:\Users\Admin\Desktop\Publish\*" -DestinationPath "C:\Users\Admin\Desktop\Publish.zip"
+
+    - name: Install lftp
+      run: |
+          choco install lftp -y
+      shell: powershell
+
+    - name: Upload ZIP via FTP (lftp)
+      shell: bash
+      run: |
+          lftp -e "set ssl:verify-certificate no; put -O / /cygdrive/c/Users/Admin/Desktop/Publish.zip; bye" \
+          -u "${{ secrets.USERNAME }},${{ secrets.PASSWORD }}" ftp://${{ secrets.HOSTNAME }}
+
+    - name: Upload unzip.php via FTP
+      shell: bash
+      run: |
+        lftp -e "set ssl:verify-certificate no; put -O / ./unzip.php; bye" \
+        -u "${{ secrets.USERNAME }},${{ secrets.PASSWORD }}" ftp://${{ secrets.HOSTNAME }}
+
+    - name: Extract ZIP file on server
+      shell: bash
+      run: |  
+          echo "🔄 Extracting ZIP file..."
+          curl https://frbilling.com/unzip.php
+    
+    - name: Delete ZIP file from server
+      shell: bash
+      run: |
+          echo "🗑️ Deleting Publish.zip from server..."
+          lftp -e "set ssl:verify-certificate no; rm /Publish.zip; bye" \
+          -u "${{ secrets.USERNAME }},${{ secrets.PASSWORD }}" ftp://${{ secrets.HOSTNAME }}
