@@ -9,61 +9,10 @@
 }
 <link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 <script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<a id="saveinv" style="" href="" target="_blank" download>
-</a>
-
-<style>
-    .Generateinvoice th {
-        width: 7.69% !important;
-    }
-
-    .field-validation-error {
-        display: inline;
-        color: red; /* Set the color for error messages */
-        font-size: 12px; /* Adjust the font size */
-        margin-top: 5px; /* Add a small margin to separate from the input field */
-    }
-</style>
-@if (ViewBag.invoiceno != null)
-{
-
-    <script>
-
-        // Pass the pdf value correctly as a boolean
-        var print = '@ViewBag.pdf';
-        $("#overlayBlock").hide();
-        debugger;
-        if (print) {
-            var filePath = '@ViewBag.url'; // Ensure ViewBag.url is correctly set in controller
-            window.location.href = filePath;
-        }
-
-        var myParamether = '@ViewBag.invoiceno';
-        var data = myParamether + ".pdf";
-        var strpfcode = '@ViewBag.strpfcode';
 
 
-        $("#overlayBlock").hide();
 
-        $('#saveinv').attr('href', "@baseurl/PDF/GSTInvoice/" + strpfcode + "/" + data);
-
-        document.getElementById('saveinv').click();
-    </script>
-}
-
-<script>
-    $(document).ready(function () {
-        $("#overlayBlock").hide();
-        var file = '@ViewBag.url'; // Ensure ViewBag.url is correctly set in controller
-        if (file != null &&  file!="") {
-            alert(file)
-            window.location.href = file;
-        }
-    });
-
-</script>
-
-@using (Ajax.BeginForm("SaveInvoiceWithoutGST", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock", OnBegin = "onBegin", OnComplete = "onComplete" }))
+@using (Ajax.BeginForm("SaveInvoiceWithoutGST", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-GSTCons", InsertionMode = InsertionMode.Replace, LoadingElementId = "overlayBlock",OnBegin = "onBegin", OnComplete = "onComplete" }))
 {
 
 
@@ -607,6 +556,7 @@
         // Hide the loader
         scrollToTop();
         document.getElementById('overlayBlock').style.display = 'none';
+      
     }
 </script>
 
@@ -1161,3 +1111,37 @@ $("#Customer_Id").autocomplete({
 });
 
 </script>
+<a id="saveinv" style="" href="" target="_blank" download>
+</a>
+
+<style>
+    .Generateinvoice th {
+        width: 7.69% !important;
+    }
+
+    .field-validation-error {
+        display: inline;
+        color: red; /* Set the color for error messages */
+        font-size: 12px; /* Adjust the font size */
+        margin-top: 5px; /* Add a small margin to separate from the input field */
+    }
+</style>
+@if (ViewBag.invoiceno != null)
+{
+    
+    
+  
+
+    <script>
+
+    
+        var myParamether = '@ViewBag.invoiceno';
+        var data = myParamether + ".pdf";
+        var strpfcode = '@ViewBag.strpfcode';
+
+
+        $('#saveinv').attr('href', "@baseurl/PDF/" + '@ViewBag.strpfcode' +"/GSTInvoice/"  + '@ViewBag.invoiceno'+".pdf");
+
+        document.getElementById('saveinv').click();
+    </script>
+}
