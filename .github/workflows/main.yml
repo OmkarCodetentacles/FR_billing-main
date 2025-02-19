@@ -46,11 +46,11 @@ jobs:
       shell: bash
       run: |  
           echo "🔄 Extracting ZIP file..."
-          curl https://frbilling.com/unzip.php
+          curl http://codetentacles-008-site7.htempurl.com/unzip.php
     
-    - name: Delete ZIP file from server
-      shell: bash
-      run: |
-          echo "🗑️ Deleting Publish.zip from server..."
-          lftp -e "set ssl:verify-certificate no; rm /Publish.zip; bye" \
-          -u "${{ secrets.USERNAME }},${{ secrets.PASSWORD }}" ftp://${{ secrets.HOSTNAME }}
+    # - name: Delete ZIP file from server
+    #   shell: bash
+    #   run: |
+    #       echo "🗑️ Deleting Publish.zip from server..."
+    #       lftp -e "set ssl:verify-certificate no; rm /Publish.zip; bye" \
+    #       -u "${{ secrets.USERNAME }},${{ secrets.PASSWORD }}" ftp://${{ secrets.HOSTNAME }}
