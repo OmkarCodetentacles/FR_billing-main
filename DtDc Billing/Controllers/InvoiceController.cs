@@ -4677,7 +4677,7 @@ Select(e => new
             ViewBag.fromdate = invfromdate;
             ViewBag.todate = invtodate;
             ViewBag.Companydetails = Companydetails;
-            ViewBag.invoiceNo = invoiceNo;
+            ViewBag.invoiceNoGST = invoiceNo;
             if (isDelete)
             {
                 var checkInvoiceNo = db.GSTInvoices.Where(x => x.IN_Id == InvoiceId && x.Pfcode == strpf).FirstOrDefault();
@@ -5150,8 +5150,22 @@ Select(e => new
                     string discount = dataset3.FirstOrDefault().discount;
 
 
-                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "InvoiceWithoutGST.rdlc");
+                    string path = "";
+                    if (franchisee.FirstOrDefault().Template == 2)
+                    {
 
+                         path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewInvocieFormatWithousGST.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+                    }
+                    else
+                    {
+                         path = Path.Combine(Server.MapPath("~/RdlcReport"), "InvoiceWithoutGST.rdlc");
+
+                    }
 
                     lr.ReportPath = path;
 
@@ -5236,10 +5250,10 @@ Select(e => new
 
 
                 ModelState.Clear();
-                return PartialView("GenerateInvoiceWithoutGST", invoice);
+                return PartialView("GnerateInoviceWithoutGSTPartial", invoice);
 
             }
-            return PartialView("GenerateInvoiceWithoutGST", invoice);
+            return PartialView("GnerateInoviceWithoutGSTPartial", invoice);
         }
 
 
