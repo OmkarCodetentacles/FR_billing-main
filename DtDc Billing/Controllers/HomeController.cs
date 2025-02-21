@@ -37,15 +37,12 @@ namespace DtDc_Billing.Controllers
     public class HomeController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
-        //sLogger logger = LogManager.GetCurrentClassLogger();
-        //[OutputCache(CacheProfile = "Cachefast")]   
-
+       
         [PageTitle("Home Index")]
         public ActionResult Index()
         {
             DateTime? dateTime;
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-            //dashboardDataModel data = new dashboardDataModel();
             ViewBag.PfCode = PfCode;
             dateTime = DateTime.Now;
             ViewBag.date = String.Format("{0:dd/MM/yyyy}", dateTime);
@@ -55,162 +52,31 @@ namespace DtDc_Billing.Controllers
             TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
             DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, tzi);
 
-
-
-
             var obj = db.dashboardData(localTime, PfCode).Select(x => new dashboardDataModel
             {
-                expiredStationaryCount = x.expiredStationaryCount ?? 0,
                 openConCount = x.openConCount ?? 0,
                 unSignPincode = x.unSignPincode ?? 0,
-                invalidCon = x.invalidCon ?? 0,
-                complaintCount = x.complaintcount ?? 0,
-                sumOfBilling = x.sumOfBilling ?? 0,
-                avgOfBillingCount=x.avgOfBillingCount ?? 0,
-                countOfBilling = x.countOfBilling ?? 0,
-                avgOfBillingSum = x.avgOfBillingSum ?? 0,
+
                 sumOfBillingCurrentMonth = x.sumOfBillingCurrentMonth ?? 0,
                 countofbillingcurrentmonth = x.countofbillingcurrentmonth ?? 0,
                 SumOfBillingCurrentDay = x.SumOfBillingCurrentDay ??0,
                 CountOfBillingCurrentDay= x.CountOfBillingCurrentDay ??0,
+
+                sumOfCashcounterCurrentMonth = x.sumOfCashcounterCurrentMonth ?? 0,
+                countofCashcountercurrentmonth = x.countofCashcountercurrentmonth ?? 0,
+                SumOfCashcounterCurrentDay = x.SumOfCashcounterCurrentDay ?? 0,
+                CountOfCashcounterCurrentDay = x.CountOfCashcounterCurrentDay ?? 0,
+
                 todayExp = x.todayExp ?? 0,
                 monthexp = x.monthexp ?? 0
 
             }).FirstOrDefault();
 
-            //try
-            //{
-            //    int x = 0;
-            //    int y = 5;
-            //    int z = y / x;
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.ErrorException("Error occured in Home controller Index Action", ex);
-
-            //}
-            // ViewBag.stationary = db.ExpiredStationaries.Count();
-            //ViewBag.openconcount = db.TransactionViews.Where(m => (m.Customer_Id == "" || m.Customer_Id == null) && (m.Pf_Code == "" || m.Pf_Code != null)).Count();
-            //ViewBag.unsignpinc = (from user in db.Transactions
-            //                      where !db.Destinations.Any(f => f.Pincode == user.Pincode)
-            //                      select user.Pincode).Distinct().ToList().Count();
-            //ViewBag.invalidcon = (from user in db.Transactions
-            //                      where !db.Companies.Any(f => f.Company_Id == user.Customer_Id) && user.Customer_Id != null
-            //                      select user).Count();
-
-
-
-            //  double d = ((from od in db.TransactionViews
-            //               where (od.booking_date.Value.Day == localTime.Day)
-            //             && (od.booking_date.Value.Month == localTime.Month)
-            //             && (od.booking_date.Value.Year == localTime.Year)
-            //             && od.Customer_Id != null && (!od.Customer_Id.StartsWith("Cash")) && od.Customer_Id != "BASIC_TS" && od.Pf_Code != null
-            //               select new { od.Amount, od.Risksurcharge, od.loadingcharge }).Sum(m => (m.Amount) + (m.Risksurcharge ?? 0) + (m.loadingcharge ?? 0))) ?? 0;
-
-            ////  ViewBag.sumofbilling = d.ToString("##");
-            //  ViewBag.sumofbilling = Math.Round(d);
-            //  ViewBag.countofbilling = ((from od in db.TransactionViews
-            //                             where (od.booking_date.Value.Day == localTime.Day)
-            //                           && (od.booking_date.Value.Month == localTime.Month)
-            //                           && (od.booking_date.Value.Year == localTime.Year)
-            //                           && od.Customer_Id != null && (!od.Customer_Id.StartsWith("Cash")) && od.Customer_Id != "BASIC_TS"
-            //                             select od.Amount).Count());
-
-
-            //  double avgsum = db.TransactionViews.Select(m => new { m.Customer_Id, m.Amount, m.Risksurcharge, m.loadingcharge, m.booking_date, m.Pf_Code, month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date) }).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null).GroupBy(m => m.month).Average(m => m.Sum(x => (x.Amount + (x.loadingcharge ?? 0) + (x.Risksurcharge ?? 0)))) ?? 0;
-            //double? data = db.TransactionViews.Select(m => new
-            //{
-            //    Customer_Id = m.Customer_Id,
-            //    Amount = m.Amount ?? 0,
-            //    Pf_Code = m.Pf_Code,
-            //    booking_date = m.booking_date,
-            //    month = SqlFunctions.DatePart("month", m.booking_date) + "-" + SqlFunctions.DatePart("year", m.booking_date)
-            //}).Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && m.Pf_Code == PfCode).GroupBy(m => m.month).Average(m => (double?)m.Count());
-
-            ////  ViewBag.avgofbillingsum = avgsum.ToString("##");
-            //if (data != null)
-            //{
-            //    double avgofbillingcount = (double)data;
-            //    ViewBag.avgofbillingcount = avgofbillingcount.ToString("##");
-            //}
-            //else
-            //{
-            //    ViewBag.avgofbillingcount = 0;
-            //}
-
-            //  double sumofbillingcurrentmonthd = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Sum(m => (m.Amount + (m.loadingcharge ?? 0) + (m.Risksurcharge ?? 0))) ?? 0;
-            //  ViewBag.sumofbillingcurrentmonth = sumofbillingcurrentmonthd.ToString("##");
-
-            //  ViewBag.countofbillingcurrentmonth = db.TransactionViews.Where(m => m.Customer_Id != null && (!m.Customer_Id.StartsWith("cash")) && m.Customer_Id != "BASIC_TS" && m.Pf_Code != null && SqlFunctions.DatePart("month", m.booking_date) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.booking_date) == DateTime.Now.Year).Count();
-
-            //  DateTime date = DateTime.Now;
-            ViewBag.firstDayOfMonth = new DateTime(localTime.Year, localTime.Month, 1).ToString("dd-MM-yyyy");
-            ViewBag.currentday = localTime.ToString("dd-MM-yyyy");
-            ViewBag.Date = localTime.ToString("dd/MM/yyyy");
-            //DateTime abc = DateTime.Now;
-
-            //var todayexp =  ((from e in db.Expenses
-            //                          where DbFunctions.TruncateTime(e.Datetime_Exp) >= DbFunctions.TruncateTime(abc)
-            //                                  && DbFunctions.TruncateTime(e.Datetime_Exp) <= DbFunctions.TruncateTime(abc)
-            //                          select e.Amount).Sum() ?? 0);
-
-            //ViewBag.todayexp = todayexp;  
-
-
-            //var monthexp = db.Expenses.Where(m => SqlFunctions.DatePart("month", m.Datetime_Exp) == DateTime.Now.Month && SqlFunctions.DatePart("year", m.Datetime_Exp) == DateTime.Now.Year).Sum(m=>m.Amount) ?? 0;
-            //ViewBag.monthexp = monthexp;
-
-            //string Pf = "abcd"; /*Session["PfID"].ToString();*/
-
-            //int PfCount = db.Sectors.Where(m => m.Pf_code == Pf).Count();
-
-            ViewBag.firstDayOfMonth = new DateTime(localTime.Year, localTime.Month, 1).ToString("dd-MM-yyyy");
-            ViewBag.currentday =localTime.ToString("dd-MM-yyyy");
-            ViewBag.complaintcount = obj.complaintCount;
-            ViewBag.sumofbilling = obj.sumOfBilling;
-            ViewBag.sumofbillingcurrentmonth = obj.sumOfBillingCurrentMonth.ToString("##");
-            ViewBag.avgofbillingsum = obj.avgOfBillingSum.ToString("##");
-            ViewBag.countofbilling = obj.countOfBilling;
-            ViewBag.countofbillingcurrentmonth = obj.countofbillingcurrentmonth;
-            ViewBag.todayexp = obj.todayExp;
-            ViewBag.monthexp = obj.monthexp;
-
-            ViewBag.openconcount = obj.openConCount;
-            ViewBag.unsignpinc = obj.unSignPincode;
-            ViewBag.invalidcon = obj.invalidCon;
-            ViewBag.stationary = obj.expiredStationaryCount;
-
-
-
+          
+           
             ViewBag.ShowModal = TempData["ShowModal "];
-            //if (PfCount < 6)
-            //{
-            //    ViewBag.RedirectSector = true;
-            //}
-
-            // ViewBag.complaintcount = db.Complaints.Where(x => x.C_Status == "Not Resolved").Count();
-
-            ViewBag.notification = db.Notifications.ToList().OrderByDescending(m => m.dateN).Take(4);
-
-
-            obj.notificationsList = db.getNotification().Select(x => new Notification
-            {
-                N_ID = x.N_ID,
-                Message = x.Message,
-                description = x.description,
-                dateN = x.dateN ?? localTime,
-                url_path = x.url_path,
-                Status = x.Status
-
-            }).Where(d => d.dateN >= DateTime.Now.Date).ToList();
-
-            var datacount = db.getNotification().Where(d => d.dateN >= DateTime.Now.Date).Count();
-
-            ViewBag.notificationCount = datacount;
-
+           
             DateTime After30days = localTime.AddDays(30);
-
-            //List<CompanyExpiryModel> CompanyExpiry = new List<CompanyExpiryModel>();
 
             var Date = (from d in db.registrations
                         where d.Pfcode == PfCode
@@ -224,28 +90,8 @@ namespace DtDc_Billing.Controllers
 
                         }).FirstOrDefault();
 
-            //string strdate = Convert.ToString(Date.dateTime);
-
-            //string[] strarr = strdate.Split(' '); 
-            //string date = strarr[0];
-            //DateTime date1 = Convert.ToDateTime(date);
-            //DateTime After1Year=date1.AddYears(1);
-            //DateTime before30days = After1Year.AddDays(-30);
-            //DateTime NowDate = DateTime.Today;
-            ////DateTime NowDate1 = NowDate.AddDays(8);
-            //if (After1Year >= NowDate)
-            //{
-            //    String diff2 = (After1Year - NowDate).TotalDays.ToString();
-            //    ViewBag.ExpiryCompCount = diff2;
-            //}
-            //else
-            //{
-            //    ViewBag.ExpiryCompCount ="";
-            //}
-            //ViewBag.After1Year = After1Year;
-            //ViewBag.NowDate = NowDate;
-            //ViewBag.before30days = before30days;
-            DateTime currentDate =localTime;
+            
+            DateTime currentDate = localTime;
 
             System.DateTime newDate = Date.paymentDate.Value.AddDays(Date.subscriptionForInDays ?? 0);
             TimeSpan date_difference = newDate - currentDate;
@@ -253,9 +99,8 @@ namespace DtDc_Billing.Controllers
             DateTime before1day = newDate.AddDays(-1);
             DateTime  before30days= newDate.AddDays(-30);
             DateTime before10days=newDate.AddDays(-10);
-            //int totalDaysDifference = date_difference.Days;
+            
             var mobileno = Date.mobileNo;
-
 
             ViewBag.subscriptionExpiredOnDate = newDate.ToString("dd/MM/yyyy");
             ViewBag.subscriptionExpiredOnDays = (newDate - currentDate).Days;
@@ -314,15 +159,13 @@ namespace DtDc_Billing.Controllers
             }
 
 
-            //Show the Company which Duedays is less than current date
-
           //  Fetch the necessary data without using AddDays in the query
             var invoiceData = (from inv in db.Invoices
                                join comp in db.Companies
                                on inv.Customer_Id equals comp.Company_Id
                                where inv.Pfcode.Equals(PfCode) && comp.Pf_code.Equals(PfCode)
                                && inv.invoicedate!=null
-                               && inv.isDelete==false
+                               && inv.isDelete == false
                                select new
                                {
                                    DueDaydata = comp.DueDays ?? 0,
@@ -332,19 +175,17 @@ namespace DtDc_Billing.Controllers
                                }).ToList();
 
           //  Perform the date calculations in memory
-
-            var Duedaysdata= (from d in invoiceData
-                             
-                             select new DueDaysModel
-                             {
-                                 Date=d.InvoiceDate.Value.AddDays(d.DueDaydata),
-                                 DueDays=(d.InvoiceDate.Value.AddDays(d.DueDaydata).Date-DateTime.Now.Date).Days,
-                                 Company_Id=d.Company_Iddata,
-                                 InvoiceNo=d.InvoiceNo  
+             var Duedaysdata= (from d in invoiceData
+                                 select new DueDaysModel
+                                 {
+                                     Date=d.InvoiceDate.Value.AddDays(d.DueDaydata),
+                                     DueDays=(d.InvoiceDate.Value.AddDays(d.DueDaydata).Date-DateTime.Now.Date).Days,
+                                     Company_Id=d.Company_Iddata,
+                                     InvoiceNo=d.InvoiceNo  
                                  
-                             }).OrderBy(d=>d.DueDays).ToList();  
+                                 }).OrderBy(d=> d.DueDays).ToList();  
             
-            var Duedysexpires=Duedaysdata.Where(x=>x.DueDays>0 && x.DueDays<5).Count();
+            var Duedysexpires = Duedaysdata.Where(x=>x.DueDays>0 && x.DueDays<5).Count();
 
             ViewBag.DueDaysExpire = Duedysexpires;
           
@@ -373,8 +214,7 @@ namespace DtDc_Billing.Controllers
 
         public PartialViewResult DestinationAndProductPartial()
         {
-            //string PfCode = Session["pfCode"].ToString();
-
+           
             dashboardDataModel obj = new dashboardDataModel();
 
             obj.DestinationList = db.destinationCount(Request.Cookies["Cookies"]["AdminValue"].ToString()).Select(x => new DestinationModel
@@ -385,60 +225,6 @@ namespace DtDc_Billing.Controllers
             }).OrderByDescending(x=>x.Count).Take(5).ToList();
 
             ViewBag.DestinationCount = Convert.ToInt32(obj.DestinationList.Count());
-
-
-
-            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-            //List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
-
-            ConsignmentCount consptp = new ConsignmentCount();
-
-            consptp.Destination = "PTP";
-            consptp.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("E") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consptp);
-
-            ConsignmentCount consPlus = new ConsignmentCount();
-
-            consPlus.Destination = "Plus";
-            consPlus.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("V") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consPlus);
-
-
-            ConsignmentCount consInternational = new ConsignmentCount();
-
-            consInternational.Destination = "International";
-            consInternational.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("N") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consInternational);
-
-
-            ConsignmentCount consDox = new ConsignmentCount();
-
-            consDox.Destination = "Standard";
-            consDox.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("P") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consDox);
-
-
-            ConsignmentCount consNonDox = new ConsignmentCount();
-
-            consNonDox.Destination = "Non Dox";
-            consNonDox.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("D") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consNonDox);
-
-
-            ConsignmentCount consNonVas = new ConsignmentCount();
-
-            consNonVas.Destination = "VAS";
-            consNonVas.Count = db.Receipt_details.Where(m => m.Consignment_No.ToUpper().StartsWith("I") && m.Pf_Code == PfCode).Count();
-
-            obj.Consignmentcount.Add(consNonVas);
-
-            ViewBag.Consignmentcount = obj.Consignmentcount.Count();
 
             return PartialView(obj);
         }

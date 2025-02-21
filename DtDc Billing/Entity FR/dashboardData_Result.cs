@@ -17,31 +17,25 @@ using System;
 public partial class dashboardData_Result
 {
 
-    public Nullable<int> expiredStationaryCount { get; set; }
-
     public Nullable<int> openConCount { get; set; }
 
     public Nullable<int> unSignPincode { get; set; }
 
-    public Nullable<int> invalidCon { get; set; }
-
-    public Nullable<int> complaintcount { get; set; }
-
-    public Nullable<double> sumOfBilling { get; set; }
-
-    public Nullable<int> countOfBilling { get; set; }
-
-    public Nullable<double> avgOfBillingSum { get; set; }
-
     public Nullable<double> sumOfBillingCurrentMonth { get; set; }
-
-    public Nullable<double> avgOfBillingCount { get; set; }
 
     public Nullable<double> SumOfBillingCurrentDay { get; set; }
 
     public Nullable<double> CountOfBillingCurrentDay { get; set; }
 
     public Nullable<double> countofbillingcurrentmonth { get; set; }
+
+    public Nullable<double> sumOfCashcounterCurrentMonth { get; set; }
+
+    public Nullable<double> SumOfCashcounterCurrentDay { get; set; }
+
+    public Nullable<double> CountOfCashcounterCurrentDay { get; set; }
+
+    public Nullable<double> countofCashcountercurrentmonth { get; set; }
 
     public Nullable<double> todayExp { get; set; }
 

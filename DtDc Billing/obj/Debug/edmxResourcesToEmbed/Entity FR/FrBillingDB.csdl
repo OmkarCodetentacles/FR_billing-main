@@ -2416,10 +2416,6 @@
       <Parameter Name="DateTime" Mode="In" Type="DateTime" />
       <Parameter Name="Status" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="dashboardData" ReturnType="Collection(db_a92afa_frbillingModel.dashboardData_Result)">
-      <Parameter Name="currentDate" Mode="In" Type="DateTime" />
-      <Parameter Name="Pfcode" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="DatabaseBackup" />
     <FunctionImport Name="destinationCount" ReturnType="Collection(db_a92afa_frbillingModel.destinationCount_Result)">
       <Parameter Name="Pfcode" Mode="In" Type="String" />
@@ -2652,24 +2648,11 @@
       <End Role="Payment" EntitySet="Payments" />
     </AssociationSet>
     <EntitySet Name="PartyPaymentDetails" EntityType="db_a92afa_frbillingModel.PartyPaymentDetail" />
+    <FunctionImport Name="dashboardData" ReturnType="Collection(db_a92afa_frbillingModel.dashboardData_Result)">
+      <Parameter Name="currentDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Pfcode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
-  <ComplexType Name="dashboardData_Result">
-    <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
-    <Property Type="Int32" Name="openConCount" Nullable="true" />
-    <Property Type="Int32" Name="unSignPincode" Nullable="true" />
-    <Property Type="Int32" Name="invalidCon" Nullable="true" />
-    <Property Type="Int32" Name="complaintcount" Nullable="true" />
-    <Property Type="Double" Name="sumOfBilling" Nullable="true" />
-    <Property Type="Int32" Name="countOfBilling" Nullable="true" />
-    <Property Type="Double" Name="avgOfBillingSum" Nullable="true" />
-    <Property Type="Double" Name="sumOfBillingCurrentMonth" Nullable="true" />
-    <Property Type="Double" Name="avgOfBillingCount" Nullable="true" />
-    <Property Type="Double" Name="SumOfBillingCurrentDay" Nullable="true" />
-    <Property Type="Double" Name="CountOfBillingCurrentDay" Nullable="true" />
-    <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
-    <Property Type="Double" Name="todayExp" Nullable="true" />
-    <Property Type="Double" Name="monthexp" Nullable="true" />
-  </ComplexType>
   <ComplexType Name="destinationCount_Result">
     <Property Type="String" Name="Destination" Nullable="true" />
     <Property Type="Int32" Name="DestCount" Nullable="true" />
@@ -3360,4 +3343,18 @@
     <Property Name="PaidAmount" Type="Double" />
     <Property Name="ModeOfPayment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
+  <ComplexType Name="dashboardData_Result">
+    <Property Type="Int32" Name="openConCount" Nullable="true" />
+    <Property Type="Int32" Name="unSignPincode" Nullable="true" />
+    <Property Type="Double" Name="sumOfBillingCurrentMonth" Nullable="true" />
+    <Property Type="Double" Name="SumOfBillingCurrentDay" Nullable="true" />
+    <Property Type="Double" Name="CountOfBillingCurrentDay" Nullable="true" />
+    <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
+    <Property Type="Double" Name="sumOfCashcounterCurrentMonth" Nullable="true" />
+    <Property Type="Double" Name="SumOfCashcounterCurrentDay" Nullable="true" />
+    <Property Type="Double" Name="CountOfCashcounterCurrentDay" Nullable="true" />
+    <Property Type="Double" Name="countofCashcountercurrentmonth" Nullable="true" />
+    <Property Type="Double" Name="todayExp" Nullable="true" />
+    <Property Type="Double" Name="monthexp" Nullable="true" />
+  </ComplexType>
 </Schema>

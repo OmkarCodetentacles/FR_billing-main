@@ -38,59 +38,51 @@ namespace DtDc_Billing.Controllers
         }
 
 
-        public JsonResult Datewise(string Date)
-        {
+        //public JsonResult Datewise(string Date)
+        //{
 
-            string strpfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
-            DateTime? EnteredDate;
+        //    string strpfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
+        //    DateTime? EnteredDate;
 
+        //    ViewBag.Date = Date;
 
-            ViewBag.Date = Date;
+        //    if (Date == "" || Date == null)
+        //    {
+        //        EnteredDate = GetLocalTime.GetDateTime();
+        //    }
+        //    else
+        //    {
 
+        //        string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+        //           "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
+        //        string bdate = DateTime.ParseExact(Date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
 
-            if (Date == "" || Date == null)
-            {
-                EnteredDate = GetLocalTime.GetDateTime();
-            }
-            else
-            {
+        //        EnteredDate = Convert.ToDateTime(bdate);
+        //    }
 
+        //    Apiclass apiclass = new Apiclass();
 
-                string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
-                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+        //    db.Configuration.ProxyCreationEnabled = false;
 
-                string bdate = DateTime.ParseExact(Date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+        //    apiclass.Amount = ((from od in db.Receipt_details
+        //                        where (od.Pf_Code==strpfcode) && 
+        //                        (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
+        //                      && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
+        //                      && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
 
+        //                        select od.Charges_Total).Sum()) ?? 0;
 
-                EnteredDate = Convert.ToDateTime(bdate);
-            }
+        //    apiclass.Count = ((from od in db.Receipt_details
+        //                       where (od.Pf_Code==strpfcode)  &&
+        //                       (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
+        //                     && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
+        //                     && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
+        //                       select od)).Count();
 
+        //    return Json(apiclass, JsonRequestBehavior.AllowGet);
 
-            Apiclass apiclass = new Apiclass();
-
-            db.Configuration.ProxyCreationEnabled = false;
-
-
-            apiclass.Amount = ((from od in db.Receipt_details
-                                where (od.Pf_Code==strpfcode) && 
-                                (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
-                              && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
-                              && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
-
-                                select od.Charges_Total).Sum()) ?? 0;
-
-            apiclass.Count = ((from od in db.Receipt_details
-                               where (od.Pf_Code==strpfcode)  &&
-                               (od.Datetime_Cons.Value.Day == EnteredDate.Value.Day)
-                             && (od.Datetime_Cons.Value.Month == EnteredDate.Value.Month)
-                             && (od.Datetime_Cons.Value.Year == EnteredDate.Value.Year)
-                               select od)).Count();
-
-
-            return Json(apiclass, JsonRequestBehavior.AllowGet);
-
-        }
+        //}
 
         public JsonResult Consignment()
         {
@@ -571,29 +563,23 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
         }
 
 
-        public JsonResult ThisMonth()
-        {
-            // string PfCode = Session["pfCode"].ToString();
-            string PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
-            List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
+        //public JsonResult ThisMonth()
+        //{
+            
+        //    string PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
+        //    List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
 
-            DateTime? EnteredDate;
+        //    Apiclass apiclass = new Apiclass();
+        //    DateTime localTime = GetLocalTime.GetDateTime();
+        //    db.Configuration.ProxyCreationEnabled = false;
 
-            Apiclass apiclass = new Apiclass();
-            DateTime localTime = GetLocalTime.GetDateTime();
-            db.Configuration.ProxyCreationEnabled = false;
+        //    apiclass.Amount = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Sum(m => m.Charges_Total) ?? 0;
 
-            apiclass.Amount = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Sum(m => m.Charges_Total) ?? 0;
+        //    apiclass.Count = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Count();
 
-            apiclass.Count = db.Receipt_details.Where(m => m.Datetime_Cons != null && m.Pf_Code == PfCode && SqlFunctions.DatePart("month", m.Datetime_Cons) == localTime.Month && SqlFunctions.DatePart("year", m.Datetime_Cons) == localTime.Year).Count();
+        //    return Json(apiclass, JsonRequestBehavior.AllowGet);
 
-
-
-
-
-            return Json(apiclass, JsonRequestBehavior.AllowGet);
-
-        }
+        //}
 
         [HttpPost]
         public ActionResult SaleReportBeforeInvoice(string PfCode, string Fromdatetime, string ToDatetime)
@@ -673,14 +659,9 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
         public JsonResult DatewiseLastSenven(string Date)
         {
-
-
             DateTime? EnteredDate;
 
-
             ViewBag.Date = Date;
-
-
 
             if (Date == "" || Date == null)
             {
@@ -688,13 +669,10 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
             }
             else
             {
-
-
                 string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
                 string bdate = DateTime.ParseExact(Date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-
 
                 EnteredDate = Convert.ToDateTime(bdate);
             }
@@ -725,12 +703,9 @@ System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
 
             List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
 
-
-
             Apiclass apiclass1 = new Apiclass();
 
             db.Configuration.ProxyCreationEnabled = false;
-
 
             apiclass1.Amount = db.Receipt_details.Where(m => m.Datetime_Cons != null)
                               .ToList().

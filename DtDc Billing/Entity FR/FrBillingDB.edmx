@@ -5132,10 +5132,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="DateTime" Mode="In" Type="DateTime" />
             <Parameter Name="Status" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="dashboardData" ReturnType="Collection(db_a92afa_frbillingModel.dashboardData_Result)">
-            <Parameter Name="currentDate" Mode="In" Type="DateTime" />
-            <Parameter Name="Pfcode" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="DatabaseBackup" />
           <FunctionImport Name="destinationCount" ReturnType="Collection(db_a92afa_frbillingModel.destinationCount_Result)">
           <Parameter Name="Pfcode" Mode="In" Type="String" />
@@ -5368,24 +5364,11 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <End Role="Payment" EntitySet="Payments" />
           </AssociationSet>
           <EntitySet Name="PartyPaymentDetails" EntityType="db_a92afa_frbillingModel.PartyPaymentDetail" />
+          <FunctionImport Name="dashboardData" ReturnType="Collection(db_a92afa_frbillingModel.dashboardData_Result)">
+            <Parameter Name="currentDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Pfcode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="dashboardData_Result">
-          <Property Type="Int32" Name="expiredStationaryCount" Nullable="true" />
-          <Property Type="Int32" Name="openConCount" Nullable="true" />
-          <Property Type="Int32" Name="unSignPincode" Nullable="true" />
-          <Property Type="Int32" Name="invalidCon" Nullable="true" />
-          <Property Type="Int32" Name="complaintcount" Nullable="true" />
-          <Property Type="Double" Name="sumOfBilling" Nullable="true" />
-          <Property Type="Int32" Name="countOfBilling" Nullable="true" />
-          <Property Type="Double" Name="avgOfBillingSum" Nullable="true" />
-          <Property Type="Double" Name="sumOfBillingCurrentMonth" Nullable="true" />
-          <Property Type="Double" Name="avgOfBillingCount" Nullable="true" />
-          <Property Type="Double" Name="SumOfBillingCurrentDay" Nullable="true" />
-          <Property Type="Double" Name="CountOfBillingCurrentDay" Nullable="true" />
-          <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
-          <Property Type="Double" Name="todayExp" Nullable="true" />
-          <Property Type="Double" Name="monthexp" Nullable="true" />
-        </ComplexType>
         <ComplexType Name="destinationCount_Result">
           <Property Type="String" Name="Destination" Nullable="true" />
           <Property Type="Int32" Name="DestCount" Nullable="true" />
@@ -6076,6 +6059,20 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="PaidAmount" Type="Double" />
           <Property Name="ModeOfPayment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="dashboardData_Result">
+          <Property Type="Int32" Name="openConCount" Nullable="true" />
+          <Property Type="Int32" Name="unSignPincode" Nullable="true" />
+          <Property Type="Double" Name="sumOfBillingCurrentMonth" Nullable="true" />
+          <Property Type="Double" Name="SumOfBillingCurrentDay" Nullable="true" />
+          <Property Type="Double" Name="CountOfBillingCurrentDay" Nullable="true" />
+          <Property Type="Double" Name="countofbillingcurrentmonth" Nullable="true" />
+          <Property Type="Double" Name="sumOfCashcounterCurrentMonth" Nullable="true" />
+          <Property Type="Double" Name="SumOfCashcounterCurrentDay" Nullable="true" />
+          <Property Type="Double" Name="CountOfCashcounterCurrentDay" Nullable="true" />
+          <Property Type="Double" Name="countofCashcountercurrentmonth" Nullable="true" />
+          <Property Type="Double" Name="todayExp" Nullable="true" />
+          <Property Type="Double" Name="monthexp" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7204,27 +7201,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="CreateTicketSave" FunctionName="db_a92afa_frbillingModel.Store.CreateTicketSave" />
-          <FunctionImportMapping FunctionImportName="dashboardData" FunctionName="db_a92afa_frbillingModel.Store.dashboardData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.dashboardData_Result">
-                <ScalarProperty Name="expiredStationaryCount" ColumnName="expiredStationaryCount" />
-                <ScalarProperty Name="openConCount" ColumnName="openConCount" />
-                <ScalarProperty Name="unSignPincode" ColumnName="unSignPincode" />
-                <ScalarProperty Name="invalidCon" ColumnName="invalidCon" />
-                <ScalarProperty Name="complaintcount" ColumnName="complaintcount" />
-                <ScalarProperty Name="sumOfBilling" ColumnName="sumOfBilling" />
-                <ScalarProperty Name="countOfBilling" ColumnName="countOfBilling" />
-                <ScalarProperty Name="avgOfBillingSum" ColumnName="avgOfBillingSum" />
-                <ScalarProperty Name="sumOfBillingCurrentMonth" ColumnName="sumOfBillingCurrentMonth" />
-                <ScalarProperty Name="avgOfBillingCount" ColumnName="avgOfBillingCount" />
-                <ScalarProperty Name="SumOfBillingCurrentDay" ColumnName="SumOfBillingCurrentDay" />
-                <ScalarProperty Name="CountOfBillingCurrentDay" ColumnName="CountOfBillingCurrentDay" />
-                <ScalarProperty Name="countofbillingcurrentmonth" ColumnName="countofbillingcurrentmonth" />
-                <ScalarProperty Name="todayExp" ColumnName="todayExp" />
-                <ScalarProperty Name="monthexp" ColumnName="monthexp" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="DatabaseBackup" FunctionName="db_a92afa_frbillingModel.Store.DatabaseBackup" />
           <FunctionImportMapping FunctionImportName="destinationCount" FunctionName="db_a92afa_frbillingModel.Store.destinationCount">
             <ResultMapping>
@@ -8022,6 +7998,24 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="dashboardData" FunctionName="db_a92afa_frbillingModel.Store.dashboardData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.dashboardData_Result">
+                <ScalarProperty Name="openConCount" ColumnName="openConCount" />
+                <ScalarProperty Name="unSignPincode" ColumnName="unSignPincode" />
+                <ScalarProperty Name="sumOfBillingCurrentMonth" ColumnName="sumOfBillingCurrentMonth" />
+                <ScalarProperty Name="SumOfBillingCurrentDay" ColumnName="SumOfBillingCurrentDay" />
+                <ScalarProperty Name="CountOfBillingCurrentDay" ColumnName="CountOfBillingCurrentDay" />
+                <ScalarProperty Name="countofbillingcurrentmonth" ColumnName="countofbillingcurrentmonth" />
+                <ScalarProperty Name="sumOfCashcounterCurrentMonth" ColumnName="sumOfCashcounterCurrentMonth" />
+                <ScalarProperty Name="SumOfCashcounterCurrentDay" ColumnName="SumOfCashcounterCurrentDay" />
+                <ScalarProperty Name="CountOfCashcounterCurrentDay" ColumnName="CountOfCashcounterCurrentDay" />
+                <ScalarProperty Name="countofCashcountercurrentmonth" ColumnName="countofCashcountercurrentmonth" />
+                <ScalarProperty Name="todayExp" ColumnName="todayExp" />
+                <ScalarProperty Name="monthexp" ColumnName="monthexp" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

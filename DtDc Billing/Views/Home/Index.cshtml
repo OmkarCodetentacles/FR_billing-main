@@ -204,25 +204,6 @@
 
 <div class="content-wrapper">
 
-
-
-
-
-
-
-    <!--<div class="col-sm-3 " style="float: right" ;>
-    <div class="input-group">
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-danger total-label">Complaint Count</button>
-        </div>-->
-    <!-- /btn-group -->
-    <!--<input type="text" class="form-control total-amount" value="@Model.complaintCount">
-        </div>
-    </div>-->
-    @*@{
-
-        Html.RenderPartial("NotificationPartial");
-        }*@
     @if (ViewBag.ExpiryMessage != null)
     {
 
@@ -237,9 +218,6 @@
                 <button type="button" class="close" data-dismiss="alert">X</button>
             </h6>
         </div>
-
-
-        // @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("warning", expiryMessage))
 
     }
     <div class="box" style="padding:16px 16px !important">
@@ -389,39 +367,10 @@
 
                                             </div>
 
-
-
-                                            <!-- /.info-box-content -->
                                         </div>
                                     </a>
 
                                 </div>
-
-
-                                @*<div class="col-md-3">
-                                        <a class="text-black" href="@Url.Action("InvalidConsignment", "BillingReports")">
-                                            <div class="info-box " style="display:flex !important; align-items:center;justify-content:center;">
-                                                <div class="row" style="display:flex; align-items:center;width:100%">
-                                                    <div class="col-sm-4">
-                                                        <span class="info-box-icon"><i class="fa fa-times-circle icon3"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-8" style="text-align:end">
-                                                        <div class="">
-
-                                                            <span class="info-box-number"> <strong>@Model.invalidCon</strong></span>
-                                                            <span class="info-box-text" style="padding:0">Invalid Consignment Found</span>
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </a>
-
-                                    </div>*@
-
-
 
                             </div>
                             <div class="text-center notetxt">
@@ -448,7 +397,7 @@
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
 
-                                                        <span id="Todayamt" class="info-box-number text-truncate">   <small>Loading...</small></span>
+                                                        <span class="info-box-number text-truncate"> @Model.CountOfCashcounterCurrentDay </span>
 
                                                         <p class="collectionpara text-truncate">Today Cash Collection</p>
                                                     </div>
@@ -460,7 +409,7 @@
                                                 </div>
                                                 <div class="col-12 col-xs-12 col-md-12   col-lg-12">
                                                     <div class="arrow1">
-                                                        @*<a href="@Url.Action("PfReportDaily","Reports")" class="small-box-footer"> <i class="fa-solid fa-angle-down"></i></a>*@
+                                                       
                                                         @if (ViewBag.Date != null)
                                                         {
                                                             <a href="@Url.Action("AdminDailyReport", "Reports", new { pfcode = ViewBag.PfCode, searcheddate = ViewBag.Date })" class="small-box-footer">View More <i class="fa fa-solid fa-arrow-right"></i></a>
@@ -474,10 +423,6 @@
 
                                             </div>
 
-
-
-
-
                                         </div>
                                     </div>
                                     <!-- ./col -->
@@ -488,7 +433,7 @@
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
 
-                                                        <span id="Lastamt" class="info-box-number text-truncate"> <small>Loading...</small></span>
+                                                        <span class="info-box-number text-truncate"> @Model.sumOfCashcounterCurrentMonth </span>
 
                                                         <p class="collectionpara text-truncate">Month Cash Collection</p>
                                                     </div>
@@ -526,7 +471,7 @@
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9">
                                                     <div class="inner">
 
-                                                        <span id="todaybooking" class="info-box-number text-truncate"> <small>Loading...</small></span>
+                                                        <span class="info-box-number text-truncate"> @Model.CountOfCashcounterCurrentDay </span>
 
                                                         <p class="collectionpara text-truncate">Today No. of Booking</p>
                                                     </div>
@@ -564,7 +509,7 @@
                                                 <div class="col-8 col-xs-8 col-md-9 col-lg-9" style="padding-right:0">
                                                     <div class="inner">
 
-                                                        <span id="lastbooking" class="info-box-number text-truncate"> <small>Loading...</small></span>
+                                                        <span class="info-box-number text-truncate"> @Model.countofCashcountercurrentmonth </span>
 
                                                         <p class="collectionpara text-truncate">
                                                             Month No. of Bookings
@@ -726,12 +671,9 @@
                                                 <p class="info-box-text text-truncate">Todays No of Bookings</p>
                                                 <span class="info-box-number text-truncate"> <strong>@Model.CountOfBillingCurrentDay</strong></span>
 
-
-
-
                                             </div>
-                                            <!-- /.info-box-content -->
-                                        </div></a>
+                                          
+                                        </div>
 
                                     </div>
 
@@ -744,13 +686,8 @@
                                                     <p class="info-box-text text-truncate">This Month No. of Bookings</p>
                                                     <span class="info-box-number text-truncate"> <strong id="countofbillingcurrentmonth">@Model.countofbillingcurrentmonth</strong></span>
 
-
-
-
                                                 </div>
 
-
-                                                <!-- /.info-box-content -->
                                             </div>
                                         </a>
 
@@ -773,42 +710,7 @@
                                 }
                             </div>
                         </div>
-                        <!-- /.row -->
-                        @*<div class="row">
-                                <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                    @{Html.RenderAction("GetInvoiceDataForDashboard", "Invoice");}
-                                </div>
-                            </div>*@
-
-                        @if (ViewBag.stationary != 0)
-                        {
-
-
-                            <div class="col-md-4">
-                                <div class="info-box bg-yellow">
-                                    <span class="info-box-icon"><i class="fa fa-exclamation-circle"></i></span>
-
-                                    <div class="info-box-content">
-                                        <p class="info-box-text">Stationaries are going to Expire</p>
-                                        <span class="info-box-number"> <strong>@ViewBag.expiredStationaryCount</strong></span>
-
-                                        <div class="progress">
-                                            <div class="progress-bar" style="width: 50%"></div>
-
-                                        </div>
-                                        <span class="progress-description">
-                                            <a class="text-black" href="@Url.Action("ExpiredStationary", "Stationery")">View details</a>
-                                        </span>
-                                    </div>
-                                    <!-- /.info-box-content -->
-                                </div>
-                            </div>
-
-                        }
-
-
-
-                        @*@{Html.RenderAction("steplinechart", "Home");}*@
+                       
                         <div class="row">
                             <div class="col-md-6">
                                 @{Html.RenderAction("DestinationAndProductPartial", "Home");}
@@ -830,12 +732,7 @@
 <div class="modal" tabindex="-1" role="dialog" id="YoutubeInfoModel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            @*<div class="modal-header" style="align-items:center">
-                    <h4 class="modal-title" style="align-content:center;color:black;font-family:Arial;align-items:center"><b>Our Information</b></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>*@
+          
             <div class="modal-body">
                 <p style="align-content:center;color:black;font-family:Arial;align-items:center;font-size:20px;font-style:normal">Watch the video on how to use the Fr-Billing Software feature.</p>
                 <a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank">
@@ -868,11 +765,6 @@
     </script>
 }
 
-
-
-
-
-
 @if (ViewBag.RedirectSector == true)
 {
     <script type="text/javascript">
@@ -882,18 +774,12 @@
 
         });
 
-
     </script>
 }
 
 <script>
     $(document).ready(function () {
 
-
-               // $('[data-toggle="tooltip"]').tooltip();
-
-
-        // Attach click event handlers to the close buttons to show an alert
         $('#YoutubeInfoModel .close, #YoutubeInfoModel .btn-danger').on('click', function () {
             $.ajax({
                 url: "@Url.Action("CountIncreaseofLogin", "Admin")",
@@ -901,47 +787,9 @@
                 success: function (data) {
 
                 }
-                })
-                });
-                $.ajax({
-                type: 'GET',
-                url: '@Url.Action("Datewise", "AtkApi")',
-                data: { },
-                dataType: 'json',
-                success: function (data) {
-
-                $("#Todayamt").html(data.Amount);
-                $("#todaybooking").text(data.Count);
-                },
-                error: function (emp) {
-                alert('error');
-                }
-                });
-
-                $.ajax({
-                type: 'GET',
-                url: '@Url.Action("ThisMonth", "AtkApi")',
-                data: { },
-                dataType: 'json',
-                success: function (data) {
-                $("#Lastamt").text(data.Amount);
-                $("#lastbooking").text(data.Count);
-                var totalthismonthsale = parseInt($("#sumofbillingcurrentmonth").text());
-                var thismonthnoofbooking = parseInt($("#countofbillingcurrentmonth").text());
-             //   $("#totalsale").text(data.Amount + totalthismonthsale);
-               // $("#totalnoofbook").text(data.Count + thismonthnoofbooking);
-
-
-                },
-                error: function (emp) {
-                alert('error');
-                }
-                });
-
-
-
-                });
-
+            })
+        });
+    });
 </script>
 @if (ViewBag.ShowModal != null && ViewBag.ShowModal == true)
 {

@@ -121,8 +121,6 @@ namespace DtDc_Billing.Controllers
                 // totalCount = x.totalCount ?? 0
             }).ToList();
 
-
-
             return View(obj);
 
         }

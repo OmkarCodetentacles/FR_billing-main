@@ -225,23 +225,6 @@ public partial class db_a92afa_frbillingEntities : DbContext
     }
 
 
-    public virtual ObjectResult<dashboardData_Result> dashboardData(Nullable<System.DateTime> currentDate, string pfcode)
-    {
-
-        var currentDateParameter = currentDate.HasValue ?
-            new ObjectParameter("currentDate", currentDate) :
-            new ObjectParameter("currentDate", typeof(System.DateTime));
-
-
-        var pfcodeParameter = pfcode != null ?
-            new ObjectParameter("Pfcode", pfcode) :
-            new ObjectParameter("Pfcode", typeof(string));
-
-
-        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dashboardData_Result>("dashboardData", currentDateParameter, pfcodeParameter);
-    }
-
-
     public virtual int DatabaseBackup()
     {
 
@@ -1244,6 +1227,23 @@ public partial class db_a92afa_frbillingEntities : DbContext
 
 
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerSalesComparison_Result>("GetCustomerSalesComparison", pFCodeParameter);
+    }
+
+
+    public virtual ObjectResult<dashboardData_Result> dashboardData(Nullable<System.DateTime> currentDate, string pfcode)
+    {
+
+        var currentDateParameter = currentDate.HasValue ?
+            new ObjectParameter("currentDate", currentDate) :
+            new ObjectParameter("currentDate", typeof(System.DateTime));
+
+
+        var pfcodeParameter = pfcode != null ?
+            new ObjectParameter("Pfcode", pfcode) :
+            new ObjectParameter("Pfcode", typeof(string));
+
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dashboardData_Result>("dashboardData", currentDateParameter, pfcodeParameter);
     }
 
 }
