@@ -127,9 +127,9 @@ namespace DtDc_Billing.Controllers
             }
             else if (strpfcode == "LF959")
             {
-             
+                invstart1 = dataInvStart + "/2024-25/";
                 lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
-                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart + " " +65;
+                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 65;
 
             }
             if (lastInvoiceno == null)
@@ -177,13 +177,21 @@ namespace DtDc_Billing.Controllers
                 }
                 else if(franchisee.PF_Code== "LF959")
                 {
-                    string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
+                    if (lastInvoiceno != null)
+                    {
+                        string[] strarrinvno1 = lastInvoiceno.Split('/');
+                        string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
 
-                    // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                        int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
+
+                        // Generate the next invoice number (e.g., "AN066")
+                        string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                        ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    }
+                    else
+                    {
+                        ViewBag.lastInvoiceno = lastInvoiceno1;
+                    }
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
@@ -249,14 +257,21 @@ namespace DtDc_Billing.Controllers
                 }
                 else if (franchisee.PF_Code == "LF959")
                 {
-                  
-                    string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
+                    if (lastInvoiceno != null)
+                    {
+                        string[] strarrinvno1 = lastInvoiceno.Split('/');
+                        string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
 
-                    // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                        int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
+
+                        // Generate the next invoice number (e.g., "AN066")
+                        string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                        ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    }
+                    else
+                    {
+                        ViewBag.lastInvoiceno = lastInvoiceno1;
+                    }
                 }
                 else if (franchisee.PF_Code == "CF2567")
                 {
@@ -3345,9 +3360,9 @@ Select(e => new
             }
             else if (strpfcode == "LF959")
             {
-
+                invstart1 = dataInvStart + "/2024-25/";
                 lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
-                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart + " " + 65;
+                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 65;
 
             }
 
@@ -3376,13 +3391,21 @@ Select(e => new
                 }
                 else if (franchisee.PF_Code == "LF959")
                 {
-                    string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
+                    if (lastInvoiceno != null)
+                    {
+                        string[] strarrinvno1 = lastInvoiceno.Split('/');
+                        string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
 
-                    // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                        int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
+
+                        // Generate the next invoice number (e.g., "AN066")
+                        string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                        ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    }
+                    else
+                    {
+                        ViewBag.lastInvoiceno = lastInvoiceno1;
+                    }
                 }
                 else if (franchisee.PF_Code == "UF2679")
                 {
@@ -3449,13 +3472,22 @@ Select(e => new
                 }
                 else if (franchisee.PF_Code == "LF959")
                 {
-                    string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
 
-                    // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    if (lastInvoiceno != null)
+                    {
+                        string[] strarrinvno1 = lastInvoiceno.Split('/');
+                        string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
+
+                        int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
+
+                        // Generate the next invoice number (e.g., "AN066")
+                        string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                        ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    }
+                    else
+                    {
+                        ViewBag.lastInvoiceno = lastInvoiceno1;
+                    }
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
@@ -4437,9 +4469,10 @@ Select(e => new
             }
             else if (strpfcode == "LF959")
             {
+                invstart1 = dataInvStart + "/2024-25/";
 
                 lastInvoiceno = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault();
-                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? dataInvStart + " " + 65;
+                lastInvoiceno1 = db.Invoices.Where(m => m.invoiceno.StartsWith(dataInvStart) && m.Pfcode == strpfcode).OrderByDescending(m => m.IN_Id).Take(1).Select(m => m.invoiceno).FirstOrDefault() ?? invstart1 + 65;
 
             }
             if (lastInvoiceno == null)
@@ -4467,13 +4500,21 @@ Select(e => new
                 }
                 else if (franchisee.PF_Code == "LF959")
                 {
-                    string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
+                    if (lastInvoice != null)
+                    {
+                        string[] strarrinvno1 = lastInvoiceno.Split('/');
+                        string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
 
-                    // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                        int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
+
+                        // Generate the next invoice number (e.g., "AN066")
+                        string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                        ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
+                    }
+                    else
+                    {
+                        ViewBag.lastInvoiceno = lastInvoiceno1;
+                    }
                 }
                 else if (strpfcode == "UF2679")
                 {
@@ -4541,13 +4582,14 @@ Select(e => new
                 }
                 else if (franchisee.PF_Code == "LF959")
                 {
+                    string[] strarrinvno1 = lastInvoiceno.Split('/');
                     string prefix = lastInvoiceno.Substring(0, 3); // Extract the prefix (e.g., "AN0")
-                    string numericPart = lastInvoiceno.Substring(3); // Extract the numeric part (e.g., "65")
-                    int nextNumber = int.Parse(numericPart) + 1; // Increment the number
+
+                    int nextNumber = Convert.ToInt32(strarrinvno1[2]) + 1; // Increment the number
 
                     // Generate the next invoice number (e.g., "AN066")
-                    string nextInvoiceNo = prefix + nextNumber.ToString(); // Pad the number to 3 digits
-                    lastInvoice = nextInvoiceNo;
+                    string nextInvoiceNo = prefix + "/" + strarrinvno1[1] + "/" + nextNumber.ToString(); // Pad the number to 3 digits
+                    ViewBag.lastInvoiceno = nextInvoiceNo; // Pass the result to the view
                 }
                 else if (franchisee.PF_Code == "CF2024")
                 {
