@@ -797,7 +797,7 @@ namespace DtDc_Billing.Controllers
 
                 Company comp = new Company();
 
-                comp.Company_Id = empmodel.Company_Id;
+                comp.Company_Id = empmodel.Company_Id.Trim();
                 comp.Phone = empmodel.Phone;
                 comp.Email = empmodel.Email;
                 comp.Insurance = empmodel.Insurance;

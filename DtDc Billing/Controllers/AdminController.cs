@@ -294,6 +294,10 @@ namespace DtDc_Billing.Controllers
 
                     DateTime currentDate = DateTime.Now;
 
+                    if (ObjData.paymentDate == null)
+                    {
+                        ObjData.paymentDate = DateTime.Now;
+                    }
                     System.DateTime newDate = ObjData.paymentDate.Value.AddDays(ObjData.subscriptionForInDays ?? 0);
                     TimeSpan date_difference = newDate - currentDate;
                     //int totalDaysDifference = date_difference.Days;

@@ -77,7 +77,7 @@ namespace DtDc_Billing.Models
 
                                    
 
-                                        comp.Company_Id = workSheet.Cells[rowIterator, 2]?.Value?.ToString();
+                                        comp.Company_Id = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
                                         comp.Company_Name = workSheet.Cells[rowIterator, 3]?.Value?.ToString();
                                         comp.Company_Address = workSheet.Cells[rowIterator, 4]?.Value?.ToString();
                                         comp.Phone = Convert.ToInt64(workSheet.Cells[rowIterator, 5]?.Value);
