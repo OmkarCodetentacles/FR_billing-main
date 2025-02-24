@@ -3707,6 +3707,8 @@ namespace DtDc_Billing.Controllers
                     register.referralCode =RandomString(10);
                     register.referralby = userDetails.referral;
                     register.isEmailConfirmed = false;
+                        register.subscriptionForInDays = 0;
+                        register.InvoiceStart = "INV";
                     register.emailOTP = "";
                         register.isPaid=false;
                         register.isEmailConfirmed = false;  
