@@ -3145,8 +3145,9 @@ Select(e => new
             var dataInvStart = (from d in db.Franchisees
                                 where d.PF_Code == strpfcode
                                 select d.InvoiceStart).FirstOrDefault();
-
-            string invstart1 = dataInvStart + "/2024-25/";
+            var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
+            string year = "2024-25";
+            string invstart1 = dataInvStart + "/"+year+"/";
 
             ViewBag.Zipinv = invstart1;
 
@@ -3174,26 +3175,34 @@ Select(e => new
             {
 
 
+                var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
+                string year = "2024-25";
 
                 for (int i = ftoInt; i <= tToInt; i++)
                 {
-           
 
-                    var dataInvStart = (from d in db.Franchisees
+                   
+                       var dataInvStart = (from d in db.Franchisees
                                         where d.PF_Code == strpfcode
                                         select d.InvoiceStart).FirstOrDefault();
 
-                    string invstart1 = dataInvStart + "/2024-25/";
+                    string invstart1 = dataInvStart + "/" + year + "/";
 
-                    if (strpfcode == "1" || strpfcode == "PF2214" || strpfcode == "PF934" || strpfcode == "PF1958" || strpfcode == "CF2024" || strpfcode == "PF2213" || strpfcode == "PF2046" || strpfcode == "PF857" || strpfcode == "PF1649" || strpfcode == "MF868" || strpfcode == "UF2679")
+                    //if (strpfcode == "1" || strpfcode == "PF2214" || strpfcode == "PF934" || strpfcode == "PF1958" || strpfcode == "CF2024" || strpfcode == "PF2213" || strpfcode == "PF2046" || strpfcode == "PF857" || strpfcode == "PF1649" || strpfcode == "MF868" || strpfcode == "UF2679")
+                    //{
+
+                    //    invstart1 = dataInvStart + "/2024-25/";
+
+
+                    //}
+                    // var paddedInvoiceNumber = i.ToString().PadLeft(flenght, '0');
+                    
+                    var paddedInvoiceNumber = i.ToString();
+                    if(strpfcode== "PF2046")
                     {
-                        
-
-                        invstart1 = dataInvStart + "/2024-25/";
-
+                   paddedInvoiceNumber = i.ToString().PadLeft(flenght, '0');
 
                     }
-                    var paddedInvoiceNumber = i.ToString().PadLeft(flenght, '0');
                     var pdfPath = Server.MapPath("~/PDF/" + strpfcode);
                     var filename = invstart1.Replace("/", "-") + paddedInvoiceNumber + ".pdf";
                     string filePath = Path.Combine(pdfPath, filename);
