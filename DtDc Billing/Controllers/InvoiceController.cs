@@ -60,7 +60,11 @@ namespace DtDc_Billing.Controllers
             var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
             var gst = franchisee.GstNo;
             ViewBag.GST = gst;
-            ViewBag.lastInvoiceno = GetmaxInvoiceno();
+            if (Invoiceno == null)
+            {
+                ViewBag.lastInvoiceno = GetmaxInvoiceno();
+            }
+        
             //var dataInvStart = (from d in db.Franchisees
             //                    where d.PF_Code == strpfcode
             //                    select d.InvoiceStart).FirstOrDefault();
@@ -3263,7 +3267,11 @@ Select(e => new
             var franchisee = db.Franchisees.Where(x => x.PF_Code == strpfcode).FirstOrDefault();
             var gst = franchisee.GstNo;
             ViewBag.GST = gst;
-            ViewBag.lastInvoiceno = GetmaxInvoiceno();
+            if (Invoiceno == null)
+            {
+                ViewBag.lastInvoiceno = GetmaxInvoiceno();
+            }
+
             //var dataInvStart = (from d in db.Franchisees
             //                    where d.PF_Code == strpfcode
             //                    select d.InvoiceStart).FirstOrDefault();
