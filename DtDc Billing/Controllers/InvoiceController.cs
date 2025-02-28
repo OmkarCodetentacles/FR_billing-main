@@ -836,10 +836,12 @@ namespace DtDc_Billing.Controllers
                                  join d in db.Destinations
                                  on t.Pincode equals d.Pincode
                                  where t.Customer_Id == CustomerId && t.Pf_Code == strpfcode
+                                
+                                 && (t.status_t == null || t.status_t == "GST")
+                                
+                                 && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
 
-                                 && (t.status_t == "GST")
 
-                                && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
                                  select new
                                  {
                                      Consignment_no = t.Consignment_no,
