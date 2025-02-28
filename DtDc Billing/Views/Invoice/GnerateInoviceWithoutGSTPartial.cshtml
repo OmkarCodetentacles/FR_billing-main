@@ -638,7 +638,9 @@
 
         });
 
-
+        @{ 
+            string invoiceno = Model != null ? Model.invoiceno : null;
+        }
 
 
         $('#show').click(function () {
@@ -648,6 +650,7 @@
             var custid = $('#Customer_Id').val();
             var periodfrom = $('#Tempdatefrom').val();
             var periodto = $('#TempdateTo').val();
+            var modelInvoiceno = '@invoiceno';
             if (custid == "" || periodfrom == "" || periodto == "") {
                 alert("Customer Id ,Period From and Period To can not be Empty!!!")
                 return false;
@@ -659,8 +662,8 @@
                 /**/
                 url: '@Url.Action("InvoiceTableWithoutGST")',
     /**/
-    /**/
-    data: { CustomerId: custid, Tempdatefrom: periodfrom, TempdateTo: periodto },
+                /**/
+                data: { CustomerId: custid, Tempdatefrom: periodfrom, TempdateTo: periodto, ModelInvoiceNo: modelInvoiceno },
     dataType: 'json',
     success: function (data) {
 
@@ -905,15 +908,15 @@ if ('@ViewBag.disc' == "yes") {
         var custid = $('#Customer_Id').val();
         var periodfrom = $('#Tempdatefrom').val();
         var periodto = $('#TempdateTo').val();
-
+         var modelInvoiceno = '@invoiceno';
         $.ajax({
             type: 'GET',
             /**/
             /**/
             url: '@Url.Action("InvoiceTableWithoutGST")',
     /**/
-    /**/
-    data: { CustomerId: custid, Tempdatefrom: periodfrom, TempdateTo: periodto },
+            /**/
+            data: { CustomerId: custid, Tempdatefrom: periodfrom, TempdateTo: periodto, ModelInvoiceNo: modelInvoiceno },
     dataType: 'json',
             success: function (data) {
 

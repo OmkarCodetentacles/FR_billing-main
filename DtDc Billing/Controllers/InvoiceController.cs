@@ -778,7 +778,7 @@ namespace DtDc_Billing.Controllers
 
         }
 
-        public JsonResult InvoiceTableWithoutGST(string CustomerId, string Tempdatefrom, string TempdateTo)
+        public JsonResult InvoiceTableWithoutGST(string CustomerId, string Tempdatefrom, string TempdateTo,string ModelInvoiceNo)
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -798,37 +798,74 @@ namespace DtDc_Billing.Controllers
 
 
             db.Configuration.ProxyCreationEnabled = false;
+            if (string.IsNullOrEmpty(ModelInvoiceNo))
+            {
+                var Companies = (from t in db.TransactionViews
+                                 join d in db.Destinations
+                                 on t.Pincode equals d.Pincode
+                                 where t.Customer_Id == CustomerId && t.Pf_Code == strpfcode
 
-            var Companies = (from t in db.TransactionViews
-                             join d in db.Destinations
-                             on t.Pincode equals d.Pincode
-                             where t.Customer_Id == CustomerId && t.Pf_Code == strpfcode
-                    
-                             && (t.status_t==null || t.status_t=="GST")
-                            && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
-                             select new
-                             {
-                                 Consignment_no = t.Consignment_no,
-                                 Name = d.Name,
-                                 chargable_weight = t.chargable_weight,
-                                 Pincode = t.Pincode,
-                                 Mode = t.Mode,
-                                 Amount = t.Amount ?? 0,
-                                 tembookingdate = t.tembookingdate,
-                                 Insurance = t.Insurance,
-                                 Claimamount = t.Claimamount ?? "0",
-                                 Percentage = t.Percentage ?? "0",
-                                 loadingcharge = t.loadingcharge ?? 0,
-                                 Risksurcharge = t.Risksurcharge ?? 0,
-                                 booking_date = t.booking_date,
-                                 BillAmount=t.BillAmount??0
+                                 && (t.status_t == null)
+                                 && !db.GSTInvoiceConsignments.Select(b=>b.Consignment_no).Contains(t.Consignment_no)
+                                && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
+                                 select new
+                                 {
+                                     Consignment_no = t.Consignment_no,
+                                     Name = d.Name,
+                                     chargable_weight = t.chargable_weight,
+                                     Pincode = t.Pincode,
+                                     Mode = t.Mode,
+                                     Amount = t.Amount ?? 0,
+                                     tembookingdate = t.tembookingdate,
+                                     Insurance = t.Insurance,
+                                     Claimamount = t.Claimamount ?? "0",
+                                     Percentage = t.Percentage ?? "0",
+                                     loadingcharge = t.loadingcharge ?? 0,
+                                     Risksurcharge = t.Risksurcharge ?? 0,
+                                     booking_date = t.booking_date,
+                                     BillAmount = t.BillAmount ?? 0
 
-                             }
+                                 }
                            ).ToList().Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                               .ToList();
+                return Json(Companies, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var Companies = (from t in db.TransactionViews
+                                 join d in db.Destinations
+                                 on t.Pincode equals d.Pincode
+                                 where t.Customer_Id == CustomerId && t.Pf_Code == strpfcode
+
+                                 && (t.status_t == "GST")
+
+                                && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(t.Consignment_no)
+                                 select new
+                                 {
+                                     Consignment_no = t.Consignment_no,
+                                     Name = d.Name,
+                                     chargable_weight = t.chargable_weight,
+                                     Pincode = t.Pincode,
+                                     Mode = t.Mode,
+                                     Amount = t.Amount ?? 0,
+                                     tembookingdate = t.tembookingdate,
+                                     Insurance = t.Insurance,
+                                     Claimamount = t.Claimamount ?? "0",
+                                     Percentage = t.Percentage ?? "0",
+                                     loadingcharge = t.loadingcharge ?? 0,
+                                     Risksurcharge = t.Risksurcharge ?? 0,
+                                     booking_date = t.booking_date,
+                                     BillAmount = t.BillAmount ?? 0
+
+                                 }
+                           ).ToList().Where(x => DateTime.Compare(x.booking_date.Value.Date, fromdate) >= 0 && DateTime.Compare(x.booking_date.Value.Date, todate) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                              .ToList();
+                return Json(Companies, JsonRequestBehavior.AllowGet);
+            }
+            
 
 
-            return Json(Companies, JsonRequestBehavior.AllowGet);
+        
 
         }
 
@@ -1073,7 +1110,11 @@ Select(e => new
                         Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.isDelete == false && m.Customer_Id == invoice.Customer_Id && (m.IsGSTConsignment == null || m.IsGSTConsignment == false) && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no) && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
-                        Companies.ForEach(m => m.status_t = invoice.invoiceno);
+                        Companies.ForEach(m => m.status_t = invoice.invoiceno
+                        
+                        
+                        
+                        );
                         db.SaveChanges();
                     }
                     ///////////////////end of update consignment///////////////////////
@@ -4704,7 +4745,11 @@ Select(e => new
                         Companies.ForEach(m => {
                             m.IsGSTConsignment = true;
                             m.status_t = "GST";
+                            db.Entry(m).State = EntityState.Modified; // Explicitly mark as modified
+                            db.SaveChanges();
                         });
+
+
                         db.SaveChanges();
                         foreach (var i in Companies.Select(x => x.Consignment_no))
                         {
