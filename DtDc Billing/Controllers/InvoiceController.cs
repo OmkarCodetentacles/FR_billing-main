@@ -2873,13 +2873,7 @@ Select(e => new
                 //    TempData["emailError"] = "Something Went Wrong to Sent Mail!!!";
                 //}
 
-
             }
-
-
-          
-
-
 
         }
 
