@@ -169,6 +169,8 @@ namespace DtDc_Billing.Controllers
                     else if(m.Trim().Equals(Pincode, StringComparison.OrdinalIgnoreCase))
                     {
                         sectorfound = i.Sector_Id;
+                        flag = 1;
+                        break;
                     }
 
 
