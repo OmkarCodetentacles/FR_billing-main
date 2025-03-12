@@ -996,6 +996,7 @@
     <Property Name="isRTO" Type="bit" />
     <Property Name="isDelete" Type="bit" />
     <Property Name="IsGSTConsignment" Type="bit" />
+    <Property Name="Reference" Type="varchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="UserModuleList">
     <Key>
@@ -1142,6 +1143,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Property Name="remarks" Type="varchar" MaxLength="100" />
     <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
     <Property Name="IsGSTConsignment" Type="bit" />
+    <Property Name="Reference" Type="varchar" MaxLength="100" />
   </EntityType>
   <Association Name="Emp_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
@@ -2411,7 +2413,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     [TransactionView].[receivedby] AS [receivedby], 
     [TransactionView].[remarks] AS [remarks], 
     [TransactionView].[tempdeliveredtime] AS [tempdeliveredtime], 
-    [TransactionView].[IsGSTConsignment] AS [IsGSTConsignment]
+    [TransactionView].[IsGSTConsignment] AS [IsGSTConsignment], 
+    [TransactionView].[Reference] AS [Reference]
     FROM [dbo].[TransactionView] AS [TransactionView]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">

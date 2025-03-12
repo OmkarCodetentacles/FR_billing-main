@@ -137,7 +137,7 @@
     <NavigationProperty Name="dtdcPlus" Relationship="Self.fk_nond" FromRole="Company" ToRole="dtdcPlus" />
     <NavigationProperty Name="Dtdc_Ptp" Relationship="Self.fk_ptp" FromRole="Company" ToRole="Dtdc_Ptp" />
     <NavigationProperty Name="express_cargo" Relationship="Self.fk_ptpexp" FromRole="Company" ToRole="express_cargo" />
-    <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction" FromRole="Company" ToRole="Transactions" />
+    <NavigationProperty Name="Transactions" Relationship="db_a92afa_frbillingModel.fk_Tansaction" FromRole="Company" ToRole="Transaction" />
   </EntityType>
   <EntityType Name="Complaint">
     <Key>
@@ -403,13 +403,13 @@
     <NavigationProperty Name="Receipt_details" Relationship="Self.fk_emprecept" FromRole="Franchisee" ToRole="Receipt_details" />
     <NavigationProperty Name="Savings" Relationship="Self.fk_Sav" FromRole="Franchisee" ToRole="Saving" />
     <NavigationProperty Name="Sectors" Relationship="Self.fk_sect" FromRole="Franchisee" ToRole="Sectors" />
-    <NavigationProperty Name="Transactions" Relationship="Self.fk_Tansaction1" FromRole="Franchisee" ToRole="Transactions" />
     <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
     <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
     <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
     <Property Name="IsGECSector" Type="Boolean" />
     <Property Name="Template" Type="Int64" />
     <NavigationProperty Name="Payments" Relationship="db_a92afa_frbillingModel.fk_Pay" FromRole="Franchisee" ToRole="Payment" />
+    <NavigationProperty Name="Transactions" Relationship="db_a92afa_frbillingModel.fk_Tansaction1" FromRole="Franchisee" ToRole="Transaction" />
   </EntityType>
   <EntityType Name="GSTInvoice">
     <Key>
@@ -996,60 +996,6 @@
     <Property Name="FirmId" Type="Int64" />
     <Property Name="FirmName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="Transaction">
-    <Key>
-      <PropertyRef Name="T_id" />
-    </Key>
-    <Property Name="T_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="booking_date" Type="DateTime" Precision="3" />
-    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Amount" Type="Double" />
-    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Quanntity" Type="Int32" />
-    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="remark" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="codAmount" Type="Double" />
-    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="TopayAmount" Type="Double" />
-    <Property Name="Topaycharges" Type="Double" />
-    <Property Name="codcharges" Type="Double" />
-    <Property Name="codtotalamount" Type="Double" />
-    <Property Name="dtdcamount" Type="Double" />
-    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="rateperkg" Type="Double" />
-    <Property Name="docketcharege" Type="Double" />
-    <Property Name="fovcharge" Type="Double" />
-    <Property Name="loadingcharge" Type="Double" />
-    <Property Name="odocharge" Type="Double" />
-    <Property Name="Risksurcharge" Type="Double" />
-    <Property Name="Invoice_No" Type="Int64" />
-    <Property Name="BillAmount" Type="Double" />
-    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Actual_weight" Type="Double" />
-    <Property Name="chargable_weight" Type="Double" />
-    <Property Name="AdminEmp" Type="Int32" />
-    <Property Name="diff_weight" Type="Double" />
-    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="Receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="compaddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-    <Property Name="isRTO" Type="Boolean" />
-    <Property Name="isDelete" Type="Boolean" />
-    <Property Name="IsGSTConsignment" Type="Boolean" />
-    <NavigationProperty Name="Company" Relationship="Self.fk_Tansaction" FromRole="Transactions" ToRole="Company" />
-    <NavigationProperty Name="Franchisee" Relationship="Self.fk_Tansaction1" FromRole="Transactions" ToRole="Franchisee" />
-  </EntityType>
   <EntityType Name="UserModuleList">
     <Key>
       <PropertyRef Name="UserModuleId" />
@@ -1147,62 +1093,6 @@
     <Property Name="Amount4_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Firm_Id" Type="Int64" />
     <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="TransactionView">
-    <Key>
-      <PropertyRef Name="T_id" />
-    </Key>
-    <Property Name="T_id" Type="Int64" Nullable="false" />
-    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="booking_date" Type="DateTime" Precision="3" />
-    <Property Name="compaddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Amount" Type="Double" />
-    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Quanntity" Type="Int32" />
-    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="codAmount" Type="Double" />
-    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="TopayAmount" Type="Double" />
-    <Property Name="Topaycharges" Type="Double" />
-    <Property Name="codcharges" Type="Double" />
-    <Property Name="codtotalamount" Type="Double" />
-    <Property Name="dtdcamount" Type="Double" />
-    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="rateperkg" Type="Double" />
-    <Property Name="docketcharege" Type="Double" />
-    <Property Name="fovcharge" Type="Double" />
-    <Property Name="loadingcharge" Type="Double" />
-    <Property Name="odocharge" Type="Double" />
-    <Property Name="isRTO" Type="Boolean" />
-    <Property Name="Risksurcharge" Type="Double" />
-    <Property Name="Invoice_No" Type="Int64" />
-    <Property Name="BillAmount" Type="Double" />
-    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Actual_weight" Type="Double" />
-    <Property Name="chargable_weight" Type="Double" />
-    <Property Name="AdminEmp" Type="Int32" />
-    <Property Name="diff_weight" Type="Double" />
-    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="isDelete" Type="Boolean" />
-    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="tempdelivereddate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="IsGSTConsignment" Type="Boolean" />
   </EntityType>
   <Association Name="FK__Cash__Firm_Id__2180FB33">
     <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
@@ -1442,18 +1332,6 @@
         <PropertyRef Name="Company_Id" />
       </Principal>
       <Dependent Role="express_cargo">
-        <PropertyRef Name="Company_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_Tansaction">
-    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-    <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Company">
-        <PropertyRef Name="Company_Id" />
-      </Principal>
-      <Dependent Role="Transactions">
         <PropertyRef Name="Company_id" />
       </Dependent>
     </ReferentialConstraint>
@@ -1878,18 +1756,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="fk_Tansaction1">
-    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
-    <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Franchisee">
-        <PropertyRef Name="PF_Code" />
-      </Principal>
-      <Dependent Role="Transactions">
-        <PropertyRef Name="Pf_Code" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="sendmasg_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
     <End Role="Sendmessage" Type="Self.Sendmessage" Multiplicity="*" />
@@ -2113,13 +1979,11 @@
     <EntitySet Name="singleinvoiceconsignments" EntityType="Self.singleinvoiceconsignment" />
     <EntitySet Name="Stationaries" EntityType="Self.Stationary" />
     <EntitySet Name="SupportTickets" EntityType="Self.SupportTicket" />
-    <EntitySet Name="Transactions" EntityType="Self.Transaction" />
     <EntitySet Name="UserModuleLists" EntityType="Self.UserModuleList" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="wallet_History" EntityType="Self.wallet_History" />
     <EntitySet Name="WalletPoints" EntityType="Self.WalletPoint" />
     <EntitySet Name="InvoiceViews" EntityType="Self.InvoiceView" />
-    <EntitySet Name="TransactionViews" EntityType="Self.TransactionView" />
     <AssociationSet Name="FK__Cash__Firm_Id__2180FB33" Association="Self.FK__Cash__Firm_Id__2180FB33">
       <End Role="FirmDetails" EntitySet="FirmDetails" />
       <End Role="Cash" EntitySet="Cashes" />
@@ -2199,10 +2063,6 @@
     <AssociationSet Name="fk_ptpexp" Association="Self.fk_ptpexp">
       <End Role="Company" EntitySet="Companies" />
       <End Role="express_cargo" EntitySet="express_cargo" />
-    </AssociationSet>
-    <AssociationSet Name="fk_Tansaction" Association="Self.fk_Tansaction">
-      <End Role="Company" EntitySet="Companies" />
-      <End Role="Transactions" EntitySet="Transactions" />
     </AssociationSet>
     <AssociationSet Name="FK__ReplyAdmi__Compl__382F5661" Association="Self.FK__ReplyAdmi__Compl__382F5661">
       <End Role="Complaint" EntitySet="Complaints" />
@@ -2343,10 +2203,6 @@
     <AssociationSet Name="fk_sect" Association="Self.fk_sect">
       <End Role="Franchisee" EntitySet="Franchisees" />
       <End Role="Sectors" EntitySet="Sectors" />
-    </AssociationSet>
-    <AssociationSet Name="fk_Tansaction1" Association="Self.fk_Tansaction1">
-      <End Role="Franchisee" EntitySet="Franchisees" />
-      <End Role="Transactions" EntitySet="Transactions" />
     </AssociationSet>
     <AssociationSet Name="sendmasg_Fk" Association="Self.sendmasg_Fk">
       <End Role="Franchisee" EntitySet="Franchisees" />
@@ -2652,6 +2508,16 @@
       <Parameter Name="currentDate" Mode="In" Type="DateTime" />
       <Parameter Name="Pfcode" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="Transactions" EntityType="db_a92afa_frbillingModel.Transaction" />
+    <EntitySet Name="TransactionViews" EntityType="db_a92afa_frbillingModel.TransactionView" />
+    <AssociationSet Name="fk_Tansaction" Association="db_a92afa_frbillingModel.fk_Tansaction">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Tansaction1" Association="db_a92afa_frbillingModel.fk_Tansaction1">
+      <End Role="Franchisee" EntitySet="Franchisees" />
+      <End Role="Transaction" EntitySet="Transactions" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="destinationCount_Result">
     <Property Type="String" Name="Destination" Nullable="true" />
@@ -3357,4 +3223,140 @@
     <Property Type="Double" Name="todayExp" Nullable="true" />
     <Property Type="Double" Name="monthexp" Nullable="true" />
   </ComplexType>
+  <EntityType Name="Transaction">
+    <Key>
+      <PropertyRef Name="T_id" />
+    </Key>
+    <Property Name="T_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="booking_date" Type="DateTime" Precision="3" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Quanntity" Type="Int32" />
+    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="remark" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="codAmount" Type="Double" />
+    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TopayAmount" Type="Double" />
+    <Property Name="Topaycharges" Type="Double" />
+    <Property Name="codcharges" Type="Double" />
+    <Property Name="codtotalamount" Type="Double" />
+    <Property Name="dtdcamount" Type="Double" />
+    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="rateperkg" Type="Double" />
+    <Property Name="docketcharege" Type="Double" />
+    <Property Name="fovcharge" Type="Double" />
+    <Property Name="loadingcharge" Type="Double" />
+    <Property Name="odocharge" Type="Double" />
+    <Property Name="Risksurcharge" Type="Double" />
+    <Property Name="Invoice_No" Type="Int64" />
+    <Property Name="BillAmount" Type="Double" />
+    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Actual_weight" Type="Double" />
+    <Property Name="chargable_weight" Type="Double" />
+    <Property Name="AdminEmp" Type="Int32" />
+    <Property Name="diff_weight" Type="Double" />
+    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="compaddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="isRTO" Type="Boolean" />
+    <Property Name="isDelete" Type="Boolean" />
+    <Property Name="IsGSTConsignment" Type="Boolean" />
+    <Property Name="Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Company" Relationship="db_a92afa_frbillingModel.fk_Tansaction" FromRole="Transaction" ToRole="Company" />
+    <NavigationProperty Name="Franchisee" Relationship="db_a92afa_frbillingModel.fk_Tansaction1" FromRole="Transaction" ToRole="Franchisee" />
+  </EntityType>
+  <EntityType Name="TransactionView">
+    <Key>
+      <PropertyRef Name="T_id" />
+    </Key>
+    <Property Name="T_id" Type="Int64" Nullable="false" />
+    <Property Name="Customer_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="booking_date" Type="DateTime" Precision="3" />
+    <Property Name="compaddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Consignment_no" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Mode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Weight_t" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="Company_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Pf_Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Quanntity" Type="Int32" />
+    <Property Name="Type_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Insurance" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Claimamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Percentage" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="calinsuranceamount" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="topay" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="codAmount" Type="Double" />
+    <Property Name="consignee" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="consigner" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="cod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TopayAmount" Type="Double" />
+    <Property Name="Topaycharges" Type="Double" />
+    <Property Name="codcharges" Type="Double" />
+    <Property Name="codtotalamount" Type="Double" />
+    <Property Name="dtdcamount" Type="Double" />
+    <Property Name="status_t" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="rateperkg" Type="Double" />
+    <Property Name="docketcharege" Type="Double" />
+    <Property Name="fovcharge" Type="Double" />
+    <Property Name="loadingcharge" Type="Double" />
+    <Property Name="odocharge" Type="Double" />
+    <Property Name="isRTO" Type="Boolean" />
+    <Property Name="Risksurcharge" Type="Double" />
+    <Property Name="Invoice_No" Type="Int64" />
+    <Property Name="BillAmount" Type="Double" />
+    <Property Name="tembookingdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Actual_weight" Type="Double" />
+    <Property Name="chargable_weight" Type="Double" />
+    <Property Name="AdminEmp" Type="Int32" />
+    <Property Name="diff_weight" Type="Double" />
+    <Property Name="Sender" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="receiver" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="isDelete" Type="Boolean" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdelivereddate" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="receivedby" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsGSTConsignment" Type="Boolean" />
+    <Property Name="Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="fk_Tansaction">
+    <End Type="db_a92afa_frbillingModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="db_a92afa_frbillingModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Tansaction1">
+    <End Type="db_a92afa_frbillingModel.Franchisee" Role="Franchisee" Multiplicity="0..1" />
+    <End Type="db_a92afa_frbillingModel.Transaction" Role="Transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Transaction">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

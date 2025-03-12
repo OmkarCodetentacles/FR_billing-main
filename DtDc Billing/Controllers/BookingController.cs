@@ -93,9 +93,6 @@ namespace DtDc_Billing.Controllers
         {
             var pincode = transaction.Pincode;
 
-
-
-
             if (transaction.topay != "yes")
             {
                 transaction.Topaycharges = 0;
@@ -191,6 +188,7 @@ namespace DtDc_Billing.Controllers
                     tran.Receiver = transaction.Receiver;
                     tran.isDelete = false;
                     tran.IsGSTConsignment = false;
+                    tran.Reference = transaction.Reference;
                     /////////////////////////////
 
                     tran.T_id = tr.T_id;
@@ -249,15 +247,11 @@ namespace DtDc_Billing.Controllers
                     tran1.IsGSTConsignment = false;
                     tran1.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                     tran1.AdminEmp = 000;
+                    tran1.Reference = transaction.Reference;
                     db.Transactions.Add(tran1);
-
-
 
                     try
                     {
-                        // Your code...
-                        // Could also be before try if you know the exception occurs in SaveChanges
-
                         db.SaveChanges();
                     }
                     catch (DbEntityValidationException e)

@@ -91,6 +91,8 @@ namespace DtDc_Billing.Metadata_Classes
         public string tembookingdate { get; set; }
 
         public string compaddress { get; set; }
+        public string Reference { get; set; }
 
+        
     }
 }
