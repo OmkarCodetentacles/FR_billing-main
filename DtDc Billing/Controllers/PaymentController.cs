@@ -333,8 +333,6 @@ namespace DtDc_Billing.Controllers
                             lr.ReportPath = path;
                         }
 
-
-
                         lr.EnableExternalImages = true;
 
                         // Create report data sources
@@ -510,20 +508,20 @@ namespace DtDc_Billing.Controllers
                         addpartyPayment.InvoicePaidCount = invoiceArray.Length;
                     
 
-                    addpartyPayment.TransactionId = GenerateUniqueString();
-                    addpartyPayment.CustomerId = cash.custId;
-                    addpartyPayment.CreditAmount = cash.creditTotalAmt;
-                    addpartyPayment.PaymentDate = getIndianDate();
-                    addpartyPayment.InvoicePaid = cash.SelectedInvoices;
-                    addpartyPayment.BalanceAmount = cash.creditTotalAmt - cash.C_Total_Amount;
-                    addpartyPayment.ModeOfPayment = "CASH";
+                        addpartyPayment.TransactionId = GenerateUniqueString();
+                        addpartyPayment.CustomerId = cash.custId;
+                        addpartyPayment.CreditAmount = cash.creditTotalAmt;
+                        addpartyPayment.PaymentDate = getIndianDate();
+                        addpartyPayment.InvoicePaid = cash.SelectedInvoices;
+                        addpartyPayment.BalanceAmount = cash.creditTotalAmt - cash.C_Total_Amount;
+                        addpartyPayment.ModeOfPayment = "CASH";
                     
-                    addpartyPayment.PaidAmount = cash.C_Total_Amount;
+                        addpartyPayment.PaidAmount = cash.C_Total_Amount;
 
-                    db.PartyPaymentDetails.Add(addpartyPayment);
-                    db.SaveChanges();
+                        db.PartyPaymentDetails.Add(addpartyPayment);
+                        db.SaveChanges();
                     }
-                    TempData["Message"] = "Payment added successfully";
+                        TempData["Message"] = "Payment added successfully";
 
                 }
 
