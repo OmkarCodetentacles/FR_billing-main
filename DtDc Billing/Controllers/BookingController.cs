@@ -1038,6 +1038,7 @@ Select(e => new
                     //    .OrderByDescending(m=>m.BookingDate).ToList();
                     var data = obj.Select(x => new {
                         ConsignmentNo = x.Consignment_no,
+                        CustomerId=x.Customer_Id,
                         Weight = x.chargable_weight,
                         x.Quanntity,
                         Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
