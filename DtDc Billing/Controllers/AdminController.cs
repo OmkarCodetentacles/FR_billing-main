@@ -4338,7 +4338,6 @@ namespace DtDc_Billing.Controllers
                 register.isLoginConfirmed = false;
                 db.Entry(register).State = EntityState.Modified;
                 db.SaveChanges();
-
             }
             SendLoginOTPtoMobile(mobileNo, otp);
 

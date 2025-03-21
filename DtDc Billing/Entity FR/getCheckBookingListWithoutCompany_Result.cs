@@ -30,5 +30,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> Risksurcharge { get; set; }
         public Nullable<double> loadingcharge { get; set; }
         public Nullable<bool> isDelete { get; set; }
+        public string Reference { get; set; }
     }
 }

@@ -60,5 +60,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<bool> isRTO { get; set; }
         public Nullable<bool> isDelete { get; set; }
         public Nullable<bool> IsGSTConsignment { get; set; }
+        public string Reference { get; set; }
     }
 }

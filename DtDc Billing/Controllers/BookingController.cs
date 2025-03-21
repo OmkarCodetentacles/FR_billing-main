@@ -464,9 +464,7 @@ Select(e => new
 
                     db.Entry(tr).State = EntityState.Detached;
 
-
                     transaction.T_id = tr.T_id;
-
 
                     Transaction tran = new Transaction();
                     tran.T_id = tr.T_id;
@@ -514,6 +512,7 @@ Select(e => new
                     tran.codtotalamount = transaction.codtotalamount;
                     tran.consigner = transaction.consigner;
                     tran.Receiver = transaction.Receiver;
+                    tran.Reference = transaction.Reference;
                     tran.isDelete = false;
                     db.Entry(tran).State = EntityState.Modified;
 
@@ -558,9 +557,6 @@ Select(e => new
                     ViewBag.nextconsignment = ch + "" + (consignnumber.ToString().PadLeft(lenght, '0'));
 
                 }
-
-
-
 
                 return PartialView("EditConsignmentPartial");
             }
@@ -634,7 +630,8 @@ Select(e => new
                     BillAmount = x.BillAmount,
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge
+                    loadingcharge = x.loadingcharge,
+                    Reference = x.Reference
 
                 }).OrderBy(d => d.Consignment_no).ToList();
 
@@ -665,7 +662,7 @@ Select(e => new
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
-
+                    Reference = x.Reference
 
                 }).OrderBy(d => d.Consignment_no).ToList();
 
@@ -860,7 +857,8 @@ Select(e => new
                     BillAmount = x.BillAmount,
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge
+                    loadingcharge = x.loadingcharge,
+                    Reference = x.Reference
 
                 }).OrderBy(d => d.booking_date).ToList();
 
@@ -891,6 +889,7 @@ Select(e => new
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
+                    Reference = x.Reference
 
                 }).OrderByDescending(d => d.booking_date).ToList();
 
@@ -1024,7 +1023,9 @@ Select(e => new
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
-                    Customer_Id=x.customer_id
+                    Customer_Id=x.customer_id,
+                    Reference = x.Reference
+
 
                 }).OrderBy(d => d.booking_date).ToList();
 
@@ -1089,7 +1090,8 @@ Select(e => new
                     Percentage = x.Percentage,
                     Risksurcharge = x.Risksurcharge,
                     loadingcharge = x.loadingcharge,
-                    Customer_Id=x.customer_id
+                    Customer_Id=x.customer_id,
+                    Reference = x.Reference
 
                 }).OrderByDescending(d => d.booking_date).ToList();
 

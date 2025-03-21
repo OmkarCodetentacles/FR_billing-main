@@ -2286,18 +2286,7 @@
       <Parameter Name="ContactNo" Mode="In" Type="String" />
       <Parameter Name="F_Address" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="getCheckBookingList" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingList_Result)">
-      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-      <Parameter Name="toDate" Mode="In" Type="DateTime" />
-      <Parameter Name="Customerid" Mode="In" Type="String" />
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="getCheckBookingListAll" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListAll_Result)">
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-    </FunctionImport>
-    <FunctionImport Name="getCheckBookingListWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result)">
-      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
-      <Parameter Name="toDate" Mode="In" Type="DateTime" />
       <Parameter Name="pfcode" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="getCreditorsInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoice_Result)">
@@ -2465,10 +2454,6 @@
       <Parameter Name="yearStart" Mode="In" Type="Int32" />
       <Parameter Name="currentYear" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="Sp_GetSingleConsignment" ReturnType="Collection(db_a92afa_frbillingModel.Sp_GetSingleConsignment_Result)">
-      <Parameter Name="Con_no" Mode="In" Type="String" />
-      <Parameter Name="pfcode" Mode="In" Type="String" />
-    </FunctionImport>
     <FunctionImport Name="sp_getTransation" ReturnType="Collection(db_a92afa_frbillingModel.sp_getTransation_Result)">
       <Parameter Name="yearStart" Mode="In" Type="Int32" />
       <Parameter Name="currentYear" Mode="In" Type="Int32" />
@@ -2518,50 +2503,27 @@
       <End Role="Franchisee" EntitySet="Franchisees" />
       <End Role="Transaction" EntitySet="Transactions" />
     </AssociationSet>
+    <FunctionImport Name="Sp_GetSingleConsignment" ReturnType="Collection(db_a92afa_frbillingModel.Sp_GetSingleConsignment_Result)">
+      <Parameter Name="Con_no" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCheckBookingList" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingList_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getCheckBookingListWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="destinationCount_Result">
     <Property Type="String" Name="Destination" Nullable="true" />
     <Property Type="Int32" Name="DestCount" Nullable="true" />
   </ComplexType>
-  <ComplexType Name="getCheckBookingList_Result">
-    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
-    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
-    <Property Type="Double" Name="chargable_weight" Nullable="true" />
-    <Property Type="Int32" Name="Quanntity" Nullable="true" />
-    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Amount" Nullable="true" />
-    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
-    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="BillAmount" Nullable="true" />
-    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
-    <Property Type="Double" Name="loadingcharge" Nullable="true" />
-    <Property Type="Boolean" Name="isDelete" Nullable="true" />
-  </ComplexType>
   <ComplexType Name="getCheckBookingListAll_Result">
-    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
-    <Property Type="Double" Name="chargable_weight" Nullable="true" />
-    <Property Type="Int32" Name="Quanntity" Nullable="true" />
-    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
-    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Amount" Nullable="true" />
-    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
-    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="BillAmount" Nullable="true" />
-    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
-    <Property Type="Double" Name="loadingcharge" Nullable="true" />
-    <Property Type="Boolean" Name="isDelete" Nullable="true" />
-  </ComplexType>
-  <ComplexType Name="getCheckBookingListWithoutCompany_Result">
-    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
     <Property Type="Double" Name="chargable_weight" Nullable="true" />
     <Property Type="Int32" Name="Quanntity" Nullable="true" />
@@ -2969,55 +2931,6 @@
     <Property Type="Double" Name="loadingcharge" Nullable="true" />
     <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
   </ComplexType>
-  <ComplexType Name="Sp_GetSingleConsignment_Result">
-    <Property Type="Int64" Name="T_id" Nullable="false" />
-    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
-    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
-    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="Weight_t" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="Amount" Nullable="true" />
-    <Property Type="String" Name="Company_id" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
-    <Property Type="Int32" Name="Quanntity" Nullable="true" />
-    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="Claimamount" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="calinsuranceamount" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="remark" Nullable="true" MaxLength="20" />
-    <Property Type="String" Name="topay" Nullable="true" MaxLength="20" />
-    <Property Type="Double" Name="codAmount" Nullable="true" />
-    <Property Type="String" Name="consignee" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="consigner" Nullable="true" MaxLength="100" />
-    <Property Type="String" Name="cod" Nullable="true" MaxLength="100" />
-    <Property Type="Double" Name="TopayAmount" Nullable="true" />
-    <Property Type="Double" Name="Topaycharges" Nullable="true" />
-    <Property Type="Double" Name="codcharges" Nullable="true" />
-    <Property Type="Double" Name="codtotalamount" Nullable="true" />
-    <Property Type="Double" Name="dtdcamount" Nullable="true" />
-    <Property Type="String" Name="status_t" Nullable="true" MaxLength="100" />
-    <Property Type="Double" Name="rateperkg" Nullable="true" />
-    <Property Type="Double" Name="docketcharege" Nullable="true" />
-    <Property Type="Double" Name="fovcharge" Nullable="true" />
-    <Property Type="Double" Name="loadingcharge" Nullable="true" />
-    <Property Type="Double" Name="odocharge" Nullable="true" />
-    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
-    <Property Type="Int64" Name="Invoice_No" Nullable="true" />
-    <Property Type="Double" Name="BillAmount" Nullable="true" />
-    <Property Type="String" Name="tembookingdate" Nullable="true" MaxLength="50" />
-    <Property Type="Double" Name="Actual_weight" Nullable="true" />
-    <Property Type="Double" Name="chargable_weight" Nullable="true" />
-    <Property Type="Int32" Name="AdminEmp" Nullable="true" />
-    <Property Type="Double" Name="diff_weight" Nullable="true" />
-    <Property Type="String" Name="Sender" Nullable="true" />
-    <Property Type="String" Name="Receiver" Nullable="true" />
-    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
-    <Property Type="Boolean" Name="isRTO" Nullable="true" />
-    <Property Type="Boolean" Name="isDelete" Nullable="true" />
-    <Property Type="Boolean" Name="IsGSTConsignment" Nullable="true" />
-  </ComplexType>
   <ComplexType Name="sp_getTransation_Result">
     <Property Type="Int64" Name="T_id" Nullable="false" />
     <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
@@ -3359,4 +3272,94 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="Sp_GetSingleConsignment_Result">
+    <Property Type="Int64" Name="T_id" Nullable="false" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Weight_t" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="String" Name="Company_id" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pf_Code" Nullable="true" MaxLength="20" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Claimamount" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="calinsuranceamount" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="remark" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="topay" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="codAmount" Nullable="true" />
+    <Property Type="String" Name="consignee" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="consigner" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="cod" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="TopayAmount" Nullable="true" />
+    <Property Type="Double" Name="Topaycharges" Nullable="true" />
+    <Property Type="Double" Name="codcharges" Nullable="true" />
+    <Property Type="Double" Name="codtotalamount" Nullable="true" />
+    <Property Type="Double" Name="dtdcamount" Nullable="true" />
+    <Property Type="String" Name="status_t" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="rateperkg" Nullable="true" />
+    <Property Type="Double" Name="docketcharege" Nullable="true" />
+    <Property Type="Double" Name="fovcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+    <Property Type="Double" Name="odocharge" Nullable="true" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Int64" Name="Invoice_No" Nullable="true" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="tembookingdate" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="Actual_weight" Nullable="true" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="AdminEmp" Nullable="true" />
+    <Property Type="Double" Name="diff_weight" Nullable="true" />
+    <Property Type="String" Name="Sender" Nullable="true" />
+    <Property Type="String" Name="Receiver" Nullable="true" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
+    <Property Type="Boolean" Name="isRTO" Nullable="true" />
+    <Property Type="Boolean" Name="isDelete" Nullable="true" />
+    <Property Type="Boolean" Name="IsGSTConsignment" Nullable="true" />
+    <Property Type="String" Name="Reference" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getCheckBookingList_Result">
+    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+    <Property Type="Boolean" Name="isDelete" Nullable="true" />
+    <Property Type="String" Name="Reference" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getCheckBookingListWithoutCompany_Result">
+    <Property Type="String" Name="customer_id" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Consignment_no" Nullable="true" MaxLength="100" />
+    <Property Type="Double" Name="chargable_weight" Nullable="true" />
+    <Property Type="Int32" Name="Quanntity" Nullable="true" />
+    <Property Type="String" Name="Name" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Pincode" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="compaddress" Nullable="true" MaxLength="500" />
+    <Property Type="String" Name="Type_t" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="Mode" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Amount" Nullable="true" />
+    <Property Type="DateTime" Name="booking_date" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Insurance" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="BillAmount" Nullable="true" />
+    <Property Type="String" Name="Percentage" Nullable="true" MaxLength="20" />
+    <Property Type="Double" Name="Risksurcharge" Nullable="true" />
+    <Property Type="Double" Name="loadingcharge" Nullable="true" />
+    <Property Type="Boolean" Name="isDelete" Nullable="true" />
+    <Property Type="String" Name="Reference" Nullable="true" MaxLength="100" />
+  </ComplexType>
 </Schema>
