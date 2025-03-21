@@ -1150,10 +1150,21 @@ Select(e => new
 
                     franchisee.FirstOrDefault().StampFilePath = (franchisee.FirstOrDefault().StampFilePath == null || franchisee.FirstOrDefault().StampFilePath == "") ? baseUrl + "/assets/Dtdclogo.png" : franchisee.FirstOrDefault().StampFilePath;
                     string discount = dataset3.FirstOrDefault().discount;
-                  
+                    string format = "Horizantal";
+
                     if (discount == "no")
                     {
-                        if (franchisee.FirstOrDefault().Template==2)
+                        if (format == "Horizantal")
+                        {
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "HorizanalPrintInvoice.rdlc");
+
+                            if (System.IO.File.Exists(path))
+                            {
+                                lr.ReportPath = path;
+                            }
+                        }
+                       
+                      else  if (franchisee.FirstOrDefault().Template==2)
                         {
                             
                                   string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
@@ -1232,15 +1243,35 @@ Select(e => new
                     string encoding;
                     string fileNameExte;
 
-                    string deviceInfo =
+
+                    string deviceInfo = "";
+
+                    if (format == "Horizantal")
+                    {
+                        deviceInfo =
                         "<DeviceInfo>" +
                         "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                        "<PageHeight>11in</PageHeight>" +
+                        "<PageHeight>10.23in</PageHeight>" +
+                        "<PageWidth>10.69in</PageWidth>" +
                        "<Margintop>0.1in</Margintop>" +
                          "<Marginleft>0.1in</Marginleft>" +
                           "<Marginright>0.1in</Marginright>" +
                            "<Marginbottom>0.5in</Marginbottom>" +
                            "</DeviceInfo>";
+
+                    }
+                    else
+                    {
+                        deviceInfo =
+                      "<DeviceInfo>" +
+                      "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                      "<PageHeight>11in</PageHeight>" +
+                     "<Margintop>0.1in</Margintop>" +
+                       "<Marginleft>0.1in</Marginleft>" +
+                        "<Marginright>0.1in</Marginright>" +
+                         "<Marginbottom>0.5in</Marginbottom>" +
+                         "</DeviceInfo>";
+                    }
 
                     Warning[] warnings;
                     string[] streams;
