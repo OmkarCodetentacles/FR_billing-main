@@ -78,7 +78,7 @@ namespace DtDc_Billing.Controllers
 
             var suggestions = db.Sp_GetSingleConsignment(Cosignmentno, strpfcode).FirstOrDefault();
 
-           // return Json(suggestions, JsonRequestBehavior.AllowGet);
+            // return Json(suggestions, JsonRequestBehavior.AllowGet);
             if (suggestions == null)
             {
                 return Json(new { success = false, message = "No data found for the provided consignment number." }, JsonRequestBehavior.AllowGet);
@@ -738,7 +738,7 @@ Select(e => new
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete == false).FirstOrDefault();
 
                     if (transaction != null)
                     {
@@ -768,7 +768,7 @@ Select(e => new
 
 
             ViewBag.Count = count;
-            ViewBag.Message ="File Uploaded Successfully! and "+ count+ " Booked Successfully";
+            ViewBag.Message = "File Uploaded Successfully! and " + count + " Booked Successfully";
 
             return View();
         }
@@ -781,40 +781,17 @@ Select(e => new
             ViewBag.fromdate = Fromdatetime;
             ViewBag.todate = ToDatetime;
             ViewBag.Custid = Custid;
-            //var obj = db.getCheckBookingListAll(strpf).Select(x => new TransactionView
-            //{
 
-            //  Consignment_no = x.Consignment_no,
-            //  chargable_weight  = x.chargable_weight,
-            //  Quanntity  = x.Quanntity,
-            //  Name  = x.Name,
-            //  Pincode  = x.Pincode,
-            //  compaddress  = x.compaddress,
-            //  Type_t = x.Type_t,
-            //  Mode  = x.Mode,
-            //  Amount  = x.Amount,
-            //  booking_date  = x.booking_date,
-            //  Insurance  = x.Insurance,
-            //  BillAmount= x.BillAmount,
-            //  Percentage  = x.Percentage,
-            //  Risksurcharge  = x.Risksurcharge,
-            //  loadingcharge  = x.loadingcharge
-
-            //}).ToList();
-
-            //ViewBag.totalamt = obj.Sum(b => b.Amount);
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
+            DateTime? fromdate = DateTime.Now;
+            DateTime? todate = DateTime.Now;
 
-            DateTime? fromdate=DateTime.Now;
-            DateTime? todate=DateTime.Now;
-          
-            if (Fromdatetime != "" && Fromdatetime!=null)
+            if (Fromdatetime != "" && Fromdatetime != null)
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 fromdate = Convert.ToDateTime(bdatefrom);
-
                 ViewBag.fromdate = Fromdatetime;
             }
             else
@@ -822,7 +799,7 @@ Select(e => new
                 fromdate = DateTime.Now;
             }
 
-            if (ToDatetime != "" && ToDatetime!=null)
+            if (ToDatetime != "" && ToDatetime != null)
             {
                 string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 todate = Convert.ToDateTime(bdateto);
@@ -837,126 +814,29 @@ Select(e => new
             {
                 ViewBag.Custid = Custid;
             }
-
-            if (Custid == "")
+            var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
             {
-                var obj = db.getCheckBookingListWithoutCompany(fromdate, todate, strpf).Select(x => new TransactionView
-                {
+                Consignment_no = x.Consignment_no,
+                Customer_Id = x.customer_id,
+                chargable_weight = x.chargable_weight,
+                Quanntity = x.Quanntity,
+                Name = x.Name,
+                Pincode = x.Pincode,
+                compaddress = x.compaddress,
+                Type_t = x.Type_t,
+                Mode = x.Mode,
+                Amount = x.Amount,
+                booking_date = x.booking_date,
+                Insurance = x.Insurance,
+                BillAmount = x.BillAmount,
+                Percentage = x.Percentage,
+                Risksurcharge = x.Risksurcharge,
+                loadingcharge = x.loadingcharge,
+                Reference = x.Reference
+            }).OrderByDescending(d => d.booking_date).ToList();
 
-                    Consignment_no = x.Consignment_no,
-                    chargable_weight = x.chargable_weight,
-                    Quanntity = x.Quanntity,
-                    Name = x.Name,
-                    Pincode = x.Pincode,
-                    compaddress = x.compaddress,
-                    Type_t = x.Type_t,
-                    Mode = x.Mode,
-                    Amount = x.Amount,
-                    booking_date = x.booking_date,
-                    Insurance = x.Insurance,
-                    BillAmount = x.BillAmount,
-                    Percentage = x.Percentage,
-                    Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge,
-                    Reference = x.Reference
+            return View(obj);
 
-                }).OrderBy(d => d.booking_date).ToList();
-
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
-
-             
-
-                return View(obj);
-
-            }
-            else
-            {
-                var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
-                {
-
-                    Consignment_no = x.Consignment_no,
-                    chargable_weight = x.chargable_weight,
-                    Quanntity = x.Quanntity,
-                    Name = x.Name,
-                    Pincode = x.Pincode,
-                    compaddress = x.compaddress,
-                    Type_t = x.Type_t,
-                    Mode = x.Mode,
-                    Amount = x.Amount,
-                    booking_date = x.booking_date,
-                    Insurance = x.Insurance,
-                    BillAmount = x.BillAmount,
-                    Percentage = x.Percentage,
-                    Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge,
-                    Reference = x.Reference
-
-                }).OrderByDescending(d => d.booking_date).ToList();
-
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
-
-             
-
-                return View(obj);
-            }
-
-        }
-
-        public ActionResult PrintCheckBookingList(List<TransactionView> obj,string Custid)
-        {
-            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
-
-            if (obj != null)
-            {
-                LocalReport lr = new LocalReport();
-                var checkBookinglist = obj;
-            
-                var company = db.Companies.Where(x => x.Company_Id == Custid);
-
-                var path = System.IO.Path.Combine(Server.MapPath("~/RdlcReport"), "CheckBookingList.rdlc");
-
-                lr.ReportPath = path;
-                lr.EnableExternalImages = true;
-                ReportDataSource rd = new ReportDataSource("CheckBookingList", checkBookinglist);
-                ReportDataSource rd1 = new ReportDataSource("Company",company);
-                lr.DataSources.Add(rd);
-                lr.DataSources.Add(rd1);
-
-                string reportType = "pdf";
-                string mimeType;
-                string encoding;
-                string fileNameExte;
-
-                string deviceInfo =
-                    "<DeviceInfo>" +
-                    "<OutputFormat>" + "pdf" + "</OutputFormat>" +
-                    "<PageHeight>11in</PageHeight>" +
-                   "<Margintop>0.1in</Margintop>" +
-                     "<Marginleft>0.1in</Marginleft>" +
-                      "<Marginright>0.1in</Marginright>" +
-                       "<Marginbottom>0.5in</Marginbottom>" +
-                       "</DeviceInfo>";
-
-                Warning[] warnings;
-                string[] streams;
-                byte[] renderByte;
-
-
-                renderByte = lr.Render
-              (reportType,
-              deviceInfo,
-              out mimeType,
-              out encoding,
-              out fileNameExte,
-              out streams,
-              out warnings
-              );
-
-
-                return File(renderByte, mimeType);
-
-            }
-            return null;
         }
 
         [HttpPost]
@@ -966,8 +846,6 @@ Select(e => new
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
-
-
             DateTime? fromdate;
             DateTime? todate;
             if (trans != null)
@@ -979,7 +857,6 @@ Select(e => new
             {
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 fromdate = Convert.ToDateTime(bdatefrom);
-
                 ViewBag.fromdate = Fromdatetime;
             }
             else
@@ -1003,141 +880,119 @@ Select(e => new
                 ViewBag.Custid = Custid;
             }
 
-            if (Custid == "")
+            var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
             {
-                var obj = db.getCheckBookingListWithoutCompany(fromdate, todate, strpf).Select(x => new TransactionView
-                {
+                Consignment_no = x.Consignment_no,
+                Customer_Id = x.customer_id,
+                chargable_weight = x.chargable_weight,
+                Quanntity = x.Quanntity,
+                Name = x.Name,
+                Pincode = x.Pincode,
+                compaddress = x.compaddress,
+                Type_t = x.Type_t,
+                Mode = x.Mode,
+                Amount = x.Amount,
+                booking_date = x.booking_date,
+                Insurance = x.Insurance,
+                BillAmount = x.BillAmount,
+                Percentage = x.Percentage,
+                Risksurcharge = x.Risksurcharge,
+                loadingcharge = x.loadingcharge,
+                Reference = x.Reference
+            }).OrderByDescending(d => d.booking_date).ToList();
 
-                    Consignment_no = x.Consignment_no,
-                    chargable_weight = x.chargable_weight,
-                    Quanntity = x.Quanntity,
-                    Name = x.Name,
-                    Pincode = x.Pincode,
-                    compaddress = x.compaddress,
-                    Type_t = x.Type_t,
-                    Mode = x.Mode,
-                    Amount = x.Amount,
-                    booking_date = x.booking_date,
-                    Insurance = x.Insurance,
-                    BillAmount = x.BillAmount,
-                    Percentage = x.Percentage,
-                    Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge,
-                    Customer_Id=x.customer_id,
-                    Reference = x.Reference
-
-
-                }).OrderBy(d => d.booking_date).ToList();
-
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
-
-                if (Submit == "Export to Excel")
-                {
-                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
-                    //var import = db.TransactionViews.ToList().Where(m=>(m.Pf_Code==strpf) &&(m.Customer_Id==null || m.Customer_Id==Custid)).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
-                    //    .Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) })
-                    //    .OrderByDescending(m=>m.BookingDate).ToList();
-                    var data = obj.Select(x => new {
-                        ConsignmentNo = x.Consignment_no,
-                        CustomerId=x.Customer_Id,
-                        Weight = x.chargable_weight,
-                        x.Quanntity,
-                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
-                        Pincode = x.Pincode,
-                        Address = x.compaddress,
-                        Type = x.Type_t,
-                        x.Mode,
-                        x.Amount,
-                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
-                        x.Insurance,
-                        x.Claimamount,
-                        x.Percentage,
-                        x.Risksurcharge,
-                        OtherCharges = x.loadingcharge,
-                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
-
-
-
-                    }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(data);
-                }
-
-                if (Submit == "Print")
-                {
-                    return PrintCheckBookingList(obj, Custid);
-
-                }
-                return View(obj);
-
-            }
-            else
+            if (Submit == "Export to Excel")
             {
-                var obj = db.getCheckBookingList(fromdate, todate, Custid, strpf).Select(x => new TransactionView
-                {
+                obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
 
-                    Consignment_no = x.Consignment_no,
-                    chargable_weight = x.chargable_weight,
-                    Quanntity = x.Quanntity,
-                    Name = x.Name,
+                var data = obj.Select(x => new
+                {
+                    ConsignmentNo = x.Consignment_no,
+                    CustomerId = x.Customer_Id,
+                    Weight = x.chargable_weight,
+                    x.Quanntity,
+                    Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
                     Pincode = x.Pincode,
-                    compaddress = x.compaddress,
-                    Type_t = x.Type_t,
-                    Mode = x.Mode,
-                    Amount = x.Amount,
-                    booking_date = x.booking_date,
-                    Insurance = x.Insurance,
-                    BillAmount = x.BillAmount,
-                    Percentage = x.Percentage,
-                    Risksurcharge = x.Risksurcharge,
-                    loadingcharge = x.loadingcharge,
-                    Customer_Id=x.customer_id,
-                    Reference = x.Reference
+                    Address = x.compaddress,
+                    Type = x.Type_t,
+                    x.Mode,
+                    x.Amount,
+                    BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
+                    x.Insurance,
+                    x.Claimamount,
+                    x.Percentage,
+                    x.Risksurcharge,
+                    OtherCharges = x.loadingcharge,
+                    x.Reference,
+                    Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
+                }).ToList();
 
-                }).OrderByDescending(d => d.booking_date).ToList();
-
-                ViewBag.totalamt = obj.Sum(b => b.Amount);
-
-                if (Submit == "Export to Excel")
-                {
-                    //var import = db.TransactionViews.Where(m => (m.Pf_Code == strpf) &&
-                    //(m.Customer_Id == null || m.Customer_Id == Custid)
-                    //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Consignment_no, Weight = x.chargable_weight, x.Quanntity, x.Name, x.Pincode, x.compaddress, x.Type_t, x.Mode, x.Amount, BookingDate = x.tembookingdate, x.Insurance, x.Claimamount, x.Percentage, Risksurcharge = x.calinsuranceamount, Total = (x.Amount + x.calinsuranceamount) }).OrderByDescending(m=>m.BookingDate).ToList();
-                    obj = obj.OrderByDescending(b => b.booking_date).Where(x => x.isRTO == null || x.isRTO == false).ToList();
-                    var data = obj.Select(x => new {
-                        CustomerId=x.Customer_Id,
-                        ConsignmentNo = x.Consignment_no,
-                        Weight = x.chargable_weight,
-                        x.Quanntity,
-                        Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
-                        Pincode = x.Pincode,
-                        Address = x.compaddress,
-                        Type = x.Type_t,
-                        x.Mode,
-                        x.Amount,
-                        BookingDate = x.booking_date.Value.ToString("dd/MM/yyyy"),
-                        x.Insurance,
-                        x.Claimamount,
-                        x.Percentage,
-                        x.Risksurcharge,
-                        OtherCharges = x.loadingcharge,
-                        Total = Math.Round(x.Amount ?? 0 + x.Risksurcharge ?? 0 + x.loadingcharge ?? 0)
-
-
-
-                    }).ToList();
-                    ExportToExcelAll.ExportToExcelAdmin(data);
-                }
-                if (Submit == "Print")
-                {
-                  return  PrintCheckBookingList(obj,Custid);
-                }
-                return View(obj);
+                ExportToExcelAll.ExportToExcelAdmin(data);
             }
 
+            if (Submit == "Print")
+            {
+                return PrintCheckBookingList(obj, Custid);
+            }
+            return View(obj);
         }
-        //Convert the Consignment for the RTO 
 
-        public JsonResult CovertConsignmentToRTO(string consignmnets,string fromdate,string todate,string custId)
+        public ActionResult PrintCheckBookingList(List<TransactionView> obj, string Custid)
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            if (obj != null)
+            {
+                LocalReport lr = new LocalReport();
+                var checkBookinglist = obj;
+
+                var company = db.Companies.Where(x => x.Company_Id == Custid);
+
+                var path = System.IO.Path.Combine(Server.MapPath("~/RdlcReport"), "CheckBookingList.rdlc");
+
+                lr.ReportPath = path;
+                lr.EnableExternalImages = true;
+                ReportDataSource rd = new ReportDataSource("CheckBookingList", checkBookinglist);
+                ReportDataSource rd1 = new ReportDataSource("Company", company);
+                lr.DataSources.Add(rd);
+                lr.DataSources.Add(rd1);
+
+                string reportType = "pdf";
+                string mimeType;
+                string encoding;
+                string fileNameExte;
+
+                string deviceInfo =
+                    "<DeviceInfo>" +
+                    "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                    "<PageHeight>11in</PageHeight>" +
+                   "<Margintop>0.1in</Margintop>" +
+                     "<Marginleft>0.1in</Marginleft>" +
+                      "<Marginright>0.1in</Marginright>" +
+                       "<Marginbottom>0.5in</Marginbottom>" +
+                       "</DeviceInfo>";
+
+                Warning[] warnings;
+                string[] streams;
+                byte[] renderByte;
+
+                renderByte = lr.Render
+              (reportType,
+              deviceInfo,
+              out mimeType,
+              out encoding,
+              out fileNameExte,
+              out streams,
+              out warnings
+              );
+
+              return File(renderByte, mimeType);
+
+            }
+            return null;
+        }
+
+        public JsonResult CovertConsignmentToRTO(string consignmnets, string fromdate, string todate, string custId)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -1147,7 +1002,7 @@ Select(e => new
 
                 foreach (var con in conno)
                 {
-                    var trans = db.Transactions.Where(x => x.Consignment_no == con && x.Pf_Code == strpf ).FirstOrDefault();
+                    var trans = db.Transactions.Where(x => x.Consignment_no == con && x.Pf_Code == strpf).FirstOrDefault();
                     if (trans != null)
                     {
                         trans.isRTO = true;
@@ -1156,8 +1011,8 @@ Select(e => new
                     }
 
                 }
-               return Json("Success", JsonRequestBehavior.AllowGet);
-             //   return Json(new { redirectUrl = Url.Action("Checkbookinglist", "Booking", new { Fromdatetime = fromdate, ToDatetime = todate, Custid = custId }) },JsonRequestBehavior.AllowGet);
+                return Json("Success", JsonRequestBehavior.AllowGet);
+                //   return Json(new { redirectUrl = Url.Action("Checkbookinglist", "Booking", new { Fromdatetime = fromdate, ToDatetime = todate, Custid = custId }) },JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -1214,7 +1069,7 @@ Select(e => new
             List<Transaction> transactions =
                 db.Transactions.Where(m =>
                (m.Pf_Code == PfCode) && (m.Customer_Id == null || m.Customer_Id == "")
-               && m.isDelete==false
+               && m.isDelete == false
                     ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
 
@@ -1341,7 +1196,7 @@ Select(e => new
         }
 
         [HttpPost]
-        public ActionResult MultipleBookingReceipt( string ToDatetime, string Fromdatetime, string Customer_Id)
+        public ActionResult MultipleBookingReceipt(string ToDatetime, string Fromdatetime, string Customer_Id)
         {
 
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -1450,12 +1305,7 @@ Select(e => new
                 db.SaveChanges();
                 return "Consignment No Deleted Successfully!";
             }
-
-            //  public ActionResult Checkbookinglist(List<TransactionView> trans, string Fromdatetime, string ToDatetime, string Custid, string Submit)
-
             return "Something Went Wrong!";
-
-
         }
 
         public string DeleteConsignment(string Consignment_No)
@@ -1554,7 +1404,7 @@ Select(e => new
                     foreach (var i in obj)
                     {
 
-                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf && m.isDelete==false).FirstOrDefault();
+                        Transaction transaction = db.Transactions.Where(m => m.Consignment_no == i.Consignment_no && m.Pf_Code == strpf && m.isDelete == false).FirstOrDefault();
 
                         if (transaction != null)
                         {
@@ -1579,7 +1429,7 @@ Select(e => new
 
                 }
 
-                ViewBag.totalamt = obj.Sum(b => b.Amount+b.Risksurcharge??0+b.loadingcharge??0);
+                ViewBag.totalamt = obj.Sum(b => b.Amount + b.Risksurcharge ?? 0 + b.loadingcharge ?? 0);
 
                 return View(obj);
 
@@ -1638,7 +1488,7 @@ Select(e => new
 
                 }
 
-                ViewBag.totalamt = obj.Sum(b =>  b.Amount+b.Risksurcharge??0+b.loadingcharge??0);
+                ViewBag.totalamt = obj.Sum(b => b.Amount + b.Risksurcharge ?? 0 + b.loadingcharge ?? 0);
 
                 return View(obj);
             }
@@ -1814,7 +1664,7 @@ Select(e => new
 
 
         [HttpGet]
-            
+
         [PageTitle("importFromExcel")]
         public ActionResult importFromExcel()
         {
@@ -1838,7 +1688,7 @@ Select(e => new
                     }
                     if (validationResult.ignoreConsignmentExcels.Count() > 0)
                     {
-                       // TempData["ConErrorMessages"] = validationResult.ignoreConsignmentExcels.Count()+"  consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
+                        // TempData["ConErrorMessages"] = validationResult.ignoreConsignmentExcels.Count()+"  consignments do not exist in our system. Therefore, we cannot proceed with booking them. We have returned these consignments in the attached Excel file.";
 
                         TempData["ConErrorMessages"] = $"{validationResult.ignoreConsignmentExcels.Count()} consignments are not in our system and cannot be booked.";
 
@@ -1862,9 +1712,9 @@ Select(e => new
             return View();
         }
 
-        public  (bool IsValid, List<string> Errors,List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateFirstExcelFormat(HttpPostedFileBase httpPostedFileBase)
+        public (bool IsValid, List<string> Errors, List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateFirstExcelFormat(HttpPostedFileBase httpPostedFileBase)
         {
-            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString(); 
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             var errorMessages = new List<string>();
             var IgnoreConsignment = new List<IgnoreConsignmentExcel>();
             string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
@@ -1876,7 +1726,7 @@ Select(e => new
                 if (currentSheet == null)
                 {
                     errorMessages.Add("The uploaded file does not contain a valid worksheet.");
-                    return (false, errorMessages,IgnoreConsignment);
+                    return (false, errorMessages, IgnoreConsignment);
                 }
 
                 var noOfRow = currentSheet.Dimension.End.Row;
@@ -1887,32 +1737,32 @@ Select(e => new
 
                     string consignmentNo = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
                     string customerId = currentSheet.Cells[rowIterator, 3]?.Value?.ToString();
-                    var trans=db.Transactions.Where(x=>x.Consignment_no.Trim().TrimStart().TrimEnd() == consignmentNo.Trim().TrimStart().TrimEnd() && x.Pf_Code==pfcode).FirstOrDefault();
+                    var trans = db.Transactions.Where(x => x.Consignment_no.Trim().TrimStart().TrimEnd() == consignmentNo.Trim().TrimStart().TrimEnd() && x.Pf_Code == pfcode).FirstOrDefault();
                     if (trans == null)
                     {
                         IgnoreConsignmentExcel ec = new IgnoreConsignmentExcel()
                         {
-                            Consignment_no=consignmentNo,
-                            Customer_Id=customerId
+                            Consignment_no = consignmentNo,
+                            Customer_Id = customerId
                         };
                         IgnoreConsignment.Add(ec);
 
                     }
-                    if (string.IsNullOrEmpty(consignmentNo)) 
+                    if (string.IsNullOrEmpty(consignmentNo))
                         errors.Add("Consignment No is required.");
                     if (string.IsNullOrEmpty(customerId))
                         errors.Add("Customer Id is Required.");
-                   
+
                     if (errors.Any())
                         errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
 
                 }
             }
-            if(errorMessages.Count>0 || IgnoreConsignment.Count > 0)
+            if (errorMessages.Count > 0 || IgnoreConsignment.Count > 0)
             {
-                IsValid=false;
+                IsValid = false;
             }
-            return (IsValid, errorMessages,IgnoreConsignment);
+            return (IsValid, errorMessages, IgnoreConsignment);
         }
 
 
@@ -1962,7 +1812,7 @@ Select(e => new
 
             return RedirectToAction("importFromExcel");
         }
-        public  (bool IsValid, List<string> Errors,List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateExcelForSecondFormat(HttpPostedFileBase httpPostedFileBase)
+        public (bool IsValid, List<string> Errors, List<IgnoreConsignmentExcel> ignoreConsignmentExcels) ValidateExcelForSecondFormat(HttpPostedFileBase httpPostedFileBase)
         {
             var pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -1978,7 +1828,7 @@ Select(e => new
                 if (currentSheet == null)
                 {
                     errorMessages.Add("The uploaded file does not contain a valid worksheet.");
-                    return (false, errorMessages,IgnoreConsignment);
+                    return (false, errorMessages, IgnoreConsignment);
                 }
 
                 var noOfRow = currentSheet.Dimension.End.Row;
@@ -1989,7 +1839,7 @@ Select(e => new
 
                     string consignmentNo = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
                     string customerId = currentSheet.Cells[rowIterator, 3]?.Value?.ToString();
-                        
+
                     string chargableWeight = currentSheet.Cells[rowIterator, 4]?.Value?.ToString();
                     string insuranceamt = currentSheet.Cells[rowIterator, 5]?.Value?.ToString();
                     string FOVamt = currentSheet.Cells[rowIterator, 6]?.Value?.ToString();
@@ -2016,7 +1866,7 @@ Select(e => new
                     if (string.IsNullOrEmpty(fovper) /*|| !int.TryParse(fovper, out _)*/)
                         errors.Add("FOV Amount is required and must be a valid integer.");
                     if (string.IsNullOrEmpty(loadingcharge)) errors.Add("Loading Charge is required.");
-                   
+
                     if (errors.Any())
                         errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
                 }
@@ -2025,9 +1875,9 @@ Select(e => new
             {
                 IsValid = false;
             }
-            return (IsValid, errorMessages,IgnoreConsignment);
+            return (IsValid, errorMessages, IgnoreConsignment);
         }
-       
+
 
         [HttpGet]
         public ActionResult AddNewimporFromExcel()
@@ -2146,7 +1996,7 @@ Select(e => new
                 }
 
                 filePath = path + DateTime.Now.ToString().Replace("/", "").Replace(" ", "").Replace(":", "") + System.IO.Path.GetFileName(ImportText.FileName);
-                 extension =System.IO. Path.GetExtension(ImportText.FileName);
+                extension = System.IO.Path.GetExtension(ImportText.FileName);
                 ImportText.SaveAs(filePath);
 
                 Task.Run(() => InsertRecords(filePath, ImportText.FileName));
@@ -2299,7 +2149,7 @@ Select(e => new
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     continue;
                 }
@@ -2481,10 +2331,10 @@ Select(e => new
                                 string bdate = DateTime.ParseExact(tran.tembookingdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                                 tran.tembookingdate = tran.tembookingdate;
                                 tran.booking_date = Convert.ToDateTime(bdate);
-                                
+
                                 tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
                                 tran.AdminEmp = 000;
-                                tran.isDelete=false;
+                                tran.isDelete = false;
                                 db.Transactions.Add(tran);
                                 db.SaveChanges();
 
@@ -2511,18 +2361,18 @@ Select(e => new
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            var list =db.Transactions.Where(x=>x.Pf_Code==strpfcode && x.isDelete==true).ToList();
+            var list = db.Transactions.Where(x => x.Pf_Code == strpfcode && x.isDelete == true).ToList();
             return View(list);
         }
-            public ActionResult RestoreConsignment(string consignmentno)
+        public ActionResult RestoreConsignment(string consignmentno)
         {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
-            var data =db.Transactions.Where(x=>x.Consignment_no==consignmentno && x.Pf_Code==strpfcode).FirstOrDefault();
+            var data = db.Transactions.Where(x => x.Consignment_no == consignmentno && x.Pf_Code == strpfcode).FirstOrDefault();
             if (data != null)
             {
-                data.isDelete= false;
-                db.Entry(data).State=EntityState.Modified;  
+                data.isDelete = false;
+                db.Entry(data).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Consignment Restore Successfully";
                 return RedirectToAction("RecycleConsignment");
@@ -2571,7 +2421,7 @@ Select(e => new
                 return View();
 
             }
-            
+
             return View();
 
         }
