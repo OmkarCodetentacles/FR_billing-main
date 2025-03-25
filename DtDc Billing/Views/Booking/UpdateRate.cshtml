@@ -108,9 +108,9 @@
                                         </div>
                                     </div>
                                 }
-                            
-                            
-                       
+
+
+
                             <div class="col-md-1" style="margin-top:22px;">
                                 <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="submit" value="Show" style="margin-bottom: 10px;width:100%" />
 
@@ -119,8 +119,8 @@
 
                                 <input type="submit" class=" btn btn-success  col-sm-12" id="UpdateRate" name="submit" value="UpdateRate" style="margin-bottom: 10px;width:100%" />
                             </div>
-                     
-                           
+
+
                             }
                         </div>
                         @*</div>
@@ -248,7 +248,9 @@
                                     <button type="button" class="btn btn-danger total-label">Total</button>
                                 </div>
                                 <!-- /btn-group -->
-                                <input type="text" class="form-control total-amount" value="@Model.ToList().Sum(x=>Math.Round(((double)x.Amount)+(x.Risksurcharge??0)+(x.loadingcharge??0)))">
+                                <input type="text" class="form-control total-amount"
+                                       value="@((Model != null ? Math.Round(Model.Sum(x => (x.Amount ?? 0) + (x.Risksurcharge ?? 0) + (x.loadingcharge ?? 0))) : 0))">
+
                             </div>
                         </div>
                         <!-- /input-group -->
