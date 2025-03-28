@@ -16,7 +16,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Util;
-
+using NPOI.HSSF.UserModel; // For .xls files
+using NPOI.XSSF.UserModel; // For .xlsx files
+using NPOI.SS.UserModel;   // Common interface for both
 namespace DtDc_Billing.CustomModel
 {
     public class ImportConsignmentFromExcel
@@ -1059,5 +1061,529 @@ namespace DtDc_Billing.CustomModel
             }
             return "1";
         }
+
+
+
+        //public string ImportFRPLUSExpcel(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        //{
+        //    try
+        //    {
+        //        var damageResult = Task.Run(() => asyncAddFrPlusExcelFile(httpPostedFileBase, PfCode));
+
+        //        return damageResult.ToString();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new RedirectException(ex.Message);
+        //    }
+        //}
+
+
+        //public static async Task<string> asyncAddFrPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        //{
+
+
+        //    if (httpPostedFileBase != null)
+        //    {
+
+
+        //        HttpPostedFileBase file = httpPostedFileBase;
+        //        if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+        //        {
+        //            string fileName = file.FileName;
+        //            string fileContentType = file.ContentType;
+        //            byte[] fileBytes = new byte[file.ContentLength];
+        //            var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+
+        //            // string[] formats = { "dd-MM-yyyy","dd-MMM-yyyy", "yyyy-MM-dd",
+        //            //"dd-MM-yyyy", "M/d/yyyy","d/M/yyyy", "dd MMM yyyy","MM-dd-yyyy","M-d-yyyy","dd/MM/yyyy","d-M-yyyy","d-MM-yyyy","d/MM/yyyy" ,"dd/M/yyyy","M/d/yyyy h:mm:ss tt","d/M/yyyy h:mm:ss tt","MM/dd/yyyy h:mm:ss tt","dd/MM/yyyy h:mm:ss tt","M/dd/yyyy h:mm:ss tt","d/MM/yyyy h:mm:ss tt","MM/d/yyyy h:mm:ss tt","dd/M/yyyy h:mm:ss tt"};
+
+        //            string[] formats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy", "d/MM/yyyy", "d-MM-yyyy", "dd/M/yyyy", "dd-M-yyyy" /*"d /M/yyyy h:mm:ss tt", "dd/MM/yyyy h:mm:ss tt" ,"d-M-yyyy h:mm:ss tt", "dd-MM-yyyy h:mm:ss tt"*//*"M/d/yyyy h:mm:ss tt", "MM/dd/yyyy h:mm:ss tt"*/ };
+        //            #region getting cookies pf code
+
+        //            BookingController admin = new BookingController();
+        //            var getPfcode = PfCode;
+
+        //            #endregion
+
+        //            using (var package = new ExcelPackage(file.InputStream))
+        //            {
+        //                var currentSheet = package.Workbook.Worksheets;
+        //                var workSheet = currentSheet.First();
+        //                var noOfCol = workSheet.Dimension.End.Column;
+        //                var noOfRow = workSheet.Dimension.End.Row;
+        //                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
+        //                {
+        //                    var tran = new Transaction();
+
+        //                    try
+        //                    {
+        //                        if (workSheet.Cells[rowIterator, 11]?.Value?.ToString() != null)
+        //                        {
+        //                            tran.Consignment_no = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
+        //                            Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
+        //                            tran.Pf_Code = workSheet.Cells[rowIterator, 4]?.Value?.ToString().Trim();
+        //                            if (getPfcode == tran.Pf_Code)
+        //                            {
+
+        //                                tran.Mode = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 8]?.Value?.ToString().ToUpper())
+        //                                ? workSheet.Cells[rowIterator, 8]?.Value?.ToString().ToUpper()
+        //                                : transaction.Mode;
+
+        //                                tran.Quanntity = workSheet.Cells[rowIterator, 9] != null
+        //                               ? Convert.ToInt16(workSheet.Cells[rowIterator, 9]?.Value)
+        //                               : transaction.Quanntity;
+        //                                tran.Pincode = workSheet.Cells[rowIterator, 10] != null
+        //                                       ? workSheet.Cells[rowIterator, 10]?.Value?.ToString()
+        //                                       : transaction.Pincode;
+        //                                tran.dtdcamount = workSheet.Cells[rowIterator, 12] != null
+        //                               ? Convert.ToDouble(workSheet.Cells[rowIterator, 12]?.Value)
+        //                               : transaction.dtdcamount;
+
+        //                                tran.chargable_weight = workSheet.Cells[rowIterator, 5]?.Value != null
+        //                                      ? Convert.ToDouble(workSheet.Cells[rowIterator, 5]?.Value)
+        //                                      : transaction.chargable_weight;
+        //                                tran.diff_weight = workSheet.Cells[rowIterator, 5]?.Value != null
+        //                                     ? Convert.ToDouble(workSheet.Cells[rowIterator, 5]?.Value)
+        //                                     : transaction.diff_weight;
+        //                                tran.BillAmount = workSheet.Cells[rowIterator, 22]?.Value != null
+        //                                  ? Convert.ToDouble(workSheet.Cells[rowIterator, 22]?.Value)
+        //                                  : transaction.BillAmount;
+        //                                tran.topay = "no";
+        //                                tran.cod = "no";
+
+
+
+        //                                string dateString = workSheet.Cells[rowIterator, 11]?.Value?.ToString();
+        //                                DateTime dateTime;
+        //                                object cellValue = workSheet.Cells[rowIterator, 11]?.Value;
+
+        //                                if (!string.IsNullOrEmpty(dateString))
+        //                                {
+        //                                    if (cellValue != null && cellValue is DateTime)
+        //                                    {
+        //                                        DateTime excelDate = (DateTime)cellValue;
+        //                                        tran.booking_date = excelDate;
+        //                                        tran.tembookingdate = excelDate.ToString("dd/MM/yyyy");
+        //                                    }
+
+
+        //                                    else if (double.TryParse(dateString, out double excelDateNumber))
+        //                                    {
+        //                                        dateTime = DateTime.FromOADate(excelDateNumber);
+        //                                        string formattedDate = DateTime.FromOADate(excelDateNumber).ToString("MM/dd/yyyy");
+
+
+        //                                        DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+
+        //                                        tran.booking_date = formattedDateTime;
+
+        //                                        tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        if (DateTime.TryParseExact(dateString, formats, null, System.Globalization.DateTimeStyles.None, out DateTime parsedDateTime))
+        //                                        {
+        //                                            double excelDateNumber1 = parsedDateTime.ToOADate();
+
+        //                                            string formattedDate = DateTime.FromOADate(excelDateNumber1).ToString("MM/dd/yyyy");
+
+        //                                            DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", null);
+
+        //                                            tran.booking_date = formattedDateTime;
+
+        //                                            tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            if (DateTime.TryParseExact(dateString, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime))
+        //                                            {
+        //                                                double excelDateNumberd = dateTime.ToOADate();
+
+        //                                                string formattedDate = DateTime.FromOADate(excelDateNumberd).ToString("MM/dd/yyyy");
+
+        //                                                DateTime formattedDateTime = DateTime.ParseExact(formattedDate, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+
+        //                                                tran.booking_date = formattedDateTime;
+
+        //                                                tran.tembookingdate = formattedDateTime.ToString("dd-MM-yyyy");
+        //                                            }
+
+        //                                        }
+        //                                    }
+
+
+        //                                }
+
+
+
+        //                                tran.Type_t = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 17]?.Value?.ToString())
+        //                                 ? workSheet.Cells[rowIterator, 17]?.Value?.ToString()
+        //                                 : transaction.Type_t;
+
+
+        //                                //tran.Customer_Id = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 10]?.Value?.ToString())
+        //                                //? workSheet.Cells[rowIterator, 10]?.Value?.ToString()
+        //                                //: transaction.Customer_Id;
+
+
+        //                                //double defaultValue = 0.0;
+
+
+        //                                //var cellValue1 = workSheet.Cells[rowIterator, 11]?.Value;
+
+
+        //                                //if (cellValue1 != null && cellValue1 is double loadingChargeValue)
+        //                                //{
+
+        //                                //    tran.loadingcharge = loadingChargeValue;
+        //                                //}
+        //                                //else
+        //                                //{
+
+        //                                //    tran.loadingcharge = defaultValue;
+        //                                //}
+
+        //                                //string defaultrece = "";
+
+
+        //                                //string receiverValue = workSheet.Cells[rowIterator, 12]?.Value?.ToString();
+        //                                //tran.Receiver = !string.IsNullOrEmpty(receiverValue) ? receiverValue : defaultrece;
+
+
+        //                                //var amtval = workSheet.Cells[rowIterator, 13]?.Value;
+        //                                //tran.Amount = amtval != null && double.TryParse(amtval.ToString(), out double parsedAmt)
+        //                                //    ? parsedAmt
+        //                                //    : 0;
+
+
+        //                            }
+
+        //                                if (transaction != null)
+        //                                {
+
+        //                                    CalculateAmount ca = new CalculateAmount();
+        //                                    double? amt = 0;
+        //                                    if (tran.Amount == null || tran.Amount == 0)
+        //                                    {
+        //                                        amt = ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+        //                                        transaction.Amount = Math.Round((double)amt);
+
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        transaction.Amount = tran.Amount;
+        //                                    }
+
+        //                                    transaction.Customer_Id = tran.Customer_Id;
+
+        //                                    transaction.Consignment_no = tran.Consignment_no.Trim();
+        //                                    transaction.chargable_weight = tran.chargable_weight;
+        //                                    transaction.Mode = tran.Mode;
+        //                                    transaction.compaddress = tran.compaddress;
+        //                                    transaction.Quanntity = tran.Quanntity;
+        //                                    transaction.Pincode = tran.Pincode;
+        //                                    transaction.booking_date = tran.booking_date;
+        //                                    transaction.Type_t = tran.Type_t;
+        //                                    transaction.tembookingdate = tran.tembookingdate;
+        //                                    transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+        //                                    transaction.AdminEmp = 000;
+        //                                    transaction.isDelete = false;
+        //                                    transaction.IsGSTConsignment = false;
+
+        //                                    db.Entry(transaction).State = EntityState.Modified;
+        //                                    db.SaveChanges();
+        //                                }
+        //                                else
+        //                                {
+        //                                    CalculateAmount ca = new CalculateAmount();
+        //                                    double? amt = 0;
+
+        //                                    if (tran.Amount == null || tran.Amount == 0)
+        //                                    {
+        //                                        // Calculate the amount using the CalulateAmt method
+        //                                        var calculatedAmt = ca.CalulateAmt(
+        //                                            tran.Consignment_no,
+        //                                            tran.Customer_Id,
+        //                                            tran.Pincode,
+        //                                            tran.Mode,
+        //                                            Convert.ToDouble(tran.chargable_weight),
+        //                                            tran.Type_t
+        //                                        ) ?? 0;
+
+        //                                        // Round the calculated amount and assign it to the transaction and tran
+        //                                        var roundedAmt = Math.Round(calculatedAmt);
+
+        //                                        tran.Amount = roundedAmt;
+        //                                    }
+
+        //                                    tran.Customer_Id = tran.Customer_Id;
+
+        //                                    tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+        //                                    tran.AdminEmp = 000;
+        //                                    tran.isDelete = false;
+        //                                    tran.IsGSTConsignment = false;
+        //                                    db.Transactions.Add(tran);
+        //                                    db.SaveChanges();
+
+        //                                }
+
+        //                            }
+
+
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        throw new RedirectException(ex.Message);
+        //                    }
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //    return "1";
+        //}
+
+        //public async Task<string> ImportFRPLUSExpcelAsync(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        //{
+        //    try
+        //    {
+        //        var damageResult = await Task.Run(() => asyncAddFrPlusExcelFile(httpPostedFileBase, PfCode));
+        //        return damageResult.ToString();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
+
+        //public  async Task<string> asyncAddFrPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        //{
+        //    if (httpPostedFileBase == null || httpPostedFileBase.ContentLength == 0)
+        //        return "No file uploaded or file is empty.";
+
+        //    string fileExtension = Path.GetExtension(httpPostedFileBase.FileName).ToLower();
+        //    IWorkbook workbook;
+
+
+
+        //    // Convert file stream to MemoryStream
+        //    using (var memoryStream = new MemoryStream())
+        //    {
+        //         httpPostedFileBase.InputStream.CopyTo(memoryStream);
+        //        memoryStream.Position = 0; // Reset stream position
+        //        byte[] fileBytes = memoryStream.ToArray();
+        //        string hexString = BitConverter.ToString(fileBytes.ToArray());
+        //        try
+        //        {   
+        //                  workbook = fileExtension == ".xls"
+        // ? (IWorkbook)new HSSFWorkbook(memoryStream)
+        // : new XSSFWorkbook(memoryStream);
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return "Error reading Excel file: " + ex.Message;
+        //        }
+        //    }
+
+        //    // Get first sheet
+        //    ISheet sheet = workbook.GetSheetAt(0);
+        //    if (sheet == null)
+        //        return "Error: Excel file has no valid sheets.";
+
+        //    int noOfRows = sheet.LastRowNum; // Get total rows
+        //    var transactionsToSave = new List<Transaction>(); // Store transactions for bulk save
+
+        //    using (var db = new db_a92afa_frbillingEntities()) // Replace with your actual DbContext
+        //    {
+        //        for (int rowIndex = 1; rowIndex <= noOfRows; rowIndex++) // Start from row 1 (skip header)
+        //        {
+        //            IRow row = sheet.GetRow(rowIndex);
+        //            if (row == null) continue;
+
+        //            var tran = new Transaction();
+
+        //            try
+        //            {
+        //                // Ensure cell exists before accessing
+        //                string GetCellString(int index) => (row?.Cells.Count > index && row.GetCell(index) != null) ? row.GetCell(index).ToString().Trim() : null;
+        //                double? GetCellDouble(int index) => (row?.Cells.Count > index && row.GetCell(index) != null && row.GetCell(index).CellType == NPOI.SS.UserModel.CellType.Numeric) ? row.GetCell(index).NumericCellValue : (double?)null;
+
+        //                tran.Consignment_no = GetCellString(2);
+        //                tran.Pf_Code = GetCellString(4);
+
+        //                Transaction transaction = db.Transactions
+        //                    .FirstOrDefault(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == PfCode);
+
+        //                if (PfCode == tran.Pf_Code)
+        //                {
+        //                    tran.Mode = GetCellString(7) ?? transaction?.Mode;
+        //                    tran.Quanntity = (short?)(GetCellDouble(8) ?? transaction?.Quanntity);
+        //                    tran.Pincode = GetCellString(9) ?? transaction?.Pincode;
+        //                    tran.dtdcamount = GetCellDouble(11) ?? transaction?.dtdcamount;
+        //                    tran.chargable_weight = GetCellDouble(4) ?? transaction?.chargable_weight;
+        //                    tran.BillAmount = GetCellDouble(21) ?? transaction?.BillAmount;
+        //                    tran.topay = "no";
+        //                    tran.cod = "no";
+
+        //                    // Handling Date Conversion
+        //                    ICell dateCell = row.GetCell(10);
+        //                    if (dateCell != null)
+        //                    {
+        //                        if (dateCell.CellType == NPOI.SS.UserModel.CellType.Numeric && DateUtil.IsCellDateFormatted(dateCell))
+        //                        {
+        //                            tran.booking_date = dateCell.DateCellValue;
+        //                            tran.tembookingdate = dateCell.DateCellValue.ToString("dd-MM-yyyy");
+        //                        }
+        //                        else
+        //                        {
+        //                            string dateString = dateCell.ToString();
+        //                            if (DateTime.TryParseExact(dateString, new[] { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" },
+        //                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+        //                            {
+        //                                tran.booking_date = parsedDate;
+        //                                tran.tembookingdate = parsedDate.ToString("dd-MM-yyyy");
+        //                            }
+        //                        }
+        //                    }
+
+        //                    tran.Type_t = GetCellString(16) ?? transaction?.Type_t;
+
+        //                    if (transaction != null)
+        //                    {
+        //                        CalculateAmount ca = new CalculateAmount();
+        //                        double? amt = tran.Amount ?? ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+        //                        transaction.Amount = Math.Round(amt ?? 0);
+        //                        transaction.Customer_Id = tran.Customer_Id;
+        //                        transaction.Consignment_no = tran.Consignment_no.Trim();
+        //                        transaction.chargable_weight = tran.chargable_weight;
+        //                        transaction.Mode = tran.Mode;
+        //                        transaction.Quanntity = tran.Quanntity;
+        //                        transaction.Pincode = tran.Pincode;
+        //                        transaction.booking_date = tran.booking_date;
+        //                        transaction.Type_t = tran.Type_t;
+        //                        transaction.tembookingdate = tran.tembookingdate;
+        //                        transaction.Pf_Code = db.Companies.Where(m => m.Company_Id == transaction.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+        //                        transaction.isDelete = false;
+        //                        transaction.IsGSTConsignment = false;
+
+        //                        db.Entry(transaction).State = EntityState.Modified;
+        //                    }
+        //                    else
+        //                    {
+        //                        CalculateAmount ca = new CalculateAmount();
+        //                        double? amt = tran.Amount ?? ca.CalulateAmt(tran.Consignment_no, tran.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+        //                        tran.Amount = Math.Round(amt ?? 0);
+        //                        tran.Customer_Id = tran.Customer_Id;
+        //                        tran.Pf_Code = db.Companies.Where(m => m.Company_Id == tran.Customer_Id).Select(m => m.Pf_code).FirstOrDefault();
+        //                        tran.isDelete = false;
+        //                        tran.IsGSTConsignment = false;
+
+        //                        transactionsToSave.Add(tran);
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                return $"Error processing row {rowIndex}: {ex.Message}";
+        //            }
+        //        }
+
+        //        // Bulk save instead of saving inside the loop
+        //        if (transactionsToSave.Count > 0)
+        //        {
+        //            db.Transactions.AddRange(transactionsToSave);
+        //        }
+        //        db.SaveChanges();
+        //    }
+
+        //    return "Success";
+        //}
+        public async Task<string> ImportFRPLUSExpcel(Stream fileStream, string PfCode,string fileExtension)
+        {
+            try
+            {
+                // ✅ Await the task
+                var damageResult = await asyncAddFrPlusExcelFile(fileStream, PfCode, fileExtension);
+                return damageResult;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Excel Import Error: " + ex.Message);
+            }
+        }
+
+        public static async Task<string> asyncAddFrPlusExcelFile(Stream fileStream, string PfCode, string fileExtension)
+        {
+            try
+            {
+                // Reset stream position if needed
+                if (fileStream.CanSeek)
+                {
+                    fileStream.Position = 0;
+                }
+
+                IWorkbook workbook;
+
+                if (fileExtension == ".xls")
+                {
+                    workbook = new HSSFWorkbook(fileStream); // Read .xls files (Old Format)
+                }
+                else if (fileExtension == ".xlsx")
+                {
+                    workbook = new XSSFWorkbook(fileStream); // Read .xlsx files (New Format)
+                }
+                else
+                {
+                    return "Unsupported file format";
+                }
+
+                ISheet sheet = workbook.GetSheetAt(0); // Get the first sheet
+                if (sheet == null)
+                {
+                    return "No sheet found in the Excel file.";
+                }
+
+                int rowCount = sheet.PhysicalNumberOfRows;
+
+                // Start from row 2 (assuming row 1 is the header)
+                for (int row = 1; row < rowCount; row++)
+                {
+                    IRow currentRow = sheet.GetRow(row);
+                    if (currentRow == null) continue;
+
+                    var dsrData = new
+                    {
+                        DSR_BRANCH_CODE = currentRow.GetCell(0)?.ToString(),
+                        DSR_CNNO = currentRow.GetCell(1)?.ToString(),
+                        DSR_BOOKED_BY = currentRow.GetCell(2)?.ToString(),
+                        DSR_CUST_CODE = currentRow.GetCell(3)?.ToString(),
+                        DSR_CN_WEIGHT = currentRow.GetCell(4)?.NumericCellValue ?? 0,
+                        DSR_CN_TYPE = currentRow.GetCell(5)?.ToString(),
+                        DSR_DEST = currentRow.GetCell(6)?.ToString(),
+                        DSR_MODE = currentRow.GetCell(7)?.ToString(),
+                        DSR_NO_OF_PIECES = (int)(currentRow.GetCell(8)?.NumericCellValue ?? 0),
+                        DSR_DEST_PIN = currentRow.GetCell(9)?.ToString(),
+                        DSR_BOOKING_DATE = currentRow.GetCell(10)?.ToString(),
+                        DSR_AMT = currentRow.GetCell(11)?.NumericCellValue ?? 0
+                    };
+
+                    // ✅ Log First Row for Debugging
+                    if (row == 1)
+                    {
+                        Console.WriteLine("First Row Data: " + Newtonsoft.Json.JsonConvert.SerializeObject(dsrData));
+                    }
+                }
+
+                return "1"; // Success
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
+
     }
 }

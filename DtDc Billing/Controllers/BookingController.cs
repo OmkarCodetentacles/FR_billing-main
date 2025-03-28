@@ -1930,6 +1930,97 @@ Select(e => new
         }
 
 
+        [HttpPost]
+        public async Task<ActionResult> ImportFrPlusExcelFile(HttpPostedFileBase ImportExcelFile)
+        {
+            if (ImportExcelFile != null && ImportExcelFile.ContentLength > 0)
+            {
+                try
+                {
+                    var strpfcode = Request.Cookies["Cookies"]["AdminValue"]?.ToString();
+
+                    using (var stream = ImportExcelFile.InputStream)
+                    {
+                        string fileExtension=System.IO.Path.GetExtension(ImportExcelFile.FileName);    
+                        var damageResult = await ImportConsignmentFromExcel.asyncAddFrPlusExcelFile(stream, strpfcode,fileExtension);
+                       
+                    
+                    if (damageResult == "1")
+                        {
+                            TempData["error"] = "Something Went Wrong<br><b style='color:red'>May be Issue in the Excel</b>";
+                        }
+                        else
+                        {
+                            TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
+                            TempData["Upload"] = "File Uploaded Successfully!";
+                        }
+                    }
+
+                    return RedirectToAction("ConsignMent", "Booking");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Error: " + ex.Message;
+                    return RedirectToAction("importTextFile");
+                }
+            }
+            else
+            {
+                TempData["Error"] = "Please upload a file";
+                return RedirectToAction("importTextFile");
+            }
+        }
+
+
+        //public static (bool IsValid, List<string> Errors) ValidateFRPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string strpfcode)
+        //{
+        //    var errorMessages = new List<string>();
+        //    string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+
+        //    if (httpPostedFileBase == null || httpPostedFileBase.ContentLength == 0)
+        //    {
+        //        errorMessages.Add("No file uploaded or file is empty.");
+        //        return (false, errorMessages);
+        //    }
+
+        //    string fileExtension = System.IO.Path.GetExtension(httpPostedFileBase.FileName);
+
+        //    MemoryStream convertedStream = null;
+
+        //    if (fileExtension == ".xls")
+        //    {
+        //        // Convert .xls to .xlsx
+        //        convertedStream = ConvertXlsToXlsx(httpPostedFileBase);
+        //        if (convertedStream == null)
+        //        {
+        //            errorMessages.Add("Failed to convert .xls file to .xlsx.");
+        //            return (false, errorMessages);
+        //        }
+        //    }
+
+        //    try
+        //    {
+        //        using (var package = new ExcelPackage(convertedStream ?? httpPostedFileBase.InputStream))
+        //        {
+        //            var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
+        //            if (currentSheet == null)
+        //            {
+        //                errorMessages.Add("The uploaded file does not contain a valid worksheet.");
+        //                return (false, errorMessages);
+        //            }
+
+        //            // Process the Excel file here...
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errorMessages.Add("Error processing Excel file: " + ex.Message);
+        //        return (false, errorMessages);
+        //    }
+
+        //    return (errorMessages.Count == 0, errorMessages);
+        //}
+
         [HttpGet]
         public ActionResult AddCodTopayimporFromExcel()
         {
