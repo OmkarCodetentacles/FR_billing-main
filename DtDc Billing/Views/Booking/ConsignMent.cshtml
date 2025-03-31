@@ -24,10 +24,15 @@
         @{
 
             var succeessdata = TempData["Upload"] as string;
+            var success = TempData["success"] as string;
         }
         @if (!string.IsNullOrEmpty(succeessdata))
         {
             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", succeessdata))
+        }
+        @if (!string.IsNullOrEmpty(success))
+        {
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", success))
         }
         @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
         {

@@ -1938,23 +1938,20 @@ Select(e => new
                 try
                 {
                     var strpfcode = Request.Cookies["Cookies"]["AdminValue"]?.ToString();
-
-                    using (var stream = ImportExcelFile.InputStream)
-                    {
-                        string fileExtension=System.IO.Path.GetExtension(ImportExcelFile.FileName);    
-                        var damageResult = await ImportConsignmentFromExcel.asyncAddFrPlusExcelFile(stream, strpfcode,fileExtension);
+    
+                        var damageResult = await ImportConsignmentFromExcel.asyncAddFrPlusExcelFile(ImportExcelFile, strpfcode);
                        
                     
-                    if (damageResult == "1")
+                         if (damageResult != "1")
                         {
-                            TempData["error"] = "Something Went Wrong<br><b style='color:red'>May be Issue in the Excel</b>";
+                            TempData["error"] = "Something Went Wrong";
                         }
                         else
                         {
                             TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
                             TempData["Upload"] = "File Uploaded Successfully!";
                         }
-                    }
+                   
 
                     return RedirectToAction("ConsignMent", "Booking");
                 }
