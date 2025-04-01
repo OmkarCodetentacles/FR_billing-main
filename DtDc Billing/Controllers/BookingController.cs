@@ -1949,7 +1949,7 @@ Select(e => new
                         else
                         {
                             TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
-                            TempData["Upload"] = "File Uploaded Successfully!";
+                           // TempData["Upload"] = "File Uploaded Successfully!";
                         }
                    
 

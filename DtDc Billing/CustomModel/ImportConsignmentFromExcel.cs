@@ -1124,8 +1124,11 @@ namespace DtDc_Billing.CustomModel
                                     tran.Consignment_no = workSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
                                     tran.Pf_Code = workSheet.Cells[rowIterator, 4]?.Value?.ToString().Trim();
                                     Transaction transaction = db.Transactions.Where(m => m.Consignment_no == tran.Consignment_no && m.Pf_Code == getPfcode).FirstOrDefault();
+                                  
+                                    //
+                                    
                                     if (getPfcode == tran.Pf_Code)
-                                    {
+                                     {
 
                                         tran.Mode = !string.IsNullOrEmpty(workSheet.Cells[rowIterator, 8]?.Value?.ToString().ToUpper())
                                         ? workSheet.Cells[rowIterator, 8]?.Value?.ToString().ToUpper()
@@ -1273,10 +1276,12 @@ namespace DtDc_Billing.CustomModel
 
                                             CalculateAmount ca = new CalculateAmount();
                                             double? amt = 0;
-                                            if (!string.IsNullOrEmpty(transaction.Customer_Id))
+                                            var checkcompany = db.Companies.Where(x => x.Company_Id == transaction.Company_id && x.Pf_code.ToLower() == getPfcode.ToLower()).FirstOrDefault();
+
+                                            if (!string.IsNullOrEmpty(transaction.Customer_Id) && checkcompany!=null)
                                             {
-                                               
-                                                    amt = ca.CalulateAmt(tran.Consignment_no, transaction.Customer_Id, tran.Pincode, tran.Mode, Convert.ToDouble(tran.chargable_weight), tran.Type_t);
+
+                                                    amt = ca.CalulateAmt(tran.Consignment_no, transaction.Customer_Id, tran.Pincode, tran.Mode??"AR", Convert.ToDouble(tran.chargable_weight??0), tran.Type_t);
                                                     transaction.Amount = Math.Round((double)amt);
 
                                             }
