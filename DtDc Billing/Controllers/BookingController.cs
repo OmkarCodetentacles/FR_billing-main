@@ -28,6 +28,7 @@ using System.EnterpriseServices;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 using OfficeOpenXml;
 using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace DtDc_Billing.Controllers
 {
@@ -1931,26 +1932,38 @@ Select(e => new
 
 
         [HttpPost]
-        public async Task<ActionResult> ImportFrPlusExcelFile(HttpPostedFileBase ImportExcelFile)
+        public ActionResult ImportFrPlusExcelFile(HttpPostedFileBase ImportExcelFile)
         {
             if (ImportExcelFile != null && ImportExcelFile.ContentLength > 0)
             {
                 try
                 {
                     var strpfcode = Request.Cookies["Cookies"]["AdminValue"]?.ToString();
-    
-                        var damageResult = await ImportConsignmentFromExcel.asyncAddFrPlusExcelFile(ImportExcelFile, strpfcode);
+
+                    // Step 1: Validate the Excel File
+                    var validationResult = ValidateFRPlusExcelFile(ImportExcelFile, strpfcode);
+                    if (!validationResult.IsValid)
+                    {
+                        TempData["ErrorMessages"] = validationResult.Errors; // Ensure this is a List<string>
+                        foreach (var error in validationResult.Errors)
+                        {
+                            System.Diagnostics.Debug.WriteLine(error); // Log each error for debugging
+                        }
+                        return RedirectToAction("importTextFile");
+                    }
+
+                    var damageResult =  ImportConsignmentFromExcel.ImportFRPLUSExpcel(ImportExcelFile, strpfcode);
                        
                     
-                         if (damageResult != "1")
-                        {
-                            TempData["error"] = "Something Went Wrong";
-                        }
-                        else
-                        {
+                        // if (damageResult == "1")
+                        //{
+                        //    TempData["error"] = "Something Went Wrong";
+                        //}
+                        //else
+                        //{
                             TempData["success"] = "File uploaded successfully! It will take some time to reflect ";
                            // TempData["Upload"] = "File Uploaded Successfully!";
-                        }
+                       // }
                    
 
                     return RedirectToAction("ConsignMent", "Booking");
@@ -1969,54 +1982,40 @@ Select(e => new
         }
 
 
-        //public static (bool IsValid, List<string> Errors) ValidateFRPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string strpfcode)
-        //{
-        //    var errorMessages = new List<string>();
-        //    string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+        public static (bool IsValid, List<string> Errors) ValidateFRPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string strpfcode)
+        {
+            var errorMessages = new List<string>();
+            string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
 
-        //    if (httpPostedFileBase == null || httpPostedFileBase.ContentLength == 0)
-        //    {
-        //        errorMessages.Add("No file uploaded or file is empty.");
-        //        return (false, errorMessages);
-        //    }
+            using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
+            {
+                var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (currentSheet == null)
+                {
+                    errorMessages.Add("The uploaded file does not contain a valid worksheet.");
+                    return (false, errorMessages);
+                }
 
-        //    string fileExtension = System.IO.Path.GetExtension(httpPostedFileBase.FileName);
+                var noOfRow = currentSheet.Dimension.End.Row;
 
-        //    MemoryStream convertedStream = null;
+                for (int rowIterator = 2; rowIterator <= 2; rowIterator++)
+                {
+                    var errors = new List<string>();
 
-        //    if (fileExtension == ".xls")
-        //    {
-        //        // Convert .xls to .xlsx
-        //        convertedStream = ConvertXlsToXlsx(httpPostedFileBase);
-        //        if (convertedStream == null)
-        //        {
-        //            errorMessages.Add("Failed to convert .xls file to .xlsx.");
-        //            return (false, errorMessages);
-        //        }
-        //    }
+                    string pfcode = currentSheet.Cells[rowIterator, 4]?.Value?.ToString().Trim();
+                    if (strpfcode.ToLower() != pfcode.ToLower())
+                    {
+                        errors.Add("Franchisee Code is Incorrect as your Login Franchisee Code");
+                    }
 
-        //    try
-        //    {
-        //        using (var package = new ExcelPackage(convertedStream ?? httpPostedFileBase.InputStream))
-        //        {
-        //            var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
-        //            if (currentSheet == null)
-        //            {
-        //                errorMessages.Add("The uploaded file does not contain a valid worksheet.");
-        //                return (false, errorMessages);
-        //            }
 
-        //            // Process the Excel file here...
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        errorMessages.Add("Error processing Excel file: " + ex.Message);
-        //        return (false, errorMessages);
-        //    }
+                    if (errors.Any())
+                        errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
+                }
+            }
 
-        //    return (errorMessages.Count == 0, errorMessages);
-        //}
+            return (errorMessages.Count == 0, errorMessages);
+        }
 
         [HttpGet]
         public ActionResult AddCodTopayimporFromExcel()

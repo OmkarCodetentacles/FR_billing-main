@@ -1064,7 +1064,7 @@ namespace DtDc_Billing.CustomModel
 
 
 
-        public string ImportFRPLUSExpcel(HttpPostedFileBase httpPostedFileBase, string PfCode)
+        public static string ImportFRPLUSExpcel(HttpPostedFileBase httpPostedFileBase, string PfCode)
         {
             try
             {
