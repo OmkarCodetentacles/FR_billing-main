@@ -22,10 +22,10 @@ namespace DtDc_Billing.Entity_FR
             this.Holidays1 = new HashSet<Holiday1>();
             this.Holidays2 = new HashSet<Holiday1>();
             this.Holidays3 = new HashSet<Holiday1>();
+            this.Payments = new HashSet<Payment>();
             this.Receipt_details = new HashSet<Receipt_details>();
             this.Savings = new HashSet<Saving>();
             this.wallet_History = new HashSet<wallet_History>();
-            this.Payments = new HashSet<Payment>();
         }
     
         public long User_Id { get; set; }
@@ -49,12 +49,12 @@ namespace DtDc_Billing.Entity_FR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Holiday1> Holidays3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receipt_details> Receipt_details { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Saving> Savings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<wallet_History> wallet_History { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

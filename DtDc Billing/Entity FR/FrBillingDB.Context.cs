@@ -50,6 +50,8 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<express_cargo> express_cargo { get; set; }
         public virtual DbSet<FirmDetail> FirmDetails { get; set; }
         public virtual DbSet<Franchisee> Franchisees { get; set; }
+        public virtual DbSet<GECrate> GECrates { get; set; }
+        public virtual DbSet<GECSector> GECSectors { get; set; }
         public virtual DbSet<GSTInvoice> GSTInvoices { get; set; }
         public virtual DbSet<GSTInvoiceConsignment> GSTInvoiceConsignments { get; set; }
         public virtual DbSet<Holiday> Holidays { get; set; }
@@ -59,10 +61,13 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<LoginDev> LoginDevs { get; set; }
         public virtual DbSet<NEFT> NEFTs { get; set; }
         public virtual DbSet<NewNotification> NewNotifications { get; set; }
+        public virtual DbSet<NewPaymentdetail> NewPaymentdetails { get; set; }
         public virtual DbSet<Nondox> Nondoxes { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Other_Service> Other_Service { get; set; }
         public virtual DbSet<Package> Packages { get; set; }
+        public virtual DbSet<PartyPaymentDetail> PartyPaymentDetails { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<paymentLog> paymentLogs { get; set; }
         public virtual DbSet<popupimage> popupimages { get; set; }
@@ -81,17 +86,12 @@ namespace DtDc_Billing.Entity_FR
         public virtual DbSet<singleinvoiceconsignment> singleinvoiceconsignments { get; set; }
         public virtual DbSet<Stationary> Stationaries { get; set; }
         public virtual DbSet<SupportTicket> SupportTickets { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<UserModuleList> UserModuleLists { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<wallet_History> wallet_History { get; set; }
         public virtual DbSet<WalletPoint> WalletPoints { get; set; }
         public virtual DbSet<InvoiceView> InvoiceViews { get; set; }
-        public virtual DbSet<GECrate> GECrates { get; set; }
-        public virtual DbSet<GECSector> GECSectors { get; set; }
-        public virtual DbSet<NewPaymentdetail> NewPaymentdetails { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
-        public virtual DbSet<PartyPaymentDetail> PartyPaymentDetails { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<TransactionView> TransactionViews { get; set; }
     
         public virtual int CreateTicketSave(string subject, string url, string details, string screenshotUrl, Nullable<int> priority, string raiseBy, string pfcode, string firmName, Nullable<System.DateTime> dateTime, string status)
@@ -137,6 +137,19 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("Status", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateTicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmNameParameter, dateTimeParameter, statusParameter);
+        }
+    
+        public virtual ObjectResult<dashboardData_Result> dashboardData(Nullable<System.DateTime> currentDate, string pfcode)
+        {
+            var currentDateParameter = currentDate.HasValue ?
+                new ObjectParameter("currentDate", currentDate) :
+                new ObjectParameter("currentDate", typeof(System.DateTime));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("Pfcode", pfcode) :
+                new ObjectParameter("Pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dashboardData_Result>("dashboardData", currentDateParameter, pfcodeParameter);
         }
     
         public virtual int DatabaseBackup()
@@ -190,6 +203,27 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FranchiseeSave", pF_CodeParameter, franchisee_NameParameter, sendermailParameter, datetime_FrParameter, ownerNameParameter, passwordParameter, contactNoParameter, f_AddressParameter);
         }
     
+        public virtual ObjectResult<getCheckBookingList_Result> getCheckBookingList(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var customeridParameter = customerid != null ?
+                new ObjectParameter("Customerid", customerid) :
+                new ObjectParameter("Customerid", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCheckBookingList_Result>("getCheckBookingList", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+        }
+    
         public virtual ObjectResult<getCheckBookingListAll_Result> getCheckBookingListAll(string pfcode)
         {
             var pfcodeParameter = pfcode != null ?
@@ -197,6 +231,23 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCheckBookingListAll_Result>("getCheckBookingListAll", pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<getCheckBookingListWithoutCompany_Result> getCheckBookingListWithoutCompany(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string pfcode)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCheckBookingListWithoutCompany_Result>("getCheckBookingListWithoutCompany", fromDateParameter, toDateParameter, pfcodeParameter);
         }
     
         public virtual ObjectResult<getCreditorsInvoice_Result> getCreditorsInvoice(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
@@ -256,6 +307,15 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("pfcode", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCreditorsInvoiceWithTDSAmount_Result>("getCreditorsInvoiceWithTDSAmount", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
+        }
+    
+        public virtual ObjectResult<GetCustomerSalesComparison_Result> GetCustomerSalesComparison(string pFCode)
+        {
+            var pFCodeParameter = pFCode != null ?
+                new ObjectParameter("PFCode", pFCode) :
+                new ObjectParameter("PFCode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerSalesComparison_Result>("GetCustomerSalesComparison", pFCodeParameter);
         }
     
         public virtual ObjectResult<getInvoice_Result> getInvoice(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
@@ -514,6 +574,11 @@ namespace DtDc_Billing.Entity_FR
         public virtual ObjectResult<getUserModuleList_Result> getUserModuleList()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getUserModuleList_Result>("getUserModuleList");
+        }
+    
+        public virtual ObjectResult<MonthlyDataAnalysis_Result> MonthlyDataAnalysis()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result>("MonthlyDataAnalysis");
         }
     
         public virtual int PaymentDetailsSave(string paymentType, Nullable<double> amount, Nullable<double> tdsAmount, Nullable<double> totalAmount, string invoiceNo, string chequeNo, string transactionId, Nullable<System.DateTime> paymentDate, Nullable<long> firmId, string pfCode, string companyName, Nullable<double> paid)
@@ -788,6 +853,19 @@ namespace DtDc_Billing.Entity_FR
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_getCheckBookingList_Result>("sp_getCheckBookingList", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter, yearStartParameter, currentYearParameter);
         }
     
+        public virtual ObjectResult<Sp_GetSingleConsignment_Result> Sp_GetSingleConsignment(string con_no, string pfcode)
+        {
+            var con_noParameter = con_no != null ?
+                new ObjectParameter("Con_no", con_no) :
+                new ObjectParameter("Con_no", typeof(string));
+    
+            var pfcodeParameter = pfcode != null ?
+                new ObjectParameter("pfcode", pfcode) :
+                new ObjectParameter("pfcode", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_GetSingleConsignment_Result>("Sp_GetSingleConsignment", con_noParameter, pfcodeParameter);
+        }
+    
         public virtual ObjectResult<sp_getTransation_Result> sp_getTransation(Nullable<int> yearStart, Nullable<int> currentYear, string pfcode)
         {
             var yearStartParameter = yearStart.HasValue ?
@@ -852,84 +930,6 @@ namespace DtDc_Billing.Entity_FR
                 new ObjectParameter("FirmName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("TicketSave", subjectParameter, urlParameter, detailsParameter, screenshotUrlParameter, dateTimeParameter, statusParameter, priorityParameter, raiseByParameter, pfcodeParameter, firmIdParameter, firmNameParameter);
-        }
-    
-        public virtual ObjectResult<MonthlyDataAnalysis_Result1> MonthlyDataAnalysis()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MonthlyDataAnalysis_Result1>("MonthlyDataAnalysis");
-        }
-    
-        public virtual ObjectResult<GetCustomerSalesComparison_Result> GetCustomerSalesComparison(string pFCode)
-        {
-            var pFCodeParameter = pFCode != null ?
-                new ObjectParameter("PFCode", pFCode) :
-                new ObjectParameter("PFCode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetCustomerSalesComparison_Result>("GetCustomerSalesComparison", pFCodeParameter);
-        }
-    
-        public virtual ObjectResult<dashboardData_Result> dashboardData(Nullable<System.DateTime> currentDate, string pfcode)
-        {
-            var currentDateParameter = currentDate.HasValue ?
-                new ObjectParameter("currentDate", currentDate) :
-                new ObjectParameter("currentDate", typeof(System.DateTime));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("Pfcode", pfcode) :
-                new ObjectParameter("Pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dashboardData_Result>("dashboardData", currentDateParameter, pfcodeParameter);
-        }
-    
-        public virtual ObjectResult<Sp_GetSingleConsignment_Result> Sp_GetSingleConsignment(string con_no, string pfcode)
-        {
-            var con_noParameter = con_no != null ?
-                new ObjectParameter("Con_no", con_no) :
-                new ObjectParameter("Con_no", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_GetSingleConsignment_Result>("Sp_GetSingleConsignment", con_noParameter, pfcodeParameter);
-        }
-    
-        public virtual ObjectResult<getCheckBookingList_Result> getCheckBookingList(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string customerid, string pfcode)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("fromDate", fromDate) :
-                new ObjectParameter("fromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("toDate", toDate) :
-                new ObjectParameter("toDate", typeof(System.DateTime));
-    
-            var customeridParameter = customerid != null ?
-                new ObjectParameter("Customerid", customerid) :
-                new ObjectParameter("Customerid", typeof(string));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCheckBookingList_Result>("getCheckBookingList", fromDateParameter, toDateParameter, customeridParameter, pfcodeParameter);
-        }
-    
-        public virtual ObjectResult<getCheckBookingListWithoutCompany_Result> getCheckBookingListWithoutCompany(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate, string pfcode)
-        {
-            var fromDateParameter = fromDate.HasValue ?
-                new ObjectParameter("fromDate", fromDate) :
-                new ObjectParameter("fromDate", typeof(System.DateTime));
-    
-            var toDateParameter = toDate.HasValue ?
-                new ObjectParameter("toDate", toDate) :
-                new ObjectParameter("toDate", typeof(System.DateTime));
-    
-            var pfcodeParameter = pfcode != null ?
-                new ObjectParameter("pfcode", pfcode) :
-                new ObjectParameter("pfcode", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getCheckBookingListWithoutCompany_Result>("getCheckBookingListWithoutCompany", fromDateParameter, toDateParameter, pfcodeParameter);
         }
     }
 }

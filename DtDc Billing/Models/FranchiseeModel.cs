@@ -52,6 +52,7 @@ namespace DtDc_Billing.Models
         public bool IsGECSector { get; set; }
 
         public Nullable<long> Template { get; set; }
+        public string ARN { get; set; }
 
 
     }

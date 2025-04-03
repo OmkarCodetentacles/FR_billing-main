@@ -2664,6 +2664,7 @@ namespace DtDc_Billing.Controllers
                 Fr.InvoiceStart = franchisee.InvoiceStart;
                 Fr.IsGECSector=franchisee.IsGECSector;
                     Fr.Template = franchisee.Template;
+                    Fr.ARN = franchisee.ARN;
                 //var getNewFilePath = "";
                 //if (franchisee.StampFilePath == null)
                 //{
@@ -3005,6 +3006,7 @@ namespace DtDc_Billing.Controllers
             Fr.StampFilePath = data.StampFilePath;
             Fr.IsGECSector = data.IsGECSector??false;
             Fr.Template = data.Template??1;
+            Fr.ARN = data.ARN;
             if (Fr == null)
             {
                 return HttpNotFound();

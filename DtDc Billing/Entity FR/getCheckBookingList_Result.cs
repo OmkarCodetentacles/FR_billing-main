@@ -31,5 +31,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> loadingcharge { get; set; }
         public Nullable<bool> isDelete { get; set; }
         public string Reference { get; set; }
+        public string Receiver { get; set; }
     }
 }

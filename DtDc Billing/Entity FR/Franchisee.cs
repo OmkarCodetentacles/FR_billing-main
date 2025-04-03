@@ -21,13 +21,13 @@ namespace DtDc_Billing.Entity_FR
             this.Employees = new HashSet<Employee>();
             this.Expenses = new HashSet<Expense>();
             this.Receipt_details = new HashSet<Receipt_details>();
+            this.Payments = new HashSet<Payment>();
             this.Savings = new HashSet<Saving>();
             this.Sectors = new HashSet<Sector>();
+            this.Transactions = new HashSet<Transaction>();
             this.Sendmessages = new HashSet<Sendmessage>();
             this.wallet_History = new HashSet<wallet_History>();
             this.Users = new HashSet<User>();
-            this.Payments = new HashSet<Payment>();
-            this.Transactions = new HashSet<Transaction>();
         }
     
         public int F_Id { get; set; }
@@ -58,6 +58,7 @@ namespace DtDc_Billing.Entity_FR
         public string QrCodeImage { get; set; }
         public Nullable<bool> IsGECSector { get; set; }
         public Nullable<long> Template { get; set; }
+        public string ARN { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }
@@ -72,18 +73,18 @@ namespace DtDc_Billing.Entity_FR
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receipt_details> Receipt_details { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Payment> Payments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Saving> Savings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sector> Sectors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sendmessage> Sendmessages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<wallet_History> wallet_History { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Payment> Payments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

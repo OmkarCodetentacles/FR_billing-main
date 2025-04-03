@@ -325,8 +325,6 @@
     <EntitySetMapping Name="Franchisees">
       <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Franchisee">
         <MappingFragment StoreEntitySet="Franchisee">
-          <ScalarProperty Name="Template" ColumnName="Template" />
-          <ScalarProperty Name="IsGECSector" ColumnName="IsGECSector" />
           <ScalarProperty Name="F_Id" ColumnName="F_Id" />
           <ScalarProperty Name="PF_Code" ColumnName="PF_Code" />
           <ScalarProperty Name="F_Address" ColumnName="F_Address" />
@@ -353,6 +351,41 @@
           <ScalarProperty Name="InvoiceYear" ColumnName="InvoiceYear" />
           <ScalarProperty Name="InvoiceStartNumber" ColumnName="InvoiceStartNumber" />
           <ScalarProperty Name="QrCodeImage" ColumnName="QrCodeImage" />
+          <ScalarProperty Name="IsGECSector" ColumnName="IsGECSector" />
+          <ScalarProperty Name="Template" ColumnName="Template" />
+          <ScalarProperty Name="ARN" ColumnName="ARN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GECrates">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECrate">
+        <MappingFragment StoreEntitySet="GECrate">
+          <ScalarProperty Name="GECrateId" ColumnName="GECrateId" />
+          <ScalarProperty Name="Slab1" ColumnName="Slab1" />
+          <ScalarProperty Name="Slab2" ColumnName="Slab2" />
+          <ScalarProperty Name="Slab3" ColumnName="Slab3" />
+          <ScalarProperty Name="Slab4" ColumnName="Slab4" />
+          <ScalarProperty Name="Uptosl1" ColumnName="Uptosl1" />
+          <ScalarProperty Name="Uptosl2" ColumnName="Uptosl2" />
+          <ScalarProperty Name="Uptosl3" ColumnName="Uptosl3" />
+          <ScalarProperty Name="Uptosl4" ColumnName="Uptosl4" />
+          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
+          <ScalarProperty Name="GECNoOfSlab" ColumnName="GECNoOfSlab" />
+          <ScalarProperty Name="Sector_Id" ColumnName="Sector_Id" />
+          <ScalarProperty Name="SectorName" ColumnName="SectorName" />
+          <ScalarProperty Name="PFcode" ColumnName="PFcode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GECSectors">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECSector">
+        <MappingFragment StoreEntitySet="GECSector">
+          <ScalarProperty Name="GECSectorId" ColumnName="GECSectorId" />
+          <ScalarProperty Name="SectorName" ColumnName="SectorName" />
+          <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="City" ColumnName="City" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -432,7 +465,6 @@
     <EntitySetMapping Name="Invoices">
       <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Invoice">
         <MappingFragment StoreEntitySet="Invoice">
-          <ScalarProperty Name="Balance" ColumnName="Balance" />
           <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
           <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
           <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
@@ -469,6 +501,7 @@
           <ScalarProperty Name="Firm_Id" ColumnName="Firm_Id" />
           <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
           <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -522,6 +555,27 @@
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="FromDate" ColumnName="FromDate" />
           <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NewPaymentdetails">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.NewPaymentdetail">
+        <MappingFragment StoreEntitySet="NewPaymentdetails">
+          <ScalarProperty Name="Payment_Id" ColumnName="Payment_Id" />
+          <ScalarProperty Name="Payment_Mode" ColumnName="Payment_Mode" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+          <ScalarProperty Name="Tds_Amount" ColumnName="Tds_Amount" />
+          <ScalarProperty Name="Total_Amount" ColumnName="Total_Amount" />
+          <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
+          <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
+          <ScalarProperty Name="Bank_Name" ColumnName="Bank_Name" />
+          <ScalarProperty Name="Branch_Name" ColumnName="Branch_Name" />
+          <ScalarProperty Name="Transaction_Id" ColumnName="Transaction_Id" />
+          <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
+          <ScalarProperty Name="CreditNoteNo" ColumnName="CreditNoteNo" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Created_Date" ColumnName="Created_Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -583,6 +637,37 @@
           <ScalarProperty Name="Despription" ColumnName="Despription" />
           <ScalarProperty Name="Subcriptionforindays" ColumnName="Subcriptionforindays" />
           <ScalarProperty Name="isPaid" ColumnName="isPaid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PartyPaymentDetails">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.PartyPaymentDetail">
+        <MappingFragment StoreEntitySet="PartyPaymentDetails">
+          <ScalarProperty Name="PartyPaymentDetailId" ColumnName="PartyPaymentDetailId" />
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
+          <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="InvoicePaid" ColumnName="InvoicePaid" />
+          <ScalarProperty Name="InvoicePaidCount" ColumnName="InvoicePaidCount" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="ModeOfPayment" ColumnName="ModeOfPayment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payments">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Payment">
+        <MappingFragment StoreEntitySet="Payment">
+          <ScalarProperty Name="Pay_ID" ColumnName="Pay_ID" />
+          <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+          <ScalarProperty Name="Description_" ColumnName="Description_" />
+          <ScalarProperty Name="Datetime_Pay" ColumnName="Datetime_Pay" />
+          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+          <ScalarProperty Name="ModeOfPayment" ColumnName="ModeOfPayment" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -834,7 +919,6 @@
     <EntitySetMapping Name="Sectors">
       <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Sector">
         <MappingFragment StoreEntitySet="Sectors">
-          <ScalarProperty Name="BillGecSec" ColumnName="BillGecSec" />
           <ScalarProperty Name="Sector_Id" ColumnName="Sector_Id" />
           <ScalarProperty Name="Sector_Name" ColumnName="Sector_Name" />
           <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
@@ -850,6 +934,7 @@
           <ScalarProperty Name="BillPriority" ColumnName="BillPriority" />
           <ScalarProperty Name="BillEcomPrio" ColumnName="BillEcomPrio" />
           <ScalarProperty Name="BillEcomGE" ColumnName="BillEcomGE" />
+          <ScalarProperty Name="BillGecSec" ColumnName="BillGecSec" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -918,6 +1003,60 @@
           <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
           <ScalarProperty Name="FirmId" ColumnName="FirmId" />
           <ScalarProperty Name="FirmName" ColumnName="FirmName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Transactions">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Transaction">
+        <MappingFragment StoreEntitySet="Transactions">
+          <ScalarProperty Name="T_id" ColumnName="T_id" />
+          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
+          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
+          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="topay" ColumnName="topay" />
+          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
+          <ScalarProperty Name="consignee" ColumnName="consignee" />
+          <ScalarProperty Name="consigner" ColumnName="consigner" />
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
+          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
+          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
+          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
+          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
+          <ScalarProperty Name="status_t" ColumnName="status_t" />
+          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
+          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
+          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
+          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
+          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
+          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
+          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
+          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
+          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
+          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
+          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
+          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
+          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
+          <ScalarProperty Name="Sender" ColumnName="Sender" />
+          <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
+          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1012,7 +1151,83 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TransactionViews">
+      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.TransactionView">
+        <MappingFragment StoreEntitySet="TransactionView">
+          <ScalarProperty Name="T_id" ColumnName="T_id" />
+          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
+          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
+          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
+          <ScalarProperty Name="topay" ColumnName="topay" />
+          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
+          <ScalarProperty Name="consignee" ColumnName="consignee" />
+          <ScalarProperty Name="consigner" ColumnName="consigner" />
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
+          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
+          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
+          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
+          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
+          <ScalarProperty Name="status_t" ColumnName="status_t" />
+          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
+          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
+          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
+          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
+          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
+          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
+          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
+          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
+          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
+          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
+          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
+          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
+          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
+          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
+          <ScalarProperty Name="Sender" ColumnName="Sender" />
+          <ScalarProperty Name="receiver" ColumnName="receiver" />
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="tempdelivereddate" ColumnName="tempdelivereddate" />
+          <ScalarProperty Name="receivedby" ColumnName="receivedby" />
+          <ScalarProperty Name="remarks" ColumnName="remarks" />
+          <ScalarProperty Name="tempdeliveredtime" ColumnName="tempdeliveredtime" />
+          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="CreateTicketSave" FunctionName="db_a92afa_frbillingModel.Store.CreateTicketSave" />
+    <FunctionImportMapping FunctionImportName="dashboardData" FunctionName="db_a92afa_frbillingModel.Store.dashboardData">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.dashboardData_Result">
+          <ScalarProperty Name="openConCount" ColumnName="openConCount" />
+          <ScalarProperty Name="unSignPincode" ColumnName="unSignPincode" />
+          <ScalarProperty Name="sumOfBillingCurrentMonth" ColumnName="sumOfBillingCurrentMonth" />
+          <ScalarProperty Name="SumOfBillingCurrentDay" ColumnName="SumOfBillingCurrentDay" />
+          <ScalarProperty Name="CountOfBillingCurrentDay" ColumnName="CountOfBillingCurrentDay" />
+          <ScalarProperty Name="countofbillingcurrentmonth" ColumnName="countofbillingcurrentmonth" />
+          <ScalarProperty Name="sumOfCashcounterCurrentMonth" ColumnName="sumOfCashcounterCurrentMonth" />
+          <ScalarProperty Name="SumOfCashcounterCurrentDay" ColumnName="SumOfCashcounterCurrentDay" />
+          <ScalarProperty Name="CountOfCashcounterCurrentDay" ColumnName="CountOfCashcounterCurrentDay" />
+          <ScalarProperty Name="countofCashcountercurrentmonth" ColumnName="countofCashcountercurrentmonth" />
+          <ScalarProperty Name="todayExp" ColumnName="todayExp" />
+          <ScalarProperty Name="monthexp" ColumnName="monthexp" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="DatabaseBackup" FunctionName="db_a92afa_frbillingModel.Store.DatabaseBackup" />
     <FunctionImportMapping FunctionImportName="destinationCount" FunctionName="db_a92afa_frbillingModel.Store.destinationCount">
       <ResultMapping>
@@ -1023,6 +1238,31 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="FranchiseeSave" FunctionName="db_a92afa_frbillingModel.Store.FranchiseeSave" />
+    <FunctionImportMapping FunctionImportName="getCheckBookingList" FunctionName="db_a92afa_frbillingModel.Store.getCheckBookingList">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCheckBookingList_Result">
+          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
+          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
+          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
+          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+          <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="getCheckBookingListAll" FunctionName="db_a92afa_frbillingModel.Store.getCheckBookingListAll">
       <ResultMapping>
         <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCheckBookingListAll_Result">
@@ -1042,6 +1282,30 @@
           <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
           <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
           <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getCheckBookingListWithoutCompany" FunctionName="db_a92afa_frbillingModel.Store.getCheckBookingListWithoutCompany">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result">
+          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
+          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
+          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
+          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -1103,6 +1367,22 @@
           <ScalarProperty Name="discountamount" ColumnName="discountamount" />
           <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
           <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetCustomerSalesComparison" FunctionName="db_a92afa_frbillingModel.Store.GetCustomerSalesComparison">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.GetCustomerSalesComparison_Result">
+          <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+          <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+          <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
+          <ScalarProperty Name="LastMonth" ColumnName="LastMonth" />
+          <ScalarProperty Name="PrevMonth" ColumnName="PrevMonth" />
+          <ScalarProperty Name="LastMonthSales" ColumnName="LastMonthSales" />
+          <ScalarProperty Name="PrevMonthSales" ColumnName="PrevMonthSales" />
+          <ScalarProperty Name="SalesDifference" ColumnName="SalesDifference" />
+          <ScalarProperty Name="PercentageChange" ColumnName="PercentageChange" />
+          <ScalarProperty Name="ChangeIndicator" ColumnName="ChangeIndicator" />
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
@@ -1461,6 +1741,22 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="MonthlyDataAnalysis" FunctionName="db_a92afa_frbillingModel.Store.MonthlyDataAnalysis">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.MonthlyDataAnalysis_Result">
+          <ScalarProperty Name="PFCode" ColumnName="PFCode" />
+          <ScalarProperty Name="InvoiceCount" ColumnName="InvoiceCount" />
+          <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
+          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+          <ScalarProperty Name="UnpaidAmount" ColumnName="UnpaidAmount" />
+          <ScalarProperty Name="LastMonth" ColumnName="LastMonth" />
+          <ScalarProperty Name="CashAmount" ColumnName="CashAmount" />
+          <ScalarProperty Name="FranchiseName" ColumnName="FranchiseName" />
+          <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="PaymentDetailsSave" FunctionName="db_a92afa_frbillingModel.Store.PaymentDetailsSave" />
     <FunctionImportMapping FunctionImportName="paymentLogSave" FunctionName="db_a92afa_frbillingModel.Store.paymentLogSave" />
     <FunctionImportMapping FunctionImportName="ReceipentsPhoneFromReceiptdetails" FunctionName="db_a92afa_frbillingModel.Store.ReceipentsPhoneFromReceiptdetails">
@@ -1539,6 +1835,60 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Sp_GetSingleConsignment" FunctionName="db_a92afa_frbillingModel.Store.Sp_GetSingleConsignment">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.Sp_GetSingleConsignment_Result">
+          <ScalarProperty Name="T_id" ColumnName="T_id" />
+          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
+          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
+          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
+          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
+          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
+          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
+          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
+          <ScalarProperty Name="remark" ColumnName="remark" />
+          <ScalarProperty Name="topay" ColumnName="topay" />
+          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
+          <ScalarProperty Name="consignee" ColumnName="consignee" />
+          <ScalarProperty Name="consigner" ColumnName="consigner" />
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
+          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
+          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
+          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
+          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
+          <ScalarProperty Name="status_t" ColumnName="status_t" />
+          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
+          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
+          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
+          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
+          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
+          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
+          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
+          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
+          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
+          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
+          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
+          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
+          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
+          <ScalarProperty Name="Sender" ColumnName="Sender" />
+          <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
+          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
+          <ScalarProperty Name="Reference" ColumnName="Reference" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_getTransation" FunctionName="db_a92afa_frbillingModel.Store.sp_getTransation">
       <ResultMapping>
         <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.sp_getTransation_Result">
@@ -1595,353 +1945,5 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
-    <FunctionImportMapping FunctionImportName="MonthlyDataAnalysis" FunctionName="db_a92afa_frbillingModel.Store.MonthlyDataAnalysis">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.MonthlyDataAnalysis_Result1">
-          <ScalarProperty Name="PFCode" ColumnName="PFCode" />
-          <ScalarProperty Name="InvoiceCount" ColumnName="InvoiceCount" />
-          <ScalarProperty Name="TotalInvoiceAmount" ColumnName="TotalInvoiceAmount" />
-          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
-          <ScalarProperty Name="UnpaidAmount" ColumnName="UnpaidAmount" />
-          <ScalarProperty Name="LastMonth" ColumnName="LastMonth" />
-          <ScalarProperty Name="CashAmount" ColumnName="CashAmount" />
-          <ScalarProperty Name="FranchiseName" ColumnName="FranchiseName" />
-          <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <EntitySetMapping Name="GECrates">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECrate">
-        <MappingFragment StoreEntitySet="GECrate">
-          <ScalarProperty Name="GECNoOfSlab" ColumnName="GECNoOfSlab" />
-          <ScalarProperty Name="PFcode" ColumnName="PFcode" />
-          <ScalarProperty Name="SectorName" ColumnName="SectorName" />
-          <ScalarProperty Name="Sector_Id" ColumnName="Sector_Id" />
-          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
-          <ScalarProperty Name="Uptosl4" ColumnName="Uptosl4" />
-          <ScalarProperty Name="Uptosl3" ColumnName="Uptosl3" />
-          <ScalarProperty Name="Uptosl2" ColumnName="Uptosl2" />
-          <ScalarProperty Name="Uptosl1" ColumnName="Uptosl1" />
-          <ScalarProperty Name="Slab4" ColumnName="Slab4" />
-          <ScalarProperty Name="Slab3" ColumnName="Slab3" />
-          <ScalarProperty Name="Slab2" ColumnName="Slab2" />
-          <ScalarProperty Name="Slab1" ColumnName="Slab1" />
-          <ScalarProperty Name="GECrateId" ColumnName="GECrateId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="GECSectors">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GECSector">
-        <MappingFragment StoreEntitySet="GECSector">
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="Priority" ColumnName="Priority" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
-          <ScalarProperty Name="SectorName" ColumnName="SectorName" />
-          <ScalarProperty Name="GECSectorId" ColumnName="GECSectorId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="NewPaymentdetails">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.NewPaymentdetail">
-        <MappingFragment StoreEntitySet="NewPaymentdetails">
-          <ScalarProperty Name="Created_Date" ColumnName="Created_Date" />
-          <ScalarProperty Name="Balance" ColumnName="Balance" />
-          <ScalarProperty Name="CreditNoteNo" ColumnName="CreditNoteNo" />
-          <ScalarProperty Name="CheckNo" ColumnName="CheckNo" />
-          <ScalarProperty Name="Transaction_Id" ColumnName="Transaction_Id" />
-          <ScalarProperty Name="Branch_Name" ColumnName="Branch_Name" />
-          <ScalarProperty Name="Bank_Name" ColumnName="Bank_Name" />
-          <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
-          <ScalarProperty Name="Pfcode" ColumnName="Pfcode" />
-          <ScalarProperty Name="Total_Amount" ColumnName="Total_Amount" />
-          <ScalarProperty Name="Tds_Amount" ColumnName="Tds_Amount" />
-          <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="Payment_Mode" ColumnName="Payment_Mode" />
-          <ScalarProperty Name="Payment_Id" ColumnName="Payment_Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="GetCustomerSalesComparison" FunctionName="db_a92afa_frbillingModel.Store.GetCustomerSalesComparison">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.GetCustomerSalesComparison_Result">
-          <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
-          <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
-          <ScalarProperty Name="Pf_code" ColumnName="Pf_code" />
-          <ScalarProperty Name="LastMonth" ColumnName="LastMonth" />
-          <ScalarProperty Name="PrevMonth" ColumnName="PrevMonth" />
-          <ScalarProperty Name="LastMonthSales" ColumnName="LastMonthSales" />
-          <ScalarProperty Name="PrevMonthSales" ColumnName="PrevMonthSales" />
-          <ScalarProperty Name="SalesDifference" ColumnName="SalesDifference" />
-          <ScalarProperty Name="PercentageChange" ColumnName="PercentageChange" />
-          <ScalarProperty Name="ChangeIndicator" ColumnName="ChangeIndicator" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <EntitySetMapping Name="Payments">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Payment">
-        <MappingFragment StoreEntitySet="Payment">
-          <ScalarProperty Name="ModeOfPayment" ColumnName="ModeOfPayment" />
-          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-          <ScalarProperty Name="Datetime_Pay" ColumnName="Datetime_Pay" />
-          <ScalarProperty Name="Description_" ColumnName="Description_" />
-          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-          <ScalarProperty Name="amount" ColumnName="amount" />
-          <ScalarProperty Name="Consignment_No" ColumnName="Consignment_No" />
-          <ScalarProperty Name="Pay_ID" ColumnName="Pay_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PartyPaymentDetails">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.PartyPaymentDetail">
-        <MappingFragment StoreEntitySet="PartyPaymentDetails">
-          <ScalarProperty Name="ModeOfPayment" ColumnName="ModeOfPayment" />
-          <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
-          <ScalarProperty Name="InvoicePaidCount" ColumnName="InvoicePaidCount" />
-          <ScalarProperty Name="InvoicePaid" ColumnName="InvoicePaid" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-          <ScalarProperty Name="BalanceAmount" ColumnName="BalanceAmount" />
-          <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
-          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
-          <ScalarProperty Name="PartyPaymentDetailId" ColumnName="PartyPaymentDetailId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="dashboardData" FunctionName="db_a92afa_frbillingModel.Store.dashboardData">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.dashboardData_Result">
-          <ScalarProperty Name="openConCount" ColumnName="openConCount" />
-          <ScalarProperty Name="unSignPincode" ColumnName="unSignPincode" />
-          <ScalarProperty Name="sumOfBillingCurrentMonth" ColumnName="sumOfBillingCurrentMonth" />
-          <ScalarProperty Name="SumOfBillingCurrentDay" ColumnName="SumOfBillingCurrentDay" />
-          <ScalarProperty Name="CountOfBillingCurrentDay" ColumnName="CountOfBillingCurrentDay" />
-          <ScalarProperty Name="countofbillingcurrentmonth" ColumnName="countofbillingcurrentmonth" />
-          <ScalarProperty Name="sumOfCashcounterCurrentMonth" ColumnName="sumOfCashcounterCurrentMonth" />
-          <ScalarProperty Name="SumOfCashcounterCurrentDay" ColumnName="SumOfCashcounterCurrentDay" />
-          <ScalarProperty Name="CountOfCashcounterCurrentDay" ColumnName="CountOfCashcounterCurrentDay" />
-          <ScalarProperty Name="countofCashcountercurrentmonth" ColumnName="countofCashcountercurrentmonth" />
-          <ScalarProperty Name="todayExp" ColumnName="todayExp" />
-          <ScalarProperty Name="monthexp" ColumnName="monthexp" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <EntitySetMapping Name="Transactions">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Transaction">
-        <MappingFragment StoreEntitySet="Transactions">
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
-          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
-          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
-          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
-          <ScalarProperty Name="Receiver" ColumnName="Receiver" />
-          <ScalarProperty Name="Sender" ColumnName="Sender" />
-          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
-          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
-          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
-          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
-          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
-          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
-          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
-          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
-          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
-          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
-          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
-          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
-          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
-          <ScalarProperty Name="status_t" ColumnName="status_t" />
-          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
-          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
-          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
-          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
-          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
-          <ScalarProperty Name="cod" ColumnName="cod" />
-          <ScalarProperty Name="consigner" ColumnName="consigner" />
-          <ScalarProperty Name="consignee" ColumnName="consignee" />
-          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
-          <ScalarProperty Name="topay" ColumnName="topay" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
-          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
-          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
-          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
-          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
-          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
-          <ScalarProperty Name="T_id" ColumnName="T_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TransactionViews">
-      <EntityTypeMapping TypeName="db_a92afa_frbillingModel.TransactionView">
-        <MappingFragment StoreEntitySet="TransactionView">
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
-          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
-          <ScalarProperty Name="tempdeliveredtime" ColumnName="tempdeliveredtime" />
-          <ScalarProperty Name="remarks" ColumnName="remarks" />
-          <ScalarProperty Name="receivedby" ColumnName="receivedby" />
-          <ScalarProperty Name="tempdelivereddate" ColumnName="tempdelivereddate" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-          <ScalarProperty Name="receiver" ColumnName="receiver" />
-          <ScalarProperty Name="Sender" ColumnName="Sender" />
-          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
-          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
-          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
-          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
-          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
-          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
-          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
-          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
-          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
-          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
-          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
-          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
-          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
-          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
-          <ScalarProperty Name="status_t" ColumnName="status_t" />
-          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
-          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
-          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
-          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
-          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
-          <ScalarProperty Name="cod" ColumnName="cod" />
-          <ScalarProperty Name="consigner" ColumnName="consigner" />
-          <ScalarProperty Name="consignee" ColumnName="consignee" />
-          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
-          <ScalarProperty Name="topay" ColumnName="topay" />
-          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
-          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
-          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
-          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
-          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
-          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
-          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
-          <ScalarProperty Name="T_id" ColumnName="T_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="Sp_GetSingleConsignment" FunctionName="db_a92afa_frbillingModel.Store.Sp_GetSingleConsignment">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.Sp_GetSingleConsignment_Result">
-          <ScalarProperty Name="T_id" ColumnName="T_id" />
-          <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
-          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Weight_t" ColumnName="Weight_t" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="Company_id" ColumnName="Company_id" />
-          <ScalarProperty Name="Pf_Code" ColumnName="Pf_Code" />
-          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
-          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
-          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
-          <ScalarProperty Name="Claimamount" ColumnName="Claimamount" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="calinsuranceamount" ColumnName="calinsuranceamount" />
-          <ScalarProperty Name="remark" ColumnName="remark" />
-          <ScalarProperty Name="topay" ColumnName="topay" />
-          <ScalarProperty Name="codAmount" ColumnName="codAmount" />
-          <ScalarProperty Name="consignee" ColumnName="consignee" />
-          <ScalarProperty Name="consigner" ColumnName="consigner" />
-          <ScalarProperty Name="cod" ColumnName="cod" />
-          <ScalarProperty Name="TopayAmount" ColumnName="TopayAmount" />
-          <ScalarProperty Name="Topaycharges" ColumnName="Topaycharges" />
-          <ScalarProperty Name="codcharges" ColumnName="codcharges" />
-          <ScalarProperty Name="codtotalamount" ColumnName="codtotalamount" />
-          <ScalarProperty Name="dtdcamount" ColumnName="dtdcamount" />
-          <ScalarProperty Name="status_t" ColumnName="status_t" />
-          <ScalarProperty Name="rateperkg" ColumnName="rateperkg" />
-          <ScalarProperty Name="docketcharege" ColumnName="docketcharege" />
-          <ScalarProperty Name="fovcharge" ColumnName="fovcharge" />
-          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
-          <ScalarProperty Name="odocharge" ColumnName="odocharge" />
-          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
-          <ScalarProperty Name="Invoice_No" ColumnName="Invoice_No" />
-          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
-          <ScalarProperty Name="tembookingdate" ColumnName="tembookingdate" />
-          <ScalarProperty Name="Actual_weight" ColumnName="Actual_weight" />
-          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
-          <ScalarProperty Name="AdminEmp" ColumnName="AdminEmp" />
-          <ScalarProperty Name="diff_weight" ColumnName="diff_weight" />
-          <ScalarProperty Name="Sender" ColumnName="Sender" />
-          <ScalarProperty Name="Receiver" ColumnName="Receiver" />
-          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
-          <ScalarProperty Name="isRTO" ColumnName="isRTO" />
-          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-          <ScalarProperty Name="IsGSTConsignment" ColumnName="IsGSTConsignment" />
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="getCheckBookingList" FunctionName="db_a92afa_frbillingModel.Store.getCheckBookingList">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCheckBookingList_Result">
-          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
-          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
-          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
-          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
-          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
-          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
-          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="getCheckBookingListWithoutCompany" FunctionName="db_a92afa_frbillingModel.Store.getCheckBookingListWithoutCompany">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result">
-          <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-          <ScalarProperty Name="Consignment_no" ColumnName="Consignment_no" />
-          <ScalarProperty Name="chargable_weight" ColumnName="chargable_weight" />
-          <ScalarProperty Name="Quanntity" ColumnName="Quanntity" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-          <ScalarProperty Name="compaddress" ColumnName="compaddress" />
-          <ScalarProperty Name="Type_t" ColumnName="Type_t" />
-          <ScalarProperty Name="Mode" ColumnName="Mode" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="booking_date" ColumnName="booking_date" />
-          <ScalarProperty Name="Insurance" ColumnName="Insurance" />
-          <ScalarProperty Name="BillAmount" ColumnName="BillAmount" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Risksurcharge" ColumnName="Risksurcharge" />
-          <ScalarProperty Name="loadingcharge" ColumnName="loadingcharge" />
-          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
-          <ScalarProperty Name="Reference" ColumnName="Reference" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

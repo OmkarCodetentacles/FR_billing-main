@@ -22,5 +22,6 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<decimal> CashAmount { get; set; }
         public string FranchiseName { get; set; }
         public string OwnerName { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -899,7 +899,8 @@ Select(e => new
                 Percentage = x.Percentage,
                 Risksurcharge = x.Risksurcharge,
                 loadingcharge = x.loadingcharge,
-                Reference = x.Reference
+                Reference = x.Reference,
+                receiver=x.Receiver
             }).OrderByDescending(d => d.booking_date).ToList();
 
             if (Submit == "Export to Excel")

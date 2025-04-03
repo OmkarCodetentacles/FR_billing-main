@@ -24,9 +24,9 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<double> Uptosl3 { get; set; }
         public Nullable<double> Uptosl4 { get; set; }
         public string Company_id { get; set; }
+        public Nullable<int> GECNoOfSlab { get; set; }
         public Nullable<int> Sector_Id { get; set; }
         public string SectorName { get; set; }
         public string PFcode { get; set; }
-        public Nullable<int> GECNoOfSlab { get; set; }
     }
 }
