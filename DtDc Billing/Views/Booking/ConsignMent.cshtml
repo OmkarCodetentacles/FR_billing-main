@@ -37,17 +37,24 @@
         }
         @{
 
-            var succeessdata = TempData["Upload"] as string;
+            var Error = TempData["Error"] as string;
             var success = TempData["success"] as string;
         }
-        @if (!string.IsNullOrEmpty(succeessdata))
-        {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", succeessdata))
-        }
+
         @if (!string.IsNullOrEmpty(success))
         {
             @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", success))
         }
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+
+
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", Error))
+
+        }
+
+
         @using (Html.BeginForm("ImportFrPlusExcelFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "excelform" }))
         {
 

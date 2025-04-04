@@ -86,8 +86,8 @@
 
 
         @*<label>
-                Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
-            </label>*@
+            Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+        </label>*@
         <label>
             Cust Id<span style="color:red">*</span>:  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -107,10 +107,17 @@
 
         </label>
 
+        <label style="width:130px;">
+            Consignment Type @Html.DropDownList("consignmentType", new SelectListItem[] {
+new SelectListItem() {Text = "Domestic", Value="Domestic" ,Selected=true},
+new SelectListItem() {Text = "International", Value="International"},
+}, new { @class = "form-control" })
 
+
+        </label>
         @*<label>
-                Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
-            </label>*@
+            Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+        </label>*@
         <label>
             Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -174,8 +181,8 @@ new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select"
 
 
         @*<label>
-            char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
-                </label>*@
+        char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+            </label>*@
         <label>
             char Wt<span style="color:red">*</span>: @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
 
@@ -196,13 +203,13 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         <label>
             Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
-           
+
         </label>
 
         <label>
             Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
 
-        </label> 
+        </label>
         <label>
             Reference @Html.EditorFor(model => model.Reference, new { htmlAttributes = new { @class = "form-control" } })
         </label>
@@ -212,7 +219,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
         </label>
         <fieldset class="form-horizontal">
-         
+
             <div class="row">
                 <div id="insshow" class="col-sm-12 no-padding" style="display: grid;">
                     <label class="col-md-2 padding-left-0 radio-label" for="radios" style="padding-top: 0; margin: 30px 16px 0px"><b>Insuarance</b></label>
@@ -1122,7 +1129,19 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
 
             CodAddition();
         });
+        $("#consignmentType").change(function () {
 
+            var type = $("#consignmentType").val();
+
+            if (type == "International") {
+                $('#intpincode').show();
+                initializeAutocomplete();
+            }
+            else {
+                $('#intpincode').hide();
+                initializeAutocomplete();
+            }
+        });
 
         function CodAddition() {
 

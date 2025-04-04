@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="db_a92afa_frbillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="db_a92afa_frbillingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="addcodamount">
           <Key>
             <PropertyRef Name="am_id" />
@@ -1003,6 +1003,7 @@
           <Property Name="isDelete" Type="bit" />
           <Property Name="IsGSTConsignment" Type="bit" />
           <Property Name="Reference" Type="varchar" MaxLength="100" />
+          <Property Name="TransportMode" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="UserModuleList">
           <Key>
@@ -1052,12 +1053,6 @@
           <Property Name="Datetime_Wa" Type="datetime" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.invalidCon' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="invalidCon">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a92afa_frbilling.dbo.InvoiceView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="InvoiceView">
           <Key>
@@ -1098,12 +1093,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.InvoiceView' does not have
           <Property Name="Firm_Id" Type="bigint" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.openConCount' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="openConCount">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TransactionView">
@@ -1163,12 +1152,6 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="IsGSTConsignment" Type="bit" />
           <Property Name="Reference" Type="varchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="unSignPincode">
-          <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
-          <Property Name="Pf_Codecount" Type="int" />
-        </EntityType>-->
         <Association Name="Emp_Fk">
           <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
@@ -2734,8 +2717,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_a92afa_frbillingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3871,6 +3853,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <Property Name="Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Company" Relationship="Self.fk_Tansaction" FromRole="Transactions" ToRole="Company" />
           <NavigationProperty Name="Franchisee" Relationship="Self.fk_Tansaction1" FromRole="Transactions" ToRole="Franchisee" />
+          <Property Name="TransportMode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserModuleList">
           <Key>
@@ -5282,7 +5265,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           </FunctionImport>
           <FunctionImport Name="DatabaseBackup" />
           <FunctionImport Name="destinationCount" ReturnType="Collection(db_a92afa_frbillingModel.destinationCount_Result)">
-            <Parameter Name="Pfcode" Mode="In" Type="String" />
+          <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="FranchiseeSave">
             <Parameter Name="PF_Code" Mode="In" Type="String" />
@@ -5301,7 +5284,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getCheckBookingListAll" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListAll_Result)">
-            <Parameter Name="pfcode" Mode="In" Type="String" />
+          <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getCheckBookingListWithoutCompany" ReturnType="Collection(db_a92afa_frbillingModel.getCheckBookingListWithoutCompany_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -5326,7 +5309,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetCustomerSalesComparison" ReturnType="Collection(db_a92afa_frbillingModel.GetCustomerSalesComparison_Result)">
-            <Parameter Name="PFCode" Mode="In" Type="String" />
+          <Parameter Name="PFCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getInvoice" ReturnType="Collection(db_a92afa_frbillingModel.getInvoice_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -5347,7 +5330,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getIssueList" ReturnType="Collection(db_a92afa_frbillingModel.getIssueList_Result)">
-            <Parameter Name="Pfcode" Mode="In" Type="String" />
+          <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getLiveData" ReturnType="Collection(db_a92afa_frbillingModel.getLiveData_Result)" />
           <FunctionImport Name="getLogin" ReturnType="Collection(db_a92afa_frbillingModel.getLogin_Result)">
@@ -5389,10 +5372,10 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
             <Parameter Name="Pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getReceiptDetails" ReturnType="Collection(db_a92afa_frbillingModel.getReceiptDetails_Result)">
-            <Parameter Name="pfcode" Mode="In" Type="String" />
+          <Parameter Name="pfcode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getRemaining" ReturnType="Collection(db_a92afa_frbillingModel.getRemaining_Result)">
-            <Parameter Name="PfCode" Mode="In" Type="String" />
+          <Parameter Name="PfCode" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="getRemainingAll" ReturnType="Collection(db_a92afa_frbillingModel.getRemainingAll_Result)" />
           <FunctionImport Name="getSP_NewCreditorsInvoiceWithTDSAmount" ReturnType="Collection(db_a92afa_frbillingModel.getSP_NewCreditorsInvoiceWithTDSAmount_Result)">
@@ -7106,6 +7089,7 @@ warning 6013: The table/view 'db_a92afa_frbilling.dbo.unSignPincode' does not ha
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransportMode" ColumnName="TransportMode" />
                 <ScalarProperty Name="T_id" ColumnName="T_id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="booking_date" ColumnName="booking_date" />

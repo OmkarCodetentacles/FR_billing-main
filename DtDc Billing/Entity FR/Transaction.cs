@@ -62,6 +62,7 @@ namespace DtDc_Billing.Entity_FR
         public Nullable<bool> isDelete { get; set; }
         public Nullable<bool> IsGSTConsignment { get; set; }
         public string Reference { get; set; }
+        public string TransportMode { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual Franchisee Franchisee { get; set; }

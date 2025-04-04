@@ -116,6 +116,14 @@
         </label>
 
 
+        <label style="width:130px;">
+            Consignment Type @Html.DropDownList("consignmentType", new SelectListItem[] {
+new SelectListItem() {Text = "Domestic", Value="Domestic" ,Selected=true},
+new SelectListItem() {Text = "International", Value="International"},
+}, new { @class = "form-control" })
+
+
+        </label>
         <label>
             Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
         </label>
@@ -419,6 +427,45 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
         }
 
     }
+     function initializeAutocomplete() {
+    var availableTutorials = [];
+    $.ajax({
+        url: '@Url.Action("InternationalCity")',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            availableTutorials = data.map(function(city) {
+                return city.Name;
+            });
+
+            $("#intpincode").autocomplete({
+                source: availableTutorials,
+                minLength: 0,
+                select: function (event, ui) {
+                    $("#intpincode").val(ui.item.value);
+                    setPincodeInt();
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+        }
+    });
+
+    function setPincodeInt() {
+        var consno = $("#intpincode").val();
+
+        $.ajax({
+            type: 'Get',
+            url: '/Booking/FillPincode',
+            data: { Name: consno },
+            success: function (Data) {
+                $('#Pincode').val(Data[0].Pincode);
+                $('#Pincode').focus();
+            }
+        });
+    }
+}
+
     $(document).ready(function () {
             /////Sender Autocomplete
  $(function () {
@@ -548,9 +595,9 @@ $("#Pincode").autocomplete({
 </script>
 
 
-<script>
+@*<script>
         $(function () {
-var availableTutorials = [
+var International = [
 
 ];
 
@@ -567,17 +614,17 @@ $.ajax({
     dataType: 'json',
     success: function (data) {
         $.each(data, function (i, item) {
-            availableTutorials.push(item.Name);
+            International.push(item.Name);
 
 
         });
     }
 });
 
-            $("#Pincode").autocomplete({
-    source: availableTutorials,
+            $("#intpincode").autocomplete({
+                source: International,
     select: function (event, ui) {
-        $("#Pincode").val(ui.item.value);
+        $("#intpincode").val(ui.item.value);
         setPincodeInt();
     }
 
@@ -597,7 +644,7 @@ $.ajax({
             });
         }
         });
-</script>
+</script>*@
 
 
 
@@ -943,7 +990,20 @@ $.ajax({
 
         });
 
+        $("#consignmentType").change(function () {
 
+            var type = $("#consignmentType").val();
+
+            if (type == "International") {
+                $('#intpincode').show();
+                initializeAutocomplete();
+
+            }
+            else {
+                $('#intpincode').hide();
+
+            }
+        });
         $("#BillAmount,#Percentage").keyup(function () {
 
             Riskcharge();
