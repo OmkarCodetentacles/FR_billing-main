@@ -911,6 +911,7 @@ Select(e => new
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+
         [HttpPost]
         public ActionResult SaveInvoice(InvoiceModel invoice, string submit)
         {
@@ -926,7 +927,6 @@ Select(e => new
             {
                 ViewBag.disc = invoice.discount;
             }
-
 
             if (ModelState.IsValid)
             {
@@ -962,12 +962,7 @@ Select(e => new
                     invoice.periodto = Convert.ToDateTime(bdateto);
                     invoice.invoicedate = Convert.ToDateTime(invdate);
 
-
-                 
-
-
                     Invoice invo = new Invoice();
-
 
                     invo.IN_Id = inv.IN_Id;
                     invo.invoiceno = invoice.invoiceno;
@@ -1008,7 +1003,7 @@ Select(e => new
                     db.Entry(inv).State = EntityState.Detached;
                     db.Entry(invo).State = EntityState.Modified;
                     db.SaveChanges();
-                    ViewBag.success = "Invoice Updated SuccessFully";
+                    ViewBag.success = "Invoice Updated Successfully";
 
                     /////////////////// update consignment///////////////////////
                     using (var db = new db_a92afa_frbillingEntities())
@@ -1037,7 +1032,7 @@ Select(e => new
 
                     if (invoi != null)
                     {
-                        ModelState.AddModelError("invoi", "Invoice is already Generated");
+                        ModelState.AddModelError("invoi", "Invoice is already generated");
                     }
 
                     string bdatefrom = DateTime.ParseExact(invoice.Tempdatefrom, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
@@ -1048,10 +1043,6 @@ Select(e => new
                     invoice.periodfrom = Convert.ToDateTime(bdatefrom);
                     invoice.periodto = Convert.ToDateTime(bdateto);
                     invoice.invoicedate = Convert.ToDateTime(invdate);
-
-
-
-                   
 
                     invoice.invoiceno = invoice.invoiceno;
 
@@ -1092,14 +1083,11 @@ Select(e => new
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
 
-
-
                     db.Invoices.Add(invo);
                     db.SaveChanges();
 
-                    ViewBag.success = "Invoice Added SuccessFully";
+                    ViewBag.success = "Invoice Added Successfully";
 
-                
                     /////////////////// update consignment///////////////////////
                     using (var db = new db_a92afa_frbillingEntities())
                     {
@@ -1112,20 +1100,17 @@ Select(e => new
                         Companies = db.Transactions.Where(m => m.Pf_Code == strpfcode && m.isDelete == false && m.Customer_Id == invoice.Customer_Id && (m.IsGSTConsignment == null || m.IsGSTConsignment == false) && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no) && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
                      Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
 
-                        Companies.ForEach(m => m.status_t = invoice.invoiceno
-                        
-                        
-                        
-                        );
+                        Companies.ForEach(m => m.status_t = invoice.invoiceno);
                         db.SaveChanges();
                     }
                     ///////////////////end of update consignment///////////////////////
-               //     ViewBag.nextinvoice = GetmaxInvoiceno(invstart1, strpfcode);
+                    //ViewBag.nextinvoice = GetmaxInvoiceno(invstart1, strpfcode);
                     ViewBag.nextinvoice = GetmaxInvoiceno();
 
                 }
+
                 string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
-               Request.ApplicationPath.TrimEnd('/') + "/";
+                Request.ApplicationPath.TrimEnd('/') + "/";
                 string Pfcode = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id).Select(m => m.Pf_code).FirstOrDefault(); /// take dynamically
 
 
@@ -1135,7 +1120,7 @@ Select(e => new
 
 
                     var dataset = db.TransactionViews.Where(m => m.Pf_Code == strpfcode && m.Customer_Id == invoice.Customer_Id && (m.IsGSTConsignment == null || m.IsGSTConsignment == false) && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no) && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)).ToList().
-                 Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                     Where(x => DateTime.Compare(x.booking_date.Value.Date, invoice.periodfrom.Value.Date) >= 0 && DateTime.Compare(x.booking_date.Value.Date, invoice.periodto.Value.Date) <= 0).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                                .ToList();
 
                     var franchisee = db.Franchisees.Where(x => x.PF_Code == Pfcode);
@@ -1145,12 +1130,16 @@ Select(e => new
 
                     var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
                     dataset3.FirstOrDefault().Invoice_Lable = AmountTowords.changeToWords(dataset3.FirstOrDefault().netamount.ToString());
+                    
                     string clientGst = dataset4.FirstOrDefault().Gst_No;
                     string frgst = franchisee.FirstOrDefault().GstNo;
 
                     franchisee.FirstOrDefault().StampFilePath = (franchisee.FirstOrDefault().StampFilePath == null || franchisee.FirstOrDefault().StampFilePath == "") ? baseUrl + "/assets/Dtdclogo.png" : franchisee.FirstOrDefault().StampFilePath;
                     string discount = dataset3.FirstOrDefault().discount;
-                   string format = "Horizantal";
+                    string format = "Horizantal";
+
+                    dataset3.FirstOrDefault().Amount4 = dataset3.FirstOrDefault().total - dataset.Sum(x => x.Risksurcharge);
+
 
                     if (discount == "no")
                     {
@@ -1381,7 +1370,7 @@ Select(e => new
                                 <!-- Include invoice details as a table or any other format you prefer -->
 
                                 <hr>
-<p><a href='{path1}'>Download your Invoice here</a></p> <!-- Add a link to the path -->      
+                                <p><a href='{path1}'>Download your Invoice here</a></p> <!-- Add a link to the path -->      
                                 <p>If you have any questions or concerns regarding your invoice, please contact our support team.<br />
                                     <strong> at +91 82086688415</strong></p>
 
@@ -1390,8 +1379,7 @@ Select(e => new
                                 <p><strong>Fr-Billing</strong></p>
                             </div>
                         </body>
-                        </html>
-                        ";
+                        </html>";
 
                         //Set up the email model
                         SendModel emailModel = new SendModel
@@ -1404,10 +1392,6 @@ Select(e => new
                         };
 
                         // Send the email using your email sending logic
-
-
-
-
 
                         SendEmailModel sm = new SendEmailModel();
                         var mailMessage = sm.MailSend(emailModel);
@@ -4969,7 +4953,7 @@ Select(e => new
                     franchisee.FirstOrDefault().StampFilePath = (franchisee.FirstOrDefault().StampFilePath == null || franchisee.FirstOrDefault().StampFilePath == "") ? baseUrl + "/assets/Dtdclogo.png" : franchisee.FirstOrDefault().StampFilePath;
                     string discount = dataset3.FirstOrDefault().discount;
 
-
+                    
                     string path = "";
                     if (franchisee.FirstOrDefault().Template == 2)
                     {
