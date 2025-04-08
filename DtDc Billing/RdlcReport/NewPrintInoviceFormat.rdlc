@@ -1251,9 +1251,11 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=IIF(First(Fields!RoundOff.Value, "invoice") &gt;= 0.5, 
-     "+" &amp; FormatNumber(First(Fields!RoundOff.Value, "invoice"), 2), 
-     "-" &amp; FormatNumber(First(Fields!RoundOff.Value, "invoice"), 2))</Value>
+                    <Value>=IIF(
+  (First(Fields!netamount.Value, "invoice") - Fix(First(Fields!netamount.Value, "invoice"))) &gt;= 0.5,
+  "+" &amp; FormatNumber(Round(First(Fields!netamount.Value, "invoice"), 0) - First(Fields!netamount.Value, "invoice"), 2),
+  "-" &amp; FormatNumber(First(Fields!netamount.Value, "invoice") - Round(First(Fields!netamount.Value, "invoice"), 0), 2)
+)</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
