@@ -1142,7 +1142,7 @@ Select(e => new
                     }
                     else if(plus== "minus")
                     {
-                        invo.FinalNetAmount = Math.Round(Math.Round((inv.netamount ?? 0),0) - adjustedAmount,0);
+                        invo.FinalNetAmount = Math.Round(Math.Round((invo.netamount ?? 0),0) - adjustedAmount,0);
                         invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
 
                     }
