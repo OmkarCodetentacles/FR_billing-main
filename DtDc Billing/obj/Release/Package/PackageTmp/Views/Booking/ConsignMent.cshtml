@@ -20,16 +20,42 @@
 
 <div class="content-wrapper">
     <div class="box box-info" style="padding:16px 16px">
-
+        @if (TempData["ErrorMessages"] != null)
+        {
+            var errorMessages = TempData["ErrorMessages"] as List<string>;
+            if (errorMessages.Count() > 0)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in errorMessages)
+                        {
+                            <li style="color:red;">@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
         @{
 
-            var succeessdata = TempData["Upload"] as string;
+            var Error = TempData["Error"] as string;
+            var success = TempData["success"] as string;
         }
-        @if (!string.IsNullOrEmpty(succeessdata))
+
+        @if (!string.IsNullOrEmpty(success))
         {
-            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", succeessdata))
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", success))
         }
-        @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+
+
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", Error))
+
+        }
+
+
+        @using (Html.BeginForm("ImportFrPlusExcelFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "excelform" }))
         {
 
             @Html.AntiForgeryToken()
@@ -53,12 +79,15 @@
 
                     <div class="col-md-6">
                         <div class="col-sm-8">
-                            <input id="File1" required type="file" name="ImportText" class="choosefile" />
-                            <span class="fileError" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+                            <!--<input id="File1" required type="file" name="ImportText" class="choosefile" />
+                        <span class="fileError" style="color: red; display: none;">Please select a file before uploading.</span>-->
+                            <!-- Error message -->
+                            <input id="ExcelFile" type="file" name="ImportExcelFile" />
+                            <span class="excelfileError" style="color: red; display: none;">Please select a Excel file before uploading.</span>
 
                         </div>
                         <div class="col-sm-4">
-                            <input type="submit" class="btn btn-primary pull-right btn-submitt" id="textsubmitBtn" value="Import From text" />
+                            <input type="submit" class="btn btn-success pull-right btn-submitt" id="excelsubmitBtn" value="Import From text" />
                         </div>
                     </div>
 
@@ -91,28 +120,50 @@
 
 <script>
     $(document).ready(function () {
-        $('#textsubmitBtn').on('click', function (e) {
-            var fileInput = $('#File1');
-            var filePath = fileInput.val();
-            var allowedExtensions = /(\.txt)$/i; // Regex to allow only .txt files
+        //$('#textsubmitBtn').on('click', function (e) {
+        //    var fileInput = $('#File1');
+        //    var filePath = fileInput.val();
+        //    var allowedExtensions = /(\.txt)$/i; // Regex to allow only .txt files
 
-            // Check if the file is selected
-            if (!filePath) {
-                $(".fileError").show();
+        //    // Check if the file is selected
+        //    if (!filePath) {
+        //        $(".fileError").show();
+        //        return false;
+        //    }
+
+        //    // Validate the file extension
+        //    if (!allowedExtensions.exec(filePath)) {
+        //        $(".fileError").text("Invalid file type. Please upload a DTDC  .txt file.");
+
+        //        fileInput.val(''); // Clear the file input
+        //        return false;
+        //    }
+
+        //    // If validation passes, submit the form
+        //    $(this).closest('importtext').submit();
+        //});
+
+
+        $('#excelsubmitBtn').on('click', function (e) {
+
+            var file = $("#ExcelFile").val();
+
+            if (file == "" || file == NaN) {
+
+                $(".excelfileError").show();
+                e.preventDefault();
+                return false;
+            }
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            if (!allowedExtensions.exec(file)) {
+                $(".excelfileError").text("Invalid file type. Please upload a .xls or .xlsx file").show();
                 return false;
             }
 
-            // Validate the file extension
-            if (!allowedExtensions.exec(filePath)) {
-                $(".fileError").text("Invalid file type. Please upload a DTDC  .txt file.");
-            
-                fileInput.val(''); // Clear the file input
-                return false;
-            }
-
-            // If validation passes, submit the form
-            $(this).closest('importtext').submit();
+            $('#excelform').submit();
         });
+
     });
 </script>
 @*@if (TempData["Upload"] != null)

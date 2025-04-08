@@ -478,6 +478,8 @@
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="isDelete" Type="bit" />
           <Property Name="Balance" Type="float" />
+          <Property Name="FinalNetAmount" Type="float" />
+          <Property Name="RoundOff" Type="float" />
         </EntityType>
         <EntityType Name="Issue">
           <Key>
@@ -1151,6 +1153,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
           <Property Name="IsGSTConsignment" Type="bit" />
           <Property Name="Reference" Type="varchar" MaxLength="100" />
+          <Property Name="TransportMode" Type="varchar" MaxLength="100" />
         </EntityType>
         <Association Name="Emp_Fk">
           <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
@@ -2421,7 +2424,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     [TransactionView].[remarks] AS [remarks], 
     [TransactionView].[tempdeliveredtime] AS [tempdeliveredtime], 
     [TransactionView].[IsGSTConsignment] AS [IsGSTConsignment], 
-    [TransactionView].[Reference] AS [Reference]
+    [TransactionView].[Reference] AS [Reference], 
+    [TransactionView].[TransportMode] AS [TransportMode]
     FROM [dbo].[TransactionView] AS [TransactionView]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">
@@ -3281,6 +3285,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="FirmDetail1" Relationship="Self.FK__Invoice__Firm_Id__308E3499" FromRole="Invoice" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail2" Relationship="Self.FK__Invoice__Firm_Id__3493CFA7" FromRole="Invoice" ToRole="FirmDetails" />
           <NavigationProperty Name="FirmDetail3" Relationship="Self.FK__Invoice__Firm_Id__3587F3E0" FromRole="Invoice" ToRole="FirmDetails" />
+          <Property Name="FinalNetAmount" Type="Double" />
+          <Property Name="RoundOff" Type="Double" />
         </EntityType>
         <EntityType Name="Issue">
           <Key>
@@ -4009,6 +4015,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="tempdeliveredtime" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsGSTConsignment" Type="Boolean" />
           <Property Name="Reference" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TransportMode" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK__Cash__Firm_Id__2180FB33">
           <End Role="FirmDetails" Type="Self.FirmDetail" Multiplicity="0..1" />
@@ -6545,6 +6552,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Invoices">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Invoice">
               <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="RoundOff" ColumnName="RoundOff" />
+                <ScalarProperty Name="FinalNetAmount" ColumnName="FinalNetAmount" />
                 <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
                 <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
                 <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
@@ -7235,6 +7244,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="TransactionViews">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.TransactionView">
               <MappingFragment StoreEntitySet="TransactionView">
+                <ScalarProperty Name="TransportMode" ColumnName="TransportMode" />
                 <ScalarProperty Name="T_id" ColumnName="T_id" />
                 <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
                 <ScalarProperty Name="booking_date" ColumnName="booking_date" />

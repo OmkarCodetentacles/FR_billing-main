@@ -9,7 +9,7 @@
 
         <div class="box-header with-border">
             <h4>
-                Import From Text
+                Import From Text And Excel for the Fr-Plus
                 <a href="https://www.youtube.com/watch?v=yYChS8s7y9g&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=19"
                    target="_blank"
                    data-toggle="tooltip"
@@ -20,8 +20,23 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="row">
-                <div class="col-md-12">
 
+                <div class="col-md-12">
+                    @if (TempData["ErrorMessages"] != null)
+                    {
+                        var errorMessages = TempData["ErrorMessages"] as List<string>;
+                        if (errorMessages.Count() > 0)
+                        {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (var error in errorMessages)
+                                    {
+                                        <li style="color:red;">@error</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
                     @{
                         var successMessage = TempData["Upload"] as string;
                         var errorMessage = TempData["Error"] as string;
@@ -33,7 +48,7 @@
                     }
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
-                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", errorMessage))
                     }
                     <div class="form-horizontal">
 
@@ -49,7 +64,24 @@
                                         </div>
                                         <div style="text-align:end;">
                                             <input type="submit" class="btn btn-success mt-3" id="submitBtn" value="Upload" style="margin-top:20px" />
-                                            
+
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("ImportFrPlusExcelFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "excelform" }))
+                                    {
+                                        <label class="">Upload Excel  File </label>
+                                        <div class="">
+                                            <input id="ExcelFile" type="file" name="ImportExcelFile" />
+                                            <span class="excelfileError" style="color: red; display: none;">Please select a Excel file before uploading.</span>  
+                                        </div>
+                                        <div style="text-align:end;">
+                                            <input type="submit" class="btn btn-success mt-3" id="excelsubmitBtn" value="Upload" style="margin-top:20px" />
+
                                         </div>
                                     }
                                 </div>
@@ -68,13 +100,7 @@
 
     $(document).ready(function () {
         $('#submitBtn').on('click', function (e) {
-      //      e.preventDefault();
-            // Prevent default form submission (since we are handling submission manually)
-       
-
-            // Scroll to the top of the page
-         //   scrollToTop();
-            // Get the file input value
+     
             var file = $("#File1").val();
            // alert(file)
             // Check if file input is empty
@@ -100,5 +126,29 @@
             // Get the form element and submit the form after validation
             $('#fromttext').submit();
         });
+
+
+        $('#excelsubmitBtn').on('click', function (e) {
+           
+            var file = $("#ExcelFile").val();
+            
+            if (file == "" || file == NaN) {
+                
+                $(".excelfileError").show();
+                e.preventDefault();
+                return false; 
+            }
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            if (!allowedExtensions.exec(file)) {
+                $(".excelfileError").text("Invalid file type. Please upload a .xls or .xlsx file").show();
+                return false;
+            }
+
+            $('#excelform').submit();
+        });
+
+
+
     })
 </script>

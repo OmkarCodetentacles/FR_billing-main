@@ -345,6 +345,18 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnAmount4_Lable;
             
+            private global::System.Data.DataColumn columnFirm_Id;
+            
+            private global::System.Data.DataColumn columnPfcode;
+            
+            private global::System.Data.DataColumn columnisDelete;
+            
+            private global::System.Data.DataColumn columnBalance;
+            
+            private global::System.Data.DataColumn columnFinalNetAmount;
+            
+            private global::System.Data.DataColumn columnRoundOff;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public InvoiceDataTable() {
@@ -644,6 +656,54 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn Firm_IdColumn {
+                get {
+                    return this.columnFirm_Id;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PfcodeColumn {
+                get {
+                    return this.columnPfcode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn isDeleteColumn {
+                get {
+                    return this.columnisDelete;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn BalanceColumn {
+                get {
+                    return this.columnBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn FinalNetAmountColumn {
+                get {
+                    return this.columnFinalNetAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn RoundOffColumn {
+                get {
+                    return this.columnRoundOff;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -711,7 +771,13 @@ namespace DtDc_Billing {
                         string Royalti_Lable, 
                         string Docket_Lable, 
                         double Amount4, 
-                        string Amount4_Lable) {
+                        string Amount4_Lable, 
+                        long Firm_Id, 
+                        string Pfcode, 
+                        bool isDelete, 
+                        double Balance, 
+                        double FinalNetAmount, 
+                        double RoundOff) {
                 InvoiceRow rowInvoiceRow = ((InvoiceRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -746,7 +812,13 @@ namespace DtDc_Billing {
                         Royalti_Lable,
                         Docket_Lable,
                         Amount4,
-                        Amount4_Lable};
+                        Amount4_Lable,
+                        Firm_Id,
+                        Pfcode,
+                        isDelete,
+                        Balance,
+                        FinalNetAmount,
+                        RoundOff};
                 rowInvoiceRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowInvoiceRow);
                 return rowInvoiceRow;
@@ -809,6 +881,12 @@ namespace DtDc_Billing {
                 this.columnDocket_Lable = base.Columns["Docket_Lable"];
                 this.columnAmount4 = base.Columns["Amount4"];
                 this.columnAmount4_Lable = base.Columns["Amount4_Lable"];
+                this.columnFirm_Id = base.Columns["Firm_Id"];
+                this.columnPfcode = base.Columns["Pfcode"];
+                this.columnisDelete = base.Columns["isDelete"];
+                this.columnBalance = base.Columns["Balance"];
+                this.columnFinalNetAmount = base.Columns["FinalNetAmount"];
+                this.columnRoundOff = base.Columns["RoundOff"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -880,6 +958,18 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnAmount4);
                 this.columnAmount4_Lable = new global::System.Data.DataColumn("Amount4_Lable", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAmount4_Lable);
+                this.columnFirm_Id = new global::System.Data.DataColumn("Firm_Id", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFirm_Id);
+                this.columnPfcode = new global::System.Data.DataColumn("Pfcode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPfcode);
+                this.columnisDelete = new global::System.Data.DataColumn("isDelete", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnisDelete);
+                this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBalance);
+                this.columnFinalNetAmount = new global::System.Data.DataColumn("FinalNetAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFinalNetAmount);
+                this.columnRoundOff = new global::System.Data.DataColumn("RoundOff", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRoundOff);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnIN_Id}, true));
                 this.columnIN_Id.AutoIncrement = true;
@@ -902,6 +992,7 @@ namespace DtDc_Billing {
                 this.columnRoyalti_Lable.MaxLength = 2147483647;
                 this.columnDocket_Lable.MaxLength = 2147483647;
                 this.columnAmount4_Lable.MaxLength = 2147483647;
+                this.columnPfcode.MaxLength = 50;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1567,6 +1658,102 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public long Firm_Id {
+                get {
+                    try {
+                        return ((long)(this[this.tableInvoice.Firm_IdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Firm_Id\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.Firm_IdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Pfcode {
+                get {
+                    try {
+                        return ((string)(this[this.tableInvoice.PfcodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Pfcode\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.PfcodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool isDelete {
+                get {
+                    try {
+                        return ((bool)(this[this.tableInvoice.isDeleteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'isDelete\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.isDeleteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double Balance {
+                get {
+                    try {
+                        return ((double)(this[this.tableInvoice.BalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Balance\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.BalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double FinalNetAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableInvoice.FinalNetAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FinalNetAmount\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.FinalNetAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double RoundOff {
+                get {
+                    try {
+                        return ((double)(this[this.tableInvoice.RoundOffColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RoundOff\' in table \'Invoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableInvoice.RoundOffColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsinvoicenoNull() {
                 return this.IsNull(this.tableInvoice.invoicenoColumn);
             }
@@ -1948,6 +2135,78 @@ namespace DtDc_Billing {
             public void SetAmount4_LableNull() {
                 this[this.tableInvoice.Amount4_LableColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsFirm_IdNull() {
+                return this.IsNull(this.tableInvoice.Firm_IdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetFirm_IdNull() {
+                this[this.tableInvoice.Firm_IdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsPfcodeNull() {
+                return this.IsNull(this.tableInvoice.PfcodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetPfcodeNull() {
+                this[this.tableInvoice.PfcodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsisDeleteNull() {
+                return this.IsNull(this.tableInvoice.isDeleteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetisDeleteNull() {
+                this[this.tableInvoice.isDeleteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsBalanceNull() {
+                return this.IsNull(this.tableInvoice.BalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetBalanceNull() {
+                this[this.tableInvoice.BalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsFinalNetAmountNull() {
+                return this.IsNull(this.tableInvoice.FinalNetAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetFinalNetAmountNull() {
+                this[this.tableInvoice.FinalNetAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRoundOffNull() {
+                return this.IsNull(this.tableInvoice.RoundOffColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetRoundOffNull() {
+                this[this.tableInvoice.RoundOffColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -1999,13 +2258,13 @@ namespace DtDc_Billing.invoTableAdapters {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
     public partial class InvoiceTableAdapter : global::System.ComponentModel.Component {
         
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
+        private global::Microsoft.Data.SqlClient.SqlDataAdapter _adapter;
         
-        private global::System.Data.SqlClient.SqlConnection _connection;
+        private global::Microsoft.Data.SqlClient.SqlConnection _connection;
         
-        private global::System.Data.SqlClient.SqlTransaction _transaction;
+        private global::Microsoft.Data.SqlClient.SqlTransaction _transaction;
         
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
+        private global::Microsoft.Data.SqlClient.SqlCommand[] _commandCollection;
         
         private bool _clearBeforeFill;
         
@@ -2017,7 +2276,7 @@ namespace DtDc_Billing.invoTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected internal global::System.Data.SqlClient.SqlDataAdapter Adapter {
+        protected internal global::Microsoft.Data.SqlClient.SqlDataAdapter Adapter {
             get {
                 if ((this._adapter == null)) {
                     this.InitAdapter();
@@ -2028,7 +2287,7 @@ namespace DtDc_Billing.invoTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
+        internal global::Microsoft.Data.SqlClient.SqlConnection Connection {
             get {
                 if ((this._connection == null)) {
                     this.InitConnection();
@@ -2048,7 +2307,7 @@ namespace DtDc_Billing.invoTableAdapters {
                 }
                 for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
                     if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                        ((global::Microsoft.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
                     }
                 }
             }
@@ -2056,7 +2315,7 @@ namespace DtDc_Billing.invoTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        internal global::System.Data.SqlClient.SqlTransaction Transaction {
+        internal global::Microsoft.Data.SqlClient.SqlTransaction Transaction {
             get {
                 return this._transaction;
             }
@@ -2082,7 +2341,7 @@ namespace DtDc_Billing.invoTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
+        protected global::Microsoft.Data.SqlClient.SqlCommand[] CommandCollection {
             get {
                 if ((this._commandCollection == null)) {
                     this.InitCommandCollection();
@@ -2105,7 +2364,7 @@ namespace DtDc_Billing.invoTableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
+            this._adapter = new global::Microsoft.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "Invoice";
@@ -2142,101 +2401,587 @@ namespace DtDc_Billing.invoTableAdapters {
             tableMapping.ColumnMappings.Add("Docket_Lable", "Docket_Lable");
             tableMapping.ColumnMappings.Add("Amount4", "Amount4");
             tableMapping.ColumnMappings.Add("Amount4_Lable", "Amount4_Lable");
+            tableMapping.ColumnMappings.Add("Firm_Id", "Firm_Id");
+            tableMapping.ColumnMappings.Add("Pfcode", "Pfcode");
+            tableMapping.ColumnMappings.Add("isDelete", "isDelete");
+            tableMapping.ColumnMappings.Add("Balance", "Balance");
+            tableMapping.ColumnMappings.Add("FinalNetAmount", "FinalNetAmount");
+            tableMapping.ColumnMappings.Add("RoundOff", "RoundOff");
             this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
+            this._adapter.DeleteCommand = new global::Microsoft.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [DtdcBilling].[Invoice] WHERE (([IN_Id] = @Original_IN_Id))";
+            this._adapter.DeleteCommand.CommandText = "DELETE FROM [Invoice] WHERE (([IN_Id] = @Original_IN_Id))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IN_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IN_Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
-            this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
+            global::Microsoft.Data.SqlClient.SqlParameter param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Original_IN_Id";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.IsNullable = true;
+            param.SourceColumn = "IN_Id";
+            param.SourceVersion = global::System.Data.DataRowVersion.Original;
+            this._adapter.DeleteCommand.Parameters.Add(param);
+            this._adapter.InsertCommand = new global::Microsoft.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [DtdcBilling].[Invoice] ([invoiceno], [invoicedate], [periodfrom], [periodto], [total], [fullsurchargetax], [fullsurchargetaxtotal], [servicetax], [servicetaxtotal], [othercharge], [netamount], [Customer_Id], [fid], [annyear], [paid], [status], [discount], [discountper], [discountamount], [servicecharges], [Royalty_charges], [Docket_charges], [Tempdatefrom], [TempdateTo], [tempInvoicedate], [Address], [Invoice_Lable], [Total_Lable], [Royalti_Lable], [Docket_Lable], [Amount4], [Amount4_Lable]) VALUES (@invoiceno, @invoicedate, @periodfrom, @periodto, @total, @fullsurchargetax, @fullsurchargetaxtotal, @servicetax, @servicetaxtotal, @othercharge, @netamount, @Customer_Id, @fid, @annyear, @paid, @status, @discount, @discountper, @discountamount, @servicecharges, @Royalty_charges, @Docket_charges, @Tempdatefrom, @TempdateTo, @tempInvoicedate, @Address, @Invoice_Lable, @Total_Lable, @Royalti_Lable, @Docket_Lable, @Amount4, @Amount4_Lable)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Invoice] ([invoiceno], [invoicedate], [periodfrom], [periodto], [total], [fullsurchargetax], [fullsurchargetaxtotal], [servicetax], [servicetaxtotal], [othercharge], [netamount], [Customer_Id], [fid], [annyear], [paid], [status], [discount], [discountper], [discountamount], [servicecharges], [Royalty_charges], [Docket_charges], [Tempdatefrom], [TempdateTo], [tempInvoicedate], [Address], [Invoice_Lable], [Total_Lable], [Royalti_Lable], [Docket_Lable], [Amount4], [Amount4_Lable], [Firm_Id], [Pfcode], [isDelete], [Balance], [FinalNetAmount], [RoundOff]) VALUES (@invoiceno, @invoicedate, @periodfrom, @periodto, @total, @fullsurchargetax, @fullsurchargetaxtotal, @servicetax, @servicetaxtotal, @othercharge, @netamount, @Customer_Id, @fid, @annyear, @paid, @status, @discount, @discountper, @discountamount, @servicecharges, @Royalty_charges, @Docket_charges, @Tempdatefrom, @TempdateTo, @tempInvoicedate, @Address, @Invoice_Lable, @Total_Lable, @Royalti_Lable, @Docket_Lable, @Amount4, @Amount4_Lable, @Firm_Id, @Pfcode, @isDelete, @Balance, @FinalNetAmount, @RoundOff)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoiceno", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoiceno", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoicedate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@periodfrom", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "periodfrom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@periodto", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "periodto", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@total", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "total", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fullsurchargetax", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fullsurchargetax", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fullsurchargetaxtotal", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fullsurchargetaxtotal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicetax", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicetax", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicetaxtotal", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicetaxtotal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@othercharge", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "othercharge", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@netamount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "netamount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Customer_Id", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Customer_Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fid", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fid", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@annyear", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "annyear", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@paid", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "paid", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discount", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discountper", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discountper", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discountamount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discountamount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicecharges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicecharges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Royalty_charges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Royalty_charges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_charges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_charges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Tempdatefrom", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Tempdatefrom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TempdateTo", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TempdateTo", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@tempInvoicedate", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "tempInvoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Invoice_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Invoice_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Total_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Total_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Royalti_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Royalti_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Amount4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount4_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Amount4_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@invoiceno";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "invoiceno";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@invoicedate";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "invoicedate";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@periodfrom";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "periodfrom";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@periodto";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "periodto";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@total";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "total";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fullsurchargetax";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "fullsurchargetax";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fullsurchargetaxtotal";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "fullsurchargetaxtotal";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicetax";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicetax";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicetaxtotal";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicetaxtotal";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@othercharge";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "othercharge";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@netamount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "netamount";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Customer_Id";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Customer_Id";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fid";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.IsNullable = true;
+            param.SourceColumn = "fid";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@annyear";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "annyear";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@paid";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "paid";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@status";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "status";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discount";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "discount";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discountper";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "discountper";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discountamount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "discountamount";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicecharges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicecharges";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Royalty_charges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Royalty_charges";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Docket_charges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Docket_charges";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Tempdatefrom";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Tempdatefrom";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@TempdateTo";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "TempdateTo";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@tempInvoicedate";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "tempInvoicedate";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Address";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Address";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Invoice_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Invoice_Lable";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Total_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Total_Lable";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Royalti_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Royalti_Lable";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Docket_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Docket_Lable";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Amount4";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Amount4";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Amount4_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Amount4_Lable";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Firm_Id";
+            param.DbType = global::System.Data.DbType.Int64;
+            param.SqlDbType = global::System.Data.SqlDbType.BigInt;
+            param.IsNullable = true;
+            param.SourceColumn = "Firm_Id";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Pfcode";
+            param.SqlDbType = global::System.Data.SqlDbType.NVarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Pfcode";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@isDelete";
+            param.DbType = global::System.Data.DbType.Boolean;
+            param.SqlDbType = global::System.Data.SqlDbType.Bit;
+            param.IsNullable = true;
+            param.SourceColumn = "isDelete";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Balance";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Balance";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@FinalNetAmount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "FinalNetAmount";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@RoundOff";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "RoundOff";
+            this._adapter.InsertCommand.Parameters.Add(param);
+            this._adapter.UpdateCommand = new global::Microsoft.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [DtdcBilling].[Invoice] SET [invoiceno] = @invoiceno, [invoicedate] = @invoicedate, [periodfrom] = @periodfrom, [periodto] = @periodto, [total] = @total, [fullsurchargetax] = @fullsurchargetax, [fullsurchargetaxtotal] = @fullsurchargetaxtotal, [servicetax] = @servicetax, [servicetaxtotal] = @servicetaxtotal, [othercharge] = @othercharge, [netamount] = @netamount, [Customer_Id] = @Customer_Id, [fid] = @fid, [annyear] = @annyear, [paid] = @paid, [status] = @status, [discount] = @discount, [discountper] = @discountper, [discountamount] = @discountamount, [servicecharges] = @servicecharges, [Royalty_charges] = @Royalty_charges, [Docket_charges] = @Docket_charges, [Tempdatefrom] = @Tempdatefrom, [TempdateTo] = @TempdateTo, [tempInvoicedate] = @tempInvoicedate, [Address] = @Address, [Invoice_Lable] = @Invoice_Lable, [Total_Lable] = @Total_Lable, [Royalti_Lable] = @Royalti_Lable, [Docket_Lable] = @Docket_Lable, [Amount4] = @Amount4, [Amount4_Lable] = @Amount4_Lable WHERE (([IN_Id] = @Original_IN_Id))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Invoice] SET [invoiceno] = @invoiceno, [invoicedate] = @invoicedate, [periodfrom] = @periodfrom, [periodto] = @periodto, [total] = @total, [fullsurchargetax] = @fullsurchargetax, [fullsurchargetaxtotal] = @fullsurchargetaxtotal, [servicetax] = @servicetax, [servicetaxtotal] = @servicetaxtotal, [othercharge] = @othercharge, [netamount] = @netamount, [Customer_Id] = @Customer_Id, [fid] = @fid, [annyear] = @annyear, [paid] = @paid, [status] = @status, [discount] = @discount, [discountper] = @discountper, [discountamount] = @discountamount, [servicecharges] = @servicecharges, [Royalty_charges] = @Royalty_charges, [Docket_charges] = @Docket_charges, [Tempdatefrom] = @Tempdatefrom, [TempdateTo] = @TempdateTo, [tempInvoicedate] = @tempInvoicedate, [Address] = @Address, [Invoice_Lable] = @Invoice_Lable, [Total_Lable] = @Total_Lable, [Royalti_Lable] = @Royalti_Lable, [Docket_Lable] = @Docket_Lable, [Amount4] = @Amount4, [Amount4_Lable] = @Amount4_Lable, [Firm_Id] = @Firm_Id, [Pfcode] = @Pfcode, [isDelete] = @isDelete, [Balance] = @Balance, [FinalNetAmount] = @FinalNetAmount, [RoundOff] = @RoundOff WHERE (([IN_Id] = @Original_IN_Id))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoiceno", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoiceno", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoicedate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@periodfrom", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "periodfrom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@periodto", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "periodto", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@total", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "total", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fullsurchargetax", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fullsurchargetax", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fullsurchargetaxtotal", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fullsurchargetaxtotal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicetax", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicetax", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicetaxtotal", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicetaxtotal", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@othercharge", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "othercharge", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@netamount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "netamount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Customer_Id", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Customer_Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@fid", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "fid", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@annyear", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "annyear", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@paid", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "paid", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@status", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discount", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discountper", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discountper", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@discountamount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "discountamount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@servicecharges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "servicecharges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Royalty_charges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Royalty_charges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_charges", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_charges", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Tempdatefrom", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Tempdatefrom", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TempdateTo", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TempdateTo", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@tempInvoicedate", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "tempInvoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Address", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Address", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Invoice_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Invoice_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Total_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Total_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Royalti_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Royalti_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount4", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Amount4", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Amount4_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Amount4_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IN_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IN_Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@invoiceno";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "invoiceno";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@invoicedate";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "invoicedate";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@periodfrom";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "periodfrom";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@periodto";
+            param.DbType = global::System.Data.DbType.DateTime;
+            param.SqlDbType = global::System.Data.SqlDbType.DateTime;
+            param.IsNullable = true;
+            param.SourceColumn = "periodto";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@total";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "total";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fullsurchargetax";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "fullsurchargetax";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fullsurchargetaxtotal";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "fullsurchargetaxtotal";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicetax";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicetax";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicetaxtotal";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicetaxtotal";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@othercharge";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "othercharge";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@netamount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "netamount";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Customer_Id";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Customer_Id";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@fid";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.IsNullable = true;
+            param.SourceColumn = "fid";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@annyear";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "annyear";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@paid";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "paid";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@status";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "status";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discount";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "discount";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discountper";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "discountper";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@discountamount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "discountamount";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@servicecharges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "servicecharges";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Royalty_charges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Royalty_charges";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Docket_charges";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Docket_charges";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Tempdatefrom";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Tempdatefrom";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@TempdateTo";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "TempdateTo";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@tempInvoicedate";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "tempInvoicedate";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Address";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Address";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Invoice_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Invoice_Lable";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Total_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Total_Lable";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Royalti_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Royalti_Lable";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Docket_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Docket_Lable";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Amount4";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Amount4";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Amount4_Lable";
+            param.DbType = global::System.Data.DbType.AnsiString;
+            param.SqlDbType = global::System.Data.SqlDbType.VarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Amount4_Lable";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Firm_Id";
+            param.DbType = global::System.Data.DbType.Int64;
+            param.SqlDbType = global::System.Data.SqlDbType.BigInt;
+            param.IsNullable = true;
+            param.SourceColumn = "Firm_Id";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Pfcode";
+            param.SqlDbType = global::System.Data.SqlDbType.NVarChar;
+            param.IsNullable = true;
+            param.SourceColumn = "Pfcode";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@isDelete";
+            param.DbType = global::System.Data.DbType.Boolean;
+            param.SqlDbType = global::System.Data.SqlDbType.Bit;
+            param.IsNullable = true;
+            param.SourceColumn = "isDelete";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Balance";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "Balance";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@FinalNetAmount";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "FinalNetAmount";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@RoundOff";
+            param.DbType = global::System.Data.DbType.Double;
+            param.SqlDbType = global::System.Data.SqlDbType.Float;
+            param.IsNullable = true;
+            param.SourceColumn = "RoundOff";
+            this._adapter.UpdateCommand.Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@Original_IN_Id";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.IsNullable = true;
+            param.SourceColumn = "IN_Id";
+            param.SourceVersion = global::System.Data.DataRowVersion.Original;
+            this._adapter.UpdateCommand.Parameters.Add(param);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DtdcBillingConnectionString"].ConnectionString;
+            this._connection = new global::Microsoft.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["db_a92afa_frbillingConnectionString"].ConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
+            this._commandCollection = new global::Microsoft.Data.SqlClient.SqlCommand[1];
+            this._commandCollection[0] = new global::Microsoft.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"SELECT IN_Id, invoiceno, invoicedate, periodfrom, periodto, total, fullsurchargetax, fullsurchargetaxtotal, servicetax, servicetaxtotal, othercharge, netamount, Customer_Id, fid, annyear, paid, status, discount, discountper, discountamount, servicecharges, Royalty_charges, Docket_charges, Tempdatefrom, TempdateTo, tempInvoicedate, Address, Invoice_Lable, Total_Lable, Royalti_Lable, Docket_Lable, Amount4, Amount4_Lable FROM DtdcBilling.Invoice";
+            this._commandCollection[0].CommandText = "SELECT        Invoice.*\r\nFROM            Invoice";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -2351,7 +3096,13 @@ namespace DtDc_Billing.invoTableAdapters {
                     string Royalti_Lable, 
                     string Docket_Lable, 
                     global::System.Nullable<double> Amount4, 
-                    string Amount4_Lable) {
+                    string Amount4_Lable, 
+                    global::System.Nullable<long> Firm_Id, 
+                    string Pfcode, 
+                    global::System.Nullable<bool> isDelete, 
+                    global::System.Nullable<double> Balance, 
+                    global::System.Nullable<double> FinalNetAmount, 
+                    global::System.Nullable<double> RoundOff) {
             if ((invoiceno == null)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
@@ -2544,6 +3295,42 @@ namespace DtDc_Billing.invoTableAdapters {
             else {
                 this.Adapter.InsertCommand.Parameters[31].Value = ((string)(Amount4_Lable));
             }
+            if ((Firm_Id.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[32].Value = ((long)(Firm_Id.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
+            if ((Pfcode == null)) {
+                this.Adapter.InsertCommand.Parameters[33].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[33].Value = ((string)(Pfcode));
+            }
+            if ((isDelete.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[34].Value = ((bool)(isDelete.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[34].Value = global::System.DBNull.Value;
+            }
+            if ((Balance.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[35].Value = ((double)(Balance.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[35].Value = global::System.DBNull.Value;
+            }
+            if ((FinalNetAmount.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[36].Value = ((double)(FinalNetAmount.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[36].Value = global::System.DBNull.Value;
+            }
+            if ((RoundOff.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[37].Value = ((double)(RoundOff.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[37].Value = global::System.DBNull.Value;
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2597,6 +3384,12 @@ namespace DtDc_Billing.invoTableAdapters {
                     string Docket_Lable, 
                     global::System.Nullable<double> Amount4, 
                     string Amount4_Lable, 
+                    global::System.Nullable<long> Firm_Id, 
+                    string Pfcode, 
+                    global::System.Nullable<bool> isDelete, 
+                    global::System.Nullable<double> Balance, 
+                    global::System.Nullable<double> FinalNetAmount, 
+                    global::System.Nullable<double> RoundOff, 
                     int Original_IN_Id) {
             if ((invoiceno == null)) {
                 this.Adapter.UpdateCommand.Parameters[0].Value = global::System.DBNull.Value;
@@ -2790,7 +3583,43 @@ namespace DtDc_Billing.invoTableAdapters {
             else {
                 this.Adapter.UpdateCommand.Parameters[31].Value = ((string)(Amount4_Lable));
             }
-            this.Adapter.UpdateCommand.Parameters[32].Value = ((int)(Original_IN_Id));
+            if ((Firm_Id.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[32].Value = ((long)(Firm_Id.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
+            if ((Pfcode == null)) {
+                this.Adapter.UpdateCommand.Parameters[33].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[33].Value = ((string)(Pfcode));
+            }
+            if ((isDelete.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[34].Value = ((bool)(isDelete.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[34].Value = global::System.DBNull.Value;
+            }
+            if ((Balance.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[35].Value = ((double)(Balance.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[35].Value = global::System.DBNull.Value;
+            }
+            if ((FinalNetAmount.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[36].Value = ((double)(FinalNetAmount.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[36].Value = global::System.DBNull.Value;
+            }
+            if ((RoundOff.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[37].Value = ((double)(RoundOff.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[37].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[38].Value = ((int)(Original_IN_Id));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -3024,8 +3853,8 @@ namespace DtDc_Billing.invoTableAdapters {
                 //
                 if ((this._invoiceTableAdapter != null)) {
                     revertConnections.Add(this._invoiceTableAdapter, this._invoiceTableAdapter.Connection);
-                    this._invoiceTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._invoiceTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    this._invoiceTableAdapter.Connection = ((global::Microsoft.Data.SqlClient.SqlConnection)(workConnection));
+                    this._invoiceTableAdapter.Transaction = ((global::Microsoft.Data.SqlClient.SqlTransaction)(workTransaction));
                     if (this._invoiceTableAdapter.Adapter.AcceptChangesDuringUpdate) {
                         this._invoiceTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
                         adaptersWithAcceptChangesDuringUpdate.Add(this._invoiceTableAdapter.Adapter);
@@ -3090,7 +3919,7 @@ namespace DtDc_Billing.invoTableAdapters {
                     workConnection.Close();
                 }
                 if ((this._invoiceTableAdapter != null)) {
-                    this._invoiceTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._invoiceTableAdapter]));
+                    this._invoiceTableAdapter.Connection = ((global::Microsoft.Data.SqlClient.SqlConnection)(revertConnections[this._invoiceTableAdapter]));
                     this._invoiceTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {

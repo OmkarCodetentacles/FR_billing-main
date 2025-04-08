@@ -150,7 +150,6 @@
                                     <th>
                                         Sr No
                                     </th>
-                                    @*<th>Check Is RTO</th>*@
                                     <th>Action</th>
                                     @if (ViewBag.Custid == null)
                                     {
@@ -158,63 +157,62 @@
                                             Customer Id
                                         </th>
                                     }
-                                    <th>
-                                        Consignment no
-                                    </th>
-                                    <th>
-                                        Weight
-                                    </th>
-                                    <th>
-                                        Quantity
-                                    </th>
-                                    <th>
-                                        Destination
-                                    </th>
-                                    <th>
-                                        Pincode
-                                    </th>
-                                    <th>
-                                        Address
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Mode
-                                    </th>
-                                    <th>
-                                        Amount
-                                    </th>
-                                    <th>
-                                        Booking Date
-                                    </th>
-                                    <th>
-                                        Insurance
-                                    </th>
-                                    <th>
-                                        Bill Amount
-                                    </th>
-                                    <th>
-                                        Percentage
-                                    </th>
-                                    <th>
-                                        Risk surcharge
-                                    </th>
-                                    <th>
-                                        Other Charges
-                                    </th>
-                                    <th>
-                                        Total
-                                    </th>
-                                </tr>
+                                        <th>
+                                            Consignment no
+                                        </th>
+                                        <th>
+                                            Weight
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Destination
+                                        </th>
+                                        <th>
+                                            Pincode
+                                        </th>
+                                        <th>
+                                            Address
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Mode
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th>
+                                            Booking Date
+                                        </th>
+                                        <th>
+                                            Insurance
+                                        </th>
+                                        <th>
+                                            Bill Amount
+                                        </th>
+                                        <th>
+                                            Percentage
+                                        </th>
+                                        <th>
+                                            Risk surcharge
+                                        </th>
+                                        <th>
+                                            Other Charges
+                                        </th>
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th>
+                                            Reference
+                                        </th>
+                                    </tr>
                             </thead>
                             <tbody>
                                 @{ int i = 1;
-
-
-
-
-                                    var items = Model.ToList(); // Convert Model to List for indexing
+                                    var items = Model.ToList(); 
 
                                     for (int j = 0; j < items.Count; j++)
                                     {
@@ -222,8 +220,8 @@
                                         i = j + 1;
                                         <tr>
                                             @*@{
-                                var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
-                            }*@
+                                                    var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+                                                }*@
 
                                             <td>@i</td>
 
@@ -252,6 +250,7 @@
                                             <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
                                             <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
                                             <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
+                                            <td>@(item.Reference == null ? "-": item.Reference)</td>
                                         </tr>
                                     }
                                 }
@@ -259,30 +258,22 @@
                         </table>
                         @*<input type="button" value="Set RTO"  class="btn btn-primary"  onclick="getCheckedConsignments()" />*@
 
-
-                        <!-- /input-group -->
                         <div class="row">
                             <div class="col-sm-3 " style="float: right" ;>
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-danger total-label">Total</button>
                                     </div>
-                                    <!-- /btn-group -->
                                     <input type="text" class="form-control total-amount" value="@(Model.Sum(m=>m.Amount+(m.Risksurcharge ?? 0)+(m.loadingcharge ?? 0)))">
                                 </div>
                             </div>
-
-                            <!-- /input-group -->
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
-    </div>
+</div>
 
 <script>
 
@@ -339,13 +330,13 @@
             success: function (response) {
                 showAlert(response, true);
                 setTimeout(function () {
-                  
+
                     location.reload();
                 }, 10000); // 6 seconds = 6000 milliseconds
-               
+
             },
             error: function (xhr, status, error) {
-              
+
                 //$('#alertContainer').text('Something went wrong while deleting the consignment. Please try again').css('background-color', 'red'); // Set red background for errors;
                 //$("#alertContainer").show();
                 showAlert("Something went wrong while deleting the consignment. Please try again", true);
@@ -354,7 +345,7 @@
                 //    $(this).html('').show(); // Clear and reset the container
                 //});
                 setTimeout(function () {
-                   
+
                 }, 10000); // 6 seconds = 6000 milliseconds
 
                 // alert("Something went wrong while deleting the consignment. Please try again.");
@@ -364,7 +355,7 @@
     $(document).ready(function () {
 
 
-     
+
     $(function () {
         var company_name = [];
         var company_idarr = [];
@@ -417,10 +408,6 @@
 });
 
 
-
-
-
-
      $('#datepicker').datepicker({
          autoclose: true,
          format: 'dd-mm-yyyy'
@@ -430,8 +417,6 @@
          autoclose: true,
          format: 'dd-mm-yyyy'
      })
-
-
 </script>
 
 
@@ -567,7 +552,7 @@
             "bLengthChange": true,
             "bFilter": true,
             "bSort": true,
-            "bInfo": false,
+            "bInfo": true,
             "bAutoWidth": false
         });
     });

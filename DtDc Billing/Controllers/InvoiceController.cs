@@ -1000,6 +1000,39 @@ Select(e => new
                     invo.Pfcode = strpfcode;
                     invo.isDelete = false;
                     invoice.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
+                    double adjustedAmount = 0;
+
+                    // Apply the same logic as your SSRS IIF condition
+                    string plus = "";
+                    double amount = 0;
+                    double netamount = invo.netamount ?? 0;
+                    double decimalPart = netamount - Math.Truncate(netamount);
+                    
+                    if (decimalPart >= 0.5)
+                    {
+                        adjustedAmount =Math.Round( decimalPart,2); 
+                      //  adjustedAmount = Math.Round(netamount, 0) - netamount; // Positive round-off
+                        plus = "plus";
+                    }
+                    else
+                    {
+                      //  adjustedAmount = netamount - Math.Round(netamount, 0); // Negative round-off
+                        adjustedAmount = Math.Round(decimalPart, 2); ; // Negative round-off
+                        plus = "minus";
+                    }
+
+                    if (plus == "plus")
+                    {
+                        invo.FinalNetAmount =Math.Round(Math.Round((invo.netamount ?? 0) ,0)+ adjustedAmount,0);
+                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+                    }
+                    else if (plus == "minus")
+                    {
+                        invo.FinalNetAmount =Math.Round( Math.Round((invo.netamount ?? 0),0) - adjustedAmount,0);
+                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+
+                    }
+                    invo.RoundOff = Math.Round(adjustedAmount,2);
                     db.Entry(inv).State = EntityState.Detached;
                     db.Entry(invo).State = EntityState.Modified;
                     db.SaveChanges();
@@ -1055,7 +1088,7 @@ Select(e => new
                     invo.servicetax = invoice.servicetax;
                     invo.servicetaxtotal = invoice.servicetaxtotal;
                     invo.othercharge = invoice.othercharge;
-                    invo.netamount = invoice.netamount;
+                   invo.netamount = invoice.netamount;
                     invo.Customer_Id = invoice.Customer_Id;
                     invo.fid = invoice.fid;
                     invo.annyear = invoice.annyear;
@@ -1071,7 +1104,7 @@ Select(e => new
                     invo.TempdateTo = invoice.TempdateTo;
                     invo.tempInvoicedate = invoice.tempInvoicedate;
                     invo.Address = invoice.Address;
-                    invo.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
+                   invo.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
                     invo.Total_Lable = invoice.Total_Lable;
                     invo.Royalti_Lable = invoice.Royalti_Lable;
                     invo.Docket_Lable = invoice.Docket_Lable;
@@ -1082,7 +1115,38 @@ Select(e => new
                     invo.periodto = Convert.ToDateTime(bdateto);
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
+                    double adjustedAmount = 0;
 
+                    // Apply the same logic as your SSRS IIF condition
+                    string plus = "";
+                    double amount = 0;
+                    double netamount = invo.netamount ?? 0;
+                    double decimalPart = netamount - Math.Truncate(netamount);
+
+                    if (decimalPart >= 0.5)
+                    {
+                        adjustedAmount = Math.Round(decimalPart, 2); ;
+                        //  adjustedAmount = Math.Round(netamount, 0) - netamount; // Positive round-off
+                        plus = "plus";
+                    }
+                    else
+                    {
+                        //  adjustedAmount = netamount - Math.Round(netamount, 0); // Negative round-off
+                        adjustedAmount = Math.Round(decimalPart, 2); ; // Negative round-off
+                        plus = "minus";
+                    }
+                    if (plus== "plus")
+                    {
+                        invo.FinalNetAmount = Math.Round(Math.Round((invo.netamount ?? 0),0) + adjustedAmount, 0);
+                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+                    }
+                    else if(plus== "minus")
+                    {
+                        invo.FinalNetAmount = Math.Round(Math.Round((inv.netamount ?? 0),0) - adjustedAmount,0);
+                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+
+                    }
+                    invo.RoundOff = Math.Round(adjustedAmount,2);
                     db.Invoices.Add(invo);
                     db.SaveChanges();
 
@@ -1129,7 +1193,7 @@ Select(e => new
                     var dataset3 = db.Invoices.Where(m => m.invoiceno == invoice.invoiceno && m.Pfcode == strpfcode);
 
                     var dataset4 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
-                    dataset3.FirstOrDefault().Invoice_Lable = AmountTowords.changeToWords(dataset3.FirstOrDefault().netamount.ToString());
+                    //dataset3.FirstOrDefault().Invoice_Lable = AmountTowords.changeToWords(dataset3.FirstOrDefault().netamount.ToString());
                     
                     string clientGst = dataset4.FirstOrDefault().Gst_No;
                     string frgst = franchisee.FirstOrDefault().GstNo;

@@ -2562,7 +2562,7 @@ Select(e => new
                 }
             }
 
-            return (errorMessages.Count == 0, errorMessages);
+            return (errorMessages.Count()>0?false:true, errorMessages);
         }
         private static bool ValidateDateFormat(string dateValue, string[] formats)
         {

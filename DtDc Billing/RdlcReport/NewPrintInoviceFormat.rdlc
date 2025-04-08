@@ -1251,9 +1251,9 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=IIF(First(Fields!netamount.Value, "invoice") - Fix(First(Fields!netamount.Value, "invoice")) &gt;= 0.5,
-    "+" &amp; FormatNumber(Round(First(Fields!netamount.Value, "invoice"), 0) - First(Fields!netamount.Value, "invoice"), 2),
-    "-" &amp; FormatNumber(First(Fields!netamount.Value, "invoice") - Round(First(Fields!netamount.Value, "invoice"), 0), 2))</Value>
+                    <Value>=IIF(First(Fields!RoundOff.Value, "invoice") &gt;= 0.5, 
+     "+" &amp; FormatNumber(First(Fields!RoundOff.Value, "invoice"), 2), 
+     "-" &amp; FormatNumber(First(Fields!RoundOff.Value, "invoice"), 2))</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -1456,7 +1456,7 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>=First(Fields!Total_Lable.Value, "invoice")</Value>
+                    <Value>=First(Fields!Invoice_Lable.Value, "invoice")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                       <FontWeight>Bold</FontWeight>
@@ -1715,13 +1715,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Sum(Fields!total.Value, "invoice") + 
- Sum(Fields!fullsurchargetaxtotal.Value, "invoice") + 
- Sum(Fields!servicetaxtotal.Value, "invoice") + 
- IIF(First(Fields!netamount.Value, "invoice") - Fix(First(Fields!netamount.Value, "invoice")) &gt;= 0.5,
-     Round(First(Fields!netamount.Value, "invoice"), 0) - First(Fields!netamount.Value, "invoice"),
-     -1 * (First(Fields!netamount.Value, "invoice") - Round(First(Fields!netamount.Value, "invoice"), 0))
- )</Value>
+                    <Value>=First(Fields!FinalNetAmount.Value, "invoice")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -3923,10 +3917,34 @@
           <DataField>Amount4_Lable</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Firm_Id">
+          <DataField>Firm_Id</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="Pfcode">
+          <DataField>Pfcode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="isDelete">
+          <DataField>isDelete</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="Balance">
+          <DataField>Balance</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="FinalNetAmount">
+          <DataField>FinalNetAmount</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="RoundOff">
+          <DataField>RoundOff</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>invo</rd:DataSetName>
-        <rd:SchemaPath>D:\Fr-Billing Main\DtDc Billing\invo.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\Fr-Billing Project\FRBilling Main\FR_billing\DtDc Billing\invo.xsd</rd:SchemaPath>
         <rd:TableName>Invoice</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

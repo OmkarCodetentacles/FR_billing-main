@@ -33,7 +33,7 @@
                         <h4 class="modal-title">
                             Add Payment
 
-                           
+
                         </h4>
                     </div>
                     <div class="modal-body">
@@ -54,11 +54,11 @@
                         </ul>
 
 
-                        <div class="tab-content"> 
+                        <div class="tab-content">
                             <div id="home" class="tab-pane active">
                                 <br>
                                 <h5>
-                                    <span class="Netamount text-info "></span><span class="Balance text-danger pull-right"></span>
+                                    <span class="Netamount text-info"></span><span class="Balance text-danger pull-right"></span>
                                     <input type="hidden" class="Firm_Id">
                                 </h5>
                                 <div id="CashP">
@@ -152,148 +152,171 @@
             }
 
 
-            <div class="box-body">
-                <!-- column -->
-                <!-- Horizontal Form -->
+        <div class="box-body">
+            <!-- column -->
+            <!-- Horizontal Form -->
 
-                <table id="table_display_block" class="table Addpayment">
-                    <thead>
+            <table id="table_display_block" class="table Addpayment">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            Customer Id
+                        </th>
+
+                        <th>
+                            Invoice No
+
+                        </th>
+                        <th>
+                            Invoice Date
+                        </th>
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.periodfrom)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.periodto)
+                    </th>*@
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.total)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Royalty_charges)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Docket_charges)
+                    </th>*@
+                        <th>Sub Total</th>
+                        <th>
+                            Fuel Surcharge(%)
+                        </th>
+                        <th>
+                            Fuel Surcharge Total
+                        </th>
+                        <th>
+                            GST(%)
+                        </th>
+                        <th>
+                            GST Total
+                        </th>
+                        <th>
+                            Net Amount
+                        </th>
+                        <th>Paid</th>
+                        <th>Balance</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th></th>
-                            <th>
-                                Customer_Id
-                            </th>
+                            <td>
+                                @if (item.Balance == 0 || item.Balance <= 0) //
+                                {
+                                    <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-success addpmt open-modal-btn" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datacustid="@item.Customer_Id" data-datafirmid="@item.Firm_Id" data-target="#modal-default" data-backdrop="static" data-keyboard="false" data-bs-target="#yourModalId">
+                                        Add Payments
+                                    </button>
+                                }
+                            </td>
 
-                            <th>
-                                invoiceno
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.invoiceno)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tempInvoicedate)
+                            </td>
+                            @*<td>
+                            @Html.DisplayFor(modelItem => item.Tempdatefrom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TempdateTo)
+                        </td>*@
+                            @*<td>
+                            @Html.DisplayFor(modelItem => item.total)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Royalty_charges)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Docket_charges)
+                        </td>*@
+                            <td>
+                                @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.servicetax)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                            </td>
 
-                            </th>
-                            <th>
-                                Invoicedate
-                            </th>
-                            @*<th>
-                                    @Html.DisplayNameFor(model => model.periodfrom)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.periodto)
-                                </th>*@
-                            @*<th>
-                                    @Html.DisplayNameFor(model => model.total)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Royalty_charges)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Docket_charges)
-                                </th>*@
-                            <th>Sub Total</th>
-                            <th>
-                                FSC
-                            </th>
-                            <th>
-                                FSC Total
-                            </th>
-                            <th>
-                                GST
-                            </th>
-                            <th>
-                                GST Total
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.netamount)
-                            </th>
-                            <th>Paid</th>
-                            <th>Balance</th>
+                            <td>
+                                @*@item.netamount.Value.ToString("##")*@
+                                @(item.netamount.ToString() ?? "0")
+                            </td>
+                            <td>
+                                <b class="text-success"> @(item.paid) </b>
+                            </td>
+                            <td>
+                                <b class="text-danger">  @(item.Balance) </b>
+                            </td>
 
                         </tr>
-                    </thead>
-                    <tbody>
+                    }
+                </tbody>
+            </table>
+            <!-- /input-group -->
+            <div class="row mt-15">
+                <div class="col-sm-4 ">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary total-label">Total</button>
+                        </div>
+                            <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(x=>x.netamount)">
+                     </div>
+                </div>
+                
+                <div class="col-sm-4 ">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-success">Paid</button>
+                        </div>
+                            <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(x=>x.paid)">
 
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @if (item.Balance == 0 || item.Balance<=0) //
-                                    {
-                                        <p class="text-success"><i class="fa fa-tick"></i> Paid</p>
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-success addpmt" data-toggle="modal" data-datac="@item.invoiceno" data-dataamt="@item.netamount" data-databal="@item.paid" data-datafirmid="@item.Firm_Id" data-target="#modal-default" data-backdrop="static" data-keyboard="false">
-                                            Add Payments
-                                        </button>
-                                    }
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Customer_Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.invoiceno)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.tempInvoicedate)
-                                </td>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.Tempdatefrom)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TempdateTo)
-                                    </td>*@
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.total)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Royalty_charges)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Docket_charges)
-                                    </td>*@
-                                <td>
-                                    @(item.total + (item.Docket_charges ?? 0) + (item.Royalty_charges ?? 0) )
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.fullsurchargetax)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.servicetax)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.servicetaxtotal)
-                                </td>
-
-                                <td>
-                                    @*@item.netamount.Value.ToString("##")*@
-                                    @(item.netamount.ToString() ?? "0")
-                                </td>
-                                <td>
-                                    @(item.paid)
-                                </td>
-                                <td>
-                                    @(item.Balance)
-                                </td>
-
-
-
-
-
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                    </div>
+                </div>
+                
+                <div class="col-sm-4 ">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-danger">Balance</button>
+                        </div>
+                            <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@(Model.Sum(x=>x.netamount) - Model.Sum(x=>x.paid))">
+                         </div>
+                </div>
+               
             </div>
-
+        </div>
 
         </div>
-        <!-- /.box -->
-        <!--/.col (right) -->
-        <!-- /.row -->
+      
     </section>
-    <!-- /.content -->
-
+  
 </div>
 
 
@@ -367,10 +390,13 @@
 <script>
 
     $(document).ready(function () {
-     
+
         $(".addpmt").click(function () {
-           
+
             var d = $(this).data('datac');
+
+            var customerId = $(this).data('datacustid');
+
             var netamt = $(this).data('dataamt');
             netamt = netamt;
             var paid = $(this).data('databal');
@@ -378,16 +404,18 @@
             var Firm_Id = $(this).data('datafirmid');
 
             $('.Invoiceno').val(d);
-            $('.Firm_Id').val(Firm_Id);
-            $('.Netamount').text('Net Amount Is' + " : " + netamt);
-            $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid));
+            $('.custId').val(customerId);
 
-         
+            $('.Firm_Id').val(Firm_Id);
+            $('.Netamount').text('Net Amount Is' + " : " + netamt.toFixed(2));
+            $('.Balance').text('Balance Amount Is' + " : " + (netamt - paid).toFixed(2));
+
+
         });
         $("#modal-default .close").click(function () {
             // Clear all forms inside the modal
             $('#modal-default').find('form').each(function () {
-                this.reset();
+                resetPopupValues(); // Reset the values when the modal is opened
             });
             $(".text-danger").empty();
         })
@@ -405,7 +433,7 @@
             "bLengthChange": true,
             "bFilter": true,
             "bSort": true,
-            "bInfo": false,
+            "bInfo": true,
             "bAutoWidth": false
         });
     });
@@ -422,3 +450,35 @@
     </script>
 }
 
+
+<script>
+
+
+    $(document).ready(function () {
+        // Bind click event to the modal open button
+        $(document).on('click', '.open-modal-btn', function () {
+            // Reset form fields
+            resetModalValues();
+        });
+    });
+
+
+    function resetModalValues() {
+        // Clear all input fields in the modal
+
+        $('#Amount').val('');
+        $('#creditTotalAmt').val('');
+        $('#selectedTotal').val('');
+        $('#tempinserteddate').val('');
+        $('#C_Tds_Amount').val('');
+        $('#C_Total_Amount').val('');
+
+
+        $('#InvAmtError').text(''); // Clear error messages
+
+        deselectAll();
+        // Reset any other custom fields or logic as needed
+        console.log('Modal values reset');
+    }
+
+</script>

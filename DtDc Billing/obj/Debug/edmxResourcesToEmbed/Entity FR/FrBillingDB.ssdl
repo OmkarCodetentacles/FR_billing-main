@@ -473,6 +473,8 @@
     <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
     <Property Name="isDelete" Type="bit" />
     <Property Name="Balance" Type="float" />
+    <Property Name="FinalNetAmount" Type="float" />
+    <Property Name="RoundOff" Type="float" />
   </EntityType>
   <EntityType Name="Issue">
     <Key>
@@ -1146,6 +1148,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     <Property Name="tempdeliveredtime" Type="varchar" MaxLength="100" />
     <Property Name="IsGSTConsignment" Type="bit" />
     <Property Name="Reference" Type="varchar" MaxLength="100" />
+    <Property Name="TransportMode" Type="varchar" MaxLength="100" />
   </EntityType>
   <Association Name="Emp_Fk">
     <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
@@ -2416,7 +2419,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
     [TransactionView].[remarks] AS [remarks], 
     [TransactionView].[tempdeliveredtime] AS [tempdeliveredtime], 
     [TransactionView].[IsGSTConsignment] AS [IsGSTConsignment], 
-    [TransactionView].[Reference] AS [Reference]
+    [TransactionView].[Reference] AS [Reference], 
+    [TransactionView].[TransportMode] AS [TransportMode]
     FROM [dbo].[TransactionView] AS [TransactionView]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">

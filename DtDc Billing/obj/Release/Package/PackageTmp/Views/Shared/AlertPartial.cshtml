@@ -1,52 +1,50 @@
 ﻿<!-- _AlertPartial.cshtml -->
 @model Tuple<string, string>
-    <style>
-        .alert-error {
-           /* background-color: #f5c6cb;*/
-            border-color: #f5c6cb;
-            color: #f5c6cb;
-        }
+<style>
+    .alert-error {
+        background-color: #f5c6cb !important;
+        border-color: #f5c6cb;
+        /*color: #f5c6cb;*/
+    }
 
-        .alert-success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-        }
-        .alert-warning {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-        }
-    </style>
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert-warning {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+</style>
 @if (!string.IsNullOrEmpty(Model.Item2))
 {
-    <div class="alert alert-@Model.Item1.ToLower()">
+    var alertClass = Model.Item1 != null ? Model.Item1.ToLower() : "info"; // Default to "info" if null
+
+    <div class="alert alert-@alertClass" role="alert">
         <h6>
-            @(Model.Item1.ToLower() == "success" ? "Success!!" : "Message:")
+            @(Model.Item1.ToLower() == "success" ? "Success!!" : "Error:")
 
             <strong>
                 @Model.Item2
             </strong>
             <button type="button" class="close" data-dismiss="alert">X</button>
-        </h6>  
+        </h6>
     </div>
 
     <script>
+    $(document).ready(function () {
         // Automatically hide the alert after 5 seconds
         setTimeout(function () {
-            var alertElement = document.querySelector('.alert');
-            if (alertElement) {
-                alertElement.parentNode.removeChild(alertElement);
-            }
-        }, 10000); // Use 5000 milliseconds (5 seconds) instead of 10000
+            $('.alert').fadeOut('slow', function () {
+                $(this).remove();
+            });
+        }, 4000); // Hide after 5 seconds
 
-          var alertColor = '@((Model.Item1.ToLower() != "success") ? "red" : "")';
-        $('strong').css('color', alertColor);
-
-        // Output the color applied to the alert for debugging
-        console.log("Alert color:", $('.alert').css('color'));
+    });
     </script>
 
-  
 }
 

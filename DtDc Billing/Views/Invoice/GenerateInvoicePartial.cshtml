@@ -424,8 +424,8 @@
                                                                 htmlAttributes = new
                                                                 {
                                                                     @type = "text",
-                                                                    @class = "form-control"@*, @readonly = "readonly"*@ }
-                                                            })
+                                                                    @class = "form-control"@*, @readonly = "readonly"*@}
+        })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -442,11 +442,24 @@
                                                                 htmlAttributes = new
                                                                 {
                                                                     @type = "text",
-                                                                    @class = "form-control"@*, @readonly = "readonly"*@ }
-                                                            })
+                                                                    @class = "form-control"@*, @readonly = "readonly"*@}
+        })
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label for="other-charge" class=" control-label">Other Charge</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -472,19 +485,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <label for="other-charge" class=" control-label">Other Charge</label>
-                                                        </div>
-                                                        <div class="col-md-9">
-                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "number", @class = "form-control" } })
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                            </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="row">
@@ -940,14 +941,14 @@ var total = $('#total').val();
 var fullsurchargetax = $('#fullsurchargetaxtotal').val();
 var Royalty_charges = $('#Royalty_charges').val();
     var Docket_charges = $('#Docket_charges').val();
-
+    var othercharges = $("#othercharge").val();
     var gst = $('#servicetax').val();
 
-var gst_total = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges);
+    var gst_total = parseFloat("0" + total) + parseFloat("0" + fullsurchargetax) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + othercharges);
 
     var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
 
-$('#servicetaxtotal').val(percamount);
+    $('#servicetaxtotal').val(percamount.toFixed(2));
 
 }
 
