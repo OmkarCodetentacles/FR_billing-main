@@ -1002,36 +1002,7 @@ Select(e => new
                     invoice.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
                     double adjustedAmount = 0;
 
-                    //// Apply the same logic as your SSRS IIF condition
-                    //string plus = "";
-                    //double amount = 0;
-                    //double netamount = invo.netamount ?? 0;
-                    //double decimalPart = netamount - Math.Truncate(netamount);
-                    //double finalnetamount = Math.Round(netamount);
-                    //if (decimalPart >= 0.5)
-                    //{
-                    //    adjustedAmount =Math.Round( decimalPart,2); 
-                    //  //  adjustedAmount = Math.Round(netamount, 0) - netamount; // Positive round-off
-                    //    plus = "plus";
-                    //}
-                    //else
-                    //{
-                    //  //  adjustedAmount = netamount - Math.Round(netamount, 0); // Negative round-off
-                    //    adjustedAmount = Math.Round(decimalPart, 2); ; // Negative round-off
-                    //    plus = "minus";
-                    //}
-
-                    //if (plus == "plus")
-                    //{
-                    //    invo.FinalNetAmount =Math.Round(finalnetamount);
-                    //    invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
-                    //}
-                    //else if (plus == "minus")
-                    //{
-                    //    invo.FinalNetAmount =Math.Round( finalnetamount );
-                    //    invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
-
-                    //}
+                   
                     double netamount = invo.netamount ?? 0;
                     double roundedAmount = Math.Round(netamount, 0);           // Round to nearest integer
                     double decimalPart = Math.Round(netamount - Math.Truncate(netamount), 2);  // Get decimal part
@@ -1044,7 +1015,6 @@ Select(e => new
                         adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
                         invo.FinalNetAmount = roundedAmount;
                         invo.FinalNetAmount = netamount+adjustedAmount;
-                        plusOrMinus = "plus";
                     }
                     else
                     {
@@ -1052,7 +1022,6 @@ Select(e => new
                         adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
                         invo.FinalNetAmount = roundedAmount;
                         invo.FinalNetAmount = roundedAmount-adjustedAmount;
-                        plusOrMinus = "minus";
                     }
 
                     // For your label (convert final amount to words)
@@ -1144,36 +1113,27 @@ Select(e => new
                     invo.Pfcode = strpfcode;
                     double adjustedAmount = 0;
 
-                    // Apply the same logic as your SSRS IIF condition
-                    string plus = "";
-                    double amount = 0;
                     double netamount = invo.netamount ?? 0;
-                    double decimalPart = netamount - Math.Truncate(netamount);
+                    double roundedAmount = Math.Round(netamount, 0);           // Round to nearest integer
+                    double decimalPart = Math.Round(netamount - Math.Truncate(netamount), 2);  // Get decimal part
+                    string plusOrMinus;
 
+                    // Calculate adjusted amount
                     if (decimalPart >= 0.5)
                     {
-                        adjustedAmount = Math.Round(decimalPart, 2); ;
-                        //  adjustedAmount = Math.Round(netamount, 0) - netamount; // Positive round-off
-                        plus = "plus";
+                        // Round up, positive adjustment
+                        adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        invo.FinalNetAmount = netamount + adjustedAmount;
                     }
                     else
                     {
-                        //  adjustedAmount = netamount - Math.Round(netamount, 0); // Negative round-off
-                        adjustedAmount = Math.Round(decimalPart, 2); ; // Negative round-off
-                        plus = "minus";
+                        // Round down, negative adjustment
+                        adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        invo.FinalNetAmount = roundedAmount - adjustedAmount;
                     }
-                    if (plus== "plus")
-                    {
-                        invo.FinalNetAmount = Math.Round((invo.netamount ?? 0),0 /*+ adjustedAmount, 0*/);
-                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
-                    }
-                    else if(plus== "minus")
-                    {
-                        invo.FinalNetAmount = Math.Round((invo.netamount ?? 0),0 /*- adjustedAmount,0*/);
-                        invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
-
-                    }
-                    invo.RoundOff = Math.Round(adjustedAmount,2);
+                    invo.RoundOff = adjustedAmount;
                     db.Invoices.Add(invo);
                     db.SaveChanges();
 
