@@ -2206,7 +2206,7 @@ Select(e => new
           
             foreach (var i in Companies)
             {
-                var invoi = db.Invoices.Where(m => m.tempInvoicedate == invoice.tempInvoicedate && m.Pfcode == strpfcode && m.Customer_Id == i).FirstOrDefault();
+                var invoi = db.Invoices.Where(m => m.tempInvoicedate == invoice.tempInvoicedate && m.Pfcode == strpfcode && m.Customer_Id == i && m.isDelete==false).FirstOrDefault();
 
                 if (invoi == null)
                 {
