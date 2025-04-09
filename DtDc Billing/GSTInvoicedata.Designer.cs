@@ -343,6 +343,10 @@ namespace DtDc_Billing {
             
             private global::System.Data.DataColumn columnisDelete;
             
+            private global::System.Data.DataColumn columnFinalNetAmount;
+            
+            private global::System.Data.DataColumn columnRoundOff;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public GSTInvoiceDataTable() {
@@ -634,6 +638,22 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn FinalNetAmountColumn {
+                get {
+                    return this.columnFinalNetAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn RoundOffColumn {
+                get {
+                    return this.columnRoundOff;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -700,7 +720,9 @@ namespace DtDc_Billing {
                         string Royalti_Lable, 
                         string Docket_Lable, 
                         string Pfcode, 
-                        bool isDelete) {
+                        bool isDelete, 
+                        double FinalNetAmount, 
+                        double RoundOff) {
                 GSTInvoiceRow rowGSTInvoiceRow = ((GSTInvoiceRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -734,7 +756,9 @@ namespace DtDc_Billing {
                         Royalti_Lable,
                         Docket_Lable,
                         Pfcode,
-                        isDelete};
+                        isDelete,
+                        FinalNetAmount,
+                        RoundOff};
                 rowGSTInvoiceRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowGSTInvoiceRow);
                 return rowGSTInvoiceRow;
@@ -796,6 +820,8 @@ namespace DtDc_Billing {
                 this.columnDocket_Lable = base.Columns["Docket_Lable"];
                 this.columnPfcode = base.Columns["Pfcode"];
                 this.columnisDelete = base.Columns["isDelete"];
+                this.columnFinalNetAmount = base.Columns["FinalNetAmount"];
+                this.columnRoundOff = base.Columns["RoundOff"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -865,6 +891,10 @@ namespace DtDc_Billing {
                 base.Columns.Add(this.columnPfcode);
                 this.columnisDelete = new global::System.Data.DataColumn("isDelete", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnisDelete);
+                this.columnFinalNetAmount = new global::System.Data.DataColumn("FinalNetAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFinalNetAmount);
+                this.columnRoundOff = new global::System.Data.DataColumn("RoundOff", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRoundOff);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnIN_Id}, true));
                 this.columnIN_Id.AutoIncrement = true;
@@ -1536,6 +1566,38 @@ namespace DtDc_Billing {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double FinalNetAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableGSTInvoice.FinalNetAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FinalNetAmount\' in table \'GSTInvoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGSTInvoice.FinalNetAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double RoundOff {
+                get {
+                    try {
+                        return ((double)(this[this.tableGSTInvoice.RoundOffColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RoundOff\' in table \'GSTInvoice\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableGSTInvoice.RoundOffColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsinvoicenoNull() {
                 return this.IsNull(this.tableGSTInvoice.invoicenoColumn);
             }
@@ -1905,6 +1967,30 @@ namespace DtDc_Billing {
             public void SetisDeleteNull() {
                 this[this.tableGSTInvoice.isDeleteColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsFinalNetAmountNull() {
+                return this.IsNull(this.tableGSTInvoice.FinalNetAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetFinalNetAmountNull() {
+                this[this.tableGSTInvoice.FinalNetAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRoundOffNull() {
+                return this.IsNull(this.tableGSTInvoice.RoundOffColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetRoundOffNull() {
+                this[this.tableGSTInvoice.RoundOffColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -2098,6 +2184,8 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             tableMapping.ColumnMappings.Add("Docket_Lable", "Docket_Lable");
             tableMapping.ColumnMappings.Add("Pfcode", "Pfcode");
             tableMapping.ColumnMappings.Add("isDelete", "isDelete");
+            tableMapping.ColumnMappings.Add("FinalNetAmount", "FinalNetAmount");
+            tableMapping.ColumnMappings.Add("RoundOff", "RoundOff");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
@@ -2106,7 +2194,7 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IN_Id", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IN_Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [GSTInvoice] ([invoiceno], [invoicedate], [periodfrom], [periodto], [total], [fullsurchargetax], [fullsurchargetaxtotal], [servicetax], [servicetaxtotal], [othercharge], [netamount], [Customer_Id], [annyear], [paid], [status], [discount], [discountper], [discountamount], [servicecharges], [Royalty_charges], [Docket_charges], [Tempdatefrom], [TempdateTo], [tempInvoicedate], [Address], [Invoice_Lable], [Total_Lable], [Royalti_Lable], [Docket_Lable], [Pfcode], [isDelete]) VALUES (@invoiceno, @invoicedate, @periodfrom, @periodto, @total, @fullsurchargetax, @fullsurchargetaxtotal, @servicetax, @servicetaxtotal, @othercharge, @netamount, @Customer_Id, @annyear, @paid, @status, @discount, @discountper, @discountamount, @servicecharges, @Royalty_charges, @Docket_charges, @Tempdatefrom, @TempdateTo, @tempInvoicedate, @Address, @Invoice_Lable, @Total_Lable, @Royalti_Lable, @Docket_Lable, @Pfcode, @isDelete)";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [GSTInvoice] ([invoiceno], [invoicedate], [periodfrom], [periodto], [total], [fullsurchargetax], [fullsurchargetaxtotal], [servicetax], [servicetaxtotal], [othercharge], [netamount], [Customer_Id], [annyear], [paid], [status], [discount], [discountper], [discountamount], [servicecharges], [Royalty_charges], [Docket_charges], [Tempdatefrom], [TempdateTo], [tempInvoicedate], [Address], [Invoice_Lable], [Total_Lable], [Royalti_Lable], [Docket_Lable], [Pfcode], [isDelete], [FinalNetAmount], [RoundOff]) VALUES (@invoiceno, @invoicedate, @periodfrom, @periodto, @total, @fullsurchargetax, @fullsurchargetaxtotal, @servicetax, @servicetaxtotal, @othercharge, @netamount, @Customer_Id, @annyear, @paid, @status, @discount, @discountper, @discountamount, @servicecharges, @Royalty_charges, @Docket_charges, @Tempdatefrom, @TempdateTo, @tempInvoicedate, @Address, @Invoice_Lable, @Total_Lable, @Royalti_Lable, @Docket_Lable, @Pfcode, @isDelete, @FinalNetAmount, @RoundOff)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoiceno", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoiceno", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoicedate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -2139,9 +2227,11 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Pfcode", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Pfcode", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@isDelete", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "isDelete", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FinalNetAmount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FinalNetAmount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RoundOff", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RoundOff", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [GSTInvoice] SET [invoiceno] = @invoiceno, [invoicedate] = @invoicedate, [periodfrom] = @periodfrom, [periodto] = @periodto, [total] = @total, [fullsurchargetax] = @fullsurchargetax, [fullsurchargetaxtotal] = @fullsurchargetaxtotal, [servicetax] = @servicetax, [servicetaxtotal] = @servicetaxtotal, [othercharge] = @othercharge, [netamount] = @netamount, [Customer_Id] = @Customer_Id, [annyear] = @annyear, [paid] = @paid, [status] = @status, [discount] = @discount, [discountper] = @discountper, [discountamount] = @discountamount, [servicecharges] = @servicecharges, [Royalty_charges] = @Royalty_charges, [Docket_charges] = @Docket_charges, [Tempdatefrom] = @Tempdatefrom, [TempdateTo] = @TempdateTo, [tempInvoicedate] = @tempInvoicedate, [Address] = @Address, [Invoice_Lable] = @Invoice_Lable, [Total_Lable] = @Total_Lable, [Royalti_Lable] = @Royalti_Lable, [Docket_Lable] = @Docket_Lable, [Pfcode] = @Pfcode, [isDelete] = @isDelete WHERE (([IN_Id] = @Original_IN_Id))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [GSTInvoice] SET [invoiceno] = @invoiceno, [invoicedate] = @invoicedate, [periodfrom] = @periodfrom, [periodto] = @periodto, [total] = @total, [fullsurchargetax] = @fullsurchargetax, [fullsurchargetaxtotal] = @fullsurchargetaxtotal, [servicetax] = @servicetax, [servicetaxtotal] = @servicetaxtotal, [othercharge] = @othercharge, [netamount] = @netamount, [Customer_Id] = @Customer_Id, [annyear] = @annyear, [paid] = @paid, [status] = @status, [discount] = @discount, [discountper] = @discountper, [discountamount] = @discountamount, [servicecharges] = @servicecharges, [Royalty_charges] = @Royalty_charges, [Docket_charges] = @Docket_charges, [Tempdatefrom] = @Tempdatefrom, [TempdateTo] = @TempdateTo, [tempInvoicedate] = @tempInvoicedate, [Address] = @Address, [Invoice_Lable] = @Invoice_Lable, [Total_Lable] = @Total_Lable, [Royalti_Lable] = @Royalti_Lable, [Docket_Lable] = @Docket_Lable, [Pfcode] = @Pfcode, [isDelete] = @isDelete, [FinalNetAmount] = @FinalNetAmount, [RoundOff] = @RoundOff WHERE (([IN_Id] = @Original_IN_Id))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoiceno", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoiceno", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@invoicedate", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "invoicedate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -2174,6 +2264,8 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Docket_Lable", global::System.Data.SqlDbType.VarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Docket_Lable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Pfcode", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Pfcode", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@isDelete", global::System.Data.SqlDbType.Bit, 0, global::System.Data.ParameterDirection.Input, 0, 0, "isDelete", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FinalNetAmount", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FinalNetAmount", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RoundOff", global::System.Data.SqlDbType.Float, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RoundOff", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_IN_Id", global::System.Data.SqlDbType.BigInt, 0, global::System.Data.ParameterDirection.Input, 0, 0, "IN_Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
@@ -2304,7 +2396,9 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
                     string Royalti_Lable, 
                     string Docket_Lable, 
                     string Pfcode, 
-                    global::System.Nullable<bool> isDelete) {
+                    global::System.Nullable<bool> isDelete, 
+                    global::System.Nullable<double> FinalNetAmount, 
+                    global::System.Nullable<double> RoundOff) {
             if ((invoiceno == null)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
@@ -2491,6 +2585,18 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             else {
                 this.Adapter.InsertCommand.Parameters[30].Value = global::System.DBNull.Value;
             }
+            if ((FinalNetAmount.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[31].Value = ((double)(FinalNetAmount.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[31].Value = global::System.DBNull.Value;
+            }
+            if ((RoundOff.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[32].Value = ((double)(RoundOff.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -2543,6 +2649,8 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
                     string Docket_Lable, 
                     string Pfcode, 
                     global::System.Nullable<bool> isDelete, 
+                    global::System.Nullable<double> FinalNetAmount, 
+                    global::System.Nullable<double> RoundOff, 
                     long Original_IN_Id) {
             if ((invoiceno == null)) {
                 this.Adapter.UpdateCommand.Parameters[0].Value = global::System.DBNull.Value;
@@ -2730,7 +2838,19 @@ namespace DtDc_Billing.GSTInvoicedataTableAdapters {
             else {
                 this.Adapter.UpdateCommand.Parameters[30].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[31].Value = ((long)(Original_IN_Id));
+            if ((FinalNetAmount.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[31].Value = ((double)(FinalNetAmount.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[31].Value = global::System.DBNull.Value;
+            }
+            if ((RoundOff.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[32].Value = ((double)(RoundOff.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[33].Value = ((long)(Original_IN_Id));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {

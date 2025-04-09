@@ -779,7 +779,7 @@ namespace DtDc_Billing.Controllers
         }
 
         public JsonResult InvoiceTableWithoutGST(string CustomerId, string Tempdatefrom, string TempdateTo,string ModelInvoiceNo)
-        {
+      {
             string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
 
@@ -999,7 +999,7 @@ Select(e => new
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
                     invo.isDelete = false;
-                    invoice.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
+                    invo.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
                     double adjustedAmount = 0;
 
                    
@@ -1014,18 +1014,18 @@ Select(e => new
                         // Round up, positive adjustment
                         adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
                         invo.FinalNetAmount = roundedAmount;
-                        invo.FinalNetAmount = netamount+adjustedAmount;
+                        //invo.FinalNetAmount = netamount+adjustedAmount;
                     }
                     else
                     {
                         // Round down, negative adjustment
                         adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
                         invo.FinalNetAmount = roundedAmount;
-                        invo.FinalNetAmount = roundedAmount-adjustedAmount;
+                       // invo.FinalNetAmount = roundedAmount-adjustedAmount;
                     }
 
                     // For your label (convert final amount to words)
-                    invo.Invoice_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+                    invo.Total_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
 
                 
                     invo.RoundOff =adjustedAmount;
@@ -1124,16 +1124,17 @@ Select(e => new
                         // Round up, positive adjustment
                         adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
                         invo.FinalNetAmount = roundedAmount;
-                        invo.FinalNetAmount = netamount + adjustedAmount;
+                       // invo.FinalNetAmount = netamount + adjustedAmount;
                     }
                     else
                     {
                         // Round down, negative adjustment
                         adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
                         invo.FinalNetAmount = roundedAmount;
-                        invo.FinalNetAmount = roundedAmount - adjustedAmount;
+                        //invo.FinalNetAmount = roundedAmount - adjustedAmount;
                     }
                     invo.RoundOff = adjustedAmount;
+                    invo.Total_Lable= AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
                     db.Invoices.Add(invo);
                     db.SaveChanges();
 
@@ -4774,7 +4775,40 @@ Select(e => new
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
                     invo.isDelete = false;
-                    invoice.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
+
+                    double adjustedAmount = 0;
+
+
+                    double netamount = invo.netamount ?? 0;
+                    double roundedAmount = Math.Round(netamount, 0);           // Round to nearest integer
+                    double decimalPart = Math.Round(netamount - Math.Truncate(netamount), 2);  // Get decimal part
+                    string plusOrMinus;
+
+                    // Calculate adjusted amount
+                    if (decimalPart >= 0.5)
+                    {
+                        // Round up, positive adjustment
+                        adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        //invo.FinalNetAmount = netamount + adjustedAmount;
+                    }
+                    else
+                    {
+                        // Round down, negative adjustment
+                        adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        //invo.FinalNetAmount = roundedAmount - adjustedAmount;
+                    }
+
+                    // For your label (convert final amount to words)
+                    invo.Total_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+
+
+                    invo.RoundOff = adjustedAmount;
+
+
+
+                    invo.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
                     db.Entry(inv).State = EntityState.Detached;
                     db.Entry(invo).State = EntityState.Modified;
                     db.SaveChanges();
@@ -4911,7 +4945,35 @@ Select(e => new
                     invo.periodto = Convert.ToDateTime(bdateto);
                     invo.invoicedate = Convert.ToDateTime(invdate);
                     invo.Pfcode = strpfcode;
+                    double adjustedAmount = 0;
 
+
+                    double netamount = invo.netamount ?? 0;
+                    double roundedAmount = Math.Round(netamount, 0);           // Round to nearest integer
+                    double decimalPart = Math.Round(netamount - Math.Truncate(netamount), 2);  // Get decimal part
+                    string plusOrMinus;
+
+                    // Calculate adjusted amount
+                    if (decimalPart >= 0.5)
+                    {
+                        // Round up, positive adjustment
+                        adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        //.FinalNetAmount = netamount + adjustedAmount;
+                    }
+                    else
+                    {
+                        // Round down, negative adjustment
+                        adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
+                        invo.FinalNetAmount = roundedAmount;
+                        //invo.FinalNetAmount = roundedAmount - adjustedAmount;
+                    }
+
+                    // For your label (convert final amount to words)
+                    invo.Total_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());
+
+
+                    invo.RoundOff = adjustedAmount;
 
 
                     db.GSTInvoices.Add(invo);

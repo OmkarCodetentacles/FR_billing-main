@@ -404,6 +404,8 @@
           <Property Name="Docket_Lable" Type="varchar(max)" />
           <Property Name="Pfcode" Type="nvarchar" MaxLength="50" />
           <Property Name="isDelete" Type="bit" />
+          <Property Name="FinalNetAmount" Type="float" />
+          <Property Name="RoundOff" Type="float" />
         </EntityType>
         <EntityType Name="GSTInvoiceConsignments">
           <Key>
@@ -3203,6 +3205,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Name="Docket_Lable" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Pfcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="isDelete" Type="Boolean" />
+          <Property Name="FinalNetAmount" Type="Double" />
+          <Property Name="RoundOff" Type="Double" />
         </EntityType>
         <EntityType Name="GSTInvoiceConsignment">
           <Key>
@@ -6479,6 +6483,8 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="GSTInvoices">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.GSTInvoice">
               <MappingFragment StoreEntitySet="GSTInvoice">
+                <ScalarProperty Name="RoundOff" ColumnName="RoundOff" />
+                <ScalarProperty Name="FinalNetAmount" ColumnName="FinalNetAmount" />
                 <ScalarProperty Name="IN_Id" ColumnName="IN_Id" />
                 <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
                 <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
