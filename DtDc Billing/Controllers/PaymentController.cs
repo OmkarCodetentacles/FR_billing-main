@@ -1952,5 +1952,94 @@ Select(e => new
             return Json(customerData, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetCustomerCreditReportForthePrint(string id)
+        {
+            var customerData = db.PartyPaymentDetails
+               .Where(p => p.CustomerId == id).ToList()
+               .Select(p => new 
+               {
+                   CustomerId = p.CustomerId,
+                   PaidAmount = p.PaidAmount ?? 0,
+                   BalanceAmount = p.BalanceAmount ?? 0,
+                   PaymentDate = p.PaymentDate != null ? p.PaymentDate.Value.ToString("dd/MM/yyyy") : "-"
+               });
+
+            if (customerData == null || !customerData.Any())
+            {
+                return null;
+            }
+            LocalReport lr = new LocalReport();
+
+            var CompanyId = id;
+
+
+            Company company = db.Companies.Where(m => m.Company_Id == CompanyId).FirstOrDefault();
+
+        
+            string Pfcode = company.Pf_code;
+
+                     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                                           Request.ApplicationPath.TrimEnd('/');
+
+            var dataset = db.Franchisees.Where(m => m.PF_Code == Pfcode).ToList();
+            dataset.FirstOrDefault().LogoFilePath = (dataset.FirstOrDefault().LogoFilePath == null || dataset.FirstOrDefault().LogoFilePath == "") ? baseurl + "/assets/Dtdclogo.png" : dataset.FirstOrDefault().LogoFilePath;
+
+            var dataset1 = db.Companies.Where(m => m.Company_Id == CompanyId).ToList();
+         
+            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "GetCustomerCreditReport.rdlc");
+
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+
+            lr.Refresh();
+
+            lr.EnableExternalImages = true;
+
+            ReportDataSource rd = new ReportDataSource("DataSet", dataset);
+            ReportDataSource rd1 = new ReportDataSource("DataSet1", dataset1);
+            ReportDataSource rd2 = new ReportDataSource("DataSet2", customerData);
+            
+         
+            lr.Refresh();
+
+            lr.DataSources.Add(rd);
+            lr.DataSources.Add(rd1);
+            lr.DataSources.Add(rd2);
+         
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+            string fileNameExte;
+
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                "<PageHeight>11in</PageHeight>" +
+               "<Margintop>0.1in</Margintop>" +
+                 "<Marginleft>0.1in</Marginleft>" +
+                  "<Marginright>0.1in</Marginright>" +
+                   "<Marginbottom>0.5in</Marginbottom>" +
+                   "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderByte;
+            //try
+            //{
+            renderByte = lr.Render
+    (reportType,
+    deviceInfo,
+    out mimeType,
+    out encoding,
+    out fileNameExte,
+    out streams,
+    out warnings
+    );
+
+            return File(renderByte, mimeType);
+            
+        }
     }
 }
