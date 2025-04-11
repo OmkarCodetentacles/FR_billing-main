@@ -11,6 +11,7 @@ namespace DtDc_Billing.Metadata_Classes
     public class TransactionMetadata
     {
         public long T_id { get; set; }
+        public int SrNo { get; set; }
 
         [Display(Name = "Customer Id")]
         [Required]

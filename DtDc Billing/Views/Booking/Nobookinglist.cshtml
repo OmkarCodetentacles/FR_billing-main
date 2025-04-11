@@ -58,64 +58,150 @@
 
 
 
+                            @*@using (Html.BeginForm())
+        {
+
+            if (ViewBag.fromdate != null)
+            {
+                <div class="col-md-2" style="padding-left:0">
+                    <div class="form-group">
+                        <label>From Date <span style="color:red">*</span> : </label>
+                        <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="" required>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-2" style="padding-left:0">
+                    <div class="form-group">
+                        <label>From Date <span style="color:red">*</span> : </label>
+                        <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style=" " required>
+                    </div>
+                </div>
+            }
+
+            if (ViewBag.todate != null)
+            {
+                <div class="col-md-2" style="padding-left:0">
+                    <div class="form-group">
+                        <label>From Date <span style="color:red">*</span> : </label>
+
+                        <input value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-2" style="padding-left:0">
+                    <div class="form-group">
+                        <label>To Date <span style="color:red">*</span> : </label>
+                        <input name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                    </div>
+                </div>
+            }
+
+            <div class="col-md-1" style=" margin-top: 23px; ">
+                <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="Show" value="Show" style="width:100%" />
+
+            </div>
+            <div class="col-md-1" style=" margin-top: 23px; ">
+                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+
+            </div>
+            <div class="col-md-1" style=" margin-top: 23px; margin-left:40px;" >
+                <input type="submit" value="Export First Format" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+
+            </div>
+            <div class="col-md-1" style=" margin-top: 23px; margin-left: 60px; ">
+                <input type="submit" value="Export Second Format" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+
+            </div>
+            <div class="col-md-1" style=" margin-top: 23px; margin-left: 80px; ">
+                <input type="submit" value="Export Third Format" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+
+            </div>
+
+        }*@
                             @using (Html.BeginForm())
                             {
-
-                                if (ViewBag.fromdate != null)
-                                {
-                                    <div class="col-md-3" style="padding-left:0">
+                                <div class="row">
+                                    <!-- From Date -->
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>From Date <span style="color:red">*</span> : </label>
-                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="" required>
+                                            <label>From Date <span style="color:red">*</span>:</label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker"
+                                                   type="text" value="@(ViewBag.fromdate ?? String.Empty)" required />
                                         </div>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3" style="padding-left:0">
+
+                                    <!-- To Date -->
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>From Date <span style="color:red">*</span> : </label>
-                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style=" " required>
+                                            <label>To Date <span style="color:red">*</span>:</label>
+                                            <input name="ToDatetime" class="form-control" id="datepicker1"
+                                                   type="text" value="@(ViewBag.todate ?? String.Empty)" required />
                                         </div>
                                     </div>
-                                }
 
-                                if (ViewBag.todate != null)
-                                {
-                                    <div class="col-md-3" style="padding-left:0">
-                                        <div class="form-group">
-                                            <label>From Date <span style="color:red">*</span> : </label>
-
-                                            <input value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                    <!-- Show Button -->
+                                    <div class="col-md-1">
+                                        <div class="form-group" style="margin-top:23px;">
+                                            <input type="submit" name="Show" value="Show"
+                                                   class="btn btn-primary btn-block" />
                                         </div>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3" style="padding-left:0">
+
+
+                                    <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>To Date <span style="color:red">*</span> : </label>
-                                            <input name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                            @Html.DropDownList("ExcelFormat",
+                                           new List<SelectListItem>() {
+                                           new SelectListItem{Text="Default",Value="Default",Selected=true},
+                                           new SelectListItem{Text="First Excel Format",Value="First Excel Format"},
+                                           new SelectListItem{Text="Second Excel Format",Value="Second Excel Format"},
+                                           new SelectListItem{Text="Third Excel Format",Value="Third Excel Format"}
+
+                                           }, new { @style = "margin-top:23px;",@class="form-control" } )
                                         </div>
                                     </div>
-                                }
 
-
-
-                                @*<div class="col-md-2">
-                        @Html.DropDownList("PfCode", null, "-ALL PF-", new { @class = "form-control" })
-                    </div>*@
-
-
-                                <div class="col-md-1" style=" margin-top: 23px; ">
-                                    <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="Show" value="Show" style="width:100%" />
-
-                                </div>
-                                <div class="col-md-1" style=" margin-top: 23px; ">
-                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+                                    <!-- Export to Excel Button -->
+                                    <div class="col-md-2">
+                                        <div class="form-group" style="margin-top:23px;">
+                                            <input type="submit" name="Submit" value="Export to Excel"
+                                                   class="btn btn-success btn-block" />
+                                        </div>
+                                    </div>
 
                                 </div>
 
+
+                                    <div class="row">
+                                    <!-- Export First Format Button -->
+                                    <!--<div class="col-md-2">
+                                        <div class="form-group" style="margin-top:23px;">
+                                            <input type="submit" name="Submit" value="Export First Format"
+                                                   class="btn btn-success btn-block" />
+                                        </div>
+                                    </div>-->
+
+                                    <!-- Export Second Format Button -->
+                                    <!--<div class="col-md-2">
+                                        <div class="form-group" style="margin-top:23px;">
+                                            <input type="submit" name="Submit" value="Export Second Format"
+                                                   class="btn btn-success btn-block" />
+                                        </div>
+                                    </div>-->
+
+                                    <!-- Export Third Format Button -->
+                                    <!--<div class="col-md-2">
+                                        <div class="form-group" style="margin-top:23px;">
+                                            <input type="submit" name="Submit" value="Export Third Format"
+                                                   class="btn btn-success btn-block" />
+                                        </div>
+                                    </div>-->
+
+                                </div>
                             }
 
                         </div>

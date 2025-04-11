@@ -1033,7 +1033,7 @@ Select(e => new
         }
 
         [HttpPost]
-        public ActionResult Nobookinglist(string Fromdatetime, string ToDatetime, string PfCode, string Submit)
+        public ActionResult Nobookinglist(string Fromdatetime, string ToDatetime, string PfCode, string Submit,string ExcelFormat)
         {
             PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -1073,23 +1073,94 @@ Select(e => new
                (m.Pf_Code == PfCode) && (m.Customer_Id == null || m.Customer_Id == "")
                && m.isDelete == false
                     ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).ToList();
-
-
-            if (Submit == "Export to Excel")
+            if(Submit== "Export to Excel")
             {
-                //var import = db.Transactions.Where(m =>
-                //(m.Pf_Code == PfCode)&& (m.Customer_Id == null || m.Customer_Id == "")
-                //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight=x.Actual_weight, x.Pincode, x.Amount,BookingDate= x.tembookingdate }).ToList();
-                if (transactions.Count != 0)
+                if (ExcelFormat == "Default")
                 {
-                    ExportToExcelAll.ExportToExcelAdmin(transactions);
+                    //var import = db.Transactions.Where(m =>
+                    //(m.Pf_Code == PfCode)&& (m.Customer_Id == null || m.Customer_Id == "")
+                    //    ).ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderByDescending(m => m.booking_date).ThenBy(n => n.Consignment_no).Select(x => new { x.Pf_Code, x.Consignment_no, Weight=x.Actual_weight, x.Pincode, x.Amount,BookingDate= x.tembookingdate }).ToList();
+                    if (transactions.Count != 0)
+                    {
+                        ExportToExcelAll.ExportToExcelAdmin(transactions);
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "No Data Found";
+                    }
                 }
-                else
+                if (ExcelFormat == "First Excel Format")
                 {
-                    ViewBag.ErrorMessage = "No Data Found";
+                    if (transactions.Count != 0)
+                    {
+                        var import = transactions.Select((x, index) => new
+                        TransactionMetadata
+                        {
+                            SrNo = index + 1,
+                            Consignment_no = x.Consignment_no,
+                            Customer_Id = x.Customer_Id
+                        }).ToList();
+                        ExportToExcelAll.ExportFirstExcelFormat(import);
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "No Data Found";
+                    }
                 }
-            }
+                if (ExcelFormat == "Second Excel Format")
+                {
+                    if (transactions.Count != 0)
+                    {
+                        var import = transactions.Select((x, index) => new
+                        TransactionMetadata
+                        {
+                            SrNo = index + 1,
+                            Consignment_no = x.Consignment_no,
+                            Customer_Id = x.Customer_Id,
+                            chargable_weight = x.chargable_weight,
+                            Insurance = x.Insurance,
+                            BillAmount = x.BillAmount,
+                            Percentage = x.Percentage,
+                            loadingcharge = x.loadingcharge
 
+                        }).ToList();
+                        ExportToExcelAll.ExportSecondExcelFormat(import);
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "No Data Found";
+                    }
+                }
+                if (ExcelFormat == "Third Excel Format")
+                {
+                    if (transactions.Count != 0)
+                    {
+                        var import = transactions.Select((x, index) => new
+                        TransactionMetadata
+                        {
+                            SrNo = index + 1,
+                            Consignment_no = x.Consignment_no,
+                            chargable_weight = x.chargable_weight,
+                            Mode = x.Mode,
+                            compaddress = x.compaddress,
+                            Quanntity = x.Quanntity,
+                            Pincode = x.Pincode,
+                            tembookingdate = x.tembookingdate,
+                            Type_t = x.Type_t,
+                            Customer_Id = x.Customer_Id,
+                            loadingcharge = x.loadingcharge,
+                            Receiver = x.Receiver,
+                            Amount = x.Amount
+                        }).ToList();
+                        ExportToExcelAll.ExportThirdExcelFormat(import);
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "No Data Found";
+                    }
+                }
+
+            }
 
             return View(transactions);
         }
