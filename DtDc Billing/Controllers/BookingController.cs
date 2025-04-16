@@ -2013,7 +2013,7 @@ Select(e => new
                     var strpfcode = Request.Cookies["Cookies"]["AdminValue"]?.ToString();
 
                     // Step 1: Validate the Excel File
-                    var validationResult = ValidateFRPlusExcelFile(ImportExcelFile, strpfcode);
+                    var validationResult = ValidateFRPlusExcelFile(ImportExcelFile);
                     if (!validationResult.IsValid)
                     {
                         TempData["ErrorMessages"] = validationResult.Errors; // Ensure this is a List<string>
@@ -2042,7 +2042,14 @@ Select(e => new
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = "Error: " + ex.Message;
+                    if (ex.Message.Contains("Object reference not set to an instance of an object") || ex.Message.Contains("The file is not a valid Package file. If the file is encrypted, please supply the password in the constructor."))
+                    {
+                        TempData["Error"] = "Error: " + "Invalid Excel Format";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "Error: " + "Something Went Wrong";
+                    }
                     return RedirectToAction("importTextFile");
                 }
             }
@@ -2054,12 +2061,14 @@ Select(e => new
         }
 
 
-        public static (bool IsValid, List<string> Errors) ValidateFRPlusExcelFile(HttpPostedFileBase httpPostedFileBase, string strpfcode)
+        public (bool IsValid, List<string> Errors) ValidateFRPlusExcelFile(HttpPostedFileBase httpPostedFileBase)
         {
             var errorMessages = new List<string>();
             string[] dateFormats = { "dd/MM/yyyy", "dd-MM-yyyy", "dd-MMM-yyyy" };
+            HttpPostedFileBase file = httpPostedFileBase;
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"]?.ToString();
 
-            using (var package = new ExcelPackage(httpPostedFileBase.InputStream))
+            using (var package = new ExcelPackage(file.InputStream))
             {
                 var currentSheet = package.Workbook.Worksheets.FirstOrDefault();
                 if (currentSheet == null)
@@ -2069,26 +2078,86 @@ Select(e => new
                 }
 
                 var noOfRow = currentSheet.Dimension.End.Row;
-
-                for (int rowIterator = 2; rowIterator <= 2; rowIterator++)
+            
+                for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                 {
                     var errors = new List<string>();
 
+                    string Consignment_no = currentSheet.Cells[rowIterator, 2]?.Value?.ToString().Trim();
                     string pfcode = currentSheet.Cells[rowIterator, 4]?.Value?.ToString().Trim();
-                    if (strpfcode.ToLower() != pfcode.ToLower())
+                    string Actual_weight = currentSheet.Cells[rowIterator, 5]?.Value?.ToString();
+                    string Mode = currentSheet.Cells[rowIterator, 8]?.Value?.ToString();
+                    string Quanntity = currentSheet.Cells[rowIterator, 9].Value?.ToString();
+                    string Pincode = currentSheet.Cells[rowIterator, 10]?.Value?.ToString();
+                    string dateString = currentSheet.Cells[rowIterator, 11]?.Value?.ToString();
+                    string dtdcamount = currentSheet.Cells[rowIterator, 12]?.Value.ToString();
+                    string type = currentSheet.Cells[rowIterator, 17]?.Value?.ToString();
+                    string chargable_weight = currentSheet.Cells[rowIterator, 39]?.Value?.ToString();
+                    if (strpfcode!=pfcode)
                     {
-                        errors.Add("Franchisee Code is Incorrect as your Login Franchisee Code");
+                        errors.Add("Franchisee Code is Incorrect as your  Franchisee Codes");
+                        if (errors.Any())
+                            errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
+                        break;
                     }
 
+
+                    if (string.IsNullOrEmpty(Consignment_no)) errors.Add("Consignment No is required.");
+                    if (string.IsNullOrEmpty(chargable_weight) || !double.TryParse(chargable_weight, out _))
+                        errors.Add("Chargeable Weight is required and must be a valid number.");
+                    if (string.IsNullOrEmpty(Actual_weight) || !double.TryParse(Actual_weight, out _))
+                        errors.Add("Actual Weight is required and must be a valid number.");
+                    if (string.IsNullOrEmpty(Mode)) errors.Add("Mode is required.");
+                    if (string.IsNullOrEmpty(Quanntity) || !int.TryParse(Quanntity, out _))
+                        errors.Add("Quantity is required and must be a valid integer.");
+                    if (string.IsNullOrEmpty(Pincode)) errors.Add("Pincode is required.");
+                    if (!ValidateExcelDateFormat(dateString, dateFormats))
+                        errors.Add($"Invalid Date Format. Expected formats: {string.Join(", ", dateFormats)}.");
+                    if (string.IsNullOrEmpty(type)) errors.Add("Type is required.");
 
                     if (errors.Any())
                         errorMessages.Add($"Row {rowIterator}: {string.Join(", ", errors)}");
                 }
             }
 
-            return (errorMessages.Count == 0, errorMessages);
+            return (errorMessages.Count() > 0 ? false : true, errorMessages);
         }
+        private static bool ValidateExcelDateFormat(string dateValue, string[] formats)
+        {
+            if (string.IsNullOrEmpty(dateValue))
+                return false;
 
+            DateTime parsedDate;
+
+            try
+            {
+                if (double.TryParse(dateValue, out double excelDateNumber))
+                {
+
+                    parsedDate = DateTime.FromOADate(excelDateNumber);
+                    return true;
+
+                }
+
+                if (DateTime.TryParse(dateValue, out parsedDate))
+                    return true;
+
+                if (DateTime.TryParseExact(dateValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+                    return true;
+
+                if (Convert.ToDateTime(dateValue) is DateTime objDate)
+                {
+                    parsedDate = objDate;
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
         [HttpGet]
         public ActionResult AddCodTopayimporFromExcel()
         {
