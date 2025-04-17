@@ -54,6 +54,7 @@ namespace DtDc_Billing.Models
         public Nullable<long> Template { get; set; }
         public string ARN { get; set; }
 
+        public string Area { get; set; }
 
     }
 }

@@ -337,6 +337,7 @@
           <Property Name="IsGECSector" Type="bit" />
           <Property Name="Template" Type="bigint" />
           <Property Name="ARN" Type="varchar" MaxLength="100" />
+          <Property Name="Area" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="GECrate">
           <Key>
@@ -3138,6 +3139,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <NavigationProperty Name="Sendmessages" Relationship="Self.sendmasg_Fk" FromRole="Franchisee" ToRole="Sendmessage" />
           <NavigationProperty Name="wallet_History" Relationship="Self.sendwall_Fk" FromRole="Franchisee" ToRole="wallet_History" />
           <NavigationProperty Name="Users" Relationship="Self.User_Fk" FromRole="Franchisee" ToRole="Users" />
+          <Property Name="Area" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="GECrate">
           <Key>
@@ -6416,6 +6418,7 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <EntitySetMapping Name="Franchisees">
             <EntityTypeMapping TypeName="db_a92afa_frbillingModel.Franchisee">
               <MappingFragment StoreEntitySet="Franchisee">
+                <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="F_Id" ColumnName="F_Id" />
                 <ScalarProperty Name="PF_Code" ColumnName="PF_Code" />
                 <ScalarProperty Name="F_Address" ColumnName="F_Address" />

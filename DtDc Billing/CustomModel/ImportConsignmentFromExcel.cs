@@ -1296,7 +1296,6 @@ namespace DtDc_Billing.CustomModel
                                             transaction.BillAmount=tran.BillAmount;
                                             transaction.diff_weight=tran.diff_weight;
                                             transaction.Mode = tran.Mode;
-                                            transaction.compaddress = tran.compaddress;
                                             transaction.Quanntity = tran.Quanntity;
                                             transaction.Pincode = tran.Pincode;
                                             transaction.booking_date = tran.booking_date;

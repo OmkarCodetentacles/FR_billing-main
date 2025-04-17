@@ -916,6 +916,7 @@ Select(e => new
                     Destination = db.Destinations.Where(m => m.Pincode == x.Pincode).Select(m => m.Name).FirstOrDefault(),
                     Pincode = x.Pincode,
                     Address = x.compaddress,
+                    Receiver=x.receiver,
                     Type = x.Type_t,
                     x.Mode,
                     x.Amount,

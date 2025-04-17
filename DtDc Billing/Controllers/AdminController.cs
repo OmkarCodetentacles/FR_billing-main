@@ -2665,6 +2665,7 @@ namespace DtDc_Billing.Controllers
                 Fr.IsGECSector=franchisee.IsGECSector;
                     Fr.Template = franchisee.Template;
                     Fr.ARN = franchisee.ARN;
+                    Fr.Area = franchisee.Area.ToUpper();
                 //var getNewFilePath = "";
                 //if (franchisee.StampFilePath == null)
                 //{
@@ -3007,6 +3008,7 @@ namespace DtDc_Billing.Controllers
             Fr.IsGECSector = data.IsGECSector??false;
             Fr.Template = data.Template??1;
             Fr.ARN = data.ARN;
+            Fr.Area = data.Area;
             if (Fr == null)
             {
                 return HttpNotFound();
@@ -4532,6 +4534,7 @@ namespace DtDc_Billing.Controllers
                     fr.ContactNo = Pfcheck.mobileNo;
                     fr.IsGECSector = false;
                     fr.Template = 1;
+                    fr.Area = "PUNE";
                     var franchisee=db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault(); 
                     if(franchisee == null)
                     {
