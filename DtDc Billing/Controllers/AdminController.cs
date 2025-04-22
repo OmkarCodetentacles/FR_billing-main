@@ -4535,6 +4535,7 @@ namespace DtDc_Billing.Controllers
                     fr.IsGECSector = false;
                     fr.Template = 1;
                     fr.Area = "PUNE";
+                    fr.InvoiceStart = "INV";
                     var franchisee=db.Franchisees.Where(x => x.PF_Code == Pfcode).FirstOrDefault(); 
                     if(franchisee == null)
                     {
