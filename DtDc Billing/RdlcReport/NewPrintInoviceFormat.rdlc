@@ -1057,7 +1057,11 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Sum(Fields!total.Value, "invoice")+Sum(Fields!fullsurchargetaxtotal.Value, "invoice")</Value>
+                    <Value>=Sum(Fields!total.Value, "invoice") 
++ Sum(Fields!fullsurchargetaxtotal.Value, "invoice")
++ Sum(IIf(IsNothing(Fields!Docket_charges.Value), 0, Fields!Docket_charges.Value), "invoice")
++ Sum(IIf(IsNothing(Fields!othercharge.Value), 0, Fields!othercharge.Value), "invoice")
++Sum(IIf(IsNothing(Fields!Royalty_charges.Value), 0, Fields!Royalty_charges.Value), "invoice")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
