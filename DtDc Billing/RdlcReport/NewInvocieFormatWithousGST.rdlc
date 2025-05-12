@@ -952,7 +952,12 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Sum(Fields!total.Value, "invoice")+Sum(Fields!fullsurchargetaxtotal.Value, "invoice")</Value>
+                    <Value>=Sum(Fields!total.Value, "invoice")
++Sum(Fields!fullsurchargetaxtotal.Value, "invoice")
+
++ Sum(IIf(IsNothing(Fields!Docket_charges.Value), 0, Fields!Docket_charges.Value), "invoice")
++ Sum(IIf(IsNothing(Fields!othercharge.Value), 0, Fields!othercharge.Value), "invoice")
++Sum(IIf(IsNothing(Fields!Royalty_charges.Value), 0, Fields!Royalty_charges.Value), "invoice")</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -1747,7 +1752,7 @@
           </Textbox>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>0.25in</Top>
+        <Top>0.20833in</Top>
         <Left>0.20966in</Left>
         <Height>7.98578in</Height>
         <Width>7.08762in</Width>
@@ -3442,8 +3447,8 @@
         </PageBreak>
         <Top>8.36384in</Top>
         <Left>0.15595in</Left>
-        <Height>0.67479in</Height>
-        <Width>7.14132in</Width>
+        <Height>0.67478in</Height>
+        <Width>7.1413in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
