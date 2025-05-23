@@ -1137,9 +1137,12 @@ namespace DtDc_Billing.CustomModel
                                         tran.Quanntity = workSheet.Cells[rowIterator, 9] != null
                                        ? Convert.ToInt16(workSheet.Cells[rowIterator, 9]?.Value)
                                        : transaction.Quanntity;
-                                        tran.Pincode = workSheet.Cells[rowIterator, 10] != null
-                                               ? workSheet.Cells[rowIterator, 10]?.Value?.ToString()
-                                               : transaction.Pincode;
+                                        //tran.Pincode = workSheet.Cells[rowIterator, 10] != null
+                                        //       ? workSheet.Cells[rowIterator, 10]?.Value?.ToString()
+                                        //       : transaction.Pincode;
+                                        var PinValue = workSheet.Cells[rowIterator, 10]?.Value?.ToString();
+                                        tran.Pincode = !string.IsNullOrWhiteSpace(PinValue) ? PinValue : "000000";
+
                                         tran.dtdcamount = workSheet.Cells[rowIterator, 12] != null
                                        ? Convert.ToDouble(workSheet.Cells[rowIterator, 12]?.Value)
                                        : transaction.dtdcamount;

@@ -2089,7 +2089,7 @@ Select(e => new
                     string Actual_weight = currentSheet.Cells[rowIterator, 5]?.Value?.ToString();
                     string Mode = currentSheet.Cells[rowIterator, 8]?.Value?.ToString();
                     string Quanntity = currentSheet.Cells[rowIterator, 9].Value?.ToString();
-                    string Pincode = currentSheet.Cells[rowIterator, 10]?.Value?.ToString();
+                   // string Pincode = currentSheet.Cells[rowIterator, 10]?.Value?.ToString();
                     string dateString = currentSheet.Cells[rowIterator, 11]?.Value?.ToString();
                     string dtdcamount = currentSheet.Cells[rowIterator, 12]?.Value.ToString();
                     string type = currentSheet.Cells[rowIterator, 17]?.Value?.ToString();
@@ -2111,7 +2111,7 @@ Select(e => new
                     if (string.IsNullOrEmpty(Mode)) errors.Add("Mode is required.");
                     if (string.IsNullOrEmpty(Quanntity) || !int.TryParse(Quanntity, out _))
                         errors.Add("Quantity is required and must be a valid integer.");
-                    if (string.IsNullOrEmpty(Pincode)) errors.Add("Pincode is required.");
+                 //   if (string.IsNullOrEmpty(Pincode)) errors.Add("Pincode is required.");
                     if (!ValidateExcelDateFormat(dateString, dateFormats))
                         errors.Add($"Invalid Date Format. Expected formats: {string.Join(", ", dateFormats)}.");
                     if (string.IsNullOrEmpty(type)) errors.Add("Type is required.");
