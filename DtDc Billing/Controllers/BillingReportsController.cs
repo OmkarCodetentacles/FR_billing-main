@@ -560,6 +560,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status,string Submit)
         {
+
            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
      Request.ApplicationPath.TrimEnd('/');
@@ -578,7 +579,7 @@ namespace DtDc_Billing.Controllers
                 }
             }
             ViewBag.select = status;
-
+          
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
@@ -876,7 +877,102 @@ namespace DtDc_Billing.Controllers
                 }
             }
 
-                if (Submit == "Print" || Submit == "Send mail")
+
+            if (Submit == "Print Without GST")
+            {
+                newObj = db.getCreditorsInvoiceWithTDSWithoutGSTAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                {
+                    invoicedate = x.invoicedate,
+                    invoiceno = x.invoiceno,
+                    periodfrom = x.periodfrom,
+                    periodto = x.periodto,
+                    total = x.total,
+                    fullsurchargetax = x.fullsurchargetax,
+                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                    servicetax = x.servicetax,
+                    servicetaxtotal = x.servicetaxtotal,
+                    Customer_Id = x.Customer_Id,
+                    CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+
+                    netamount = x.netamount,
+                    paid = x.paid ?? 0,
+                    discountper = x.discountper ?? 0,
+                    discountamount = x.discountamount ?? 0,
+                    balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                    TdsAmount = x.TdsAmount ?? 0,
+                    TotalAmount = x.TotalAmount ?? 0
+
+                }).ToList().OrderBy(x => x.invoicedate).ToList();
+
+                var DataSet1 = newObj.Where(x => customerid == x.Customer_Id).OrderBy(x => x.invoicedate).ToList();
+                if (DataSet1.Count() > 0)
+                {
+                    var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
+                    var pfcode1 = DataSet2.FirstOrDefault().Pf_code;
+                    var DataSet3 = db.Franchisees.Where(m => m.PF_Code == pfcode1).ToList();
+                    DataSet3.FirstOrDefault().LogoFilePath = (DataSet3.FirstOrDefault().LogoFilePath == null || DataSet3.FirstOrDefault().LogoFilePath == "") ? baseurl + "/assets/Dtdclogo.png" : DataSet3.FirstOrDefault().LogoFilePath;
+
+                    LocalReport lr = new LocalReport();
+
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "PaymentOutstanding.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+
+
+                    ReportDataSource rd1 = new ReportDataSource("DataSet3", DataSet3);
+                    ReportDataSource rd2 = new ReportDataSource("DataSet1", DataSet1);
+                    ReportDataSource rd3 = new ReportDataSource("DataSet2", DataSet2);
+                    ReportDataSource rd4 = new ReportDataSource("DataSet4", DataSet1);
+
+                    lr.DataSources.Add(rd1);
+                    lr.DataSources.Add(rd2);
+                    lr.DataSources.Add(rd3);
+                    lr.DataSources.Add(rd4);
+                    string reportType = "pdf";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
+
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                       "<Margintop>0.1in</Margintop>" +
+                         "<Marginleft>0.1in</Marginleft>" +
+                          "<Marginright>0.1in</Marginright>" +
+                           "<Marginbottom>0.5in</Marginbottom>" +
+                           "</DeviceInfo>";
+
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+
+                    renderByte = lr.Render
+                  (reportType,
+                  deviceInfo,
+                  out mimeType,
+                  out encoding,
+                  out fileNameExte,
+                  out streams,
+                  out warnings
+                  );
+
+
+                    string savePath = Server.MapPath("~/PDF/" + Custid + "-PaymentOutstanding.pdf");
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+                    }
+                    return File(renderByte, mimeType);
+                }
+
+            }
+
+            if (Submit == "Print" || Submit == "Send mail")
                 {
                     if (Custid != null && Custid != "")
                     {

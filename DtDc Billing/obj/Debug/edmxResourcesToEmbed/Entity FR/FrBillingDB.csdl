@@ -2767,6 +2767,12 @@
       <Parameter Name="FirmId" Mode="In" Type="Int64" />
       <Parameter Name="FirmName" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="getCreditorsInvoiceWithTDSWithoutGSTAmount" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSWithoutGSTAmount_Result)">
+      <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+      <Parameter Name="toDate" Mode="In" Type="DateTime" />
+      <Parameter Name="Customerid" Mode="In" Type="String" />
+      <Parameter Name="pfcode" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="dashboardData_Result">
     <Property Type="Int32" Name="openConCount" Nullable="true" />
@@ -3359,5 +3365,24 @@
     <Property Type="String" Name="receivedby" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="remarks" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="tempdeliveredtime" Nullable="true" MaxLength="100" />
+  </ComplexType>
+  <ComplexType Name="getCreditorsInvoiceWithTDSWithoutGSTAmount_Result">
+    <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+    <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+    <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+    <Property Type="Double" Name="total" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+    <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+    <Property Type="Double" Name="servicetax" Nullable="true" />
+    <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+    <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+    <Property Type="Double" Name="netamount" Nullable="true" />
+    <Property Type="Double" Name="paid" Nullable="true" />
+    <Property Type="Boolean" Name="isDelete" Nullable="true" />
+    <Property Type="Double" Name="discountper" Nullable="true" />
+    <Property Type="Double" Name="discountamount" Nullable="true" />
+    <Property Type="Double" Name="TdsAmount" Nullable="true" />
+    <Property Type="Double" Name="TotalAmount" Nullable="true" />
   </ComplexType>
 </Schema>

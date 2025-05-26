@@ -2097,6 +2097,12 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Parameter Name="Customerid" Type="varchar" Mode="In" />
           <Parameter Name="pfcode" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="getCreditorsInvoiceWithTDSWithoutGSTAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fromDate" Type="datetime" Mode="In" />
+          <Parameter Name="toDate" Type="datetime" Mode="In" />
+          <Parameter Name="Customerid" Type="varchar" Mode="In" />
+          <Parameter Name="pfcode" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="GetCustomerSalesComparison" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PFCode" Type="nvarchar" Mode="In" />
         </Function>
@@ -5495,6 +5501,12 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             <Parameter Name="FirmId" Mode="In" Type="Int64" />
             <Parameter Name="FirmName" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="getCreditorsInvoiceWithTDSWithoutGSTAmount" ReturnType="Collection(db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSWithoutGSTAmount_Result)">
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="toDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Customerid" Mode="In" Type="String" />
+            <Parameter Name="pfcode" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="dashboardData_Result">
           <Property Type="Int32" Name="openConCount" Nullable="true" />
@@ -6087,6 +6099,25 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
           <Property Type="String" Name="receivedby" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="remarks" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="tempdeliveredtime" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="getCreditorsInvoiceWithTDSWithoutGSTAmount_Result">
+          <Property Type="DateTime" Name="invoicedate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="invoiceno" Nullable="true" MaxLength="23" />
+          <Property Type="DateTime" Name="periodfrom" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="periodto" Nullable="true" Precision="23" />
+          <Property Type="Double" Name="total" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetax" Nullable="true" />
+          <Property Type="Double" Name="fullsurchargetaxtotal" Nullable="true" />
+          <Property Type="Double" Name="servicetax" Nullable="true" />
+          <Property Type="Double" Name="servicetaxtotal" Nullable="true" />
+          <Property Type="String" Name="Customer_Id" Nullable="true" MaxLength="50" />
+          <Property Type="Double" Name="netamount" Nullable="true" />
+          <Property Type="Double" Name="paid" Nullable="true" />
+          <Property Type="Boolean" Name="isDelete" Nullable="true" />
+          <Property Type="Double" Name="discountper" Nullable="true" />
+          <Property Type="Double" Name="discountamount" Nullable="true" />
+          <Property Type="Double" Name="TdsAmount" Nullable="true" />
+          <Property Type="Double" Name="TotalAmount" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -8045,6 +8076,29 @@ warning 6002: The table/view 'db_a92afa_frbilling.dbo.TransactionView' does not 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="TicketSave" FunctionName="db_a92afa_frbillingModel.Store.TicketSave" />
+          <FunctionImportMapping FunctionImportName="getCreditorsInvoiceWithTDSWithoutGSTAmount" FunctionName="db_a92afa_frbillingModel.Store.getCreditorsInvoiceWithTDSWithoutGSTAmount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="db_a92afa_frbillingModel.getCreditorsInvoiceWithTDSWithoutGSTAmount_Result">
+                <ScalarProperty Name="invoicedate" ColumnName="invoicedate" />
+                <ScalarProperty Name="invoiceno" ColumnName="invoiceno" />
+                <ScalarProperty Name="periodfrom" ColumnName="periodfrom" />
+                <ScalarProperty Name="periodto" ColumnName="periodto" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="fullsurchargetax" ColumnName="fullsurchargetax" />
+                <ScalarProperty Name="fullsurchargetaxtotal" ColumnName="fullsurchargetaxtotal" />
+                <ScalarProperty Name="servicetax" ColumnName="servicetax" />
+                <ScalarProperty Name="servicetaxtotal" ColumnName="servicetaxtotal" />
+                <ScalarProperty Name="Customer_Id" ColumnName="Customer_Id" />
+                <ScalarProperty Name="netamount" ColumnName="netamount" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="discountper" ColumnName="discountper" />
+                <ScalarProperty Name="discountamount" ColumnName="discountamount" />
+                <ScalarProperty Name="TdsAmount" ColumnName="TdsAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
