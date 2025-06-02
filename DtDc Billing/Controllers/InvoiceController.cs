@@ -1000,29 +1000,15 @@ Select(e => new
                     invo.Pfcode = strpfcode;
                     invo.isDelete = false;
                     invo.Invoice_Lable = AmountTowords.changeToWords(invoice.netamount.ToString());
-                    double adjustedAmount = 0;
+                    
+                    
 
-                   
                     double netamount = invo.netamount ?? 0;
-                    double roundedAmount = Math.Round(netamount, 0);           // Round to nearest integer
-                    double decimalPart = Math.Round(netamount - Math.Truncate(netamount), 2);  // Get decimal part
-                    string plusOrMinus;
+                    double roundedAmount = Math.Round(netamount, 0, MidpointRounding.AwayFromZero); // Correct rounding
+                    double adjustedAmount = Math.Round(roundedAmount - netamount, 2);
 
-                    // Calculate adjusted amount
-                    if (decimalPart >= 0.5)
-                    {
-                        // Round up, positive adjustment
-                        adjustedAmount = Math.Round(roundedAmount - netamount, 2);  // Positive value (e.g., +0.42)
-                        invo.FinalNetAmount = roundedAmount;
-                        //invo.FinalNetAmount = netamount+adjustedAmount;
-                    }
-                    else
-                    {
-                        // Round down, negative adjustment
-                        adjustedAmount = Math.Round(netamount - roundedAmount, 2);  // Negative value (e.g., -0.42)
-                        invo.FinalNetAmount = roundedAmount;
-                       // invo.FinalNetAmount = roundedAmount-adjustedAmount;
-                    }
+                    invo.FinalNetAmount = roundedAmount;
+                    
 
                     // For your label (convert final amount to words)
                     invo.Total_Lable = AmountTowords.changeToWords(invo.FinalNetAmount.ToString());

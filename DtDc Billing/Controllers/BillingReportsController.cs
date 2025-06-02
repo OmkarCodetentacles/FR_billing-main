@@ -21,7 +21,7 @@ using Invoice = DtDc_Billing.Entity_FR.Invoice;
 namespace DtDc_Billing.Controllers
 {
     [SessionAdmin]
- //   [SessionUserModule]
+    //   [SessionUserModule]
     public class BillingReportsController : Controller
     {
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
@@ -34,7 +34,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        public ActionResult DatewiseReport(string Fromdatetime, string ToDatetime,string Submit)
+        public ActionResult DatewiseReport(string Fromdatetime, string ToDatetime, string Submit)
         {
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -43,24 +43,24 @@ namespace DtDc_Billing.Controllers
             DateTime? fromdate;
             DateTime? todate;
 
-          
-                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                fromdate = Convert.ToDateTime(bdatefrom);
 
-                ViewBag.fromdate = Fromdatetime;
-          
+            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            fromdate = Convert.ToDateTime(bdatefrom);
 
-           
-                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                todate = Convert.ToDateTime(bdateto);
-                ViewBag.todate = ToDatetime;
-         
+            ViewBag.fromdate = Fromdatetime;
+
+
+
+            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            todate = Convert.ToDateTime(bdateto);
+            ViewBag.todate = ToDatetime;
+
 
 
 
 
             List<TransactionView> transactions =
-                db.TransactionViews.Where(m=>m.Customer_Id!= null && m.Customer_Id != "").ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
+                db.TransactionViews.Where(m => m.Customer_Id != null && m.Customer_Id != "").ToList().Where(m => m.booking_date.Value.Date >= fromdate.Value.Date && m.booking_date.Value.Date <= todate.Value.Date).OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
                            .ToList();
 
 
@@ -92,7 +92,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        public ActionResult PfWiseReport(string PfCode, string Fromdatetime, string ToDatetime,string Submit)
+        public ActionResult PfWiseReport(string PfCode, string Fromdatetime, string ToDatetime, string Submit)
         {
             ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
 
@@ -104,75 +104,75 @@ namespace DtDc_Billing.Controllers
             DateTime? fromdate;
             DateTime? todate;
 
-          
-                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                fromdate = Convert.ToDateTime(bdatefrom);
 
-                ViewBag.fromdate = Fromdatetime;
-        
+            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            fromdate = Convert.ToDateTime(bdatefrom);
 
-                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                todate = Convert.ToDateTime(bdateto);
-                ViewBag.todate = ToDatetime;
+            ViewBag.fromdate = Fromdatetime;
+
+
+            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            todate = Convert.ToDateTime(bdateto);
+            ViewBag.todate = ToDatetime;
 
 
 
             var list = (from t in db.TransactionViews
-                                                 join c in db.Companies
-                                                 on t.Customer_Id equals c.Company_Id
-                                                 join f in db.Franchisees
-                                                 on t.Pf_Code equals f.PF_Code
-                                                 where (t.Pf_Code ==PfCode || PfCode == "") &&
-                                                  t.Customer_Id != null &&
-                                                  DbFunctions.TruncateTime(t.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(t.booking_date) <= DbFunctions.TruncateTime(todate)
+                        join c in db.Companies
+                        on t.Customer_Id equals c.Company_Id
+                        join f in db.Franchisees
+                        on t.Pf_Code equals f.PF_Code
+                        where (t.Pf_Code == PfCode || PfCode == "") &&
+                         t.Customer_Id != null &&
+                         DbFunctions.TruncateTime(t.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(t.booking_date) <= DbFunctions.TruncateTime(todate)
 
 
-                                                 select new 
-                                                 {
-                                                     Consignment_no = t.Consignment_no,
-                                                     bookingdate = t.tembookingdate,
-                                                     Pf_Code = t.Pf_Code,
-                                                     Customer_Id = t.Customer_Id,
-                                                     Gst_No = c.Gst_No,
-                                                     chargable_weight = t.chargable_weight,
-                                                     Mode = t.Mode,
-                                                     Type_t = t.Type_t,
-                                                     Name = t.Name,
-                                                     Pincode = t.Pincode,
-                                                     BillAmount = t.BillAmount ?? 0,
-                                                     Amount = t.Amount,
-                                                     Risksurcharge = t.Risksurcharge ?? 0,
-                                                     CnoteCharges = (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0,
-                                                     RoyalCharges = ((t.Amount * c.Royalty_Charges) / 100) ?? 0,
-                                                     ServiceCharges = 0,
-                                                     Subtotal = (t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0),
-                                                     Fuel_Sur_Charge = c.Fuel_Sur_Charge ?? 0,                                                     
-                                                     FscAmt = (t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0,                                                                                                                                                                                                      
-                                                     Taxable = (t.Amount ?? 0) +
-                                                     (t.Risksurcharge ?? 0) +
-                                                     (((t.Amount * c.Royalty_Charges) / 100) ?? 0 ) + 
-                                                     ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) +
-                                                     ((t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0),
+                        select new
+                        {
+                            Consignment_no = t.Consignment_no,
+                            bookingdate = t.tembookingdate,
+                            Pf_Code = t.Pf_Code,
+                            Customer_Id = t.Customer_Id,
+                            Gst_No = c.Gst_No,
+                            chargable_weight = t.chargable_weight,
+                            Mode = t.Mode,
+                            Type_t = t.Type_t,
+                            Name = t.Name,
+                            Pincode = t.Pincode,
+                            BillAmount = t.BillAmount ?? 0,
+                            Amount = t.Amount,
+                            Risksurcharge = t.Risksurcharge ?? 0,
+                            CnoteCharges = (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0,
+                            RoyalCharges = ((t.Amount * c.Royalty_Charges) / 100) ?? 0,
+                            ServiceCharges = 0,
+                            Subtotal = (t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0),
+                            Fuel_Sur_Charge = c.Fuel_Sur_Charge ?? 0,
+                            FscAmt = (t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0,
+                            Taxable = (t.Amount ?? 0) +
+                            (t.Risksurcharge ?? 0) +
+                            (((t.Amount * c.Royalty_Charges) / 100) ?? 0) +
+                            ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) +
+                            ((t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0),
 
-                                                     Cgst = (c.Gst_No == null ||  c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.09 : 0,
-                                                     Sgst= (c.Gst_No == null ||  c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.09 :0,
-                                                     Igst= (c.Gst_No != null && c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.18:0,
-                                                     GrandTotal= (
-                                                     (
-                                                     (t.Amount ?? 0) +
-                                                     (t.Risksurcharge ?? 0) +
-                                                     (((t.Amount * c.Royalty_Charges) / 100) ?? 0) +
-                                                     ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) +
-                                                     ((t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0)
-                                                     ) +
-                                                    (((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.18)
-                                                    
-                                                     
-                                                     ) ,
-                                                     CNote_cost = 0,
-                                                     dtdcamount = t.dtdcamount,
+                            Cgst = (c.Gst_No == null || c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.09 : 0,
+                            Sgst = (c.Gst_No == null || c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.09 : 0,
+                            Igst = (c.Gst_No != null && c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2)) ? ((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.18 : 0,
+                            GrandTotal = (
+                            (
+                            (t.Amount ?? 0) +
+                            (t.Risksurcharge ?? 0) +
+                            (((t.Amount * c.Royalty_Charges) / 100) ?? 0) +
+                            ((t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) +
+                            ((t.Amount + (t.Risksurcharge ?? 0) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0)
+                            ) +
+                           (((t.Amount ?? 0) + (t.Risksurcharge ?? 0) + (((t.Amount * c.Royalty_Charges) / 100) ?? 0) + ((t.Amount + (t.Risksurcharge ?? 0)) + (t.Consignment_no.StartsWith("D") ? c.D_Docket ?? 0 : t.Consignment_no.StartsWith("P") ? c.P_Docket ?? 0 : t.Consignment_no.StartsWith("E") ? c.E_Docket ?? 0 : t.Consignment_no.StartsWith("I") ? c.I_Docket ?? 0 : t.Consignment_no.StartsWith("V") ? c.V_Docket ?? 0 : t.Consignment_no.StartsWith("N") ? c.N_Docket ?? 0 : 0) + (((t.Amount * (c.Royalty_Charges ?? 0)) / 100) ?? 0)) * (c.Fuel_Sur_Charge / 100) ?? 0 + (t.Consignment_no.StartsWith("D") ? c.D_Docket : t.Consignment_no.StartsWith("P") ? c.P_Docket : t.Consignment_no.StartsWith("E") ? c.E_Docket : t.Consignment_no.StartsWith("I") ? c.I_Docket : t.Consignment_no.StartsWith("V") ? c.V_Docket : t.Consignment_no.StartsWith("N") ? c.N_Docket : 0) ?? 0) * 0.18)
 
-                                                 }).ToList();
+
+                            ),
+                            CNote_cost = 0,
+                            dtdcamount = t.dtdcamount,
+
+                        }).ToList();
 
 
 
@@ -182,7 +182,7 @@ namespace DtDc_Billing.Controllers
 
 
             ExportToExcelAll.ExportToExcelAdmin(list);
-         
+
 
 
             ViewBag.totalamt = list.Sum(b => b.Amount);
@@ -198,8 +198,8 @@ namespace DtDc_Billing.Controllers
         public ActionResult SaleReportBeforeInvoice()
         {
 
-           //it is pfcode based 
-         //   ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
+            //it is pfcode based 
+            //   ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code");
 
 
             List<DisplayPFSum> list = new List<DisplayPFSum>();
@@ -208,7 +208,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaleReportBeforeInvoice(string Fromdatetime, string ToDatetime,string Submit)
+        public ActionResult SaleReportBeforeInvoice(string Fromdatetime, string ToDatetime, string Submit)
         {
             //  ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
             var PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -218,20 +218,20 @@ namespace DtDc_Billing.Controllers
 
 
             DateTime? fromdate;
-            DateTime ?todate;
+            DateTime? todate;
 
-         
-                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                fromdate = Convert.ToDateTime(bdatefrom);
 
-                ViewBag.fromdate = Fromdatetime;
-        
+            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            fromdate = Convert.ToDateTime(bdatefrom);
 
-                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                todate = Convert.ToDateTime(bdateto);
-                ViewBag.todate = ToDatetime;
-         
-            
+            ViewBag.fromdate = Fromdatetime;
+
+
+            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            todate = Convert.ToDateTime(bdateto);
+            ViewBag.todate = ToDatetime;
+
+
 
             List<DisplayPFSum> Pfsum = new List<DisplayPFSum>();
 
@@ -256,7 +256,7 @@ namespace DtDc_Billing.Controllers
                                        ).FirstOrDefault(),
                          Sum = db.TransactionViews.Where(m =>
                (m.Customer_Id == studentGroup.Key)
-                     && m.status_t==null
+                     && m.status_t == null
                                 && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                                 && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
@@ -264,7 +264,7 @@ namespace DtDc_Billing.Controllers
 
                          Branchname = db.TransactionViews.Where(m =>
                  (m.Customer_Id == studentGroup.Key)
-                       && m.status_t==null
+                       && m.status_t == null
                                 && !db.singleinvoiceconsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                                 && !db.GSTInvoiceConsignments.Select(b => b.Consignment_no).Contains(m.Consignment_no)
                     ).ToList().Where(m => DbFunctions.TruncateTime(m.booking_date) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(m.booking_date) <= DbFunctions.TruncateTime(todate))
@@ -320,10 +320,10 @@ namespace DtDc_Billing.Controllers
 
             if (Submit == "Export to Excel")
             {
-                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(m=> new { CustomerId=m.CustomerId,Count=m.Count,Total=m.Sum}));
+                ExportToExcelAll.ExportToExcelAdmin(Pfsum.Select(m => new { CustomerId = m.CustomerId, Count = m.Count, Total = m.Sum }));
             }
 ;
-          
+
 
             return View(Pfsum);
 
@@ -341,7 +341,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult PfwiseCreditorsReport(string PfCode, string Fromdatetime, string ToDatetime, string status, string Submit)
         {
-            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code",PfCode);
+            ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
             DateTime? fromdate = null;
             DateTime? todate = null;
 
@@ -366,7 +366,7 @@ namespace DtDc_Billing.Controllers
 
 
             List<Invoice> collectionAmount = new List<Invoice>();
-            
+
             if (PfCode != null && PfCode != "")
             {
                 if (status == "Paid")
@@ -375,7 +375,7 @@ namespace DtDc_Billing.Controllers
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
                                         where c.Pf_code == PfCode
-                                        && u.isDelete==false
+                                        && u.isDelete == false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -430,7 +430,7 @@ namespace DtDc_Billing.Controllers
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
                                         where c.Pf_code == PfCode
-                                        && u.isDelete==false
+                                        && u.isDelete == false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -460,7 +460,7 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
-                                        where u.isDelete==false
+                                        where u.isDelete == false
                                         select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
@@ -486,8 +486,8 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
-                                        where u.isDelete==false
-                                         select new Invoice
+                                        where u.isDelete == false
+                                        select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
                                             invoiceno = u.invoiceno,
@@ -513,8 +513,8 @@ namespace DtDc_Billing.Controllers
                     collectionAmount = (from u in db.Invoices.AsEnumerable()
                                         join c in db.Companies
                                         on u.Customer_Id equals c.Company_Id
-                                         where u.isDelete==false
-                                      select new Invoice
+                                        where u.isDelete == false
+                                        select new Invoice
                                         {
                                             invoicedate = u.invoicedate,
                                             invoiceno = u.invoiceno,
@@ -538,38 +538,38 @@ namespace DtDc_Billing.Controllers
             }
             if (Submit == "Export to Excel")
             {
- 
-                 ExportToExcelAll.ExportToExcelAdmin(collectionAmount.Select(m=> new { m.invoiceno,m.Customer_Id, m.invoicedate,m.netamount,m.paid, Balance = m.netamount - m.paid }));
+
+                ExportToExcelAll.ExportToExcelAdmin(collectionAmount.Select(m => new { m.invoiceno, m.Customer_Id, m.invoicedate, m.netamount, m.paid, Balance = m.netamount - m.paid }));
             }
 
-            
+
 
             return View(collectionAmount);
-           
+
         }
 
         [PageTitle("CreditorsReport")]
         public ActionResult CreditorsReport()
         {
             List<CreditorsInvoiceModel> inc = new List<CreditorsInvoiceModel>();
-           // List<Invoice> inc=new List<Invoice>();
+            // List<Invoice> inc=new List<Invoice>();
             return View(inc);
         }
 
 
         [HttpPost]
-        public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status,string Submit)
+        public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status, string Submit)
         {
 
-           string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
             string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
-     Request.ApplicationPath.TrimEnd('/');
+            Request.ApplicationPath.TrimEnd('/');
             DateTime? fromdate = null;
             DateTime? todate = null;
 
-            if(Submit == "Send mail")
+            if (Submit == "Send mail")
             {
-                if (Custid == null || Custid=="")
+                if (Custid == null || Custid == "")
                 {
                     ViewBag.fromdate = Fromdatetime;
                     ViewBag.todate = ToDatetime;
@@ -579,30 +579,25 @@ namespace DtDc_Billing.Controllers
                 }
             }
             ViewBag.select = status;
-          
+
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
-          
+            string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            fromdate = Convert.ToDateTime(bdatefrom);
 
-                string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                fromdate = Convert.ToDateTime(bdatefrom);
-
-           
-
-        
-                string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
-                todate = Convert.ToDateTime(bdateto);
-                ViewBag.fromdate = Fromdatetime;
-                ViewBag.todate = ToDatetime;
+            string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+            todate = Convert.ToDateTime(bdateto);
+            ViewBag.fromdate = Fromdatetime;
+            ViewBag.todate = ToDatetime;
 
 
             if (Custid != "")
             {
                 ViewBag.Custid = Custid;
             }
-               
-        //List<Invoice> obj = new List<Invoice>();
+
+            //List<Invoice> obj = new List<Invoice>();
 
             List<CreditorsInvoiceModel> newObj = new List<CreditorsInvoiceModel>();
 
@@ -628,13 +623,13 @@ namespace DtDc_Billing.Controllers
 
                     netamount = x.netamount,
                     paid = x.paid ?? 0,
-                    discountper= x.discountper??0,
-                    discountamount=x.discountamount??0,
-                     balanceamount= Math.Round((double)x.netamount - (x.paid ?? 0)),
+                    discountper = x.discountper ?? 0,
+                    discountamount = x.discountamount ?? 0,
+                    balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                     TdsAmount = x.TdsAmount ?? 0,
                     TotalAmount = x.TotalAmount ?? 0
 
-                }).ToList().Where(x => x.balanceamount <= 0).ToList();
+                }).OrderBy(x=>x.invoicedate).ToList().Where(x => x.balanceamount <= 0).ToList();
 
 
                 //if (Custid == "")
@@ -686,7 +681,7 @@ namespace DtDc_Billing.Controllers
 
             }
 
-            else if(status == "Unpaid")
+            else if (status == "Unpaid")
             {
                 //if (Custid == "")
                 //{
@@ -749,11 +744,11 @@ namespace DtDc_Billing.Controllers
                     paid = x.paid ?? 0,
                     discountper = x.discountper ?? 0,
                     discountamount = x.discountamount ?? 0,
-                   balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                    balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                     TdsAmount = x.TdsAmount ?? 0,
                     TotalAmount = x.TotalAmount ?? 0
 
-                }).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
+                }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
 
 
             }
@@ -826,46 +821,43 @@ namespace DtDc_Billing.Controllers
                             discountamount = x.discountamount ?? 0,
                             netamount = x.netamount ?? 0,
                             paid = x.paid ?? 0,
-                           balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                            balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                             TdsAmount = x.TdsAmount ?? 0,
                             TotalAmount = x.TotalAmount ?? 0
-                        })
-
-                        .ToList();
+                        }).ToList();
                 }
 
             }
 
-         
-        
 
-                if (Submit == "Export to Excel")
+            if (Submit == "Export to Excel")
+            {
+                //ExportToExcelAll.ExportToExcelAdmin(obj);
+                //Apply as per TDS amount\
+
+                var data = newObj.Select(x => new
                 {
-                    //ExportToExcelAll.ExportToExcelAdmin(obj);
-                    //Apply as per TDS amount\
+                    InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
+                    InvoiceNo = x.invoiceno,
+                    PeriodFrom = x.periodfrom.Value.ToString("dd-MM-yyyy"),
+                    PeriodTo = x.periodto.Value.ToString("dd-MM-yyyy"),
+                    Total = x.total,
+                    FullSurchargeTax = x.fullsurchargetax,
+                    FullSurChargeTotal = x.fullsurchargetaxtotal,
+                    ServiceTax = x.servicetax,
+                    ServiceTaxTotal = x.servicetaxtotal,
+                    DiscountPer = x.discountper,
+                    DiscountAmount = x.discountamount,
+                    CustomerId = x.Customer_Id,
+                    NetAmount = x.netamount ?? 0,
+                    Paid = x.paid ?? 0,
 
-                    var data = newObj.Select(x => new
-                    {
-                        InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
-                        InvoiceNo = x.invoiceno,
-                        PeriodFrom = x.periodfrom.Value.ToString("dd-MM-yyyy"),
-                        PeriodTo = x.periodto.Value.ToString("dd-MM-yyyy"),
-                        Total = x.total,
-                        FullSurchargeTax = x.fullsurchargetax,
-                        FullSurChargeTotal = x.fullsurchargetaxtotal,
-                        ServiceTax = x.servicetax,
-                        ServiceTaxTotal = x.servicetaxtotal,
-                        DiscountPer=x.discountper,
-                        DiscountAmount=x.discountamount,
-                        CustomerId = x.Customer_Id,
-                        NetAmount = x.netamount ?? 0,
-                        Paid = x.paid ?? 0,
-                       
-                        Balance = x.balanceamount,
-                     //   TDSAmount = x.TotalAmount ?? 0,
-                      //  TotalAmount = x.TotalAmount ?? 0
+                    Balance = x.balanceamount,
+                    //   TDSAmount = x.TotalAmount ?? 0,
+                    //  TotalAmount = x.TotalAmount ?? 0
 
-                    }).ToList();
+                }).ToList();
+
                 if (newObj.Count() <= 0 || newObj == null)
                 {
                     ViewBag.Nodata = "No Data Found";
@@ -902,7 +894,7 @@ namespace DtDc_Billing.Controllers
                     TdsAmount = x.TdsAmount ?? 0,
                     TotalAmount = x.TotalAmount ?? 0
 
-                }).ToList().OrderBy(x => x.invoicedate).ToList();
+                }).OrderBy(x => x.invoicedate).ToList();
 
                 var DataSet1 = newObj.Where(x => customerid == x.Customer_Id).OrderBy(x => x.invoicedate).ToList();
                 if (DataSet1.Count() > 0)
@@ -973,11 +965,11 @@ namespace DtDc_Billing.Controllers
             }
 
             if (Submit == "Print" || Submit == "Send mail")
+            {
+                if (Custid != null && Custid != "")
                 {
-                    if (Custid != null && Custid != "")
-                    {
-                        var DataSet1 = newObj.Where(x=>customerid == x.Customer_Id).OrderBy(x => x.invoiceno).ToList();
-                    if (DataSet1.Count()>0)
+                    var DataSet1 = newObj.Where(x => customerid == x.Customer_Id).OrderBy(x => x.invoicedate).ToList();
+                    if (DataSet1.Count() > 0)
                     {
                         var DataSet2 = db.Companies.Where(m => m.Company_Id == Custid).ToList();
                         var pfcode1 = DataSet2.FirstOrDefault().Pf_code;
@@ -1107,11 +1099,11 @@ namespace DtDc_Billing.Controllers
                         ViewBag.Nodata = "No Data Found";
                     }
 
-                    }
-                    else
-                    {
-                        var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
-                    if (DataSet1.Count()>0)
+                }
+                else
+                {
+                    var DataSet1 = newObj.OrderBy(x => x.invoiceno).ToList();
+                    if (DataSet1.Count() > 0)
                     {
                         LocalReport lr = new LocalReport();
 
@@ -1176,17 +1168,12 @@ namespace DtDc_Billing.Controllers
                     else
                     {
                         TempData["error"] = "Dat Not Found";
-                     
-
                     }
                 }
-                }
+            }
 
-
-
-            // return View(obj);
-            ViewBag.NetAmountSum = newObj.Distinct().Select(x => new { x.netamount,x.invoiceno}).GroupBy(x => x.invoiceno).Sum(x=>x.FirstOrDefault().netamount);
-            ViewBag.Balance= newObj.Distinct().Select(x => new { x.balanceamount, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().balanceamount);
+            ViewBag.NetAmountSum = newObj.Distinct().Select(x => new { x.netamount, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().netamount);
+            ViewBag.Balance = newObj.Distinct().Select(x => new { x.balanceamount, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().balanceamount);
             ViewBag.Paid = newObj.Distinct().Select(x => new { x.paid, x.invoiceno }).GroupBy(x => x.invoiceno).Sum(x => x.FirstOrDefault().paid);
             return View(newObj);
         }
@@ -1203,7 +1190,7 @@ namespace DtDc_Billing.Controllers
 
         [HttpPost]
         public ActionResult BusinessAnalysis(string Fromdatetime, string ToDatetime, string Custid)
-       {
+        {
             var Pfcode = CommonFunctions.getSessionPfcode();
 
             string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -1243,12 +1230,12 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Custid = Custid;
             }
 
-          
+
 
             List<TransactionView> transactions =
                 db.TransactionViews.Where(m =>
-               (string.IsNullOrEmpty(Custid) ||  m.Customer_Id == Custid)
-               && m.Pf_Code==pfcode
+               (string.IsNullOrEmpty(Custid) || m.Customer_Id == Custid)
+               && m.Pf_Code == pfcode
                && m.booking_date.HasValue && m.booking_date.Value >= fromdate.Value && m.booking_date.Value <= todate.Value
 
                     ).ToList().OrderBy(m => m.booking_date).ThenBy(n => n.Consignment_no)
@@ -1283,7 +1270,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete == false).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
@@ -1314,7 +1301,7 @@ namespace DtDc_Billing.Controllers
         [HttpPost]
         public ActionResult EmployeeWiseConsigmentReport(string PfCode)
         {
-            var st = db.Issues.Where(m=>m.Pf_code== PfCode || PfCode == "").ToList();
+            var st = db.Issues.Where(m => m.Pf_code == PfCode || PfCode == "").ToList();
 
             List<string> str = new List<string>();
 
@@ -1337,7 +1324,7 @@ namespace DtDc_Billing.Controllers
                     string updateconsignment = stch + i.ToString();
 
 
-                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+                    Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete == false).FirstOrDefault();
 
 
                     if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
@@ -1365,7 +1352,7 @@ namespace DtDc_Billing.Controllers
         }
 
 
-        public ActionResult MemberShipreport(string ToDatetime, string Fromdatetime, string Submit,string pfcode = "")
+        public ActionResult MemberShipreport(string ToDatetime, string Fromdatetime, string Submit, string pfcode = "")
         {
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -1405,7 +1392,7 @@ namespace DtDc_Billing.Controllers
 
 
             var tmpItem = (from item in db.wallet_History
-                           where item.PF_Code == pfcode || pfcode=="" && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
+                           where item.PF_Code == pfcode || pfcode == "" && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
                            group item by item.mobile_no into g
                            select new WalletReport
                            {
@@ -1413,10 +1400,10 @@ namespace DtDc_Billing.Controllers
                                Total_Wallet_Money = g.Where(item => item.H_Status == "Added").Select(m => m.Amount).Sum(),
                                Total_Redeemed = g.Where(item => item.H_Status == "Redeemed").Select(m => m.Amount).Sum() ?? 0,
                                No_Of_Bookings = g.Count(),
-                              // Balance = (g.Where(item => item.H_Status == "Added").Select(m => m.Amount).Sum()  - g.Where(item => item.H_Status == "Redeemed").Select(m => m.Amount).Sum() ?? 0),
+                               // Balance = (g.Where(item => item.H_Status == "Added").Select(m => m.Amount).Sum()  - g.Where(item => item.H_Status == "Redeemed").Select(m => m.Amount).Sum() ?? 0),
                                Mobile_No = g.Key,
                                Name = g.Select(m => m.PF_Code).FirstOrDefault(),
-                               
+
                                //Amount = g.Sum(item => item.Amount), <-- we can also do like that
 
 
@@ -1432,7 +1419,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
-        public ActionResult MembershipPfWiseReport( string ToDatetime, string Fromdatetime, string pfcode = "")
+        public ActionResult MembershipPfWiseReport(string ToDatetime, string Fromdatetime, string pfcode = "")
         {
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -1469,9 +1456,9 @@ namespace DtDc_Billing.Controllers
             ViewBag.PfCode = new SelectList(db.Franchisees, "PF_Code", "PF_Code", pfcode);
 
             var tmpItem = (from item in db.wallet_History
-                           where item.PF_Code == pfcode || pfcode == ""  && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
+                           where item.PF_Code == pfcode || pfcode == "" && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
                            group item by item.mobile_no into g
-                          
+
                            select new WalletReport
                            {
 
@@ -1491,7 +1478,7 @@ namespace DtDc_Billing.Controllers
         }
 
         [HttpGet]
-        public ActionResult PFwisemembershipsummary(string ToDatetime, string Fromdatetime,string pfcode,string Submit)
+        public ActionResult PFwisemembershipsummary(string ToDatetime, string Fromdatetime, string pfcode, string Submit)
         {
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -1530,7 +1517,7 @@ namespace DtDc_Billing.Controllers
 
 
             var tmpItem = (from item in db.wallet_History
-                           where item.PF_Code == pfcode || pfcode == "" && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate)  && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
+                           where item.PF_Code == pfcode || pfcode == "" && (DbFunctions.TruncateTime(item.datetime) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.datetime) <= DbFunctions.TruncateTime(todate))
                            group item by item.PF_Code into g
                            select new WalletReport
                            {
@@ -1567,8 +1554,8 @@ namespace DtDc_Billing.Controllers
 
             var list = (from user in db.Transactions
                         where !db.Destinations.Any(f => f.Pincode == user.Pincode)
-                        && user.Pf_Code== pfcode
-                        && user.isDelete==false
+                        && user.Pf_Code == pfcode
+                        && user.isDelete == false
                         select user).ToList();
 
             return View(list);
@@ -1577,66 +1564,66 @@ namespace DtDc_Billing.Controllers
         public ActionResult InvalidConsignment()
         {
             //string pfcode = Session["pfCode"].ToString();
-            string pfcode =Request.Cookies["Cookies"]["pfCode"].ToString();
+            string pfcode = Request.Cookies["Cookies"]["pfCode"].ToString();
             var list = (from user in db.Transactions
                         where !db.Companies.Any(f => f.Company_Id == user.Customer_Id) && user.Customer_Id != null
-                        && user.Pf_Code== pfcode
-                        && user.isDelete==false
+                        && user.Pf_Code == pfcode
+                        && user.isDelete == false
                         select user).ToList();
 
             return View(list);
         }
 
-        public ActionResult ViewAllDestinationReport(string Fromdatetime, string ToDatetime, string PfCode="")
+        public ActionResult ViewAllDestinationReport(string Fromdatetime, string ToDatetime, string PfCode = "")
         {
-           //PfCode=Session["pfCode"].ToString();
-           PfCode =   Request.Cookies["Cookies"]["pfCode"].ToString();
+            //PfCode=Session["pfCode"].ToString();
+            PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
 
             //ViewBag.PfCode = Session["pfCode"].ToString();//new SelectList(db.Franchisees, "PF_Code", "PF_Code", PfCode);
-            ViewBag.PfCode =Request.Cookies["Cookies"]["pfCode"].ToString();
+            ViewBag.PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
             if (Fromdatetime != null && ToDatetime != null)
-            { 
+            {
 
-            DateTime? fromdate;
-            DateTime? todate;
+                DateTime? fromdate;
+                DateTime? todate;
 
-            
+
                 string bdatefrom = DateTime.ParseExact(Fromdatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 fromdate = Convert.ToDateTime(bdatefrom);
 
                 ViewBag.fromdate = Fromdatetime;
-          
 
-           
+
+
                 string bdateto = DateTime.ParseExact(ToDatetime, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
                 todate = Convert.ToDateTime(bdateto);
                 ViewBag.todate = ToDatetime;
-          
 
 
 
-           
 
-            var results = (from p in db.Receipt_details
-                           where p.Pf_Code==PfCode || PfCode==""
-                           && ((DbFunctions.TruncateTime(p.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(p.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null))
-                           group p by p.Destination into g
-                           orderby g.Count() descending
-                           select new ConsignmentCount
-                           {
 
-                               Destination = g.Key,
-                               Count = g.Count()
-                           });
+
+                var results = (from p in db.Receipt_details
+                               where p.Pf_Code == PfCode || PfCode == ""
+                               && ((DbFunctions.TruncateTime(p.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(p.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null))
+                               group p by p.Destination into g
+                               orderby g.Count() descending
+                               select new ConsignmentCount
+                               {
+
+                                   Destination = g.Key,
+                                   Count = g.Count()
+                               });
                 return View(results);
             }
             else
             {
                 var results = (from p in db.Receipt_details
-                               where p.Pf_Code == PfCode || PfCode == ""                               
+                               where p.Pf_Code == PfCode || PfCode == ""
                                group p by p.Destination into g
                                orderby g.Count() descending
                                select new ConsignmentCount
@@ -1648,15 +1635,15 @@ namespace DtDc_Billing.Controllers
                 return View(results);
             }
 
-            
-            
+
+
 
         }
 
-        public ActionResult ViewAllProductReport(string Fromdatetime, string ToDatetime,string PfCode = "")
+        public ActionResult ViewAllProductReport(string Fromdatetime, string ToDatetime, string PfCode = "")
         {
             //PfCode = Session["pfCode"].ToString();
-            PfCode =   Request.Cookies["Cookies"]["pfCode"].ToString();
+            PfCode = Request.Cookies["Cookies"]["pfCode"].ToString();
 
             List<ConsignmentCount> Consignmentcount = new List<ConsignmentCount>();
 
@@ -1686,18 +1673,18 @@ namespace DtDc_Billing.Controllers
                 ViewBag.todate = ToDatetime;
 
 
-               
+
                 ConsignmentCount consptp = new ConsignmentCount();
 
                 consptp.Destination = "PTP";
-                consptp.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("E")  && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
+                consptp.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("E") && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
 
                 Consignmentcount.Add(consptp);
 
                 ConsignmentCount consPlus = new ConsignmentCount();
 
                 consPlus.Destination = "Plus";
-                consPlus.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("V")  && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
+                consPlus.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("V") && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
 
                 Consignmentcount.Add(consPlus);
 
@@ -1705,7 +1692,7 @@ namespace DtDc_Billing.Controllers
                 ConsignmentCount consInternational = new ConsignmentCount();
 
                 consInternational.Destination = "International";
-                consInternational.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("N")  && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
+                consInternational.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("N") && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
 
                 Consignmentcount.Add(consInternational);
 
@@ -1713,7 +1700,7 @@ namespace DtDc_Billing.Controllers
                 ConsignmentCount consDox = new ConsignmentCount();
 
                 consDox.Destination = "Standart";
-                consDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("P")  && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
+                consDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("P") && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
 
                 Consignmentcount.Add(consDox);
 
@@ -1721,7 +1708,7 @@ namespace DtDc_Billing.Controllers
                 ConsignmentCount consNonDox = new ConsignmentCount();
 
                 consNonDox.Destination = "Non Dox";
-                consNonDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("D")  && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
+                consNonDox.Count = db.Receipt_details.Where(m => m.Consignment_No.StartsWith("D") && (m.Pf_Code == PfCode || PfCode == "") && (DbFunctions.TruncateTime(m.Datetime_Cons) >= DbFunctions.TruncateTime(fromdate) || Fromdatetime == null) && (DbFunctions.TruncateTime(m.Datetime_Cons) <= DbFunctions.TruncateTime(todate) || ToDatetime == null)).Count();
 
 
                 ConsignmentCount consNonVas = new ConsignmentCount();
@@ -1787,7 +1774,7 @@ namespace DtDc_Billing.Controllers
 
                 return View(Consignmentcount);
             }
-            
+
         }
 
         [HttpGet]
@@ -1797,7 +1784,7 @@ namespace DtDc_Billing.Controllers
             List<InvoiceAndCompany> list = new List<InvoiceAndCompany>();
 
             return View(list);
-          
+
         }
 
         [HttpPost]
@@ -1833,7 +1820,7 @@ namespace DtDc_Billing.Controllers
 
                         where
                             (c.Pf_code == PfCode) &&
-                            i.isDelete==false &&
+                            i.isDelete == false &&
                             DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1883,7 +1870,7 @@ namespace DtDc_Billing.Controllers
 
                                  where
                                      (c.Pf_code == PfCode) &&
-                                     i.isDelete==false &&
+                                     i.isDelete == false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -1918,7 +1905,7 @@ namespace DtDc_Billing.Controllers
                                      IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
 
                                  }).ToList();
-                    if (list1.Count() <= 0 || list1==null)
+                    if (list1.Count() <= 0 || list1 == null)
                     {
                         ViewBag.Nodata = "No Data Found";
                     }
@@ -1939,7 +1926,7 @@ namespace DtDc_Billing.Controllers
 
                                  where
                                      (c.Pf_code == PfCode) &&
-                                     i.isDelete==false &&
+                                     i.isDelete == false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
                                  select new
                                  {
@@ -1981,7 +1968,7 @@ namespace DtDc_Billing.Controllers
 
 
                                  }).ToList();
-                    if (list1.Count() <= 0 || list1==null)
+                    if (list1.Count() <= 0 || list1 == null)
                     {
                         ViewBag.Nodata = "No Data Found";
 
@@ -2005,7 +1992,7 @@ namespace DtDc_Billing.Controllers
                         on c.Pf_code equals f.PF_Code
 
                         where
-                        i.isDelete==false &&
+                        i.isDelete == false &&
                             DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2055,7 +2042,7 @@ namespace DtDc_Billing.Controllers
                                  on c.Pf_code equals f.PF_Code
 
                                  where
-                                 i.isDelete== false && 
+                                 i.isDelete == false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2091,7 +2078,7 @@ namespace DtDc_Billing.Controllers
 
 
                                  }).ToList();
-                    if(list1.Count()<=0 || list1 == null)
+                    if (list1.Count() <= 0 || list1 == null)
                     {
                         ViewBag.Nodata = "No Data Found";
                     }
@@ -2112,7 +2099,7 @@ namespace DtDc_Billing.Controllers
                                  on c.Pf_code equals f.PF_Code
 
                                  where
-                                 i.isDelete==false && 
+                                 i.isDelete == false &&
                                      DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
                                  select new
@@ -2182,7 +2169,7 @@ namespace DtDc_Billing.Controllers
             return View(list);
         }
         [HttpPost]
-        public ActionResult TaxReport(string ToDatetime, string Fromdatetime, string Custid,string Submit, string Tallyexcel)
+        public ActionResult TaxReport(string ToDatetime, string Fromdatetime, string Custid, string Submit, string Tallyexcel)
         {
             string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
 
@@ -2210,7 +2197,7 @@ namespace DtDc_Billing.Controllers
                 ViewBag.Custid = Custid;
             }
 
-            List<InvoiceAndCompany> list = 
+            List<InvoiceAndCompany> list =
             list = (from i in db.Invoices
                     join c in db.Companies
                     on i.Customer_Id equals c.Company_Id
@@ -2218,9 +2205,9 @@ namespace DtDc_Billing.Controllers
                     on c.Pf_code equals f.PF_Code
 
                     where
-                        (i.Customer_Id == Custid || Custid == "") && 
-                        i.Pfcode== strpf &&
-                        i.isDelete==false &&
+                        (i.Customer_Id == Custid || Custid == "") &&
+                        i.Pfcode == strpf &&
+                        i.isDelete == false &&
                         DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
@@ -2232,31 +2219,31 @@ namespace DtDc_Billing.Controllers
                         periodto = i.periodto,
                         total = i.total,
                         fullsurchargetax = i.fullsurchargetax,
-                        fullsurchargetaxtotal = i.fullsurchargetaxtotal!=null?Math.Round((double)i.fullsurchargetaxtotal):0,
+                        fullsurchargetaxtotal = i.fullsurchargetaxtotal != null ? Math.Round((double)i.fullsurchargetaxtotal) : 0,
                         servicetax = i.servicetax,
-                        servicetaxtotal = i.servicetaxtotal != null ? Math.Round((double)i.servicetaxtotal) : 0 ,
+                        servicetaxtotal = i.servicetaxtotal != null ? Math.Round((double)i.servicetaxtotal) : 0,
                         othercharge = i.othercharge != null ? Math.Round((double)i.othercharge) : 0,
                         netamount = Math.Round((double)i.netamount),
                         Customer_Id = i.Customer_Id,
                         fid = i.fid,
-                        servicecharges = i.servicecharges!=null?Math.Round((double)i.servicecharges):0,
-                        Royalty_charges = i.Royalty_charges!=null?Math.Round((double)i.Royalty_charges):0,
-                        Docket_charges = i.Docket_charges!=null ? Math.Round((double)i.Docket_charges):0,
-                        discount=i.discount!=null?i.discount:"0",
-                        discountamount=i.discountamount!=null?Math.Round((double)i.discountamount):0,
+                        servicecharges = i.servicecharges != null ? Math.Round((double)i.servicecharges) : 0,
+                        Royalty_charges = i.Royalty_charges != null ? Math.Round((double)i.Royalty_charges) : 0,
+                        Docket_charges = i.Docket_charges != null ? Math.Round((double)i.Docket_charges) : 0,
+                        discount = i.discount != null ? i.discount : "0",
+                        discountamount = i.discountamount != null ? Math.Round((double)i.discountamount) : 0,
                         Tempdatefrom = i.Tempdatefrom,
                         TempdateTo = i.TempdateTo,
                         tempInvoicedate = i.tempInvoicedate,
                         Company_Name = c.Company_Name,
                         Gst_No = c.Gst_No,
                         Fr_Gst_No = f.GstNo,
-                        CgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0):9):0,
-                        SgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) :9) :0,
-                        IgstPer = i.servicetax > 0 ?(c.Gst_No.Length > 1 ?(c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0):0):0,
+                        CgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
+                        SgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
+                        IgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0) : 0) : 0,
 
-                        CgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1?(c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0): (i.servicetaxtotal / 2)) : 0,
-                        SgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0): (i.servicetaxtotal / 2)) : 0,
-                        IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0): 0): 0,
+                        CgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
+                        SgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
+                        IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
 
                     }).ToList();
 
@@ -2265,59 +2252,59 @@ namespace DtDc_Billing.Controllers
             if (Submit == "Export to Excel")
             {
                 var list1 = (from i in db.Invoices
-                                                join c in db.Companies
-                                                on i.Customer_Id equals c.Company_Id
-                                                join f in db.Franchisees
-                                                on c.Pf_code equals f.PF_Code
+                             join c in db.Companies
+                             on i.Customer_Id equals c.Company_Id
+                             join f in db.Franchisees
+                             on c.Pf_code equals f.PF_Code
 
-                                                where
-                                                    (i.Customer_Id == Custid || Custid == "") &&
-                                                     i.Pfcode == strpf &&
-                                                     i.isDelete==false &&
-                                                    DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
+                             where
+                                 (i.Customer_Id == Custid || Custid == "") &&
+                                  i.Pfcode == strpf &&
+                                  i.isDelete == false &&
+                                 DbFunctions.TruncateTime(i.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(i.invoicedate) <= DbFunctions.TruncateTime(todate)
 
 
-                                                select new 
-                                                {
-                                                    invoiceno = i.invoiceno,
-                                                    invoicedate = i.tempInvoicedate,
-                                                    periodfrom = i.Tempdatefrom,
-                                                    periodto = i.TempdateTo,
-                                                    total = i.total,
-                                                    fullsurchargetax = i.fullsurchargetax,
-                                                    fullsurchargetaxtotal = i.fullsurchargetaxtotal,
-                                                    //servicetax = i.servicetax,
-                                                    //servicetaxtotal = i.servicetaxtotal,
-                                                    //othercharge = i.othercharge,
-                                                    DiscountPer=i.discountper,
-                                                    DiscountAmt=i.discountamount,
-                                                    netamount = i.netamount,
-                                                    Customer_Id = i.Customer_Id,
-                                                   // fid = i.fid,
-                                                   // servicecharges = i.servicecharges,
-                                                    Royalty_charges = i.Royalty_charges,
-                                                    Docket_charges = i.Docket_charges,                                          
-                                                    
-                                                    Company_Name = c.Company_Name,
-                                                    Gst_No = c.Gst_No,
-                                                    // Fr_Gst_No = f.GstNo,
-                                                    //CgstPer = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0,
-                                                    //SgstPer = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0,
-                                                    //IgstPer = c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0,
+                             select new
+                             {
+                                 invoiceno = i.invoiceno,
+                                 invoicedate = i.tempInvoicedate,
+                                 periodfrom = i.Tempdatefrom,
+                                 periodto = i.TempdateTo,
+                                 total = i.total,
+                                 fullsurchargetax = i.fullsurchargetax,
+                                 fullsurchargetaxtotal = i.fullsurchargetaxtotal,
+                                 //servicetax = i.servicetax,
+                                 //servicetaxtotal = i.servicetaxtotal,
+                                 //othercharge = i.othercharge,
+                                 DiscountPer = i.discountper,
+                                 DiscountAmt = i.discountamount,
+                                 netamount = i.netamount,
+                                 Customer_Id = i.Customer_Id,
+                                 // fid = i.fid,
+                                 // servicecharges = i.servicecharges,
+                                 Royalty_charges = i.Royalty_charges,
+                                 Docket_charges = i.Docket_charges,
 
-                                                    //CgstAmt = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0,
-                                                    //SgstAmt = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0,
-                                                    //IgstAmt = c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0,
+                                 Company_Name = c.Company_Name,
+                                 Gst_No = c.Gst_No,
+                                 // Fr_Gst_No = f.GstNo,
+                                 //CgstPer = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0,
+                                 //SgstPer = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0,
+                                 //IgstPer = c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0,
 
-                                                    CgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
-                                                    SgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
-                                                    IgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0) : 0) : 0,
+                                 //CgstAmt = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0,
+                                 //SgstAmt = c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0,
+                                 //IgstAmt = c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0,
 
-                                                    CgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
-                                                    SgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
-                                                    IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
+                                 CgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
+                                 SgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? 9 : 0) : 9) : 0,
+                                 IgstPer = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? 18 : 0) : 0) : 0,
 
-                                                }).ToList();
+                                 CgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
+                                 SgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) == f.GstNo.Substring(0, 2) ? (i.servicetaxtotal / 2) : 0) : (i.servicetaxtotal / 2)) : 0,
+                                 IgstAmt = i.servicetax > 0 ? (c.Gst_No.Length > 1 ? (c.Gst_No.Substring(0, 2) != f.GstNo.Substring(0, 2) ? (i.servicetaxtotal) : 0) : 0) : 0,
+
+                             }).ToList();
                 if (list1.Count() <= 0 || list1 == null)
                 {
                     ViewBag.Nodata = "No Data Found";
@@ -2339,7 +2326,7 @@ namespace DtDc_Billing.Controllers
                              on i.Customer_Id equals c.Company_Id
                              join f in db.Franchisees
                              on c.Pf_code equals f.PF_Code
-                             
+
                              where
                                  (i.Customer_Id == Custid || Custid == "") &&
                                   i.Pfcode == strpf &&
@@ -2388,20 +2375,20 @@ namespace DtDc_Billing.Controllers
 
                              }).ToList();
 
-         
 
-            if (list2.Count() <= 0 || list2 == null)
-            {
-                ViewBag.Nodata = "No Data Found";
+
+                if (list2.Count() <= 0 || list2 == null)
+                {
+                    ViewBag.Nodata = "No Data Found";
+
+                }
+                else
+                {
+                    ExportToExcelAll.ExportToExcelAdmin(list2);
+
+                }
 
             }
-            else
-            {
-                ExportToExcelAll.ExportToExcelAdmin(list2);
-
-            }
-
-        }
 
 
 
@@ -2430,14 +2417,14 @@ namespace DtDc_Billing.Controllers
                 string updateconsignment = stch + i.ToString();
 
 
-                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete==false).FirstOrDefault();
+                Transaction transaction = db.Transactions.Where(m => m.Consignment_no == updateconsignment && m.isDelete == false).FirstOrDefault();
 
 
                 if (transaction != null && transaction.Customer_Id != null && transaction.Customer_Id.Length > 1)
                 {
                     Consignments.Add(transaction.Consignment_no);
                 }
-                
+
 
             }
 
@@ -2445,7 +2432,7 @@ namespace DtDc_Billing.Controllers
 
         }
 
-       
+
 
     }
 }
