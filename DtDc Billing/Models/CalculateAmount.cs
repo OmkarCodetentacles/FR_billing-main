@@ -11,24 +11,16 @@ namespace DtDc_Billing.Models
         private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
 
 
-<<<<<<< HEAD
-        public double getGCEAmount(string Consignment, string custid, string Pincode, double charweight)
-=======
         public double getGCEAmount(string Consignment, string custid, string Pincode,double charweight)
->>>>>>> upstream/main
         {
             double? Amount = 0.0;
             double highwaight = charweight;
             string sectorfound = db.GECSectors.Where(m => m.Pincode == Pincode).Select(m => m.SectorName).FirstOrDefault();
 
-<<<<<<< HEAD
-
-=======
             if(sectorfound == null)
             {
                 sectorfound = db.GECSectors.Select(x=>x.SectorName).FirstOrDefault();
             }
->>>>>>> upstream/main
 
             var dox = (from s in db.Sectors
                        join gecsector in db.GECrates on s.Sector_Id equals gecsector.Sector_Id
