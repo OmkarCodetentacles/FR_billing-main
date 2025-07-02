@@ -1,0 +1,304 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Sector>
+
+@{
+    ViewBag.Title = "RateMaster";
+}
+@{
+    var sMessage = TempData["Success"] as string;
+
+
+}
+
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    <script>
+        document.getElementById('overlayBlock').style.display = 'none';
+    </script>
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage))
+}
+
+<section>
+    <div class="">
+        <h2>RateMaster</h2>
+        @using (Html.BeginForm())
+        {
+            <label> 2 Slab<input type="radio" name="Slabrad" checked="checked" value="2" /></label>
+            <label> 3 Slab<input type="radio" name="Slabrad" value="3" /></label>
+            <label>4 Slab<input type="radio" name="Slabrad" value="4" /></label>
+
+            <div class="col-sm-12 container">
+                <div class="col-sm-2">
+                    <label>Upto</label>
+                    @foreach (var i in Model)
+                    {
+                        <p>@i.Sector_Name</p>
+                    }
+                </div>
+
+                <div class="col-sm-2">
+                    <input step="0.01" type="number" name="Upto" />
+                    @foreach (var i in Model)
+                    {
+                        <input step="0.01" type="number" name="slab1arr" />
+                    }
+                </div>
+
+
+                <div class="col-sm-2" id="Slab2">
+                    <input step="0.01" type="number" name="Upto" />
+                    @foreach (var i in Model)
+                    {
+                        <input step="0.01" type="number" name="slab2arr" />
+                    }
+                </div>
+
+
+                <div class="col-sm-2" id="Slab3">
+                    <input step="0.01" type="number" name="Upto" />
+                    @foreach (var i in Model)
+                    {
+                        <input step="0.01" type="number" name="slab3arr" />
+                    }
+                </div>
+
+                <div class="col-sm-2" id="slab4">
+                    <input step="0.01" type="number" name="Upto" />
+                    @foreach (var i in Model)
+                    {
+                        <input step="0.01" type="number" name="slab4arr" />
+                    }
+                </div>
+
+                <div style="display:none" class="col-sm-2" id="SectorId">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" value="@i.Sector_Id" name="Sector_Id" />
+                    }
+                </div>
+            </div>
+
+
+            <p>Second Half</p>
+            <div class="col-sm-12">
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+
+            </div>
+            <p>Third  Half</p>
+            <div class="col-sm-12">
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+                <div class="col-sm-1" id="">
+                    @foreach (var i in Model)
+                    {
+                        <input type="text" name="slab4arr" />
+                    }
+                </div>
+
+            </div>
+
+
+            <input type="hidden" name="only" id="only" />
+
+
+
+            <div class="col-sm-12">
+                <input style="float:right" class="btn bg-maroon" type="submit" name="" value="Submit" id="submitBtn" />
+            </div>
+        }
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+
+</script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#only').val(2);
+
+        $("input[name$='Slabrad']").change(function () {
+
+            var Rtest = $(this).val();
+
+            //alert(test);
+
+            if (Rtest == 3) {
+                $('#Slab3').hide();
+                $('#Slab2').show();
+
+                $('#only').val(Rtest);
+            }
+            else if (Rtest == 4) {
+                $('#Slab3').show();
+                $('#Slab2').show();
+                $('#only').val(Rtest);
+            }
+            else if (Rtest == 2) {
+                $('#Slab3').hide();
+                $('#Slab2').hide();
+                $('#only').val(2);
+
+            }
+
+        });
+    });
+</script>
+
+
+

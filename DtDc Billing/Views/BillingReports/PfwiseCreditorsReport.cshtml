@@ -1,0 +1,368 @@
+﻿
+@model IEnumerable<DtDc_Billing.Entity_FR.Invoice>
+
+
+
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info" style="padding: 16px 16px !important">
+                <div class="box-header with-border">
+                    <h4>Mfcode wise Creditor's Report</h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        <div class="col-md-2">
+                                            <div class="pf-code" id="PfCode">
+                                                @Html.DropDownList("PfCode", "-ALL MF-")
+
+                                                @*@Html.DropDownList("PfCode", ViewBag.PfCode as SelectList,"All PF_Code")*@
+                                            </div>
+                                        </div>
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
+                                            </div>
+                                        }
+
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                            </div>
+                                        }
+
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                            </div>
+                                        }
+
+                                        <div class="col-md-2">
+                                            <select name="status" class="form-control">
+                                                <option value="Paid">Paid</option>
+                                                <option value="Unpaid">Unpaid</option>
+                                                <option value="both">both</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
+                                        </div>
+
+                                        <div class="col-md-2  pull-right">
+                                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success" />
+                                        </div>
+
+                                    }
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <table id="table_display_block" class="table table-bordered table-responsive height-450">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoiceno)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Customer_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoicedate)
+                                    </th>
+                                    <th>
+                                        Due days
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodfrom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetax)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetaxtotal)
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.netamount)
+                                    </th>
+                                    <th>Paid</th>
+                                    <th>
+                                        Balance
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="@(item.discountamount==0 ? "paid-party" : "unpaid-party")">
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.invoiceno)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer_Id)
+                                        </td>
+                                        <td>
+                                            @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @getdays((DateTime)item.invoicedate)
+                                        </td>
+                                        <td>
+                                            @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @item.periodto.Value.ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.total)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetax)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.netamount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.paid)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.discountamount)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <!-- /input-group -->
+
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary total-label">Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>(m.netamount))">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-success">Paid</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(m=>(m.paid))">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger">Balance</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@Model.Sum(m=>(m.discountamount))">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@functions {
+
+    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+
+    public int getdays(DateTime invoicedate)
+    {
+
+        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+        var day = (indianTime.Date - invoicedate.Date).TotalDays;
+        return Convert.ToInt32(day);
+    }
+}
+
+@if (ViewBag.select != null)
+{
+    <script>
+        $(document).ready(function () {
+            $('[name="status"]').val('@ViewBag.select');
+        });
+    </script>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
+
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
+
+
+        });
+
+
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+
+    .paid-party {
+        color: #008000;
+    }
+
+        .paid-party td {
+            border-color: #00800059 !important;
+        }
+
+    .unpaid-party {
+        background-color: #ff000059;
+    }
+
+        .unpaid-party td {
+            border-color: #ff000059 !important;
+        }
+
+    .pf-code select {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
+
+            var todate = $('#datepicker1').val();
+
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+    });
+</script>
+
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

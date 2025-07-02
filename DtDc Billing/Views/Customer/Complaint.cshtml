@@ -1,0 +1,92 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Complaint>
+
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<section class="invoice-section content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h4>Complaint</h4>
+                    </div>
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-block">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>
+                                                    Consignment No
+                                                </th>
+                                                <th>
+                                                    Reason
+                                                </th>
+                                                <th>
+                                                    Company ID
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                                <th>
+                                                    Operation
+                                                </th>
+
+                                            </tr>
+
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Consignment_No)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Reason)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Company_id)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.C_Status)
+                                                    </td>
+                                                    <td>
+                                                        <a href="@Url.Action("ComplaintDetails","Customer", new {Complaint_ID =item.Complaint_ID })" class="view-btn">View In Detail</a>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .btn {
+        font-size: 16px;
+        line-height: 25px;
+        padding: 6px;
+        font-weight: 300;
+        float: right;
+    }
+
+
+    .navbar-default .navbar-collapse {
+        float: right;
+    }
+</style>
+
+

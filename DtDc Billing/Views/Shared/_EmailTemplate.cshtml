@@ -1,0 +1,141 @@
+﻿@model DtDc_Billing.Models.FinancialSummary
+@{
+   
+        Layout = null;
+    
+    string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+     Request.ApplicationPath.TrimEnd('/');
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Financial Summary</title>
+    <style>
+        /* Container styling */
+        .email-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            border-radius: 8px;
+        }
+
+        /* Header styling */
+        .email-header {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+        }
+
+            .email-header img {
+                max-width: 120px; /* Adjust size of the logo */
+                margin-bottom: 10px;
+            }
+
+        /* Content styling */
+        .email-body {
+            padding: 25px;
+            line-height: 1.6;
+        }
+
+            .email-body h2 {
+                color: #4CAF50;
+                font-size: 24px;
+                margin-bottom: 20px;
+                font-weight: bold;
+            }
+
+            .email-body p {
+                margin: 12px 0;
+                font-size: 16px;
+            }
+
+            .email-body .highlight {
+                color: #4CAF50;
+                font-weight: bold;
+            }
+
+        /* Button styling */
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Footer styling */
+        .email-footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777777;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 25px;
+        }
+
+        .logo {
+            height: 100px;
+            width: 100px;
+        }
+        /* Additional styling for important numbers */
+        .email-body .highlight-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d9534f; /* Red color for important numbers */
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+
+        <!-- Header with Logo -->
+        <div class="email-header">
+            <img src="https://frbilling.com/assets/images/goeasy.png" class="logo">
+            Monthly Financial Summary
+        </div>
+
+        <!-- Body Content -->
+        <div class="email-body">
+            <h2>Hello, <strong>@Model.FranchiseeName</strong> Owner!</h2>
+            <p>We are excited to share with you the financial summary for this month. Below are the details:</p>
+
+            <p><span class="highlight">Total Revenue Generated:</span>  ₹@Model.TotalRevenue</p>
+            <p><span class="highlight">Outstanding Invoices:</span>  ₹@Model.OutstandingInvoicesAmount (<span class="highlight-number">@Model.OutstandingInvoicesCount</span> invoices pending)</p>
+            <p><span class="highlight">Invoices Paid:</span>  ₹@Model.InvoicesPaidAmount (<span class="highlight-number">@Model.InvoicesPaidCount</span> invoices completed)</p>
+            <p><span class="highlight">Invoices Unpaid:</span>  ₹@Model.InvoicesUnpaidAmount (<span class="highlight-number">@Model.InvoicesUnpaidCount</span> invoices not paid)</p>
+            <p><span class="highlight">Total Expense:</span>  ₹@Model.TotalExpense</p>
+
+            <p><strong>We hope this summary helps you stay informed about your franchise’s financial status. If you have any questions or need further details, please don’t hesitate to reach out to us.</strong></p>
+
+            <p>If you'd like to view a detailed report or get more insights, feel free to click the button below:</p>
+            <a href="https://frbilling.com" style="display: inline-block; padding: 12px 25px; background-color: #17a2b8; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; text-align: center;">View More</a>
+
+        </div>
+        <!-- Chart image placeholder -->
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="@(Request.Url.Scheme + "://" + Request.Url.Authority + Url.Content("~/Admin/ShowFinancialChart?pfcode=" + Model.pfcode))"
+               style="display: inline-block; padding: 12px 25px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; text-align: center;">
+                View Chart
+            </a>
+        </div>
+        <!-- Footer -->
+        <div class="email-footer">
+            &copy; @DateTime.Now.Year Your CodeTentacles. All rights reserved. <br>
+            If you have any inquiries, please contact us at <a href="mailto:info@frbilling.com">support@codetentacles.com</a>
+        </div>
+    </div>
+</body>
+</html>

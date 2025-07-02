@@ -1,0 +1,2045 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Globalization;
+using System.IO;
+using System.IO.Ports;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DtDc_Billing.CustomModel;
+using DtDc_Billing.Entity_FR;
+using DtDc_Billing.Models;
+using Microsoft.Reporting.WebForms;
+using Razorpay.Api;
+using static DtDc_Billing.invo;
+
+namespace DtDc_Billing.Controllers
+{
+
+    [SessionAdminold]
+    //[SessionUserModule]
+    public class PaymentController : Controller
+    {
+        private db_a92afa_frbillingEntities db = new db_a92afa_frbillingEntities();
+
+
+        public static DateTime getIndianDate()
+        {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo indianTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, indianTimeZone);
+
+            return indianTime;
+            
+        }
+
+        public static string GenerateUniqueString()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+
+            var result = new char[20];
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(result) + DateTime.UtcNow.Ticks.ToString("x").Substring(0, 4); // Adds additional uniqueness
+        }
+        public ActionResult GetInvoiceList(string customerId)
+        {
+            // Fetch the list of invoices based on the customerId
+            var getListOfList = db.Invoices
+                .Where(x => x.Customer_Id == customerId.Trim() && (x.paid == null ? 0 : x.paid) < x.netamount)
+                .Select(x => new MulInvoice
+                {
+                    InvoiceNo = x.invoiceno,
+                    Amount = (x.netamount ?? 0) - (x.paid ?? 0),
+                    LastBalanceAmount = db.PartyPaymentDetails.Where(y=>y.CustomerId == customerId.Trim()).OrderByDescending(y=>y.PartyPaymentDetailId).Select(y=>y.BalanceAmount).FirstOrDefault() ?? 0
+                }).OrderBy(x=>x.Amount)
+                .ToList();
+
+            // Return the data as a JSON response
+            return Json(getListOfList, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: Payment
+        public ActionResult InvoicePaymentList()
+        {
+
+            List<PaymentModel> list = new List<PaymentModel>();
+            ViewBag.Cash = new CashModel();
+            ViewBag.Cheque = new ChequeModel();
+            ViewBag.Neft = new NEFTModel();
+            ViewBag.Credit = new CreditNoteModel();
+
+            //var transactions = db.Invoices.AsEnumerable();
+
+            //return View(transactions.ToList());CashEdit
+
+
+            return View(list);
+        }
+
+        [HttpPost]
+        public ActionResult InvoicePaymentList(string status)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.status = status;
+
+            ViewBag.Cash = new CashModel();
+            ViewBag.Cheque = new ChequeModel();
+            ViewBag.Neft = new NEFTModel();
+            ViewBag.Credit = new CreditNoteModel();
+
+            var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
+            {
+                invoiceno = x.invoiceno,
+                total = x.total,
+                fullsurchargetax = x.fullsurchargetax,
+                fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                servicetax = x.servicetax,
+                servicetaxtotal = x.servicetaxtotal,
+                othercharge = x.othercharge,
+                netamount = x.netamount,
+                Firm_Id = x.Firm_Id,
+                Customer_Id = x.Customer_Id,
+                paid = Math.Round(x.paid ?? 0),
+                tempInvoicedate = x.tempInvoicedate,
+                Royalty_charges = x.Royalty_charges,
+                Docket_charges = x.Docket_charges,
+                Balance = Math.Round(x.Balance, 2)
+                // discount = x.discount,
+                // totalCount = x.totalCount ?? 0
+            }).ToList();
+
+            return View(obj);
+
+        }
+
+        [HttpGet]
+        public ActionResult NewPaymentList()
+        {
+            List<PaymentModel> list = new List<PaymentModel>();
+            ViewBag.AllModePaymentModel = new NewPaymentModel();
+            ViewBag.Message = TempData["Message"];
+            TempData["remainingAmount"] = TempData["remainingAmount"];
+            return View(list);
+        }
+        [HttpPost]
+        public ActionResult NewPaymentList(string status)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.status = status;
+
+            ViewBag.AllModePaymentModel = new NewPaymentModel();
+
+
+            var obj = db.getPayment(status, strpf).Select(x => new PaymentModel
+            {
+                invoiceno = x.invoiceno,
+                total = x.total,
+                fullsurchargetax = x.fullsurchargetax,
+                fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                servicetax = x.servicetax,
+                servicetaxtotal = x.servicetaxtotal,
+                othercharge = x.othercharge,
+                netamount = x.netamount,
+                Firm_Id = x.Firm_Id,
+                Customer_Id = x.Customer_Id,
+                paid = x.paid ?? 0,
+                tempInvoicedate = x.tempInvoicedate,
+                Royalty_charges = x.Royalty_charges,
+                Docket_charges = x.Docket_charges,
+                Balance = Math.Round(x.Balance, 2)
+                // discount = x.discount,
+                // totalCount = x.totalCount ?? 0
+            }).ToList();
+
+
+
+            return View(obj);
+
+        }
+
+        public ActionResult MakePayment(MakePaymentModel payment)
+        {
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                //var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                var obj = db.getPayment("Unpaid", strpf).Select(x => new PaymentModel
+                {
+                    total = x.total,
+                    fullsurchargetax = x.fullsurchargetax,
+                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                    servicetax = x.servicetax,
+                    servicetaxtotal = x.servicetaxtotal,
+                    othercharge = x.othercharge,
+                    netamount = x.netamount,
+                    Customer_Id = x.Customer_Id,
+                    paid = x.paid ?? 0,
+                    Royalty_charges = x.Royalty_charges,
+                    Docket_charges = x.Docket_charges,
+                    Balance = x.Balance
+
+                }).Where(x => x.Customer_Id == payment.CompanyName).FirstOrDefault();
+
+
+                if (payment.TotalAmount > obj.Balance)
+                {
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+
+                    var paid = Convert.ToDouble(payment.TotalAmount);
+
+                    var save = db.PaymentDetailsSave(payment.PaymentType, payment.Amount, payment.TdsAmount, payment.TotalAmount, payment.InvoiceNo, payment.ChequeNo, payment.TransactionId, payment.tempinserteddate, payment.FirmId, strpf, payment.CompanyName, paid);
+
+                    TempData["remainingAmount"] = obj.Balance - Convert.ToDouble(payment.TotalAmount);
+                    TempData["isSuccsse"] = save.ToString();
+                    TempData["Message"] = "Payment added successfully";
+                }
+
+            }
+
+
+
+            return PartialView("MakePaymentPartial", payment);
+        }
+
+        //[HttpGet]
+        //public ActionResult PaymodeModePartial(int id)
+        //{
+        //    string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+        //    NewPaymentModel newPaymentdetail = new NewPaymentModel();
+        //    var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+        //    if (data != null)
+        //    {
+        //        var invoice = db.Invoices.Where(x => x.invoiceno == data.InvoiceNo && x.Pfcode == pfcode).FirstOrDefault();
+
+        //        newPaymentdetail.InvoiceNo = data.InvoiceNo;
+        //        newPaymentdetail.Pfcode = pfcode;
+        //        newPaymentdetail.Amount = data.Amount;
+        //        newPaymentdetail.Payment_Mode = data.Payment_Mode;
+        //        newPaymentdetail.Tds_Amount = data.Tds_Amount;
+        //        newPaymentdetail.Total_Amount = data.Total_Amount;
+        //        newPaymentdetail.Payment_Date= data.Payment_Date;
+        //        newPaymentdetail.Bank_Name = data.Bank_Name;
+        //        newPaymentdetail.Branch_Name = data.Branch_Name;
+        //        newPaymentdetail.Transaction_Id = data.Transaction_Id;
+        //        newPaymentdetail.CheckNo = data.CheckNo;
+        //        newPaymentdetail.CreditNoteNo=data.CreditNoteNo;
+        //        newPaymentdetail.Balance = data.Balance;
+        //        newPaymentdetail.Created_Date = data.Created_Date;
+        //        newPaymentdetail.temppaymentdate = data.Created_Date.Value.ToString("dd-MM-yyyy");
+
+        //        return PartialView("PaymodeModePartial",newPaymentdetail);
+        //    }
+        //    return PartialView("PaymodeModePartial");
+        //}
+        [HttpPost]
+        public ActionResult PaymodeModePartial(NewPaymentModel newPaymentModel, string status)
+        {
+            ViewBag.status = status;
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var invoice = db.Invoices.Where(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(invoice.netamount) - Convert.ToDouble(invoice.paid ?? 0);
+
+                TempData["remainingAmount"] = balance;
+
+                if (newPaymentModel.Total_Amount > balance)
+                {
+
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                    newPaymentModel.Amount = 0;
+                    newPaymentModel.Tds_Amount = 0;
+                    newPaymentModel.Total_Amount = 0;
+                    return PartialView("PaymodeModePartial", newPaymentModel);
+                }
+                else
+                {
+                    invoice.paid = Convert.ToDouble(invoice.paid) + Convert.ToDouble(newPaymentModel.Total_Amount);
+                    invoice.Balance = Math.Round((double)invoice.netamount - (double)(invoice.paid ?? 0));
+                    db.Entry(invoice).State = EntityState.Modified;
+                    db.SaveChanges();
+                    newPaymentModel.Pfcode = strpf;
+                    string[] formats = { "dd-MM-yyyy" };
+                    string tempdate = DateTime.ParseExact(newPaymentModel.temppaymentdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                    DateTime PaymentDate = Convert.ToDateTime(tempdate);
+
+                    NewPaymentdetail NP = new NewPaymentdetail();
+                    NP.Payment_Mode = newPaymentModel.Payment_Mode;
+                    NP.Amount = newPaymentModel.Amount;
+                    NP.Payment_Date = PaymentDate;
+                    NP.InvoiceNo = newPaymentModel.InvoiceNo;
+                    NP.Tds_Amount = newPaymentModel.Tds_Amount;
+                    NP.Total_Amount = newPaymentModel.Total_Amount;
+                    NP.Pfcode = strpf;
+                    NP.Bank_Name = newPaymentModel.Bank_Name;
+                    NP.Branch_Name = newPaymentModel.Branch_Name;
+                    NP.Transaction_Id = newPaymentModel.Transaction_Id;
+                    NP.Created_Date = DateTime.Now;
+                    NP.CreditNoteNo = newPaymentModel.CreditNoteNo;
+                    NP.Balance = balance - newPaymentModel.Total_Amount;
+                    NP.CheckNo = newPaymentModel.CheckNo;
+                    db.NewPaymentdetails.Add(NP);
+                    db.SaveChanges();
+                    TempData["Message"] = "Payment added successfully";
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(newPaymentModel.Total_Amount);
+
+
+
+                    if (newPaymentModel.Payment_Mode == "CreditNote")
+                    {
+                        LocalReport lr = new LocalReport();
+
+                        var DataSet1 = db.Franchisees.Where(x => x.PF_Code == strpf).FirstOrDefault();
+
+                        var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                        var DataSet3 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id && m.Pf_code == strpf).FirstOrDefault();
+
+                        DataSet2.Amount4_Lable = AmountTowords.changeToWords(newPaymentModel.Total_Amount.ToString());
+                        DataSet2.Address = newPaymentModel.CreditNoteNo;
+                        DataSet2.Tempdatefrom = newPaymentModel.temppaymentdate;
+                        DataSet2.Amount4 = newPaymentModel.Total_Amount;
+
+
+                        // Convert single objects to lists
+                        var DataSet1List = new List<Franchisee> { DataSet1 };
+                        var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
+                        var DataSet3List = new List<Company> { DataSet3 };
+                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            lr.ReportPath = path;
+                        }
+
+                        lr.EnableExternalImages = true;
+
+                        // Create report data sources
+                        ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1List);
+                        ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2List);
+                        ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3List);
+
+                        lr.DataSources.Add(rd);
+                        lr.DataSources.Add(rd1);
+                        lr.DataSources.Add(rd2);
+
+
+                        string reportType = "pdf";
+                        string mimeType;
+                        string encoding;
+                        string fileNameExte;
+
+                        string deviceInfo =
+                            "<DeviceInfo>" +
+                            "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                            "<PageHeight>11in</PageHeight>" +
+                           "<Margintop>0.1in</Margintop>" +
+                             "<Marginleft>0.1in</Marginleft>" +
+                              "<Marginright>0.1in</Marginright>" +
+                               "<Marginbottom>0.5in</Marginbottom>" +
+                               "</DeviceInfo>";
+
+                        Warning[] warnings;
+                        string[] streams;
+                        byte[] renderByte;
+
+
+                        renderByte = lr.Render
+                      (reportType,
+                      deviceInfo,
+                      out mimeType,
+                      out encoding,
+                      out fileNameExte,
+                      out streams,
+                      out warnings
+                      );
+                        //return File(renderByte, mimeType);
+
+
+                        string savePath = Server.MapPath("~/PDF/" + strpf + "/" + DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+                        using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                        {
+                            stream.Write(renderByte, 0, renderByte.Length);
+
+                        }
+
+
+                        ViewBag.FileName = DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf";
+                        ViewBag.pfcode = strpf;
+
+                    }
+                    List<PaymentModel> p = new List<PaymentModel>();
+                    ViewBag.AllModePaymentModel = newPaymentModel;
+                    return PartialView("PaymodeModePartial", newPaymentModel);
+
+                }
+            }
+            List<PaymentModel> pm = new List<PaymentModel>();
+            ViewBag.AllModePaymentModel = newPaymentModel;
+            return PartialView("PaymodeModePartial", newPaymentModel);
+        }
+
+        public ActionResult DeleteNewPayment(int id)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+            if (data != null)
+            {
+                var invoice = db.Invoices.Where(m => m.invoiceno == data.InvoiceNo && m.Pfcode == pfcode).FirstOrDefault();
+
+                invoice.paid = Convert.ToDouble(invoice.paid) - Convert.ToDouble(data.Total_Amount);
+                invoice.Balance = Math.Round((double)invoice.netamount - (double)(invoice.paid ?? 0));
+                db.Entry(invoice).State = EntityState.Modified;
+                db.SaveChanges();
+
+                db.NewPaymentdetails.Remove(data);
+                db.SaveChanges();
+                TempData["Deletedsuccss"] = "Payment Details Deleted Successfully!";
+                return RedirectToAction("NewPaymentTrack");
+
+            }
+            TempData["Deletedsuccss"] = "Something Went Wrong";
+            return RedirectToAction("NewPaymentTrack");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cash(CashModel cash)
+        {
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var cashb = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid ?? 0);
+
+                var errorFlag = 0;
+
+                if (cash.invoiceType == "multiple" && cash.SelectedInvoices == null)
+                {
+                    errorFlag = 1;
+                    ModelState.AddModelError("InvAmt", "Please select at least 1 invoice");
+                }
+
+                if (cash.invoiceType == "multiple" && cash.C_Total_Amount > cash.selectedTotal)
+                {
+                    errorFlag = 1;
+                    ModelState.AddModelError("InvAmt", "Your amount is greater than selected invoice");
+                }
+                if (cash.invoiceType == "multiple" && cash.C_Total_Amount > cash.creditTotalAmt)
+                {
+                    errorFlag = 1;
+                    ModelState.AddModelError("InvAmt", "Your amount is greater than credit amount");
+                }
+
+                if (cash.invoiceType == "single" && cash.C_Total_Amount > balance)
+                {
+                    errorFlag = 1;
+                    ModelState.AddModelError("InvAmt", "Your amount is greater than balance");
+                }
+
+                if (errorFlag == 1)
+                {
+                    TempData["remainingAmount"] = balance;
+
+                }
+                else
+                {
+
+                    if (cash.invoiceType == "multiple")
+                    {
+                        var result = saveMultipleInvoice(cash);
+                    }
+                    else
+                    {
+                        cashb.paid = Convert.ToDouble(cashb.paid) + Convert.ToDouble(cash.C_Total_Amount);
+                        db.Entry(cashb).State = EntityState.Modified;
+                        db.SaveChanges();
+                        cash.Pfcode = strpf;
+
+                        Cash c = new Cash();
+                        c.Amount = cash.Amount;
+                        c.inserteddate = cash.inserteddate;
+                        c.Invoiceno = cash.Invoiceno;
+                        c.C_Tds_Amount = cash.C_Tds_Amount;
+                        c.C_Total_Amount = cash.C_Total_Amount;
+                        c.Pfcode = strpf;
+                        c.tempinserteddate = cash.tempinserteddate;
+                        c.tempch_date = cash.tempch_date;
+                        c.Balance = balance - Convert.ToDouble(cash.C_Total_Amount);
+
+                        db.Cashes.Add(c);
+                        db.SaveChanges();
+
+                        TempData["remainingAmount"] = Math.Round(balance - Convert.ToDouble(cash.C_Total_Amount));
+                    }
+
+
+                    /////////add transaction history details////////////
+
+                    if (cash.invoiceType == "multiple")
+                    {
+                        PartyPaymentDetail addpartyPayment = new PartyPaymentDetail();
+
+                        var invoiceArray = cash.SelectedInvoices.Split(',');
+                        addpartyPayment.InvoicePaidCount = invoiceArray.Length;
+                    
+
+                        addpartyPayment.TransactionId = GenerateUniqueString();
+                        addpartyPayment.CustomerId = cash.custId;
+                        addpartyPayment.CreditAmount = cash.creditTotalAmt;
+                        addpartyPayment.PaymentDate = getIndianDate();
+                        addpartyPayment.InvoicePaid = cash.SelectedInvoices;
+                        addpartyPayment.BalanceAmount = cash.creditTotalAmt - cash.C_Total_Amount;
+                        addpartyPayment.ModeOfPayment = "CASH";
+                    
+                        addpartyPayment.PaidAmount = cash.C_Total_Amount;
+
+                        db.PartyPaymentDetails.Add(addpartyPayment);
+                        db.SaveChanges();
+                    }
+                        TempData["Message"] = "Payment added successfully";
+
+                }
+
+            }
+
+            return PartialView("CashPartial", cash);
+        }
+
+        public string saveMultipleInvoice(CashModel cash)
+        {
+
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            // Convert it to an array by splitting on the comma
+            var invoiceArray = cash.SelectedInvoices.Split(',');
+
+            // Loop through the array
+            for (var i = 0; i < invoiceArray.Length; i++)
+            {
+                var invoiceNo = invoiceArray[i];
+                double paidamount = 0;
+                var cashb = db.Invoices.Where(m => m.invoiceno == invoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid ?? 0);
+               
+                if (cash.Amount >= balance)
+                {
+                    paidamount = balance;
+
+                }
+                else
+                {
+                    paidamount = Convert.ToDouble(cash.Amount - (cashb.paid ?? 0));
+
+                }
+
+
+                cash.Amount = cash.Amount - paidamount;
+
+                cashb.paid = (cashb.paid ?? 0) + paidamount;
+                db.Entry(cashb).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                if (paidamount > 1)
+                {
+                    Cash c = new Cash();
+                    c.Amount = paidamount;
+                    c.inserteddate = cash.inserteddate;
+                    c.Invoiceno = invoiceNo;
+                    c.C_Tds_Amount = cash.C_Tds_Amount;
+                    c.C_Total_Amount = paidamount;
+                    c.Pfcode = strpf;
+                    c.tempinserteddate = cash.tempinserteddate;
+                    c.tempch_date = cash.tempch_date;
+                    c.Balance = balance - paidamount;
+
+                    db.Cashes.Add(c);
+                    db.SaveChanges();
+                }
+            }
+
+            return "1";
+
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cheque(ChequeModel cheque)
+        {
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var cashb = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid);
+
+                if (cheque.totalAmount > balance)
+                {
+                    TempData["remainingAmount"] = balance;
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                    cashb.paid = Convert.ToDouble(cashb.paid) + Convert.ToDouble(cheque.totalAmount);
+                    cheque.Pfcode = strpf;
+                    db.Entry(cashb).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    Cheque c = new Cheque();
+                    c.C_Amount = cheque.C_Amount;
+                    c.bank_name = cheque.bank_name;
+                    c.branch_Name = cheque.branch_Name;
+                    c.totalAmount = cheque.totalAmount;
+                    c.Invoiceno = cheque.Invoiceno;
+                    c.Tds_amount = cheque.Tds_amount;
+                    c.Pfcode = strpf;
+                    c.tempch_date = cheque.tempch_date;
+                    c.Balance = (balance - cheque.totalAmount);
+
+                    db.Cheques.Add(c);
+                    db.SaveChanges();
+                    //  return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(cheque.totalAmount);
+                    TempData["Message"] = "Payment added successfully";
+                }
+
+            }
+
+            return PartialView("ChequePartial", cheque);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Neft(NEFTModel nEFT)
+        {
+            if (ModelState.IsValid)
+            {
+                string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+                var cashb = db.Invoices.Where(m => m.invoiceno == nEFT.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid);
+
+                if (nEFT.N_Total_Amount > balance)
+                {
+                    TempData["remainingAmount"] = balance;
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                    cashb.paid = Convert.ToDouble(cashb.paid) + Convert.ToDouble(nEFT.N_Total_Amount);
+                    db.Entry(cashb).State = EntityState.Modified;
+                    db.SaveChanges();
+                    NEFT n = new NEFT();
+                    n.NeftAmount = nEFT.NeftAmount;
+                    n.Invoiceno = nEFT.Invoiceno;
+                    n.Transaction_Id = nEFT.Transaction_Id;
+                    n.N_Tds_Amount = nEFT.N_Tds_Amount;
+                    n.N_Total_Amount = nEFT.N_Total_Amount;
+                    n.Pfcode = strpf;
+                    n.tempneftdate = nEFT.tempneftdate;
+                    n.Balance = balance - nEFT.N_Total_Amount;
+                    db.NEFTs.Add(n);
+                    db.SaveChanges();
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(nEFT.N_Total_Amount);
+                    TempData["Message"] = "Payment added successfully";
+                    //return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+                }
+
+            }
+
+            return PartialView("NeftPartial", nEFT);
+        }
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreditNote(CreditNoteModel creditNote)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var cashb = db.Invoices.Where(m => m.invoiceno == creditNote.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+            //TempData["Firmid"] = Firm_Id;
+            TempData["Customer_Id"] = cashb.Customer_Id;
+
+            if (ModelState.IsValid)
+            {
+
+
+                double balance = Convert.ToDouble(cashb.netamount) - Convert.ToDouble(cashb.paid);
+
+                if (creditNote.Cr_Amount > balance)
+                {
+                    TempData["remainingAmount"] = balance;
+                    ModelState.AddModelError("InvAmt", "Amount Is Greater Than Balance");
+                }
+                else
+                {
+                    CreditNote cn = new CreditNote();
+                    cashb.paid = Convert.ToDouble(cashb.paid) + Convert.ToDouble(creditNote.Cr_Amount);
+                    cn.Creditnoteno = "MH" + RandomString(8);
+                    db.Entry(cashb).State = EntityState.Modified;
+
+                    cn.Cr_Amount = creditNote.Cr_Amount;
+                    cn.Invoiceno = creditNote.Invoiceno;
+                    cn.tempch_date = creditNote.tempch_date;
+                    cn.Pfcode = strpf;
+                    cn.Balance = balance - creditNote.Cr_Amount;
+                    db.CreditNotes.Add(cn);
+                    db.SaveChanges();
+
+                    LocalReport lr = new LocalReport();
+
+                    var DataSet1 = db.Franchisees.Where(x => x.PF_Code == strpf).FirstOrDefault();
+
+                    var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno == cashb.invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+                    var DataSet3 = db.Companies.Where(m => m.Company_Id == cashb.Customer_Id && m.Pf_code == strpf).FirstOrDefault();
+
+                    DataSet2.Amount4_Lable = AmountTowords.changeToWords(creditNote.Cr_Amount.ToString());
+                    DataSet2.Address = creditNote.Creditnoteno;
+                    DataSet2.Tempdatefrom = creditNote.tempch_date.ToString().Replace("-", "/");
+                    DataSet2.Amount4 = creditNote.Cr_Amount;
+
+
+                    // Convert single objects to lists
+                    var DataSet1List = new List<Franchisee> { DataSet1 };
+                    var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
+                    var DataSet3List = new List<Company> { DataSet3 };
+                    string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+                    if (System.IO.File.Exists(path))
+                    {
+                        lr.ReportPath = path;
+                    }
+
+
+
+                    lr.EnableExternalImages = true;
+
+                    // Create report data sources
+                    ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1List);
+                    ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2List);
+                    ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3List);
+
+                    lr.DataSources.Add(rd);
+                    lr.DataSources.Add(rd1);
+                    lr.DataSources.Add(rd2);
+
+
+                    string reportType = "pdf";
+                    string mimeType;
+                    string encoding;
+                    string fileNameExte;
+
+                    string deviceInfo =
+                        "<DeviceInfo>" +
+                        "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                        "<PageHeight>11in</PageHeight>" +
+                       "<Margintop>0.1in</Margintop>" +
+                         "<Marginleft>0.1in</Marginleft>" +
+                          "<Marginright>0.1in</Marginright>" +
+                           "<Marginbottom>0.5in</Marginbottom>" +
+                           "</DeviceInfo>";
+
+                    Warning[] warnings;
+                    string[] streams;
+                    byte[] renderByte;
+
+
+                    renderByte = lr.Render
+                  (reportType,
+                  deviceInfo,
+                  out mimeType,
+                  out encoding,
+                  out fileNameExte,
+                  out streams,
+                  out warnings
+                  );
+                    //return File(renderByte, mimeType);
+
+
+                    string savePath = Server.MapPath("~/PDF/" + DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+                    using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                    {
+                        stream.Write(renderByte, 0, renderByte.Length);
+
+                    }
+                    TempData["success"] = "pdf";
+                    TempData["remainingAmount"] = balance - Convert.ToDouble(creditNote.Cr_Amount);
+                    ViewBag.FileName = DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf";
+                    // return File(renderByte, mimeType);
+                }
+
+
+                // return Json(new { RedirectUrl = Url.Action("InvoicePaymentList") });
+            }
+            return PartialView("CreditNotePartial", creditNote);
+        }
+
+
+        public string PrintReceipt(long id)
+        {
+            var creditnote = db.CreditNotes.Where(m => m.Cr_id == id).FirstOrDefault();
+            var invoice = db.Invoices.Where(m => m.invoiceno == creditnote.Invoiceno.Trim()).FirstOrDefault();
+            LocalReport lr = new LocalReport();
+
+            var DataSet1 = db.Franchisees.Where(x => x.Firm_Id == invoice.Firm_Id);
+
+            var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno == creditnote.Invoiceno);
+
+            var DataSet3 = db.Companies.Where(m => m.Company_Id == invoice.Customer_Id);
+
+
+            DataSet2.FirstOrDefault().Amount4_Lable = AmountTowords.changeToWords(creditnote.Cr_Amount.ToString());
+            DataSet2.FirstOrDefault().Address = creditnote.Creditnoteno;
+            DataSet2.FirstOrDefault().Tempdatefrom = creditnote.tempch_date.ToString().Replace("-", "/");
+            DataSet2.FirstOrDefault().Amount4 = creditnote.Cr_Amount;
+
+            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+
+
+
+            lr.EnableExternalImages = true;
+            ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1);
+            ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2);
+            ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3);
+
+            lr.DataSources.Add(rd);
+            lr.DataSources.Add(rd1);
+            lr.DataSources.Add(rd2);
+
+
+            string reportType = "pdf";
+            string mimeType;
+            string encoding;
+            string fileNameExte;
+
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                "<PageHeight>11in</PageHeight>" +
+               "<Margintop>0.1in</Margintop>" +
+                 "<Marginleft>0.1in</Marginleft>" +
+                  "<Marginright>0.1in</Marginright>" +
+                   "<Marginbottom>0.5in</Marginbottom>" +
+                   "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderByte;
+
+
+            renderByte = lr.Render
+          (reportType,
+          deviceInfo,
+          out mimeType,
+          out encoding,
+          out fileNameExte,
+          out streams,
+          out warnings
+          );
+            //return File(renderByte, mimeType);
+
+
+            string savePath = Server.MapPath("~/PDF/" + DataSet2.FirstOrDefault().Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+            using (FileStream stream = new FileStream(savePath, FileMode.Create))
+            {
+                stream.Write(renderByte, 0, renderByte.Length);
+            }
+            return DataSet2.FirstOrDefault().Customer_Id + "_CreditNoteReceipt" + ".pdf";
+        }
+
+        public ActionResult AddCodPayment()
+        {
+            ViewBag.Cod = new AddCodAmount();
+
+            ViewBag.Codlist = new List<TransactionView>();
+
+
+            return View();
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult CodSearch(string Custid)
+        {
+            ViewBag.Custid = Custid;
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+            List<TransactionView> transactions = (from u in db.TransactionViews
+                                                  where u.cod == "yes" && u.Pf_Code == strpfcode &&
+                                                  (Custid == null || Custid == "" || u.Customer_Id == Custid) &&
+                                                  !db.addcodamounts.Any(f => f.consinment_no == u.Consignment_no)
+
+                                                  && (u.isRTO == null || u.isRTO == false)
+                                                  select u).ToList();
+
+            return PartialView("CodSearchPartial", transactions);
+
+
+        }
+
+        [HttpPost]
+        public ActionResult EditCod(AddCodAmount addcodamount)
+        {
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+            if (ModelState.IsValid)
+            {
+                var cod = db.addcodamounts.Where(x => x.consinment_no.Trim().ToLower() == addcodamount.consinment_no.Trim().ToLower() && x.pfcode == strpfcode).FirstOrDefault();
+                if (cod != null)
+                {
+
+
+                    cod.chequeno = addcodamount.chequeno;
+                    cod.bank_name = addcodamount.chequeno;
+                    cod.branch = addcodamount.branch;
+                    cod.consinment_no = addcodamount.consinment_no;
+                    cod.Invoiceno = addcodamount.Invoiceno;
+                    cod.pfcode = strpfcode;
+                    db.Entry(cod).State = EntityState.Modified;
+                    db.SaveChanges();
+                    ViewBag.Message = "Cod Payment Updated SuccessFully";
+                }
+                else
+                {
+                    addcodamount codamt = new addcodamount();
+                    codamt.chequeno = addcodamount.chequeno;
+                    codamt.bank_name = addcodamount.bank_name;
+                    codamt.branch = addcodamount.branch;
+                    codamt.consinment_no = addcodamount.consinment_no;
+                    codamt.Invoiceno = addcodamount.Invoiceno;
+                    codamt.pfcode = strpfcode;
+
+                    db.addcodamounts.Add(codamt);
+                    db.SaveChanges();
+
+                    ViewBag.Message = "Cod Payment Added SuccessFully";
+
+                }
+
+                return PartialView("EditCodPartial");
+            }
+
+            return PartialView("EditCodPartial", addcodamount);
+        }
+
+
+
+        public ActionResult AddTopayPayment()
+        {
+            ViewBag.Topay = new AddToPayAmount();
+
+            ViewBag.Codlist = new List<TransactionView>();
+
+
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public ActionResult TopaySearch(string Custid)
+        {
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.Custid = Custid;
+
+            List<TransactionView> transactions = (from u in db.TransactionViews
+                                                  where u.topay == "yes" && u.Pf_Code == strpfcode &&
+                                                 (Custid == null || Custid == "" || u.Customer_Id == Custid) &&
+
+                                                  !db.addtopayamounts.Any(f => f.consinmentno == u.Consignment_no)
+                                                   && (u.isRTO == null || u.isRTO == false)
+                                                  select u).ToList();
+
+            return PartialView("TopaySearchPartial", transactions);
+
+
+        }
+
+        [HttpPost]
+        public ActionResult EditTopay(AddToPayAmount addtopayamount)
+        {
+
+            var strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            if (ModelState.IsValid)
+            {
+                var topay = db.addtopayamounts.Where(x => x.consinmentno.Trim().ToLower() == addtopayamount.consinmentno.Trim().ToLower()).FirstOrDefault();
+                if (topay != null)
+                {
+                    topay.sapno = addtopayamount.sapno;
+                    topay.consinmentno = addtopayamount.consinmentno.ToUpper().Trim();
+                    //string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
+
+                    //string bdate = DateTime.ParseExact(Convert.ToString(addtopayamount.date), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+                    //var format = Convert.ToDateTime(addtopayamount.date);
+                    // topay.date = format.ToString("dd/MM/yyyy");
+                    topay.date = addtopayamount.date;
+                    topay.Invoiceno = addtopayamount.Invoiceno;
+                    topay.pfcode = strpfcode;
+                    db.Entry(topay).State = EntityState.Modified;
+                    db.SaveChanges();
+                    ViewBag.Message = "Topay Payment Updated SuccessFully";
+
+                }
+                else
+                {
+                    addtopayamount pay = new addtopayamount();
+
+                    pay.sapno = addtopayamount.sapno;
+                    pay.consinmentno = addtopayamount.consinmentno.ToUpper().Trim();
+                    //string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
+
+                    //string bdate = DateTime.ParseExact(Convert.ToString(addtopayamount.date), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+                    //var format = Convert.ToDateTime(addtopayamount.date);
+
+                    //topay.date = format.ToString("dd/MM/yyyy");
+                    pay.date = addtopayamount.date;
+                    pay.Invoiceno = addtopayamount.Invoiceno.Trim();
+                    pay.pfcode = strpfcode;
+                    db.addtopayamounts.Add(pay);
+                    db.SaveChanges();
+
+                    ViewBag.Message = "Topay Payment Added SuccessFully";
+                }
+
+
+                return PartialView("EditTopayPartial");
+            }
+
+            return PartialView("EditTopayPartial", addtopayamount);
+        }
+
+        public ActionResult CustomerIdAutocomplete()
+        {
+
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var entity = db.Companies.
+Select(e => new
+{
+    e.Company_Id,
+    e.Pf_code
+}).Where(d => d.Pf_code == strpfcode).Distinct().ToList();
+
+
+            return Json(entity, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult PaymentTrack()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.DeletedMessage = TempData["Deletedsuccss"];
+            List<PaymentTrack> track = new List<PaymentTrack>();
+
+            var cash = (from inv in db.Invoices
+                        join ca in db.Cashes on inv.invoiceno equals ca.Invoiceno
+                        where inv.Pfcode == ca.Pfcode
+                        && inv.Pfcode == strpfcode
+                        select new PaymentTrack
+                        {
+                            Amount = ca.C_Total_Amount,
+                            Invoiceno = ca.Invoiceno,
+                            invoicedate = inv.invoicedate,
+                            Customer_Id = inv.Customer_Id,
+                            Modeofpayment = "Cash",
+                            netamount = inv.netamount,
+                            tempinserteddate = ca.tempinserteddate,
+                            Balance = ca.Balance ?? 0,
+                            id = ca.Cash_id,
+                            remark = "",
+
+
+                        }).ToList();
+
+            var cheque = (from inv in db.Invoices
+                          join ch in db.Cheques on inv.invoiceno equals ch.Invoiceno
+                          where inv.Pfcode == ch.Pfcode
+                           && inv.Pfcode == strpfcode
+                          select new PaymentTrack
+                          {
+                              Amount = ch.totalAmount,
+                              Invoiceno = ch.Invoiceno,
+                              invoicedate = inv.invoicedate,
+                              Customer_Id = inv.Customer_Id,
+                              Modeofpayment = "Cheque",
+                              netamount = inv.netamount,
+                              tempinserteddate = ch.tempch_date,
+                              id = ch.Cheque_id,
+                              remark = ch.branch_Name,
+                              Balance = ch.Balance,
+
+                          }).ToList();
+
+            var NEFT = (from inv in db.Invoices
+                        join ne in db.NEFTs on inv.invoiceno equals ne.Invoiceno
+                        where inv.Pfcode == ne.Pfcode
+                         && inv.Pfcode == strpfcode
+                        select new PaymentTrack
+                        {
+                            Amount = ne.N_Total_Amount,
+                            Invoiceno = ne.Invoiceno,
+                            invoicedate = inv.invoicedate,
+                            Customer_Id = inv.Customer_Id,
+                            Modeofpayment = "NEFT",
+                            netamount = inv.netamount,
+                            tempinserteddate = ne.tempneftdate,
+                            id = ne.Neft_id,
+                            remark = ne.Transaction_Id,
+                            Balance = ne.Balance
+                        }).ToList();
+
+            var CreditNote = (from inv in db.Invoices
+                              join cn in db.CreditNotes on inv.invoiceno equals cn.Invoiceno
+                              where inv.Pfcode == cn.Pfcode
+                               && inv.Pfcode == strpfcode
+                              select new PaymentTrack
+                              {
+                                  Amount = cn.Cr_Amount,
+                                  Invoiceno = cn.Invoiceno,
+                                  invoicedate = inv.invoicedate,
+                                  Customer_Id = inv.Customer_Id,
+                                  Modeofpayment = "CreditNote",
+                                  netamount = inv.netamount,
+                                  tempinserteddate = cn.tempch_date,
+                                  id = cn.Cr_id,
+                                  remark = cn.Creditnoteno,
+                                  Balance = cn.Balance
+                              }).ToList();
+
+            track.AddRange(cash);
+            track.AddRange(cheque);
+            track.AddRange(NEFT);
+            track.AddRange(CreditNote);
+
+
+
+            return View(track.OrderBy(m => m.Invoiceno).ToList());
+        }
+
+        [HttpGet]
+        public ActionResult NewPaymentTrack()
+        {
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.DeletedMessage = TempData["Deletedsuccss"];
+
+
+            var Paymentdata = (from inv in db.Invoices
+                               join pay in db.NewPaymentdetails on inv.invoiceno equals pay.InvoiceNo
+                               where inv.Pfcode == strpfcode
+                               && pay.Pfcode == strpfcode
+                               select new PaymentInvoiceModel
+                               {
+                                   Payment_Id = pay.Payment_Id,
+                                   Payment_Date = pay.Payment_Date,
+                                   Payment_Mode = pay.Payment_Mode,
+                                   Amount = pay.Amount,
+                                   InvoiceNo = pay.InvoiceNo,
+                                   Tds_Amount = pay.Tds_Amount,
+                                   Total_Amount = pay.Total_Amount,
+                                   Pfcode = pay.Pfcode,
+                                   Bank_Name = pay.Bank_Name,
+                                   Branch_Name = pay.Branch_Name,
+                                   Transaction_Id = pay.Transaction_Id,
+                                   CheckNo = pay.CheckNo,
+                                   CreditNoteNo = pay.CreditNoteNo,
+                                   Balance = pay.Balance,
+                                   Created_Date = pay.Created_Date,
+                                   invoicedate = inv.invoicedate,
+                                   Customer_Id = inv.Customer_Id,
+                                   netamount = inv.netamount
+
+
+
+                               }).OrderByDescending(x => x.Payment_Date).ToList();
+
+            return View(Paymentdata);
+        }
+        [HttpPost]
+        public ActionResult NewPaymentTrack(string Custid, DateTime Fromdatetime, DateTime ToDatetime)
+        {
+
+
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.fromdate = Fromdatetime.ToString("MM/dd/yyyy");
+            ViewBag.todate = ToDatetime.ToString("MM/dd/yyyy");
+            ViewBag.Custid = Custid;
+
+
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+
+            var Paymentdata = (from inv in db.Invoices
+                               join pay in db.NewPaymentdetails on inv.invoiceno equals pay.InvoiceNo
+                               where inv.Pfcode == strpfcode
+                               && pay.Pfcode == strpfcode
+                               && inv.Customer_Id == Custid
+                               select new PaymentInvoiceModel
+                               {
+                                   Payment_Id = pay.Payment_Id,
+                                   Payment_Date = pay.Payment_Date,
+                                   Payment_Mode = pay.Payment_Mode,
+                                   Amount = pay.Amount,
+                                   InvoiceNo = pay.InvoiceNo,
+                                   Tds_Amount = pay.Tds_Amount,
+                                   Total_Amount = pay.Total_Amount,
+                                   Pfcode = pay.Pfcode,
+                                   Bank_Name = pay.Bank_Name,
+                                   Branch_Name = pay.Branch_Name,
+                                   Transaction_Id = pay.Transaction_Id,
+                                   CheckNo = pay.CheckNo,
+                                   CreditNoteNo = pay.CreditNoteNo,
+                                   Balance = pay.Balance,
+                                   Created_Date = pay.Created_Date,
+                                   invoicedate = inv.invoicedate,
+                                   Customer_Id = inv.Customer_Id,
+                                   netamount = inv.netamount
+                               }).ToList() // Fetch data to memory
+                   .Where(x => x.Payment_Date.HasValue &&
+                               x.Payment_Date.Value.Date >= Fromdatetime.Date &&
+                               x.Payment_Date.Value.Date <= ToDatetime.Date) // Perform in-memory filtering
+                   .OrderByDescending(x => x.Payment_Date)
+                   .ToList();
+
+
+
+
+            return View(Paymentdata);
+
+        }
+
+
+        [HttpPost]
+        public ActionResult PaymentTrack(string Custid, DateTime Fromdatetime, DateTime ToDatetime)
+        {
+            List<PaymentTrack> track = new List<PaymentTrack>();
+
+            string strpfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            ViewBag.fromdate = Fromdatetime.ToString("MM/dd/yyyy");
+            ViewBag.todate = ToDatetime.ToString("MM/dd/yyyy");
+            ViewBag.Custid = Custid;
+
+
+            string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
+                   "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
+
+
+            var objCash = db.getPaymentTrackCash(Fromdatetime, ToDatetime, Custid, strpfcode).Select(x => new PaymentTrack
+            {
+
+
+                Amount = x.Amount,
+                Invoiceno = x.Invoiceno,
+                invoicedate = x.invoicedate,
+                Customer_Id = x.Customer_Id,
+                Modeofpayment = x.Modeofpayment,
+                netamount = x.netamount,
+                tempinserteddate = x.tempinserteddate,
+                id = x.id,
+                remark = x.remark,
+                isDelete = x.isDelete,
+                Balance = x.Balance
+
+            }).ToList();
+
+            var objCheque = db.getPaymentTrackCheque(Fromdatetime, ToDatetime, Custid, strpfcode).Select(x => new PaymentTrack
+            {
+
+
+                Amount = x.Amount,
+                Invoiceno = x.Invoiceno,
+                invoicedate = x.invoicedate,
+                Customer_Id = x.Customer_Id,
+                Modeofpayment = x.Modeofpayment,
+                netamount = x.netamount,
+                tempinserteddate = x.tempinserteddate,
+                id = x.id,
+                remark = x.remark,
+                isDelete = x.isDelete,
+                Balance = x.Balance
+
+
+            }).ToList();
+
+            var objNeft = db.getPaymentTrackNEFT(Fromdatetime, ToDatetime, Custid, strpfcode).Select(x => new PaymentTrack
+            {
+
+
+                Amount = x.Amount,
+                Invoiceno = x.Invoiceno,
+                invoicedate = x.invoicedate,
+                Customer_Id = x.Customer_Id,
+                Modeofpayment = x.Modeofpayment,
+                netamount = x.netamount,
+                tempinserteddate = x.tempinserteddate,
+                id = x.id,
+                remark = x.remark,
+                isDelete = x.isDelete,
+                Balance = x.Balance
+
+
+            }).ToList();
+
+            var objcr = db.getPaymentTrackCreditNote(Fromdatetime, ToDatetime, Custid, strpfcode).Select(x => new PaymentTrack
+            {
+
+
+                Amount = x.Amount,
+                Invoiceno = x.Invoiceno,
+                invoicedate = x.invoicedate,
+                Customer_Id = x.Customer_Id,
+                Modeofpayment = x.Modeofpayment,
+                netamount = x.netamount,
+                tempinserteddate = x.tempinserteddate,
+                id = x.id,
+                remark = x.remark,
+                isDelete = x.isDelete,
+                Balance = x.Balance,
+
+            }).ToList();
+
+
+            track.AddRange(objCash);
+            track.AddRange(objCheque);
+            track.AddRange(objNeft);
+            track.AddRange(objcr);
+            return View(track);
+
+
+            //return View();
+
+
+
+        }
+
+        [HttpGet]
+        public ActionResult NewPaymentEdit(int id)
+        {
+            string pfcode = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            var obj = db.NewPaymentdetails.Where(m => m.Payment_Id == id && m.Pfcode == pfcode).FirstOrDefault();
+
+            NewPaymentModel newPaymentdetail = new NewPaymentModel();
+            var data = db.NewPaymentdetails.Where(x => x.Payment_Id == id && x.Pfcode == pfcode).FirstOrDefault();
+            if (data != null)
+            {
+                var invoice = db.Invoices.Where(x => x.invoiceno == data.InvoiceNo && x.Pfcode == pfcode).FirstOrDefault();
+
+                newPaymentdetail.Payment_Id = data.Payment_Id;
+
+                newPaymentdetail.InvoiceNo = data.InvoiceNo;
+                newPaymentdetail.Pfcode = pfcode;
+                newPaymentdetail.Amount = data.Amount;
+                newPaymentdetail.Payment_Mode = data.Payment_Mode;
+                newPaymentdetail.Tds_Amount = data.Tds_Amount;
+                newPaymentdetail.Total_Amount = data.Total_Amount;
+                newPaymentdetail.Payment_Date = data.Payment_Date;
+                newPaymentdetail.Bank_Name = data.Bank_Name;
+                newPaymentdetail.Branch_Name = data.Branch_Name;
+                newPaymentdetail.Transaction_Id = data.Transaction_Id;
+                newPaymentdetail.CheckNo = data.CheckNo;
+                newPaymentdetail.CreditNoteNo = data.CreditNoteNo;
+                newPaymentdetail.Balance = data.Balance;
+                newPaymentdetail.Created_Date = data.Created_Date;
+                newPaymentdetail.temppaymentdate = data.Created_Date.Value.ToString("dd-MM-yyyy");
+                ViewBag.netamount = invoice.netamount;
+                ViewBag.existingvalue = obj.Total_Amount ?? 0;
+                ViewBag.paidamt = invoice.paid;
+                ViewBag.ctotalamt = obj.Total_Amount;
+                return View(newPaymentdetail);
+            }
+            return View("NewPaymentTrack");
+        }
+
+        [HttpPost]
+        public ActionResult NewPaymentEdit(NewPaymentModel newPaymentModel, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+            string[] formats = { "dd-MM-yyyy", "dd/MM/yyyy" };
+
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+            if (ModelState.IsValid)
+            {
+                if (newPaymentModel.Total_Amount > 0)
+                {
+                    if (newPaymentModel.Total_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+
+                        if (!string.IsNullOrEmpty(newPaymentModel.temppaymentdate))
+                        {
+                            string paymentdate = DateTime.ParseExact(newPaymentModel.temppaymentdate, formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                            newPaymentModel.Payment_Date = Convert.ToDateTime(paymentdate);
+
+                        }
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + newPaymentModel.Total_Amount;
+
+                        var paymentdetails = db.NewPaymentdetails.Where(x => x.Payment_Id == newPaymentModel.Payment_Id && x.Pfcode == strpf).FirstOrDefault();
+                        paymentdetails.InvoiceNo = newPaymentModel.InvoiceNo;
+                        paymentdetails.Pfcode = strpf;
+                        paymentdetails.Amount = newPaymentModel.Amount;
+                        paymentdetails.Payment_Date = newPaymentModel.Payment_Mode != null ? newPaymentModel.Payment_Date : paymentdetails.Payment_Date;
+                        paymentdetails.Tds_Amount = newPaymentModel.Tds_Amount;
+                        paymentdetails.Total_Amount = newPaymentModel.Total_Amount;
+
+                        paymentdetails.Bank_Name = newPaymentModel.Bank_Name;
+                        paymentdetails.Branch_Name = newPaymentModel.Branch_Name;
+                        paymentdetails.Transaction_Id = newPaymentModel.Transaction_Id;
+                        paymentdetails.CheckNo = newPaymentModel.CheckNo;
+                        paymentdetails.CreditNoteNo = newPaymentModel.CreditNoteNo;
+                        paymentdetails.Balance = newPaymentModel.Balance;
+                        paymentdetails.Created_Date = DateTime.Now;
+
+
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Message"] = "Updated successfully!";
+                        if (newPaymentModel.Payment_Mode == "CreditNote")
+                        {
+                            LocalReport lr = new LocalReport();
+
+                            var DataSet1 = db.Franchisees.Where(x => x.PF_Code == strpf).FirstOrDefault();
+
+                            var DataSet2 = db.Invoices.OrderByDescending(m => m.invoiceno == newPaymentModel.InvoiceNo && m.Pfcode == strpf).FirstOrDefault();
+
+                            var DataSet3 = db.Companies.Where(m => m.Company_Id == invoicedetails.Customer_Id && m.Pf_code == strpf).FirstOrDefault();
+
+                            DataSet2.Amount4_Lable = AmountTowords.changeToWords(newPaymentModel.Total_Amount.ToString());
+                            DataSet2.Address = newPaymentModel.CreditNoteNo;
+                            DataSet2.Tempdatefrom = newPaymentModel.Payment_Date.Value.ToString("dd/MM/yyyy");
+                            DataSet2.Amount4 = newPaymentModel.Total_Amount;
+
+
+                            // Convert single objects to lists
+                            var DataSet1List = new List<Franchisee> { DataSet1 };
+                            var DataSet2List = new List<Entity_FR.Invoice> { DataSet2 };
+                            var DataSet3List = new List<Company> { DataSet3 };
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "ReceiptCreditNote.rdlc");
+
+                            if (System.IO.File.Exists(path))
+                            {
+                                lr.ReportPath = path;
+                            }
+
+
+
+                            lr.EnableExternalImages = true;
+
+                            // Create report data sources
+                            ReportDataSource rd = new ReportDataSource("DataSet1", DataSet1List);
+                            ReportDataSource rd1 = new ReportDataSource("DataSet2", DataSet2List);
+                            ReportDataSource rd2 = new ReportDataSource("DataSet3", DataSet3List);
+
+                            lr.DataSources.Add(rd);
+                            lr.DataSources.Add(rd1);
+                            lr.DataSources.Add(rd2);
+
+
+                            string reportType = "pdf";
+                            string mimeType;
+                            string encoding;
+                            string fileNameExte;
+
+                            string deviceInfo =
+                                "<DeviceInfo>" +
+                                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                                "<PageHeight>11in</PageHeight>" +
+                               "<Margintop>0.1in</Margintop>" +
+                                 "<Marginleft>0.1in</Marginleft>" +
+                                  "<Marginright>0.1in</Marginright>" +
+                                   "<Marginbottom>0.5in</Marginbottom>" +
+                                   "</DeviceInfo>";
+
+                            Warning[] warnings;
+                            string[] streams;
+                            byte[] renderByte;
+
+
+                            renderByte = lr.Render
+                          (reportType,
+                          deviceInfo,
+                          out mimeType,
+                          out encoding,
+                          out fileNameExte,
+                          out streams,
+                          out warnings
+                          );
+                            //return File(renderByte, mimeType);
+
+
+                            string savePath = Server.MapPath("~/PDF/" + DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf");
+
+                            using (FileStream stream = new FileStream(savePath, FileMode.Create))
+                            {
+                                stream.Write(renderByte, 0, renderByte.Length);
+
+                            }
+
+
+                            ViewBag.FileName = DataSet2.Customer_Id + "_CreditNoteReceipt" + ".pdf";
+
+                        }
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+
+
+
+            return View(newPaymentModel);
+        }
+
+        public ActionResult CashEdit(int id)
+        {
+            var obj = db.Cashes.Where(m => m.Cash_id == id).FirstOrDefault();
+            CashModel model = new CashModel();
+            model.Cash_id = obj.Cash_id;
+            model.Amount = obj.Amount;
+            model.Invoiceno = obj.Invoiceno;
+            model.C_Tds_Amount = obj.C_Tds_Amount;
+            model.C_Total_Amount = obj.C_Total_Amount;
+            model.Pfcode = obj.Pfcode;
+            model.tempinserteddate = obj.tempinserteddate;
+
+
+            var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
+            ViewBag.netamount = inv.netamount;
+            ViewBag.existingvalue = obj.C_Total_Amount ?? 0;
+            ViewBag.paidamt = inv.paid;
+            ViewBag.ctotalamt = obj.C_Total_Amount;
+            //ViewBag.firmid = Firm_Id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CashEdit(CashModel cash, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+
+            if (ModelState.IsValid)
+            {
+                if (cash.C_Total_Amount > 0)
+                {
+                    if (cash.C_Total_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + cash.C_Total_Amount;
+                        string[] formats = { "dd-MM-yyyy" };
+
+                        //string bdate = DateTime.ParseExact(Convert.ToString(cash.tempinserteddate), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+                        //cash.inserteddate = Convert.ToDateTime(bdate);
+                        Cash cash1 = new Cash();
+                        cash1.Cash_id = cash.Cash_id;
+                        cash1.Amount = cash.Amount;
+                        cash1.Invoiceno = cash.Invoiceno;
+                        cash1.C_Tds_Amount = cash.C_Tds_Amount;
+                        cash1.C_Total_Amount = cash.C_Total_Amount;
+                        cash1.Pfcode = strpf;
+                        //Date will not able to modify
+                        cash1.tempinserteddate = cash.tempinserteddate;
+                        cash1.Balance = invoicedetails.netamount - invoicedetails.paid;
+                        db.Entry(cash1).State = EntityState.Modified;
+
+
+
+
+
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Updatedsuccss"] = "Updated successfully!";
+
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+            ViewBag.firmid = cash.Firm_Id;
+
+
+            return View(cash);
+        }
+
+        public ActionResult ChequeEdit(int id)
+        {
+            var obj = db.Cheques.Where(m => m.Cheque_id == id).FirstOrDefault();
+            var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
+            ChequeModel cm = new ChequeModel();
+            cm.Cheque_id = obj.Cheque_id;
+            cm.C_Amount = obj.C_Amount;
+            cm.Pfcode = obj.Pfcode;
+            cm.bank_name = obj.bank_name;
+            cm.branch_Name = obj.branch_Name;
+            cm.totalAmount = obj.totalAmount;
+            cm.Invoiceno = obj.Invoiceno;
+            cm.Tds_amount = obj.Tds_amount;
+            cm.tempch_date = obj.tempch_date;
+            ViewBag.netamount = inv.netamount;
+            ViewBag.existingvalue = obj.totalAmount ?? 0;
+            ViewBag.paidamt = inv.paid;
+            ViewBag.ctotalamt = obj.totalAmount;
+            //ViewBag.firmid = Firm_Id;
+            return View(cm);
+        }
+
+        [HttpPost]
+        public ActionResult ChequeEdit(ChequeModel cheque, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+            if (ModelState.IsValid)
+            {
+                if (cheque.totalAmount > 0)
+                {
+                    if (cheque.totalAmount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+
+                        string[] formats = { "dd-MM-yyyy" };
+
+                        //string bdate = DateTime.ParseExact(cheque.tempch_date.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+                        //cheque.ch_date = Convert.ToDateTime(bdate);
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + cheque.totalAmount;
+
+                        Cheque cm = new Cheque();
+                        cm.Cheque_id = cheque.Cheque_id;
+                        cm.C_Amount = cheque.C_Amount;
+                        cm.Pfcode = strpf;
+                        cm.bank_name = cheque.bank_name;
+                        cm.branch_Name = cheque.branch_Name;
+                        cm.totalAmount = cheque.totalAmount;
+                        cm.Invoiceno = cheque.Invoiceno;
+                        cm.Tds_amount = cheque.Tds_amount;
+                        cm.tempch_date = cheque.tempch_date;
+                        cheque.Pfcode = strpf;
+                        cm.Balance = (invoicedetails.netamount - invoicedetails.paid);
+
+                        db.Entry(cm).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Updatedsuccss"] = "Updated successfully!";
+
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+            ViewBag.firmid = cheque.Firm_Id;
+
+            return View(cheque);
+        }
+
+        [HttpGet]
+        public ActionResult NEFTEdit(int id)
+        {
+            var obj = db.NEFTs.Where(m => m.Neft_id == id).FirstOrDefault();
+            var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
+            NEFTModel model = new NEFTModel();
+            model.Neft_id = obj.Neft_id;
+            model.Pfcode = obj.Pfcode;
+            model.NeftAmount = obj.NeftAmount;
+            model.Invoiceno = obj.Invoiceno;
+            model.Transaction_Id = obj.Transaction_Id;
+            model.N_Tds_Amount = obj.N_Tds_Amount;
+            model.N_Total_Amount = obj.N_Total_Amount;
+            model.tempneftdate = obj.tempneftdate;
+
+
+            ViewBag.netamount = inv.netamount;
+            ViewBag.existingvalue = obj.N_Total_Amount ?? 0;
+            ViewBag.paidamt = inv.paid;
+            ViewBag.ctotalamt = obj.N_Total_Amount;
+            //ViewBag.firmid = Firm_Id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult NEFTEdit(NEFTModel nEFT, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == nEFT.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+            if (ModelState.IsValid)
+            {
+                if (nEFT.N_Total_Amount > 0)
+                {
+                    if (nEFT.N_Total_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+
+                        string[] formats = { "dd-MM-yyyy" };
+
+                        //string bdate = DateTime.ParseExact(nEFT.tempneftdate.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + nEFT.N_Total_Amount;
+
+                        //nEFT.neftdate = Convert.ToDateTime(bdate);
+                        nEFT.Pfcode = strpf;
+                        NEFT model = new NEFT();
+                        model.Neft_id = nEFT.Neft_id;
+                        model.Pfcode = nEFT.Pfcode;
+                        model.NeftAmount = nEFT.NeftAmount;
+                        model.Invoiceno = nEFT.Invoiceno;
+                        model.Transaction_Id = nEFT.Transaction_Id;
+                        model.N_Tds_Amount = nEFT.N_Tds_Amount;
+                        model.N_Total_Amount = nEFT.N_Total_Amount;
+                        model.tempneftdate = nEFT.tempneftdate;
+                        model.Balance = invoicedetails.netamount - invoicedetails.paid;
+                        db.Entry(model).State = EntityState.Modified;
+                        db.SaveChanges();
+
+
+
+
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Updatedsuccss"] = "Updated successfully!";
+
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+            ViewBag.firmid = nEFT.Firm_Id;
+
+            return View(nEFT);
+        }
+
+
+        public ActionResult CreditEdit(int id)
+        {
+            var obj = db.CreditNotes.Where(m => m.Cr_id == id).FirstOrDefault();
+            var inv = db.Invoices.Where(m => m.invoiceno == obj.Invoiceno && m.Pfcode == obj.Pfcode).FirstOrDefault();
+
+            CreditNoteModel model = new CreditNoteModel();
+            model.Cr_id = id;
+            model.Pfcode = obj.Pfcode;
+            model.Invoiceno = obj.Invoiceno;
+            model.Cr_Amount = obj.Cr_Amount;
+            model.Creditnoteno = obj.Creditnoteno;
+            model.tempch_date = obj.tempch_date;
+
+            ViewBag.netamount = inv.netamount;
+            ViewBag.existingvalue = obj.Cr_Amount ?? 0;
+            ViewBag.paidamt = inv.paid;
+            ViewBag.ctotalamt = obj.Cr_Amount;
+            //ViewBag.firmid = Firm_Id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreditEdit(CreditNoteModel credit, double amountval)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var invoicedetails = db.Invoices.Where(m => m.invoiceno == credit.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+            if (ModelState.IsValid)
+            {
+                if (credit.Cr_Amount > 0)
+                {
+                    if (credit.Cr_Amount <= amountval + (invoicedetails.netamount - invoicedetails.paid))
+                    {
+
+                        string[] formats = { "dd-MM-yyyy" };
+
+                        //string bdate = DateTime.ParseExact(credit.tempch_date.ToString(), formats, CultureInfo.InvariantCulture, DateTimeStyles.None).ToString("MM/dd/yyyy");
+
+                        //credit.cr_date = Convert.ToDateTime(bdate);
+                        invoicedetails.paid = (invoicedetails.paid - amountval) + credit.Cr_Amount;
+
+                        CreditNote model = new CreditNote();
+                        model.Cr_id = credit.Cr_id;
+                        model.Cr_Amount = credit.Cr_Amount;
+                        model.Pfcode = strpf;
+                        model.Invoiceno = credit.Invoiceno;
+                        model.Cr_Amount = credit.Cr_Amount;
+                        model.Creditnoteno = credit.Creditnoteno;
+                        model.tempch_date = credit.tempch_date;
+                        model.Balance = invoicedetails.netamount - invoicedetails.paid;
+                        db.Entry(model).State = EntityState.Modified;
+                        db.SaveChanges();
+                        db.Entry(invoicedetails).State = EntityState.Modified;
+                        db.SaveChanges();
+                        TempData["Updatedsuccss"] = "Updated successfully!";
+
+                    }
+                }
+            }
+            ViewBag.netamount = invoicedetails.netamount;
+            ViewBag.existingvalue = amountval;
+            ViewBag.paidamt = invoicedetails.paid;
+
+            return View(credit);
+        }
+
+
+        public ActionResult DeletePayment(int id, string modeofpayment)
+        {
+            string strpf = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+
+            if (modeofpayment == "Cash")
+            {
+                var cash = db.Cashes.Where(x => x.Cash_id == id).FirstOrDefault();
+                var invoicedetails = db.Invoices.Where(m => m.invoiceno == cash.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+                invoicedetails.paid = Convert.ToDouble(invoicedetails.paid ?? 0) - Convert.ToDouble(cash.C_Total_Amount ?? 0);
+                db.Entry(invoicedetails).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                db.Cashes.Remove(cash);
+                db.SaveChanges();
+
+                TempData["Deletedsuccss"] = "Deleted successfully!";
+                return RedirectToAction("PaymentTrack");
+            }
+            else if (modeofpayment == "Cheque")
+            {
+                var cheque = db.Cheques.Where(x => x.Cheque_id == id).FirstOrDefault();
+                var invoicedetails = db.Invoices.Where(m => m.invoiceno == cheque.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+                invoicedetails.paid = Convert.ToDouble(invoicedetails.paid ?? 0) - Convert.ToDouble(cheque.totalAmount ?? 0);
+                db.Entry(invoicedetails).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                db.Cheques.Remove(cheque);
+                db.SaveChanges();
+
+                TempData["Deletedsuccss"] = "Deleted successfully!";
+                return RedirectToAction("PaymentTrack");
+            }
+            else if (modeofpayment == "NEFT")
+            {
+                var NEFT = db.NEFTs.Where(x => x.Neft_id == id).FirstOrDefault();
+                var invoicedetails = db.Invoices.Where(m => m.invoiceno == NEFT.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+                invoicedetails.paid = Convert.ToDouble(invoicedetails.paid ?? 0) - Convert.ToDouble(NEFT.N_Total_Amount ?? 0);
+
+                db.Entry(invoicedetails).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                db.NEFTs.Remove(NEFT);
+                db.SaveChanges();
+
+                TempData["Deletedsuccss"] = "Deleted successfully!";
+                return RedirectToAction("PaymentTrack");
+            }
+            else if (modeofpayment == "CreditNote")
+            {
+                var creditnote = db.CreditNotes.Where(x => x.Cr_id == id).FirstOrDefault();
+                var invoicedetails = db.Invoices.Where(m => m.invoiceno == creditnote.Invoiceno && m.Pfcode == strpf).FirstOrDefault();
+                invoicedetails.paid = Convert.ToDouble(invoicedetails.paid ?? 0) - Convert.ToDouble(creditnote.Cr_Amount ?? 0);
+                db.Entry(invoicedetails).State = EntityState.Modified;
+                db.SaveChanges();
+
+
+                db.CreditNotes.Remove(creditnote);
+                db.SaveChanges();
+
+                TempData["Deletedsuccss"] = "Deleted successfully!";
+                return RedirectToAction("PaymentTrack");
+            }
+            return RedirectToAction("PaymentTrack");
+        }
+
+        [HttpGet]
+        public ActionResult GetCustomerCredit()
+        {
+            var pfCodeFilter = Request.Cookies["Cookies"]["AdminValue"].ToString();
+
+            var groupedData = db.PartyPaymentDetails
+                .Join(db.Companies,
+                      p => p.CustomerId,
+                      c => c.Company_Id,
+                      (p, c) => new { p, c }) // Joining PartyPaymentDetails with Companies
+                .Where(joined => joined.c.Pf_code == pfCodeFilter) // Filtering by pf_code
+                .GroupBy(joined => joined.p.CustomerId)
+                .Select(g => new GetCustomerCreditModel
+                {
+                    CustomerId = g.Key,
+                    TotalCreditPayment = g.Sum(x => x.p.PaidAmount ?? 0), // Sum of payments
+                    LastBalanceAmount = g.OrderByDescending(x => x.p.PartyPaymentDetailId)
+                                          .Select(x => x.p.BalanceAmount)
+                                          .FirstOrDefault() ?? 0
+                })
+                .ToList();
+
+
+            return View(groupedData);
+        }
+
+        public ActionResult GetCustomerDetails(string customerId)
+        {
+            var customerData = db.PartyPaymentDetails
+                .Where(p => p.CustomerId == customerId).ToList()
+                .Select(p => new
+                {
+                    CustomerId = p.CustomerId,
+                    PaidAmount = p.PaidAmount ?? 0,
+                    BalanceAmount = p.BalanceAmount ?? 0,
+                    PaymentDate = p.PaymentDate != null ? p.PaymentDate.Value.ToString("dd/MM/yyyy") :"-"
+                });
+
+            if (customerData == null || !customerData.Any())
+            {
+                return Json(new { error = "Customer not found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(customerData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetCustomerCreditReportForthePrint(string id)
+        {
+            var customerData = db.PartyPaymentDetails
+               .Where(p => p.CustomerId == id).ToList()
+               .Select(p => new 
+               {
+                   CustomerId = p.CustomerId,
+                   PaidAmount = p.PaidAmount ?? 0,
+                   BalanceAmount = p.BalanceAmount ?? 0,
+                   PaymentDate = p.PaymentDate != null ? p.PaymentDate.Value.ToString("dd/MM/yyyy") : "-"
+               });
+
+            if (customerData == null || !customerData.Any())
+            {
+                return null;
+            }
+            LocalReport lr = new LocalReport();
+
+            var CompanyId = id;
+
+
+            Company company = db.Companies.Where(m => m.Company_Id == CompanyId).FirstOrDefault();
+
+        
+            string Pfcode = company.Pf_code;
+
+                     string baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                                           Request.ApplicationPath.TrimEnd('/');
+
+            var dataset = db.Franchisees.Where(m => m.PF_Code == Pfcode).ToList();
+            dataset.FirstOrDefault().LogoFilePath = (dataset.FirstOrDefault().LogoFilePath == null || dataset.FirstOrDefault().LogoFilePath == "") ? baseurl + "/assets/Dtdclogo.png" : dataset.FirstOrDefault().LogoFilePath;
+
+            var dataset1 = db.Companies.Where(m => m.Company_Id == CompanyId).ToList();
+         
+            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "GetCustomerCreditReport.rdlc");
+
+            if (System.IO.File.Exists(path))
+            {
+                lr.ReportPath = path;
+            }
+
+            lr.Refresh();
+
+            lr.EnableExternalImages = true;
+
+            ReportDataSource rd = new ReportDataSource("DataSet", dataset);
+            ReportDataSource rd1 = new ReportDataSource("DataSet1", dataset1);
+            ReportDataSource rd2 = new ReportDataSource("DataSet2", customerData);
+            
+         
+            lr.Refresh();
+
+            lr.DataSources.Add(rd);
+            lr.DataSources.Add(rd1);
+            lr.DataSources.Add(rd2);
+         
+            string reportType = "PDF";
+            string mimeType;
+            string encoding;
+            string fileNameExte;
+
+            string deviceInfo =
+                "<DeviceInfo>" +
+                "<OutputFormat>" + "pdf" + "</OutputFormat>" +
+                "<PageHeight>11in</PageHeight>" +
+               "<Margintop>0.1in</Margintop>" +
+                 "<Marginleft>0.1in</Marginleft>" +
+                  "<Marginright>0.1in</Marginright>" +
+                   "<Marginbottom>0.5in</Marginbottom>" +
+                   "</DeviceInfo>";
+
+            Warning[] warnings;
+            string[] streams;
+            byte[] renderByte;
+            //try
+            //{
+            renderByte = lr.Render
+    (reportType,
+    deviceInfo,
+    out mimeType,
+    out encoding,
+    out fileNameExte,
+    out streams,
+    out warnings
+    );
+
+            return File(renderByte, mimeType);
+            
+        }
+    }
+}

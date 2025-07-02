@@ -1,0 +1,98 @@
+﻿@{
+
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Invoice Dashboard";
+    var indiaCulture = new System.Globalization.CultureInfo("hi-IN");
+    var invoiceData = Newtonsoft.Json.JsonConvert.DeserializeObject<DtDc_Billing.Models.InvoiceDataForDashBoard>(ViewBag.DataPoints);
+}
+
+
+<style>
+    .metric-card {
+        text-align: center;
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .metric-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+    .metric-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .metric-card:hover .metric-icon {
+        transform: scale(1.1) rotate(10deg);
+    }
+
+    .metric-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        transition: transform 0.3s ease;
+    }
+
+    .metric-card:hover .metric-value {
+        transform: scale(1.05);
+    }
+
+    .metric-label {
+        color: #6c757d;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    .metric-card:hover .metric-label {
+        color: #495057;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-icon text-success">
+                    <i class="fa fa-inr"></i>
+                </div>
+                <div class="metric-value text-success">@string.Format(indiaCulture, "{0:C}", invoiceData.Paid)</div>
+                <div class="metric-label">Paid Amount</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-icon text-danger">
+                    <i class="fa fa-inr"></i>
+                </div>
+                <div class="metric-value text-danger">@string.Format(indiaCulture, "{0:C}", invoiceData.Unpaid)</div>
+                <div class="metric-label">Unpaid Amount</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-icon text-primary">
+                    <i class="fa fa-inr"></i>
+                </div>
+                <div class="metric-value text-primary">@string.Format(indiaCulture, "{0:C}", @invoiceData.TotalNetAmount)</div>
+                <div class="metric-label">Total Sale</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="metric-icon text-warning">
+                    <i class="fa fa-inr"></i>
+                </div>
+                <div class="metric-value text-warning">@string.Format(indiaCulture, "{0:C}", invoiceData.PattialPaid)</div>
+                <div class="metric-label">Partial Paid</div>
+            </div>
+        </div>
+    </div>
+</div>
+

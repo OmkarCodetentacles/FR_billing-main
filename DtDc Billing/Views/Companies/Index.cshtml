@@ -1,0 +1,119 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Company>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div id="frmEmp">
+    
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.c_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Insurance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Minimum_Risk_Charge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Other_Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fuel_Sur_Charge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Topay_Charge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cod_Charge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gec_Fuel_Sur_Charge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company_Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Franchisee.F_Address)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Insurance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Minimum_Risk_Charge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Other_Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fuel_Sur_Charge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Topay_Charge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cod_Charge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gec_Fuel_Sur_Charge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company_Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Franchisee.F_Address)
+            </td>
+            <td>
+
+
+                @Ajax.ActionLink("Edit","EditCompanyRate", "demo",
+                      new AjaxOptions
+                      {
+
+                          UpdateTargetId = "frmEmp", // <-- DOM element ID to update
+
+                 InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+
+                 HttpMethod = "GET" // <-- HTTP method
+
+             }, new { id = item.Company_Id })
+            </td>
+        </tr>
+        }
+
+    </table>
+</div>

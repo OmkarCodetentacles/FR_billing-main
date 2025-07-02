@@ -1,0 +1,130 @@
+// mixins start
+@mixin font($family, $size, $height, $weight, $color) {
+  font-family: $family;
+  font-size: $size;
+  line-height: $height;
+  font-weight: $weight;
+  color: $color;
+  font-style: normal;
+  text-align: left;
+}
+
+@mixin before($value) {
+  &::before {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 0px;
+    margin-top: $value;
+  }
+}
+
+@mixin after($value) {
+  &::after {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 0px;
+    margin-bottom: $value;
+  }
+}
+
+@mixin background($color, $repeat, $size, $position) {
+  background-color: $color;
+  background-repeat: $repeat;
+  background-size: $size;
+  background-position: $position;
+}
+
+@mixin center($width) {
+  max-width: $width;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+@mixin border-radius($value) {
+  -webkit-border-radius: $value;
+  -moz-border-radius: $value;
+  -ms-border-radius: $value;
+  border-radius: $value;
+}
+
+@mixin transform($value) {
+  -webkit-transform: $value;
+  -ms-transform: $value;
+  transform: $value;
+}
+
+@mixin transition($value) {
+  -webkit-transition: $value;
+  -o-transition: $value;
+  transition: $value;
+}
+
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  box-shadow: $value;
+}
+
+@mixin min-screen($value) {
+  @media only screen and (min-width: $value) {
+    @content;
+  }
+}
+
+@mixin xxl-screen {
+  @media only screen and (min-width: 1400px) {
+    @content;
+  }
+}
+
+@mixin xl-screen {
+  @media only screen and (min-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin lg-screen {
+  @media only screen and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin md-screen {
+  @media only screen and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin sm-screen {
+  @media only screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin xs-screen {
+  @media only screen and (max-width: 575px) {
+    @content;
+  }
+}
+
+@mixin xxs-screen {
+  @media only screen and (max-width: 424px) {
+    @content;
+  }
+}
+
+@mixin max-screen($value) {
+  @media only screen and (max-width: $value) {
+    @content;
+  }
+}
+
+@mixin min-max($value1, $value2) {
+  @media (min-width: $value1) and (max-width: $value2) {
+    @content;
+  }
+}
+
+// mixins end

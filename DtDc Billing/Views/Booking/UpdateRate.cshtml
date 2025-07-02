@@ -1,0 +1,399 @@
+﻿@{
+    /**/
+
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Update Rate
+                <a href="https://www.youtube.com/watch?v=0r2VVw9q9pE&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=16"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+                        var successMessage = ViewBag.successmsg;
+
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+
+                    <div class="form-horizontal">
+
+
+                        @*<div class="row">
+                            <div class="col-md-12">*@
+
+                        <div class="form-group">
+
+
+
+
+                            @using (Html.BeginForm())
+                            {
+
+
+                                if (ViewBag.Custid != null)
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Customer id</label>
+                                            <input name="Custid" style="margin-right:10px;margin-bottom:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Customer id</label>
+                                            <input name="Custid" style="margin-right: 10px; margin-bottom: 10px" class="form-control" id="custid" type="text">
+                                        </div>
+                                    </div>
+                                }
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span> :</label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="margin-bottom: 10px" required>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span> :</label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style="margin-bottom: 10px" required>
+                                        </div>
+                                    </div>
+                                }
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span> : </label>
+                                            <input style="margin-right: 50px; margin-bottom: 10px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span> : </label>
+                                            <input style="margin-right: 50px; margin-bottom: 10px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                            <div class="col-md-1" style="margin-top:22px;">
+                                <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="submit" value="Show" style="margin-bottom: 10px;width:100%" />
+
+                            </div>
+                            <div class="col-md-1" style="margin-top:22px;">
+
+                                <input type="submit" class=" btn btn-success  col-sm-12" id="UpdateRate" name="submit" value="UpdateRate" style="margin-bottom: 10px;width:100%" />
+                            </div>
+
+
+                            }
+                        </div>
+                        @*</div>
+                            </div>*@
+
+                        <table id="check-booking-list" class="table Updaterate ">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        Consignment no
+                                    </th>
+                                    <th>
+                                        Weight
+                                    </th>
+                                    <th>
+                                        Destination
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+
+                                    @*<th>
+                                        customer ID
+                                    </th>*@
+                                    <th>
+                                        Mode
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+                                    <th>
+                                        Insurance
+                                    </th>
+                                    <th>
+                                        Claim amount
+                                    </th>
+                                    <th>
+                                        Percentage
+                                    </th>
+                                    <th>
+                                        Risk surcharge
+                                    </th>
+                                    <th>
+                                        Other Charges
+                                    </th>
+                                    <th>
+                                        Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.chargable_weight)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pincode)
+                                            </td>
+
+                                            @*<td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>*@
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Insurance)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Claimamount)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Percentage)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.calinsuranceamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.loadingcharge)
+                                            </td>
+                                            <td>
+                                                @(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))
+                                            </td>
+
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <br />
+                        <!-- /input-group -->
+
+                        <div class="col-sm-3 " style="float: right; padding:0">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger total-label">Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount"
+                                       value="@((Model != null ? Math.Round(Model.Sum(x => (x.Amount ?? 0) + (x.Risksurcharge ?? 0) + (x.loadingcharge ?? 0))) : 0))">
+
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@if (ViewBag.successmsg != null)
+{
+    <script>
+  //  alert('@ViewBag.successmsg');
+    </script>
+}
+
+
+
+<script>
+    $(document).ready(function () {
+
+     $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+
+     $('#datepicker').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+     $('#datepicker1').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+    });
+</script>
+<style>
+    .Updaterate th {
+        width: 6.66% !important;
+    }
+</style>
+@*<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+            if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
+        });
+    });
+
+</script>*@
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+
+            if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
+        });
+    });
+
+</script>
+
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+

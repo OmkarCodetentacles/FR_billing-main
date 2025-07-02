@@ -1,0 +1,103 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Transaction>
+
+@{
+    ViewBag.Title = "Destinations";
+    Layout = "~/Views/Shared/EmpLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4> New Destination</h4>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    @using (Html.BeginForm("Create", "Destinations", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <label>Pincode</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="Pincode" class="form-control" />
+                                    <p class="text-danger">@Html.ValidationMessage("Pincode")</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <label>Name</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="Name" class="form-control" />
+                                    <p class="text-danger">@Html.ValidationMessage("Name")</p>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <input type="submit" value="Add" class="btn btn-primary pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pincode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Consignment_no)
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pincode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Consignment_no)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (TempData["Success"] != null)
+{
+    <script>
+
+        $(document).ready(function () {
+
+            alert('Destination Added SuccessFully');
+
+        });
+
+    </script>
+
+}

@@ -1,0 +1,576 @@
+﻿@{
+    /**/
+
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+    .box-body {
+        overflow-y: auto;
+    }
+
+    .checkbooklist th {
+        width: 5.88% !important;
+    }
+
+    .checkbooklist table {
+        max-height: 400px !important;
+        display: inline-block !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Check Booking List
+                <a href="https://www.youtube.com/watch?v=jhZdKrIpubk&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=17"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="form-horizontal">
+
+                        <div id="alertContainer" style="display: none; color: white; background-color: green; padding: 10px; border-radius: 5px;"></div>
+
+
+                        <div id="ErrorMessage">
+
+                        </div>
+                        <div class="row">
+                            <div class="">
+                                <div class="form-group">
+
+
+
+
+                                    @using (Html.BeginForm("Checkbookinglist", "Booking"))
+                                    {
+
+
+                                        if (ViewBag.Custid != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Customer id</label>
+                                                    <input name="Custid" style="margin-right:10px;margin-bottom:10px;" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Customer id</label>
+                                                    <input name="Custid" style="margin-right: 10px; margin-bottom: 10px;" class="form-control" id="custid" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span> : </label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="margin-bottom: 10px;" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span> : </label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style="margin-bottom: 10px;" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span> : </label>
+                                                    <input style="margin-right: 50px; margin-bottom: 10px;" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span> : </label>
+                                                    <input style="margin-right: 50px; margin-bottom: 10px;" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="col-md-1" style=" margin-top: 22px;">
+
+                                            <input type="submit" class="btn btn-primary  col-sm-12" id="Show" name="Show" value="Show" style="width:100%" />
+
+                                        </div>
+                                        <div class="col-md-1" style=" margin-top: 22px;">
+
+                                            <input type="submit" value="Export to Excel" id="btnExcelSubmit" name="Submit" class="btn btn-block btn-success sbmt col-sm-12" style="width:100%" />
+
+                                        </div>
+                                        <div class="col-md-1" style=" margin-top: 22px;margin-left:55px;">
+
+                                            <input type="submit" value="Print" id="printButton" name="Submit" class="btn btn-block btn-info sbmt col-sm-12 pull-right" target="_blank" style="width:100%" />
+
+                                        </div>
+
+
+                                    }
+                                </div>
+                                <div class="row" id="ErrorMessage" style="display:none;color:red;">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <table id="check-booking-list" class="table checkbooklist " style="display: inline-block !important;">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>Action</th>
+                                    @if (ViewBag.Custid == null)
+                                    {
+                                        <th>
+                                            Customer Id
+                                        </th>
+                                    }
+                                        <th>
+                                            Consignment no
+                                        </th>
+                                        <th>
+                                            Weight
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Destination
+                                        </th>
+                                        <th>
+                                            Pincode
+                                        </th>
+                                        <th>
+                                            Address
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Mode
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th>
+                                            Booking Date
+                                        </th>
+                                        <th>
+                                            Insurance
+                                        </th>
+                                        <th>
+                                            Bill Amount
+                                        </th>
+                                        <th>
+                                            Percentage
+                                        </th>
+                                        <th>
+                                            Risk surcharge
+                                        </th>
+                                        <th>
+                                            Other Charges
+                                        </th>
+                                        <th>
+                                            Total
+                                        </th>
+                                        <th>
+                                            Reference
+                                        </th>
+                                    </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    var items = Model.ToList(); 
+
+                                    for (int j = 0; j < items.Count; j++)
+                                    {
+                                        var item = items[j];
+                                        i = j + 1;
+                                        <tr>
+                                            @*@{
+                                                    var isChecked = (bool)(items[j].isRTO == null ? false : items[j].isRTO);
+                                                }*@
+
+                                            <td>@i</td>
+
+                                            @*<td>@Html.CheckBox("items[" + j + "].isRTO", (bool)(items[j].isRTO == null ? false : items[j].isRTO))</td>*@
+                                            <td>
+                                                <input type="button" id="DeleteBtn" onclick="DeleteConsignment('@item.Consignment_no')" value="Delete" class="btn btn-danger btn-sm" />
+
+                                            </td>
+                                            @if (ViewBag.Custid == null)
+                                            {
+                                                <td>@Html.DisplayFor(m => items[j].Customer_Id)</td>
+                                            }
+                                            <td>@Html.DisplayFor(m => items[j].Consignment_no)</td>
+                                            <td>@Html.DisplayFor(m => items[j].chargable_weight)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Quanntity)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Name)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Pincode)</td>
+                                            <td>@Html.DisplayFor(m => items[j].compaddress)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Type_t)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Mode)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Amount)</td>
+                                            <td>@item.booking_date.Value.ToString("dd/MM/yyyy")</td>
+                                            <td>@Html.DisplayFor(m => items[j].Insurance)</td>
+                                            <td>@Html.DisplayFor(m => items[j].BillAmount)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Percentage)</td>
+                                            <td>@Html.DisplayFor(m => items[j].Risksurcharge)</td>
+                                            <td>@Html.DisplayFor(m => items[j].loadingcharge)</td>
+                                            <td>@(item.Amount + (item.Risksurcharge ?? 0) + (item.loadingcharge ?? 0))</td>
+                                            <td>@(item.Reference == null ? "-": item.Reference)</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        @*<input type="button" value="Set RTO"  class="btn btn-primary"  onclick="getCheckedConsignments()" />*@
+
+                        <div class="row">
+                            <div class="col-sm-3 " style="float: right" ;>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-danger total-label">Total</button>
+                                    </div>
+                                    <input type="text" class="form-control total-amount" value="@(Model.Sum(m=>m.Amount+(m.Risksurcharge ?? 0)+(m.loadingcharge ?? 0)))">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function showAlert(message, isSuccess = true) {
+        const $alertContainer = $("#alertContainer");
+
+        // Set the message
+        $alertContainer.text(message);
+
+        // Update styles based on success or error
+        if (isSuccess) {
+            $alertContainer.css({ "background-color": "green", "color": "black" });
+        } else {
+            $alertContainer.css({ "background-color": "red", "color": "black" });
+        }
+
+        // Show the div
+        $alertContainer.show();
+
+        // Hide the div automatically after 10 seconds
+        setTimeout(function () {
+            $alertContainer.fadeOut();
+        }, 6000); // 10 seconds
+    }
+    function DeleteConsignment(consignmentno) {
+        // Get the consignment number from the input field or some other source
+        const consignmentNo = consignmentno;
+        var customerId = $('#custid').val();
+        var fromDate = $('#datepicker').val();
+        var toDate = $('#datepicker1').val();
+        if (!consignmentNo) {
+            alert("Please provide a consignment number.");
+            return;
+        }
+
+        // Confirm deletion
+        if (!confirm(`Are you sure you want to delete consignment number ${consignmentNo}?`)) {
+            return false;
+        }
+
+        // Prepare the data
+        const data = {
+            Consignment_No: consignmentNo,
+            FromDate: fromDate,
+            ToDate: toDate,
+            CustomerId: customerId
+        };
+
+        // Perform AJAX request
+        $.ajax({
+            url: '/Booking/DeleteCons', // Replace with your controller's actual name
+            type: 'POST',
+            data: data,
+            success: function (response) {
+                showAlert(response, true);
+                setTimeout(function () {
+
+                    location.reload();
+                }, 10000); // 6 seconds = 6000 milliseconds
+
+            },
+            error: function (xhr, status, error) {
+
+                //$('#alertContainer').text('Something went wrong while deleting the consignment. Please try again').css('background-color', 'red'); // Set red background for errors;
+                //$("#alertContainer").show();
+                showAlert("Something went wrong while deleting the consignment. Please try again", true);
+                //// Automatically hide the alert after 10 seconds
+                //$('#alertContainer').fadeOut('slow', function () {
+                //    $(this).html('').show(); // Clear and reset the container
+                //});
+                setTimeout(function () {
+
+                }, 10000); // 6 seconds = 6000 milliseconds
+
+                // alert("Something went wrong while deleting the consignment. Please try again.");
+            }
+        });
+    }
+    $(document).ready(function () {
+
+
+
+    $(function () {
+        var company_name = [];
+        var company_idarr = [];
+
+        // Fetch data using AJAX
+        $.ajax({
+            type: 'GET',
+            url: '/Booking/CustomerIdAutocomplete',
+            dataType: 'json',
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    company_name.push({
+                        label: item.Company_Name, // Display this in the autocomplete dropdown
+                        value: item.Company_Id   // Store this as the actual value
+                    });
+                    company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
+                });
+
+                var pfcode = '@ViewBag.PfCode';
+                if (pfcode == "CF2024") {
+                    // Initialize the autocomplete and customize how the items are rendered in the dropdown
+                    $("#custid").autocomplete({
+                        source: company_name, // Use company_name as the source for autocomplete
+                        select: function (event, ui) {
+                            // When an item is selected, update the input value with the selected item's value
+                            $("#custid").val(ui.item.value);
+                            $("#custid").trigger("focusout");
+                            return false; // Prevent the default behavior of updating the input with the label
+                        }
+                    }).autocomplete("instance")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<div>" + item.value + " (" + item.label + ")</div>")
+                            .appendTo(ul);
+                    };
+                } else {
+                    // Initialize the autocomplete with the default settings
+                    $("#custid").autocomplete({
+                        source: company_idarr, // Use company_idarr as the source for autocomplete
+                        select: function (event, ui) {
+                            // When an item is selected, update the input value with the selected item's value
+                            $("#custid").val(ui.item.value);
+                            $("#custid").trigger("focusout");
+                            return false; // Prevent the default behavior of updating the input with the label
+                        }
+                    });
+                }
+            }
+        });
+    });
+});
+
+
+     $('#datepicker').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+     $('#datepicker1').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+
+            if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
+        });
+        $("#btnExcelSubmit").click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+            if (cutid == "") {
+                $("#ErrorMessage").Text("To generate the Excel report for the Check Booking List, please provide the From Date, To Date, and Customer ID")
+                $("#ErrorMessage").show();
+                return false;
+            }
+            $("#printButton").click(function () {
+                var frmdate = $('#datepicker').val();
+
+                var todate = $('#datepicker1').val();
+
+                if (frmdate == "" || todate == "") {
+                    return false
+                }
+                else {
+                    return true;
+                }
+            })
+            //if (custid == "" && fromdate == "" && todate == "") {
+            //    alert("To Generate the Excel Report for the To generate the Excel report for the Check Booking List, please provide the From Date, To Date, and Customer ID")
+            //    return false;
+            //}
+
+
+        })
+    });
+
+</script>
+<script>
+    var checkedConsignments = [];
+    // Function to get checked consignment numbers
+    function getCheckedConsignments() {
+
+        // Loop through each row in the table
+        $('#check-booking-list tbody tr').each(function () {
+            // Find the checkbox within the current row
+            var checkbox = $(this).find('td:eq(1) input[type="checkbox"]');
+            // Check if the checkbox is checked
+            if (checkbox.prop('checked')) {
+                // If checked, get the consignment number from the second column
+                var consignmentNumber = $(this).find('td:eq(2)').text().trim();
+                checkedConsignments.push(consignmentNumber);
+            }
+        });
+        PasstheConsignmentsToRTO();
+
+    }
+
+    function PasstheConsignmentsToRTO() {
+
+        var consignmentsString = checkedConsignments.join(',');
+        var fromdate = $("#datepicker").val();
+        var todate = $("#datepicker1").val();
+        var custid = $("#custid").val();
+        $.ajax({
+            type: 'GET',
+            url: '/Booking/CovertConsignmentToRTO?' + "fromdate=" + fromdate + "&todate=" + todate + "&custId=" + custid,
+            data: { consignmnets: consignmentsString },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data === "Success") {
+                    alert("Consignment Set for the RTO  successfully!!!");
+
+                    //window.location.href = "/Booking/Checkbookinglist?" +
+                    //    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                    //    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                    //    "&Custid=" + encodeURIComponent($("#custid").val());
+
+
+                    window.location.replace("/Booking/Checkbookinglist?" +
+                        "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                        "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                        "&Custid=" + encodeURIComponent($("#custid").val()));
+                }
+                //else
+                //if (data === "Success") {
+                //    alert("Success")
+                //    $("#NoBookingData").submit()
+                //    //window.location.href = "/Booking/Checkbookinglist?" +
+                //    //    "Fromdatetime=" + encodeURIComponent($("#datepicker").val()) +
+                //    //    "&ToDatetime=" + encodeURIComponent($("#datepicker1").val()) +
+                //    //    "&Custid=" + encodeURIComponent($("#custid").val());
+                //}
+                else {
+                    alert("Something Went Wrong")
+                }
+
+
+
+            },
+            error: function () {
+                alert("Error occurred while processing the request.");
+            }
+        })
+    }
+
+</script>
+
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var nodata = '@ViewBag.Nodata';
+        document.getElementById('printButton').addEventListener('click', function (event) {
+            if (nodata!="") {
+                event.preventDefault(); // Prevent form submission
+
+            }
+            else {
+                document.getElementById('printButton').setAttribute('formtarget', '_blank'); // Open in new tab if data is found
+
+            }
+        });
+    });
+</script>
+

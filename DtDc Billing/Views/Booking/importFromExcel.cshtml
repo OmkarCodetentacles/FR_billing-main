@@ -1,0 +1,648 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    string baseUrl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                   Request.ApplicationPath.TrimEnd('/');
+}
+
+
+<style>
+    /* Excel-like table styles */
+    .excel-table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+
+        .excel-table th {
+            background-color: #E6E6E6;
+            border: 1px solid #C0C0C0;
+            font-weight: bold;
+            padding: 8px;
+            position: relative;
+        }
+
+        .excel-table td {
+            border: 1px solid #C0C0C0;
+            padding: 6px 8px;
+            background-color: white;
+        }
+
+    /* Column headers like Excel */
+    .excel-header {
+        display: flex;
+        background-color: #F8F9FA;
+        border: 1px solid #C0C0C0;
+        margin-bottom: -1px;
+    }
+
+        .excel-header div {
+            padding: 4px 8px;
+            border-right: 1px solid #C0C0C0;
+            min-width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+        }
+
+    /* Excel-like row numbers */
+    .row-number {
+        background-color: #F8F9FA;
+        border-right: 1px solid #C0C0C0;
+        color: #666;
+        text-align: center;
+        width: 40px;
+    }
+
+    .table-container {
+        border: 1px solid #C0C0C0;
+        background: white;
+        padding: 0;
+        margin: 10px 0;
+        overflow-x: auto;
+    }
+
+    .template-item {
+        margin: 10px;
+        cursor: pointer;
+        text-align: center;
+        border: 2px solid transparent;
+        border-radius: 5px;
+    }
+
+        .template-item.selected {
+            border: 2px solid #007bff;
+            background-color: #f0f8ff;
+        }
+
+        .template-item img {
+            max-width: 170px;
+            max-height: 200px;
+        }
+
+    .step-number {
+        width: 25px;
+        height: 25px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Import From Excel
+
+                <a href="https://www.youtube.com/watch?v=yYChS8s7y9g&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=19"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (TempData["ErrorMessages"] != null)
+                    {
+                        var errorMessages = TempData["ErrorMessages"] as List<string>;
+                        if (errorMessages.Count()>0)
+                        {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (var error in errorMessages)
+                                    {
+                                        <li style="color:red;">@error</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
+                    @*@if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                        }*@
+
+                    @{
+                        var successMessage = TempData["Success"] as string;
+                        var errorMessage = TempData["error"] as string;
+                        var ConsErrorMessage = TempData["ConErrorMessages"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        string mainmessage = successMessage +" "+ ConsErrorMessage;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", mainmessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+                    }
+                    @*@if (!string.IsNullOrEmpty(ConsErrorMessage))
+                    {
+                        <script>
+                        
+
+                        </script>
+                        <div id="alertMessage" class="alert alert-danger" style="display: none;">
+                            <strong>Error!</strong><strong style="color:red;">@ConsErrorMessage</strong>
+                        </div>
+
+                                   }*@
+
+                    @*@if (TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success">
+                                <strong>Success!</strong> @TempData["Success"]
+                            </div>
+                        }*@
+
+                    @*@if (TempData["ConErrorMessages"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong>  @TempData["ConErrorMessages"]
+                        </div>
+                    }*@
+
+
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm("importFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form1" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4">
+                                                    <label for="file"><h4><strong id="up-txt">First Format</strong></h4></label>
+                                                    <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                                    <span id="fileErrorF1" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                    <a href="@baseUrl/excelformat/UploadforDocument.xlsx" class="btn btn-success"> Download Format1</a><!--CREAte Dynamic http://frbilling.com-->
+
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <h6><strong id="up-txt">Steps:</strong></h6>
+                                                    <p><span class="step-number">1</span>Download the format1</p>
+                                                    <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                    <p><span class="step-number">3</span>You need to upload a .txt file for this format</p>
+                                                    <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-sm-12">
+
+                                                <div class="preview-section">
+
+                                                    <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                    <div class="table-container">
+                                                        <div class="excel-header">
+                                                            <div style="width: 40px">&nbsp;</div>
+                                                            <div style="width: 135px">A</div>
+                                                            <div style="width: 104px">B</div>
+
+                                                        </div>
+                                                        <table class="excel-table">
+                                                            <tr>
+                                                                <td class="row-number">1</td>
+                                                                <th>Consignment No<span class="text-danger">*</span></th>
+                                                                <th>Customer Id<span class="text-danger">*</span></th>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">2</td>
+                                                                <td>T12300345</td>
+                                                                <td>Test Logistic</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">3</td>
+                                                                <td></td>
+                                                                <td></td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @using (Html.BeginForm("importFromExcelWhole", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form2" }))
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4">
+                                                    <label for="file"><h4><strong id="up-txt">Second Format</strong></h4></label>
+                                                    <input type="file" name="httpPostedFileBase" id="file2" class="form-control" />
+                                                    <span id="fileErrorF2" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn2" />
+                                                    <a href="@baseUrl/excelformat/UploadforNonDocument.xlsx" class="btn btn-success"> Download Format2</a>
+                                                </div>
+
+                                                <div class="col-sm-8">
+                                                    <h6><strong id="up-txt">Steps:</strong></h6>
+                                                    <p><span class="step-number">1</span>Download the format2</p>
+                                                    <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                    <p><span class="step-number">3</span>You need to upload a .txt file for this format</p>
+                                                    <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-12">
+
+                                                <div class="preview-section">
+
+                                                    <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                    <div class="table-container">
+                                                        <div class="excel-header">
+                                                            <div style="width: 40px">&nbsp;</div>
+                                                            <div style="width: 54px">A</div>
+                                                            <div style="width: 135px;">B</div>
+                                                            <div style="width: 105px;">C</div>
+                                                            <div style="width: 136px;">D</div>
+                                                            <div style="width: 115px;">E</div>
+                                                            <div style="width: 77px;">F</div>
+                                                            <div style="width: 73px;">G</div>
+                                                            <div style="width: 112px;">H</div>
+                                                        </div>
+                                                        <table class="excel-table">
+                                                            <tr>
+                                                                <td class="row-number">1</td>
+                                                                <th>Sr.No</th>
+                                                                <th>Consignment No<span class="text-danger">*</span></th>
+                                                                <th>Customer Id<span class="text-danger">*</span></th>
+                                                                <th>Chargable Weight</th>
+                                                                <th>Insurance Amt</th>
+                                                                <th>FOV Amt</th>
+                                                                <th>FOV Per</th>
+                                                                <th>Other charges</th>
+
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class="row-number">2</td>
+                                                                <td>1</td>
+                                                                <td>T12300345</td>
+                                                                <td>Test Logistic</td>
+                                                                <td>1.1</td>
+                                                                <td>100</td>
+                                                                <td>0.2</td>
+                                                                <td>2</td>
+                                                                <td>50</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="row-number">3</td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+
+                        </div>
+
+
+
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @using (Html.BeginForm("AddNewimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "form3" }))
+                                            {
+                                                <div class="col-md-12">
+                                                    <div class="col-sm-4">
+                                                        <label for="file"><h4><strong id="up-txt">Third Format</strong></h4></label>
+                                                        <input type="file" name="httpPostedFileBase" id="file3" class="form-control" />
+                                                        <span id="fileErrorF3" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+
+                                                        <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn3" />
+                                                        <a href="@baseUrl/excelformat/UploadNew.xlsx" class="btn btn-success"> Download Format3</a><!--Create Dynamic url-->
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <h6><strong id="up-txt">Steps:</strong></h6>
+                                                        <p><span class="step-number">1</span>Download the format3</p>
+                                                        <p><span class="step-number">2</span>Fill in your data & upload your file</p>
+                                                        <p><span class="step-number">3</span>If you enter the amount, it will be saved. If left blank, the amount will be calculated based on the ratemaster</p>
+                                                        <p><span class="step-number">4</span>Below is a preview of the excel format. Please ensure all required columns are filled and the data matches the expected format</p>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-12">
+
+                                                    <div class="preview-section">
+
+                                                        <h6><strong id="up-txt">Format Preview:</strong></h6>
+                                                        <div class="table-container">
+                                                            <div class="excel-header">
+                                                                <div style="width: 40px">&nbsp;</div>
+                                                                <div style="width: 54px;">A</div>
+                                                                <div style="width: 110px;">B</div>
+                                                                <div style="width: 90px;">C</div>
+                                                                <div style="width: 59px;">D</div>
+                                                                <div style="width: 87px;">E</div>
+                                                                <div style="width: 80px;">F</div>
+                                                                <div style="width: 77px;">G</div>
+                                                                <div style="width: 147px;">H</div>
+                                                                <div style="width: 67px;">I</div>
+                                                                <div style="width: 85px;">J</div>
+                                                                <div style="width: 77px;">K</div>
+                                                                <div style="width: 76px;">L</div>
+                                                                <div style="width: 88px;">M</div>
+                                                            </div>
+                                                            <table class="excel-table">
+                                                                <tr>
+                                                                    <td class="row-number">1</td>
+                                                                    <th>Sr.No</th>
+                                                                    <th>Consignment No<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Chargable Weight
+                                                                    </th>
+                                                                    <th>Mode<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Company Address
+                                                                    </th>
+                                                                    <th>Quantity<span class="text-danger">*</span></th>
+                                                                    <th>Pincode<span class="text-danger">*</span></th>
+                                                                    <th>
+                                                                        Booking Date(dd/MM/yyyy Or dd-MM-YYYY)<span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th>Type(D or N)</th>
+                                                                    <th>
+                                                                        Customer Id<span class="text-danger">*</span>
+                                                                    </th>
+                                                                    <th>
+                                                                        Other Charges
+
+                                                                    </th>
+                                                                    <th>
+                                                                        Receiver
+                                                                    </th>
+                                                                    <th>
+                                                                        Amount (Optional)
+                                                                    </th>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="row-number">2</td>
+                                                                    <td>1</td>
+                                                                    <td>T12300345</td>
+                                                                    <td>1.1</td>
+                                                                    <td>AR</td>
+                                                                    <td>Pune</td>
+                                                                    <td>2</td>
+                                                                    <td>400001</td>
+                                                                    <td>30/05/2000</td>
+                                                                    <td>D</td>
+                                                                    <td>Test Logistic</td>
+                                                                    <td>50</td>
+                                                                    <td>Bob</td>
+                                                                    <td>50</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="row-number">3</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+
+                            </div>
+                        </div>
+
+                        @*<div class="form-horizontal">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @using (Html.BeginForm("ImportCSV", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                                {
+                                                    <div class="col-md-8 no-padding">
+                                                        <label for="file"><strong id="up-txt"> Upload New </strong></label>
+                                                        <input type="file" name="file" id="file" class="form-control" />
+                                                        <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                            <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                              <a href="@Url.Action("ExportCSV", "Booking")" class="btn btn-success" target="_blank">Export CSV</a>
+                                                        </div>
+                                                    </div>
+
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                </div>
+                            </div>*@
+
+                        <!--<div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @@using (Html.BeginForm("AddCodTopayimporFromExcel", "Booking", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="col-md-8 no-padding">
+                                                <label for="file"><strong id="up-txt"> Upload New </strong></label>
+                                                <input type="file" name="file" id="file" class="form-control" />
+                                                <div style="display:flex; gap:10px;justify-content:end;margin-top:10px">
+                                                    <input type="submit" value="Upload" class="btn btn-primary" id="submitBtn" />
+                                                    <a href="@@baseUrl/excelformat/ExportCCodTopayExcel.xlsx" class="btn btn-success"> Export Excel</a><!--Create Dynamic url-->
+                        <!--@*<a href="@Url.Action("ExportCCodTopayExcel", "Booking")" class="btn btn-success" target="_blank">Export CSV</a>*@
+                                                    </div>
+                                                </div>
+
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showLoader() {
+
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
+
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+            // Prevent default form submission (since we are handling submission manually)
+
+
+            // Scroll to the top of the page
+            scrollToTop();
+            // Get the file input value
+            var file = $("#file").val();
+            // Check if file input is empty
+            if (file == "" || file == NaN) {
+                e.preventDefault();
+                $("#fileErrorF1").show();
+               // alert("Please select a file before Uploading.");
+                return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                
+                $("#fileErrorF1").text("Invalid file type. Please upload a .XLS or .XLSX file");
+                $("#fileErrorF1").show();
+                return false;
+            }
+
+            // Show the loader after validation
+            showLoader();
+
+            // Get the form element and submit the form after validation
+            $('#form1').submit();
+        });
+
+
+        $('#submitBtn2').on('click', function (e) {
+            // Prevent default form submission (since we are handling submission manually)
+
+
+            // Scroll to the top of the page
+            scrollToTop();
+            // Get the file input value
+            var file = $("#file2").val();
+            // Check if file input is empty
+            if (file == "" || file == NaN) {
+                e.preventDefault();
+                //    alert("Please select a file before Uploading.");
+                $("#fileErrorF2").show();
+                return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorF2").text("Invalid file type. Please upload a .XLS or .XLSX file");
+                $("#fileErrorF2").show();
+                return false;
+            }
+            // Show the loader after validation
+            showLoader('overlayBlock');
+
+            // Get the form element and submit the form after validation
+            $('#form2').submit();
+        });
+
+        $('#submitBtn3').on('click', function (e) {
+            // Prevent default form submission (since we are handling submission manually)
+
+            // Scroll to the top of the page
+            scrollToTop();
+            // Get the file input value
+            var file = $("#file3").val();
+            // Check if file input is empty
+            if (file == "" || file == NaN) {
+                e.preventDefault();
+                $("#fileErrorF3").show();
+             //   alert("Please select a file before Uploading.");
+                return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $("#fileErrorF3").text("Invalid file type. Please upload a .XLS or .XLSX file");
+                $("#fileErrorF3").show();
+                return false;
+            }
+
+            // Show the loader after validation
+            showLoader('overlayBlock');
+
+            // Get the form element and submit the form after validation
+            $('#form3').submit();
+        });
+
+    });
+
+</script>

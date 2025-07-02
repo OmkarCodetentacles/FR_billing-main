@@ -1,0 +1,150 @@
+﻿@model DtDc_Billing.Models.ExpenseModel
+
+@{
+    ViewBag.Title = "Add_Expenses";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<style>
+    textarea {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #0049af26 !important;
+        border-radius: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+</style>
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- Main content -->
+        <div class="box box-info" style="padding: 16px 16px !important">
+            <div class="box-header with-border">
+                <h4 class="box-title">Add Expenses</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        @{
+                            var successMessage = ViewBag.success as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            successMessage = "Expenses Added SuccessFully";
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Amount" } })
+                                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Reason<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.TextAreaFor(model => model.Rason, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Address", rows = "1" } })
+                                                @Html.ValidationMessageFor(model => model.Rason, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputPassword3" class="">Category</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownList("Category", ViewData["list"] as List<SelectListItem>, new { @class = "form-control" })
+                                                @*@Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="">
+
+                                            <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin: 14px 0" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+    textarea {
+        width: 100%;
+    }
+    .Reqired {
+        color: red;
+    }
+</style>
+
+
+@*@if (ViewBag.Success != null)
+{
+    <script>
+
+        $(document).ready(function () {
+
+            alert('Expenses Added SuccessFully');
+
+        });
+
+    </script>
+
+}*@
+
+

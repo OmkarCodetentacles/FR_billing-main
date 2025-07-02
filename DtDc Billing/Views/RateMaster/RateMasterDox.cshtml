@@ -1,0 +1,336 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Ratem>
+
+@{
+
+    Layout = null;
+}
+
+
+<section>
+
+
+    @{
+        var successMessage = ViewBag.Message as string;
+    }
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+    }
+
+    <div class="" style="padding: 20px; border: 1px solid #dddddd;">
+        <a href="https://www.youtube.com/watch?v=e13892KoxZ4&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=8"
+           target="_blank"
+           data-placement="left"
+           data-toggle="tooltip"
+           class="pull-right" style="padding-right:30px"
+           title="Click to view more info">
+            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+        </a>
+        @using (Ajax.BeginForm("RateMasterDox", "RateMaster", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp1", OnBegin = "onBegin", OnComplete = "onComplete" }, new { onsubmit = "showLoader" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" value="@ViewBag.companyid" name="comppid">
+
+
+            foreach (var item in Model)
+            {
+                if (item.NoOfSlab != null)
+                {
+                    <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
+                        <div class="box-header" style="padding:0">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlab, 2) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlab, 3)  Slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlab, 4)  Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    break;
+                }
+                else
+                {
+                    <div class="col-sm-6 col-sm-offset-3" style="padding:10px 0">
+                        <div class="box-header" style="padding:0">
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlab, 2, new { @checked = "checked" }) Slab 2</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>  @Html.RadioButtonFor(m => item.NoOfSlab, 3) slab 3</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label> @Html.RadioButtonFor(m => item.NoOfSlab, 4)  Slab 4</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    break;
+
+                }
+
+            }
+            <div class="row">
+                <div class="col-lg-12 ">
+
+
+                    <table class="table table-bordered table-striped" id="DoxTable">
+                        <thead>
+                            <tr class="upto-input">
+                                <th>
+                                    @*<h4>Sectors</h4>*@
+                                    @*<input type="hidden" name="hide" value="@ViewBag.Slabs.Uptosl1" />*@
+                                </th>
+                                <th>
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl1" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab2">
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl2" />
+                                    <label>Kg</label>
+                                </th>
+                                <th class="slab3">
+                                    <label>Upto</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl3" />
+                                    <label>Kg</label>
+                                </th>
+                                <th>
+                                    <label>Additional</label>
+                                    <input type="text" name="Upto" value="@ViewBag.Slabs.Uptosl4" />
+                                    <label>Kg</label>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="sectors">
+                                        @Html.DisplayFor(modelItem => item.Sector.Sector_Name)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.slab1)
+                                    </td>
+                                    <td class="slab2">
+                                        @Html.EditorFor(modelItem => item.slab2)
+                                    </td>
+                                    <td class="slab3">
+                                        @Html.EditorFor(modelItem => item.slab3)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(modelItem => item.slab4)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Rete_Id)
+                                    </td>
+                                    <td class="hidden">
+                                        @Html.HiddenFor(modelItem => item.Sector_Id)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input class="btn btn-primary pull-right" type="submit" name="submit" value="Save" id="submitBtn" onclick="scrollToTop()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="selected_tab" name="selected_tab" value="2" />
+
+
+        }
+    </div>
+</section>
+
+<script>
+
+     // Show loader if TempData flag is set
+
+    function showLoader() {
+
+            scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+        $(document).on('click', '#submitBtn', function () {
+
+            showLoader('overlayBlock');
+            scrollToTop();
+        });
+
+
+        $(document).ready(function () {
+
+            var data = '@TempData["Success"]';
+
+            if (data != null && data!="")
+            {
+                alert(data);
+            }
+
+
+        });
+
+
+
+</script>
+<style>
+    table {
+        max-height: 400px !important;
+        display: inline-table !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+
+        //scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+        // Hide the loader
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'none';
+    }
+</script>
+
+<script>
+
+
+
+    $(document).ready(function () {
+
+    //    $('#submitBtn').on('click', function (e) {
+    //        alert("Rate Master Dox ")
+    //        e.preventDefault();
+
+
+    //        $(this).prop('disabled', true);
+
+    //        $('form').submit();
+    //    });
+        //$('#DoxTable td:nth-child(2)').hide();
+        //$('#DoxTable td:nth-child(3)').hide();
+
+        //$('#DoxTable th:nth-child(2)').hide();
+        //$('#DoxTable th:nth-child(3)').hide();
+
+        var Doxtest = '@ViewBag.Dox[0].NoOfSlab';
+
+      //  alert(test);
+
+        if (Doxtest == 3) {
+
+
+            $('.slab2').show();
+
+
+
+
+            $('.slab3').hide();
+
+
+            $('#only').val(Doxtest);
+        }
+        else if (Doxtest == 4) {
+
+            $('.slab2').show();
+            $('.slab3').show();
+
+
+
+            $('#only').val(Doxtest);
+        }
+        else if (Doxtest == 2) {
+            $('.slab2').hide();
+            $('.slab3').hide();
+
+            $('#only').val(2);
+
+        }
+
+
+        $("input[name$='NoOfSlab']").change(function () {
+
+            var Doxtest = $(this).val();
+
+            //alert(test);
+
+            if (Doxtest == 3) {
+
+
+                $('.slab2').show();
+
+
+
+
+                $('.slab3').hide();
+
+
+                $('#only').val(Doxtest);
+            }
+            else if (Doxtest == 4) {
+
+                $('.slab2').show();
+                $('.slab3').show();
+
+
+
+                $('#only').val(Doxtest);
+            }
+            else if (Doxtest == 2) {
+                $('.slab2').hide();
+                $('.slab3').hide();
+
+                $('#only').val(2);
+
+            }
+
+        });
+    });
+</script>
+
+
+
+
+
+
+@if (ViewBag.Session != null)
+{
+    <script>
+
+        $(document).ready(function () {
+
+       alert('@ViewBag.Session');
+
+
+});
+
+    </script>
+
+}
+

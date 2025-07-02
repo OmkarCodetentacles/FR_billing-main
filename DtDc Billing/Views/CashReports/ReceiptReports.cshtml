@@ -1,0 +1,254 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Receipt_details>
+
+@{
+    ViewBag.Title = "ReceiptReports";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
+}
+
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+
+<div class="content-wrapper">
+    <section class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"> Receipt Report</h3>
+                        @*<h3 class="box-title">Receipts Report</h3><h3 class="pull-right">Total Collection : ₹ @ViewBag.totalAmt </h3>*@
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>From Date:</label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            @if (ViewBag.Fromdatetime != null)
+                                            {
+                                                <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                                            }
+                                            else
+                                            {
+                                                <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                                            }
+                                            @Html.ValidationMessage("Fromdateeror")
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>To Date:</label>
+
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            @if (ViewBag.ToDatetime != null)
+                                            {
+                                                <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                                            }
+                                            else
+                                            {
+                                                <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                                            }
+                                            @Html.ValidationMessage("Todateeror")
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label> </label>
+                                        <button type="submit" id="sbmt" class="btn btn-block btn-primary sbmt">Search</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                        <table id="example1" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Consignment_No)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Sender)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.sender_phone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ReciepentsPincode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Datetime_Cons)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Destination)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Actual_Weight)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.volumetric_Weight)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Shipment_Quantity)
+                                    </th>
+
+                                    <th>
+                                        Total Amount
+                                    </th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_No)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Sender)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.sender_phone)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ReciepentsPincode)
+                                            </td>
+                                            <td>
+                                                @item.Datetime_Cons.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Destination)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Actual_Weight)
+                                            </td>
+
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.volumetric_Weight)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Shipment_Quantity)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Charges_Total)
+                                            </td>
+
+
+
+
+
+
+
+
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                        <br>
+                        <!-- /input-group -->
+
+                        <div class="col-sm-3 " style="float: right" ;>
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger total-label">Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control" value="@ViewBag.totalAmt">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<script>
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
+
+            var todate = $('#datepicker1').val();
+
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>

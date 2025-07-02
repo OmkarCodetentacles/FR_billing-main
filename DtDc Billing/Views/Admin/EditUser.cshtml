@@ -1,0 +1,199 @@
+﻿@model DtDc_Billing.Entity_FR.User
+
+@{
+    ViewBag.Title = "EditUser";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Edit User</h4>
+                </div>
+                <!-- /.box-header -->
+
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.User_Id)
+
+                            <div class="form-group">
+                                <label class="col-md-2">Name</label>
+                                <div class="col-md-5">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2">Email</label>
+                                <div class="col-md-5">
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2">Contact No</label>
+                                <div class="col-md-5">
+                                    @Html.EditorFor(model => model.Contact_no, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Contact_no, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2">PF Code</label>
+                                <div class="col-md-5">
+                                    @Html.DropDownList("PF_Code", null, htmlAttributes: new { @class = "form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.PF_Code, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-2">Password</label>
+                                <div class="col-md-5">
+                                    @Html.EditorFor(model => model.Password_U, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                    @Html.ValidationMessageFor(model => model.Password_U, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-md-2">User Type</label>
+                                <div class="col-md-5">
+                                    @Html.DropDownList("Usertype", null, htmlAttributes: new { @class = " select2", @multiple = "multiple" })
+                                    @Html.ValidationMessageFor(model => model.Usertype, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="ModuleCash">
+                                <label class="col-md-2">Module Type For Cashcounter</label>
+                                <div class="col-md-5">
+                                    @Html.DropDownList("ModuletypeCash", null, htmlAttributes: new { @class = " selectM", @multiple = "multiple" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" id="ModuleBilling">
+                                <label class="col-md-2">Module Type For Billing</label>
+                                <div class="col-md-5">
+                                    @Html.DropDownList("ModuletypeBilling", null, htmlAttributes: new { @class = " selectM", @multiple = "multiple" })
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-info" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .box-header {
+        padding: 0 10px;
+    }
+</style>
+
+<script>
+    $(function () {
+        $('#user-list').addClass('active');
+    });
+</script>
+
+<script>
+    $(function () {
+        $('#user-list').addClass('active');
+    });
+
+    $('.select2').select2();   
+
+
+    
+   
+</script>
+
+<script>
+    $(function () {
+        $('#module-list').addClass('active');
+    });
+
+    $('.selectM').select2()
+</script>
+@*<script>
+    $(document).ready(function () {
+        var values = "@ViewBag.selected_usertypes";
+        debugger;
+        $.each(values.split(","), function (i, e) {
+            $(".select2 option[value='" + e + "']").prop("selected", true);
+        });
+    });
+</script>*@
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#ModuleCash').show();
+        $('#ModuleBilling').show();
+
+
+
+    });
+
+    $(document).ready(function () {
+        $('#Usertype').on('change', (function () {
+
+            var optionSelected = $('#Usertype').val();
+
+            if (optionSelected == "CashCounter") {
+                $('#ModuleCash').show();
+                $('#ModuleBilling').hide();
+            }
+
+            else if (optionSelected == "Billing") {
+                $('#ModuleCash').hide();
+                $('#ModuleBilling').show();
+            }
+            else if (optionSelected == "CashCounter", "Billing") {
+                $('#ModuleBilling').show();
+                $('#ModuleCash').show();
+
+            }
+            else if (optionSelected == "Billing", "CashCounter") {
+                $('#ModuleBilling').show();
+                $('#ModuleCash').show();
+
+            }
+            else if (optionSelected == null) {
+                $('#ModuleBilling').hide();
+                $('#ModuleCash').hide();
+
+            }
+            else {
+                $('#ModuleBilling').hide();
+                $('#ModuleCash').hide();
+            }
+
+
+        }));
+    });
+
+</script>

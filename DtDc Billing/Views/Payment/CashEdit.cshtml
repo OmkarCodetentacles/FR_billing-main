@@ -1,0 +1,186 @@
+﻿@model DtDc_Billing.Models.CashModel
+
+@{
+    ViewBag.Title = "CashEdit";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+    .control-label{
+        text-align:left !important;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>Edit</h4>
+
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <!-- /.box-header -->
+
+                    @{
+                        var sMessage = TempData["Updatedsuccss"] as string;
+                    }
+                    @if (!string.IsNullOrEmpty(sMessage))   
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                    }
+
+
+
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "submit" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
+                                <input type="hidden" id="Firm_Id" value="@ViewBag.firmid" name="Firm_Id" />
+                                <div class="col-md-3">
+                                    <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5> Balance :  <strong class="text-danger">
+    @(Math.Round((decimal)(ViewBag.netamount - (ViewBag.paidamt != null ? ViewBag.paidamt : 0)), 2))
+
+</strong></h5>
+                                </div>
+                            </div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Cash_id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Date
+                                </label>
+                                @*@Html.LabelFor(model => model.tempinserteddate, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.FormattedTempInsertedDate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate",@readonly="readonly" } })
+                                    @Html.ValidationMessageFor(model => model.tempinserteddate, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.tempinserteddate, "")
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Invoiceno, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.C_Tds_Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.C_Tds_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.C_Tds_Amount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.C_Total_Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.C_Total_Amount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.C_Total_Amount, "", new { @class = "text-danger" })
+                                    <span class="errormsd text-danger">Billed amount is greater than enter amount!</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" id="submit" class="btn btn-primary" />
+
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+@if(TempData["Updatedsuccss"] != null)
+{
+<script>
+   // alert("@TempData["Updatedsuccss"]");
+</script>
+}
+
+
+<style>
+    .errormsd {
+        display: none;
+    }
+
+</style>
+
+<script>
+
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+        </script>
+
+ <script>
+     $(document).ready(function () {
+         $("#submit").submit(function () {
+           
+            var amount = $("#amountval").val();
+             var enterval = $("#C_Total_Amount").val();
+           
+             var bal = ('@ViewBag.netamount' - '@ViewBag.paidamt');
+
+             
+             if (enterval > (parseFloat(amount) + parseFloat(bal))) {
+                $(".errormsd").css("display", "inline");
+                return false;
+            }
+
+             
+        }); 
+    });
+
+
+
+     $(document).ready(function () {
+
+         $("#Amount,#C_Tds_Amount").keyup(function () {
+
+             var Amount = $('#Amount').val();
+
+             var C_Tds_Amount = $('#C_Tds_Amount').val();
+
+
+             var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+             $('#C_Total_Amount').val(addition);
+
+         });
+
+     });
+</script>

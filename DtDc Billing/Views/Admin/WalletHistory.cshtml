@@ -1,0 +1,80 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.wallet_History>
+@{
+    ViewBag.Title = "WalletHistory";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>PFWise Membership Summary</h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <table id="table_display_block" class="table table-striped table-bordered table-responsive">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.H_Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.consignment_no)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.mobile_no)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.datetime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PF_Code)
+                                </th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.H_Status)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.consignment_no)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.mobile_no)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.datetime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PF_Code)
+                                    </td>
+
+                                    <td>
+                                        @*@Html.ActionLink("Edit", "Edit", new { id = item.H_Id }) |
+                                            @Html.ActionLink("Details", "Details", new { id = item.H_Id }) |
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.H_Id })*@
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

@@ -1,0 +1,100 @@
+﻿@model DtDc_Billing.Models.FinancialSummary
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Financial Summary</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Additional styling for the chart */
+        .chart-container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h3>Monthly Financial Overview</h3>
+        <canvas id="financialPieChart"></canvas>
+    </div>
+
+    <script>
+        // Function to generate random color in rgba format
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `rgba(${r}, ${g}, ${b}, 0.5)`; // 0.5 opacity for background color
+        }
+
+        // Prepare data for the pie chart
+        var data = {
+            labels: [
+                "Total Revenue",
+                "Outstanding Invoices",
+                "Invoices Paid",
+                "Invoices Unpaid",
+                "Total Expense"
+            ],
+            datasets: [{
+                label: 'Financial Data',
+                data: [
+                    @Model.TotalRevenue ?? 0,  // Total Revenue
+                    @Model.OutstandingInvoicesAmount ?? 0,  // Outstanding Invoices
+                    @Model.InvoicesPaidAmount ?? 0,  // Invoices Paid
+                    @Model.InvoicesUnpaidAmount ?? 0,  // Invoices Unpaid
+                    @Model.TotalExpense ?? 0  // Total Expense
+                ],
+                backgroundColor: [
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor()
+                ],
+                borderColor: [
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor(),
+                    getRandomColor()
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Chart options
+        var options = {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.label + ": $" + tooltipItem.raw.toFixed(2);
+                        }
+                    }
+                }
+            }
+        };
+
+        // Initialize the chart
+        var ctx = document.getElementById('financialPieChart').getContext('2d');
+        var financialPieChart = new Chart(ctx, {
+            type: 'pie', // Pie chart type
+            data: data,
+            options: options
+        });
+    </script>
+</body>
+</html>

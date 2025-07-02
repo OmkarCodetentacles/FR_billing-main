@@ -1,0 +1,51 @@
+﻿@model DtDc_Billing.Models.userDetailsModel
+@{
+
+    Layout = null;
+}
+@using (Ajax.BeginForm("PaymentSuccess", "Admin", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "frmEmp", OnSuccess = "createsuccess" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <!-- pricing section start -->
+    <div class="pricing bg-img" id="plan" data-background="/Content/assets/images/pricing/pricing-bg.png">
+        <div class="container">
+
+
+            <div class="pricing__area">
+                <div class="choice__title">
+                    @if (TempData["msg"] != null)
+                    {
+                        var successMessage = TempData["msg"] as string;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+
+                    }
+                    else if (TempData["error"] != null)
+                    {
+                        var errorMessage = TempData["error"] as string;
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", errorMessage))
+
+                    }
+                    <h6 class="text-center wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">Our Plans</h6>
+                    <h2 class="text-center wow animate__animated animate__fadeInUp">Mosto Plans for Everyone</h2>
+                    <p class="text-center wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                    <p>
+                        <b>Payment successful!</b> enjoy services
+                        dolor sit amet, consectetur adipiscing elit. Quisque tristique
+                        tincidunt arcu.
+                    </p>
+                </div>
+                <div class="row">
+                    <input type="submit" value="Login" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+

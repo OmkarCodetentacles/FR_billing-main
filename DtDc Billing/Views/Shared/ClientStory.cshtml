@@ -1,0 +1,150 @@
+﻿@{ 
+    Layout = null;
+}
+<style>
+    .client-section {
+        overflow: hidden;
+        position: relative;
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+
+    .client-track {
+        display: flex;
+        animation: scroll 20s linear infinite;
+        width: calc(250px * 10);
+    }
+
+    .client-slide {
+        width: 250px;
+        padding: 20px;
+        flex-shrink: 0;
+        transition: transform 0.3s;
+    }
+
+        .client-slide:hover {
+            transform: scale(1.1);
+        }
+
+    .client-image {
+        width: 100%;
+        height: 100px;
+        object-fit: contain;
+        filter: grayscale(100%);
+        transition: filter 0.3s;
+    }
+
+    .client-slide:hover .client-image {
+        filter: grayscale(0%);
+    }
+
+    .client-container:hover .client-track {
+        animation-play-state: paused;
+    }
+
+    @@keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(calc(-250px * 5));
+        }
+    }
+
+    /* Gradient overlays for smooth transition */
+    .overlay-left, .overlay-right {
+        position: absolute;
+        top: 0;
+        width: 100px;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .overlay-left {
+        left: 0;
+        background: linear-gradient(to right, #f8f9fa 0%, transparent 100%);
+    }
+
+    .overlay-right {
+        right: 0;
+        background: linear-gradient(to left, #f8f9fa 0%, transparent 100%);
+    }
+
+    .text-muted-t {
+        color: #05844f;
+    }
+</style>
+
+
+
+
+
+
+<section class="client-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold">Our Trusted Clients</h2>
+                <p class="text-muted-t">Proud to work with industry leaders worldwide</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="client-container position-relative">
+        <div class="overlay-left"></div>
+        <div class="overlay-right"></div>
+
+        <div class="client-track">
+            <!-- First set of clients -->
+            <div class="client-slide">
+                <img src="assets/ClientLogo/globex.png" alt="Client 1" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/IJS.png" alt="Client 2" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/Mexpress.png" alt="Client 3" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/VBExpress.png" alt="Client 4" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/veerexpress.png" alt="Client 8" class="client-image">
+            </div>
+
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/Ontrack.png" alt="Client 5" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/atk.png" alt="Client 6" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/SHUBHAM EXPRESS.png" alt="Client 7" class="client-image">
+            </div>
+
+
+
+            <div class="client-slide">
+                <img src="~/assets/ClientLogo/GlobalWorldwideexpress.jpg" alt="Client 9" class="client-image">
+            </div>
+
+
+            <div class="client-slide">
+                <img src="assets/ClientLogo/globex.png" alt="Client 1" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/IJS.png" alt="Client 2" class="client-image">
+            </div>
+            <div class="client-slide">
+                <img src="assets/ClientLogo/Mexpress.png" alt="Client 3" class="client-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+

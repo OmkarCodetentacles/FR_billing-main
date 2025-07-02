@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "AdminChangePass";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border invoice-intro-block">
+                    <h4>
+                        Change Password
+                    </h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+
+                                @{
+                                    var successMessage = ViewBag.sendmail as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+
+                                @{
+                                    
+                                    var changePassword = ViewBag.changepass as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(changePassword))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", changePassword))
+                                }
+
+                                @using (Html.BeginForm("NewpasswordSave", "Admin"))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="col-sm-12">
+
+                                            <div class="form-group control-label col-md-2">
+                                                <label>Current Password</label>
+                                            </div>
+                                            <div class="col-md-3 ">
+                                                <input type="password" name="currentpass" class="form-control">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group control-label col-md-2">
+                                                <label>New Password</label>
+                                            </div>
+                                            <div class="col-md-3 ">
+                                                <input type="password" name="newpass" class="form-control">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group control-label col-md-2">
+                                                <label>Enter Token</label>
+                                            </div>
+                                            <div class="col-md-3 ">
+                                                <input type="text" name="Token" class="form-control">
+
+                                            </div>
+                                            <div class="col-md-3 ">
+                                                <a href="" onclick="return false" id="tokenlink" class="token">Generate Token</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Create" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*@if (ViewBag.sendmail != null)
+{
+    <script>
+        alert('@ViewBag.sendmail');
+    </script>
+}*@
+@*@if (ViewBag.changepass != null)
+{
+    <script>
+        alert('@ViewBag.changepass');
+    </script>
+}*@
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("a.token").click(function () {
+                $.ajax({
+                    // edit to add steve's suggestion.
+                    //url: "/ControllerName/ActionName",
+                    url: '@Url.Action("NewpasswordSave", "Admin")',
+                    success: function (data) {
+                        // your data could be a View or Json or what ever you returned in your action method
+                        // parse your data here
+                        alert("mail send");
+                    }
+                });
+            });
+        });
+</script>

@@ -1,0 +1,136 @@
+﻿@model DtDc_Billing.CustomModel.LiveDataModel
+@{
+    Layout = null;
+}
+<style>
+    .metrics-section {
+        padding: 60px 0;
+        margin-top: 100px !important;
+    }
+
+    .metric-item {
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+
+        .metric-item:hover {
+            transform: translateY(-5px);
+        }
+
+    .metric-icon {
+        font-size: 2.5rem;
+        color: #ff9a85;
+        margin-bottom: 1rem;
+    }
+
+    .metric-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .metric-title {
+        font-size: 1.1rem;
+        color: #05844f;
+        font-weight: 500;
+    }
+
+    .counter-wrapper {
+        display: inline-block;
+    }
+
+    .imagefont {
+        width: 15%;
+    }
+
+    .plussymbol {
+        color: #05844f;
+    }
+</style>
+
+
+<section class="metrics-section">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Invoice Metric -->
+            <!-- Revenue Metric -->
+            <div class="col-md-6 col-lg-4">
+                <div class="metric-item">
+                    @* <img src="~/assets/Home/imgs/profit-loss.png" alt="Satisfied Customers Illustration" class="imagefont">*@
+                    <div class="metric-number">
+                        ₹<span class="counter-wrapper" data-target="@Model.TotalInvoiceAmount">0</span>
+                        <span class="plussymbol">+</span>
+                    </div>
+                    <div class="metric-title">Revenue Generated</div>
+                </div>
+            </div>
+
+
+
+            <!-- Bookings Metric -->
+            <div class="col-md-6 col-lg-4">
+                <div class="metric-item">
+                    @*   <img src="~/assets/Home/imgs/bookings.png" alt="Satisfied Customers Illustration" class="imagefont">*@
+                    <div class="metric-number">
+                        <span class="counter-wrapper" data-target="@Model.TotalConsignmentBooked">0</span>
+                        <span class="plussymbol">+</span>
+                    </div>
+                    <div class="metric-title">Bookings Processed</div>
+                </div>
+            </div>
+
+            <!-- Users Metric -->
+            <div class="col-md-6 col-lg-4">
+                <div class="metric-item">
+                    @* <img src="/assets/Home/imgs/customers.png" alt="Satisfied Customers Illustration" class="imagefont">*@
+                    <div class="metric-number">
+                        <span class="counter-wrapper" data-target="@Model.TotalUser">0</span>
+                        <span class="plussymbol">+</span>
+                    </div>
+                    <div class="metric-title">Active Users</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const counters = document.querySelectorAll('.counter-wrapper');
+        const speed = 200; // The lower the faster
+
+        const startCounting = (counter) => {
+            const target = +counter.getAttribute('data-target');
+            let count = 0;
+
+            const updateCount = () => {
+                const increment = target / speed;
+
+                if (count < target) {
+                    count += increment;
+                    counter.innerText = Math.floor(count).toLocaleString();
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            };
+
+            updateCount();
+        };
+
+        // Intersection Observer for triggering animations when visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startCounting(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => observer.observe(counter));
+    });
+</script>

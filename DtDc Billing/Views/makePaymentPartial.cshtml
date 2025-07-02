@@ -1,0 +1,98 @@
+﻿@model FrBillingGoEasyLive.Models.userDetailsModel
+
+
+@Html.AntiForgeryToken()
+@Html.ValidationMessage("customErrorPay", new { @class = "text-danger" })
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="alert alert-success" id="paymentsuccess" style="display:none">
+    <strong>Success!</strong>You have made payment successfully
+</div>
+<div id="mydiv" data-myval="10" data-name="10" data-email="10" data-contact="10" data-address="test"></div>
+<!-- pricing section start -->
+<div class="pricing bg-img" id="plan" data-background="/Content/assets/images/pricing/pricing-bg.png">
+    <div class="container">
+
+
+        <div class="pricing__area">
+            <div class="choice__title">
+
+                <h6 class="text-center wow animate__animated animate__fadeInUp" data-wow-delay="0.1s">Our Plans</h6>
+                <h2 class="text-center wow animate__animated animate__fadeInUp">Mosto Plans for Everyone</h2>
+                <p class="text-center wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                    @*<p>@Session["Data"]    Lorem ipsum*@
+                    dolor sit amet, consectetur adipiscing elit. Quisque tristique
+                    tincidunt arcu.
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-xl-4">
+                    <button id="rzp-button1" class="button btn1">Make Payment</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- pricing section end -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+     <script>
+     function fun(e) {
+         // alert(e.getAttribute('data-email'));
+
+         var a = $('#mydiv').data('myval'); //getter
+
+         var name = $('#mydiv').data('name'); //getter
+         var email = $('#mydiv').data('email'); //getter
+         var contact = $('#mydiv').data('contact'); //getter
+         var address = $('#mydiv').data('address'); //getter
+
+
+         var amount = 500000;
+
+         var options = {
+
+                "key": "rzp_test_ORKmnTOESzja0p",
+                "amount": amount, // INR 299.35
+                "name": "FRBILLING",
+                "description": "1 yr. Subscription",
+                "image": "http://codetentacles-005-site2.htempurl.com/assets/images/logo1.png",
+                "handler": function (response) {
+
+         if (response.razorpay_payment_id != null) {
+                        $('#paymentsuccess').show();
+         }
+         window.location.href = "@Url.Action("Pay", "Account")?paymentid=" + response.razorpay_payment_id;
+     },
+                "prefill": {
+            @*"name": '@Model.name',
+            "email": '@Model.email',
+            "contact": '@Model.mobileNo'*@
+
+                    "name": name,
+                    "email": email,
+                    "contact": contact
+                },
+                "notes": {
+                    "address": address
+                },
+                "theme": {
+                    "color": "#c6043f"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            document.getElementById('rzp-button1').onclick = function (e) {
+                rzp1.open();
+                e.preventDefault();
+            }
+        }
+
+</script>
+
+
+<script>
+
+</script>
+
+

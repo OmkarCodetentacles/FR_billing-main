@@ -1,0 +1,384 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Transaction>
+
+
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .Billunbilled th{
+        width: 13.5% !important
+    }
+    table {
+        max-height: 400px !important;
+        display:list-item !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Billed Unbilled List
+
+                <a href="https://www.youtube.com/watch?v=IpsaAwUpDsE&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=39"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   class="pull-right"
+                   style="margin-top:10px"
+                   title="Click to view more info of Weight Difference">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+                        var nodata = ViewBag.Nodata as string;
+                    }
+                    @if (!string.IsNullOrEmpty(nodata))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                    }
+                    <div class="form-horizontal">
+
+
+                        <div class="row">
+                            <div class="">
+                                <div class="form-group">
+
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>: </label>
+
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" placeholder="From Date" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>:</label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" placeholder="From Date" required>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" placeholder="To Date" required>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                        @*<div class="col-md-2">
+                        <div class=" pf-code">
+                            @Html.DropDownList("PfCode")
+                        </div>
+                        </div>*@
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Status</label>
+
+                                                <div class=" pf-code">
+                                                    @Html.DropDownList("status", new List<SelectListItem>
+                                                    {
+                                                        new SelectListItem{ Text="Billed", Value = "Billed" },
+                                                        new SelectListItem{ Text="Unbilled", Value = "Unbilled" },
+                                                        new SelectListItem{ Text="Both", Value = "Both" },
+                                                     })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1" style="margin: 22px auto; text-align: center; padding:0">
+                                            <input type="submit" class=" btn btn-primary" id="Show" name="Show" value="Show" style="width:100%" />
+                                        </div>
+
+                                        <div class="col-md-1" style="margin: 22px auto; text-align: center;">
+                                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" style="margin-left:auto" />
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <table id="table_display_block" class="table Billunbilled">
+                            <thead>
+
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        Consignment no
+
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+
+                                    <th>
+                                        Company Id
+                                    </th>
+                                    <th>
+                                        Actual Weight
+                                    </th>
+                                    <th>
+                                        Chargable Weight
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        if (item.Actual_weight == null)
+                                        {
+                                            item.Actual_weight = 0;
+                                        }
+                                        <tr>
+                                            
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pincode)
+                                            </td>
+                                            <td>
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Actual_weight)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.chargable_weight)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Quanntity)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                     
+                        <!-- /input-group -->
+                        <div class="row mt-15">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary total-label">Total Amount</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>Math.Round((double)m.Amount,2))">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-success total-label">Total Consignment</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Count()">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    </div>
+    <script>
+    $(document).ready(function () {
+
+     $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+
+     $('#datepicker').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+     $('#datepicker1').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+    });
+    </script>
+    <style>
+        #no-booking-list {
+            display: block;
+            min-height: 400px;
+        }
+
+        .pf-code select, .emp-id select {
+            display: block;
+            width: 100%;
+            height: 36px !important;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+    </style>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#Show').click(function () {
+                var cutid = $('#custid').val();
+                var frmdate = $('#datepicker').val();
+                var todate = $('#datepicker1').val();
+
+
+                if (frmdate == "") {
+                    alert("Please Enter From Date");
+                    return false;
+                }
+                else if (todate == "") {
+                    alert("Please Enter To Date");
+                    return false;
+                }
+                else { return true; }
+
+
+            });
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('#table_display_block').dataTable({
+                "bPaginate": false,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": false,
+                "bAutoWidth": false
+            });
+        });
+    </script>
+    

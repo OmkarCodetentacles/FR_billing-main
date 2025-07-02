@@ -1,0 +1,371 @@
+﻿
+@model DtDc_Billing.Models.NewPaymentModel
+
+
+@{ var sMessage = TempData["Message"] as string;
+    var balance = TempData["remainingAmount"] as string;
+}
+@using (Ajax.BeginForm(  "PaymodeModePartial",  "Payment",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        UpdateTargetId = "CashPartial",
+        OnSuccess = "createsuccess",
+        OnBegin = "showLoader",
+        OnComplete = "onComplete"
+    }
+
+))
+{
+    @Html.AntiForgeryToken()
+    <div class="messagediv" style="display:none;color: #ff0000; padding: 15px; border: 1px solid #f5c6cb; border-radius: 5px;">
+        All Fields Are Required!
+    </div>
+    if (!string.IsNullOrEmpty(sMessage))
+    {
+        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage))
+        <script>
+            setTimeout(function () {
+                window.location.reload();
+
+
+
+            }, 10000); // 3000 milliseconds = 3 seconds
+        </script>
+    }
+
+<div class="form-horizontal" id="CashPartial">
+
+    <hr />
+    
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <input type="hidden" class="Firm_Id" name="Firm_Id">
+    <div class="form-group">
+        <label class="col-md-4">Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            @Html.ValidationMessage("InvAmt", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.Payment_Mode)
+
+    <div class="form-group">
+        <label class="col-md-4">Date</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.temppaymentdate, new { htmlAttributes = new { @class = "form-control", @id = "temppaymentdate" } })
+            @Html.ValidationMessageFor(model => model.temppaymentdate, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group bankname" style="display:none;">
+        <label class="col-md-4">Bank Name</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Bank_Name, new { htmlAttributes = new { @class = "form-control ", } })
+            @Html.ValidationMessageFor(model => model.Bank_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group branchname" style="display:none;">
+        <label class="col-md-4">Branch Name</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Branch_Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Branch_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group  transactionId" style="display:none;">
+        <label class="col-md-4">Transaction Id</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Transaction_Id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Transaction_Id, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group checknumber" style="display:none;">
+        <label class="col-md-4">Check Number</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CheckNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.CheckNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group creditNoteNumber" style="display:none;">
+        <label class="col-md-4">Credit Note Number</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.CreditNoteNo, new { htmlAttributes = new { @class = "form-control Invoiceno" } })
+            @Html.ValidationMessageFor(model => model.CreditNoteNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group tdsamount">
+        <label class="col-md-4">Tds Amount</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Tds_Amount, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Tds_Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4">Total Amt</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control", } })
+            @Html.ValidationMessageFor(model => model.Total_Amount, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4">Invoice No</label>
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.InvoiceNo, new { htmlAttributes = new { @class = "form-control Invoiceno", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.InvoiceNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="submit" value="Save" id="btnSubmit" class="btn btn-success pull-right " />
+        </div>
+    </div>
+</div>
+}
+
+
+
+<a id="savecredit" style="" href="" target="_blank" download>
+</a>
+@if (ViewBag.FileName != null)
+{
+    var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority +
+                        Request.ApplicationPath.TrimEnd('/');
+
+    <script>
+     var data = '@ViewBag.FileName';
+        var baseurl = '@baseurl';
+        var pfcode = '@ViewBag.pfcode';
+    document.getElementById('overlayBlock').style.display = 'none';
+
+        $('#savecredit').attr('href', baseurl + "/PDF/" + pfcode+"/" + data);
+
+    document.getElementById('savecredit').click();
+
+    </script>
+
+
+
+}
+
+
+<script>
+
+
+
+    // Function to clear form fields
+    function clearFormFields() {
+        $(".bankname input").val(''); // Clear Bank Name field
+        $(".branchname input").val(''); // Clear Branch Name field
+        $(".transactionId input").val(''); // Clear Transaction ID field
+        $(".checknumber input").val(''); // Clear Check Number field
+        $(".creditNoteNumber input").val('');
+    }
+    $('#temppaymentdate').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+    function createsuccess() {
+
+        $('#Amount').removeAttr('value');
+        $('#temppaymentdate').removeAttr('value');
+        $('#Tds_Amount').removeAttr('value');
+        $('.Balance').text('Balance Amount Is' + " : " + '@TempData["remainingAmount"]');
+      
+        $('#successmsg').fadeIn('fast').delay(2000).fadeOut('fast');
+
+        var Amount = $('#Amount').val();
+
+        var C_Tds_Amount = $('#Tds_Amount').val();
+
+
+        var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+        $('#Total_Amount').val(addition);
+        }
+        $(document).ready(function () {
+
+        $("#Amount,#Tds_Amount").keyup(function () {
+
+        var Amount = $('#Amount').val();
+
+        var C_Tds_Amount = $('#Tds_Amount').val();
+
+
+        var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+        $('#Total_Amount').val(addition);
+
+        });
+        $('input[name="paymentMode"]').change(function () {
+        var selectedMode = $(this).val();
+        $("#Payment_Mode").val(selectedMode);
+        // Clear all fields before updating visibility
+        clearFormFields();
+        //  $("#paymentForm")[0].reset(); // Reset the form
+        if (selectedMode == "Cash") {
+        $(".bankname").hide();
+        $(".branchname").hide();
+        $(".transactionId").hide();
+        $(".checknumber").hide();
+        $(".creditNoteNumber").hide();
+        }
+        else if (selectedMode == "Cheque") {
+
+        $(".bankname").show();
+        $(".branchname").show();
+        $(".transactionId").hide();
+        $(".checknumber").show();
+        $(".creditNoteNumber").hide();
+        }
+        else if (selectedMode == "NEFT") {
+
+        $(".bankname").hide();
+        $(".branchname").hide();
+        $(".transactionId").show();
+        $(".checknumber").hide();
+        $(".creditNoteNumber").hide();
+        }
+        else if (selectedMode == "CreditNote") {
+        $(".bankname").hide();
+        $(".branchname").hide();
+        $(".transactionId").hide();
+        $(".checknumber").hide();
+        $(".creditNoteNumber").show();
+        }
+        });
+        $("#btnSubmit").click(function () {
+
+        var bankname = $("#Bank_Name").val();
+        var branchname = $("#Branch_Name").val();
+        var transactionid = $("#Transaction_Id").val();
+        var checkNumber = $("#CheckNo").val();
+        var creditnotnumber = $("#CreditNoteNo").val();
+
+        var amount = $("#Amount").val();
+        var invoiceno = $("#InvoiceNo").val();
+        var tdsamount = $("#Tds_Amount").val();
+        var totalamount = $("#Total_Amount").val();
+        var temppaymentdate = $("#temppaymentdate").val();
+
+        var selectedValue = $('input[name="paymentMode"]:checked').val();
+        $("#Payment_Mode").val(selectedValue);
+        if (selectedValue == "Cash") {
+        $("#Bank_Name").val('');
+        $("#Branch_Name").val('');
+        $("#Transaction_Id").val('');
+        $("#CheckNo").val('');
+        $("#CreditNoteNo").val('');
+        if (amount == "" || invoiceno == "" || tdsamount == "" || totalamount == "") {
+        $("#modal-default").show();
+
+        $(".messagediv").show();
+        return false;
+        }
+        else {
+
+        return true;
+        }
+
+        }
+        else if (selectedValue == "Cheque") {
+
+        $("#Transaction_Id").val('');
+        $("#CreditNoteNo").val('');
+
+        if (amount == "" || invoiceno == "" || tdsamount == "" || totalamount == "" || branchname == "" || bankname == "" || checkNumber == "") {
+
+        $(".messagediv").show();
+        return false;
+        }
+        else {
+
+        return true;
+        }
+        }
+        else if (selectedValue == "NEFT") {
+        $("#Bank_Name").val('');
+        $("#Branch_Name").val('');
+        $("#CheckNo").val('');
+        $("#CreditNoteNo").val('');
+        if (amount == "" || invoiceno == "" || tdsamount == "" || totalamount == "" || transactionid == "") {
+
+        $(".messagediv").show();
+        return false;
+        }
+        else {
+
+        return true;
+        }
+        }
+
+        else if (selectedValue == "CreditNote") {
+        $("#Bank_Name").val('');
+        $("#Branch_Name").val('');
+        $("#Transaction_Id").val('');
+        $("#CheckNo").val('');
+
+        if (amount == "" || invoiceno == "") {
+
+        $(".messagediv").show();
+        return false;
+        }
+        else {
+
+        return true;
+        }
+        }
+
+        });
+
+        });
+</script>
+
+
+<script type="text/javascript">
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+
+    function onBegin() {
+
+        //scrollToTop();
+        // Show the loader
+        document.getElementById('overlayBlock').style.display = 'block';
+    }
+
+    function onComplete() {
+      
+        document.getElementById('overlayBlock').style.display = 'none';
+
+        //$("#modal-default").hide();
+    }
+
+
+    // Show loader if TempData flag is set
+
+    function showLoader() {
+
+        scrollToTop();
+        document.getElementById('overlayBlock').style.display = 'block';
+
+    }
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).on('click', '#submitBtn', function () {
+
+        showLoader('overlayBlock');
+        scrollToTop();
+    });
+
+</script>

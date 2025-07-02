@@ -1,0 +1,116 @@
+﻿@model IEnumerable<DtDc_Billing.CustomModel.WalletPointModel>
+
+@{
+    ViewBag.Title = "WalletReports";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+
+
+    <section class="conatiner">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-info" style="padding: 16px 16px !important">
+                    <div class="box-header with-border">
+                        <h4>
+
+                            @using (Html.BeginForm())
+    {
+                        <div class="col-sm-2 pull-right">
+                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-primary" />
+                        </div>
+}   Membership Report
+                        </h4>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                      
+                        <table id="example1" class="table table-striped table-bordered table-scroll table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Wallet_Money)
+                                    </th>
+                                    <th>
+                                        Created date
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        PF Code
+                                    </th>
+                                    <th>
+                                        Redeemed
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MobileNo)
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+            {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Wallet_Money)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Datetime_Wa)
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.PFCode
+                        </td>
+                        <td>
+                            @item.Redeemed
+                        </td>
+
+                        <td>
+                            <a href="@Url.Action("WalletHistory","Admin",new {phone=item.MobileNo })">@item.MobileNo</a>
+                        </td>
+
+
+                    </tr>
+}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<style>
+    @@media (max-width: 768px) {
+        #example1 {
+            display: block;
+        }
+    }
+
+    .table-scroll {
+        height: 600px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+    $('.sidebar-menu li a').click(function () {
+        $('li a').removeClass("active");
+        $(this).addClass("active");
+    });    
+</script>

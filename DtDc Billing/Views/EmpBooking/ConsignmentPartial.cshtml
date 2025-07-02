@@ -1,0 +1,990 @@
+﻿@model  DtDc_Billing.Metadata_Classes.TransactionMetadata
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+@using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+{
+   <section>
+       <div id="sg1">
+           <label style="width: 125px;">
+               Consi no
+               @if (ViewBag.nextconsignment != null)
+               {
+                   @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
+
+                   <script>
+                       $('#Consignment_no').keyup();
+                   </script>
+               }
+               else
+               {
+                   @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
+               }
+           </label>
+           <label style="width: 125px;">
+               Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+           </label>
+           <label style="width: 105px;">
+               Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label style="width: 105px;">
+               Book date @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label>
+               Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+           </label>
+           <label>
+               Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
+new SelectListItem() {Text = "AR", Value="AR"},
+new SelectListItem() {Text = "AC", Value="AC"},
+new SelectListItem() {Text = "SF", Value="SF"},
+new SelectListItem() {Text = "SC1", Value="SC1"},
+new SelectListItem() {Text = "AR1", Value="AR1"},
+new SelectListItem() {Text = "AC1", Value="AC1"},
+new SelectListItem() {Text = "SF1", Value="SF1"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "CP1", Value="CP1"},
+new SelectListItem() {Text = "CP2", Value="CP2"},
+new SelectListItem() {Text = "CSP", Value="CSP"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "D2Z", Value="D2Z"},
+new SelectListItem() {Text = "DZ2", Value="DZ2"},
+new SelectListItem() {Text = "D10", Value="D10"},
+new SelectListItem() {Text = "D12", Value="D12"},
+new SelectListItem() {Text = "DM2", Value="DM2"},
+new SelectListItem() {Text = "DCP", Value="DCP"},
+new SelectListItem() {Text = "DC2", Value="DC2"},
+new SelectListItem() {Text = "DCD", Value="DCD"},
+new SelectListItem() {Text = "DZB", Value="DZB"},
+new SelectListItem() {Text = "DSF", Value="DSF"},
+new SelectListItem() {Text = "D2D", Value="D2D"},
+new SelectListItem() {Text = "DZS", Value="DZS"},
+new SelectListItem() {Text = "ZSP", Value="ZSP"},
+new SelectListItem() {Text = "DAR", Value="DAR"},
+new SelectListItem() {Text = "DMB", Value="DMB"},
+new SelectListItem() {Text = "DMD", Value="DMD"},
+new SelectListItem() {Text = "DMS", Value="DMS"},
+new SelectListItem() {Text = "DSM", Value="DSM"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNP", Value="DNP"},
+new SelectListItem() {Text = "DN2", Value="DN2"},
+new SelectListItem() {Text = "DND", Value="DND"},
+new SelectListItem() {Text = "DNS", Value="DNS"},
+new SelectListItem() {Text = "GEC", Value="GEC"},
+new SelectListItem() {Text = "PEC", Value="PEC"},
+ new SelectListItem() {Text = "DZG", Value="DZG"},
+ new SelectListItem() {Text = "DNG", Value="DNG"},
+new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-control" })
+
+
+           </label>
+           <label style="width: 70px;">
+               Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+           </label>
+           <label style="width: 70px;">
+               char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label style="width: 65px;">
+               Qty @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label style="width: 60px;">
+               Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
+new SelectListItem() {Text = "D", Value="D"},
+new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-control" })
+           </label>
+           <label>
+               Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label style="width: 100px;">
+               Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+           </label>
+           <label style="width: 100px;">
+               Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+           </label>
+
+
+           <fieldset class="form-horizontal">
+               <!-- Form Name -->
+               <!-- Multiple Radios -->
+               <div class="row">
+                   <div id="insshow" class="col-sm-5">
+                       <label class="col-md-2 radio-label" for="radios">Insuarance</label>
+
+                       <div class="radio-inline">
+                           <label for="radios-0">
+                               @*<input name="Insurance" id="radios-0" value="yes" checked="checked" type="radio">*@
+                               @Html.RadioButtonFor(m => m.Insurance, "yes")
+                               Carrier Risk
+                           </label>
+                       </div>
+                       <div class="radio-inline">
+                           <label for="radios-1">
+                               @*<input name="Insurance" id="radios-1" value="no" type="radio" checked>*@
+                               @Html.RadioButtonFor(m => m.Insurance, "no", new { @checked = true, @id = "Insurance" })
+                               Owner Risk
+                           </label>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-7" id="insdiv">
+                       <label>
+                           Bill Amount @Html.EditorFor(model => model.BillAmount, new { htmlAttributes = new { @class = "form-control" } })
+
+                       </label>
+                       <label>
+                           <span class="insurancelable">Insuarance</span>
+                           @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
+
+                       </label>
+                       <label>
+                           <span class="resksurlable">Risk surcharge</span>  @Html.EditorFor(model => model.Risksurcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+                       </label>
+                       <label>
+                           Invoice No @Html.EditorFor(model => model.Invoice_No, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                       </label>
+                   </div>
+               </div>
+
+               <!-- Multiple Radios -->
+               <div class="row">
+                   <div id="topayradio" class="col-sm-5">
+                       <label class="col-md-2 radio-label" for="radios">To Pay </label>
+
+                       <div class="radio-inline">
+                           <label for="radios-0">
+                               @*<input name="topay" id="radios-0" value="yes" checked="checked" type="radio">*@
+                               @Html.RadioButtonFor(m => m.topay, "yes")
+                               Yes
+                           </label>
+                       </div>
+                       <div class="radio-inline">
+                           <label for="radios-1">
+
+                               @*<input name="topay" id="radios-1" value="no" type="radio" checked>*@
+                               @Html.RadioButtonFor(m => m.topay, "no", new { @checked = true })
+                               No
+                           </label>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-9" id="Topaydiv">
+                       <label>
+                           To pay Charges @Html.EditorFor(model => model.Topaycharges, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.Topaycharges, "", new { @class = "text-danger" })
+                       </label>
+                       <label>
+                           Consignee
+                           @Html.EditorFor(model => model.consignee, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.consignee, "", new { @class = "text-danger" })
+                       </label>
+                       <label>
+                           To pay Amount
+                           @Html.EditorFor(model => model.TopayAmount, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                       </label>
+                   </div>
+               </div>
+               <!-- Multiple Radios -->
+               <div class="row">
+                   <div id="codradio" class="col-sm-5">
+                       <label class="col-md-2 radio-label" for="radios">COD</label>
+
+                       <div class="radio-inline">
+                           <label for="radios-0">
+                               @Html.RadioButtonFor(m => m.cod, "yes")
+                               Yes
+                           </label>
+                       </div>
+                       <div class="radio-inline">
+                           <label for="radios-1">
+                               @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
+                               No
+                           </label>
+                       </div>
+                   </div>
+
+                   <div class="col-sm-9" id="coddiv">
+                       <label>
+                           Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
+                       </label>
+                       <label>
+                           Cod Charges @Html.EditorFor(model => model.codcharges, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.codcharges, "", new { @class = "text-danger" })
+                       </label>
+                       <label>
+                           Consigner @Html.EditorFor(model => model.consigner, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.consigner, "", new { @class = "text-danger" })
+                       </label>
+                       <label>
+                           cod Total Amount @Html.EditorFor(model => model.codtotalamount, new { htmlAttributes = new { @class = "form-control" } })
+                           @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
+                       </label>
+                   </div>
+               </div>
+           </fieldset>
+
+           <input type="submit" value="Submit" id="submitbook" class="btn btn-primary" />
+
+       </div>
+       <div class="container"></div>
+   </section>
+
+
+}
+
+
+<div class="overlay" id="overlayBlock">
+    <div class="loader"> </div>
+</div>
+
+<style>
+
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
+
+<script>
+
+    /////Sender Autocomplete
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Customer_Id").autocomplete({
+            source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+
+        $("#Customer_Id").trigger("focusout");
+    }
+});
+    });
+
+
+
+
+        $(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("PincodeautocompleteSender")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Pincode);
+
+
+        });
+    }
+});
+
+$("#Pincode").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#Pincode").val(ui.item.value);
+
+        $("#Pincode").trigger("change");
+        $("#Customer_Id").trigger("focusout");
+    }
+
+});
+});
+</script>
+<script>
+        $(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("InternationalCity")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Name);
+
+
+        });
+    }
+});
+
+        $("#intpincode").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+        $("#intpincode").val(ui.item.value);
+        setPincodeInt();
+    }
+
+    });
+
+        function setPincodeInt() {
+            var consno = $("#intpincode").val();
+
+            $.ajax({
+                type: 'Get',
+                url: '/Booking/FillPincode',
+                data: { Name: consno },
+                success: function (Data) {
+                    $('#Pincode').val(Data[0].Pincode);
+                    $('#Pincode').focus();
+                }
+            });
+        }
+        });
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var Amountglobal;
+
+        $('#Consignment_no').focus();
+        $("#insdiv").hide();
+        $('#Topaydiv').hide();
+        $('#coddiv').hide();
+
+        $('#insshow').hide();
+        $('#topayradio').hide();
+        $('#codradio').hide();
+
+
+
+
+
+        $('#Type_t').on('change', function (e) {
+            var optionSelected = $('#Type_t').find(":selected").text();
+            // alert(optionSelected);
+
+            if (optionSelected == "N") {
+                $('#insshow').show();
+                $('#insdiv').show();
+            }
+            else {
+                $('#insshow').hide();
+                $('#insdiv').hide();
+                $("#Insurance1").prop("checked", true);
+
+
+            }
+        });
+
+
+        $('#Consignment_no').focusout(function () {
+
+            var Type_t = $('#Consignment_no').val();
+
+
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+            }
+            else {
+                $('#intpincode').hide();
+            }
+        });
+
+
+
+        $('#Consignment_no').keyup(function () {
+            // alert("Keyup");
+            var consno = $("#Consignment_no").val();
+            if (consno.length >= 9) {
+                $('#Consignment_no').val($(this).val().toUpperCase());
+                $('#Consignment_no').focusout();
+                ShowRadios(); //calling function
+                $("#overlayBlock").show();
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Consignmentdetails',
+                    data: { Cosignmentno: consno },
+                    success: function (Data) {
+
+                        $('#Customer_Id').val(Data.Customer_Id);
+                        $('#booking_date').val(Data.booking_date);
+                        $('#Pincode').val(Data.Pincode);
+
+
+                        //$('#Mode').val(Data.Mode);
+                        if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+                            $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+                            $('#Mode').val(Data.Mode);
+                        }
+                        else {
+
+                            $('#Mode').val(Data.Mode);
+                        }
+                        $('#Actual_weight').val(Data.Actual_weight);
+                        $('#Pincode').val(Data.Pincode);
+                        $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+                        $('#dtdcamount').val(Data.dtdcamount);
+
+                        $('#chargable_weight').val(Data.chargable_weight);
+                        $('#Quanntity').val(Data.Quanntity);
+                        $('#Type_t').val(Data.Type_t);
+
+                        if (Data.Type_t == "N") {
+                            $('#insshow').show();
+                        }
+
+                        $('#Amount').val(Data.Amount);
+                        $('#Quanntity').val(Data.Quanntity);
+
+
+                        var companyid = Data.Customer_Id;
+                        //<----------IF Consignment Is Booked--------->
+                        if (companyid != null) {
+
+                            alert("Consignment No" + " " + consno + " " + "is Already Booked");
+
+                            $('#form-Cons').find('input:text,textarea').val('');
+                            $('#form-Cons').find('select').val('D');
+                            $('#Quanntity').val('');
+                            $('#Amount').val('');
+
+
+                            $('#Consignment_no').focus();
+                            $("#insdiv").hide();
+                            $('#Topaydiv').hide();
+                            $('#coddiv').hide();
+
+                            $('#insshow').hide();
+                            $('#topayradio').hide();
+                            $('#codradio').hide();
+
+                        }
+
+                        //<---------------------------------------->
+                        $("#overlayBlock").hide();
+
+                    },
+                    error: function (Data) {
+                        $("#overlayBlock").hide();
+                    }
+                });
+            }
+
+        });
+
+
+        $('#Consignment_no').focusout(function () {
+            // alert("Keyup");
+            var consno = $("#Consignment_no").val();
+            if (consno.length >= 9) {
+                $('#Consignment_No').val($(this).val().toUpperCase());
+                $('#Customer_Id').focus();
+                ShowRadios(); //calling function
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Consignmentdetails',
+                    data: { Cosignmentno: consno },
+                    success: function (Data) {
+                        
+                        //$('#Customer_Id').val(Data.Customer_Id);
+
+                        $('#booking_date').val(Data.booking_date);
+                        $('#Pincode').val(Data.Pincode);
+
+
+                        //$('#Mode').val(Data.Mode);
+                        if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+                            $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+                            $('#Mode').val(Data.Mode);
+                        }
+                        else {
+
+                            $('#Mode').val(Data.Mode);
+                        }
+                        $('#Actual_weight').val(Data.Actual_weight);
+                        $('#Pincode').val(Data.Pincode);
+                        $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+                        $('#dtdcamount').val(Data.dtdcamount);
+
+                        $('#chargable_weight').val(Data.chargable_weight);
+                        $('#Quanntity').val(Data.Quanntity);
+                        $('#Type_t').val(Data.Type_t);
+                        if (Data.Type_t == "N") {
+                            $('#insshow').show();
+                        }
+
+                        $('#Amount').val(Data.Amount);
+                        $('#Quanntity').val(Data.Quanntity);
+
+
+
+                    }
+                });
+            }
+
+        });
+
+
+        $('#Customer_Id').focusout(function () {
+            var Customerid = $('#Customer_Id').val();
+            if (Customerid.length > 0) {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Checkcompany',
+                    data: { Customerid: Customerid },
+                    success: function (Data) {
+
+                        if (Data == "0") {
+                            alert("Please Enter Valid Company Id");
+                            $('#Customer_Id').val('');
+                        }
+
+
+
+                    }
+                });
+            }
+        });
+
+
+        function ShowRadios() {
+
+            var str = $('#Consignment_no').val();
+            var res = str.charAt(0);
+            //alert(res);
+            if (res.toLowerCase() == "i") {
+
+
+                $('#topayradio').show();
+                $('#codradio').show();
+            }
+        }
+
+
+
+
+
+        $('[name="Insurance"]').change(function () {
+
+            var Insuranceval = $('input[name="Insurance"]:checked').val();
+
+            //alert(Insuranceval);
+
+            if (Insuranceval == "yes") {
+
+                $("#insdiv").show();
+                $('.insurancelable').html("Insuarance");
+                $('.resksurlable').html("Risk surcharge");
+            }
+            else {
+                $("#insdiv").show();
+                $('.insurancelable').html("For Percentage");
+                $('.resksurlable').html("For Charges");
+
+            }
+
+        });
+
+
+        $('[name="topay"]').change(function () {
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+
+            if (Insuranceval == "yes") {
+                $('#Topaydiv').show();
+
+
+
+
+                Amountglobal = $('#Amount').val();
+
+                Topayaddition();
+
+                //$('#TopayAmount').keyup();
+
+
+            }
+            else {
+
+                Topaysubtraction();
+
+                $('#Topaydiv').hide();
+
+            }
+        });
+
+        $('[name="cod"]').change(function () {
+
+            var Insuranceval = $('input[name="cod"]:checked').val();
+
+            //alert(Insuranceval);
+
+            if (Insuranceval == "yes") {
+                $('#coddiv').show();
+            }
+            else {
+                $('#coddiv').hide();
+            }
+
+
+
+        });
+
+
+        $('#Customer_Id').change(function () {
+
+            var customerid = $('#Customer_Id').val();
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/CustomerDetails',
+                data: { CustomerId: customerid },
+                success: function (Data) {
+                    $('#Percentage').val(Data.Insurance);
+                    $('#Topaycharges').val(Data.Topay_Charge);
+                    $('#codcharges').val(Data.Cod_Charge);
+
+                }
+            });
+
+        });
+
+
+
+        $("#BillAmount,#Percentage").keyup(function () {
+
+            Riskcharge();
+        });
+
+        function Riskcharge() {
+
+            var Billamount = $('#BillAmount').val();
+            var Insurance = $('#Percentage').val();
+
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance));
+
+            $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
+        }
+
+
+        $("#Topaycharges").keyup(function () {
+
+            Topayaddition();
+
+        });
+
+
+
+        function Topayaddition() {
+
+
+            var TopayCharge = $('#Topaycharges').val();
+
+
+            var addition = (parseFloat("0" + Amountglobal) + parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(addition);
+
+            $('#Amount').val(0);
+        }
+
+
+        function Topaysubtraction() {
+
+            var amount = $('#TopayAmount').val();
+
+            var TopayCharge = $('#Topaycharges').val();
+
+
+            var subtraction = (parseFloat("0" + Amountglobal) - parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(0);
+
+            $('#Amount').val(Amountglobal);
+
+            Amountglobal = 0;
+            // The function returns Sum Of Amount
+        }
+
+
+        $("#codAmount,#codcharges").keyup(function () {
+
+            CodAddition();
+        });
+
+
+        function CodAddition() {
+
+
+            var codamount = $('#codAmount').val();
+
+            var codcharges = $('#codcharges').val();
+
+
+            var addition = (parseFloat("0" + codamount) + parseFloat("0" + codcharges));
+
+            $('#codtotalamount').val(addition);
+
+
+        }
+
+
+
+        $('#submitbook').click(function () {
+
+            var Amount = $('#Amount').val();
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+            if (Insuranceval == "yes") {
+                return true;
+            }
+            else {
+                if (Amount <= 0) {
+                    alert("Amount Should be greater than zero");
+                    return false;
+                }
+            }
+
+        });
+
+
+        //function Addition(p1, p2, p3, p4, p5, p6) {
+        //    //alert(p6);
+        //    var addition = (parseInt("0" + p1) + parseInt("0" + p2) + parseInt("0" + p3) + parseInt("0" + p4) + parseInt("0" + p5) - p6);
+        //    $('#Charges_Total').val(addition);      // The function returns Sum Of Amount
+        //}
+
+
+    });
+</script>
+<style>
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+
+    label {
+        display: inline-block;
+        width: 85px;
+        margin-right: .5em;
+        padding-top: 1.5em;
+    }
+
+    .radio-label {
+        width: 100px;
+        padding-top: 3em;
+    }
+
+    .form-horizontal .radio-inline {
+        padding-top: 1.5em;
+    }
+
+
+    .form-horizontal .col-sm-9 label {
+        width: 120px;
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
+
+            var Consino = $('#Consignment_no').val();
+            var custid = $('#Customer_Id').val();
+            var bookdate = $('#booking_date').val();
+            var pincode = $('#Pincode').val();
+            var mode = $('#Mode').val();
+            var qty = $('#Quanntity').val();
+            var charweight = $('#chargable_weight').val();
+            var type = $('[name="Type_t"]').val();
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+
+                return false;
+            }
+
+            else {
+                $('#loading').show();
+
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Calculation/CalulateAmt',
+                    data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        //alert(Data.Amount);
+                        $('#Amount').val(Data.Amount);
+                        // $('#dtdcamount').val(Data.dtdcamount);
+                        $('#loading').hide();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $('#loading').hide();
+                    }
+                });
+            }
+
+        });
+
+        var currentDate = new Date();
+
+        $('#tembookingdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+
+        }).datepicker("setDate", new Date())
+
+
+
+
+        $('[name="Mode"],[name="Type_t"]').change(function () {
+
+            $("#Customer_Id").trigger("focusout");
+        });
+
+
+    });
+</script>
+
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+         alert("@ViewBag.Message");
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#importtext').submit(function () {
+            $('#loading').show();
+        });
+    });
+</script>
+
+@if (TempData["Upload"] != null)
+{
+    <script>
+        alert('@TempData["Upload"]');
+    </script>
+}
+
+@if (ViewBag.compid != null)
+{
+    <script>
+        $('#Customer_Id').val('@ViewBag.compid');
+        $('#Customer_Id').keyup();
+    </script>
+}

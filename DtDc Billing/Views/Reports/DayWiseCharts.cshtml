@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewBag.Title = "DayWiseCharts";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+
+<section class="conatiner">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-info" style="padding: 16px 16px !important">
+                        <div class="box-header with-border">
+                            <h4> Daily Sales Report Chart</h4>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+
+                            @using (Html.BeginForm())
+    {
+                        <div class="col-md-3">
+                            <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            @*@Html.DropDownList("Years", null, "-Select Year", new { @class = "form-control" })*@
+
+                            <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownList("PfCode", null, "-Select PFCode-", new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" id="submitdate" class="btn btn-block btn-primary">Search</button>
+                        </div>
+}
+                            <div class="col-md-12">
+                                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                            </div>
+
+
+                            <!-- /.box-header -->
+                            <table id="" class="tblCons table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            <!-- /input-group -->
+                            <br />
+                            <div class="col-sm-5 " style="float: right" ;> 
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-danger total-label">Total</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control total-amount" id="amt">
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script>
+    window.onload = function () {
+
+        var dataPoints = [];
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title: {
+                text: "Daily Sales Report Chart"
+            },
+            axisY: {
+                title: "INR",
+                titleFontSize: 24,
+                includeZero: false,
+                prefix: "Rs.",
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                }
+            },
+            axisX: {
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true,
+                }
+            },
+            data: [{
+                type: "area",
+
+                dataPoints: dataPoints
+            }]
+        });
+
+        function addData(data) {
+            for (var i = 0; i < data.length; i++) {
+
+                console.log(new Date(1520208000 * 1000) + "hgfdshad");
+                dataPoints.push({
+                    x: new Date(data[i].X * 1000),
+                    y: data[i].Y
+
+                });
+            }
+            chart.render();
+
+        }
+
+        $.getJSON("/Reports/json", addData);
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#submitdate').click(function () {
+            var Fromdatetime = $('#datepicker').val();
+            var ToDatetime = $('#datepicker1').val();
+            var PfCode = $('#PfCode').val();
+
+            callchart(Fromdatetime, ToDatetime, PfCode);
+
+
+        });
+
+
+        function callchart(Fromdatetime, ToDatetime, PfCode) {
+            var dataPoints = [];
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Daily Sales Report Chart"
+                },
+                axisY: {
+                    title: "INR",
+                    titleFontSize: 24,
+                    includeZero: false,
+                    prefix: "Rs.",
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                axisX: {
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true,
+                    }
+                },
+                data: [{
+                    type: "area",
+
+                    dataPoints: dataPoints
+                }]
+            });
+
+            function addData(data) {
+                var rows = "";
+                var amount = 0;
+                for (var i = 0; i < data.length; i++) {
+
+                    console.log(new Date(1520208000 * 1000) + "hgfdshad");
+                    dataPoints.push({
+                        x: new Date(data[i].X * 1000),
+                        y: data[i].Y
+
+                    });
+                    
+                    var date = new Date(data[i].X * 1000);
+                    var ab = (date.getDate() ) + "-" + (date.getMonth() + 1 )+ "-" + date.getFullYear();
+
+                    rows += "<tr>"
+                        + "<td>" + ab + "</td>"
+                        + "<td>" + (data[i].Y.toFixed(2)) + "</td>"
+
+                            + "</tr>";
+                  
+                    $('.tblCons tbody').html(rows);
+                    amount = amount + data[i].Y;
+                }
+
+                $('#amt').val(amount.toFixed(2));
+                chart.render();
+
+            }
+
+            $.getJSON("/Reports/json", { Fromdatetime: Fromdatetime, ToDatetime: ToDatetime, pfCode: PfCode }, addData);
+
+        }
+    });
+</script>
+
+
+
+<script>
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+</script>

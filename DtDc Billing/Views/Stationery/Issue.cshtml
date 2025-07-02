@@ -1,0 +1,359 @@
+﻿@model DtDc_Billing.Models.StationaryIssueModel
+
+
+@{
+    ViewBag.Title = "Issue";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<style>
+    #Inssuedate {
+        border-top-right-radius: 5px !important;
+        border-bottom-right-radius: 5px !important;
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .input-group-addon {
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+        border-top-left-radius: 5px !important;
+        border-bottom-left-radius: 5px !important;
+    }
+
+    .dow, .prev, .datepicker-switch, .next {
+        border-right: 0 !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Main content -->
+   
+    
+    <div class="box" style="padding: 16px 16px">
+        <!-- column -->
+        <div class="box-header with-border">
+            <h4>Issue Stationary</h4>
+        </div><!-- /.box-header -->
+        @{
+            var successMessage = ViewBag.Message as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+          
+            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+        }
+        <div class="box-body">
+            <div class="row">
+                <!-- Horizontal Form -->
+                <div class="col-md-12">
+                    <!-- form start -->
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-horizontal">
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-7">
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="issue-date" class=" control-label">Issued Date<span style="color:red">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    @Html.EditorFor(model => model.Inssuedate, new { htmlAttributes = new { @class = "form-control pull-right", @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.Inssuedate, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="start-no" class=" control-label">Start No<span style="color:red">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+
+
+                                                @Html.EditorFor(model => model.startno, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.startno, "", new { @class = "text-danger" })
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="end-no" class=" control-label">End No<span style="color:red">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+
+                                                @Html.EditorFor(model => model.endno, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.endno, "", new { @class = "text-danger" })
+                                                <span id="lblError1" style="color:red"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="company-id" class=" control-label">Company Id</label>
+                                            </div>
+                                            <div class="col-md-9">
+
+                                                @Html.EditorFor(model => model.Comapny_Id, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Comapny_Id, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="emp-name" class=" control-label">Employee Name</label>
+                                            </div>
+                                            <div class="col-md-9">
+
+                                                @Html.EditorFor(model => model.EmployeeName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="two-block-inline" class="form-group">
+                                    <div class="col-md-7">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="leaf-no" class=" control-label">No of Leafs</label>
+                                            </div>
+                                            <div class="col-md-9">
+
+                                                @Html.EditorFor(model => model.noofleafs, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.noofleafs, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-success pull-right">Save</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
+                    }
+                </div>
+                <!-- /.box -->
+            </div>
+            <!--/.col (right) -->
+        </div>
+    </div>
+   
+</div>
+    <!-- /.content -->
+    @*@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+         alert("@ViewBag.Message");
+        </script>
+    }*@
+
+
+
+    <script>
+
+
+    $(document).ready(function () {
+
+     $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete","Booking")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Comapny_Id").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+           $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("Employeeautocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.EmployeeName);
+        });
+
+    }
+});
+
+        $("#EmployeeName").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+
+       
+           
+      
+
+        });
+
+
+
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#startno').keyup(function () {
+                //alert("Keyup");
+                $('#endno').val('');
+                $('#startno').val($(this).val().toUpperCase());
+                var startno = $("#startno").val();
+                if (startno.length >= 9) {
+                    $('#endno').focus();
+                }
+
+            });
+
+            $('#endno').keyup(function () {
+                //alert("Keyup");
+
+                $('#endno').val($(this).val().toUpperCase());
+
+                var endno = $("#endno").val();
+                var startno = $("#startno").val();
+
+                var firstchastart = startno.charAt(0);
+                var firstcharend = endno.charAt(0);
+
+                if (firstchastart != firstcharend) {
+                    $('#endno').val('');
+                }
+                else if (endno.length >= 9) {
+                    $('#noofleafs').focus();
+                    setleaf();
+                }
+                var total = $('#noofleafs').val();
+                if (total > 1000) {
+                    lblError1.innerHTML = "Max limit is 1000";
+                }
+                else {
+                    lblError1.innerHTML = "";
+                }
+            });
+
+
+            function setleaf() {
+
+                var startno = $("#startno").val();
+                var endno = $("#endno").val();
+
+                calstart = startno.substring(1);
+                calend = endno.substring(1);
+
+
+                var leafs = parseInt("0" + calend) - parseInt("0" + calstart) + 1;
+
+                $('#noofleafs').val(leafs);
+
+                var noofleafs = Math.ceil(leafs / 50);
+
+                $('#noofbooks').val(noofleafs);
+
+
+
+            }
+        });
+
+
+
+        $('#Inssuedate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy',
+
+        });
+        var currentDate = new Date();
+        $("#Inssuedate").datepicker("setDate", currentDate);
+    </script>

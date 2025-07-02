@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "importTextFile";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("DeliveryFile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.AntiForgeryToken()
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+
+                        <h4>Upload Text File</h4>
+
+
+                    </div>
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+
+                            <div class="row">
+
+
+                            </div>
+                            <br>
+
+                            <div>
+
+                                <label class="col-sm-3">Upload Text or Csv  File</label>
+                                <div class="col-sm-3">
+                                    <input id="File1" type="file" name="ImportText" />
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <input class="btn btn-primary" type="submit" value="Upload" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+         alert("@ViewBag.Message");
+    </script>
+}

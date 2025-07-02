@@ -1,0 +1,120 @@
+﻿@model  DtDc_Billing.Entity_FR.Complaint
+@*customer reply*@
+@{
+    /**/
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+
+}
+
+
+<section class="complaint-intro-section content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+
+
+                        @using (Html.BeginForm("Addstatus", "Customer"))
+                        {
+                            <div class="col-sm-6 pull-right">
+                                <div class="col-sm-8">
+                                    @Html.DropDownList("C_Status", new List<SelectListItem>
+                            {
+
+                        new SelectListItem{ Text="completed", Value = "completed" },
+                                new SelectListItem{ Text="Not Resolved", Value = "Not Resolved" },
+
+
+                             },
+                                new { @class = "form-control" })
+
+                                    <input type="hidden" name="Complaint_ID" value="@Model.Complaint_ID" />
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary" />
+
+
+                            </div>
+                        }
+
+
+                        <h4>Complaint Details</h4>
+                    </div>
+
+                    <div class="form-horizontal">
+
+                        <div class="box-body">
+                            <div class="complaint-intro-block row">
+                                <div class="col-sm-12 table-bordered bg">
+                                    <div class="col-sm-3 lh">
+                                        <strong>Consignment No</strong>
+                                    </div>
+                                    <div class="col-sm-3 lh">
+                                        <strong>Reason</strong>
+                                    </div>
+                                    <div class="col-sm-3 lh">
+                                        <strong>Message</strong>
+                                    </div>
+                                    <div class="col-sm-3 lh">
+                                        <strong>Company Id</strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 table-bordered bt-0 bg">
+                                    <div class="col-sm-3">
+                                        <P>@Model.Consignment_No</P>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <P>@Model.Reason</P>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <P>@Model.Message</P>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <P>@Model.Company_id</P>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="comments">
+                                <p class="nocomments"><span> Comments </span></p>
+
+                                <input type="hidden" name="complaintid" class="complaintid" value="@Model.Complaint_ID" />
+
+
+                                @foreach (var i in Model.ReplyAdmins)
+                                {
+                                    <p><span id="admin-txt">@i.AdminOrUser</span></p>
+                                    <p>@i.Reply_Message</p>
+                                    <hr />
+                                }
+                                @*@<p class="replyadmin">
+                                </p>*@
+
+                            </div>
+
+                            @using (Html.BeginForm("Reply", "Customer"))
+                            {
+                                <div class="comments">
+                                    <p class="nocomments"><span>Any Queries </span></p>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <textarea name="Reply_Message" class="form-control" placeholder="Enter the Message"></textarea>
+                                </div>
+                                <input type="hidden" name="Complaint_ID" value="@Model.Complaint_ID" />
+                                <input type="submit" value="Reply" class="btn btn-primary" />
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+                                    
+

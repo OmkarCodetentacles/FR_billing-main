@@ -1,0 +1,211 @@
+﻿@model IEnumerable<DtDc_Billing.Models.CompanyModel>
+
+@{
+    /**/
+
+    ViewBag.Title = "EditCompanyRateMaster";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<style>
+    .edittable th{
+        width:12.5% !important;
+    }
+    .tableEdit {
+        display: grid ;
+        align-items: center;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px">
+        <div class="box-header with-border" style="display:flex; justify-content:space-between">
+            <h4>
+                Edit Company RateMater
+                <a href="https://www.youtube.com/watch?v=yZl75I48JVo&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=13" target="_blank" data-toggle="tooltip" title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+            <span class="pull-right">
+                <a href="@Url.Action("AddCompany","Ratemaster")" class="btn btn-primary ml-3"> Add Company</a>
+            </span>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal">
+
+
+                        @{
+                            var successMessage = TempData["Success"] as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+                        <table id="example2" class="table edittable"style="overflow:auto;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 68px;">
+                                        Sr No
+                                    </th>
+
+
+                                    <th> Option</th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.Company_Id)*@Company Id
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.Company_Name)*@ Company Name
+                                    </th>
+
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Phone)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Email)
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.Company_Address)*@Company Address
+                                    </th>
+                                    <th>Print</th>  
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int srno = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        string id = item.Company_Id.Replace("&", "__").Replace(".", "xdotx");
+                                                                <tr>
+                                                                    <td>
+                                                                        @srno
+                                                                    </td>
+
+
+                                                                    <td class="">
+
+                                                                        @Html.ActionLink("Edit", "EditCompanyRate", new { id = id }, new { @class = "edit-btn tableEdit" })
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @*@Html.DisplayFor(modelItem => item.Company_Id)*@ @id
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="hideextra">
+                                                                            @Html.DisplayFor(modelItem => item.Company_Name)
+                                                                        </div>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Phone)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="hideextra">
+                                                                            @Html.DisplayFor(modelItem => item.Company_Address)
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.ActionLink("Print", "ReportPrinterMethod", new { id = id }, new { @class = "btn btn-success tableEdit", target = "_blank" })
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.Company_Name == "BASIC_TS")
+                                                                        { 
+                                                                            <input type="button" value="Delete" class="btn btn-danger tableEdit" disabled>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @Html.ActionLink("Delete", "DeleteCompapy", "Admin", new { companyid = id },
+                                                                              new { onclick = "return confirm('Are you sure you want to Delete?')", @class = "btn btn-danger tableEdit" })
+                                                                        }
+                                                                    </td>
+
+                                                                </tr>
+                                        srno++;
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // Scroll to the top of the page
+    function scrollToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function () {
+            scrollToTop();
+            showLoader('overlayBlock');
+            // Get the form element
+            var form = $('#frmEmp');
+            // Submit the form
+            form.submit();
+
+        });
+
+
+
+    });
+
+</script>.
+
+@*@if (TempData["Success"] != null)
+{
+    <script type="text/javascript">
+      //  alert("@TempData["Success"] ");
+    </script>
+}*@
+
+<style>
+    .fs-20 {
+        font-size: 20px;
+    }
+
+    @@media (max-width: 768px) {
+        #rate-mater-edit {
+            display: block;
+        }
+
+        .table td.fit,
+        .table th.fit {
+            white-space: nowrap;
+            width: 1%;
+        }
+    }
+</style>
+
+
+<script>
+    $(function () {
+        $('#example1').DataTable()
+        $('#example2').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    })
+</script>

@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "importTextFile";
+    Layout = "~/Views/Shared/EmpLayout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("importTextFile", "Emp", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.AntiForgeryToken()
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h4>Import From Text</h4>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="box-body">
+
+                            <div>
+
+                                <label class="col-sm-3">Upload Text or Csv  File </label>
+                                <div class="col-sm-3">
+                                    <input id="File1" type="file" name="ImportText" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="submit" class="btn btn-info mt-3" value="Upload" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+
+
+@if (TempData["Upload"] != null)
+{
+    <script>
+        alert('@TempData["Upload"]');
+    </script>
+}

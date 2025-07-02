@@ -1,0 +1,301 @@
+﻿
+@{
+    //ViewBag.Title = "ExpiredDate";
+    //Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DTDC Admin</title>
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Font Awesome -->
+    <!-- Ionicons -->
+
+    <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @*@Scripts.Render("~/admin-lte/js")
+
+        @RenderSection("scripts", required: false)
+
+        @Scripts.Render("~/Scripts/jquery.validate.min.js")*@
+
+
+    <script src="~/admin-lte/plugins/fastclick/fastclick.js"></script>
+
+
+
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/admin-lte/js/adminlte.min.js"></script>
+    <script src="~/admin-lte/js/icheck.min.js"></script>
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+    <script src="~/admin-lte/bower_components/select2/dist/css/select2.min.css"></script>
+    <link href="~/Content/ratemaster.css" rel="stylesheet" />
+
+
+    <link href="~/admin-lte/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/css")*@
+    @*@Scripts.Render("~/bundles/modernizr")*@
+
+
+    @* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+
+
+    <style>
+
+
+
+        body#LoginForm {
+            background-image: url('../../assets/images/register.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+            padding: 12px 38px;
+            height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .form-heading {
+            color: #fff;
+            font-size: 23px;
+        }
+
+        .panel h2 {
+            color: #444444;
+            font-size: 18px;
+            margin: 0 0 8px 0;
+        }
+
+        .panel p {
+            color: #090808;
+            font-size: 17px;
+            line-height: 24px;
+        }
+
+        .login-form .form-control {
+            background: #f7f7f7 none repeat scroll 0 0;
+            border: 1px solid #d4d4d4;
+            border-radius: 4px;
+            font-size: 15px;
+            height: 40px;
+            line-height: 1px;
+        }
+
+        .main-div {
+            background: #ffffff none repeat scroll 0 0;
+            border-radius: 2px;
+            margin: 15px auto 15px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 10px;
+        }
+
+        .login-form {
+            text-align: center;
+            padding: 1px 20px;
+            box-shadow: 0px 0px 4px 1px #cecaca;
+        }
+
+        .forgot a {
+            color: #777777;
+            font-size: 14px;
+            text-decoration: underline;
+        }
+
+        .login-form .btn.btn-primary {
+            background: #03a4ed none repeat scroll 0 0;
+            border-color: #03a4ed;
+            color: #ffffff;
+            font-size: 14px;
+            width: 100%;
+            height: 40px;
+            line-height: 1px;
+            padding: 0;
+            margin-top: 12px;
+            border-radius: 3px;
+        }
+
+        .forgot {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .botto-text {
+            color: #ffffff;
+            font-size: 14px;
+            margin: auto;
+        }
+
+        .login-form .btn.btn-primary.reset {
+            background: #ff9900 none repeat scroll 0 0;
+        }
+
+        .back {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+            .back a {
+                color: #444444;
+                font-size: 13px;
+                text-decoration: none;
+            }
+
+        #formloginbox {
+            width: 350px;
+        }
+
+        .mymsg {
+            padding: 0;
+        }
+
+        .formlogo a {
+            font-size: 33px;
+            color: #f0ad4e;
+        }
+
+        .formlogo h4 {
+            color: #dfdfdf;
+            font-size: 50px;
+            font-weight: bold;
+        }
+
+        .formlogo span {
+            color: #fa440a;
+            margin-right: -14px;
+        }
+
+        span.logotxt1 {
+            color: #a94442;
+            font-size: 50px;
+            font-weight: 900;
+        }
+
+        .logotxt2 {
+            font-size: 50px;
+            font-weight: 100;
+            color: black;
+        }
+
+        .logo-text {
+            font-size: 1.3em;
+            text-align: center;
+            color: #090808;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .login-box, .register-box {
+            width: 360px;
+            margin: 3% auto;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div>
+
+
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">Welcome, and enjoy your journey with us!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span style="color:red">
+                                Your subscription has expired. Please renew to continue enjoying our services. <br />For assistance, contact us at <strong style="color:black">+91 9209764995</strong>.
+                            </span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModalBtn">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trigger the modal -->
+
+
+
+        </div>
+    </div>
+
+    <!-- /.login-box -->
+    <!-- jQuery 3 -->
+    @*  <script src="~/admin-lte/bower_components/jquery/dist/jquery.min.js"></script>*@
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+
+
+    <script>
+        $(document).ready(function () {
+            // Event handler for the Close button
+            $("#closeModalBtn,.close").click(function () {
+                // Redirect to another controller view
+                window.location.href = '/Admin/Index#portfolio';
+            });
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#successModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            $('#successModal').modal('show');
+
+        })
+    </script>
+
+</body>
+
+</html>
+
+
+

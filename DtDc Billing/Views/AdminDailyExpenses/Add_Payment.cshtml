@@ -1,0 +1,347 @@
+﻿@model DtDc_Billing.Models.CashCounterPaymentModel
+
+@{
+    ViewBag.Title = "Add Payment";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    #example1 {
+        white-space: nowrap;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        /* line-height: 1.42857143; */
+        /* color: #555; */
+        /* background-color: #fff; */
+        background-image: none;
+        border: 1px solid #0049af26 !important;
+        /* border-radius: 4px; */
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+    .box-body {
+        overflow: auto;
+    }
+
+    .AddPayment th {
+        width: 8.33% !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <!-- Main content -->
+        <div class="box box-info" style="padding: 16px 16px !important">
+            <div class="box-header with-border">
+                <h4 class="box-title">Add Payment</h4>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        @{
+                            var successMessage = ViewBag.success as string;
+                            var errorMessage = ViewBag.Error as string;
+                        }
+
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            successMessage = "Payment Added SuccessFully";
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                        }
+                        
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                         {
+                            errorMessage = "Consignment number Does not Exists";
+                            @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", errorMessage))
+
+                        }
+
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Consignment No<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Consignment No" } })
+                                                @Html.ValidationMessageFor(model => model.Consignment_No, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    @*<div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Date<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.Datetime_PayString, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Date", Value = @ViewBag.date } })
+                                                @Html.ValidationMessageFor(model => model.Datetime_PayString, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>*@
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Amount<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.amount, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Amount" } })
+                                                @Html.ValidationMessageFor(model => model.amount, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputEmail3" class="">Mode<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <label>
+                                                    <input type="radio" name="ModeOfPayment" id="cash" value="cash" checked="">
+                                                    Cash
+                                                </label>
+
+
+                                                <label>
+                                                    <input type="radio" name="ModeOfPayment" id="credit" value="credit">
+                                                    Credit
+                                                </label>
+
+                                                <label>
+                                                    <input type="radio" name="ModeOfPayment" id="cheque" value="cheque">
+                                                    Cheque
+                                                </label>
+
+                                                <label>
+                                                    <input type="radio" name="ModeOfPayment" id="card" value="card">
+                                                    Card
+                                                </label>
+
+                                                <label>
+                                                    <input type="radio" name="ModeOfPayment" id="other" value="other">
+                                                    Other
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7" style="margin-bottom: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="inputPassword3" class="">Description<span class="Reqired">*</span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                @Html.TextAreaFor(model => model.Description_, new { htmlAttributes = new { @class = "form-control", placeholder = "Description", rows = "5" } })
+                                                @Html.ValidationMessageFor(model => model.Description_, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div>
+
+                                            <input type="submit" class="btn btn-primary pull-right btn-sm" value="Add" style="margin-top:10px" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    <section class="content">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="padding: 16px 16px !important">
+                    <div class="box-header">
+                        <h3 class="box-title">Consignment Report</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body" style="overflow:auto;">
+                        <table id="example1" class="table AddPayment">
+
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Consignment No
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+                                    <th>
+                                        Destination
+                                    </th>
+                                    <th>
+                                        Sender Phone
+                                    </th>
+
+                                    <th>
+                                        Sender
+                                    </th>
+
+                                    <th>
+                                        Recipients Pincode
+                                    </th>
+                                    <th>
+                                        Charge total
+                                    </th>
+                                    <th>
+                                        Paid Amount
+                                    </th>
+                                    <th>
+                                        Balance Amount
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+
+                        </table>
+
+                        <div class="box-footer">
+                            <div class="col-md-4 col-md-offset-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn bg-primary total-label">Total Balance</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control" id="totalamt" placeholder="Total Balance">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+@*@if (ViewBag.Success != null)
+    {
+        <script>
+
+            $(document).ready(function () {
+
+                alert('Payment Added SuccessFully');
+
+            });
+
+        </script>
+
+    }*@
+
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetAllCreditReport")',
+            data: { },
+            dataType: 'json',
+            success: function (data) {
+                var sum = 0;
+    var rows;
+                $.each(data, function (i, item) {
+                    var timestamp = parseInt(item.Datetime_Cons.match(/\d+/)[0]);
+                    var date = new Date(timestamp);
+
+                    // Format date as dd/MM/yyyy
+                    var formattedDate = date.toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+
+        rows += "<tr>"
+            + "<td>" + item.Consignment_No + "</td>"
+            + "<td>" + formattedDate + "</td>"
+            + "<td>" + item.Destination + "</td>"
+            + "<td>" + item.sender_phone + "</td>"
+            + "<td>" + item.Sender + "</td>"
+            + "<td>" + item.ReciepentsPincode + "</td>"
+            + "<td>" + item.Charges_Total + "</td>"
+            + "<td><span style='color: green; font-weight: bold;'>" + item.Paid_Amount + "</span></td>"
+            + "<td><span style='color: red; font-weight: bold;'>" + (item.Charges_Total - item.Paid_Amount) + "</span></td>"
+
+            + "</tr>";
+        sum += (item.Charges_Total - item.Paid_Amount);
+    });
+                $('#example1 tbody').append(rows);
+                $('#totalamt').val(sum);
+    $('#example1').dataTable({
+        "bPaginate": true,
+        "bLengthChange": true,
+        "bFilter": true,
+        "bSort": true,
+        "bInfo": true,
+        "bAutoWidth": false
+    });
+
+ },
+            error: function (emp) {
+                alert('error');
+            }
+        });
+
+    });
+
+
+    $('#Datetime_PayString').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy'
+
+    })
+</script>
+
+
+
+<style>
+    .Reqired {
+        color: red;
+    }
+</style>

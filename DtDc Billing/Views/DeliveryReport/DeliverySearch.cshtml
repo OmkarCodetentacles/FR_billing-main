@@ -1,0 +1,231 @@
+﻿
+@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+@{
+
+    Layout = null;
+}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+                    @using (Ajax.BeginForm("DeliverySearch", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "tr-table", InsertionMode = InsertionMode.Replace }))
+                    {
+
+                        if (ViewBag.Custid != null)
+                        {
+                            <div class="col-md-3">
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="CustiomerId" type="text">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-2">
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" placeholder="CustiomerId" type="text">
+                            </div>
+                        }
+                        if (ViewBag.fromdate != null)
+                        {
+                            <div class="col-md-2">
+                                <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-2">
+                                <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
+                            </div>
+                        }
+
+                        if (ViewBag.todate != null)
+                        {
+                            <div class="col-md-2">
+                                <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                            </div>
+                        }
+
+                        else
+                        {
+                            <div class="col-md-2">
+                                <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                            </div>
+                        }
+
+                        <div class="col-md-2">
+                            <select name="status" class="form-control">
+                                <option value="Delivered">Delivered</option>
+                                <option value="Undelivered">Undelivered</option>
+                                <option value="both">both</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-primary" name="Show" value="Show" />
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <table id="edit-consignment" class="table table-striped table-bordered table-responsive height-450">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Consignment_no)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.remarks)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.receivedby)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.tempdelivereddate)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="button" class="custbtn" value="Edit" data-datac="@item.Consignment_no" />
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Consignment_no)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.remarks)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.receivedby)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tempdelivereddate)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@if (ViewBag.totalamt != null)
+{
+    <p>Total Amount : @ViewBag.totalamt</p>
+}
+
+@if (ViewBag.select != null)
+{
+    <script>
+        $(document).ready(function () {
+            $("select").val('@ViewBag.select');
+        });
+    </script>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
+
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
+
+
+        });
+
+
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+</style>
+
+<script>
+
+    /////Sender Autocomplete
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Customer_Id").autocomplete({
+            source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+
+        $("#Customer_Id").trigger("focusout");
+    }
+        });
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+    });
+</script>

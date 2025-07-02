@@ -1,0 +1,517 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Receipt_details>
+@{
+    ViewBag.Title = "DailyReport";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    .Consignmentreport th {
+        width: 11.11% !important;
+    }
+
+    .Expences th {
+        width: 5% !important
+    }
+
+    .Payment th {
+        width: 18.33% !important
+    }
+
+    .saving th {
+        width: 5% !important
+    }
+
+    table {
+        height: 450px !important;
+        display: list-item !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+
+    .formpaytble td {
+        width: 30% !important;
+    }
+</style>
+
+
+<div class="content-wrapper" id="dailyrptwrpr">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-info" style="padding: 16px 16px !important">
+                            <div class="box-header with-border">
+                              
+                                
+                                <h3 class="box-title">Daily Report</h3>
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body">
+
+                                @{
+                                    var successMessage = ViewBag.Consignment;
+                                    var nodata = ViewBag.Nodata as string;
+                                }
+
+                                @if (!string.IsNullOrEmpty(successMessage))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                }
+                                @if (!string.IsNullOrEmpty(nodata))
+                                {
+                                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                                 }
+                                @using (Html.BeginForm("DailyReport", "Reports", FormMethod.Get))
+                                {
+
+                                    <div class="col-md-12 no-padding">
+                                        <div class="form-group mt-5">
+                                            <div class="col-md-3" style="padding:0;">
+                                                <label class=" no-padding">Date:</label>
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon" style="border-radius:0 !important">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    @if (ViewBag.datetime != null)
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@ViewBag.datetime" type="text">
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="form-control pull-right" id="datepicker" name="dateTime" value="@DateTime.Parse(ViewBag.Fdate.ToString()).ToString("dd-MM-yyyy")" type="text">
+
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group" style="margin: 24px auto">
+                                                    <button type="submit" class="btn btn-block btn-primary" style="width:100%">Search</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block " style="margin: 24px auto" />
+                                            </div>
+                                        </div>
+
+
+                                        <!-- /.form-group -->
+                                    </div>
+
+
+
+
+
+
+                                }
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="box box-info">
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Consignment Report</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @(Model.Sum(x=>x.Paid_Amount))</p>
+                                            </div><!-- /.box-header -->
+                                            <script>
+
+                                            </script>
+                                            <div class="mt-12">
+                                                <table id="example1" class="table Consignmentreport">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr.No</th>
+                                                            <th>Action</th>
+                                                            <th>
+                                                                @*@Html.DisplayNameFor(model => model.Consignment_No)*@
+                                                                Consignment No
+                                                            </th>
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.Sender)
+                                                            </th>
+                                                            <th>
+                                                                @*@Html.DisplayNameFor(model => model.sender_phone)*@
+                                                                Sender Phone
+                                                            </th>
+
+                                                            <th>
+                                                                @Html.DisplayNameFor(model => model.Destination)
+                                                            </th>
+
+
+                                                            <th>
+                                                                @*@Html.DisplayNameFor(model => model.Actual_Weight)*@
+                                     Actual Weight                                              
+                                                            </th>
+
+                                                            <th>
+                                                                @*@Html.DisplayNameFor(model => model.volumetric_Weight)*@
+                                                                Volumetric Weight
+                                                            </th>
+                                                            <th>
+                                                                Payment Mode
+                                                            </th>
+                                                            <th>
+                                                                @*@Html.DisplayNameFor(model => model.Paid_Amount)*@
+                                                                Paid Amount
+                                                            </th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{ int i = 1;
+                                                            foreach (var item in Model)
+                                                            {
+
+                                                                <tr>
+                                                                    <td>@(i++)</td>
+                                                                    <td>
+
+
+
+                                                                        @Html.ActionLink("Delete", "DeleteCashConsignment", "CashBooking",
+                                                                      new { consignmentno = item.Consignment_No, dateTime = ViewBag.Fdate }, new { onclick = "return confirm('Are you sure you want to delete this item?');", @class = "btn btn-danger", @id = "deleteLink" + i })
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Consignment_No)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Sender)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.sender_phone)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Destination)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Actual_Weight)
+                                                                    </td>
+
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.volumetric_Weight)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Credit)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(modelItem => item.Paid_Amount)
+                                                                    </td>
+                                                                    @*<td>
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Receipt_Id }) |
+                                                @Html.ActionLink("Details", "Details", new { id = item.Receipt_Id }) |
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Receipt_Id })
+                                            </td>*@
+
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="box box-info">
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Expense</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total :  @ViewBag.expenseCount</p>
+                                            </div>
+                                            <div class="">
+
+                                                <table id="example1" class="table Expences">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Amount
+                                                            </th>
+                                                            <th>
+                                                                Reason
+                                                            </th>
+
+
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in ViewBag.Expense)
+                                                        {
+
+
+
+                                                            <tr>
+                                                                <td>
+                                                                    @item.Amount
+                                                                </td>
+
+                                                                <td>
+                                                                    @item.Rason
+                                                                </td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="box box-info">
+                                            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                                                <h3 class="box-title titlnew" style="margin:0">Payment</h3>
+                                                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total : @ViewBag.PaymentCount </p>
+                                            </div><!-- /.box-header -->
+                                            <div class=" ">
+
+                                                <table id="example1" class="table Payment">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Consignment No
+                                                            </th>
+                                                            <th>
+                                                                Amount
+                                                            </th>
+                                                            <th>
+                                                                Description
+                                                            </th>
+
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in ViewBag.Payment)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @item.Consignment_No
+                                                                </td>
+
+                                                                <td>
+                                                                    @item.amount
+                                                                </td>
+
+                                                                <td>
+                                                                    @item.Description_
+                                                                </td>
+
+                                                            </tr>
+
+                                                        }
+
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--   -->
+                                    <!--<div class="col-md-6">
+        <div class="box box-info">
+            <div class="box-header with-border bginfo" style="margin-bottom:20px;display:flex;justify-content:space-between;">
+                <h3 class="box-title titlnew" style="margin:0">Savings</h3>
+                <p class="totlpaymt pull-right label label-primary" style="margin:0">Total : @@ViewBag.Savingscount </p>
+            </div>
+
+            <div class=" ">
+
+                <table id="example1" class="table saving">
+                    <thead>
+                        <tr>
+                            <th>
+                                Saving Amount
+                            </th>
+                            <th>
+                                Reason
+                            </th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @@foreach (var item in ViewBag.Savings)
+                        {
+                            <tr>
+                                <td>
+                                    @@item.Saving_amount
+                                </td>-->
+                                    <!--<td></td>-->
+                                    <!--<td>
+                                        @@item.Rason
+                                    </td>
+
+
+
+
+
+
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>-->
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12" style="padding:0">
+                                        <div class="box box-info">
+                                            <div class="    ">
+                                                @*<p>Total Amount </p>  @ViewBag.sum*@
+
+                                                <div class="col-md-9">
+                                                    <table id="formpaytble" class="formpaytble" style="display: inline-table !important;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class=" total-label"> By Cash</td>
+                                                                <td class="sign">+</td>
+                                                                <td class=" "> @ViewBag.bycash</td>
+
+                                                            </tr>
+
+
+                                                            <tr>
+                                                                <td class=" total-label"> By Card</td>
+                                                                <td class="sign">+</td>
+                                                                <td class=" "> @ViewBag.bycard</td>
+
+                                                            </tr>
+
+
+                                                            <tr>
+                                                                <td class=" total-label"> By Cheque</td>
+                                                                <td class="sign">+</td>
+                                                                <td class=" "> @ViewBag.bycheque</td>
+
+                                                            </tr>
+
+
+                                                            <tr>
+                                                                <td class=" total-label"> By Credit</td>
+                                                                <td class="sign">+</td>
+                                                                <td class=" "> @ViewBag.bycredit</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="total-label">By Online</td>
+                                                                <td class="sign">+</td>
+                                                                <td class="">@ViewBag.byOnline</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class=" total-label"> By Other</td>
+                                                                <td class="sign">+</td>
+                                                                <td class=" ">  @ViewBag.byother</td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td class=" total-label">Payment</td>
+                                                                <td class="sign">+</td>
+                                                                <td class="">  @ViewBag.PaymentCount</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class=" total-label titlnew">Expense</td>
+                                                                <td class="sign">-</td>
+                                                                <td class="titlnew"> @ViewBag.expenseCount</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td class=" total-label titlnewgreen">Total</td>
+                                                                <td class="sign"></td>
+                                                                <td class="titlnewgreen ">@ViewBag.sum</td>
+
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+
+
+                                                </div>
+
+                                                @*<div class="row">
+                            <div class="col-md-12">
+                                <div class="box box-info">
+                                    <div class="box-body text-left">
+                                        <p>Total Amount:   @ViewBag.sum</p>
+                                        <p>By Cash:   @ViewBag.bycash</p>
+                                        <p>By Card:   @ViewBag.bycard</p>
+                                        <p>By Cheque:   @ViewBag.bycheque</p>
+                                        <p>By Credit:   @ViewBag.bycredit</p>
+                                        <p>By Other:   @ViewBag.byother</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                                                @*<div class="col-md-2">
+                            <p> Credit Amount: @ViewBag.openingbal</p>
+                        </div>*@
+
+                                                <!-- /input-group -->
+
+                                                <div class="col-sm-3 " style="float: right" ;>
+                                                    <div class="input-group">
+                                                        <div class="input-group-btn">
+                                                            <button type="button" class="btn btn-default total-label">Credit Amount</button>
+                                                        </div>
+                                                        <!-- /btn-group -->
+                                                        <input type="text" class="form-control" value="@ViewBag.openingcreditamount">
+                                                    </div>
+                                                </div>
+                                                <!-- /input-group -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $(function () {
+
+        $('#example1').dataTable({
+
+        });
+    });
+
+
+</script>
+

@@ -1,0 +1,42 @@
+﻿@if (ViewBag.firmcount == 1)
+{
+    <script>
+        location.href ="@ViewBag.url" + "?Firm_Id=@ViewBag.Firmname";
+    </script>
+}
+
+
+
+
+
+<div class="modal-body">
+
+    @Html.DropDownList("Firm_Id", null, htmlAttributes: new { @class = "form-control", @id = "firmdetailid" })
+
+</div>
+
+<div class="modal-footer">
+
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+    <a id="gotoinv" href="#" class="btn btn-primary">GO</a>
+
+</div>
+
+
+<script>
+
+
+     var Firm_Id = $("#firmdetailid").val();
+
+     document.getElementById("gotoinv").href = "@ViewBag.url" + "?Firm_Id=" + Firm_Id;
+
+
+    $('#firmdetailid').on('change', function () {
+
+         Firm_Id = $("#firmdetailid").val();
+         document.getElementById("gotoinv").href = "@ViewBag.url" + "?Firm_Id=" + Firm_Id;
+     });
+
+
+</script>

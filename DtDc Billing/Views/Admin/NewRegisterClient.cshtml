@@ -1,0 +1,267 @@
+﻿@model IEnumerable<DtDc_Billing.Models.NewRegisterUser>
+@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Users</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .box-header {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            background: #f7f7f7;
+        }
+
+            .box-header h4 {
+                margin: 0;
+                font-weight: bold;
+            }
+
+        .table-responsive {
+            padding: 15px;
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            margin-top: 5px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .text-primary {
+            color: #007bff;
+        }
+
+        .text-danger {
+            color: #dc3545;
+        }
+
+        .text-info {
+            color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- View New Register Users -->
+        <section>
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="text-primary">Users Registered But Not Paid</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="unpaidUsersTable">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Remark</th>
+                                <th>Update Remark</th>
+                                <th>Pfcode</th>
+                                <th>Franchise Name</th>
+                                <th>Email</th>
+                                <th>Mobile No</th>
+                                <th>Registration Date</th>
+                                <th>Days Since Registration</th>
+                                <th>User Name</th>
+                                <th>Password</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Body -->
+                        <tbody>
+                            @{
+                                int srno = 1;
+                                foreach (var item in Model.Where(x => x.isPaid != true))
+                                {
+                                    <tr>
+                                        <td>@srno</td>
+                                        <td>@item.Remark</td>
+                                        <td>
+                                            @using (Html.BeginForm("UpdateRemark", "Admin"))
+                                            {
+                                                <input type="hidden" value="@item.registrationId" name="registrationId">
+                                                <textarea name="remark" class="form-control" id="remark" style="height: 50px;width: 140px;"></textarea>
+                                                <input type="submit" class="btn btn-primary">
+                                            }
+                                        </td>
+                                        <td>@item.Pfcode</td>
+                                        <td>@item.franchiseName</td>
+                                        <td>@item.emailId</td>
+                                        <td>@item.mobileNo</td>
+                                        <td>@item.dateTime</td>
+                                        <td>@item.DaysSinceRegistration</td>
+                                        <td>@item.userName</td>
+                                        <td>@item.password</td>
+                                    </tr>
+                                    srno++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscription Expiring Clients -->
+        <section>
+            <div class="box">
+                <div class="box-header">
+                    <h4 class="text-primary">Subscriptions Expiring</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="expiringSubscriptionsTable">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Remark</th>
+                                <th>Update Remark</th>
+                                <th>Pfcode</th>
+                                <th>Franchise Name</th>
+                                <th>Mobile No</th>
+                                <th>Payment Date</th>
+                                <th>Expire Date</th>
+                                <th>Expired Days</th>
+                                <th>Activate User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int srno1 = 1;
+                                foreach (var item in Model.Where(x => x.ExpiredDays <= 10).OrderByDescending(x => x.ExpiredDays))
+                                {
+                                    if (item.ExpireDate != null)
+                                    {
+                                        <tr>
+                                            <td>@srno1</td>
+                                            <td>@item.Remark</td>
+                                            <td>
+                                                @using (Html.BeginForm("UpdateRemark", "Admin"))
+                                                {
+                                                    <input type="hidden" value="@item.registrationId" name="registrationId">
+                                                    <textarea name="remark" class="form-control" id="remark" style="height: 50px;width: 140px;"></textarea>
+                                                    <input type="submit" class="btn btn-primary">
+                                                }
+                                            </td>
+                                            <td>@item.Pfcode</td>
+                                            <td>@item.franchiseName</td>
+                                            <td>@item.mobileNo</td>
+                                            <td>@item.dateTime</td>
+                                            @if (item.ExpiredDays <= 0)
+                                            {
+                                                <td style="color:red">@item.ExpireDate</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@item.ExpireDate</td>
+                                            }
+                                            <td>
+                                                <strong>
+                                                    @if (item.ExpiredDays <= 0)
+                                                    {
+                                                        <span class="text-danger">@item.ExpiredDays</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-info">@item.ExpiredDays</span>
+                                                    }
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <label for="pid">Payment Subscription</label>
+                                                @Html.DropDownList("pid", new SelectListItem[] {
+                                                   new SelectListItem() {Text = "Select Subscription", Value=""},
+                                                   new SelectListItem() {Text = "1 Month", Value="1"},
+                                                   new SelectListItem() {Text = "1 Year", Value="2"},
+                                                }, new { @class = "form-control", id = "pid_" + srno1 })
+                                                <a href="#" class="btn btn-success" onclick="renewSubscription('@item.Pfcode','@srno1')">Renew</a>
+                                            </td>
+                                        </tr>
+                                        srno1++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTables
+            $('#unpaidUsersTable').DataTable({
+                paging: true,
+                searching: true,
+                responsive: true,
+                order: [[0, 'asc']]
+            });
+
+            $('#expiringSubscriptionsTable').DataTable({
+                paging: true,
+                searching: true,
+                responsive: true,
+                order: [[0, 'asc']]
+            });
+        });
+    </script>
+
+    <!-- Your custom scripts -->
+    <script>
+        function renewSubscription(pfcode, srno) {
+            var selectedValue = document.getElementById('pid_' + srno).value;
+            alert(selectedValue)
+            if (selectedValue == "" || selectedValue == null) {
+                alert("Select Payment Subscription");
+                return false;
+            } else {
+                var url = '/Admin/RenewSubcriptionExpClient?Pfcode=' + pfcode + '&pid=' + selectedValue;
+                window.location.href = url;
+            }
+        }
+    </script>
+    @if (TempData["SuccessMessage"] as string != null)
+    {
+        <script>
+                    alert('@TempData["SuccessMessage"]')
+        </script>
+    }
+    <!-- Initialize DataTables -->
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+</body>
+</html>

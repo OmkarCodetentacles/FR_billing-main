@@ -1,0 +1,127 @@
+﻿@{
+    Layout = null;
+}
+
+<style>
+
+    /* Status Dots */
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        position: relative;
+    }
+
+        /* Green Dot */
+        .status-dot.active {
+            background-color: #198754;
+        }
+
+            .status-dot.active::after {
+                background-color: #198754;
+            }
+
+        /* Yellow Dot */
+        .status-dot.warning {
+            background-color: #ffc107;
+        }
+
+            .status-dot.warning::after {
+                background-color: #ffc107;
+            }
+
+        /* Red Dot */
+        .status-dot.danger {
+            background-color: #dc3545;
+        }
+
+            .status-dot.danger::after {
+                background-color: #dc3545;
+            }
+
+        /* Pulse Animation for all dots */
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+
+        50% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 0.5;
+        }
+    }
+</style>
+
+@{
+    if (ViewBag.subscriptionExpiredOnDays <= 10)
+    {
+        <div class="col-sm-4">
+            <div class="status-dot danger text-center"></div>
+         <strong>About to Expire</strong>
+        </div>
+        <div class="col-sm-8" style="text-align:end">
+            <div class="">
+                <h5 class="text-danger">Left <strong> @ViewBag.subscriptionExpiredOnDays</strong> Days</h5>
+                <span class="info-box-text" style="padding:0">
+                    <strong>
+                        Expires On
+                        @ViewBag.subscriptionExpiredOnDate
+                    </strong>
+                </span>
+            </div>
+        </div>
+    }
+    else if (ViewBag.subscriptionExpiredOnDays <= 20)
+    {
+        <div class="col-sm-4">
+            <div class="status-dot warning text-center"></div>
+            <span>Expiring Soon</span>
+        </div>
+        <div class="col-sm-8" style="text-align:end">
+            <div class="">
+                <h5 class="text-warning">Left @ViewBag.subscriptionExpiredOnDays Days</h5>
+                <span class="info-box-text" style="padding:0">
+                    Expires On
+                    @ViewBag.subscriptionExpiredOnDate
+                </span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-sm-4">
+            <div class="status-dot success text-center"></div>
+            <span>Active</span>
+        </div>
+        <div class="col-sm-8" style="text-align:end">
+            <div class="">
+                <h5 class="text-success">Left @ViewBag.subscriptionExpiredOnDays Days</h5>
+                <span class="info-box-text" style="padding:0">
+                    Expires On
+                    @ViewBag.subscriptionExpiredOnDate
+                </span>
+            </div>
+        </div>
+    }
+
+}

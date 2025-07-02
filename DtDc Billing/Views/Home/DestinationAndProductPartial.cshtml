@@ -1,0 +1,39 @@
+﻿@model DtDc_Billing.CustomModel.dashboardDataModel
+@{
+
+    Layout = null;
+}
+
+<div class="col-md-12" style="margin-top:30px">
+    <div class="box box-info" style=" width: 98%; ">
+        <div class="box-header with-border">
+            <p><strong style="color: #0049af; font-size: 18px;">Favorable Destinations</strong> </p>
+         </div>
+       
+        <div class="box-body box-body-collapsed">
+            <div class="table-responsive">
+                <table id="table_display_block" class="table no-margin tblProducts height-450">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">City</th>
+
+                            <th style="text-align:center">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DestinationList)
+                        {
+                            <tr>
+                                <td> @item.City </td>
+                                <td>@item.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+           
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,99 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Franchisee>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section>
+    <div class="container">
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.F_Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.F_Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OwnerName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BranchName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.GstNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Franchisee_Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContactNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Branch_Area)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Datetime_Fr)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pan_No)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirmDetail.Firm_Name)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.F_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.F_Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BranchName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GstNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Franchisee_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch_Area)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Datetime_Fr)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pan_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirmDetail.Firm_Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.PF_Code }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.PF_Code }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.PF_Code })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</section>

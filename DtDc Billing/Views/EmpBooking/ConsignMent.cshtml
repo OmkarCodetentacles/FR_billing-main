@@ -1,0 +1,58 @@
+﻿@model DtDc_Billing.Metadata_Classes.TransactionMetadata
+
+
+@{
+    
+    Layout = "~/Views/Shared/EmpLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+
+
+                @using (Html.BeginForm("importTextFile", "Emp", FormMethod.Post, new { enctype = "multipart/form-data", id = "importtext" }))
+                {
+
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <h4>Book Consignment</h4>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <div class="col-sm-8">
+                                    <input id="File1" required type="file" name="ImportText" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="submit" class="btn btn-info pull-right" value="Import From text" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div id="form-Cons">
+                            @Html.Partial("ConsignmentPartial", Model)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+

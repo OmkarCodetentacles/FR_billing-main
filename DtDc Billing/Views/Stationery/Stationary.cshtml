@@ -1,0 +1,147 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Stationary>
+
+@{
+    /**/
+
+    ViewBag.Title = "ViewInvoice";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+<!-- Main content -->
+<section class="container">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="table_display_block" class="table table-striped table-bordered table-responsive height-450">
+                        <thead>
+                            <tr>
+                              
+                                <th>
+                                    @Html.DisplayNameFor(model => model.startno)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.endno)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.noofleafs)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.noofbooks)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Expiry_Date)
+                                </th>
+                              
+                              
+                                <th>
+                                   MFcode
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                   
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.startno)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.endno)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.noofleafs)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.noofbooks)
+                                    </td>
+                                    <td>
+                                       @item.Expiry_Date.Value.ToString("dd-MM-yyyy")
+                                    </td>
+                                   
+                                  
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pf_code)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "EditStationary", new { id = item.S_id }) |
+                                      
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+<script>
+    $(function () {
+
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

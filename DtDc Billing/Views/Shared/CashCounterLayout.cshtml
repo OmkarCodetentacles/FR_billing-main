@@ -1,0 +1,436 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DTDC | Cashcounter</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Font Awesome -->
+    <!-- Ionicons -->
+
+    <link href="~/admin-lte/bower_components/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/admin-lte/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/ratemaster.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+    <link href="~/admin-lte/css/customstyle.css" rel="stylesheet" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/admin-lte/js")
+
+    @RenderSection("scripts", required: false)
+
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <script src="~/admin-lte/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/admin-lte/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/admin-lte/js/adminlte.min.js"></script>
+    <script src="~/admin-lte/js/icheck.min.js"></script>
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#bookdate').datepicker();
+        });
+    </script>
+
+</head>
+
+<body class="hold-transition skin-red  ">
+    <div class="wrapper">
+        <!-- Main Header -->
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="index2.html" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini logo-text"><b>IS</b></span>
+                <!-- logo for regular state and mobile devices -->
+                @*<span class="logo-lg logo-text"><img src="http://atkxpress.com/images/atkexpress-logo.jpg" style="width: 100%;"></span>*@
+
+                <div class="logo-lg logo-text" style="
+    text-align: center;
+">
+
+                    <img src="~/Content/img/IJS Logo new.png" style="width: 100%;height: 71px;margin-top: -2px;">
+
+
+                </div>
+
+
+            </a>
+            <!-- Header Navbar -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <a href="/Booking/Printreceipt" class="sidetoggle"> Booking </a>
+                <a href="/Reports/DailyReport" class="sidetoggle">  Daily Report</a>
+
+
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+
+                    <ul class="nav navbar-nav">
+                        @*<li class="logincss">
+
+                        @{
+
+                            var UserType = new SelectList(new[]
+                            {
+            new SelectListItem { Text = "CashCounter", Value = "CashCounter", Selected = true },
+            new SelectListItem { Text = "Billing", Value = "Billing"},
+        }, "Value", "Text");
+                        }
+
+                        <a <span="">UserType :<span>@Html.DropDownList("UserType", UserType, new { style = "width: 120px; background-color: DeepSkyBlue;" })
+                              </span> </a>
+
+
+                    </li>*@
+                        @*<li class="logincss">
+            <a <span="">UserType :<span> @Html.DropDownList("UserType",null, new { style = "width: 120px; background-color: DeepSkyBlue;" }) </span> </a>
+        </li>*@
+                        @*<li class="logincss">                        
+                            <a>
+                                <span>
+                                    UserType : CashCounter
+                                    @Html.Label((string)ViewBag.CurrentUserType)
+                                </span>
+
+
+                                @if (@Session["UserType"] != null)
+                                {
+                                    <span>@Html.Label((string)@Session["UserType"]) </span>
+
+                                }
+                            </a>
+
+                            @ViewBag.CurrentUserType
+                        </li>*@
+
+                        @*@if (@ViewBag.CurrentUserType == "")
+                        {
+
+                    <li class="logincss">
+                        @{
+                            int count = Convert.ToInt32(@Session["CountUserType"]);
+
+                            if (count > 1)
+                            {
+                                <a href="@Url.Action("ChangeUserType","Booking",new { strcurrentuser = Session["UserType"] })"> Change UserType </a>
+                            }
+                            else
+                            {
+
+                            }
+
+                        }
+                    </li>
+                        }
+                        else
+                        {
+
+                    <li class="logincss">
+                        @{
+                            int count = Convert.ToInt32(@Session["CountUserType"]);
+
+                            if (count > 1)
+                            {
+                                <a href="@Url.Action("ChangeUserType", "Booking", new { strcurrentuser = ViewBag.CurrentUserType })"> Change UserType </a>
+                            }
+                            else
+                            {
+                                
+                            }
+
+                        }
+
+
+
+
+                    </li>
+                            }*@
+
+                            <li class="logincss">
+                                <a <span="">MFCode :<span>  @Session["pfCode"].ToString() </span> </a>
+                            </li>
+                            <!-- User Account Menu -->
+                            <li class="logincss">
+                                <a <span="">For any query : <i class="fa fa-phone phnicon" aria-hidden="true"></i><span>8208990681 </span> </a>
+                            </li>
+
+
+                            <li class="dropdown user user-menu">
+
+                                <a href="#" class="dropdown-toggle sidetoggle" data-toggle="dropdown" aria-expanded="true">
+
+                                    <!-- The user image in the navbar-->
+                                    <img src="/admin-lte/img/user2-160x160.jpg" height="20" width="20" class="img-circle" alt="User Image">
+                                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                                    @if (Session["EmpName"] != null)
+                                    {
+                                        <span> @Session["EmpName"].ToString()</span>
+                                    }
+                                </a>
+
+
+
+                            </li>
+
+                            <li class="user-footer">
+                                <a href="@Url.Action("LogOut","Admin")"><i class="fa fa-share fa-fw"></i>  Sign Out   </a>
+                            </li>
+
+
+
+
+                            @*<li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>*@
+                        </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+
+                <!-- search form -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                
+               
+                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                @*<li class="header">MAIN NAVIGATION</li>*@
+
+
+
+
+
+                @{
+
+                    Html.RenderPartial("UserModelPartial");
+                }
+
+
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <!-- Content Header (Page header) -->
+        <!-- Main content -->
+        <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+        @RenderBody()
+
+        <!-- /.content -->
+        <!-- /.content-wrapper -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- Default to the left -->
+            <strong>Copyright  &copy;<span id="currentYear"></span>  <a href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles</a>.</strong> All rights reserved.
+        </footer>
+        <!-- Control Sidebar -->
+        @*<aside class="control-sidebar control-sidebar-dark">
+                <!-- Create the tabs -->
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                    <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- Home tab content -->
+                    <div class="tab-pane active" id="control-sidebar-home-tab">
+                        <h3 class="control-sidebar-heading">Recent Activity</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                    <div class="menu-info">
+                                        <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                        <p>Will be 23 on April 24th</p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.control-sidebar-menu -->
+                        <h3 class="control-sidebar-heading">Tasks Progress</h3>
+                        <ul class="control-sidebar-menu">
+                            <li>
+                                <a href="javascript:;">
+                                    <h4 class="control-sidebar-subheading">
+                                        Custom Template Design
+                                        <span class="pull-right-container">
+                                            <span class="label label-danger pull-right">70%</span>
+                                        </span>
+                                    </h4>
+                                    <div class="progress progress-xxs">
+                                        <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <!-- /.control-sidebar-menu -->
+                    </div>
+                    <!-- /.tab-pane -->
+                    <!-- Stats tab content -->
+                    <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+                    <!-- /.tab-pane -->
+                    <!-- Settings tab content -->
+                    <div class="tab-pane" id="control-sidebar-settings-tab">
+                        <form method="post">
+                            <h3 class="control-sidebar-heading">General Settings</h3>
+                            <div class="form-group">
+                                <label class="control-sidebar-subheading">
+                                    Report panel usage
+                                    <input type="checkbox" class="pull-right" checked>
+                                </label>
+                                <p>
+                                    Some information about this general settings option
+                                </p>
+                            </div>
+                            <!-- /.form-group -->
+                        </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                </div>
+            </aside>*@
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+        immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 3 -->
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. -->
+
+
+
+    <script type='text/javascript'>
+        /** add active class and stay opened when selected */
+        var url = window.location;
+
+        // for sidebar menu entirely but not cover treeview
+        $('ul.sidebar-menu a').filter(function () {
+            return this.href == url;
+        }).parent().addClass('active');
+
+        // for treeview
+        $('ul.treeview-menu a').filter(function () {
+            return this.href == url;
+        }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+        $('.messages-menu').click(function () {
+            if ($(this).hasClass('open'))
+                $(this).removeClass('open');
+            else
+                $(this).addClass('open');
+        });
+    </script>
+
+    @*///setdat*@
+
+    <script>
+
+        function setCopyrightDate() {
+            year = new Date().getYear();
+            if (year < 1900)
+                year += 1900;
+            document.getElementById("currentYear").innerHTML = year;
+        }
+
+        setCopyrightDate();
+
+
+    </script>
+
+
+    <script>
+
+
+        window.onload = function () {
+            var tableCont = document.querySelector('#table_display_block, #check-booking-list, #generate-invoice, #example1')
+
+            function scrollHandle(e) {
+                var scrollTop = this.scrollTop;
+                this.querySelector('thead').style.transform = 'translateY(' + scrollTop + 'px)';
+            }
+
+            tableCont.addEventListener('scroll', scrollHandle)
+        }
+
+
+    </script>
+
+
+
+    <style>
+        .logo-text {
+            font-size: 1.3em;
+            font-family: 'Roboto Slab', serif;
+        }
+    </style>
+
+
+    @*<script>
+    $(document).ready(function () {
+    divAsset();
+    });
+
+    function divAsset() {
+    var AssetShared1 = '@Session["UserType"]';
+
+        if (AssetShared1 == 'true') {
+            $("#SharedAssetShared").hide();
+
+    }
+        else {
+            $("#SharedAssetShared").show();
+
+    }
+
+    }
+
+    </script>*@
+
+
+</body>
+</html>

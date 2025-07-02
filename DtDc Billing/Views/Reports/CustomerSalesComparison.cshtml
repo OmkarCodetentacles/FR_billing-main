@@ -1,0 +1,138 @@
+﻿@model IEnumerable<DtDc_Billing.Models.GetCustomerSalesReportModel>
+@{
+    ViewBag.Title = "CustomerSalesComparison";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>Customer Sales Report Comparison</h4>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+
+                <table id="example1" class="table Salereport">
+                    <thead>
+                        <tr>
+                            <th>Sr.No</th>
+
+                            <th>
+                                Comapany Id
+                            </th>
+                            <th>
+                                Comapany Name
+                            </th>
+
+                            <th>
+                                Previous Month Sale(@Model.Select(x => x.PrevMonth).FirstOrDefault())
+                            </th>
+                            <th>   Last Month Sale(@Model.Select(x => x.LastMonth).FirstOrDefault()) </th>
+                            <th>
+                                Sales Differnce
+                            </th>
+
+                            <th>
+                                Percentage Change
+                            </th>
+                            <th>
+                                Status
+                            </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int srno = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@srno</td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company_Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company_Name)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PrevMonthSales)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastMonthSales)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SalesDifference)
+                                </td>
+
+                                <td>
+                                    @(item.PercentageChange??0)
+                                </td>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ChangeIndicator)
+                                </td>
+                            </tr>
+                            srno++;
+
+                        }
+                    </tbody>
+
+                </table>
+                <br>
+
+                <!-- /input-group -->
+
+                <div class="col-sm-4" style="float: right;padding-right:0" ;>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-danger total-label">Last Month Total Sale(@Model.Select(x => x.LastMonth).FirstOrDefault())</button>
+                        </div>
+                        <!-- /btn-group -->
+                        <input type="text" class="form-control total-amount" value="@Model.Sum(x=>x.LastMonthSales)">
+                    </div>
+                </div>
+                <!-- /input-group -->
+                <!-- /input-group -->
+
+                <div class="col-sm-4" style="float: right;padding-right:0" ;>
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-danger total-label">Previous Month Total Sale(@Model.Select(x => x.PrevMonth).FirstOrDefault())</button>
+                        </div>
+                        <!-- /btn-group -->
+                        <input type="text" class="form-control total-amount" value="@Model.Sum(x=>x.PrevMonthSales)">
+                    </div>
+                </div>
+                <!-- /input-group -->
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+

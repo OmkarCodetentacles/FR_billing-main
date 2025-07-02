@@ -1,0 +1,275 @@
+﻿
+@{
+
+    //var myList = (List <UserModuleList>)Session["UserModuleList"];
+
+    //var myList = Session["UserModuleList"] as IEnumerable<DtDc_Billing.Entity_FR.UserModuleList>;
+    //DtDc_Billing.Models.SessionUserModule
+    // UserModuleList= filterContext.Items["UserModuleList"];
+
+
+
+    var mylist = ViewBag.UserModList;
+    // var myList = Session["UserModuleList"] as List<string>;
+
+    if (ViewBag.CurrentUserType == "CashCounter")
+    {
+    <ul class="sidebar-menu" data-widget="tree">
+
+        <div class="sidebar-menu">
+            <label style="background-color:cornflowerblue;font-size:medium;text-align:center ">CashCounter Menu</label>
+        </div>
+
+        @foreach (var item in mylist)
+        {
+
+    <li class="treeview">
+
+        <a href="javascript:;">
+
+            @if (item.ModuleName == "DailyExpenses")
+            {
+                <i class="fa fa-bookmark"></i>
+
+            }
+
+            @if (item.ModuleName == "RateMaster")
+            {
+
+                <i class="fa fa-dashboard"></i>
+
+            }
+
+            @if (item.ModuleName == "Booking")
+            {
+                <i class="fa fa-edit"></i>
+
+            }
+
+            @if (item.ModuleName == "Stationary")
+            {
+                <i class="fa fa-pencil-square-o"></i>
+
+            }
+
+            @if (item.ModuleName == "SendMessage")
+            {
+                <i class="fa fa-mail-forward"></i>
+
+            }
+
+            @if (item.ModuleName == "Reports")
+            {
+                <i class="fa fa-th-list"></i>
+
+            }
+            <span>
+                @item.ModuleName
+            </span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+
+        </a>
+
+        @if (item.ModuleName == "DailyExpenses")
+        {
+
+            <ul class="treeview-menu">
+                @*<li><a href="@Url.Action("CreateUser","Admin")"><i class="fa fa-circle-o"></i>Create User </a></li>
+                <li><a href="@Url.Action("AddFranchisee","Admin")"><i class="fa fa-circle-o"></i> Add Franchisee</a></li>*@
+                <li><a href="@Url.Action("Add_Expenses", "DailyExpenses")"><i class="fa fa-circle-o"></i> Add Expenses</a></li>
+                <li><a href="@Url.Action("Add_Payment", "DailyExpenses")"><i class="fa fa-circle-o"></i> Add Payments</a></li>
+                <li><a href="@Url.Action("Add_Saving", "DailyExpenses")"><i class="fa fa-circle-o"></i> Add Saving</a></li>
+            </ul>
+
+        }
+
+        @if (item.ModuleName == "Stationary")
+        {
+            @*<ul class="treeview-menu">
+                <li><a href="@Url.Action("Add","EmpStationery")"><i class="fa fa-circle-o"></i> Add Stationary</a></li>
+            </ul>*@
+
+        }
+
+        @if (item.ModuleName == "RateMaster")
+        {
+
+            <ul class="treeview-menu">
+                <li><a href="@Url.Action("EditCompanyCash", "RateMasterCash")"><i class="fa fa-circle-o"></i> Update RateMaster</a></li>
+            </ul>
+
+        }
+
+        @if (item.ModuleName == "Booking")
+        {
+
+
+
+            <ul class="treeview-menu">
+                <li class="active"><a href="@Url.Action("Printreceipt", "CashBooking")"><i class="fa fa-circle-o"></i> Print</a></li>
+                <li><a href="@Url.Action("BulkBooking", "CashBooking")"><i class="fa fa-circle-o"></i> Bulk Booking</a></li>
+                <li><a href="@Url.Action("ConsignmentDetails", "CashBooking")"><i class="fa fa-circle-o"></i> Consignment details</a></li>
+                @*<li><a href="@Url.Action("RateCalculater", "CashBooking")"><i class="fa fa-circle-o"></i>Rate Calculator</a></li>*@
+
+
+            </ul>
+        }
+
+        @if (item.ModuleName == "SendMessage")
+        {
+
+            <ul class="treeview-menu">
+                <li><a href="@Url.Action("Pickupmsg", "SendMessage")"><i class="fa fa-circle-o"></i> Send Pickup Message</a></li>
+                <li><a href="@Url.Action("SendBulkmsg", "SendMessage")"><i class="fa fa-circle-o"></i> Send Message</a></li>
+            </ul>
+
+        }
+        @if (item.ModuleName == "Reports")
+        {
+
+
+            <ul class="treeview-menu">
+                <li><a href="@Url.Action("ReceiptReports", "CashReports")"><i class="fa fa-circle-o"></i> Receipt Report</a></li>
+                @*<li><a href="@Url.Action("WalletReports","Reports")"><i class="fa fa-circle-o"></i> Wallet Report</a></li>*@
+                <li><a href="@Url.Action("DailyReport", "CashReports")"><i class="fa fa-circle-o"></i> Daily Report</a></li>
+            </ul>
+        }
+    </li>
+
+        }
+    </ul>
+    }
+
+    var myBillinglist = ViewBag.UserBillingModList;
+    // var myList = Session["UserModuleList"] as List<string>
+
+
+    if (ViewBag.CurrentUserTypeEmp == "Billing")
+    {
+<ul class="sidebar-menu" data-widget="tree">
+
+    <div class="sidebar-menu">
+        <label style="background-color:cornflowerblue;font-size:medium;text-align:center ">Billing Menu</label>
+    </div>
+    @foreach (var item in myBillinglist)
+    {
+
+        <li class="treeview">
+
+            <a href="javascript:;">
+
+
+                @if (item.ModuleName == "Stationary")
+                {
+                    <i class="fa fa-pencil-square-o"></i>
+
+                }
+
+                @if (item.ModuleName == "ViewRateMaster")
+                {
+
+                    <i class="fa fa-calculator"></i>
+
+                }
+
+                @if (item.ModuleName == "Booking")
+                {
+                    <i class="fa fa-address-card-o"></i>
+                }
+
+                @if (item.ModuleName == "Invoice")
+                {
+                    <i class="fa fa-file-pdf-o"></i>
+
+                }
+
+                @if (item.ModuleName == "Reports")
+                {
+                    <i class="fa fa-line-chart"></i>
+
+                }
+                <span>
+                    @item.ModuleName
+                </span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+
+            </a>
+
+            @if (item.ModuleName == "Stationary")
+            {
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("Add","EmpStationery")"><i class="fa fa-circle-o"></i> Add Stationary</a></li>
+                </ul>
+
+            }
+
+            @if (item.ModuleName == "ViewRateMaster")
+            {
+
+
+        <li class="active">
+            <a href="@Url.Action("CompanyList", "Booking")"><i class="fa fa-circle-o"></i> View RateMaster</a>
+            <ul class="treeview-menu">
+                @*<li><a href="@Url.Action("EditCompanyRateMaster","RateMaster")"><i class="fa fa-circle-o"></i>View/Edit Company</a></li>
+            <li><a href="@Url.Action("AddCompany","RateMaster")"><i class="fa fa-circle-o"></i>Add Company</a></li>*@
+            </ul>
+        </li>
+
+
+        }
+            @if (item.ModuleName == "Booking")
+            {
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("ConsignMent","EmpBooking")"><i class="fa fa-circle-o"></i> Add</a></li>
+                    @*<li><a href="@Url.Action("EditConsignment","Booking")"><i class="fa fa-circle-o"></i> Modify</a></li>*@
+                    <li><a href="@Url.Action("Checkbookinglist","EmpBooking")"><i class="fa fa-circle-o"></i> Check Booking List</a></li>
+                    <li><a href="@Url.Action("ToAddressReport","EmpBooking")"><i class="fa fa-circle-o"></i> Toaddress Report</a></li>
+                    <li><a href="@Url.Action("Nobookinglist","EmpBooking")"><i class="fa fa-circle-o"></i> No Booking Data</a></li>
+                    <li><a href="@Url.Action("importTextFile","Emp")"><i class="fa fa-circle-o"></i> Import From Text</a></li>
+                    <li><a href="@Url.Action("importFromExcel","Emp")"><i class="fa fa-circle-o"></i> Import From Excel</a></li>
+                    <li><a href="@Url.Action("MultipleBooking","EmpBooking")"><i class="fa fa-circle-o"></i> Multiple Booking</a></li>
+                    <li><a href="@Url.Action("MultipleBookingReceipt","EmpBooking")"><i class="fa fa-circle-o"></i> Import From CashCounter</a></li>
+                </ul>
+            }
+
+            @if (item.ModuleName == "Invoice")
+            {
+
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("ViewInvoice","BillingInvoice")"><i class="fa fa-circle-o"></i> View Invoice </a></li>
+
+                </ul>
+
+
+            }
+            @if (item.ModuleName == "Reports")
+            {
+
+
+                <ul class="treeview-menu">
+                    <li><a href="@Url.Action("creditorsreport", "EmpReports")"><i class="fa fa-circle-o"></i> Creditors Report</a></li>
+                    @*<li><a href="@Url.Action("WalletReports","Reports")"><i class="fa fa-circle-o"></i> Wallet Report</a></li>*@
+                    <li><a href="@Url.Action("InvalidConsignment", "EmpReports")"><i class="fa fa-circle-o"></i> Invalid Consignment</a></li>
+                    <li><a href="@Url.Action("Destinations", "EmpReports")"><i class="fa fa-circle-o"></i> New Destinations</a></li>
+
+                </ul>
+            }
+            </li>
+
+        }
+
+</ul>
+    }
+    }
+
+
+    @*</ul>*@
+
+
+
+
+

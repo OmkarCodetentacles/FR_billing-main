@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.WalletPoint>
+
+@{
+    ViewBag.Title = "WalletReports";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
+}
+
+
+
+    <section class="conatiner">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box" style="padding: 16px 16px !important">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Wallet Report</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.MobileNo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Wallet_Money)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("WalletHistory","Wallet",new {phone=item.MobileNo })">@item.MobileNo</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Wallet_Money)
+                        </td>
+
+                    </tr>
+}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+                    </section>
+    
+
+                    <script type="text/javascript">
+                        $(function () {
+
+                            $('#example1').dataTable({
+                                "bPaginate": true,
+                                "bLengthChange": true,
+                                "bFilter": true,
+                                "bSort": true,
+                                "bInfo": true,
+                                "bAutoWidth": false
+                            });
+                        });
+                    </script>
