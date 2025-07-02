@@ -1,0 +1,516 @@
+﻿@model IEnumerable<DtDc_Billing.CustomModel.ReceiptDetailsForDailyReport>
+
+@{
+    ViewBag.Title = "SaleReports";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    #datepicker1, #datepicker {
+        border-radius: 0px !important;
+    }
+
+    >
+    .input-group-addon {
+        border-radius: 0px !important;
+    }
+
+    .dow, .prev, .datepicker-switch, .next {
+        border-right: 0 !important;
+    }
+
+    .box-body {
+        overflow: auto;
+    }
+
+    .creditorsreport th {
+        width: 7.69% !important;
+    }
+</style>
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>Cash Creditors Report</h4>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                @{
+                    var nodata = ViewBag.Nodata as string;
+                }
+                @if (!string.IsNullOrEmpty(nodata))
+                {
+                    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                }
+                <div class="col-xs-12">
+
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>From Date:<span class="Reqired">*</span></label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @if (ViewBag.Fromdatetime != null)
+                                        {
+                                            <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                                        }
+                                        else
+                                        {
+                                            <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                                        }
+                                        @Html.ValidationMessage("Fromdateeror")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>To Date:<span class="Reqired">*</span></label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @if (ViewBag.ToDatetime != null)
+                                        {
+                                            <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                                        }
+                                        else
+                                        {
+                                            <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                                        }
+                                        @Html.ValidationMessage("Todateeror")
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-1" style="padding:0">
+                                <button type="submit" class="btn btn-block btn-primary sbmt" style="margin:22px auto;width:100%">Search</button>
+                            </div>
+                            <div class="col-md-1 ">
+                                <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success sbmt" style="margin: 22px auto" />
+                            </div>
+
+                        </div>
+
+                    }
+
+
+
+
+                    <table id="example1" class="table creditorsreport">
+                        <thead>
+                            <tr>
+                                <th>Sr.No</th>
+                                <th></th>
+                                <th>
+                                    Consignment No
+                                </th>
+                                <th>
+                                    Sender Name
+                                </th>
+                                <th>
+                                    Sender Phone
+                                </th>
+                                <th>
+                                    Receiver
+                                </th>
+                                <th>
+                                    Receiver Phone
+                                </th>
+
+                                <th>
+                                    Destination Pincode
+                                </th>
+
+                                <th>
+                                    Booking Date
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Paid Amount
+                                </th>
+                                <th>
+                                    Balance Amount
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @*<a href="@Url.Action("DownloadReceipts", "AdminCashBooking", new { consignmentno = item.Consignment_No })" target="_blank" class="btn btn-success">Print</a>*@
+
+                                        <button type="button" class="btn btn-success getPayDetails open-modal-btn" data-toggle="modal" data-datac="@item.Consignment_No" data-target="#modal-default" data-backdrop="static" data-keyboard="false" data-bs-target="#yourModalId">
+                                            Payment Details
+                                        </button>
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Consignment_No)
+                                    </td>
+                                    <td>
+                                        @(item.Sender== null ? "-": item.Sender)
+                                    </td>
+                                    <td>
+                                        @(item.sender_phone == null ? "-" : item.sender_phone)
+                                    </td>
+                                    <td>
+                                        @(item.Reciepents == null ? "-" : item.Reciepents)
+                                    </td>
+                                    <td>
+                                        @(item.Reciepents_phone == null ? "-":item.Reciepents_phone)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ReciepentsPincode)
+                                    </td>
+
+                                    <td>
+                                        @item.CreateDateString
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Charges_Total)
+                                    </td>
+
+                                    <td style="color:green">
+                                        <b>  @Html.DisplayFor(modelItem => item.Paid_Amount) </b>
+                                    </td>
+
+                                    <td style="color:red">
+                                        <b>  @((item.Charges_Total - item.Paid_Amount) ?? 0) </b>
+                                    </td>
+
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+
+                    </table>
+                    <!-- /input-group -->
+                    <div class="row mt-15">
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary total-label">Total</button>
+                                </div>
+                                <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(x=>x.Charges_Total)">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-success">Paid</button>
+                                </div>
+                                <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@Model.Sum(x=>x.Paid_Amount)">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                        <div class="col-sm-4 ">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-danger">Balance</button>
+                                </div>
+                                <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@(Model.Sum(x=>x.Charges_Total) - Model.Sum(x=>x.Paid_Amount))">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Payment Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Consignment No</th>
+                                    <th>Total</th>
+                                    <th>Paid</th>
+                                    <th>Balance</th>
+                                    <th>Mode Of Payment</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated dynamically here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script>
+
+/////Sender Autocomplete
+$(function () {
+    var availableTutorials = [
+
+    ];
+    var company_idarr = [
+
+
+
+    ];
+
+    $.ajax({
+        type: 'GET',
+        /**/
+        /**/
+        /**/
+        url: '@Url.Action("CustomerIdAutocomplete","Booking")',
+/**/
+/**/
+/**/
+data: { },
+dataType: 'json',
+success: function(data) {
+    $.each(data, function(i, item) {
+                company_idarr.push(item.Company_Id);
+            });
+
+        }
+    });
+
+    $("#Employees").autocomplete({
+        source: company_idarr,
+select: function(event, ui) {
+    $("#Employees").val(ui.item.value);
+
+    $("#Employees").trigger("focusout");
+        }
+    });
+
+    $("#Employees").autocomplete({
+        source: company_idarr,
+        select: function(event, ui) {
+
+        }
+    });
+});
+</script>
+
+
+@*if (selectedemp != null) {
+            $("#Employees").val(selectedemp);
+        }
+    var selectedemp = @ViewBag.selectedemp;*@
+<script>
+
+
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": false,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+
+
+<style>
+    .pf-code select, .emp-id select {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+
+
+    .table-scroll {
+        height: 400px;
+    }
+
+    .Reqired {
+        color: red;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
+
+
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+
+            else {
+                return true;
+            }
+
+        });
+
+
+
+
+
+    });
+
+</script>
+
+<script type="text/javascript">
+   $(document).ready(function () {
+    $(".getPayDetails").click(function () {
+        var consignmentNo = $(this).data('datac'); // Get consignment number
+        console.log("Fetching payment details for:", consignmentNo);
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetPaymentDetails")', // Controller action to fetch data
+            data: { consignmentNo: consignmentNo }, // Send consignment number
+            dataType: 'json',
+            success: function (response) {
+
+                var tableBody = $("#modal-default tbody"); // Target table body
+                tableBody.empty(); // Clear existing table rows
+
+                let hasData = false; // Flag to track if any row is added
+                let totalPaidAmount = 0; // Initialize total paid amount
+                let lastBalanceAmount = 0; // Track last balance amount
+
+                // ✅ Handle Receipt Details (Single Object)
+                if (response.ReceiptDetails) {
+                    var receiptRow = "<tr style='font-weight: bold; background-color: #f8f9fa;'>"
+                        + "<th>" + response.ReceiptDetails.ConsignmentNo + "</th>"
+                        + "<td>" + response.ReceiptDetails.ChargesTotal + "</td>"
+                        + "<td>" + response.ReceiptDetails.PaidAmount + "</td>"
+                        + "<td>" + response.ReceiptDetails.BalanceAmount + "</td>"
+                        + "<td>" + response.ReceiptDetails.PaymentMode + "</td>"
+                        + "<td>" + response.ReceiptDetails.Date + "</td>"
+                        + "</tr>";
+                    tableBody.append(receiptRow);
+                    totalPaidAmount += parseFloat(response.ReceiptDetails.PaidAmount || 0); // Add receipt paid amount
+                    lastBalanceAmount = parseFloat(response.ReceiptDetails.BalanceAmount || 0); // Initialize balance
+                    hasData = true;
+                }
+
+                // ✅ Handle Payment History (List)
+                if (response.PaymentHistory && response.PaymentHistory.length > 0) {
+                    $.each(response.PaymentHistory, function (index, item) {
+                        var row = "<tr>"
+                            + "<th>" + item.ConsignmentNo + "</th>"
+                            + "<td>" + item.ChargesTotal + "</td>"
+                            + "<td>" + item.PaidAmount + "</td>"
+                            + "<td>" + item.BalanceAmount + "</td>"
+                            + "<td>" + item.PaymentMode + "</td>"
+                            + "<td>" + item.Date + "</td>"
+                            + "</tr>";
+                        tableBody.append(row);
+
+                        totalPaidAmount += parseFloat(item.PaidAmount || 0); // Sum all paid amounts
+                        lastBalanceAmount = parseFloat(item.BalanceAmount || 0); // Keep updating for last entry
+                        hasData = true;
+                    });
+                }
+
+                // ✅ Show "No Payment History Found" only if hasData is still false
+                if (!hasData) {
+                    tableBody.append("<tr><td colspan='6' class='text-center text-danger'>No payment history found</td></tr>");
+                }
+
+                // ✅ Append Total Row for Paid Amount and Last Balance Amount
+                tableBody.append("<tr style='font-weight: bold; background-color: #f1f1f1;'>"
+                    + "<td colspan='2' class='text-right'>Total:</td>"
+                    + "<td>" + totalPaidAmount.toFixed(2) + "</td>"
+                    + "<td>" + lastBalanceAmount.toFixed(2) + "</td>"
+                    + "<td colspan='2'></td>" // Empty columns to align table
+                    + "</tr>");
+
+                // ✅ Show modal after populating data
+                $("#modal-default").modal('show'); // Show modal
+            },
+            error: function () {
+                console.log("Error fetching payment details");
+            }
+        });
+    });
+});
+</script>

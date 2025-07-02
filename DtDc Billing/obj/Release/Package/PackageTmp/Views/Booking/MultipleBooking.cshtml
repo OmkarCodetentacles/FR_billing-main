@@ -1,0 +1,262 @@
+﻿@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+
+<div class="content-wrapper">
+   
+       
+                <div class="box box-info" style="padding: 16px 16px !important">
+                    
+
+                        <div class="box-header with-border">
+                            <h4>
+                                Multiple Booking
+                                <a href="https://www.youtube.com/watch?v=CrtHwi3JhD4&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=18"
+                                   target="_blank"
+                                   data-toggle="tooltip"
+                                   title="Click to view more info">
+                                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                                </a>
+
+                            </h4>
+                            <p><strong style="color:red">You can access this feature only after uploading the DTDC TXT file</strong></p>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @{
+                                        var successMessage = ViewBag.Message as string;
+                                        var BookedConsignments = ViewBag.Count as string;
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(successMessage))
+                                    {
+                                       
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                    }
+                                   
+                                    <div class="form-horizontal">
+                                        <div id="form-Cons">
+                                            @using (Html.BeginForm("MultipleBooking", "Booking"))
+                                            {
+                                                <div class="">
+
+                                                    <div class="row">
+
+                                                        <div class="form-group">
+                                                            <div class="col-md-7">
+                                                                <div class="row">
+                                                                    <div class="col-md-3" style="padding:0">
+                                                                        <label class=""> Start number</label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <input id="StartingCons" class="form-control input-sm" type="text" name="StartingCons" />
+                                                                        <span id="startconserror" style="color: red; display: none;">Please Enter Starting Consignment.</span> <!-- Error message -->
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-7">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-3" style="padding:0">
+                                                                        <label class=""> End number</label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <input id="EndingCons" type="text" class="form-control input-sm" name="EndingCons" />
+                                                                        <span id="endconserror" style="color: red; display: none;">Please Enter End Consignment Number.</span> <!-- Error message -->
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-7">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-3" style="padding:0">
+                                                                        <label class=""> Company </label>
+                                                                    </div>
+                                                                    <div class="col-md-9">
+
+                                                                        <input type="text" id="Companyid" class="form-control input-sm" name="Companyid" />
+                                                                        <span id="companyiderror" style="color: red; display: none;">Please Select Comapny Id.</span> <!-- Error message -->
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="form-group">
+                                                    <div class="col-md-7 " style=" text-align: end;">
+                                                        <input id="SubmitM" type="submit" class="btn btn-success" value="Submit" />
+                                                    </div>
+                                                </div>
+
+                                                <p class="text-danger rdcls">You can book only upto 100 consignment At One Time...</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        </div>
+  
+    </div>
+
+    @*@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+        // alert("@ViewBag.Message");
+        </script>
+    }*@
+    <script>
+        $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Companyid").autocomplete({
+            source: company_idarr,
+    select: function (event, ui) {
+        $("#Companyid").val(ui.item.value);
+
+       // $("#Customer_Id").trigger("focusout");
+    }
+});
+    });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#SubmitM').click(function () {
+                var StartingCons = $('#StartingCons').val();
+                var EndingCons = $('#EndingCons').val();
+                var Companyid = $('#Companyid').val();
+                if (StartingCons == "" && EndingCons == "" && Companyid=="") {
+                    $("#startconserror").show();
+                    $("#endconserror").show();
+                    $("#companyiderror").show();
+                    return false;
+                }
+              else  if (StartingCons == "") {
+                    // alert("Please Enter Starting Consignment");
+                    $("#startconserror").show();
+                    $("#endconserror").hide();
+                    $("#companyiderror").hide();
+                    return false;
+                }
+                else if (EndingCons == "") {
+                    //   alert("Please Enter Ending Consignment");
+                    $("#endconserror").show();
+                    $("#startconserror").hide();
+                    $("#companyiderror").hide();
+                    return false;
+                }
+                else if (Companyid == "") {
+                    //  alert("Please Enter Company Id");
+                    $("#companyiderror").show();
+                    $("#endconserror").hide();
+                    $("#startconserror").hide();
+                    return false;
+                }
+                else {
+
+                    calstart = StartingCons.substring(1);
+                    calend = EndingCons.substring(1);
+
+                    var conscount = parseInt("0" + calend) - parseInt("0" + calstart) + 1;
+
+                    if (conscount > 100) {
+                        $("#companyiderror").text("Selected consignment are over 100");
+                        //alert("Selected consignment are over 100");
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+
+                }
+            });
+
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#StartingCons').keyup(function () {
+                //alert("Keyup");
+                $('#EndingCons').val('');
+                $('#StartingCons').val($(this).val().toUpperCase());
+                var startno = $("#StartingCons").val();
+                //if (startno.length >= 9) {
+                //    $('#EndingCons').focus();
+                //}
+
+            });
+
+            $('#EndingCons').keyup(function () {
+                //alert("Keyup");
+
+                $('#EndingCons').val($(this).val().toUpperCase());
+
+                var endno = $("#EndingCons").val();
+                var startno = $("#StartingCons").val();
+
+                var firstchastart = startno.charAt(0);
+                var firstcharend = endno.charAt(0);
+
+                if (firstchastart != firstcharend) {
+                    $('#EndingCons').val('');
+                }
+                //else if (endno.length >= 9) {
+                //    $('#Companyid').focus();
+
+                //}
+
+            });
+        });
+
+    </script>
+   

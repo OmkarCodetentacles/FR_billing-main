@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DtdcBillingModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ActivityLog">
+    <Key>
+      <PropertyRef Name="Activity_Id" />
+    </Key>
+    <Property Name="Activity_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Activity" Type="varchar" MaxLength="500" />
+    <Property Name="Emp_Id" Type="int" />
+    <Property Name="PF_Code" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="A_Id" />
+    </Key>
+    <Property Name="A_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="100" />
+    <Property Name="A_Password" Type="varchar" MaxLength="20" />
+    <Property Name="Datetime_Adm" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="Company_Id" />
+    </Key>
+    <Property Name="Company_Id" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="c_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Phone" Type="bigint" />
+    <Property Name="Email" Type="varchar" MaxLength="200" />
+    <Property Name="Insurance" Type="float" />
+    <Property Name="Minimum_Risk_Charge" Type="float" />
+    <Property Name="Other_Details" Type="varchar" MaxLength="5000" />
+    <Property Name="Fuel_Sur_Charge" Type="float" />
+    <Property Name="Topay_Charge" Type="float" />
+    <Property Name="Cod_Charge" Type="float" />
+    <Property Name="Gec_Fuel_Sur_Charge" Type="float" />
+    <Property Name="Pf_code" Type="varchar" MaxLength="20" />
+    <Property Name="Company_Address" Type="varchar" MaxLength="1000" />
+    <Property Name="Company_Name" Type="varchar" MaxLength="500" />
+    <Property Name="Datetime_Comp" Type="datetime" />
+    <Property Name="Gst_No" Type="varchar" MaxLength="100" />
+    <Property Name="Pan_No" Type="varchar" MaxLength="100" />
+    <Property Name="Royalty_Charges" Type="float" />
+    <Property Name="D_Docket" Type="float" />
+    <Property Name="P_Docket" Type="float" />
+    <Property Name="E_Docket" Type="float" />
+    <Property Name="V_Docket" Type="float" />
+    <Property Name="I_Docket" Type="float" />
+    <Property Name="N_Docket" Type="float" />
+  </EntityType>
+  <EntityType Name="Destination">
+    <Key>
+      <PropertyRef Name="Dest_Id" />
+    </Key>
+    <Property Name="Dest_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Pincode" Type="varchar" MaxLength="50" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="State_" Type="varchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Dtdc_Ptp">
+    <Key>
+      <PropertyRef Name="ptp_id" />
+    </Key>
+    <Property Name="ptp_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dest" Type="varchar" MaxLength="200" />
+    <Property Name="PUpto500gm" Type="float" />
+    <Property Name="PAdd500gm" Type="float" />
+    <Property Name="PU10to25kg" Type="float" />
+    <Property Name="PU25to50" Type="float" />
+    <Property Name="PU50to100" Type="float" />
+    <Property Name="Padd100kg" Type="float" />
+    <Property Name="P2Upto500gm" Type="float" />
+    <Property Name="P2Add500gm" Type="float" />
+    <Property Name="P2U10to25kg" Type="float" />
+    <Property Name="P2U25to50" Type="float" />
+    <Property Name="P2U50to100" Type="float" />
+    <Property Name="P2add100kg" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="Sector_Id" Type="int" />
+  </EntityType>
+  <EntityType Name="dtdcPlus">
+    <Key>
+      <PropertyRef Name="plus_id" />
+    </Key>
+    <Property Name="plus_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="destination" Type="varchar" MaxLength="200" />
+    <Property Name="Upto500gm" Type="float" />
+    <Property Name="U10to25kg" Type="float" />
+    <Property Name="U25to50" Type="float" />
+    <Property Name="U50to100" Type="float" />
+    <Property Name="add100kg" Type="float" />
+    <Property Name="go149" Type="float" />
+    <Property Name="go99" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="Add500gm" Type="float" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="CashCounterPlus" Type="bit" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Emp_Id" />
+    </Key>
+    <Property Name="Emp_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Emp_Name" Type="varchar" MaxLength="100" />
+    <Property Name="email" Type="varchar" MaxLength="100" />
+    <Property Name="Phone" Type="bigint" />
+    <Property Name="PF_Code" Type="varchar" MaxLength="20" />
+    <Property Name="Emp_Role" Type="varchar" MaxLength="20" />
+    <Property Name="E_Password" Type="varchar" MaxLength="15" />
+  </EntityType>
+  <EntityType Name="Expense">
+    <Key>
+      <PropertyRef Name="Exp_ID" />
+    </Key>
+    <Property Name="Exp_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="real" />
+    <Property Name="Rason" Type="varchar(max)" />
+    <Property Name="Category" Type="varchar" MaxLength="500" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+    <Property Name="Datetime_Exp" Type="datetime" />
+    <Property Name="User_Id" Type="bigint" />
+  </EntityType>
+  <EntityType Name="express_cargo">
+    <Key>
+      <PropertyRef Name="Exp_Id" />
+    </Key>
+    <Property Name="Exp_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Exslab1" Type="float" />
+    <Property Name="Exslab2" Type="float" />
+    <Property Name="Upto" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="CashCounterExpr" Type="bit" />
+  </EntityType>
+  <EntityType Name="Franchisee">
+    <Key>
+      <PropertyRef Name="PF_Code" />
+    </Key>
+    <Property Name="F_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="PF_Code" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="F_Address" Type="varchar" MaxLength="1000" />
+    <Property Name="OwnerName" Type="varchar" MaxLength="50" />
+    <Property Name="BranchName" Type="varchar" MaxLength="100" />
+    <Property Name="GstNo" Type="varchar" MaxLength="50" />
+    <Property Name="Franchisee_Name" Type="varchar" MaxLength="100" />
+    <Property Name="ContactNo" Type="varchar" MaxLength="20" />
+    <Property Name="Branch_Area" Type="varchar" MaxLength="20" />
+    <Property Name="Datetime_Fr" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Nondox">
+    <Key>
+      <PropertyRef Name="Non_ID" />
+    </Key>
+    <Property Name="Non_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Aslab1" Type="float" />
+    <Property Name="Aslab2" Type="float" />
+    <Property Name="Aslab3" Type="float" />
+    <Property Name="Aslab4" Type="float" />
+    <Property Name="Sslab1" Type="float" />
+    <Property Name="Sslab2" Type="float" />
+    <Property Name="Sslab3" Type="float" />
+    <Property Name="Sslab4" Type="float" />
+    <Property Name="AUptosl1" Type="float" />
+    <Property Name="AUptosl2" Type="float" />
+    <Property Name="AUptosl3" Type="float" />
+    <Property Name="AUptosl4" Type="float" />
+    <Property Name="SUptosl1" Type="float" />
+    <Property Name="SUptosl2" Type="float" />
+    <Property Name="SUptosl3" Type="float" />
+    <Property Name="SUptosl4" Type="float" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="NoOfSlabN" Type="int" />
+    <Property Name="NoOfSlabS" Type="int" />
+    <Property Name="CashCounterNon" Type="bit" />
+  </EntityType>
+  <EntityType Name="Other_Service">
+    <Key>
+      <PropertyRef Name="Service_Other_Id" />
+    </Key>
+    <Property Name="Service_Other_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Pincode_Other" Type="bigint" />
+    <Property Name="Service_Other" Type="varchar" MaxLength="500" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Pay_ID" />
+    </Key>
+    <Property Name="Pay_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Consignment_No" Type="varchar" MaxLength="100" />
+    <Property Name="amount" Type="real" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+    <Property Name="Description_" Type="varchar(max)" />
+    <Property Name="Datetime_Pay" Type="datetime" />
+    <Property Name="User_Id" Type="bigint" />
+  </EntityType>
+  <EntityType Name="Ratem">
+    <Key>
+      <PropertyRef Name="Rete_Id" />
+    </Key>
+    <Property Name="Rete_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="slab1" Type="float" />
+    <Property Name="slab2" Type="float" />
+    <Property Name="slab3" Type="float" />
+    <Property Name="slab4" Type="float" />
+    <Property Name="Sector_Id" Type="int" />
+    <Property Name="Uptosl1" Type="float" />
+    <Property Name="Uptosl2" Type="float" />
+    <Property Name="Uptosl3" Type="float" />
+    <Property Name="Uptosl4" Type="float" />
+    <Property Name="Company_id" Type="varchar" MaxLength="100" />
+    <Property Name="NoOfSlab" Type="int" />
+    <Property Name="CashCounter" Type="bit" />
+  </EntityType>
+  <EntityType Name="Receipt_details">
+    <Key>
+      <PropertyRef Name="Receipt_Id" />
+    </Key>
+    <Property Name="Receipt_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Consignment_No" Type="varchar" MaxLength="20" />
+    <Property Name="Destination" Type="nvarchar(max)" />
+    <Property Name="sender_phone" Type="nvarchar(max)" />
+    <Property Name="Sender_Email" Type="nvarchar(max)" />
+    <Property Name="Sender" Type="nvarchar(max)" />
+    <Property Name="SenderCompany" Type="nvarchar(max)" />
+    <Property Name="SenderAddress" Type="nvarchar(max)" />
+    <Property Name="SenderCity" Type="nvarchar(max)" />
+    <Property Name="SenderState" Type="nvarchar(max)" />
+    <Property Name="SenderPincode" Type="varchar" MaxLength="50" />
+    <Property Name="Reciepents_phone" Type="nvarchar(max)" />
+    <Property Name="Reciepents_Email" Type="nvarchar(max)" />
+    <Property Name="Reciepents" Type="nvarchar(max)" />
+    <Property Name="ReciepentCompany" Type="nvarchar(max)" />
+    <Property Name="ReciepentsAddress" Type="nvarchar(max)" />
+    <Property Name="ReciepentsCity" Type="nvarchar(max)" />
+    <Property Name="ReciepentsState" Type="nvarchar(max)" />
+    <Property Name="ReciepentsPincode" Type="varchar" MaxLength="50" />
+    <Property Name="Shipmenttype" Type="nvarchar(max)" />
+    <Property Name="Shipment_Length" Type="real" />
+    <Property Name="Shipment_Quantity" Type="int" />
+    <Property Name="Shipment_Breadth" Type="real" />
+    <Property Name="Shipment_Heigth" Type="real" />
+    <Property Name="DivideBy" Type="real" />
+    <Property Name="TotalNo" Type="int" />
+    <Property Name="Actual_Weight" Type="real" />
+    <Property Name="volumetric_Weight" Type="real" />
+    <Property Name="DescriptionContent1" Type="nvarchar(max)" />
+    <Property Name="DescriptionContent2" Type="nvarchar(max)" />
+    <Property Name="DescriptionContent3" Type="nvarchar(max)" />
+    <Property Name="Amount1" Type="real" />
+    <Property Name="Amount2" Type="real" />
+    <Property Name="Amount3" Type="real" />
+    <Property Name="Total_Amount" Type="real" />
+    <Property Name="Insurance" Type="nvarchar(max)" />
+    <Property Name="Insuance_Percentage" Type="real" />
+    <Property Name="Insuance_Amount" Type="real" />
+    <Property Name="Charges_Amount" Type="real" Nullable="false" />
+    <Property Name="Charges_Service" Type="real" />
+    <Property Name="Risk_Surcharge" Type="real" />
+    <Property Name="Service_Tax" Type="real" />
+    <Property Name="Charges_Total" Type="real" />
+    <Property Name="Cash" Type="nvarchar(max)" />
+    <Property Name="Credit" Type="nvarchar(max)" />
+    <Property Name="Credit_Amount" Type="int" />
+    <Property Name="secure_Pack" Type="bit" />
+    <Property Name="Passport" Type="bit" />
+    <Property Name="OfficeSunday" Type="bit" />
+    <Property Name="Shipment_Mode" Type="varchar" MaxLength="50" />
+    <Property Name="Addition_charge" Type="real" />
+    <Property Name="Addition_Lable" Type="varchar" MaxLength="1" />
+    <Property Name="Discount" Type="real" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+    <Property Name="User_Id" Type="bigint" />
+    <Property Name="Datetime_Cons" Type="datetime" />
+    <Property Name="Paid_Amount" Type="real" />
+  </EntityType>
+  <EntityType Name="Saving">
+    <Key>
+      <PropertyRef Name="Saving_ID" />
+    </Key>
+    <Property Name="Saving_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Saving_amount" Type="real" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+    <Property Name="Rason" Type="varchar(max)" />
+    <Property Name="Datetime_Sav" Type="datetime" />
+    <Property Name="User_Id" Type="bigint" />
+  </EntityType>
+  <EntityType Name="sectorName">
+    <Key>
+      <PropertyRef Name="sname_id" />
+    </Key>
+    <Property Name="sname_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sname" Type="varchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="Sectors">
+    <Key>
+      <PropertyRef Name="Sector_Id" />
+    </Key>
+    <Property Name="Sector_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Sector_Name" Type="varchar" MaxLength="100" />
+    <Property Name="Pf_code" Type="varchar" MaxLength="20" />
+    <Property Name="Pincode_values" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="Service_list">
+    <Key>
+      <PropertyRef Name="Service_Id" />
+    </Key>
+    <Property Name="Service_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Pincode" Type="varchar" MaxLength="50" />
+    <Property Name="Service_" Type="varchar" MaxLength="500" />
+    <Property Name="Pf_Code" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="User_Id" />
+    </Key>
+    <Property Name="User_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="150" />
+    <Property Name="Contact_no" Type="varchar" MaxLength="10" />
+    <Property Name="PF_Code" Type="varchar" MaxLength="20" />
+    <Property Name="Password_U" Type="varchar" MaxLength="20" />
+    <Property Name="Usertype" Type="varchar" MaxLength="20" />
+    <Property Name="Datetime_User" Type="datetime" />
+  </EntityType>
+  <EntityType Name="WalletPoints">
+    <Key>
+      <PropertyRef Name="Wallet_Id" />
+    </Key>
+    <Property Name="Wallet_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MobileNo" Type="varchar" MaxLength="20" />
+    <Property Name="Wallet_Money" Type="real" />
+    <Property Name="Datetime_Wa" Type="datetime" />
+  </EntityType>
+  <Association Name="Activity_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="ActivityLog" Type="Self.ActivityLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="ActivityLog">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Emp_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dtdc_Ptp__Sector__29221CFB">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__dtdcPlus__Sector__2B0A656D">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__express_c__Secto__2EDAF651">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Nondox__Company___30C33EC3">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ratem__Company_i__339FAB6E">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_company">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Company" Type="Self.Company" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Company">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emexp">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Expense" Type="Self.Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emppay">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_emprecept">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Receipt_details" Type="Self.Receipt_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Receipt_details">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_empsav">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Saving" Type="Self.Saving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Saving">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_exp">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Expense" Type="Self.Expense" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Expense">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_nod">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Nondox" Type="Self.Nondox" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Nondox">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_nond">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="dtdcPlus" Type="Self.dtdcPlus" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="dtdcPlus">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Pay">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ptp">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Dtdc_Ptp" Type="Self.Dtdc_Ptp" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="Dtdc_Ptp">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ptpexp">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="express_cargo" Type="Self.express_cargo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="Company_Id" />
+      </Principal>
+      <Dependent Role="express_cargo">
+        <PropertyRef Name="Company_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_rateamaster">
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="0..1" />
+    <End Role="Ratem" Type="Self.Ratem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sectors">
+        <PropertyRef Name="Sector_Id" />
+      </Principal>
+      <Dependent Role="Ratem">
+        <PropertyRef Name="Sector_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_rece">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Receipt_details" Type="Self.Receipt_details" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="User_Id" />
+      </Principal>
+      <Dependent Role="Receipt_details">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Sav">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Saving" Type="Self.Saving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Saving">
+        <PropertyRef Name="Pf_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_sect">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Sectors" Type="Self.Sectors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Sectors">
+        <PropertyRef Name="Pf_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="User_Fk">
+    <End Role="Franchisee" Type="Self.Franchisee" Multiplicity="0..1" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Franchisee">
+        <PropertyRef Name="PF_Code" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="PF_Code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DtdcBillingModel1StoreContainer">
+    <EntitySet Name="ActivityLog" EntityType="Self.ActivityLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Destination" EntityType="Self.Destination" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Dtdc_Ptp" EntityType="Self.Dtdc_Ptp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="dtdcPlus" EntityType="Self.dtdcPlus" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Expense" EntityType="Self.Expense" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="express_cargo" EntityType="Self.express_cargo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Franchisee" EntityType="Self.Franchisee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Nondox" EntityType="Self.Nondox" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Other_Service" EntityType="Self.Other_Service" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ratem" EntityType="Self.Ratem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Receipt_details" EntityType="Self.Receipt_details" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Saving" EntityType="Self.Saving" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sectorName" EntityType="Self.sectorName" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sectors" EntityType="Self.Sectors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Service_list" EntityType="Self.Service_list" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="WalletPoints" EntityType="Self.WalletPoints" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="Activity_Fk" Association="Self.Activity_Fk">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="ActivityLog" EntitySet="ActivityLog" />
+    </AssociationSet>
+    <AssociationSet Name="Emp_Fk" Association="Self.Emp_Fk">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dtdc_Ptp__Sector__29221CFB" Association="Self.FK__Dtdc_Ptp__Sector__29221CFB">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="FK__dtdcPlus__Sector__2B0A656D" Association="Self.FK__dtdcPlus__Sector__2B0A656D">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="FK__express_c__Secto__2EDAF651" Association="Self.FK__express_c__Secto__2EDAF651">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Nondox__Company___30C33EC3" Association="Self.FK__Nondox__Company___30C33EC3">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Nondox" EntitySet="Nondox" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ratem__Company_i__339FAB6E" Association="Self.FK__Ratem__Company_i__339FAB6E">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Ratem" EntitySet="Ratem" />
+    </AssociationSet>
+    <AssociationSet Name="fk_company" Association="Self.fk_company">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Company" EntitySet="Company" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emexp" Association="Self.fk_emexp">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Expense" EntitySet="Expense" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emppay" Association="Self.fk_emppay">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="fk_emprecept" Association="Self.fk_emprecept">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Receipt_details" EntitySet="Receipt_details" />
+    </AssociationSet>
+    <AssociationSet Name="fk_empsav" Association="Self.fk_empsav">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Saving" EntitySet="Saving" />
+    </AssociationSet>
+    <AssociationSet Name="fk_exp" Association="Self.fk_exp">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Expense" EntitySet="Expense" />
+    </AssociationSet>
+    <AssociationSet Name="fk_nod" Association="Self.fk_nod">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Nondox" EntitySet="Nondox" />
+    </AssociationSet>
+    <AssociationSet Name="fk_nond" Association="Self.fk_nond">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="dtdcPlus" EntitySet="dtdcPlus" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Pay" Association="Self.fk_Pay">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ptp" Association="Self.fk_ptp">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Dtdc_Ptp" EntitySet="Dtdc_Ptp" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ptpexp" Association="Self.fk_ptpexp">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="express_cargo" EntitySet="express_cargo" />
+    </AssociationSet>
+    <AssociationSet Name="fk_rateamaster" Association="Self.fk_rateamaster">
+      <End Role="Sectors" EntitySet="Sectors" />
+      <End Role="Ratem" EntitySet="Ratem" />
+    </AssociationSet>
+    <AssociationSet Name="fk_rece" Association="Self.fk_rece">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Receipt_details" EntitySet="Receipt_details" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Sav" Association="Self.fk_Sav">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Saving" EntitySet="Saving" />
+    </AssociationSet>
+    <AssociationSet Name="fk_sect" Association="Self.fk_sect">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Sectors" EntitySet="Sectors" />
+    </AssociationSet>
+    <AssociationSet Name="User_Fk" Association="Self.User_Fk">
+      <End Role="Franchisee" EntitySet="Franchisee" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,238 @@
+﻿
+
+@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+@{
+
+    Layout = null;
+}
+@{
+    var sMessage = ViewBag.Message as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+}
+<style>
+    .table th {
+        width: 11.25% !important;
+    }
+</style>
+<section style="margin-top:50px">
+
+    <div class="row">
+        <div class="col-md-12 mt-15" style="padding:0">
+            <div class="col-md-8">
+                <div class="form-group">
+
+
+                    @using (Ajax.BeginForm("TopaySearch", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "tr-table", InsertionMode = InsertionMode.Replace }))
+                    {
+
+                        if (ViewBag.Custid != null)
+                        {
+                            <div class="col-md-5">
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="CustiomerId" type="text">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-5">
+                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" placeholder="CustiomerId" type="text">
+                            </div>
+                        }
+
+                        <div class="col-md-2">
+                            <input type="submit" class="btn btn-primary" name="Show" value="Show" />
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <table id="edit-consignment" class="table table-striped table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th style="width:130px">Sr. No</th>
+                    <th style="width:130px">
+                        Action
+                    </th>
+                    <th style="width:140px">
+                        @Html.DisplayNameFor(model => model.Consignment_no)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+
+                    <th style="width:140px">
+                        @Html.DisplayNameFor(model => model.booking_date)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.Mode)
+                    </th>
+                    <th style="width:130px">
+                        @Html.DisplayNameFor(model => model.TopayAmount)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{ int i = 1;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>
+                            <input type="button" class="custbtn btn btn-primary" value="Edit" data-datac="@item.Consignment_no" />
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Consignment_no)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+
+                        <td>
+                            @item.booking_date.Value.ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mode)
+                        </td>
+                        <td>
+                            @item.TopayAmount
+                        </td>
+
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+@*@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+             alert("@ViewBag.Message");
+        </script>
+    }*@
+
+
+
+
+@if (ViewBag.select != null)
+{
+    <script>
+        $(document).ready(function () {
+            $("select").val('@ViewBag.select');
+        });
+    </script>
+}
+
+
+<script>
+
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
+
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
+
+
+        });
+
+
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+</style>
+
+<script>
+
+    /////Sender Autocomplete
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Customer_Id").autocomplete({
+            source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+
+        $("#Customer_Id").trigger("focusout");
+    }
+        });
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(function () {
+        $('#edit-consignment').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+</script>
+

@@ -1,0 +1,572 @@
+﻿
+@model IEnumerable<DtDc_Billing.CustomModel.CreditorsInvoiceModel>
+
+
+
+@{
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+
+    .padding-left-0 {
+        padding-left: 0
+    }
+
+    .Creditorsreport th {
+        width: 7.14% !important;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Creditor's Report  <a href="https://www.youtube.com/watch?v=KlZDv9kMuVI&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=35"
+                                      target="_blank"
+                                      data-toggle="tooltip"
+                                      class="pull-right"
+                                      style="margin-top:10px"
+                                      title="Click to view more info of Weight Difference">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+
+                        var errorMessage = TempData["error"] as string;
+                        var nodata = ViewBag.Nodata as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", errorMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(nodata))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                    }
+                    <div class="form-horizontal">
+
+
+                        @*<div class="row">
+            <div class="">*@
+                        <div class="form-group">
+
+
+                            @using (Html.BeginForm())
+                            {
+
+                                if (ViewBag.Custid != null)
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
+
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                        </div>
+                                        <span style="color:red">
+                                            @Html.ValidationMessage("CustError")
+                                        </span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 padding-left-0">
+                                        <div class="form-group">
+                                            <label>CustomerId</label>
+
+                                            <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                            <span style="color:red">
+                                                @Html.ValidationMessage("CustError")
+                                            </span>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span>: </label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span>:</label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span>:</label>
+                                            <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span>:</label>
+                                            <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Status</label>
+
+                                        <select name="status" class="form-control">
+                                            <option value="Paid">Paid</option>
+                                            <option value="Unpaid">Unpaid</option>
+                                            <option value="both">both</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="margin-top:10px">
+
+                                    <input type="submit" class="btn btn-primary sbmt" name="Submit" value="Show" style="width: 100%" />
+
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="margin-top:10px">
+
+                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success sbmt" style=" width:100% !important" />
+
+
+
+                                </div>
+                                <div class="col-lg-10 col-md-11 col-sm-11"></div>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12 " style="margin-top:10px">
+                                    <input type="submit" value="Print" name="Submit" class="btn btn-warning sbmt" style="padding: 15px; line-height: 0; width: 100%" @*formtarget="_blank"*@ id="printButton" />
+
+                                </div>
+                                <div class="col-lg-10 col-md-11 col-sm-11"></div>
+                                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12" style="margin-top:10px">
+                                    <input type="submit" value="Send mail" name="Submit" class="btn btn-info sbmt" id="sendmail" style=" padding: 15px; line-height: 0; width: 100%" />
+
+                                </div>
+
+                            }
+
+
+
+                        </div>
+                        @*</div>
+            </div>*@
+
+                        <table id="table_display_block" class="table Creditorsreport">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoiceno)
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.Customer_Id)*@@Html.DisplayName("Customer Id")
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CustomerName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoicedate)
+                                    </th>
+                                    <th>
+                                        Due days
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodfrom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax) (%)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetax) (%)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.servicetaxtotal)
+                                    </th>
+                                    <th>
+                                        Discount(%)
+                                    </th>
+                                    <th>
+                                            Discount Amount
+                                    </th>
+                                    <th>
+                                      Net Amount
+                                    </th>
+                                    <th>Paid</th>
+                                    <th>
+                                        Balance
+                                    </th>
+                                    <th>Payment Mode TDS Amount</th>
+                                    <th>Payment Mode Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 1;}
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr class="@(item.balanceamount <= 0 ? "paid-party" : "unpaid-party")">
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.invoiceno)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Customer_Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerName)
+                                            </td>
+                                            <td>
+                                                @item.invoicedate.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @getdays((DateTime)item.invoicedate)
+                                            </td>
+                                            <td>
+                                                @item.periodfrom.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @item.periodto.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.total)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetax)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.servicetaxtotal)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountper)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.discountamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.netamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.paid)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.balanceamount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TdsAmount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TotalAmount)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        <!-- /input-group -->
+                        <div class="row mt-15">
+                            <div class="col-sm-4 ">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary total-label">Total</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        //@*@Model.GroupBy(x => x.invoiceno).Select(g => new {InvoiceNo=g.Key,TotalNetAmount=g.Sum(x=>Math.Round((double)x.netamount,2))}).Sum(x=>x.TotalNetAmount)*@
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="@ViewBag.NetAmountSum" />
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+                            <!-- /input-group -->
+
+                            <div class="col-sm-4 ">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-success">Paid</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        //@*@Model.GroupBy(x => x.invoiceno).Select(g => new {InvoiceNo=g.Key,TotalNetAmount=g.Sum(x=>Math.Round((double)x.paid,2))}).Sum(x=>x.TotalNetAmount)*@ 
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@ViewBag.Paid"/>
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+                            <!-- /input-group -->
+
+                            <div class="col-sm-4 ">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-danger">Balance</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    @if (Model != null)
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="@ViewBag.Balance">
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control total-amount" style="border-color:#d73925" placeholder="0" value="0">
+
+                                    }
+                                </div>
+                            </div>
+                            <!-- /input-group -->
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var nodata = '@ViewBag.Nodata';
+        document.getElementById('printButton').addEventListener('click', function (event) {
+            if (nodata!="") {
+                event.preventDefault(); // Prevent form submission
+
+            }
+            else {
+                document.getElementById('printButton').setAttribute('formtarget', '_blank'); // Open in new tab if data is found
+
+            }
+        });
+    });
+</script>
+
+
+@functions {
+
+    private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+
+    public int getdays(DateTime invoicedate)
+    {
+
+        DateTime indianTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, INDIAN_ZONE);
+        var day = (indianTime.Date - invoicedate.Date).TotalDays;
+        return Convert.ToInt32(day);
+    }
+}
+
+@if (ViewBag.select != null)
+{
+    <script>
+                $(document).ready(function() {
+        $("select").val('@ViewBag.select');
+            });
+    </script>
+}
+
+@*@if (TempData["error"] != null)
+    {
+        <script>
+    alert('@TempData["error"]');
+        </script>
+    }*@
+
+<script>
+
+    $(document).ready(function () {
+        $(".custbtn").click(function () {
+            var d = $(this).data('datac');
+
+            $('#consinmentno').val(d);
+            $('#consinmentno').keyup();
+
+
+        });
+
+
+
+
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+        $('#datepicker1').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        })
+
+
+
+    });
+</script>
+<style>
+    #edit-consignment {
+        display: block;
+    }
+
+    .paid-party {
+        color: #008000;
+    }
+
+        .paid-party td {
+            border-color: #00800059 !important;
+        }
+
+    .unpaid-party {
+        background-color: #ff000059;
+    }
+
+        .unpaid-party td {
+            border-color: #ff000059 !important;
+        }
+</style>
+
+<script>
+
+/////Sender Autocomplete
+$(function () {
+    var availableTutorials = [
+
+    ];
+    var company_idarr = [
+
+
+
+    ];
+
+    $.ajax({
+        type: 'GET',
+        /**/
+        /**/
+        /**/
+        url: '@Url.Action("CustomerIdAutocomplete","Booking")',
+/**/
+/**/
+/**/
+data: { },
+dataType: 'json',
+        success: function (data) {
+            console.log(data)
+    $.each(data, function(i, item) {
+                company_idarr.push(item.Company_Id);
+            });
+
+        }
+    });
+
+    $("#Custid").autocomplete({
+        source: company_idarr,
+select: function(event, ui) {
+    $("#Custid").val(ui.item.value);
+
+    $("#Custid").trigger("focusout");
+        }
+    });
+
+    $("#custid").autocomplete({
+        source: company_idarr,
+        select: function(event, ui) {
+
+        }
+    });
+});
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+       
+        $('.sbmt').click(function () {
+         var sbmt=   $(".sbmt").val();
+            var frmdate = $('#datepicker').val();
+
+            var todate = $('#datepicker1').val();
+            
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+      
+    });
+</script>
+
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

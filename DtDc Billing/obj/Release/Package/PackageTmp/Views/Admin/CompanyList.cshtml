@@ -1,0 +1,334 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Company>
+
+@{
+    ViewBag.Title = "CompanyList";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>CompanyList</h2>
+
+
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Consignments</h4>
+                </div><!-- /.box-header -->
+                <div class="box-body" style="overflow-x: auto;">
+
+
+
+                    <table id="example1" class="table table-striped table-bordered table-scroll">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.c_id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Phone)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Insurance)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Minimum_Risk_Charge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Other_Details)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Fuel_Sur_Charge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Topay_Charge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Cod_Charge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Gec_Fuel_Sur_Charge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Company_Address)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Company_Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Datetime_Comp)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Gst_No)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pan_No)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Royalty_Charges)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.D_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.P_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.E_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.V_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.I_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.N_Docket)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Password)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Username)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Franchisee.F_Address)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Company_Id)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.c_id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Insurance)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Minimum_Risk_Charge)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Other_Details)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fuel_Sur_Charge)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Topay_Charge)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cod_Charge)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gec_Fuel_Sur_Charge)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company_Address)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Datetime_Comp)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Gst_No)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Pan_No)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Royalty_Charges)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.D_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.P_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.E_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.V_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.I_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.N_Docket)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Password)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Franchisee.F_Address)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Company_Id)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Delete", "DeleteCompapy", new { id = item.Company_Id })
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <br>
+                    <!-- /input-group -->
+
+                    <div class="col-sm-3 " style="float: right" ;>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-danger total-label">Total</button>
+                            </div>
+                            <!-- /btn-group -->
+                            <input type="text" class="form-control total-amount" value="@ViewBag.sum">
+                        </div>
+                    </div>
+                    <!-- /input-group -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*if (selectedemp != null) {
+            $("#Employees").val(selectedemp);
+        }
+    var selectedemp = @ViewBag.selectedemp;*@
+<script>
+
+    var stateId = $("#PfCode").val();
+    var selectedemp = '@ViewBag.selectedemp';
+
+    $.ajax
+        ({
+            url: '/Reports/GetUserList',
+            type: 'POST',
+            datatype: 'application/json',
+            data: { Pfcode: stateId },
+            success: function (result) {
+                $("#Employees").html("");
+                $.each($.parseJSON(result), function (i, city) {
+                    $("#Employees").append
+                        ($('<option></option>').val(city.Name).html(city.Name))
+                })
+                if (selectedemp != null) {
+                    $("#Employees").val(selectedemp);
+                }
+            },
+
+        });
+
+
+    $('#PfCode').change(function () {
+
+        var stateId = $("#PfCode").val();
+        $.ajax
+            ({
+                url: '/Reports/GetUserList',
+                type: 'POST',
+                datatype: 'application/json',
+                data: { Pfcode: stateId },
+                success: function (result) {
+                    $("#Employees").html("");
+                    $.each($.parseJSON(result), function (i, city) {
+                        $("#Employees").append
+                            ($('<option></option>').val(city.Name).html(city.Name))
+                    })
+                },
+
+            });
+    });
+
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+
+</script>
+
+
+
+<style>
+    .pf-code select, .emp-id select {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+    .table-scroll {
+        height: 400px;
+    }
+</style>
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        alert('@TempData["Success"]');
+    </script>
+}

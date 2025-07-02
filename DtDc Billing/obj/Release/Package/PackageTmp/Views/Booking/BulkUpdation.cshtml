@@ -1,0 +1,665 @@
+﻿@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+<style>
+    .check-booking-list {
+        display: block;
+        min-height: 400px;
+    }
+
+    .consignmentno, .bookingdate {
+        width: 80px;
+    }
+
+    .customerid {
+        width: 115px;
+    }
+
+    .chargablewt {
+        width: 40px;
+    }
+
+    .actualweights {
+        width: 50px;
+    }
+
+    .name {
+        width: 120px;
+    }
+
+    .pincode {
+        width: 55px;
+    }
+
+    .quantity {
+        width: 30px;
+    }
+
+    .amount {
+        width: 50px;
+    }
+
+    input:read-only {
+        border: none;
+        background: transparent;
+    }
+
+    th {
+        font-size: 12px;
+    }
+
+    td {
+        font-size: 13px
+    }
+
+    table input {
+        border: 1px solid #3c8dbb;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 24px;
+    }
+
+    table select {
+        text-align: center;
+        vertical-align: middle;
+        line-height: 24px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: #00000052;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: none;
+    }
+
+    .loader {
+        position: absolute;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid blue;
+        border-bottom: 16px solid blue;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        top: 40%;
+        animation: spin 2s linear infinite;
+        bottom: 50%;
+        left: 50%;
+        right: 50%;
+    }
+
+    .messageajax {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        text-align: center;
+        display: none;
+    }
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .submitbtn {
+        background: transparent;
+        color: #000000bd;
+        text-transform: capitalize;
+    }
+</style>
+
+
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Bulk updation</h4>
+                </div>
+                <div class="messageajax">
+                    <div class="alert alert-success"></div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        <div class="col-md-2">
+                                            @Html.DropDownList("ListType", new List<SelectListItem>
+    {
+
+        new SelectListItem{ Text="Open Consignment", Value = "OpenConsignment" },
+        new SelectListItem{ Text="Update Consignment", Value = "UpdateConsignment" },
+
+
+     }, new { @class = "form-control", @id = "ListType" })
+                                        </div>
+
+                                        if (ViewBag.Custid != null)
+                                        {
+                                            <div class="col-md-2 custid">
+                                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" placeholder="Customer id " type="text">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-2 custid">
+                                                <input name="Custid" style="margin-right:10px" class="form-control" id="custid" placeholder="Customer id " type="text">
+                                            </div>
+                                        }
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <input name="Fromdatetime" class="form-control" id="datepicker" placeholder="From Date" type="text">
+                                            </div>
+                                        }
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <input style="margin-right:50px" name="ToDatetime" class="form-control" placeholder="To Date" id="datepicker1" type="text">
+                                            </div>
+                                        }
+                                        <div class="col-md-1">
+                                            <input type="submit" class="pull-right btn btn-primary col-sm-12" id="Show" name="Show" value="Show" />
+
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="check-booking-list table table-striped table-bordered table-responsive height-450" id="tblscroll">
+                            <thead>
+
+
+
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    <th>
+                                        Consignment no
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Destination
+                                    </th>
+
+                                    <th>
+                                        customer ID
+                                    </th>
+                                    <th>
+                                        A.  Weight
+                                    </th>
+                                    <th>
+                                        Weight
+                                    </th>
+
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Qty
+                                    </th>
+
+                                    <th>
+                                        Mode
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @i
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="consignmentno" value="@item.Consignment_no" readonly>
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="bookingdate" readonly value="@item.booking_date.Value.ToString("dd/MM/yyyy")">
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="pincode" value="@item.Pincode" readonly>
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="name" value="@item.Name" readonly>
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="customerid" value="@item.Customer_Id">
+
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="actualweights" value="@item.Actual_weight" readonly>
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="chargablewt" value="@item.chargable_weight">
+                                            </td>
+
+
+                                            <td>
+
+                                                <select data-index="@i" class="typet">
+                                                    <option value="D" @(item.Type_t == "D" ? "Selected" : "")>D</option>
+                                                    <option value="N" @(item.Type_t == "N" ? "Selected" : "")>N</option>
+                                                </select>
+
+                                            </td>
+                                            <td>
+
+                                                <input type="text" data-index="@i" class="quantity" value="@item.Quanntity" readonly>
+                                            </td>
+
+                                            <td>
+
+
+                                                <select data-index="@i" class="mode">
+                                                    <option value="AR" @(item.Mode == "AR" ? "Selected" : "")>AR</option>
+                                                    <option value="AC" @(item.Mode == "AC" ? "Selected" : "")>AC</option>
+                                                    <option value="SF" @(item.Mode == "SF" ? "Selected" : "")>SF</option>
+                                                    <option value="AR1" @(item.Mode == "AR1" ? "Selected" : "")>AR1</option>
+                                                    <option value="AC1" @(item.Mode == "AC1" ? "Selected" : "")>AC1</option>
+                                                    <option value="SF1" @(item.Mode == "SF1" ? "Selected" : "")>SF1</option>
+                                                    <option value="D1Z" @(item.Mode == "D1Z" ? "Selected" : "")>D1Z</option>
+                                                    <option value="CP1" @(item.Mode == "CP1" ? "Selected" : "")>CP1</option>
+                                                    <option value="CP2" @(item.Mode == "CP2" ? "Selected" : "")>CP2</option>
+                                                    <option value="CSP" @(item.Mode == "CSP" ? "Selected" : "")>CSP</option>
+                                                    <option value="D1Z" @(item.Mode == "D1Z" ? "Selected" : "")>D1Z</option>
+                                                    <option value="D2Z" @(item.Mode == "D2Z" ? "Selected" : "")>D2Z</option>
+                                                    <option value="DZ2" @(item.Mode == "DZ2" ? "Selected" : "")>DZ2</option>
+                                                    <option value="D10" @(item.Mode == "D10" ? "Selected" : "")>D10</option>
+                                                    <option value="D12" @(item.Mode == "D12" ? "Selected" : "")>D12</option>
+                                                    <option value="DM2" @(item.Mode == "DM2" ? "Selected" : "")>DM2</option>
+                                                    <option value="DCP" @(item.Mode == "DCP" ? "Selected" : "")>DCP</option>
+                                                    <option value="DC2" @(item.Mode == "DC2" ? "Selected" : "")>DC2</option>
+                                                    <option value="DCD" @(item.Mode == "DCD" ? "Selected" : "")>DCD</option>
+                                                    <option value="DZB" @(item.Mode == "DZB" ? "Selected" : "")>DZB</option>
+                                                    <option value="DSF" @(item.Mode == "DSF" ? "Selected" : "")>DSF</option>
+                                                    <option value="D2D" @(item.Mode == "D2D" ? "Selected" : "")>D2D</option>
+                                                    <option value="DZS" @(item.Mode == "DZS" ? "Selected" : "")>DZS</option>
+                                                    <option value="ZSP" @(item.Mode == "ZSP" ? "Selected" : "")>ZSP</option>
+                                                    <option value="DAR" @(item.Mode == "DAR" ? "Selected" : "")>DAR</option>
+                                                    <option value="DMB" @(item.Mode == "DMB" ? "Selected" : "")>DMB</option>
+                                                    <option value="DMD" @(item.Mode == "DMD" ? "Selected" : "")>DMD</option>
+                                                    <option value="DMS" @(item.Mode == "DMS" ? "Selected" : "")>DMS</option>
+                                                    <option value="DSM" @(item.Mode == "DSM" ? "Selected" : "")>DSM</option>
+                                                    <option value="MSP" @(item.Mode == "MSP" ? "Selected" : "")>MSP</option>
+                                                    <option value="MSP" @(item.Mode == "MSP" ? "Selected" : "")>MSP</option>
+                                                    <option value="DNB" @(item.Mode == "DNB" ? "Selected" : "")>DNB</option>
+                                                    <option value="DNP" @(item.Mode == "DNP" ? "Selected" : "")>DNP</option>
+                                                    <option value="DN2" @(item.Mode == "DN2" ? "Selected" : "")>DN2</option>
+                                                    <option value="DND" @(item.Mode == "DND" ? "Selected" : "")>DND</option>
+                                                    <option value="DNS" @(item.Mode == "DNS" ? "Selected" : "")>DNS</option>
+                                                    <option value="GEC" @(item.Mode == "GEC" ? "Selected" : "")>GEC</option>
+                                                    <option value="PEC" @(item.Mode == "PEC" ? "Selected" : "")>PEC</option>
+                                                    <option value="GE1" @(item.Mode == "GE1" ? "Selected" : "")>GE1</option>
+
+                                                </select>
+                                            </td>
+                                            <td>
+
+                                                <label>
+                                                    <input type="text" data-index="@i" class="amount" value="@item.Amount">
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <input type="submit" data-index="@i" class="btn btn-success submitbtn" value="update" />
+                                            </td>
+
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <br>
+                        <!-- /input-group -->
+                        @*<div class="col-sm-3 " style="float: right" ;>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-danger total-label">Total</button>
+                    </div>*@
+                        <!-- /btn-group -->
+                        @*<input type="text" class="form-control total-amount" value="@ViewBag.totalamt">
+                    </div>
+                </div>*@
+                        <!-- /input-group -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="overlay">
+    <div class="loader"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+     $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+         $("#custid,.customerid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+
+     $('#datepicker').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+     $('#datepicker1').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+    });
+</script>
+
+@*<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+
+            if (cutid == "") {
+                alert("Please Enter Customer Id");
+                return false;
+            }
+            else if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
+        });
+    });
+
+</script>*@
+<script>
+    $(document).ready(function () {
+        
+        $('.customerid,.chargablewt,.typet,.mode').focusout(function () {
+        //$('.amount').focus(function () {
+
+            var index = $(this).attr('data-index');
+            var Consino = $('.consignmentno[data-index="' + index + '"]').val();
+            var custid = $('.customerid[data-index="' + index + '"]').val();
+            var bookdate = $('.bookingdate[data-index="' + index + '"]').val();
+            var pincode = $('.pincode[data-index="' + index + '"]').val();
+            var mode = $('.mode[data-index="' + index + '"]').val();
+            var qty = $('.quantity[data-index="' + index + '"]').val();
+            var charweight = $('.chargablewt[data-index="' + index + '"]').val();
+            var type = $('.typet[data-index="' + index + '"]').val();
+          
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+
+                return false;
+            }
+            else {
+                $('.overlay').show();
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Calculation/CalulateAmt',
+                    data: { Consignment: Consino, custid: custid, pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        //alert(Data.Amount);
+                        var Insuranceval = $('input[name="topay"]:checked').val();
+
+
+                        if (Insuranceval == "yes") {
+                            $('.amount[data-index="' + index + '"]').val(0);
+                        }
+                        else {
+
+                            $('.amount[data-index="' + index + '"]').val(Data.Amount);
+                        }
+                        $('.overlay').hide();
+                        // $('#dtdcamount').val(Data.dtdcamount);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $('.overlay').hide();
+                    }
+                });
+            }
+
+        });
+
+        $('.submitbtn').click(function () {
+            
+            var index = $(this).attr('data-index');
+            var Consino = $('.consignmentno[data-index="' + index + '"]').val();
+            var custid = $('.customerid[data-index="' + index + '"]').val();
+            var bookdate = $('.bookingdate[data-index="' + index + '"]').val();
+            var pincode = $('.pincode[data-index="' + index + '"]').val();
+            var mode = $('.mode[data-index="' + index + '"]').val();
+            var qty = $('.quantity[data-index="' + index + '"]').val();
+            var charweight = $('.chargablewt[data-index="' + index + '"]').val();
+            var type = $('.typet[data-index="' + index + '"]').val();
+            var amount = $('.amount[data-index="' + index + '"]').val();
+
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+
+                return false;
+            }
+            else {
+                $('.messageajax').show();
+                $('.messageajax .alert').html('Updating Consignmentno ' + Consino+'.....');
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Booking/Bulkupdatesave',
+                    data: { Consignment: Consino, custid: custid, amount: amount, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        if (Data == 1) {
+                            $('.messageajax .alert').html('Consignmentno ' + Consino + ' Updated Successfully.....');
+                            setTimeout(function () {
+                                $('.messageajax').fadeOut('fast');
+                            }, 4000);
+                            
+                        }
+                        else {
+                            alert("Error");
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $('.messageajax .alert').html('Error occured while saving Consignmentno ' + Consino + '');
+                        setTimeout(function () {
+                            $('.messageajax').fadeOut('fast');
+                        }, 4000);
+                    }
+                });
+            }
+
+        });
+
+
+       
+        function custmeridshowhide() {
+
+            
+            var value = $("#ListType option:selected").text();
+            
+            if (value == "Open Consignment") {
+
+                $(".custid").hide();
+            }
+            else {
+                $(".custid").show();
+            }
+        }
+
+
+        $("#ListType").change(function () {
+            
+            custmeridshowhide();
+        });
+
+
+       
+
+        custmeridshowhide();
+        });
+
+</script>
+
+
+
+
+@*<script>
+    $(document).ready(function () {
+
+        $('#Show').click(function () {
+            var cutid = $('#custid').val();
+            var frmdate = $('#datepicker').val();
+            var todate = $('#datepicker1').val();
+
+
+            if (frmdate == "") {
+                alert("Please Enter From Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter To Date");
+                return false;
+            }
+            else { return true; }
+
+
+        });
+    });
+
+</script>*@
+
+<script>
+    $(function () {
+        $('#check-booking-list').dataTable({
+            "bPaginate": false,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

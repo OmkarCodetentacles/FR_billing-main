@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
+    Html.EnableClientValidation(true);
+}
+
+
+
+<!-- Main content -->
+
+    <div class="content-wrapper">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-body">
+
+                            <ul id="Tab" class="nav nav-tabs">
+
+                                <li class="active"><a data-toggle="tab" href="#menu1">Dox</a></li>
+                                <li><a data-toggle="tab" href="#menu2">NonDox</a></li>
+                                <li><a data-toggle="tab" href="#menu3">Dtdc PLUS</a></li>
+                                <li><a data-toggle="tab" href="#menu4">Dtdc PTP</a></li>
+                                <li><a data-toggle="tab" href="#menu5">Express Cargo</a></li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div id="menu1" class="tab-pane fade in active">
+                                    <div id="frmEmp1">
+                                        @{ Html.RenderPartial("CashCounterDox", (IEnumerable<DtDc_Billing.Entity_FR.Ratem>)ViewBag.Dox);}
+                                    </div>
+                                </div>
+                                <div id="menu2" class="tab-pane fade">
+                                    <div id="frmEmp2">
+                                        @{ Html.RenderPartial("CashCounterNonDox", (IEnumerable<DtDc_Billing.Entity_FR.Nondox>)ViewBag.NonDox);}
+                                    </div>
+                                </div>
+                                <div id="menu3" class="tab-pane fade">
+                                    <div id="frmEmp3">
+                                        @{ Html.RenderPartial("CashCounterPlus", (IEnumerable<DtDc_Billing.Entity_FR.dtdcPlu>)ViewBag.Plus);}
+                                    </div>
+                                </div>
+                                <div id="menu4" class="tab-pane fade">
+                                    <div id="frmEmp4">
+                                        @{ Html.RenderPartial("CashCounterPtp", (IEnumerable<DtDc_Billing.Entity_FR.Dtdc_Ptp>)ViewBag.Ptp);}
+                                    </div>
+                                </div>
+                                <div id="menu5" class="tab-pane fade">
+                                    <div id="frmEmp5">
+                                        @{ Html.RenderPartial("CashCounterExpress", (IEnumerable<DtDc_Billing.Entity_FR.express_cargo>)ViewBag.Cargo);}
+                                    </div>
+                                </div>
+                                <input type="hidden" id="tabbb" name="tab" />
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+                <!-- /.box -->
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+    </div>
+    

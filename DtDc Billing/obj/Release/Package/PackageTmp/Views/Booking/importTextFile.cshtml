@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "importTextFile";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+
+        <div class="box-header with-border">
+            <h4>
+                Import From Text And Excel for the Fr-Plus
+                <a href="https://www.youtube.com/watch?v=yYChS8s7y9g&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=19"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    @if (TempData["ErrorMessages"] != null)
+                    {
+                        var errorMessages = TempData["ErrorMessages"] as List<string>;
+                        if (errorMessages.Count() > 0)
+                        {
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (var error in errorMessages)
+                                    {
+                                        <li style="color:red;">@error</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    }
+                    @{
+                        var successMessage = TempData["Upload"] as string;
+                        var errorMessage = TempData["Error"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", errorMessage))
+                    }
+                    <div class="form-horizontal">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("importTextFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "fromttext" }))
+                                    {
+                                        <label class="">Upload Text or Csv  File </label>
+                                        <div class="">
+                                            <input id="File1" type="file" name="ImportText" />
+                                            <span class="fileError" style="color: red; display: none;">Please select a file before uploading.</span> <!-- Error message -->
+                                        </div>
+                                        <div style="text-align:end;">
+                                            <input type="submit" class="btn btn-success mt-3" id="submitBtn" value="Upload" style="margin-top:20px" />
+
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("ImportFrPlusExcelFile", "Booking", FormMethod.Post, new { enctype = "multipart/form-data", id = "excelform" }))
+                                    {
+                                        <label class="">Upload Excel  File </label>
+                                        <div class="">
+                                            <input id="ExcelFile" type="file" name="ImportExcelFile" />
+                                            <span class="excelfileError" style="color: red; display: none;">Please select a Excel file before uploading.</span>  
+                                        </div>
+                                        <div style="text-align:end;">
+                                            <input type="submit" class="btn btn-success mt-3" id="excelsubmitBtn" value="Upload" style="margin-top:20px" />
+
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#submitBtn').on('click', function (e) {
+     
+            var file = $("#File1").val();
+           // alert(file)
+            // Check if file input is empty
+            if (file == "" || file == NaN)
+            {
+                // alert("Please select a file before Uploading.");
+                $(".fileError").show();
+                e.preventDefault();
+                return false; // Stop the form submission
+            }
+            // Extract the file extension
+            var allowedExtensions = /(\.txt|\.csv)$/i;
+
+            // Validate file extension
+            if (!allowedExtensions.exec(file)) {
+                $(".fileError").text("Invalid file type. Please upload a .TXT or .CSV file").show();
+                return false;
+            }
+
+            // Show the loader after validation
+          //  showLoader('overlayBlock');
+
+            // Get the form element and submit the form after validation
+            $('#fromttext').submit();
+        });
+
+
+        $('#excelsubmitBtn').on('click', function (e) {
+           
+            var file = $("#ExcelFile").val();
+            
+            if (file == "" || file == NaN) {
+                
+                $(".excelfileError").show();
+                e.preventDefault();
+                return false; 
+            }
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+            if (!allowedExtensions.exec(file)) {
+                $(".excelfileError").text("Invalid file type. Please upload a .xls or .xlsx file").show();
+                return false;
+            }
+
+            $('#excelform').submit();
+        });
+
+
+
+    })
+</script>

@@ -523,6 +523,7 @@ namespace DtDc_Billing.Controllers
                     {
                         if (highwaight <= prio.priupto1)
                         {
+<<<<<<< HEAD
                             AirAmount = Convert.ToDouble(prio.prislab1) * prio.priupto1;
                         }
                         else
@@ -532,17 +533,37 @@ namespace DtDc_Billing.Controllers
                             weightmod = Math.Ceiling(weightmod);
 
                             AirAmount = Convert.ToDouble((prio.prislab1 * prio.priupto1) + (prio.prislab4 * weightmod));
+=======
+                            AirAmount = Convert.ToDouble(prio.prislab1); 
+                        }
+                        else
+                        {
+
+                        double weightmod = (highwaight - Convert.ToDouble(prio.priupto1)) / Convert.ToDouble(prio.priupto4);
+
+                            weightmod = Math.Ceiling(weightmod);
+
+                            AirAmount = Convert.ToDouble((prio.prislab1) + (prio.prislab4 * weightmod));
+>>>>>>> upstream/main
                         }
                     }
                     else if (prio.prinoofslab == 3)
                     {
                         if (highwaight <= prio.priupto1)
                         {
+<<<<<<< HEAD
                             AirAmount = Convert.ToDouble(prio.prislab1) * prio.priupto1;
                         }
                         else if (highwaight <= prio.priupto2)
                         {
                             AirAmount = Convert.ToDouble(prio.prislab2) * Math.Ceiling(highwaight);
+=======
+                            AirAmount = Convert.ToDouble(prio.prislab1);
+                        }
+                        else if (highwaight <= prio.priupto2)
+                        {
+                            AirAmount = Convert.ToDouble(prio.prislab2);
+>>>>>>> upstream/main
                         }
                         else
                         {
@@ -561,16 +582,28 @@ namespace DtDc_Billing.Controllers
 
                         if (highwaight <= prio.priupto1)
                         {
+<<<<<<< HEAD
                             AirAmount = Convert.ToDouble(prio.prislab1) * prio.priupto1;
+=======
+                            AirAmount = Convert.ToDouble(prio.prislab1);
+>>>>>>> upstream/main
                         }
 
                         else if (highwaight <= prio.priupto2)
                         {
+<<<<<<< HEAD
                             AirAmount = Convert.ToDouble(prio.prislab2) * Math.Ceiling(highwaight);
                         }
                         else if (highwaight <= prio.priupto3)
                         {
                             AirAmount = Convert.ToDouble(prio.prislab3) * Math.Ceiling(highwaight);
+=======
+                            AirAmount = Convert.ToDouble(prio.prislab2);
+                        }
+                        else if (highwaight <= prio.priupto3)
+                        {
+                            AirAmount = Convert.ToDouble(prio.prislab3);
+>>>>>>> upstream/main
                         }
                         else
                         {
@@ -579,7 +612,11 @@ namespace DtDc_Billing.Controllers
                             weightmod = Math.Ceiling(weightmod);
 
                             // AirAmount = Convert.ToDouble(nondox.Aslab3 + (nondox.Aslab4 * weightmod));
+<<<<<<< HEAD
                             AirAmount = Convert.ToDouble((prio.prislab3 * prio.priupto3) + (prio.prislab4 * weightmod));
+=======
+                            AirAmount = Convert.ToDouble((prio.prislab3) + (prio.prislab4 * weightmod));
+>>>>>>> upstream/main
                         }
 
                     }

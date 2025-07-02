@@ -1,0 +1,104 @@
+﻿@model IEnumerable<DtDc_Billing.Models.DisplayPFSum>
+
+@{
+    ViewBag.Title = "PfReport";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>PfReport</h2>
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+
+
+    @using (Html.BeginForm())
+    {
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>To Date:</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    @if (ViewBag.Fromdatetime != null)
+                    {
+                        <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                    }
+                    else
+                    {
+                        <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                    }
+
+                    @Html.ValidationMessage("Fromdateeror")
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>To Date:</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    @if (ViewBag.ToDatetime != null)
+                    {
+                        <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                    }
+                    else
+                    {
+                        <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                    }
+
+                    @Html.ValidationMessage("Todateeror")
+                </div>
+
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-block btn-success">Search</button>
+    }
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PfCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sum)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PfCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+<script>
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+   
+
+</script>

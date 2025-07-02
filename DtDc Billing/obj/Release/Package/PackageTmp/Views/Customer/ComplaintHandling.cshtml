@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Complaint>
+
+@{
+    ViewBag.Title = "ComplaintHandling";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<section>
+    <div class="container">
+
+        <h2>ComplaintHandling</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Consignment_No)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reason)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Complaint_Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Company_id)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Consignment_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reason)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Complaint_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company_id)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Complaint_ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Complaint_ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Complaint_ID })
+                    </td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</section>
+

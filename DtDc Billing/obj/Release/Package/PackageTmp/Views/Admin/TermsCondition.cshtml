@@ -1,0 +1,452 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+@{
+    Layout = null;
+    string robotsTxtPath = Server.MapPath("~/excelformat/robots.txt");
+    string robotsTxtContent = System.IO.File.ReadAllText(robotsTxtPath);
+}
+
+
+<head>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+
+
+    @{
+        string context = null;
+        string type = null;
+        string organizationName = "Fr-Billing";
+        string organizationUrl = "http://codetentaclestechnologies.com/";
+        string logoUrl = "https://frbilling.com/";
+        string phoneNumber = "+91 8208668841";
+        string facebookUrl = "https://www.facebook.com/profile.php?id=61555152457829";
+        string instagramUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        //   string linkedinUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        string linkedinUrl = "https://www.linkedin.com/company/fr-billing";
+    }
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "@Html.Raw(organizationName)",
+  "url": "@Html.Raw(organizationUrl)",
+  "logo": "@Html.Raw(logoUrl)",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "@Html.Raw(phoneNumber)",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    "@Html.Raw(facebookUrl)",
+    "@Html.Raw(instagramUrl)",
+    "@Html.Raw(linkedinUrl)"
+  ]
+}
+    </script>
+
+    <meta charset="UTF-8">
+
+    @*<meta name="robots" content="index,follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta property="og:title" content="Your Blog Post Title" />
+        <meta property="og:description" content="Your blog post description" />
+        <meta property="og:image" content="URL to your blog post image" />
+        <meta property="og:url" content="URL to your blog post" />*@
+    <meta name="robots" content="index,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!" />
+    <meta property="og:description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." />
+    <meta property="og:image" content="https://frbilling.com/assets/Home/assets/images/logo.png" />
+    <meta property="og:url" content="https://frbilling.com/" />
+    <meta name="description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." data-target="Unlock unparalleled efficiency with Fr-Billing - Your Ultimate Billing Solution. Discover how our cutting-edge platform revolutionizes billing processes, elevates user experience, and turbocharges productivity. Streamline operations effortlessly and stay ahead in today's dynamic business landscape. Click now to explore the future of billing">
+
+    <meta name="author" content="CodeTentacles Technologies">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://www.fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    @*<title>FR-Billing | Index</title>*@
+    <title>FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!</title>
+
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
+    <!-- Bootstrap core CSS -->
+    <link href="~/assets/Home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="canonical" href="https://www.codetentaclestechnologies.com" />
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/assets/Home/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/templatemo-onix-digital.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/animated.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/owl.css">
+    <!--
+
+    TemplateMo 565 Onix Digital
+
+    https://templatemo.com/tm-565-onix-digital
+
+    -->
+    <style>
+        i.fa.fa-solid.fa-check {
+            color: #05844f;
+            margin: 0 6px;
+            display: grid;
+            align-items: center;
+        }
+
+        .contacticon {
+            margin-right: 5px;
+            width: 46px;
+            height: 46px;
+            display: inline-block;
+            text-align: center;
+            line-height: 46px;
+            border-radius: 50%;
+            background: rgb(255,104,95);
+            background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .contactus {
+            color: #ff7461;
+            font-size: 15px;
+            font-weight: 500;
+            margin-left: 30px;
+        }
+
+        .indian_wheel {
+            width: 20px;
+        }
+
+        .new-blue-button-hover {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: color 0.3s ease, font-size 0.3s ease;
+            animation: shake 0.3s ease infinite;
+        }
+
+            .new-blue-button-hover a {
+                color: inherit;
+            }
+
+            .new-blue-button-hover::after {
+                content: '';
+                position: absolute;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s ease, height 0.3s ease;
+                pointer-events: none;
+            }
+
+            .new-blue-button-hover:hover::after {
+                width: 200px;
+                height: 200px;
+            }
+
+            .new-blue-button-hover:hover {
+                animation-play-state: paused; /* Pause the shake animation on hover */
+            }
+
+        .main-banner .item h1 {
+            font-size: 50px;
+            font-weight: 700;
+            color: #2a2a2a;
+            line-height: 72px;
+        }
+
+            .main-banner .item h1 em {
+                color: #03a4ed;
+                font-style: normal;
+            }
+
+        @@keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-3px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+
+        .diwalilogo img {
+            width: 18%;
+            overflow: hidden;
+        }
+
+        .diwalilogofooter img {
+            width: 56%;
+            overflow: hidden;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="elfsight-app-38ff4384-1e40-4eca-b963-69e2e25bccfc" data-elfsight-app-lazy></div>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <img src="~/assets/Home/assets/images/loader.gif" alt="Loading animation">
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="#" class="logo" target="_self">
+                            <img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing logo">
+
+                        </a>
+
+                        <!-- ***** DIWALI Logo ***** -->
+                        @*<a href="#" class="diwalilogo" target="_self">
+                                <img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing logo">
+
+                            </a>*@
+                        <!-- *****DIWALI  Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            
+                            <li class="scroll-to-section"><div class="main-red-button-hover"><a href="@Url.Action("index","Admin")">Home</a></div></li>
+                        </ul>
+                        <a class='menu-trigger' href="">
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+
+
+    <div style="
+  margin-top: 10rem;
+">
+        <div class="tables-left-dec">
+            <img src="~/assets/Home/assets/images/tables-left-dec.png" alt="">
+        </div>
+        <div class="tables-right-dec">
+            <img src="~/assets/Home/assets/images/tables-right-dec.png" alt="">
+        </div>
+        <div class="container">
+
+            <h2 class="text-center">Terms  <em>& </em><span>Conditions</span></h2>
+            <div class="row justify-content-center my-5">
+                <div class="col-md-10">
+
+                    <p>This document is an electronic record in terms of the Information Technology Act, 2000, and the rules thereunder as applicable and the amended provisions pertaining to electronic records in various statutes as amended by the Information Technology Act, 2000. This electronic record is generated by a computer system and does not require any physical or digital signatures.</p>
+                    <p>This document is published in accordance with the provisions of Rule 3(1) of the Information Technology (Intermediaries guidelines) Rules, 2011, that require publishing the rules and regulations, privacy policy, and Terms of Use for access or usage of the domain name frbilling.com (www.frbilling.com), including the related mobile site and mobile application (hereinafter referred to as “Platform”).</p>
+                    <p>The Platform is owned by Codetentacles Technologies, a company incorporated under the Companies Act, 1956, with its registered office at Wakad, Pune (hereinafter referred to as "Platform Owner", “we”, “us”, “our”). Your use of the Platform and services and tools are governed by the following terms and conditions ("Terms of Use") as applicable to the Platform, including the applicable policies which are incorporated herein by reference.</p>
+                    <p>By mere use of the Platform, you shall be contracting with the Platform Owner, and these terms and conditions, including the policies, constitute your binding obligations with the Platform Owner.</p>
+                    <h4 class="section-title">Use of Services</h4>
+                    <p>To access and use the Services, you agree to:</p>
+                    <ul>
+                        <li>Provide true, accurate, and complete information during and after registration.</li>
+                        <li>Be responsible for all acts done through the use of your registered account on the Platform.</li>
+                    </ul>
+                    <p>You agree not to use the Platform and/or Services for any purpose that is unlawful or forbidden by these Terms or applicable laws.</p>
+
+                    <h4 class="section-title">Liability and Disclaimers</h4>
+                    <p>The Platform Owner shall not be liable for any indirect, consequential, incidental, special, or punitive damages, including without limitation damages for loss of profits, revenues, data, or business opportunities.</p>
+
+                    <h4 class="section-title">Governing Law</h4>
+                    <p>All disputes arising out of or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts in Pune, Maharashtra.</p>
+
+                    <h4>Shipping Policy</h4>
+                    <h4 class="section-title">Processing Time</h4>
+                    <p>All orders are delivered within 2-3 business days. Orders are not shipped or delivered on weekends or holidays. If we are experiencing a high volume of orders, shipments may be delayed by a few days.</p>
+                    <h4 class="section-title">Shipping Time</h4>
+                    <p>Domestic Shipping: Orders will be delivered within 3 to 4 weeks from the date of order confirmation. Delivery times may be affected by factors beyond our control, such as weather conditions or customs delays.</p>
+
+                    <h4>Return and Refund Policy</h4>
+                    <h4 class="section-title">Return</h4>
+                    <p>We have a 5-day return policy, which means you have 5 days after receiving your item to request a return. Once the returned product is received, it will be inspected and approved within 2 days.</p>
+                    <h4 class="section-title">Refunds</h4>
+                    <p>Refunds will be processed on your original payment method within 10 business days after approval. If more than 15 business days have passed since the refund was approved, please contact us at <a href="mailto:info@frbilling.com">info@frbilling.com</a>.</p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="footer-dec">
+        <img src="~/assets/Home/assets/images/footer-dec.png" alt="Footer Image">
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="about footer-item">
+                        <div class="logo">
+                            <a href="#"><img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing"></a>
+                        </div>
+
+                        @*////////start diwali logo/////////*@
+
+                        @*<div class="diwalilogofooter">
+                                <a href="#"><img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing"></a>
+                            </div>*@
+                        @*////////end diwali logo/////////*@
+                        <a href="mailto:info@frbilling.com" type="email" target="_blank">info@frbilling.com</a>
+                        <ul>
+                            <li><a href="https://www.facebook.com/people/FrBilling-CT/pfbid0QfLDqvFXRwe4y5KcUHSwaJV6mXmmCTGzpYVy7rdTMH6DgVjgPwZeR8vmVj7DSog3l/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                            @*<li><a href="https://www.linkedin.com/in/prajkta-navlakhe-47790613b/" target="_blank"><i class="fa fa-linkedin"></i></a></li>*@
+                            <li><a href="https://www.linkedin.com/company/fr-billing" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="https://www.instagram.com/fr_billing?igsh=MTF2YzM3dDFiOTB1eg%3D%3D&utm_source=qr" target="_blank"> <i class="fa fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="services footer-item">
+                        <h4>About</h4>
+                        <ul>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Our Features</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">About</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Schedule Demo</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Pricing</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Contact Us</a></li>
+                            
+                        </ul>
+                    </div>
+
+                    <!--  -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="community footer-item">
+                        <h4>Community</h4>
+                        <ul>
+                            <li><a href="@Url.Action("TermsCondition","Admin")">Terms & Condition</a></li>
+                            <li><a href="@Url.Action("privacyPolicy","Admin")">Privacy Policy</a></li>
+                            <li><a href="@Url.Action("RefundandCancellationPolicy","Admin")">Refund and Cancellation Policy</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                @* <div class="col-lg-3">
+                    <div class="subscribe-newsletters footer-item">
+                        <h4>Subscribe Newsletters</h4>
+                        <p>Get our latest news and ideas to your inbox</p>
+                        <div class="newsletters">
+                            @using (Ajax.BeginForm("ContactUs", "Admin", null, new AjaxOptions
+                            {
+                                OnSuccess = "onSuccess",
+                                UpdateTargetId = "contact",
+                                OnBegin = "validateForm"
+                            }, null))
+                            {
+                                <input type="text" name="email" id="email" pattern="" placeholder="Your Email" required="">
+                                <button type="submit" id="form-submit" class="main-button "><i class="fa fa-paper-plane-o"></i></button>
+                            }
+                        </div>
+                    </div> </div>*@
+                <div class="col-lg-3" id="newslettersPage">
+                    @Html.Partial("newslettersPartialView")
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="copyright">
+                        <p>
+                            @*Copyright © @DateTime.Now.Year FR Billing, Ltd. All Rights Reserved.
+                                <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>*@
+                            <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="https://frbilling.com/uploadedlogo/indiaFlag.jpg" alt="India Flag" class="indian_wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">CodeTentacles</span></a> </strong>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <script src="~/assets/Home/vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js" integrity="sha512-YHQNqPhxuCY2ddskIbDlZfwY6Vx3L3w9WRbyJCY81xpqLmrM6rL2+LocBgeVHwGY9SXYfQWJ+lcEWx1fKS2s8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/assets/Home/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/Home/assets/js/owl-carousel.js"></script>
+    <script src="~/assets/Home/assets/js/animation.js"></script>
+    <script src="~/assets/Home/assets/js/imagesloaded.js"></script>
+    <script src="~/assets/Home/assets/js/custom.js"></script>
+
+    <script>
+        // Acc
+        $(document).on("click", ".naccs .menu div", function () {
+            var numberIndex = $(this).index();
+
+            if (!$(this).is("active")) {
+                $(".naccs .menu div").removeClass("active");
+                $(".naccs ul li").removeClass("active");
+
+                $(this).addClass("active");
+                $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+
+
+            }
+        });
+    </script><!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-67GZ3J4NH7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-67GZ3J4NH7');
+    </script>
+
+
+
+
+
+</body>
+</html>

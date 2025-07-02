@@ -1,0 +1,75 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Issue>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section>
+    <div class="container">
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.startno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.endno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.noofleafs)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inssuedate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comapny_Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pf_code)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.startno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.endno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.noofleafs)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Inssuedate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comapny_Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pf_code)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Issue_id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Issue_id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Issue_id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</section>

@@ -1,0 +1,476 @@
+﻿
+
+@{
+    ViewBag.Title = "Add_Expenses";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+
+
+        <!-- Main content -->
+        <section class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Rate Caclulater</h3>
+                        </div>
+
+
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-sm-3 padding-right-0">Type</label>
+                                    <div class="radio col-md-3">
+                                        <label>
+                                            <input type="radio" name="Shipmenttype" id="dox" value="D" checked>
+
+                                            Dox
+                                        </label>
+                                    </div>
+                                    <div class="radio col-md-3 padding-right-0">
+                                        <label>
+                                            <input type="radio" name="Shipmenttype" id="nondox" value="N">
+                                            @*@Html.RadioButtonFor(model => model.Shipmenttype, "N", new { @id = "nondox" })*@
+                                            Non Dox
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 col-md-offset-2">Actual Weight</label>
+                                    <div class="col-sm-6">
+
+
+                                        <input type="number" name="Actual_Weight" id="Actual_Weight" class="Actual_Weight" />
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 col-md-offset-2">Pincode</label>
+                                    <div class="col-sm-6">
+
+
+                                        <input type="text" name="ReciepentsPincode" id="ReciepentsPincode" class="ReciepentsPincode" />
+
+                                    </div>
+                                </div>
+
+
+                                <div class="box-footer">
+                                    <input type="submit" id="calculate" class="btn btn-primary pull-right btn-sm" value="Calculate" />
+                                </div>
+
+                                <!-- radio -->
+                                <div id="Services" class="col-md-4">
+                                    <div class="form-group doxamount dox-lite">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="Doxradio" value="0">
+                                                Dox Lite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group nondair nondox-air">
+                                        <div id="" class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="Airradio" value="0">
+                                                Non Dox Air
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group nondSurf nondox-surface">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="surfradio" value="0">
+                                                Non Dox Surface
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Plus">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="plusradio" value="0">
+                                                DTDC Plus
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Blue">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="blueradio" value="0">
+                                                DTDC Blue
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group green">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="greenradio" value="0">
+                                                DTDC Green
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ptp11">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="ptp11radio" value="0">
+                                                PTP 10.30 AM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group PTP12">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="PTP12radio" value="0">
+                                                PTP 12.00 PM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ptp2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="ptp2radio" value="0">
+                                                PTP 2.00 PM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Sunday">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="Sundayradio" value="0">
+                                                Sunday PTP
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group GEC">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="GECradio" value="0">
+                                                GEC
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-md-offset-1">
+                                    <div class="form-group doxamount">
+                                        <input type="text" class="form-control input-sm" id="DoxInput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group nondair">
+                                        <input type="text" class="form-control input-sm" id="Airinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group nondSurf">
+                                        <input type="text" class="form-control input-sm" id="surfinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Plus">
+                                        <input type="text" class="form-control input-sm" id="plusinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Blue">
+                                        <input type="text" class="form-control input-sm" id="blueinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group green">
+                                        <input type="text" class="form-control input-sm" id="greeninput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group ptp11">
+                                        <input type="text" class="form-control input-sm" id="ptp11input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group  PTP12">
+                                        <input type="text" class="form-control input-sm" id="PTP12input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group ptp2">
+                                        <input type="text" class="form-control input-sm" id="ptp2input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Sunday">
+                                        <input type="text" class="form-control input-sm" id="Sundayinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group GEC">
+                                        <input type="text" class="form-control input-sm" id="GECinput" placeholder="" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-md-offset-1">
+
+                                    <div class="form-group">
+                                        <div class="box-footer">
+                                            @*<button type="button" class="btn btn-block btn-info btn-sm">Add Remark</button>*@
+                                        </div>
+                                    </div>
+                                    <!-- checkbox -->
+
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+
+
+                            <!-- /.box-footer -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<style>
+
+    .nopadding {
+        padding: 0px;
+    }
+
+    #consignment .form-group {
+        margin-bottom: 5px;
+    }
+
+    #consignment label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #consignment textarea {
+        width: 100%;
+    }
+
+    #consignment #insurancedetails, #consignment #creditamount {
+        display: none;
+    }
+
+    #consignment .icheckbox_minimal-red, .iradio_minimal-red {
+        margin: 0 10px;
+    }
+
+    #consignment #Services .radio {
+        margin: 0px 10px;
+        padding: 5px;
+        padding-bottom: 0px;
+        color: white;
+    }
+
+    .dox-lite, .nondox-air, .nondox-surface {
+        background-color: #ecf0f5;
+    }
+
+        .dox-lite label, .nondox-air label, .nondox-surface label {
+            color: black !important;
+        }
+
+    .Plus {
+        background-color: red;
+    }
+
+    .Blue {
+        background-color: blue;
+    }
+
+    .green {
+        background-color: #008000;
+    }
+
+    .ptp11, .PTP12, .ptp2, .Sunday {
+        background-color: #8c0c7c;
+    }
+
+    .GEC {
+        color: black !important;
+        background-color: #eeb6f5;
+    }
+
+    @@media (min-width:769px) {
+        .padding-right-0 {
+            padding-right: 0px;
+        }
+    }
+
+    label {
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .form-control input-sm {
+        font-size: 12px;
+    }
+
+    #consignment label {
+        padding-right: 0px;
+    }
+
+    .padding-left-0 {
+        padding-left: 0px;
+    }
+
+    .pad-5 input {
+        padding: 5px;
+    }
+
+    .radio input[type=radio] {
+        margin-top: 2px;
+    }
+</style>
+<script>
+
+        $(document).ready(function () {
+
+            $("#calculate").click(function () {
+                Services();
+            });
+
+            function Services() {
+                var Actualwaqight = $('[name = "Actual_Weight"]').val();
+                var ReceipentPincode = $('[name = "ReciepentsPincode"]').val();
+                var ShipmentType = $("input[name='Shipmenttype']:checked").val();
+                var Volumetric = 0;
+
+                if (Volumetric == "") {
+                    Volumetric = "0";
+                }
+                if (Actualwaqight == "" || ReceipentPincode == "" || ShipmentType == "") {
+                    return false;
+                }
+                else {
+                    // alert("Abcd");
+                    $.ajax({
+                        type: 'Get',
+                        dataType: 'json',
+                        url: '/Booking/Calculation',
+                        data: { Actualwaight: Actualwaqight, Pincode: ReceipentPincode, ShipmentType: ShipmentType, VolumetricWaight: Volumetric },
+                        success: function (Data) {
+
+                            $('.doxamount').hide();
+                            $('.nondair').hide();
+                            $('.nondSurf').hide();
+                            $('.PTP12').hide();
+                            $('.ptp2').hide();
+                            $('.GEC').hide();
+                            $('.Plus').hide();
+                            $('.Blue').hide();
+                            $('.green').hide();
+                            $('.Sunday').hide();
+                            $('.ptp11').hide();
+
+
+
+                            for (var obj in Data) {
+                                if (Data[obj].name == "Doxamount") {
+                                    $('.doxamount').show();
+
+                                    $('#Doxradio').val(Data[obj].Amount);
+                                    $('#DoxInput').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name == "AirAmount") {
+                                    $('.nondair').show();
+
+                                    $('#Airradio').val(Data[obj].Amount);
+                                    $('#Airinput').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name == "Amountsurf") {
+                                    $('.nondSurf').show();
+
+
+                                    $('#surfradio').val(Data[obj].Amount);
+                                    $('#surfinput').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name.indexOf("PRIMETIME PLUS 12.00") != -1 || Data[obj].name.indexOf("METRO PRIMETIME PLUS-12.00") != -1) {
+                                    $('.PTP12').show();
+
+                                    $('#PTP12radio').val(Data[obj].Amount);
+                                    $('#PTP12input').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name.indexOf("PRIMETIME PLUS - 2 PM") != -1) {
+                                    $('.ptp2').show();
+
+                                    $('#ptp2radio').val(Data[obj].Amount);
+                                    $('#ptp2input').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name.indexOf("EXPRESS CARGO") != -1) {
+                                    $('.GEC').show();
+
+                                    $('#GECradio').val(Data[obj].Amount);
+                                    $('#GECinput').val(Data[obj].Amount);
+
+
+                                }
+                                else if (Data[obj].name.indexOf("PLUS") != -1) {
+                                    $('.Plus').show();
+
+                                    //alert(Data[obj].name);
+                                    $('#plusradio').val(Data[obj].Amount);
+                                    $('#plusinput').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name.indexOf("BLUE") != -1) {
+                                    $('.Blue').show();
+                                    //alert(Data[obj].Amount);
+                                    $('#blueradio').val(Data[obj].Amount);
+                                    $('#blueinput').val(Data[obj].Amount);
+                                }
+                                else if (Data[obj].name.indexOf("GREEN") != -1) {
+                                    $('.green').show();
+
+                                    $('#greenradio').val(Data[obj].Amount);
+                                    $('#greeninput').val(Data[obj].Amount);
+                                }
+
+                            }
+                            Setchargeamount()
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        }
+                    });
+                }            }
+
+
+        });
+
+
+
+$(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("PincodeautocompleteSender")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Pincode);
+
+
+        });
+    }
+});
+
+$("#ReciepentsPincode").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#ReciepentsPincode").val(ui.item.value);
+
+        $("#ReciepentsPincode").trigger("change");
+    }
+
+});
+});
+
+
+</script>
+
+

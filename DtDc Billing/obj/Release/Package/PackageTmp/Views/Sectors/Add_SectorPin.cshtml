@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Sector>
+@{
+
+    Layout = null;
+}
+@{
+    ViewBag.Title = "Add_SectorPin";
+}
+
+<section>
+    <div class="container">
+        <h2>Add_SectorPin</h2>
+
+        @using (Html.BeginForm())
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Sector_Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Pincode_values)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Franchisee.F_Address)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(modelItem => item.Sector_Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sector_Name)
+                        </td>
+                        <td>
+                            @Html.EditorFor(modelItem => item.Pincode_values)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Franchisee.F_Address)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            Html.ValidationMessage("PinError");
+            <input type="submit" value="Save" />
+        }
+    </div>
+</section>

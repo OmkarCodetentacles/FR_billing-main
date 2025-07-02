@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "weightdifference";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Main content -->
+<section class=" content-wrapper">
+
+   
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-info" style="padding: 16px 16px !important">
+                    <div class="box-header with-border">
+                        <h4>Download PDF File of Invoices</h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="form-horizontal">
+
+                                @using (Html.BeginForm())
+                                {
+
+
+
+                                    <input type="hidden" value="@ViewBag.firmid">
+
+                                    <div class="col-sm-10 form-group mb-15">
+                                        <label for="period-from" class="col-sm-6 control-label">From Invoice No <span class="text-info">@ViewBag.Zipinv</span></label>
+                                        <div class="col-sm-6 input-group date">
+
+                                            @if (ViewBag.frominv != null)
+                                            {
+                                                <input type="text" class="form-control pull-right" id="from" name="frominv" value="@ViewBag.frominv">
+
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control pull-right" name="frominv" id="from">
+
+                                            }
+                                            <span class="fromINV" style="color: red; display: none;">Please Enter From Invoice Number</span> <!-- Error message -->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group mb-15">
+                                        <label for="period-to" class="col-sm-6 control-label">To Invoice No  <span class="text-info">@ViewBag.Zipinv</span></label>
+                                        <div class="col-sm-6 input-group date">
+
+                                            @if (ViewBag.toinv != null)
+                                            {
+                                                <input type="text" class="form-control pull-right" id="to" value="@ViewBag.toinv" name="toinv">
+                                            }
+                                            else
+                                            {
+                                                <input type="text" class="form-control pull-right" id="to" name="toinv" required>
+                                            }
+                                            <span class="toINV" style="color: red; display: none;">Please Enter From Invoice Number</span> <!-- Error message -->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 form-group mb-15">
+                                        <input type="submit" value="Download" id="btnSubmit" class="btn btn-primary pull-right sbmt" />
+                                    </div>
+
+
+
+                                }
+                            </div>
+                        </div>
+
+                        <br>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+   
+    <!-- /.col -->
+
+</section>
+<!-- /.content -->
+
+
+
+<script>
+    $("#departmentsDropdown").change(function () {
+        //var selectedStudentVal = $("#ddlStudent").val();
+        //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
+
+        var departmentsDropdown = $("#departmentsDropdown").val();
+        // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
+        window.location.replace("/Invoice/InvoiceZip?Firm_Id=" + departmentsDropdown);
+
+        $("#departmentsDropdown").html(departmentsDropdown);
+    });
+
+    $("#btnSubmit").click(function () {
+      
+        var fromIN = $("#from").val();
+        var ToIN = $("#to").val();
+        if (fromIN == "" && ToIN == "") {
+            $(".fromINV").show();
+            $(".toINV").show();
+            return false;
+        }
+        else if (fromIN == "") {
+            $(".fromINV").show();
+            $(".toINV").hide();
+            return false;
+        }
+        else if (ToIN == "") {
+            $(".toINV").show();
+            $(".fromINV").hide();
+            return false;
+        }
+        return true;
+    })
+
+</script>
+<style>
+    #check-booking-list {
+        display: block;
+        min-height: 400px;
+    }
+</style>

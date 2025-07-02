@@ -1,0 +1,439 @@
+﻿@model IEnumerable<DtDc_Billing.Models.InvoiceAndCompany>
+
+@{
+    ViewBag.Title = "TaxReport";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+
+
+    #table_display_block tbody tr th {
+        background-color: #e5ecf7;
+    }
+
+    .sbmt {
+        line-height: 0;
+    }
+
+    .TaxReport th {
+        width: 5.26% !important;
+    }
+
+    table {
+        max-height: 400px !important;
+        display: block !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+</style>
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                Tax Report
+
+                <a href="https://www.youtube.com/watch?v=WDKakPKs76Y&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=37"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   class="pull-right"
+                   style="margin-top:10px"
+                   title="Click to view more info of Weight Difference">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+
+
+                        var nodata = ViewBag.Nodata as string;
+                    }
+
+                 
+                    @if (!string.IsNullOrEmpty(nodata))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("Error", nodata))
+                    }
+                    <div class="form-horizontal">
+
+
+                        <div class="row">
+                            <div class="">
+                                <div class="form-group">
+
+
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        if (ViewBag.Custid != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>CustiomerId</label>
+
+                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" value="@ViewBag.Custid" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>CustiomerId</label>
+                                                    <input name="Custid" style="margin-right:10px" class="form-control" id="custid" type="text">
+                                                </div>
+                                            </div>
+                                        }
+                                        if (ViewBag.fromdate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>: </label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" placeholder="From Date" type="text" required>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>From Date <span style="color:red">*</span>:</label>
+                                                    <input name="Fromdatetime" class="form-control" id="datepicker" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        if (ViewBag.todate != null)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        else
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>To Date <span style="color:red">*</span>:</label>
+                                                    <input style="margin-right:50px" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                        <div class="col-md-1" style="margin-top:22px;padding:0">
+
+                                            <input type="submit" class="btn btn-block btn-primary  sbmt col-sm-12" name="Show" value="Show" style="width:100%;padding:0" />
+                                        </div>
+
+                                        <div class="col-md-1" style="gap: 3px; margin-top: 22px">
+                                            <input type="submit" value="Export to Excel" name="Submit" class="btn btn-success btn-block sbmt col-sm-12"  style="width:100%;"/>&nbsp;
+                                        </div>
+                                        <div  class="col-md-1" style="gap: 3px; margin-top: 22px">
+                                            <input type="submit" value="Tally excel" name="Tallyexcel" class="btn btn-warning  sbmt col-sm-12" style="margin-left:10px" />&nbsp;
+
+                                        </div>
+
+                                    }
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <table id="table_display_block" class="table TaxReport">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Customer_Id)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoiceno)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.invoicedate)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodfrom)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.periodto)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.total)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetax) (%)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.fullsurchargetaxtotal)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Royalty_charges)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Docket_charges)
+                                    </th>
+                                    <th>
+                                       Discount(%)
+                                    </th>
+                                    <th>
+                                       Discount Amount
+                                    </th>
+                                    <th>
+                                        Subtotal
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.CgstPer)*@ CGST(%)
+                                     </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.CgstAmt)*@ CGST Amt
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.SgstPer)*@ SGST(%)
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.SgstAmt)*@  SGST Amt
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.IgstPer)*@  IGST(%)
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.IgstAmt)*@ IGST Amt
+                                    </th>
+                                    <th>GST Total</th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.netamount)*@ Net Amout
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            @{ 
+                                int i = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customer_Id)
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.invoiceno)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tempInvoicedate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tempdatefrom)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TempdateTo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.total)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.fullsurchargetax)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.fullsurchargetaxtotal)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Royalty_charges)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Docket_charges)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem=>item.discount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem=>item.discountamount)
+                                    </td>
+                                    <td>
+                                        @(Math.Round((double)(item.total + item.fullsurchargetaxtotal + item.Royalty_charges + item.Docket_charges)))
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CgstPer)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CgstAmt)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SgstPer)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SgstAmt)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IgstPer)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IgstAmt)
+                                    </td>
+                                    <td>
+                                        @(item.SgstAmt + item.CgstAmt + item.IgstAmt)
+
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.netamount)
+                                    </td>
+
+                                </tr>
+                                i++;
+                            }
+                            @*<tr>
+                <td colspan="19" >No Data Found</td>
+            </tr>*@
+                        </table>
+                        <!-- /input-group -->
+
+                        <div class="col-md-3 col-sm-6 col-6" style="margin-top:10px">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary total-label">Net Total</button>
+                                </div>
+                                <!-- /btn-group -->
+                                <input type="text" class="form-control total-amount" placeholder="0" value="@Model.Sum(m=>(m.netamount))">
+                            </div>
+                        </div>
+                        <!-- /input-group -->
+                        <!-- /input-group -->
+
+                        <!--<div class="col-md-3 col-sm-6 col-6" style="margin-top:10px">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-success">DTDC Total</button>
+                                </div>-->
+                                <!-- /btn-group -->
+                                <!--<input type="text" class="form-control total-amount" style="border-color:#008d4c" placeholder="0" value="@@Model.Sum(m=>(m.dtdcamount))">
+                            </div>
+                        </div>-->
+                        <!-- /input-group -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    /////Sender Autocomplete
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete","Booking")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#Customer_Id").autocomplete({
+            source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+
+        $("#Customer_Id").trigger("focusout");
+    }
+        });
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+    });
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+</script>
+
+<style>
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var frmdate = $('#datepicker').val();
+
+            var todate = $('#datepicker1').val();
+
+            if (frmdate == "") {
+                alert("Please Enter Start Date");
+                return false;
+            }
+            else if (todate == "") {
+                alert("Please Enter End Date");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        });
+
+    });
+</script>
+
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>

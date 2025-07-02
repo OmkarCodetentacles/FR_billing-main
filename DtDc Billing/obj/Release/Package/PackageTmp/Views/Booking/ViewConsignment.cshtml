@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "ViewConsignment";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border invoice-intro-block">
+                    <h4>
+                        View Consignment
+                    </h4>
+                </div>
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @using (Ajax.BeginForm("ViewPartial", "Booking", new AjaxOptions { HttpMethod = "POST", UpdateTargetId= "View" }))
+                                {
+                                    <div class="col-md-4">
+                                        <input type="text" name="consignmetno" id="consignmetno" class="form-control" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" name="submit" value="Search" class="btn btn-primary" />
+                                    </div>
+                                }
+                            </div>
+                                </div>
+
+
+                        <div id="View">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

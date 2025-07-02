@@ -1,0 +1,452 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.TransactionView>
+
+@{
+    ViewBag.Title = "Consignmentlist";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Consignments</h4>
+                </div><!-- /.box-header -->
+                <div class="box-body" style="overflow-x: auto;">
+
+
+
+                    <table id="example1" class="table table-striped table-bordered table-scroll">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Customer_Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.booking_date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Consignment_no)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Mode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Weight_t)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Company_id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pincode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Pf_Code)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Quanntity)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Type_t)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Insurance)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Claimamount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Percentage)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.calinsuranceamount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.topay)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.codAmount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.consignee)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.consigner)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.cod)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TopayAmount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Topaycharges)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.codcharges)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.codtotalamount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.dtdcamount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.status_t)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.rateperkg)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.docketcharege)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.fovcharge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.loadingcharge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.odocharge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Risksurcharge)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Invoice_No)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BillAmount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.tembookingdate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Actual_weight)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.chargable_weight)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AdminEmp)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.diff_weight)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.tempdelivereddate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.receivedby)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.remarks)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.tempdeliveredtime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Sender)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.receiver)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customer_Id)
+                                    </td>
+                                    <td>
+                                        @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Consignment_no)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Weight_t)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Company_id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pincode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Pf_Code)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quanntity)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type_t)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Insurance)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Claimamount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Percentage)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.calinsuranceamount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.topay)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.codAmount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.consignee)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.consigner)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.cod)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TopayAmount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Topaycharges)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.codcharges)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.codtotalamount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.dtdcamount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.status_t)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.rateperkg)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.docketcharege)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.fovcharge)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.loadingcharge)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.odocharge)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Risksurcharge)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Invoice_No)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.BillAmount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tembookingdate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Actual_weight)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.chargable_weight)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AdminEmp)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.diff_weight)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tempdelivereddate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.receivedby)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.remarks)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.tempdeliveredtime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Sender)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.receiver)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Delete", "DeleteCons", new { id = item.T_id })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <br>
+                    <!-- /input-group -->
+
+                    <div class="col-sm-3 " style="float: right" ;>
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-danger total-label">Total</button>
+                            </div>
+                            <!-- /btn-group -->
+                            <input type="text" class="form-control total-amount" value="@ViewBag.sum">
+                        </div>
+                    </div>
+                    <!-- /input-group -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@*if (selectedemp != null) {
+            $("#Employees").val(selectedemp);
+        }
+    var selectedemp = @ViewBag.selectedemp;*@
+<script>
+
+    var stateId = $("#PfCode").val();
+    var selectedemp = '@ViewBag.selectedemp';
+
+    $.ajax
+        ({
+            url: '/Reports/GetUserList',
+            type: 'POST',
+            datatype: 'application/json',
+            data: { Pfcode: stateId },
+            success: function (result) {
+                $("#Employees").html("");
+                $.each($.parseJSON(result), function (i, city) {
+                    $("#Employees").append
+                        ($('<option></option>').val(city.Name).html(city.Name))
+                })
+                if (selectedemp != null) {
+                    $("#Employees").val(selectedemp);
+                }
+            },
+
+        });
+
+
+    $('#PfCode').change(function () {
+
+        var stateId = $("#PfCode").val();
+        $.ajax
+            ({
+                url: '/Reports/GetUserList',
+                type: 'POST',
+                datatype: 'application/json',
+                data: { Pfcode: stateId },
+                success: function (result) {
+                    $("#Employees").html("");
+                    $.each($.parseJSON(result), function (i, city) {
+                        $("#Employees").append
+                            ($('<option></option>').val(city.Name).html(city.Name))
+                    })
+                },
+
+            });
+    });
+
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $('#example1').dataTable({
+            "bPaginate": true,
+            "bLengthChange": true,
+            "bFilter": true,
+            "bSort": true,
+            "bInfo": true,
+            "bAutoWidth": false
+        });
+    });
+
+</script>
+
+
+
+<style>
+    .pf-code select, .emp-id select {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+
+    .table-scroll {
+        height: 400px;
+    }
+</style>
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        alert('@TempData["Success"]');
+    </script>
+}

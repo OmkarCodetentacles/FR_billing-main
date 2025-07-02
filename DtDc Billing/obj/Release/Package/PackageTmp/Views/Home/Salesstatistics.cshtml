@@ -1,0 +1,92 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+@*<div id="samplePivotTable1"></div>*@
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Sales statistics</h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+
+                        <div id="samplePivotTable1" style="height: 710px; width: 100%;"></div>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+</section>
+
+<!-- PivotTable.js plugin with renderers -->
+<script src="~/Scripts/pivottable/pivot.min.js"></script>
+<!-- note: renderers are OPTIONAL (useful are: google charts, c3 charts) -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/pivottable/2.7.0/export_renderers.min.js"></script>
+<!-- NReco extensions -->
+<script src="~/Scripts/pivottable/nrecopivottableext.js"></script>
+
+<!-- basic pivottable css -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/pivottable/2.7.0/pivot.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Scripts/pivottable/nrecopivottableext.css" rel="stylesheet" />
+<script>
+    var sampleData = [];
+    $.ajax({
+        type: 'Get',
+        dataType: 'json',
+        url: '/Home/PivotData',
+        data: {},
+        success: function (Data) {
+            sampleData = Data;
+
+            var nrecoPivotExt = new NRecoPivotTableExtensions({
+                fixedHeaders: true
+            });
+
+            var utils = $.pivotUtilities;
+            var heatmap = utils.renderers["Heatmap"];
+
+            $("#samplePivotTable1").pivot(
+                sampleData,
+                {
+                    vals: ["NetAmount"],
+                    rows: ["Customer_id"],
+                    cols: ["month"],
+                    rendererOptions: {},
+                    aggregator: $.pivotUtilities.aggregators["Sum"](["NetAmount"]),
+                    renderer: nrecoPivotExt.wrapTableRenderer(
+                        $.pivotUtilities.renderers["Table Barchart"]),
+                    sortByColumnsEnabled: false
+
+                });
+            nrecoPivotExt.initFixedHeaders(
+                $("#samplePivotTable1").find('table.pvtTable'));
+
+
+            //var sumOverSum = utils.aggregators["Sum over Sum"];
+
+            //$("#samplePivotTable1").pivot(
+            //    sampleData, {
+            //        rows: ["Customer_id"],
+            //        cols: ["month"],
+            //        vals: ["NetAmount"],
+            //        aggregator: $.pivotUtilities.aggregators["Sum"](["NetAmount"]),
+            //         renderer: heatmap,
+            //    });
+
+        }
+    });
+
+
+
+</script>

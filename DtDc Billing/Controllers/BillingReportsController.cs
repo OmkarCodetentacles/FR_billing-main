@@ -558,7 +558,11 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpPost]
+<<<<<<< HEAD
         public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status, string Submit)
+=======
+        public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status,string invoicetype, string Submit)
+>>>>>>> upstream/main
         {
 
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -579,6 +583,10 @@ namespace DtDc_Billing.Controllers
                 }
             }
             ViewBag.select = status;
+<<<<<<< HEAD
+=======
+            ViewBag.selectType = invoicetype;
+>>>>>>> upstream/main
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -600,10 +608,15 @@ namespace DtDc_Billing.Controllers
             //List<Invoice> obj = new List<Invoice>();
 
             List<CreditorsInvoiceModel> newObj = new List<CreditorsInvoiceModel>();
+<<<<<<< HEAD
+=======
+            List<CreditorsInvoiceModel> newObj1 = new List<CreditorsInvoiceModel>();
+>>>>>>> upstream/main
 
             // List<Invoice> collectionAmount = new List<Invoice>();
             string customerid = Custid != null ? Custid : null;
             string pfcode = PfCode;
+<<<<<<< HEAD
             if (status == "Paid")
             {
 
@@ -803,6 +816,74 @@ namespace DtDc_Billing.Controllers
 
                 using (var db = new db_a92afa_frbillingEntities())
                 {
+=======
+
+            if (invoicetype == "GST" || invoicetype == "Both")
+            {
+                if (status == "Paid")
+                {
+
+                    newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                    {
+                        invoicedate = x.invoicedate,
+                        invoiceno = x.invoiceno,
+                        periodfrom = x.periodfrom,
+                        periodto = x.periodto,
+                        total = x.total,
+                        fullsurchargetax = x.fullsurchargetax,
+                        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                        servicetax = x.servicetax,
+                        servicetaxtotal = x.servicetaxtotal,
+                        Customer_Id = x.Customer_Id,
+                        CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+
+                        netamount = x.netamount,
+                        paid = x.paid ?? 0,
+                        discountper = x.discountper ?? 0,
+                        discountamount = x.discountamount ?? 0,
+                        balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                        TdsAmount = x.TdsAmount ?? 0,
+                        TotalAmount = x.TotalAmount ?? 0,
+                        InvoiceType = "GST"
+
+                    }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount <= 0).ToList();
+
+
+                }
+
+                else if (status == "Unpaid")
+                {
+                    
+                    newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                    {
+                        invoicedate = x.invoicedate,
+                        invoiceno = x.invoiceno,
+                        periodfrom = x.periodfrom,
+                        periodto = x.periodto,
+                        total = x.total,
+                        fullsurchargetax = x.fullsurchargetax,
+                        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                        servicetax = x.servicetax,
+                        servicetaxtotal = x.servicetaxtotal,
+                        Customer_Id = x.Customer_Id,
+                        CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+                        netamount = x.netamount,
+                        paid = x.paid ?? 0,
+                        discountper = x.discountper ?? 0,
+                        discountamount = x.discountamount ?? 0,
+                        balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                        TdsAmount = x.TdsAmount ?? 0,
+                        TotalAmount = x.TotalAmount ?? 0,
+                        InvoiceType = "GST"
+
+                    }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
+
+
+                }
+                else
+                {
+                    
+>>>>>>> upstream/main
                     newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode)
                         .Select(x => new CreditorsInvoiceModel
                         {
@@ -823,6 +904,7 @@ namespace DtDc_Billing.Controllers
                             paid = x.paid ?? 0,
                             balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                             TdsAmount = x.TdsAmount ?? 0,
+<<<<<<< HEAD
                             TotalAmount = x.TotalAmount ?? 0
                         }).ToList();
                 }
@@ -835,6 +917,49 @@ namespace DtDc_Billing.Controllers
                 //ExportToExcelAll.ExportToExcelAdmin(obj);
                 //Apply as per TDS amount\
 
+=======
+                            TotalAmount = x.TotalAmount ?? 0,
+                            InvoiceType = "GST"
+                        }).OrderBy(x => x.invoicedate).ToList();
+                }
+
+            }
+            if(invoicetype == "NonGST" || invoicetype == "Both")
+            {
+                newObj1 = (from item in db.GSTInvoices
+                               where item.Pfcode == pfcode && (customerid == "" || item.Customer_Id.Contains(customerid)) &&
+                               (DbFunctions.TruncateTime(item.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.invoicedate) <= DbFunctions.TruncateTime(todate))
+                               select new CreditorsInvoiceModel
+                               {
+                                   invoicedate = item.invoicedate,
+                                   invoiceno = item.invoiceno,
+                                   periodfrom = item.periodfrom,
+                                   periodto = item.periodto,
+                                   total = item.total,
+                                   fullsurchargetax = item.fullsurchargetax,
+                                   fullsurchargetaxtotal = item.fullsurchargetaxtotal,
+                                   servicetax = item.servicetax,
+                                   servicetaxtotal = item.servicetaxtotal,
+                                   Customer_Id = item.Customer_Id,
+                                   CustomerName = db.Companies.Where(m => m.Company_Id == item.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+                                   discountper = item.discountper ?? 0,
+                                   discountamount = item.discountamount ?? 0,
+                                   netamount = item.netamount ?? 0,
+                                   paid = item.paid ?? 0,
+                                   balanceamount = Math.Round((double)item.netamount - (item.paid ?? 0)),
+                                   TdsAmount = 0,
+                                   TotalAmount = item.FinalNetAmount ?? 0,
+                                   InvoiceType = "Non-GST"
+                               }).ToList();
+            }
+            if (invoicetype == "Both")
+            {  
+                newObj.AddRange(newObj1);
+            }
+            if (Submit == "Export to Excel")
+            {
+               
+>>>>>>> upstream/main
                 var data = newObj.Select(x => new
                 {
                     InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
@@ -856,7 +981,11 @@ namespace DtDc_Billing.Controllers
                     //   TDSAmount = x.TotalAmount ?? 0,
                     //  TotalAmount = x.TotalAmount ?? 0
 
+<<<<<<< HEAD
                 }).ToList();
+=======
+                }).OrderBy(x=>x.InvoiceDate).ToList();
+>>>>>>> upstream/main
 
                 if (newObj.Count() <= 0 || newObj == null)
                 {

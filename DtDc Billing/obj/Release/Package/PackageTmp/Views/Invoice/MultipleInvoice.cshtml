@@ -1,0 +1,414 @@
+﻿@model DtDc_Billing.Entity_FR.Invoice
+@{
+    ViewBag.Title = "GenerateInvoice";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+<div class="content-wrapper">
+
+
+    @using (Html.BeginForm())
+    {
+
+                <div class="box box-info" style="padding: 16px 16px !important">
+                    <div class="box-header with-border">
+                        <h4>
+                            Generate Multiple Invoice
+                            <a href="https://www.youtube.com/watch?v=oWYlqf5AKQY&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=24"
+                               target="_blank"
+                               data-toggle="tooltip"
+                               title="Click to view more info">
+                                <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-horizontal">
+                                    @{
+                                        var successMessage = ViewBag.Success as string;
+                                        var errorMessage = ViewBag.ErrorMessage as string;
+                                    }
+                                    @if (!string.IsNullOrEmpty(errorMessage))
+                                    {
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", successMessage))
+                                    }
+                                    @if (!string.IsNullOrEmpty(successMessage))
+                                    {
+                                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                                    }
+
+                                    <div class="row">
+                                        <div class="col-md-12 no-padding">
+                                            <div class="col-md-12">
+
+                                                <div class="subject-info-box-1">
+                                                    <select multiple="multiple" id='lstBox1' class="form-control">
+                                                        @foreach (var i in ViewBag.Complist)
+                                                        {
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div class="subject-info-arrows text-center" style="margin-top:15px">
+                                                    @*<input type='button' id='btnAllRight' value='>>' class="btn btn-default" /><br />*@
+                                                    <input type='button' id='btnRight' value='>' class="btn btn-default" /><br />
+                                                    <input type='button' id='btnLeft' value='<' class="btn btn-default" /><br />
+                                                    @*<input type='button' id='btnAllLeft' value='<<' class="btn btn-default" />*@
+                                                </div>
+
+                                                <div class="subject-info-box-2">
+                                                    <select multiple="multiple" id='lstBox2' name="Companies" class="form-control"></select>
+                                                </div>
+
+                                            </div>
+                                            <br /><br /><br />
+                                            <div class="col-sm-6 mt-15">
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <label for="email">Invoice Date:</label>
+                                                                </div>
+                                                                <div class="col-md-9" style="padding:0">
+                                                                    @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <label for="email">Period From:</label>
+                                                                </div>
+                                                                <div class="col-md-9" style="padding:0">
+                                                                    @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <label for="email">Period To:</label>
+                                                                </div>
+                                                                <div class="col-md-9" style="padding:0">
+                                                                    @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <label for="email">GST(%):</label>
+                                                                </div>
+                                                                <div class="col-md-9" style="padding:0">
+                                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @class = "form-control", @Value = "18" } })
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        @*<label for="email">Firm Details:</label>
+
+                            @Html.Editor("FirmName", new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.firmname, @readonly = "readonly" } })*@
+
+                                                        @*<label for="departmentsDropdown">Firm Name</label>
+                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown"></select>
+
+
+                            @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })*@
+
+
+                                                    </div>
+
+                                                    <div class="col-sm-12 no-padding" style="text-align:end">
+                                                        <div class="form-group">
+                                                            <input type="submit" name="submit" class="btn btn-success sbmt" id="sbmt" value="Save" style="width:auto" />
+                                                            &nbsp;
+                                                            <button type="submit" name="submit" class="btn bg-maroon sbmt" id="sbmt2" value="Email" style="width:auto">Send Mail</button>
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div style="display:none">
+
+                                                    @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+                                                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "1000" } })
+                                                    @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "10.10" } })
+                                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+                                                    @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "Bala" } })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+    }
+
+    </div>
+@if (ViewBag.GST == null || ViewBag.GST=="0")
+            {
+    <script>
+        $("#servicetax").val(0);    
+    </script>
+            }
+    <style>
+        .input-validation-error {
+            border: 1px solid #ff0000 !important;
+        }
+    </style>
+
+    <style>
+        .subject-info-box-1,
+        .subject-info-box-2 {
+            float: left;
+            width: 45%;
+        }
+
+            .subject-info-box-1 select, .subject-info-box-2 select {
+                height: 233px !important;
+                padding: 0;
+            }
+
+            .subject-info-box-1 option, .subject-info-box-2 option {
+                padding: 4px 10px 4px 10px;
+            }
+
+        option:hover {
+            background: #EEEEEE;
+        }
+
+        .subject-info-arrows {
+            float: left;
+            width: 10%;
+        }
+
+        input {
+            width: 70%;
+            margin-bottom: 5px;
+        }
+
+        #btnLeft {
+            margin-top: 10px;
+        }
+    </style>
+
+
+    <script>
+    var a =@Request.Params["Firm_Id"];
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Invoice/getFirm",
+            data: "{}",
+            success: function (data) {
+                // var s = '<option value="-1">Please Select a Department</option>';
+                var s;
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].Firm_Id + '">' + data[i].Firm_Name + '</option>';
+                }
+                $("#departmentsDropdown").html(s);
+
+                $("#departmentsDropdown").val(a);
+
+
+            }
+
+
+
+        });
+    });
+
+
+    </script>
+
+    @*@if(ViewBag.firmid == null)
+        {
+            <script> alert("Select Firm")</script>
+        }*@
+    <script>
+        $("#departmentsDropdown").change(function () {
+            //var selectedStudentVal = $("#ddlStudent").val();
+            //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
+
+            var departmentsDropdown = $("#departmentsDropdown").val();
+            // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
+            //window.location.replace("/Invoice/MultipleInvoice?Firm_Id=" + departmentsDropdown);
+
+            $("#departmentsDropdown").html(departmentsDropdown);
+        });
+
+
+
+
+    </script>
+
+
+    <script>
+        (function () {
+            $('#btnRight').click(function (e) {
+                var selectedOpts = $('#lstBox1 option:selected');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+
+                $('#lstBox2').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+
+            $('#btnAllRight').click(function (e) {
+                var selectedOpts = $('#lstBox1 option');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+
+                $('#lstBox2').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+
+            $('#btnLeft').click(function (e) {
+                var selectedOpts = $('#lstBox2 option:selected');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+
+                $('#lstBox1').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+
+            $('#btnAllLeft').click(function (e) {
+                var selectedOpts = $('#lstBox2 option');
+                if (selectedOpts.length == 0) {
+                    alert("Nothing to move.");
+                    e.preventDefault();
+                }
+
+                $('#lstBox1').append($(selectedOpts).clone());
+                $(selectedOpts).remove();
+                e.preventDefault();
+            });
+        }(jQuery));
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+
+
+            $('#sbmt').click(function () {
+                var selectedOpts = $('#lstBox2 option');
+                
+                $("#lstBox2 option").attr("selected", "selected");
+               // $("#lstBox2 option").prop("selected", true);
+                var frmdate = $('#Tempdatefrom').val();
+                var invdate = $("#tempInvoicedate").val();
+                var todate = $('#TempdateTo').val();
+                if (invdate == "") {
+                    alert("Please Enter Invoice Date");
+                    return false;
+                }
+                if (frmdate == "") {
+                    alert("Please Enter Start Date");
+                    return false;
+                }
+                else if (todate == "") {
+                    alert("Please Enter End Date");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+
+            });
+
+            $('#sbmt2').click(function () {
+                var selectedOpts = $('#lstBox2 option');
+
+                $("#lstBox2 option").attr("selected", "selected");
+                // $("#lstBox2 option").prop("selected", true);
+                var frmdate = $('#Tempdatefrom').val();
+                var invdate = $("#tempInvoicedate").val();
+                var todate = $('#TempdateTo').val();
+                if (invdate == "") {
+                    alert("Please Enter Invoice Date");
+                    return false;
+                }
+                if (frmdate == "") {
+                    alert("Please Enter Start Date");
+                    return false;
+                }
+                else if (todate == "") {
+                    alert("Please Enter End Date");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+
+            });
+
+            $('#Tempdatefrom').datepicker({
+                autoclose: true,
+                format: 'dd-mm-yyyy'
+            });
+
+            $('#tempInvoicedate').datepicker({
+                autoclose: true,
+                format: 'dd-mm-yyyy'
+            });
+
+            $('#TempdateTo').datepicker({
+                autoclose: true,
+                format: 'dd-mm-yyyy'
+            });
+
+
+        });
+    </script>
+
+
+
+
+    @if (ViewBag.Success != null)
+    {
+        <script>
+ //   alert('@ViewBag.Success');
+        </script>
+    }
+

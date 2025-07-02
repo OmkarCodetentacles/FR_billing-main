@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "AddCodPayment";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+
+
+@*@{
+    ViewBag.Title = "Dreport";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";*@
+}
+
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info" style="padding: 16px 16px !important">
+                <div class="box-header with-border">
+                    <h4>Add ToPay Payment</h4>
+                </div>
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <div id="form-Cons">
+                            @*@Html.Partial("EditConsignmentPartial", Model)*@
+                            @{ Html.RenderPartial("EditTopayPartial", (DtDc_Billing.Models.AddToPayAmount)ViewBag.Topay);}
+                        </div>
+
+                        <div id="tr-table"  style="margin-top:20px;">
+                            @{ Html.RenderPartial("TopaySearchPartial", (IEnumerable<DtDc_Billing.Entity_FR.TransactionView>)ViewBag.Codlist);}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

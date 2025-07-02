@@ -1,0 +1,541 @@
+﻿@*@model IEnumerable<DtDc_Billing.Entity_FR.Stationary>*@
+@model IEnumerable<DtDc_Billing.Models.RemainingModel>
+@{
+    ViewBag.Title = "Remaining";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<style>
+    .showd {
+        padding: 7px !important;
+        height: auto !important;
+    }
+
+    .main-footer {
+        margin-left: 0;
+    }
+
+    .Ramainingtable th {
+        width: 14.28% !important;
+    }
+
+    .Ramainingtable1 th {
+        width: 40% !important;
+    }
+
+    .Ramainingtable2 th {
+        width: 5% !important;
+    }
+
+    table {
+        max-height: 400px !important;
+        display: list-item !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+    }
+
+    .wide-header {
+        width: 600px; /* Adjust the width as needed */
+    }
+</style>
+
+<!-- Main content -->
+<div class="content-wrapper">
+    <div class="box" style="padding: 16px 16px">
+
+        <div class="box-header with-border">
+            <h4>
+                Remaining Stationary
+                <a href="https://www.youtube.com/watch?v=TOTNh6_D4gw&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=4" target="_blank" data-toggle="tooltip" title="Click to view more info">
+
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+                        var successMessage = @TempData["success"] as string;
+                        var errorMessage = TempData["error"] as string;
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("danger", successMessage))
+                    }
+
+                    <div class="form-horizontal">
+
+                        @using (Html.BeginForm("Remaining", "Stationery", FormMethod.Get))
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div>
+                                        <div class="form-group">
+                                            <label>Select Type</label>
+                                            <label class="Reqired" style="color:red">* </label>
+                                            @Html.DropDownList("RemainingType")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="submit" class="btn btn-primary sbmt" name="Show" value="Show" />
+                                </div>
+                            </div>
+                            <input type="hidden" id="PfCode" value="@ViewBag.PfCode">
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-8 col-sm-8 col-xs-8 col-md-8 col-lg-8 col-xl-8">
+                    <table id="table_display_block" class="table table-bordered table-responsive Ramainingtable">
+                        <thead>
+                            <tr>
+                                <th>Receipt Date</th>
+                                <th>Expiring in</th>
+                                <th>Start No</th>
+                                <th>End No </th>
+                                <th>No Of Consignment</th>
+                                <th>Used</th>
+                                <th>Remining</th>
+                                <th style="width:500px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var sum10 = 0;
+                                var sum25 = 0;
+                                int j = 0;
+
+                                if (ViewBag.type == "Expired")
+                                {
+                                    foreach (var i in Model)
+                                    {
+                                        long remainig = (Convert.ToInt64(NoofConsignments(i.startno, i.endno)) - Convert.ToInt64(i.totalCount));
+
+                                        if (remainig == 0)
+                                        {
+                                            <tr>
+                                                <td>@i.temprecdate</td>
+
+                                                <td>
+                                                    @{
+                                                        try
+                                                        {
+                                                            if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 0)
+                                                            {
+                                                                <span class="text-danger">Expired</span>
+                                                            }
+                                                            else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 10)
+                                                            {
+                                                                sum10 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(ViewBag.str[j]));
+                                                                <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                            else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 25)
+                                                            {
+                                                                sum25 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(ViewBag.str[j]));
+                                                                <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                        }
+                                                        catch (Exception ex)
+                                                        {
+                                                            // handle exception
+                                                        }
+
+                                                    }
+                                                </td>
+
+                                                <td>@i.startno</td>
+
+                                                <td>@i.endno</td>
+
+                                                <td>@NoofConsignments(i.startno, i.endno) </td>
+
+                                                <td>@i.totalCount</td>
+
+                                                <td>@remainig</td>
+
+                                                <td style="width:200px;">
+                                                    <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /><br /><br />
+                                                    @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isDelete = true, type = "RemainingDone" }, new { onclick = "return confirm('Do you really want to delete this Stationary?')", @class = "delete-btn" })
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        j++;
+                                    }
+                                }
+
+                                else if (ViewBag.type == "Remaining")
+                                {
+                                    foreach (var i in Model)
+                                    {
+                                        long remainig = (Convert.ToInt64(NoofConsignments(i.startno, i.endno)) - Convert.ToInt64(i.totalCount));
+
+                                        if (remainig > 0)
+                                        {
+
+                                            <tr>
+                                                <td>@i.temprecdate</td>
+
+                                                <td>
+
+                                                    @{
+
+                                                        try
+                                                        {
+                                                            if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 0)
+                                                            {
+                                                                <span class="text-danger">Expired</span>
+                                                            }
+                                                            else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 10)
+                                                            {
+                                                                sum10 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(i.totalCount));
+                                                                <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                            else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 25)
+                                                            {
+                                                                sum25 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(i.totalCount));
+                                                                <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span> @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days days</span>
+                                                            }
+                                                        }
+                                                        catch (Exception ex)
+                                                        {
+                                                            // handle exception
+                                                        }
+
+
+                                                    }
+                                                </td>
+
+                                                <td>@i.startno</td>
+
+                                                <td>@i.endno</td>
+
+                                                <td>@NoofConsignments(i.startno, i.endno)</td>
+
+                                                <td>@i.totalCount</td>
+
+                                                <td>@remainig</td>
+
+                                                <td style="width:200px;">
+                                                    <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /><br /><br />
+                                                    @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isDelete = true, type = "Remaining" }, new { onclick = "return confirm('Do you really want to delete this Stationary?')", @class = "delete-btn" })
+
+                                                    @*<input id="deleteId" class="" type="button" value="Delete" data-datac="@i.S_id" />*@
+
+                                                </td>
+                                            </tr>
+                                        }
+                                        j++;
+                                    }
+                                }
+
+
+                                else
+                                {
+
+                                    foreach (var i in Model)
+                                    {
+                                        long remainig = (Convert.ToInt64(NoofConsignments(i.startno, i.endno)) - Convert.ToInt64(i.totalCount));
+
+                                        <tr>
+
+                                            <td>@i.temprecdate</td>
+
+                                            <td>
+
+                                                @{
+
+                                                    try
+                                                    {
+                                                        if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 0)
+                                                        {
+                                                            <span class="text-danger">Expired</span>
+                                                        }
+                                                        else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 10)
+                                                        {
+                                                            sum10 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(i.totalCount));
+                                                            <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days</span>
+                                                        }
+                                                        else if ((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays > 0 && (getDate(i.temprecdate) - DateTime.Now.Date).TotalDays < 25)
+                                                        {
+                                                            sum25 += (Convert.ToInt16(NoofConsignments(i.startno, i.endno)) - Convert.ToInt16(i.totalCount));
+                                                            <span class="text-danger">    @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span> @((getDate(i.temprecdate) - DateTime.Now.Date).TotalDays) Days</span>
+                                                        }
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        // handle exception
+                                                    }
+
+
+                                                }
+                                            </td>
+
+                                            <td>@i.startno</td>
+
+                                            <td>@i.endno</td>
+
+                                            <td>@NoofConsignments(i.startno, i.endno)</td>
+
+                                            <td>@i.totalCount</td>
+
+                                            <td>@remainig</td>
+
+                                            <td style="width:200px;">
+                                                <input id="showd" class="btn btn-primary" type="button" value="View" data-datac="@i.startno" data-datad="@i.endno" /><br /><br />
+                                                @Html.ActionLink("Delete", "DeleteStationary", "Stationery", new { stationary_id = i.S_id, isdelete = true, type = "All" }, new { onclick = "return confirm('do you really want to delete this Stationary?')", @class = "delete-btn" })
+
+                                            </td>
+                                        </tr>
+                                        j++;
+                                    }
+
+                                }
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                    @*<div class="pagination">
+                            @{
+                                var getTotalCount = Model.Select(x => x.totalCount).FirstOrDefault();
+
+
+                                if (getTotalCount > 10)
+                                {
+
+                                    for (int ii = 1; ii <= (getTotalCount / ViewBag.size); ii++)
+                                    {
+
+                                        <a href="@Url.Action("Remaining","Stationery", new { size = ViewBag.size, pageNo = ii,PfCode = ViewBag.PfCode})" class="@(ViewBag.pageNo == ii ? "active":"")">@ii</a>
+
+                                    }
+                                }
+                            }
+                        </div>*@
+
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+
+                    <table id="example2" class="table Ramainingtable1">
+                        <thead>
+                            <tr>
+                                <th>Consignment No</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">No Data Found</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="row">
+                <div class="col-12 col-xs-12 col-sm-12  col-md-6 col-lg-6 col-xl-6  mt-15 mb-15 ">
+
+                    <table class="table Ramainingtable2 ">
+                        <thead>
+                            <tr>
+                                <th>Days left</th>
+                                <th>No of consignment</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td class="text-danger">@sum10</td>
+                            <td class="text-danger">@sum25</td>
+                        </tr>
+                        <tr>
+                            <td>10 Days left</td>
+                            <td>25 Days left</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.content -->
+@functions {
+
+    public long NoofConsignments(string startno, string endno)
+    {
+        long diff = 0;
+
+
+        //if (startno.ToLower().StartsWith("7d") && endno.ToLower().StartsWith("7d"))
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(2));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(2));
+
+        //    diff = EndConsignment - startConsignment;
+
+        //}
+        //else if (startno.ToLower().StartsWith("7x") && endno.ToLower().StartsWith("7x"))
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(2));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(2));
+
+        //    diff = EndConsignment - startConsignment;
+
+        //}
+        //else
+        //{
+        //    long startConsignment = Convert.ToInt64(startno.Substring(1));
+        //    long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+        //    diff = EndConsignment - startConsignment;
+
+
+        //}
+
+        //  return diff + 1;
+
+        // Extract the numeric part of the consignment number
+        var matchst = System.Text.RegularExpressions.Regex.Match(startno, @"(\d+)(?!.*\d)").ToString();
+        var matchen = System.Text.RegularExpressions.Regex.Match(endno, @"(\d+)(?!.*\d)").ToString();
+        string startNumeric = matchst;
+        string endNumeric = matchen;
+
+        diff = Convert.ToInt64(endNumeric) - Convert.ToInt64(startNumeric);
+        return diff + 1;
+
+
+    }
+
+
+
+
+    public DateTime getDate(string tempdate)
+    {
+
+        var sd = tempdate.Split('-');
+
+        var d = DateTime.ParseExact(sd[0] + "-" + sd[1] + "-" + sd[2], "dd-MM-yyyy", null); //MM / dd / yyyy
+        var formateddate = d.AddDays(90);
+        var dd = Convert.ToDateTime(formateddate.ToString("MM/dd/yyyy"));
+        //var formattedDate = d.ToString("MM/dd/yyyy");
+
+        //var dd = d.Date.AddDays(90);
+        return dd;
+    }
+
+    //public long UsedConsignments(string startno, string endno)
+    //{
+
+    //    long startConsignment = Convert.ToInt64(startno.Substring(1));
+    //    long EndConsignment = Convert.ToInt64(endno.Substring(1));
+
+    //    long diff = EndConsignment - startConsignment;
+
+    //    return diff;
+
+    //}
+
+}
+
+<script>
+
+    $(document).ready(function () {
+        $('.sbmt').click(function () {
+            var PfCode = $('#PfCode').val();
+
+            var Type = $('#RemainingType').val();
+
+            if (Type == "") {
+                alert("Please Select Type");
+                return false;
+            }
+
+            else {
+                return true;
+            }
+
+        });
+
+    });
+
+</script>
+
+<script>
+    $(document).on('click', '#showd', function () {
+
+
+        var startno = $(this).data('datac');
+        var endno = $(this).data('datad');
+
+        $.ajax({
+            type: 'Get',
+            dataType: 'json',
+            url: '/Stationery/RemainingConsignments',
+            data: { startno: startno, endno: endno },
+            success: function (Data) {
+                $('#example2 tbody').empty();
+                console.log(Data)
+                var rows;
+                $.each(Data, function (i, item) {
+
+                    rows += "<tr>"
+                        + "<td>" +item  + "</td>"
+                        /**/
+                      /*  + "<td> <img src=" + item.FilePath + "></td>"*/
+                        /**/
+                        + "</tr>";
+                });
+
+                $('#example2 tbody').append(rows);
+
+
+
+            }
+        });
+
+
+
+
+    });
+</script>
+<script>
+    $(function () {
+        $('#table_display_block').dataTable({
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bSort": false,
+            "bInfo": false,
+            "bAutoWidth": false
+        });
+    });
+</script>
+
+

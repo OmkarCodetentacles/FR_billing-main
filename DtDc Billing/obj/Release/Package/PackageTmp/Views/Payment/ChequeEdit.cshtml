@@ -1,0 +1,237 @@
+﻿@model DtDc_Billing.Models.ChequeModel
+
+@{
+    ViewBag.Title = "ChequeEdit";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<section class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info" style="padding: 16px 16px !important">
+                <div class="box-header with-border">
+                    <h4>Edit</h4>
+
+                    @{
+                        var sMessage =TempData["Updatedsuccss"] as string;
+                    }
+                    @if (!string.IsNullOrEmpty(sMessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+                    }
+
+
+                </div>
+                <!-- /.box-header -->
+
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "submit" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <div class="box-body">
+
+                            <div class="row">
+                                <input type="hidden" id="amountval" value="@ViewBag.existingvalue" name="amountval" />
+                                <input type="hidden" id="Firm_Id" value="@ViewBag.firmid" name="Firm_Id" />
+                                <div class="col-md-6">
+                                    <h5>Net  Amount : <strong class="text-success"> @ViewBag.netamount </strong></h5>
+                                </div>
+                                <div class="col-md-6" style="text-align:right">
+                                    <h5> Balance :  <strong class="text-danger">
+    @(Math.Round((decimal)(ViewBag.netamount - (ViewBag.paidamt != null ? ViewBag.paidamt : 0)), 2))
+
+</strong></h5>
+                                </div>
+                            </div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Cheque_id)
+
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.C_Amount, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.C_Amount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.C_Amount, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        <label class="control-label">Date</label>
+                                        @*@Html.LabelFor(model => model.tempch_date, htmlAttributes: new { @class = "control-label " })*@
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.FormattedTempChInsertedDate, new { htmlAttributes = new { @class = "form-control", @id = "tempinserteddate",@readonly="readonly" } })
+                                        @Html.ValidationMessageFor(model => model.tempch_date, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model=>model.tempch_date,"")
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.bank_name, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.bank_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.bank_name, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.branch_Name, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.branch_Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.branch_Name, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.Invoiceno, htmlAttributes: new { @class = "control-label " })
+
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Invoiceno, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.Tds_amount, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.Tds_amount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Tds_amount, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-md-7">
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.totalAmount, htmlAttributes: new { @class = "control-label " })
+                                    </div>
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.totalAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.totalAmount, "", new { @class = "text-danger" })
+                                        <span class="errormsd text-danger">Billed amount is greater than enter amount!</span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-7" >
+                                    <div class=" col-md-12">
+                                        <input type="submit" value="Save" class="btn btn-primary pull-right" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@if (TempData["Updatedsuccss"] != null)
+{
+    <script>
+    //alert("@TempData["Updatedsuccss"]");
+    </script>
+}
+
+
+<style>
+    .errormsd {
+        display: none;
+    }
+</style>
+
+<script>
+
+
+    $('#tempch_date').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yyyy'
+    })
+
+</script>
+
+<script>
+     $(document).ready(function () {
+         $("#submit").submit(function () {
+
+            var amount = $("#amountval").val();
+             var enterval = $("#C_Amount").val();
+           
+             var bal = ('@ViewBag.netamount' - '@ViewBag.paidamt');
+
+
+            if (enterval > (parseFloat(amount) + parseFloat(bal))) {
+                $(".errormsd").css("display", "inline");
+                return false;
+            }
+
+
+        });
+    });
+
+
+
+     $(document).ready(function () {
+
+         $("#C_Amount,#Tds_amount").keyup(function () {
+
+             var Amount = $('#C_Amount').val();
+
+             var C_Tds_Amount = $('#Tds_amount').val();
+
+
+             var addition = (parseFloat("0" + Amount) + parseFloat("0" + C_Tds_Amount));
+
+             $('#totalAmount').val(addition);
+
+         });
+
+     });
+</script>

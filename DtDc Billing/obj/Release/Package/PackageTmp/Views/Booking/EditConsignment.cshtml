@@ -1,0 +1,61 @@
+﻿@{
+
+    var consignments = ViewBag.Consignments;
+    {
+        if (consignments != null)
+        {
+            var jsArray = @Html.Raw(Json.Encode(consignments));
+            <script>
+
+             var consignmentsArray = @Html.Raw(jsArray);
+
+            </script>
+        }
+    }
+
+}
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>
+                        Edit Consignment
+                        <a href="https://www.youtube.com/watch?v=L3PiOLOVTwI&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=14"
+                           target="_blank"
+                           data-toggle="tooltip"
+                           title="Click to view more info">
+                            <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                        </a>
+                    </h4>
+                </div>
+                <div class="col-md-6">
+                    <div class="">
+                        <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International City" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-horizontal">
+                        <div id="form-Cons">
+                            @*@Html.Partial("EditConsignmentPartial", Model)*@
+                            @{Html.RenderPartial("EditConsignmentPartial", (DtDc_Billing.Metadata_Classes.TransactionMetadata)ViewBag.transaction);}
+                        </div>
+
+                        <div id="tr-table">
+                            @{ Html.RenderPartial("TrSearchTable", (IEnumerable<DtDc_Billing.Entity_FR.TransactionView>)ViewBag.talist);}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

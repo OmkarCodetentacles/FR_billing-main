@@ -1,0 +1,38 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/EmpLayout.cshtml";
+}
+
+
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Edit Consignment</h4>
+                    <div class="pull-right">
+                        <input type="text" id="intpincode" class="form-control" style="display:none" placeholder="International Pincode" />
+                    </div>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <div id="form-Cons">
+                            @*@Html.Partial("EditConsignmentPartial", Model)*@
+                            @{ Html.RenderPartial("EditConsignmentPartial", (EmpBilling.Metadata_Classes.TransactionMetadata)ViewBag.transaction);}
+                        </div>
+
+                        <div id="tr-table">
+                            @{ Html.RenderPartial("TrSearchTable", (IEnumerable<EmpBilling.EntityFr.TransactionView>)ViewBag.talist);}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

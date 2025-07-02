@@ -1,0 +1,2114 @@
+﻿@model DtDc_Billing.Entity_FR.Receipt_details
+
+@{
+    ViewBag.Title = "Printreceipt";
+    Layout = "~/Views/Shared/CashCounterLayout.cshtml";
+}
+
+
+
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "receiptform" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-4">Consignment No</label>
+                        <div class="col-sm-6">
+                            @if (ViewBag.nextconsignment != null)
+                            {
+
+                                @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Consignment No", @Value = ViewBag.nextconsignment } })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Consignment_No, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Consignment No" } })
+                            }
+                            @Html.ValidationMessage("Consignment")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-sm-3">Destination</label>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.Destination, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Destination" } })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section id="consignment" class="content">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- Horizontal Form -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Sender Details</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Ph No</label>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.sender_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number" } })
+
+                                    </div>
+                                    <label for="" class="col-sm-2">Email</label>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Sender_Email, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Email" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Sender</label>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.Sender, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Sender Name" } })
+
+                                    </div>
+                                    <label for="" class="col-sm-2">Company</label>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.SenderCompany, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Company" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Address</label>
+                                    <div class="col-sm-10">
+                                        @Html.TextAreaFor(model => model.SenderAddress, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Address" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 padding-right-0">City</label>
+                                    <div class="col-sm-3">
+                                        @Html.EditorFor(model => model.SenderCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
+                                    </div>
+                                    <label class="col-sm-1 nopadding">State</label>
+                                    <div class="col-sm-3 nopadding">
+                                        @Html.EditorFor(model => model.SenderState, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "State" } })
+                                    </div>
+                                    <label for="" class="col-sm-2 padding-right-0">Pincode</label>
+                                    <div class="col-sm-2 padding-left-0">
+
+                                        @Html.EditorFor(model => model.SenderPincode, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Pincode", @id = "Pincode" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                    <!-- Horizontal Form -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Recipient's Details</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Ph No</label>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Reciepents_phone, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Phone Number", @id = "receipientphno" } })
+
+                                    </div>
+                                    <label for="" class="col-sm-2">Email</label>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Reciepents_Email, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Email" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-2">Recipient</label>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Reciepents, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Recipient's Name" } })
+
+                                    </div>
+                                    <label for="" class="col-sm-2">Company</label>
+                                    <div class="col-sm-4">
+
+
+                                        @Html.EditorFor(model => model.ReciepentCompany, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Company" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-2">Address</label>
+                                    <div class="col-sm-10">
+
+
+                                        @Html.TextAreaFor(model => model.ReciepentsAddress, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Address" } })
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-1 padding-right-0">City</label>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(model => model.ReciepentsCity, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "City" } })
+
+                                    </div>
+                                    <label class="col-sm-1 nopadding">State</label>
+                                    <div class="col-sm-3 nopadding">
+
+                                        @Html.EditorFor(model => model.ReciepentsState, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "State" } })
+
+                                    </div>
+                                    <label class="col-sm-2 padding-right-0">Pincode</label>
+                                    <div class="col-sm-2 padding-left-0">
+
+                                        @Html.EditorFor(model => model.ReciepentsPincode, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Pincode" } })
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                    <!-- Horizontal Form -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Shipment Type</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <!-- radio -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 padding-right-0">Type</label>
+                                        <div class="radio col-md-4">
+                                            <label>
+                                                @*<input type="radio" name="Shipmenttype" id="dox" value="D" checked>*@
+                                                @Html.RadioButtonFor(model => model.Shipmenttype, "D", new { @checked = true, @id = "dox" })
+                                                Dox
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-4 padding-right-0">
+                                            <label>
+                                                @*<input type="radio" name="Shipmenttype" id="nondox" value="N">*@
+                                                @Html.RadioButtonFor(model => model.Shipmenttype, "N", new { @id = "nondox" })
+                                                Non Dox
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="radio col-sm-4 padding-right-0">
+                                            <label>
+                                                @*<input type="radio" name="Shipment_Mode" id="air" value="Air" checked>*@
+                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "Air", new { @checked = true, @id = "air" })
+                                                Air
+                                            </label>
+                                        </div>
+                                        <div class="radio col-sm-4 nopadding">
+                                            <label>
+                                                @*<input type="radio" name="Shipment_Mode" id="surface" value="Surface">*@
+                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "Surface", new { @id = "surface" })
+                                                Surface
+                                            </label>
+                                        </div>
+                                        <div class="radio col-sm-4 nopadding">
+                                            <label>
+                                                @*<input type="radio" name="Shipment_Mode" id="international" value="International">*@
+                                                @Html.RadioButtonFor(model => model.Shipment_Mode, "International", new { @id = "international" })
+                                                International
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 col-md-offset-2">QTY</label>
+                                        <div class="col-sm-6">
+
+                                            @Html.EditorFor(model => model.TotalNo, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 col-md-offset-2">A.W</label>
+                                        <div class="col-sm-6">
+                                            @Html.EditorFor(model => model.Actual_Weight, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Weight" } })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-2 padding-right-0">
+                                                    <label>L </label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
+                                                    <div class="pad-5">
+                                                        @Html.EditorFor(model => model.Shipment_Length, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 padding-right-0">
+                                                    <label>B</label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
+                                                    <div class="pad-5">
+                                                        @Html.EditorFor(model => model.Shipment_Quantity, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 padding-right-0">
+                                                    <label>H </label>
+                                                    <label class="pull-right"><strong> X </strong> </label>
+                                                    <div class="pad-5">
+                                                        @Html.EditorFor(model => model.Shipment_Breadth, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 padding-right-0">
+                                                    <label>Pcs </label>
+                                                    <label class="pull-right"><strong> / </strong> </label>
+                                                    <div class="pad-5">
+                                                        @Html.EditorFor(model => model.Shipment_Heigth, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 padding-right-0">
+                                                    <label>Devide By</label>
+                                                    <div class="pad-5">
+                                                        @Html.EditorFor(model => model.DivideBy, new { htmlAttributes = new { @class = "form-control input-sm", @Value = 3000 } })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <label class="col-sm-4">V.Wt</label>
+                                                <div class="col-sm-7 col-md-offset-1">
+                                                    @Html.EditorFor(model => model.volumetric_Weight, new { htmlAttributes = new { @class = "form-control input-sm volw", @placeholder = "Vol. Weight" } })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                    <!-- Horizontal Form -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <div class="col-md-8">
+                                <h3 class="box-title">Description of Content</h3>
+                            </div>
+                            <div class="col-md-4">
+                                <h3 class="box-title">Value Of Goods</h3>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <!-- radio -->
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+
+                                            @Html.EditorFor(model => model.DescriptionContent1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
+
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.EditorFor(model => model.Amount1, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            @Html.EditorFor(model => model.DescriptionContent2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
+
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.EditorFor(model => model.Amount2, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8">
+                                            @Html.EditorFor(model => model.DescriptionContent3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Description" } })
+
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.EditorFor(model => model.Amount3, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-12 control-label">Total Value of Goods</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            @Html.EditorFor(model => model.Total_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total" } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-footer -->
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!--/.col (left) -->
+                <!-- right column -->
+                <div class="col-md-6">
+                    <!-- Horizontal Form -->
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Charges </h3>
+
+                            <div class="box-tools pull-right">
+                                <div class="form-group">
+                                    <label for="" class="col-md-12 btn btn-info" style="width: 150px;" data-toggle="tooltip" title="Tick if you dont want to add point to wallet on this booking">@Html.CheckBox("DisableDisc") Disable Wallet</label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <!-- radio -->
+                                <div class="col-md-6">
+                                    <div id="insurance">
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-4">Insurance</label>
+                                            <div class="radio col-md-4">
+                                                <label>
+                                                    @*<input type="radio" name="Insurance" id="noinsurance" value="no" checked>*@
+                                                    @Html.RadioButtonFor(model => model.Insurance, "no", new { @checked = true, @id = "noinsurance" })
+                                                    No
+                                                </label>
+                                            </div>
+                                            <div class="radio col-md-4">
+                                                <label>
+                                                    @*<input type="radio" name="Insurance" id="yesinsurance" value="yes">*@
+                                                    @Html.RadioButtonFor(model => model.Insurance, "yes", new { @id = "yesinsurance" })
+                                                    Yes
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        <div id="insurancedetails" class="form-group">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-12">Percentage</label>
+                                                    <div class="col-sm-12">
+                                                        @Html.EditorFor(model => model.Insuance_Percentage, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Insurance" } })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="" class="col-sm-12">Amount</label>
+                                                    <div class="col-sm-12">
+
+                                                        @Html.EditorFor(model => model.Insuance_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-6 nopadding">Amount</label>
+                                        <div class="col-sm-6 nopadding">
+
+                                            @Html.EditorFor(model => model.Charges_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6 nopadding">Service Charge</label>
+                                        <div class="col-sm-6 nopadding">
+
+                                            @Html.EditorFor(model => model.Charges_Service, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Charge" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-6 nopadding">Risk Surcharge</label>
+                                        <div class="col-sm-6 nopadding">
+
+                                            @Html.EditorFor(model => model.Risk_Surcharge, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Risk", @readonly = "readonly" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-6 nopadding">Service Tax</label>
+                                        <div class="col-sm-6 nopadding">
+                                            @Html.EditorFor(model => model.Service_Tax, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Service tax" } })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-6 nopadding">Discount</label>
+                                        <div class="col-sm-6 nopadding">
+                                            @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Discount", @readonly = "readonly", @Value = 0 } })
+
+                                            @*<input type="text" id="Discount" name="Discount" class="form-control input-sm" placeholder="Discount" disabled value="0" />*@
+
+                                            @*<input class="form-control input-sm text-box single-line" data-val="true" data-val-number="The field Discount must be a number." disabled="disabled" id="Discount" name="Discount" placeholder="Discount" type="text" value="">*@
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <select class="select2 col-sm-4 input-sm">
+                                            <option selected="selected">Select</option>
+                                            <option>Envelope</option>
+                                            <option>Box</option>
+                                        </select>
+                                        <div class="col-sm-7 pad-40 col-md-offset-1">
+                                            @Html.EditorFor(model => model.Addition_charge, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Additional charge" } })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6 nopadding">Total</label>
+                                        <div class="col-sm-6 nopadding">
+                                            @Html.EditorFor(model => model.Charges_Total, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Total", @readonly = "readonly" } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+
+
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Mode Of Payment </h3>
+
+
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="radio col-md-2">
+                                            <label>
+                                                <input type="radio" name="credit" id="cash" value="cash" checked="">
+                                                Cash
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-2">
+                                            <label>
+                                                <input type="radio" name="credit" id="credit" value="credit">
+                                                Credit
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-2">
+                                            <label>
+                                                <input type="radio" name="credit" id="cheque" value="cheque">
+                                                Cheque
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-2">
+                                            <label>
+                                                <input type="radio" name="credit" id="card" value="card">
+                                                Card
+                                            </label>
+                                        </div>
+                                        <div class="radio col-md-2">
+                                            <label>
+                                                <input type="radio" name="credit" id="other" value="other">
+                                                Other
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class=" col-md-4">
+                                        <div id="creditamount" class="form-group">
+                                            <label for="" class="col-sm-12">Paid Amount</label>
+                                            <div class="col-sm-12">
+                                                @Html.EditorFor(model => model.Credit_Amount, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "Amount" } })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-md-4">
+                                        <div id="balamount" class="form-group">
+                                            <label for="" class="col-sm-12">Balance Amount</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" name="balamount" id="balamount1" value="0" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-4">
+                                        <div id="details" class="form-group">
+                                            <label for="" class="col-sm-12">Details</label>
+                                            <div class="col-sm-12">
+                                                @Html.EditorFor(model => model.Cash, new { htmlAttributes = new { @class = "form-control input-sm", @placeholder = "details" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- radio -->
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                    <!-- Horizontal Form -->
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Services</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <div class="form-horizontal">
+                            <div class="box-body">
+                                <!-- radio -->
+                                <div id="Services" class="col-md-4">
+                                    <div class="form-group doxamount dox-lite">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="Doxradio" value="0">
+                                                 Lite
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group nondair nondox-air">
+                                        <div id="" class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="Airradio" value="0">
+                                                Non Dox Air
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group nondSurf nondox-surface">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="surfradio" value="0">
+                                                Non Dox Surface
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Plus">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" class="sericerad" id="plusradio" value="0">
+                                                DTDC Plus
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Blue">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="blueradio" value="0">
+                                                DTDC Blue
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group green">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="greenradio" value="0">
+                                                DTDC Green
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ptp11">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="ptp11radio" value="0">
+                                                PTP 10.30 AM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group PTP12">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="PTP12radio" value="0">
+                                                PTP 12.00 PM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ptp2">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="ptp2radio" value="0">
+                                                PTP 2.00 PM
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group Sunday">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="Sundayradio" value="0">
+                                                Sunday PTP
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group GEC">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="sericerad" id="GECradio" value="0">
+                                                GEC
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-md-offset-1">
+                                    <div class="form-group doxamount">
+                                        <input type="text" class="form-control input-sm" id="DoxInput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group nondair">
+                                        <input type="text" class="form-control input-sm" id="Airinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group nondSurf">
+                                        <input type="text" class="form-control input-sm" id="surfinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Plus">
+                                        <input type="text" class="form-control input-sm" id="plusinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Blue">
+                                        <input type="text" class="form-control input-sm" id="blueinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group green">
+                                        <input type="text" class="form-control input-sm" id="greeninput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group ptp11">
+                                        <input type="text" class="form-control input-sm" id="ptp11input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group  PTP12">
+                                        <input type="text" class="form-control input-sm" id="PTP12input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group ptp2">
+                                        <input type="text" class="form-control input-sm" id="ptp2input" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group Sunday">
+                                        <input type="text" class="form-control input-sm" id="Sundayinput" placeholder="" value="0">
+                                    </div>
+                                    <div class="form-group GEC">
+                                        <input type="text" class="form-control input-sm" id="GECinput" placeholder="" value="0">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.box-body -->
+                            <!-- box-Footer -->
+                            <div class="box-footer">
+                                <div class="col-md-5 col-md-offset-2">
+                                    <strong>Your Wallet Money Is :</strong>
+                                </div>
+                                <div class="col-md-2">
+                                    @if (ViewBag.WalletPopints == null)
+                                    {
+                                        <span id="Walletmoney">0</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="Walletmoney">@ViewBag.WalletPopints</span>
+                                    }
+                                </div>
+                                <div id="redeem-btn" class="col-md-3">
+                                    <div class="container">
+                                        <button type="button" class="btn bg-maroon btn-sm" id="MainRedeem" data-toggle="modal" data-target="#myModal">Redeem</button>
+                                        <div class="modal" id="myModal" role="dialog">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Modal Default</h4>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Enter OTP</label>
+                                                                <input type="text" class="form-control input-sm" id="Otp" placeholder="">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Enter Amount</label>
+                                                                <input type="text" class="form-control input-sm" id="DiscAmount" placeholder="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                                                        <button id="disc" type="button" class="btn btn-primary">Redeem</button>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer text-right">
+                                <button type="submit" value="Save" class="btn btn-info btn-sm">Save</button>
+                                @*<button type="submit" class="btn btn-info pull-right">Print</button>*@
+                                <button type="submit" value="Sms" name="Submit" class="btn btn-success btn-sm">Save With SMS</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Clear</button>
+                            </div>
+                            <!-- /.box-footer -->
+                        </div>
+
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+}
+
+
+<!-- Modal -->
+<div class="example-modal">
+
+</div><!-- /.example-modal -->
+
+
+
+
+<style>
+    .form-horizontal .checkbox, .form-horizontal .radio {
+        min-height: 30px;
+    }
+
+    #consignment .form-group {
+        margin-bottom: 5px;
+    }
+
+    #consignment label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    #consignment #insurancedetails, #consignment #creditamount {
+        display: none;
+    }
+
+    #consignment .icheckbox_minimal-red, .iradio_minimal-red {
+        margin: 0 10px;
+    }
+
+    .pad-40 {
+        padding-right: 0;
+        padding-left: 8%;
+    }
+
+    .volw {
+        width: 105%;
+        margin-left: -5px;
+    }
+
+
+    @@media (min-width:769px) {
+        .padding-right-0 {
+            padding-right: 0px;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .box-footer #redeem-btn .modal-dialog {
+            width: 400px;
+            margin: 30px auto;
+        }
+    }
+</style>
+
+<script>
+
+    function showinsurance() {
+        $('#insurance').show();
+    }
+    function cash() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').hide();
+
+    }
+    function cashamount() {
+        $('#creditamount').show();
+        $('#balamount').hide();
+        $('#details').hide();
+    }
+    function creditamount() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').show();
+
+    }
+    function chequeamount() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').show();
+    }
+    function cardamount() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').show();
+    }
+    function otheramount() {
+        $('#creditamount').show();
+        $('#balamount').show();
+        $('#details').show();
+    }
+    function hideinsurance() {
+        $('#insurance').hide();
+    }
+    function yesinsurance() {
+        $('#insurancedetails').show();
+
+    }
+    function noinsurance() {
+        $('#insurancedetails').hide();
+
+        var perc = $('#Insuance_Percentage').val('');
+        var Amt = $('#Insuance_Amount').val('');
+
+        $('#Risk_Surcharge').val(0);
+    }
+
+    function CalculateInsuarance() {
+        var perc = parseFloat($('#Insuance_Percentage').val());
+        var Amt = parseFloat($('#Insuance_Amount').val());
+
+
+
+        var riskcharge = ((perc / 100) * Amt);
+
+        // alert(riskcharge);
+
+        $('#Risk_Surcharge').val(riskcharge);
+    }
+
+
+
+    $(document).ready(function () {
+        hideinsurance();  //hiding insuarance at statrting
+        cash();
+        $('#yesinsurance').click(function () {
+            yesinsurance();
+        });
+
+        //otherTab is the class for the tabs other than tab1
+        $('#noinsurance').click(function () {
+            noinsurance();
+        });
+
+        $('#nondox').click(function () {
+            showinsurance();
+        });
+
+        $('#dox').click(function () {
+            hideinsurance();
+        });
+
+        $('#cash').click(function () {
+            cashamount();
+        });
+
+        $('#credit').click(function () {
+            creditamount();
+        });
+        $('#cheque').click(function () {
+            chequeamount();
+        });
+        $('#card').click(function () {
+            cardamount();
+        });
+        $('#other').click(function () {
+            otheramount();
+        });
+
+        $('#Insuance_Percentage,#Insuance_Amount').keyup(function () {
+            var perc = $('#Insuance_Percentage').val();
+            var Amt = $('#Insuance_Amount').val();
+
+
+            if (perc == "") {
+                return false;
+            }
+            else if (Amt == "") {
+                return false;
+            }
+            else if ($.isNumeric(perc) == false) {
+                $('#Risk_Surcharge').val(0);
+                return false;
+            }
+            else if ($.isNumeric(Amt) == false) {
+                $('#Risk_Surcharge').val(0);
+                return false;
+            }
+            else {
+                CalculateInsuarance();
+            }
+
+            $('#Risk_Surcharge').keyup();   // calling keyup for calulating amount
+        });
+
+
+    });
+
+
+
+    /* Ph No AutoComplete */
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript"
+        ];
+
+        var senderpincode = [
+            "101",
+            "102",
+            "103",
+            "104",
+            "105"
+        ];
+
+        /**/
+        /**/
+@*var Phone = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            url: '@Url.Action("SenderPhoneAutocomplete")',
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        Phone = data;
+    }
+});
+
+        $("#sender_phone").autocomplete({
+    source: Phone
+});*@
+    /**/
+    /**/
+
+
+
+    $("#receipientphno").autocomplete({
+        source: availableTags
+    });
+
+    $("#pincode").autocomplete({
+        source: senderpincode
+    });
+
+    $("#receipientpincode").autocomplete({
+        source: senderpincode
+    });
+
+});
+
+//Red color scheme for iCheck
+$('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+    checkboxClass: 'icheckbox_minimal-red',
+    radioClass: 'iradio_minimal-red'
+})
+//Flat red color scheme for iCheck
+$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+    checkboxClass: 'icheckbox_flat-green',
+    radioClass: 'iradio_flat-green'
+})
+
+//On checkbox click change the totalcharges value
+$(document).ready(function () {
+    $("#securepack").click(function () {
+
+        if ($(this).is(":checked")) {
+
+            $("#totalcharges").val("100");
+        } else {
+            $("#totalcharges").val("0");
+        }
+    });
+});
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        // $('#Discount').val("0");
+
+
+        $('#disc').click(function () {
+            var amount = $('#DiscAmount').val();
+            var phone = $("#sender_phone").val();
+            var Otp = $("#Otp").val();
+
+            if (amount == "") {
+                return false;
+            }
+            else {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/RedeemDiscount',
+                    data: { sender_phone: phone, amount: amount, Otp: Otp },
+                    success: function (Data) {
+                        if (Data == "0.0") {
+                            alert("Your Wallet Has not Sufficient Balance");
+
+                        }
+                        else if (Data == "2") {
+                            alert("OtP Is Incorrect");
+                        }
+                        else {
+                            $('#Discount').val(amount);
+
+                            $("#Discount").trigger("keyup");
+
+                            $('#myModal').modal('toggle');
+                        }
+                    }
+                });
+            }
+
+
+
+        });
+
+
+        $('#MainRedeem').click(function () {
+
+            var phone = $('#sender_phone').val();
+
+            if (phone == "") {
+                alert("Please Enter Phone Number");
+            }
+            else if (phone.length != 10) {
+                alert("Please Enter Valid Phone Number...");
+            }
+            else {
+
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/SendOtp',
+                    data: { sender_phone: phone },
+                    success: function (Data) {
+
+                    }
+                });
+            }
+
+        });
+
+        $("#sender_phone").keyup(function () {
+            $('#Discount').val(0);
+        });
+
+
+
+        $('#Consignment_No').keyup(function () {
+            var consno = $('#Consignment_No').val();
+            if (consno.length >= 9) {
+                $('#Consignment_No').val($(this).val().toUpperCase());
+                $('#sender_phone').focus();
+
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/consignmentval',
+                    data: { Consignment: consno },
+                    success: function (Data) {
+                        if (Data == "0") {
+                            alert("Consignment no Already Exist");
+                            $('#Consignment_No').val('');
+
+                        }
+                        else {
+                            $('#ConError').hide();
+                        }
+                    }
+                });
+            }
+        });
+
+
+
+
+    });
+</script>
+
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
+
+<script>
+
+    /////Sender Autocomplete
+    $(function () {
+        var availableTutorials = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("SenderPhoneAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.sender_phone);
+
+
+
+        });
+    }
+});
+
+$("#sender_phone").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#sender_phone").val(ui.item.value);
+
+        $("#sender_phone").trigger("change");
+    }
+});
+});
+
+//recepients autocomplete
+
+$(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("ReceipentsPhoneAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Reciepents_phone);
+
+
+        });
+    }
+});
+
+$("#receipientphno").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#receipientphno").val(ui.item.value);
+
+        $("#receipientphno").trigger("change");
+    }
+
+});
+});
+//////////
+
+$(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("PincodeautocompleteSender")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Pincode);
+
+
+        });
+    }
+});
+
+$("#Pincode").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#Pincode").val(ui.item.value);
+
+        $("#Pincode").trigger("change");
+    }
+
+});
+});
+
+$(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("PincodeautocompleteSender")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Pincode);
+
+
+        });
+    }
+});
+
+$("#ReciepentsPincode").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#ReciepentsPincode").val(ui.item.value);
+
+        $("#ReciepentsPincode").trigger("change");
+    }
+
+});
+});
+
+/////////////////receipents city autocomplete
+$(function () {
+var availableTutorials = [
+
+];
+
+$.ajax({
+    type: 'GET',
+    /**/
+    /**/
+    /**/
+    url: '@Url.Action("ReceipentsCityAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            availableTutorials.push(item.Name);
+
+
+        });
+    }
+});
+
+$("#ReciepentsCity").autocomplete({
+    source: availableTutorials,
+    select: function (event, ui) {
+
+        $("#ReciepentsCity").val(ui.item.value);
+
+        $("#ReciepentsCity").trigger("change");
+    }
+
+});
+});
+
+/////////////////////////////
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        ///////while Bulk booking Empty recepients details  only
+        $('#receipientphno').val(' ');
+        $('#Reciepents_Email').val(' ');
+        $('#Reciepents').val(' ');
+        $('#ReciepentCompany').val(' ');
+        $('#ReciepentsAddress').val(' ');
+        $('#ReciepentsCity').val(' ');
+        $('#ReciepentsState').val(' ');
+        $('#ReciepentsPincode').val(' ');
+        $('#Destination').val(' ');
+        /////////////////////////////////////////
+
+
+        $("#sender_phone").change(function () {
+            var consno = $("#sender_phone").val();
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/FillSenderdetails',
+                data: { sender_phone: consno },
+                success: function (Data) {
+                    // alert(Data[0].SenderPincode);
+                    $('#Sender_Email').val(Data.Sender_Email);
+                    $('#Sender').val(Data.Sender);
+                    $('#SenderCompany').val(Data.SenderCompany);
+                    $('#SenderAddress').val(Data.SenderAddress);
+                    $('#SenderCity').val(Data.SenderCity);
+                    $('#SenderState').val(Data.SenderState);
+                    $('#Pincode').val(Data.SenderPincode);
+
+                    ////////Set ////////
+
+                    $('#Discount').val(0);
+                    //////////////////
+                }
+            });
+
+        });
+
+
+
+
+        $("#receipientphno").change(function () {
+            var consno = $("#receipientphno").val();
+            // alert("sfdvgd");
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/FillReceipentsdetails',
+                data: { phone: consno },
+                success: function (Data) {
+                    // alert(Data[0].SenderPincode);
+                    $('#Reciepents_Email').val(Data.Reciepents_Email);
+                    $('#Reciepents').val(Data.Sender);
+                    $('#ReciepentCompany').val(Data.ReciepentCompany);
+                    $('#ReciepentsAddress').val(Data.ReciepentsAddress);
+                    $('#ReciepentsCity').val(Data.ReciepentsCity);
+                    $('#ReciepentsState').val(Data.ReciepentsState);
+                    $('#ReciepentsPincode').val(Data.ReciepentsPincode);
+                    $('#Destination').val(Data.Destination);
+                }
+            });
+
+        });
+
+        $("#ReciepentsPincode").change(function () {
+            var consno = $("#ReciepentsPincode").val();
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/FillDestination',
+                data: { pincode: consno },
+                success: function (Data) {
+                    // alert(Data[0].SenderPincode);
+                    $('#Destination').val(Data[0].Name);
+                    $('#ReciepentsState').val(Data[0].State_);
+                    $('#ReciepentsCity').val(Data[0].Name);
+
+                }
+            });
+
+        });
+
+        $("#ReciepentsCity").change(function () {
+            var consno = $("#ReciepentsCity").val();
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/FillRecepentsPincode',
+                data: { Name: consno },
+                success: function (Data) {
+                    // alert(Data[0].SenderPincode);
+
+                    $('#ReciepentsPincode').val(Data[0].Pincode);
+                    $('#Destination').val(Data[0].Name);
+
+                }
+            });
+
+        });
+
+        $("#Pincode").change(function () {
+            var consno = $("#Pincode").val();
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/FillDestination',
+                data: { pincode: consno },
+                success: function (Data) {
+                    // alert(Data[0].SenderPincode);
+                    $('#SenderState').val(Data[0].State_);
+                    $('#SenderCity').val(Data[0].Name);
+
+                }
+            });
+        });
+
+        $('[name="credit"]').change(function () {
+            var Shipment_Mode = $("input[name='credit']:checked").val();
+
+            var total = $('#Charges_Total').val();
+
+
+            if (Shipment_Mode == "credit" || Shipment_Mode == "cheque" || Shipment_Mode == "card" || Shipment_Mode == "other") {
+
+                if (total == "") {
+                    total = 0;
+                }
+
+                $('#Credit_Amount').val(total);
+
+                // alert(total);
+
+
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+        $("#Charges_Amount,#Charges_Service,#Risk_Surcharge,#Service_Tax,#Addition_charge,#Discount").keyup(function () {
+            var Charges_Amount = $('#Charges_Amount').val();
+            var Charges_Service = $('#Charges_Service').val();
+            var Risk_Surcharge = $('#Risk_Surcharge').val();
+            var Service_Tax = $('#Service_Tax').val();
+            var Addition_charge = $('#Addition_charge').val();
+            var Discount = $('#Discount').val();
+            // var Credit_Amount = $('#Credit_Amount').val();
+            //alert(Discount);
+
+            Addition(Charges_Amount, Charges_Service, Risk_Surcharge, Service_Tax, Addition_charge, Discount)
+
+
+        });
+
+
+        function Addition(p1, p2, p3, p4, p5, p6) {
+            //alert(p6);
+            var addition = (parseInt("0" + p1) + parseInt("0" + p2) + parseInt("0" + p3) + parseInt("0" + p4) + parseInt("0" + p5) - p6);
+            $('#Charges_Total').val(addition);      // The function returns Sum Of Amount
+            $('#Credit_Amount').val(addition);      // The function returns Sum Of Amount
+            $('#balamount1').val(0);     
+        }
+
+        $("#Credit_Amount").keyup(function () {
+
+            var Credit_Amount = $('#Credit_Amount').val();
+            var Charges_Total = $('#Charges_Total').val();
+            var balamount = $('#balamount1').val();
+
+
+            sub(Credit_Amount, Charges_Total)
+        });
+
+        function sub(p1, p2) {
+            var subt = (parseInt("0" + p2) - parseInt("0" + p1));
+            $('#balamount1').val(subt);
+
+        }
+
+        $("#Shipment_Quantity,#Shipment_Length,#Shipment_Breadth,#Shipment_Heigth,#DivideBy").keyup(function () {
+            var Shipment_Quantity = $('#Shipment_Quantity').val();
+            var Shipment_Length = $('#Shipment_Length').val();
+            var Shipment_Breadth = $('#Shipment_Breadth').val();
+            var Shipment_Heigth = $('#Shipment_Heigth').val();
+            var DivideBy = $('#DivideBy').val();
+
+
+            if (Shipment_Quantity == "") {
+
+                return false;
+            }
+            else if (Shipment_Length == "") {
+
+                return false;
+            }
+            else if (Shipment_Breadth == "") {
+
+                return false;
+            }
+            else if (Shipment_Heigth == "") {
+
+                return false;
+            }
+            else if (DivideBy == "") {
+
+                return false;
+            }
+            else {
+
+                VolumetricMult(Shipment_Quantity, Shipment_Length, Shipment_Breadth, Shipment_Heigth, DivideBy)
+            }
+
+        });
+
+        function VolumetricMult(p1, p2, p3, p4, DivideBy) {
+            var Mul = ((parseFloat(p1) * parseFloat(p2) * parseFloat(p3) * parseFloat(p4) / parseFloat(DivideBy))).toFixed(3);
+            $('#volumetric_Weight').val(Mul);      // The function returns volumatric amt
+        }
+
+
+
+        $('[name="Shipment_Mode"]').change(function () {
+            var Shipment_Mode = $("input[name='Shipment_Mode']:checked").val();
+
+            if (Shipment_Mode == "Air") {
+                $('#DivideBy').val(3000);
+
+            }
+            if (Shipment_Mode == "Surface") {
+                $('#DivideBy').val(4000);
+            }
+            if (Shipment_Mode == "International") {
+                $('#DivideBy').val(5000);
+            }
+
+
+            var Shipment_Quantity = $('#Shipment_Quantity').val();
+            var Shipment_Length = $('#Shipment_Length').val();
+            var Shipment_Breadth = $('#Shipment_Breadth').val();
+            var Shipment_Heigth = $('#Shipment_Heigth').val();
+            var DivideBy = $('#DivideBy').val();
+
+
+
+            if (Shipment_Quantity == "") {
+                return false;
+            }
+            else if (Shipment_Length == "") {
+                return false;
+            }
+            else if (Shipment_Breadth == "") {
+                return false;
+            }
+            else if (Shipment_Heigth == "") {
+                return false;
+            }
+            else if (DivideBy == "") {
+                return false;
+            }
+            else {
+                VolumetricMult(Shipment_Quantity, Shipment_Length, Shipment_Breadth, Shipment_Heigth, DivideBy)
+                Services()
+
+            }
+
+
+
+
+        });
+
+
+        $('[name="Actual_Weight"],[name="ReciepentsPincode"],[name="Shipmenttype"],[name="volumetric_Weight"]').keyup(function () {
+            //alert("Bala");
+            Services()
+        });
+
+        $('[name="Shipmenttype"]').change(function () {
+            //alert("Bala");
+            Services()
+        });
+
+
+
+        function Services() {
+            var Actualwaqight = $('[name = "Actual_Weight"]').val();
+            var ReceipentPincode = $('[name = "ReciepentsPincode"]').val();
+            var ShipmentType = $("input[name='Shipmenttype']:checked").val();
+            var Volumetric = $('[name="volumetric_Weight"]').val();
+
+            if (Volumetric == "") {
+                Volumetric = "0";
+            }
+            if (Actualwaqight == "" || ReceipentPincode == "" || ShipmentType == "") {
+                return false;
+            }
+            else {
+                // alert("Abcd");
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Calculation',
+                    data: { Actualwaight: Actualwaqight, Pincode: ReceipentPincode, ShipmentType: ShipmentType, VolumetricWaight: Volumetric },
+                    success: function (Data) {
+
+                        $('.doxamount').hide();
+                        $('.nondair').hide();
+                        $('.nondSurf').hide();
+                        $('.PTP12').hide();
+                        $('.ptp2').hide();
+                        $('.GEC').hide();
+                        $('.Plus').hide();
+                        $('.Blue').hide();
+                        $('.green').hide();
+                        $('.Sunday').hide();
+                        $('.ptp11').hide();
+
+
+
+                        for (var obj in Data) {
+                            if (Data[obj].name == "Doxamount") {
+                                $('.doxamount').show();
+
+                                $('#Doxradio').val(Data[obj].Amount);
+                                $('#DoxInput').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name == "AirAmount") {
+                                $('.nondair').show();
+
+                                $('#Airradio').val(Data[obj].Amount);
+                                $('#Airinput').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name == "Amountsurf") {
+                                $('.nondSurf').show();
+
+
+                                $('#surfradio').val(Data[obj].Amount);
+                                $('#surfinput').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name.indexOf("PRIMETIME PLUS 12.00") != -1) {
+                                $('.PTP12').show();
+
+                                $('#PTP12radio').val(Data[obj].Amount);
+                                $('#PTP12input').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name.indexOf("PRIMETIME PLUS - 2 PM") != -1) {
+                                $('.ptp2').show();
+
+                                $('#ptp2radio').val(Data[obj].Amount);
+                                $('#ptp2input').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name.indexOf("EXPRESS CARGO") != -1) {
+                                $('.GEC').show();
+
+                                $('#GECradio').val(Data[obj].Amount);
+                                $('#GECinput').val(Data[obj].Amount);
+
+
+                            }
+                            else if (Data[obj].name.indexOf("PLUS") != -1) {
+                                $('.Plus').show();
+
+                                //alert(Data[obj].name);
+                                $('#plusradio').val(Data[obj].Amount);
+                                $('#plusinput').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name.indexOf("BLUE") != -1) {
+                                $('.Blue').show();
+                                //alert(Data[obj].Amount);
+                                $('#blueradio').val(Data[obj].Amount);
+                                $('#blueinput').val(Data[obj].Amount);
+                            }
+                            else if (Data[obj].name.indexOf("GREEN") != -1) {
+                                $('.green').show();
+
+                                $('#greenradio').val(Data[obj].Amount);
+                                $('#greeninput').val(Data[obj].Amount);
+                            }
+
+                        }
+                        Setchargeamount()
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                    }
+                });
+            }
+        }
+
+        $('[name="sericerad"]').change(function () {
+
+            Setchargeamount()
+        });
+
+        function Setchargeamount() {
+
+            var ServiceAmt = $("input[name='sericerad']:checked").val();
+
+            $('#Charges_Amount').val(ServiceAmt);
+
+            $('#Charges_Amount').keyup();
+        }
+
+        $('#secure_Pack,#Passport,#OfficeSunday').change(function () {
+
+            var amt = 0;
+
+            if ($('#secure_Pack').is(":checked")) {
+                amt += 100;
+            }
+
+            if ($('#Passport').is(":checked")) {
+                amt += 200;
+            }
+
+            $('#Addition_charge').val(amt);
+
+            $('#Addition_charge').keyup();
+        });
+
+
+
+
+        function Add100() {
+
+        }
+
+        function Add300() {
+
+        }
+        function Min100() {
+
+        }
+
+        function Min300() {
+
+        }
+
+        $('#ConError').hide();
+
+    });
+</script>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var consno = $("#sender_phone").val();
+        $.ajax({
+            type: 'Get',
+            dataType: 'json',
+            url: '/Booking/Walletamount',
+            data: { sender_phone: consno },
+            success: function (Data) {
+                //alert(Data);
+                var amt = Data;
+                $('#Walletmoney').html(amt.toFixed(2));
+
+                // alert(data);
+            }
+        });
+
+        $("#sender_phone").change(function () {
+            var consno = $("#sender_phone").val();
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/Walletamount',
+                data: { sender_phone: consno },
+                success: function (Data) {
+                    //alert(Data);
+                    var amt = Data;
+                    $('#Walletmoney').html(amt.toFixed(2));
+
+                    alert(data);
+                }
+            });
+
+        });
+    });
+
+</script>
+
+
+
+
+
+
+@if (ViewBag.Insuarance == "N")
+{
+    <script>
+    $(document).ready(function () {
+        $('#insurance').show();
+    });
+    </script>
+}
+
+@if (ViewBag.yesinsurance == "yes")
+{
+    <script>
+    $(document).ready(function () {
+        $('#insurancedetails').show();
+    });
+    </script>
+}
+
+@if (ViewBag.Success != null)
+{
+    <script>
+
+    $(document).ready(function () {
+
+        alert('Consignment Added SuccessFully');
+
+    });
+
+    </script>
+
+}
+
+@if (ViewBag.Discount != null && ViewBag.Discount != 0)
+{
+    <script>
+    /**/
+    /**/
+    var abcd =@ViewBag.Discount;
+    /**/
+    /**/
+
+    $(document).ready(function () {
+
+        $('#Discount').val(abcd);
+
+        $("#Discount").trigger("keyup");
+
+    });
+
+    </script>
+}
+
+<script>
+    //$('#sender_phone').focusout(function () {
+    //    var phone = $('#sender_phone').val();
+
+    //    if (phone.length > 9 && phone.length < 12) {
+    //        return true;
+
+    //    }
+    //    else {
+    //        alert("Phone number Should Be 10 To 11 Digits");
+    //        return false;
+    //    }
+    //});
+
+
+    //$('#receipientphno').focusout(function () {
+    //    var phone = $('#receipientphno').val();
+
+    //    if (phone.length > 9 && phone.length < 12) {
+    //        return true;
+
+    //    }
+    //    else {
+    //        alert("Phone number Should Be 10 To 11 Digits");
+    //        return false;
+    //    }
+    //});
+
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('body').addClass("sidebar-mini sidebar-collapse");
+    });
+
+    $(function () { //shorthand document.ready function
+        $('#receiptform').on('submit', function (e) { //use on if jQuery 1.7+
+
+            var phone = $('#sender_phone').val();
+            var phone1 = $('#receipientphno').val();
+            var Charges_Amount1 = $('#Charges_Amount').val();
+            var Discount1 = $('#Discount').val();
+
+
+            if (phone.length > 9 && phone.length < 12) {
+                return true;
+
+            }
+            else if (phone1.length > 9 && phone1.length < 12) {
+                return true;
+            }
+            else if ((Charges_Amount1 <= 0 || Charges_Amount1 == null) && Discount1 <= 0) {
+                alert("Amount Should be Greater than 0");
+                return false;
+
+            }
+            else {
+                alert("Phone number Should Be 10 To 11 Digits");
+                return false;
+            }
+
+
+
+        });
+    });
+</script>
+
+
+
+
+
+
+<style>
+
+    .nopadding {
+        padding: 0px;
+    }
+
+    #consignment .form-group {
+        margin-bottom: 5px;
+    }
+
+    #consignment label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #consignment textarea {
+        width: 100%;
+    }
+
+    #consignment #insurancedetails, #consignment #creditamount {
+        display: none;
+    }
+
+    #consignment .icheckbox_minimal-red, .iradio_minimal-red {
+        margin: 0 10px;
+    }
+
+    #consignment #Services .radio {
+        margin: 0px 10px;
+        padding: 5px;
+        padding-bottom: 0px;
+        color: white;
+    }
+
+    .dox-lite, .nondox-air, .nondox-surface {
+        background-color: #ecf0f5;
+    }
+
+        .dox-lite label, .nondox-air label, .nondox-surface label {
+            color: black !important;
+        }
+
+    .Plus {
+        background-color: red;
+    }
+
+    .Blue {
+        background-color: blue;
+    }
+
+    .green {
+        background-color: #008000;
+    }
+
+    .ptp11, .PTP12, .ptp2, .Sunday {
+        background-color: #8c0c7c;
+    }
+
+    .GEC {
+        color: black !important;
+        background-color: #eeb6f5;
+    }
+
+    @@media (min-width:769px) {
+        .padding-right-0 {
+            padding-right: 0px;
+        }
+    }
+
+    label {
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .form-control input-sm {
+        font-size: 12px;
+    }
+
+    #consignment label {
+        padding-right: 0px;
+    }
+
+    .padding-left-0 {
+        padding-left: 0px;
+    }
+
+    .pad-5 input {
+        padding: 5px;
+    }
+
+    .radio input[type=radio] {
+        margin-top: 2px;
+    }
+</style>
+

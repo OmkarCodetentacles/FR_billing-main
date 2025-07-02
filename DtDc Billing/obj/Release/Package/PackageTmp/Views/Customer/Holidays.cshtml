@@ -1,0 +1,100 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Holiday>
+
+@{
+    ViewBag.Title = "Holidays";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+
+                    <p class="pull-right" style="text-decoration:underline;    font-size: 14px;">
+                        @Html.ActionLink("Create New", "AddHoliday")
+                    </p>
+                    <h4>Holidays</h4>
+
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="table-block">
+
+                                    <table class="table  table-striped">
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.H_Year)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.State)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.H_Month)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.H_datetime)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Holiday_Name)
+                                            </th>
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.H_Year)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.State)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.H_Month)
+                                                </td>
+                                                <td>
+                                                    @item.H_datetime.Value.Date.ToString("MM/dd/yyyy")
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Holiday_Name)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Edit", "EditHoliday", new { id = item.Holiday_ID })
+                                                    @Html.ActionLink("Delete", "DeleteHoliday", new { id = item.Holiday_ID })
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+
+
+                                    @if (TempData["Success"] != null)
+                                    {
+                                        <script>
+
+        $(document).ready(function () {
+
+            alert('@TempData["Success"]');
+
+        });
+
+                                        </script>
+
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>

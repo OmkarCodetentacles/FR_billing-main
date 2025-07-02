@@ -1,0 +1,1323 @@
+﻿@model  DtDc_Billing.Metadata_Classes.TransactionMetadata
+@{
+
+    Layout = null;
+}
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<style>
+    .padding-left-0 {
+        padding-left: 0 !important
+    }
+
+    no-padding {
+        padding: 0 !important
+    }
+
+    #edit-consignment {
+        max-height: 300px;
+    }
+
+    .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+        position: absolute;
+        margin-left: -41px !important;
+    }
+
+    label {
+        display: inline-block;
+        width: 117px !important;
+        margin-right: 0.5em;
+        padding-top: 1.5em;
+    }
+
+    select {
+        border: 1px solid #0049af30 !important;
+        border-radius: 0px !important;
+        height: 40px !important;
+        padding: 10px;
+        width: 100% !important;
+    }
+</style>
+
+@{
+    var smessage = ViewBag.Message as string;
+    var notvalid = ViewBag.notvalidpincode as string;
+
+}
+
+
+
+@if (!string.IsNullOrEmpty(smessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", smessage))
+
+}
+@if (!string.IsNullOrEmpty(notvalid))
+{
+    <script>
+                  alert('@notvalid')
+    </script>
+}
+@using (Ajax.BeginForm("SaveEditConsignment", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+{
+
+
+    <div id="sg1">
+
+
+
+        <label>
+            Consi no<span style="color:red">*</span>:
+
+            @if (ViewBag.nextconsignment != null)
+            {
+                @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.nextconsignment } })
+
+                <script>
+                    $('#Consignment_no').keyup();
+                </script>
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Consignment_no, new { htmlAttributes = new { @class = "form-control" } })
+            }
+        </label>
+
+
+        @*<label>
+            Cust Id  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+        </label>*@
+        <label>
+            Cust Id<span style="color:red">*</span>:  @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label>
+            Receiver @Html.EditorFor(model => model.Receiver, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+        <label>
+            Address @Html.EditorFor(model => model.compaddress, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label>
+            Book date<span style="color:red">*</span>: @Html.EditorFor(model => model.tembookingdate, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label style="width:130px;">
+            Consignment Type @Html.DropDownList("consignmentType", new SelectListItem[] {
+new SelectListItem() {Text = "Domestic", Value="Domestic" ,Selected=true},
+new SelectListItem() {Text = "International", Value="International"},
+}, new { @class = "form-control" })
+
+
+        </label>
+        @*<label>
+            Pincode @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+        </label>*@
+        <label>
+            Pincode<span style="color:red">*</span>: @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+
+        <label>
+            Mode @Html.DropDownListFor(x => x.Mode, new SelectListItem[] {
+new SelectListItem() {Text = "AR", Value="AR"},
+new SelectListItem() {Text = "AC", Value="AC"},
+new SelectListItem() {Text = "SF", Value="SF"},
+new SelectListItem() {Text = "SC1", Value="SC1"},
+new SelectListItem() {Text = "AR1", Value="AR1"},
+new SelectListItem() {Text = "AC1", Value="AC1"},
+new SelectListItem() {Text = "SF1", Value="SF1"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "CP1", Value="CP1"},
+new SelectListItem() {Text = "CP2", Value="CP2"},
+new SelectListItem() {Text = "CSP", Value="CSP"},
+new SelectListItem() {Text = "D1Z", Value="D1Z"},
+new SelectListItem() {Text = "D2Z", Value="D2Z"},
+new SelectListItem() {Text = "DZ2", Value="DZ2"},
+new SelectListItem() {Text = "D10", Value="D10"},
+new SelectListItem() {Text = "D12", Value="D12"},
+new SelectListItem() {Text = "DM2", Value="DM2"},
+new SelectListItem() {Text = "DCP", Value="DCP"},
+new SelectListItem() {Text = "DC2", Value="DC2"},
+new SelectListItem() {Text = "DCD", Value="DCD"},
+new SelectListItem() {Text = "DZB", Value="DZB"},
+new SelectListItem() {Text = "DSF", Value="DSF"},
+new SelectListItem() {Text = "D2D", Value="D2D"},
+new SelectListItem() {Text = "DZS", Value="DZS"},
+new SelectListItem() {Text = "ZSP", Value="ZSP"},
+new SelectListItem() {Text = "DAR", Value="DAR"},
+new SelectListItem() {Text = "DMB", Value="DMB"},
+new SelectListItem() {Text = "DMD", Value="DMD"},
+new SelectListItem() {Text = "DMS", Value="DMS"},
+new SelectListItem() {Text = "DSM", Value="DSM"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "MSP", Value="MSP"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNB", Value="DNB"},
+new SelectListItem() {Text = "DNP", Value="DNP"},
+new SelectListItem() {Text = "DN2", Value="DN2"},
+new SelectListItem() {Text = "DND", Value="DND"},
+new SelectListItem() {Text = "DNS", Value="DNS"},
+new SelectListItem() {Text = "GEC", Value="GEC"},
+new SelectListItem() {Text = "D71", Value="D71"},
+new SelectListItem() {Text = "P7X", Value="P7X"},
+new SelectListItem() {Text = "PEC", Value="PEC"},
+new SelectListItem() {Text = "GE1", Value="GE1"} }, new { @class = "form-select" })
+
+
+        </label>
+
+        <label>
+            Act Wt @Html.EditorFor(model => model.Actual_weight, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </label>
+
+
+
+        @*<label>
+        char Wt @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+            </label>*@
+        <label>
+            char Wt<span style="color:red">*</span>: @Html.EditorFor(model => model.chargable_weight, new { htmlAttributes = new { @class = "form-control" } })
+
+
+        </label>
+
+
+        <label>
+            Qty<span style="color:red">*</span>: @Html.EditorFor(model => model.Quanntity, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label class="type-select">
+            Type @Html.DropDownListFor(x => x.Type_t, new SelectListItem[]{
+new SelectListItem() {Text = "D", Value="D"},
+new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
+        </label>
+
+        <label>
+            Amount @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+
+        <label>
+            Other Charges @Html.EditorFor(model => model.loadingcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+        </label>
+        <label>
+            Reference @Html.EditorFor(model => model.Reference, new { htmlAttributes = new { @class = "form-control" } })
+        </label>
+
+        <label>
+            Dtdc Amt @Html.EditorFor(model => model.dtdcamount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+        </label>
+        <fieldset class="form-horizontal">
+
+            <div class="row">
+                <div id="insshow" class="col-sm-12 no-padding" style="display: grid;">
+                    <label class="col-md-2 padding-left-0 radio-label" for="radios" style="padding-top: 0; margin: 30px 16px 0px"><b>Insuarance</b></label>
+
+                    <div style="padding: 0px 11px 0px">
+                        <div class="radio-inline col-md-4" style="padding-top:0">
+                            <label for="radios-0 ">
+                                @*<input name="Insurance" id="radios-0" value="yes" checked="checked" type="radio">*@
+                                @Html.RadioButtonFor(m => m.Insurance, "yes")
+                                Carrier Risk
+                            </label>
+                        </div>
+                        <div class="radio-inline col-md-4" style="padding-top:0">
+                            <label for="radios-1 ">
+                                @*<input name="Insurance" id="radios-1" value="no" type="radio" checked>*@
+                                @Html.RadioButtonFor(m => m.Insurance, "no", new { @checked = true, @id = "Insurance" })
+                                Owner Risk
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" id="insdiv">
+                    <label>
+                        Bill Amount
+
+                        @Html.EditorFor(model => model.BillAmount, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </label>
+                    <label>
+                        <span class="insurancelable">Insuarance</span>
+                        @Html.EditorFor(model => model.Percentage, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </label>
+                    <label>
+                        <span class="resksurlable"> Risk surcharge </span> @Html.EditorFor(model => model.Risksurcharge, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </label>
+                    <label>
+                        Invoice No @Html.EditorFor(model => model.Invoice_No, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+
+
+            </div>
+
+            <!-- Multiple Radios -->
+            <div class="row">
+                <div id="topayradio" class="col-sm-5 no-padding">
+                    <label class="col-md-2 radio-label" for="radios">To Pay </label>
+
+                    <div class="radio-inline">
+                        <label for="radios-0">
+                            @*<input name="topay" id="radios-0" value="yes" checked="checked" type="radio">*@
+                            @Html.RadioButtonFor(m => m.topay, "yes")
+                            Yes
+                        </label>
+                    </div>
+                    <div class="radio-inline">
+                        <label for="radios-1">
+
+                            @*<input name="topay" id="radios-1" value="no" type="radio" checked>*@
+                            @Html.RadioButtonFor(m => m.topay, "no", new { @checked = true })
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-sm-7" id="Topaydiv">
+                    <label>
+                        To pay Charges @Html.EditorFor(model => model.Topaycharges, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Topaycharges, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Consignee
+                        @Html.EditorFor(model => model.consignee, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.consignee, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        To pay Amount
+                        @Html.EditorFor(model => model.TopayAmount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TopayAmount, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+            </div>
+            <!-- Multiple Radios -->
+            <div class="row">
+                <div id="codradio" class="col-sm-5 no-padding">
+                    <label class="radio-label col-sm-2 " for="radios">COD</label>
+
+                    <div class="radio-inline ">
+                        <label for="radios-0">
+                            @Html.RadioButtonFor(m => m.cod, "yes")
+                            Yes
+                        </label>
+                    </div>
+                    <div class="radio-inline ">
+                        <label for="radios-1">
+                            @Html.RadioButtonFor(m => m.cod, "no", new { @checked = true })
+                            No
+                        </label>
+                    </div>
+                </div>
+
+                <div id="coddiv" class="col-sm-7">
+                    <label>
+                        Cod Amount @Html.EditorFor(model => model.codAmount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codAmount, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Cod Charges @Html.EditorFor(model => model.codcharges, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codcharges, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        Consigner @Html.EditorFor(model => model.consigner, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.consigner, "", new { @class = "text-danger" })
+                    </label>
+                    <label>
+                        cod Total Amount @Html.EditorFor(model => model.codtotalamount, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.codtotalamount, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="text-right" style="margin: 30px">
+            <input type="submit" id="submitbook" value="Submit" class="btn btn-success" />
+        </div>
+    </div>
+
+
+
+
+}
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            var company_name = [];
+            var company_idarr = [];
+
+            // Fetch data using AJAX
+            $.ajax({
+                type: 'GET',
+                url: '/Booking/CustomerIdAutocomplete',
+                dataType: 'json',
+                success: function (data) {
+
+                    $.each(data, function (i, item) {
+                        company_name.push({
+                            label: item.Company_Name, // Display this in the autocomplete dropdown
+                            value: item.Company_Id   // Store this as the actual value
+                        });
+                        company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
+                    });
+                    console.log(company_name)
+
+                    var pfcode = '@ViewBag.PfCode';
+
+                    if (pfcode == "CF2024") {
+                        // Initialize the autocomplete and customize how the items are rendered in the dropdown
+                        $("#Customer_Id").autocomplete({
+                            source: company_name, // Use company_name as the source for autocomplete
+                            select: function (event, ui) {
+                                // When an item is selected, update the input value with the selected item's value
+                                $("#Customer_Id").val(ui.item.value);
+                                $("#Customer_Id").trigger("focusout");
+                                return false; // Prevent the default behavior of updating the input with the label
+                            }
+                        }).autocomplete("instance")._renderItem = function (ul, item) {
+                            return $("<li>")
+                                .append("<div>" + item.value + " (" + item.label + ")</div>")
+                                .appendTo(ul);
+                        };
+                    } else {
+                        // Initialize the autocomplete with the default settings
+                        $("#Customer_Id").autocomplete({
+                            source: company_name, // Use company_idarr as the source for autocomplete
+                            select: function (event, ui) {
+                                // When an item is selected, update the input value with the selected item's value
+                                $("#Customer_Id").val(ui.item.value);
+                                $("#Customer_Id").trigger("focusout");
+                                return false; // Prevent the default behavior of updating the input with the label
+                            }
+                        }).autocomplete("instance")._renderItem = function (ul, item) {
+                            return $("<li>")
+                                .append("<div>" + item.value +"</div>")
+                                .appendTo(ul);
+                        };
+                    }
+                }
+            });
+
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+            var availableTutorials = [
+
+            ];
+
+            $.ajax({
+                type: 'GET',
+
+                url: '/Booking/PincodeautocompleteSender',
+
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        availableTutorials.push(item.Pincode);
+
+                    });
+                }
+            });
+
+            $("#Pincode").autocomplete({
+                source: availableTutorials,
+                select: function (event, ui) {
+
+                    $("#Pincode").val(ui.item.value);
+
+                    $("#Pincode").trigger("change");
+                    $("#Customer_Id").trigger("focusout");
+                }
+
+            });
+        });
+
+
+    });
+
+</script>
+<script>
+    /* $(function () {
+         var availableTutorials = [];
+   $.ajax({
+         url: '@@Url.Action("InternationalCity")',
+         type: 'GET',
+         dataType: 'json',
+         success: function (data) {
+             var availableTutorials = data.map(function(city) {
+                 return city.Name;
+             });
+
+             $("#intpincode").autocomplete({
+                 source: availableTutorials,
+                 minLength: 0, // Set minimum length to 0 so that the dropdown appears on focus
+                 select: function (event, ui) {
+                     $("#intpincode").val(ui.item.value);
+                     setPincodeInt();
+                 }
+             }).focus(function () {
+                 $(this).autocomplete("search", ""); // Trigger the autocomplete search on focus
+             });
+         }
+     });
+
+         function setPincodeInt() {
+             var consno = $("#intpincode").val();
+
+             $.ajax({
+                 type: 'Get',
+                 url: '/Booking/FillPincode',
+                 data: { Name: consno },
+                 success: function (Data) {
+                     $('#Pincode').val(Data[0].Pincode);
+                     $('#Pincode').focus();
+                 }
+             });
+         }
+         });*/
+</script>
+
+
+<script>
+
+ function initializeAutocomplete() {
+    var availableTutorials = [];
+    $.ajax({
+        url: '@Url.Action("InternationalCity")',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            availableTutorials = data.map(function(city) {
+                return city.Name;
+            });
+
+            $("#intpincode").autocomplete({
+                source: availableTutorials,
+                minLength: 0,
+                select: function (event, ui) {
+                    $("#intpincode").val(ui.item.value);
+                    setPincodeInt();
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            });
+        }
+    });
+
+    function setPincodeInt() {
+        var consno = $("#intpincode").val();
+
+        $.ajax({
+            type: 'Get',
+            url: '/Booking/FillPincode',
+            data: { Name: consno },
+            success: function (Data) {
+                $('#Pincode').val(Data[0].Pincode);
+                $('#Pincode').focus();
+            }
+        });
+    }
+}
+
+    $(document).ready(function () {
+
+        var Amountglobal;
+
+        $('#Consignment_no').focus();
+        $("#insdiv").hide();
+        $('#Topaydiv').hide();
+        $('#coddiv').hide();
+
+        $('#insshow').hide();
+        $('#topayradio').hide();
+        $('#codradio').hide();
+
+
+
+
+
+        $('#Type_t').on('change', function (e) {
+            var optionSelected = $('#Type_t').find(":selected").text();
+            // alert(optionSelected);
+
+            if (optionSelected == "N") {
+                $('#insshow').show();
+                $('#insdiv').show();
+
+            }
+            else {
+                $('#insshow').hide();
+                $('#insdiv').hide();
+                $("#Insurance1").prop("checked", true);
+
+
+            }
+        });
+
+
+        $('#Consignment_no').focusout(function () {
+
+            var Type_t = $('#Consignment_no').val();
+            $('#Consignment_no').val($(this).val().toUpperCase());
+
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+                initializeAutocomplete();
+            }
+              else if (/^\d{11}$/.test(Type_t)) {
+                $('#intpincode').show(); // Show the element if condition is true
+                initializeAutocomplete();
+   }
+   else {
+       $('#intpincode').hide();
+   }
+        });
+
+
+
+
+  //      $('#Consignment_no').keyup(function () {
+  //          // alert("Keyup");
+  //          var consno = $("#Consignment_no").val();
+  //          var flag = 0;
+  //          var consval = consno.toLowerCase();
+
+  //          if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
+
+  //              flag = 1;
+
+  //          }
+  //          else {
+  //              //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
+  //              if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
+
+
+  //                  flag = 1;
+  //              }
+  //          }
+  //          if (flag===1) {
+  //              $('#Consignment_no').val($(this).val().toUpperCase());
+  //              $('#Consignment_no').focusout();
+  //              ShowRadios(); //calling function
+
+  //              $.ajax({
+  //                  type: 'Get',
+  //                  dataType: 'json',
+  //                  url: '/Booking/Consignmentdetails',
+  //                  data: { Cosignmentno: consno },
+  //                  success: function (Data) {
+
+  //                      //$('#Customer_Id').val(Data.Customer_Id);
+  //                      var companyid = Data.Customer_Id;
+
+  //                      //<----------IF Consignment Is Booked--------->
+  //                      if (companyid != null) {
+
+  //                          alert("Consignment No" + " " + consno + " " + "is Already Booked");
+  //                          //Hide If already Company Exists
+  //                          $("#compaddress").val('');
+  //                          $('#booking_date').val('');
+  //                          $('#Pincode').val("");
+  //                          $('#chargable_weight').val('');
+  //                          $('#Quanntity').val('');
+  //                          $('#Type_t').val("");
+
+  //                          $('#Mode').val("");
+
+
+
+  //                          $('#form-Cons').find('input:text,textarea').val('');
+  //                          $('#form-Cons').find('select').val('D');
+  //                          $('#Quanntity').val('');
+  //                          $("#Receiver").val(Data.Receiver);
+
+  //                          $('#Consignment_no').focus();
+  //                          $("#insdiv").hide();
+  //                          $('#Topaydiv').hide();
+  //                          $('#coddiv').hide();
+
+  //                          $('#insshow').hide();
+  //                          $('#topayradio').hide();
+  //                          $('#codradio').hide();
+
+  //                      }
+  //                      else {
+
+  //                          $('#compaddress').val(Data.compaddress);
+  //                          $('#booking_date').val(Data.booking_date);
+  //                          $('#Pincode').val(Data.Pincode);
+
+  //                          $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+
+
+  //                          if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+  //                              $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+  //                              $('#Mode').val(Data.Mode);
+  //                          }
+  //                          else {
+
+  //                              $('#Mode').val(Data.Mode);
+  //                          }
+
+  //                          $('#Actual_weight').val(Data.Actual_weight);
+  //                          $('#Pincode').val(Data.Pincode);
+
+
+  //                          $('#chargable_weight').val(Data.chargable_weight);
+  //                          $('#Quanntity').val(Data.Quanntity);
+  //                          $('#Type_t').val(Data.Type_t);
+
+  //                          if (Data.Type_t == "N") {
+  //                              $('#insshow').show();
+  //                          }
+  //                          $("#dtdcamount").val(Data.dtdcamount);
+  //                          $('#Amount').val(Data.Amount);
+  //                          $('#Quanntity').val(Data.Quanntity);
+
+
+
+
+
+  //                      }
+  //                  }
+  ////<---------------------------------------->
+
+  //              });
+  //          }
+
+  //      });
+        function CheckInternational() {
+            var Type_t = $('#Consignment_no').val();
+
+            if (Type_t.startsWith("N")) {
+                $('#intpincode').show();
+                initializeAutocomplete();
+            }
+            // Check if it contains only numbers and is 11 digits long
+            else if (/^\d{11}$/.test(Type_t)) {
+                $('#intpincode').show(); // Show the element if condition is true
+                initializeAutocomplete();
+            }
+            else {
+                $('#intpincode').hide();
+            }
+        }
+
+        $('#Consignment_no').focusout(function () {
+            // alert("Keyup");
+            var consno = $("#Consignment_no").val();
+            $('#Consignment_no').val($(this).val().toUpperCase());
+            var flag = 1;
+            var consval = consno.toLowerCase();
+
+            //if ((consval.startsWith("7d") || consval.startsWith("7x")) && (consno.length >= 11)) {
+
+            //    flag = 1;
+
+            //}
+            //else {
+            //    //((consno.toLowerCase().startsWith("7d") != true || consno.toLowerCase().startsWith("7x") != true) && consno.length >= 9)
+            //    if (!(consval.startsWith("7d") || consval.startsWith("7x")) && consno.length >= 9) {
+
+
+            //        flag = 1;
+            //    }
+            //}
+            if (flag==1) {
+                $('#Consignment_No').val($(this).val().toUpperCase());
+            //   $('#Customer_Id').focus();
+                ShowRadios(); //calling function
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Consignmentdetails',
+                    data: { Cosignmentno: consno },
+                    success: function (Data) {
+
+                        //$('#Customer_Id').val(Data.Customer_Id);
+                        $('#compaddress').val(Data.compaddress);
+
+                        $('#booking_date').val(Data.booking_date);
+                        $('#Pincode').val(Data.Pincode);
+                        $('#tembookingdate').datepicker('setDate', Data.tembookingdate);
+                        $("#Receiver").val(Data.Receiver);
+                        if ($("#Mode option:contains('" + Data.Mode + "')").length == 0) {
+
+                            $("#Mode").append(new Option("" + Data.Mode + "", "" + Data.Mode + ""));
+                            $('#Mode').val(Data.Mode);
+                        }
+                        else {
+
+                            $('#Mode').val(Data.Mode);
+                        }
+                        $('#Actual_weight').val(Data.Actual_weight);
+                        $('#Pincode').val(Data.Pincode);
+                        $("#dtdcamount").val(Data.dtdcamount);
+
+                        $('#chargable_weight').val(Data.chargable_weight);
+                        $('#Quanntity').val(Data.Quanntity);
+                        $('#Type_t').val(Data.Type_t);
+                        if (Data.Type_t == "N") {
+                            $('#insshow').show();
+                        }
+
+                        $('#Amount').val(Data.Amount);
+                        $('#Quanntity').val(Data.Quanntity);
+
+
+                        var companyid = Data.Customer_Id;
+
+                        if (Data.Insurance == 'ownerrisk' || Data.Insurance == 'yes') {
+                            $('input:radio[id=Insurance][value=ownerrisk]').prop('checked', true);
+                        }
+                        else if (Data.Insurance == 'carrierrisk') {
+                            $('input:radio[id=Insurance][value=carrierrisk]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[id=Insurance][value=nocoverage]').prop('checked', true);
+                        }
+
+
+
+                        $('#BillAmount').val(Data.BillAmount);
+                        $('#Percentage').val(Data.Percentage);
+                        $('#Risksurcharge').val(Data.Risksurcharge);
+                        $('#Invoice_No').val(Data.Invoice_No);
+                        $('#Packingcharges').val(Data.Packingcharges);
+                        $('#Handlingcharges').val(Data.Handlingcharges);
+                        $('#GEC3Additioncharges').val(Data.GEC3Additioncharges);
+                        var consv = $("#Consignment_No").val();
+
+                        if (consv && consno.toLowerCase() == "i") {
+                            if (Data.topay == 'yes') {
+                                $('input:radio[name=topay][value=yes]').prop('checked', true);
+                            }
+                            else {
+                                $('input:radio[name=topay][value=no]').prop('checked', true);
+                            }
+
+                            $('#topayradio').css("display", "block");
+                        }
+                        else {
+                            $('#topayradio').hide();
+                            $('#Topaydiv').hide();
+                            $('#codradio').hide();
+                        }
+
+
+                        $('#Topaycharges').val(Data.Topaycharges);
+                        $('#consignee').val(Data.consignee);
+                        $('#TopayAmount').val(Data.TopayAmount);
+
+
+
+                        if (Data.cod == 'yes') {
+                            $('input:radio[name=cod][value=yes]').prop('checked', true);
+                        }
+                        else {
+                            $('input:radio[name=cod][value=no]').prop('checked', true);
+                        }
+
+
+
+                        $('#codAmount').val(Data.codAmount);
+                        $('#codcharges').val(Data.codcharges);
+                        $('#consigner').val(Data.consigner);
+                        $('#codtotalamount').val(Data.codtotalamount);
+
+
+                        ////<----------IF Consignment Is Booked--------->
+                        var companyid = Data.Customer_Id;
+                        if (companyid != null) {
+
+                            alert("Consignment No" + " " + consno + " " + "is Allready Booked");
+
+                            $('#form-Cons').find('input:text,textarea').val('');
+                            $('#form-Cons').find('select').val('D');
+                            $('#Quanntity').val('');
+
+
+                            $('#Consignment_no').focus();
+                            $("#insdiv").hide();
+                            $('#Topaydiv').hide();
+                            $('#coddiv').hide();
+
+                            $('#insshow').hide();
+                            $('#topayradio').hide();
+                            $('#codradio').hide();
+
+                        }
+                        else {
+                            if (Data.Type_t == "N") {
+                                $('#insshow').show();
+                                $('#insdiv').show();
+                            }
+                            else if (Data.Type_t == "Lap") {
+                                $('#insshow').show();
+                            }
+                            else if (Data.Type_t == "RevLap") {
+                                $('#insshow').show();
+                            }
+                            else {
+                                $('#insshow').hide();
+                                $('#insdiv').hide();
+                            }
+
+                            var str = consno;
+                            var res = str.charAt(0);
+
+                            if (res.toLowerCase() == "i") {
+
+                                $('#topayradio').show();
+                                $('#codradio').show();
+
+
+                                if (Data.topay == "yes") {
+                                    $('#topayradio').show();
+                                    $('#Topaydiv').show();
+                                    $('#Amount').val(0);
+                                }
+                                else {
+                                    //  $('#topayradio').hide();
+                                    $('#Topaydiv').hide();
+                                }
+                            }
+                            if (Data.cod == "yes") {
+                                $('#codradio').show();
+                                $('#coddiv').show();
+                            }
+                            else {
+                                //$('#codradio').hide();
+                                $('#coddiv').hide();
+                            }
+                            if (Data.Insurance == "ownerrisk" || Data.Insurance == "yes") {
+                                $('#insdiv').show();
+                            }
+                            else if (Data.Insurance == "carrierrisk") {
+                                $('#insdiv').show();
+                            }
+                            else {
+                                $('#insdiv').hide();
+                            }
+
+
+
+                        }
+                        ////<---------------------------------------->
+                        CheckInternational();
+
+                    }
+                });
+            }
+
+        });
+
+
+        $('#Customer_Id').focusout(function () {
+            var Customerid = $('#Customer_Id').val();
+            if (Customerid.length >= 3) {
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Booking/Checkcompany',
+                    data: { Customerid: Customerid },
+                    success: function (Data) {
+
+                        if (Data == "0") {
+                            alert("Please Enter Valid Company Id");
+                            $('#Customer_Id').val('');
+                        }
+
+
+
+                    }
+                });
+            }
+        });
+
+        function ShowRadios() {
+
+            var str = $('#Consignment_no').val();
+            var res = str.charAt(0);
+            //alert(res);
+            if (res.toLowerCase() == "i") {
+
+
+                $('#topayradio').show();
+                $('#codradio').show();
+            }
+        }
+
+
+
+
+
+        $('[name="Insurance"]').change(function () {
+
+            var Insuranceval = $('input[name="Insurance"]:checked').val();
+
+            //alert(Insuranceval);
+
+            if (Insuranceval == "yes") {
+
+                $("#insdiv").show();
+                $('.insurancelable').html("Insuarance");
+                $('.resksurlable').html("Risk surcharge");
+
+            }
+            else {
+                $("#insdiv").show();
+                $('.insurancelable').html("For Percentage");
+                $('.resksurlable').html("For Charges");
+            }
+
+        });
+
+
+        $('[name="topay"]').change(function () {
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+
+            if (Insuranceval == "yes") {
+                $('#Topaydiv').show();
+
+
+
+
+                Amountglobal = $('#Amount').val();
+
+                Topayaddition();
+
+                //$('#TopayAmount').keyup();
+
+
+            }
+            else {
+
+                Topaysubtraction();
+
+                $('#Topaydiv').hide();
+
+            }
+        });
+
+        $('[name="cod"]').change(function () {
+
+            var Insuranceval = $('input[name="cod"]:checked').val();
+
+            //alert(Insuranceval);
+
+            if (Insuranceval == "yes") {
+                $('#coddiv').show();
+            }
+            else {
+                $('#coddiv').hide();
+            }
+
+
+
+        });
+
+
+        $('#Customer_Id').change(function () {
+
+            var customerid = $('#Customer_Id').val();
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Booking/CustomerDetails',
+                data: { CustomerId: customerid },
+                success: function (Data) {
+                    $('#compaddress').val(Data.Company_Address);
+
+                    $('#Percentage').val(Data.Insurance);
+                    $('#Topaycharges').val(Data.Topay_Charge);
+                    $('#codcharges').val(Data.Cod_Charge);
+
+                }
+            });
+
+        });
+
+
+
+        $("#BillAmount,#Percentage").keyup(function () {
+
+            Riskcharge();
+        });
+
+        function Riskcharge() {
+
+            var Billamount = $('#BillAmount').val();
+            var Insurance = $('#Percentage').val();
+
+            var Parc = ((parseFloat("0" + Billamount) / 100) * parseFloat("0" + Insurance)).toFixed();
+
+            $('#Risksurcharge').val(Parc);      // The function returns Sum Of Amount
+        }
+
+
+        $("#Topaycharges").keyup(function () {
+
+            Topayaddition();
+
+        });
+
+
+
+        function Topayaddition() {
+
+
+            var TopayCharge = $('#Topaycharges').val();
+
+
+            var addition = (parseFloat("0" + Amountglobal) + parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(addition);
+
+            $('#Amount').val(0);
+        }
+
+
+        function Topaysubtraction() {
+
+            var amount = $('#TopayAmount').val();
+
+            var TopayCharge = $('#Topaycharges').val();
+
+
+            var subtraction = (parseFloat("0" + Amountglobal) - parseFloat("0" + TopayCharge));
+
+            $('#TopayAmount').val(0);
+
+            $('#Amount').val(Amountglobal);
+
+            Amountglobal = 0;
+            // The function returns Sum Of Amount
+        }
+
+
+        $("#codAmount,#codcharges").keyup(function () {
+
+            CodAddition();
+        });
+        $("#consignmentType").change(function () {
+
+            var type = $("#consignmentType").val();
+
+            if (type == "International") {
+                $('#intpincode').show();
+                initializeAutocomplete();
+            }
+            else {
+                $('#intpincode').hide();
+                initializeAutocomplete();
+            }
+        });
+
+        function CodAddition() {
+
+
+            var codamount = $('#codAmount').val();
+
+            var codcharges = $('#codcharges').val();
+
+
+            var addition = (parseFloat("0" + codamount) + parseFloat("0" + codcharges));
+
+            $('#codtotalamount').val(addition);
+
+
+        }
+
+
+        $('#submitbook').click(function () {
+
+           // var Amount = $('#Amount').val();
+
+            var Insuranceval = $('input[name="topay"]:checked').val();
+
+            if (Insuranceval == "yes") {
+                return true;
+            }
+            //else {
+            //    if (Amount <= 0) {
+            //        alert("Amount Should be greater than zero");
+            //        return false;
+            //    }
+            //}
+
+        });
+
+        //function Addition(p1, p2, p3, p4, p5, p6) {
+        //    //alert(p6);
+        //    var addition = (parseInt("0" + p1) + parseInt("0" + p2) + parseInt("0" + p3) + parseInt("0" + p4) + parseInt("0" + p5) - p6);
+        //    $('#Charges_Total').val(addition);      // The function returns Sum Of Amount
+        //}
+
+
+
+
+    });
+</script>
+<style>
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('[name="Consignment_no"],[name="Customer_Id"],[name="booking_date"],[name="Pincode"],[name="chargable_weight"],[name="Quanntity"]').focusout(function () {
+            var pincode = $('#Pincode').val();
+            if (pincode == null) {
+                return false;
+            }
+            var Consino = $('#Consignment_no').val();
+            var custid = $('#Customer_Id').val();
+            var bookdate = $('#booking_date').val();
+
+            var mode = $('#Mode').val();
+            var qty = $('#Quanntity').val();
+            var charweight = $('#chargable_weight').val();
+            var type = $('[name="Type_t"]').val();
+
+            if (Consino == "" || custid == "" || bookdate == "" || pincode == "" || mode == "" || qty == "" || charweight == "" || type == "") {
+
+                return false;
+            }
+
+            else {
+                $('#loading').show();
+
+                //alert($(this).val());
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/Calculation/CalulateAmt',
+                    data: { Consignment: Consino, custid: custid, Pincode: pincode, mode: mode, qty: qty, charweight: charweight, type: type },
+                    success: function (Data) {
+                        //alert(Data.Amount);
+                        $('#Amount').val(Data.Amount);
+                        // $('#dtdcamount').val(Data.dtdcamount);
+                        $('#loading').hide();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        $('#loading').hide();
+                    }
+                });
+            }
+
+        });
+
+        var currentDate = new Date();
+
+        $('#tembookingdate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+
+        })
+            /*, 'setDate', new Date()*/
+
+
+
+        $('[name="Mode"],[name="Type_t"]').change(function () {
+
+            $("#Customer_Id").trigger("focusout");
+        });
+
+        $('#Pincode').focus(function () {
+
+            if ($('#Consignment_no').val().startsWith("N") && !($('#Pincode').val().startsWith("111"))) {
+
+                $('#intpincode').focus();
+            }
+        });
+
+    });
+    $('#Pincode').focusout(function () {
+        var pincode = $('#Pincode').val();
+        $.ajax({
+            type: 'get',
+            data: { Pincode: pincode },
+            url:'@Url.Action("checkpincode")',
+            success: function (Data) {
+                if (Data === "NotValidPinCode")
+                {
+                    alert("Please Choose Valid Pincode");
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $('#loading').hide();
+            }
+        })
+    });
+</script>
+
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+         //alert("@ViewBag.Message");
+    </script>
+}
+
+
+@if (ViewBag.Customerid != null)
+{
+    <script>
+         $('#Customer_Id').val('@ViewBag.Customerid');
+         $("#Customer_Id").trigger("focusout");
+         $("#Customer_Id").trigger("change");
+    </script>
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#importtext').submit(function () {
+            $('#loading').show();
+        });
+    });
+</script>
+
+@*@if (TempData["Upload"] != null)*@
+<!--{
+    <script>
+      //  alert('@TempData["Upload"]');
+    </script>
+}-->

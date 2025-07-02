@@ -1,0 +1,451 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+@{
+    Layout = null;
+    string robotsTxtPath = Server.MapPath("~/excelformat/robots.txt");
+    string robotsTxtContent = System.IO.File.ReadAllText(robotsTxtPath);
+}
+
+
+<head>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+
+
+    @{
+        string context = null;
+        string type = null;
+        string organizationName = "Fr-Billing";
+        string organizationUrl = "http://codetentaclestechnologies.com/";
+        string logoUrl = "https://frbilling.com/";
+        string phoneNumber = "+91 8208668841";
+        string facebookUrl = "https://www.facebook.com/profile.php?id=61555152457829";
+        string instagramUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        //   string linkedinUrl = "https://www.linkedin.com/in/franchisee-billing-04b7802b8/";
+        string linkedinUrl = "https://www.linkedin.com/company/fr-billing";
+    }
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "@Html.Raw(organizationName)",
+  "url": "@Html.Raw(organizationUrl)",
+  "logo": "@Html.Raw(logoUrl)",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "@Html.Raw(phoneNumber)",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    "@Html.Raw(facebookUrl)",
+    "@Html.Raw(instagramUrl)",
+    "@Html.Raw(linkedinUrl)"
+  ]
+}
+    </script>
+
+    <meta charset="UTF-8">
+
+    @*<meta name="robots" content="index,follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta property="og:title" content="Your Blog Post Title" />
+        <meta property="og:description" content="Your blog post description" />
+        <meta property="og:image" content="URL to your blog post image" />
+        <meta property="og:url" content="URL to your blog post" />*@
+    <meta name="robots" content="index,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!" />
+    <meta property="og:description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." />
+    <meta property="og:image" content="https://frbilling.com/assets/Home/assets/images/logo.png" />
+    <meta property="og:url" content="https://frbilling.com/" />
+    <meta name="description" content="Welcome to Fr-Billing - Your Ultimate Billing Solution. Streamline your billing process, enhance user experience, and boost productivity with our cutting-edge platform." data-target="Unlock unparalleled efficiency with Fr-Billing - Your Ultimate Billing Solution. Discover how our cutting-edge platform revolutionizes billing processes, elevates user experience, and turbocharges productivity. Streamline operations effortlessly and stay ahead in today's dynamic business landscape. Click now to explore the future of billing">
+
+    <meta name="author" content="CodeTentacles Technologies">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://www.fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    @*<title>FR-Billing | Index</title>*@
+    <title>FR-Billing: The Most Trusted Software for Courier Billing and Invoicing!</title>
+
+    <link rel="shortcut icon" href="~/assets/images/fav.png">
+    <!-- Bootstrap core CSS -->
+    <link href="~/assets/Home/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="canonical" href="https://www.codetentaclestechnologies.com" />
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/assets/Home/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/templatemo-onix-digital.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/animated.css">
+    <link rel="stylesheet" href="~/assets/Home/assets/css/owl.css">
+    <!--
+
+    TemplateMo 565 Onix Digital
+
+    https://templatemo.com/tm-565-onix-digital
+
+    -->
+    <style>
+        i.fa.fa-solid.fa-check {
+            color: #05844f;
+            margin: 0 6px;
+            display: grid;
+            align-items: center;
+        }
+
+        .contacticon {
+            margin-right: 5px;
+            width: 46px;
+            height: 46px;
+            display: inline-block;
+            text-align: center;
+            line-height: 46px;
+            border-radius: 50%;
+            background: rgb(255,104,95);
+            background: linear-gradient(105deg, rgba(255,104,95,1) 0%, rgba(255,144,104,1) 100%);
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .contactus {
+            color: #ff7461;
+            font-size: 15px;
+            font-weight: 500;
+            margin-left: 30px;
+        }
+
+        .indian_wheel {
+            width: 20px;
+        }
+
+        .new-blue-button-hover {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: color 0.3s ease, font-size 0.3s ease;
+            animation: shake 0.3s ease infinite;
+        }
+
+            .new-blue-button-hover a {
+                color: inherit;
+            }
+
+            .new-blue-button-hover::after {
+                content: '';
+                position: absolute;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s ease, height 0.3s ease;
+                pointer-events: none;
+            }
+
+            .new-blue-button-hover:hover::after {
+                width: 200px;
+                height: 200px;
+            }
+
+            .new-blue-button-hover:hover {
+                animation-play-state: paused; /* Pause the shake animation on hover */
+            }
+
+        .main-banner .item h1 {
+            font-size: 50px;
+            font-weight: 700;
+            color: #2a2a2a;
+            line-height: 72px;
+        }
+
+            .main-banner .item h1 em {
+                color: #03a4ed;
+                font-style: normal;
+            }
+
+        @@keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-3px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+
+        .diwalilogo img {
+            width: 18%;
+            overflow: hidden;
+        }
+
+        .diwalilogofooter img {
+            width: 56%;
+            overflow: hidden;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="elfsight-app-38ff4384-1e40-4eca-b963-69e2e25bccfc" data-elfsight-app-lazy></div>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <img src="~/assets/Home/assets/images/loader.gif" alt="Loading animation">
+        </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="#" class="logo" target="_self">
+                            <img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing logo">
+
+                        </a>
+
+                        <!-- ***** DIWALI Logo ***** -->
+                        @*<a href="#" class="diwalilogo" target="_self">
+                                <img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing logo">
+
+                            </a>*@
+                        <!-- *****DIWALI  Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li class="scroll-to-section"><div class="main-red-button-hover"><a href="@Url.Action("index","Admin")">Home</a></div></li>
+                    </ul>
+                        <a class='menu-trigger' href="">
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+
+    <div style="
+  margin-top: 10rem;
+">
+        <div class="tables-left-dec">
+            <img src="~/assets/Home/assets/images/tables-left-dec.png" alt="">
+        </div>
+        <div class="tables-right-dec">
+            <img src="~/assets/Home/assets/images/tables-right-dec.png" alt="">
+        </div>
+        <div class="container">
+
+            <h2 class="text-center">Privacy  <span>Policy</span></h2>
+            <div class="row justify-content-center my-5">
+                <div class="col-md-10">
+                    <p>This Privacy Policy describes how and its affiliates (collectively "Fr-Billing, we, our, us") collect, use, share, protect or otherwise process your information/personal data through our website frbilling.com (hereinafter referred to as "Platform").</p>
+                    <p>Please note that you may be able to browse certain sections of the Platform without registering with us. We do not offer any product/service under this Platform outside India, and your personal data will primarily be stored and processed in India.</p>
+                    <p>By visiting this Platform, providing your information, or availing of any product/service offered on the Platform, you expressly agree to be bound by the terms and conditions of this Privacy Policy, the Terms of Use, and the applicable service/product terms and conditions, and agree to be governed by the laws of India, including but not limited to the laws applicable to data protection and privacy. If you do not agree, please do not use or access our Platform.</p>
+
+                    <h4 class="section-title">Collection</h4>
+                    <p>We collect your personal data when you use our Platform, services, or otherwise interact with us during the course of our relationship. Some of the information we may collect includes but is not limited to:</p>
+                    <ul>
+                        <li>Name</li>
+                        <li>Date of birth</li>
+                        <li>Address</li>
+                        <li>Telephone/mobile number</li>
+                        <li>Email ID</li>
+                        <li>Proof of identity or address</li>
+                    </ul>
+                    <p>Some sensitive personal data may be collected with your consent, such as bank account details, credit/debit card information, or biometric data. You always have the option to not provide information by choosing not to use a particular service or feature on the Platform.</p>
+
+                    <h4 class="section-title">Usage</h4>
+                    <p>We use personal data to provide the services you request. To the extent we use your personal data to market to you, we will provide you the ability to opt-out of such uses. Usage purposes include:</p>
+                    <ul>
+                        <li>Handling and fulfilling orders</li>
+                        <li>Enhancing customer experience</li>
+                        <li>Resolving disputes and troubleshooting problems</li>
+                        <li>Detecting and protecting against fraud</li>
+                    </ul>
+
+                    <h4 class="section-title">Sharing</h4>
+                    <p>We may share your personal data internally within our group entities, corporate entities, and affiliates to provide you access to services and products. We may also disclose personal data to:</p>
+                    <ul>
+                        <li>Sellers and business partners</li>
+                        <li>Third-party service providers</li>
+                        <li>Government agencies as required by law</li>
+                    </ul>
+
+                    <h4 class="section-title">Security Precautions</h4>
+                    <p>We adopt reasonable security practices and procedures to protect your personal data. However, data transmission over the internet cannot be guaranteed as completely secure. Users are responsible for safeguarding their account credentials.</p>
+
+                    <h4 class="section-title">Data Deletion and Retention</h4>
+                    <p>You can delete your account through the Platform. In cases of pending grievances or claims, deletion requests may be delayed. Data may be retained in anonymized form for analytical purposes.</p>
+
+                    <h4 class="section-title">Your Rights</h4>
+                    <p>You may access, rectify, and update your personal data directly through the Platform. You can withdraw your consent by contacting our Grievance Officer.</p>
+
+                    <h4 class="section-title">Changes to this Privacy Policy</h4>
+                    <p>We may update this Privacy Policy to reflect changes to our practices. Please review it periodically.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-dec">
+        <img src="~/assets/Home/assets/images/footer-dec.png" alt="Footer Image">
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="about footer-item">
+                        <div class="logo">
+                            <a href="#"><img src="~/assets/Home/assets/images/logo.png" alt="Fr-Billing"></a>
+                        </div>
+
+                        @*////////start diwali logo/////////*@
+
+                        @*<div class="diwalilogofooter">
+                                <a href="#"><img src="~/assets/Home/assets/images/frbillingdiwalilogo.gif" alt="Fr-Billing"></a>
+                            </div>*@
+                        @*////////end diwali logo/////////*@
+                        <a href="mailto:info@frbilling.com" type="email" target="_blank">info@frbilling.com</a>
+                        <ul>
+                            <li><a href="https://www.facebook.com/people/FrBilling-CT/pfbid0QfLDqvFXRwe4y5KcUHSwaJV6mXmmCTGzpYVy7rdTMH6DgVjgPwZeR8vmVj7DSog3l/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="https://www.youtube.com/playlist?list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                            @*<li><a href="https://www.linkedin.com/in/prajkta-navlakhe-47790613b/" target="_blank"><i class="fa fa-linkedin"></i></a></li>*@
+                            <li><a href="https://www.linkedin.com/company/fr-billing" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="https://www.instagram.com/fr_billing?igsh=MTF2YzM3dDFiOTB1eg%3D%3D&utm_source=qr" target="_blank"> <i class="fa fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="services footer-item">
+                        <h4>About</h4>
+                        <ul>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Our Features</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">About</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Schedule Demo</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Pricing</a></li>
+                            <li class="scroll-to-section"><a href="@Url.Action("index","Admin")">Contact Us</a></li>
+                        </ul>
+                    </div>
+
+                    <!--  -->
+                </div>
+                <div class="col-lg-3">
+                    <div class="community footer-item">
+                        <h4>Community</h4>
+                        <ul>
+                            <li><a href="@Url.Action("TermsCondition","Admin")">Terms & Condition</a></li>
+                            <li><a href="@Url.Action("privacyPolicy","Admin")">Privacy Policy</a></li>
+                            <li><a href="@Url.Action("RefundandCancellationPolicy","Admin")">Refund and Cancellation Policy</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                @* <div class="col-lg-3">
+                    <div class="subscribe-newsletters footer-item">
+                        <h4>Subscribe Newsletters</h4>
+                        <p>Get our latest news and ideas to your inbox</p>
+                        <div class="newsletters">
+                            @using (Ajax.BeginForm("ContactUs", "Admin", null, new AjaxOptions
+                            {
+                                OnSuccess = "onSuccess",
+                                UpdateTargetId = "contact",
+                                OnBegin = "validateForm"
+                            }, null))
+                            {
+                                <input type="text" name="email" id="email" pattern="" placeholder="Your Email" required="">
+                                <button type="submit" id="form-submit" class="main-button "><i class="fa fa-paper-plane-o"></i></button>
+                            }
+                        </div>
+                    </div> </div>*@
+                <div class="col-lg-3" id="newslettersPage">
+                    @Html.Partial("newslettersPartialView")
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="copyright">
+                        <p>
+                            @*Copyright © @DateTime.Now.Year FR Billing, Ltd. All Rights Reserved.
+                                <a rel="nofollow" href="https://codetentaclestechnologies.com/" target="_blank">CodeTentacles Technologies.</a>*@
+                            <strong>© <span>@DateTime.Now.Year</span> CodeTentacles Technologies | FR-Billing - Empowering Solutions | Proudly Made in India <img src="https://frbilling.com/uploadedlogo/indiaFlag.jpg" alt="India Flag" class="indian_wheel" /> | <a href="https://codetentaclestechnologies.com/" target="_blank"><span class="text-success">CodeTentacles</span></a> </strong>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Scripts -->
+    <script src="~/assets/Home/vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js" integrity="sha512-YHQNqPhxuCY2ddskIbDlZfwY6Vx3L3w9WRbyJCY81xpqLmrM6rL2+LocBgeVHwGY9SXYfQWJ+lcEWx1fKS2s8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js" integrity="sha512-DedNBWPF0hLGUPNbCYfj8qjlEnNE92Fqn7xd3Sscfu7ipy7Zu33unHdugqRD3c4Vj7/yLv+slqZhMls/4Oc7Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/assets/Home/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/Home/assets/js/owl-carousel.js"></script>
+    <script src="~/assets/Home/assets/js/animation.js"></script>
+    <script src="~/assets/Home/assets/js/imagesloaded.js"></script>
+    <script src="~/assets/Home/assets/js/custom.js"></script>
+
+    <script>
+        // Acc
+        $(document).on("click", ".naccs .menu div", function () {
+            var numberIndex = $(this).index();
+
+            if (!$(this).is("active")) {
+                $(".naccs .menu div").removeClass("active");
+                $(".naccs ul li").removeClass("active");
+
+                $(this).addClass("active");
+                $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+
+
+            }
+        });
+    </script><!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-67GZ3J4NH7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-67GZ3J4NH7');
+    </script>
+
+
+
+
+
+</body>
+</html>

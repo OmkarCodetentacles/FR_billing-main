@@ -1,0 +1,76 @@
+﻿@{
+
+    Layout = null;
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+         var result = @Html.Raw(ViewBag.DataPoints);
+        var dps =[];
+        for (var i = 0; i < result.length; i++){
+
+            dps.push({ "x": new Date(result[i].year, result[i].month-1), "y": result[i].netamount });
+        }
+
+        console.log(dps);
+        window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,
+    backgroundColor: "#f0f5f5",
+	title: {
+		text: "Month Vs Total Sale"
+	},
+	axisX: {
+		valueFormatString: "MMM YY"
+	},
+	    axisY: {
+		    title: "Total Billed",
+            prefix: "₹",
+		includeZero: false
+	},
+    data: [{
+        type: "stepLine",
+        xValueType: "dateTime",
+        lineColor: "#ff851b",
+        yValueFormatString: "₹##,##,##0.##",
+        xValueFormatString: "MMM YY",
+        lineThickness: 4,
+        dataPoints: dps
+
+    }]
+});
+chart.render();
+
+}
+    </script>
+</head>
+<body>
+
+
+    <section>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Sale Report</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+                        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>   

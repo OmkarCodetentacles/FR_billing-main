@@ -1,0 +1,81 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Cheque>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<section>
+    <div class="container">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.C_Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ch_date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tempch_date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bank_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.branch_Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.totalAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Invoiceno)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Tds_amount)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.C_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ch_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tempch_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.bank_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.branch_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.totalAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoiceno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tds_amount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Cheque_id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Cheque_id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Cheque_id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</section>

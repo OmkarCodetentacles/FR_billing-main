@@ -1,0 +1,158 @@
+﻿@{
+
+    Layout = null;
+}
+@model DtDc_Billing.Entity_FR.deliverydata
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+@using (Ajax.BeginForm("EditDelivery", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+{
+
+    <section>
+        <div class="container">
+            <div id="sg1">
+
+                <label style="width: 158px;">
+                    Delivery date @Html.EditorFor(model => model.tempdelivereddate, new { htmlAttributes = new { @class = "form-control" } })
+                </label>
+                <label style="width: 130px;">
+                    Delivery time @Html.EditorFor(model => model.tempdeliveredtime, new { htmlAttributes = new { @class = "form-control" } })
+                </label>
+                <label style="width: 130px;">
+                    Remark @Html.EditorFor(model => model.remarks, new { htmlAttributes = new { @class = "form-control" } })
+                </label>
+                <label style="width: 130px;">
+                    Received By @Html.EditorFor(model => model.receivedby, new { htmlAttributes = new { @class = "form-control" } })
+                </label>
+                <label style="width: 151px;">
+                    Consignment no @Html.EditorFor(model => model.consinmentno, new { htmlAttributes = new { @class = "form-control" } })
+                </label>
+                <input type="submit" value="Submit" class="btn btn-success" />
+
+            </div>
+        </div>
+    </section>
+
+
+}
+
+
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+
+    label {
+        display: inline-block;
+        width: 6em;
+        margin-right: .5em;
+        padding-top: 1.5em;
+    }
+
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+
+    label {
+        display: inline-block;
+        width: 85px;
+        margin-right: .5em;
+        padding-top: 1.5em;
+    }
+
+    .radio-label {
+        width: 100px;
+        padding-top: 3em;
+    }
+
+    .form-horizontal .radio-inline {
+        padding-top: 1.5em;
+    }
+
+        .form-horizontal .radio-inline label {
+            width: 20px;
+        }
+
+    .form-horizontal .col-sm-9 label {
+        width: 120px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+         alert("@ViewBag.Message");
+    </script>
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#consinmentno').keyup(function () {
+
+            var consno = $("#consinmentno").val();
+            if (consno.length >= 9) {
+                $('#consinmentno').val($(this).val().toUpperCase());
+                $('#consinmentno').focusout();
+
+
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/DeliveryReport/Deliverydetails',
+                    data: { Cosignmentno: consno },
+                    success: function (Data) {
+
+                        $('#tempdelivereddate').val(Data.tempdelivereddate);
+                        $('#tempdeliveredtime').val(Data.tempdeliveredtime);
+
+
+                        $('#remarks').val(Data.remarks);
+                        $('#receivedby').val(Data.receivedby);
+
+                        // $('#consinmentno').val(Data.consinmentno);
+
+
+
+
+                    },
+                    error: function (textStatus, errorThrown) {
+
+                        $('#delivered_date').val(' ');
+                        $('#delivered_time').val(' ');
+
+
+                        $('#remarks').val(' ');
+                        $('#receivedby').val(' ');
+
+                    }
+                });
+            }
+
+        });
+    });
+</script>

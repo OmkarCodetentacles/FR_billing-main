@@ -1,0 +1,308 @@
+﻿@model IEnumerable<DtDc_Billing.Entity_FR.Transaction>
+
+
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    .BookingData th{
+        width: 13.5% !important;
+    }
+    table {
+        max-height: 400px !important;
+        display: list-item !important;
+        overflow: auto !important;
+        border: 1px solid #e5ecf7;
+        width: 100% !important;
+    }
+</style>
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<div class="content-wrapper">
+    <div class="box box-info" style="padding: 16px 16px !important">
+        <div class="box-header with-border">
+            <h4>
+                No Booking List
+                <a href="https://www.youtube.com/watch?v=jhZdKrIpubk&list=PLT-Gd9X3Y1afr1FZRb8Z8ELFncnWwOhzz&index=17"
+                   target="_blank"
+                   data-toggle="tooltip"
+                   title="Click to view more info">
+                    <i class="fa fa-info-circle" style="font-size:25px;"></i>
+                </a>
+            </h4>
+        </div>
+        <div class="box-body">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    @{
+                        string errormessage = ViewBag.ErrorMessage;
+
+                    }
+                    @if (!string.IsNullOrEmpty(errormessage))
+                    {
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("error", errormessage))
+                    }
+
+
+
+                    <div class="form-horizontal">
+
+                        @*<div class="row">
+            <div class="col-md-12">*@
+                        <div class="form-group">
+
+
+
+                            @using (Html.BeginForm())
+                            {
+
+                                if (ViewBag.fromdate != null)
+                                {
+                                    <div class="col-md-3" style="padding-left:0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span> : </label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" value="@ViewBag.fromdate" type="text" style="" required>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3" style="padding-left:0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span> : </label>
+                                            <input name="Fromdatetime" class="form-control" id="datepicker" type="text" style=" " required>
+                                        </div>
+                                    </div>
+                                }
+
+                                if (ViewBag.todate != null)
+                                {
+                                    <div class="col-md-3" style="padding-left:0">
+                                        <div class="form-group">
+                                            <label>From Date <span style="color:red">*</span> : </label>
+
+                                            <input value="@ViewBag.todate" name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3" style="padding-left:0">
+                                        <div class="form-group">
+                                            <label>To Date <span style="color:red">*</span> : </label>
+                                            <input name="ToDatetime" class="form-control" id="datepicker1" type="text" required>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+                                @*<div class="col-md-2">
+                        @Html.DropDownList("PfCode", null, "-ALL PF-", new { @class = "form-control" })
+                    </div>*@
+
+
+                                <div class="col-md-1" style=" margin-top: 23px; ">
+                                    <input type="submit" class=" btn btn-primary col-sm-12" id="Show" name="Show" value="Show" style="width:100%" />
+
+                                </div>
+                                <div class="col-md-1" style=" margin-top: 23px; ">
+                                    <input type="submit" value="Export to Excel" name="Submit" class="btn btn-block btn-success col-sm-12  sbmt" style="" />
+
+                                </div>
+
+                            }
+
+                        </div>
+                        @*</div>
+            </div>*@
+
+
+                        <table id="table_display_block" class="table BookingData">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Sr No
+                                    </th>
+                                    @*<th>
+                            PF Code
+                        </th>*@
+                                    <th>
+                                        Consignment no
+                                    </th>
+                                    <th>
+                                        Weight
+                                    </th>
+
+                                    <th>
+                                        Pincode
+                                    </th>
+                                    <th>
+                                        Mode
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Booking Date
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @i
+                                            </td>
+                                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Pf_Code)
+                                </td>*@
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Consignment_no)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Actual_weight)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Pincode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Mode)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @item.booking_date.Value.ToString("dd/MM/yyyy")
+                                            </td>
+
+
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                        @if (ViewBag.totalamt != null)
+                        {
+                            <p> Total Amount : @ViewBag.totalamt </p>
+
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+    <script>
+    $(document).ready(function () {
+
+     $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete")',
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+        $("#custid").autocomplete({
+            source: company_idarr,
+            select: function (event, ui) {
+
+            }
+        });
+        });
+
+
+
+     $('#datepicker').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+     $('#datepicker1').datepicker({
+         autoclose: true,
+         format: 'dd-mm-yyyy'
+     })
+
+    });
+    </script>
+    <style>
+        #no-booking-list {
+            display: block;
+            min-height: 400px;
+        }
+    </style>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#Show').click(function () {
+                var cutid = $('#custid').val();
+                var frmdate = $('#datepicker').val();
+                var todate = $('#datepicker1').val();
+
+
+                if (frmdate == "") {
+                    alert("Please Enter From Date");
+                    return false;
+                }
+                else if (todate == "") {
+                    alert("Please Enter To Date");
+                    return false;
+                }
+                else { return true; }
+
+
+            });
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('#table_display_block').dataTable({
+                "bPaginate": true,
+                "bLengthChange": true,
+                "bFilter": true,
+                "bSort": true,
+                "bInfo": true,
+                "bAutoWidth": false
+            });
+        });
+    </script>
+    

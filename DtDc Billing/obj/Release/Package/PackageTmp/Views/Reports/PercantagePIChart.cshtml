@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Chart";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<section class="conatiner">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-info" style="padding: 16px 16px !important">
+                        <div class="box-header with-border">
+                            <h4> Sales Percentage Report Chart </h4>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                <div class="col-sm-12">
+                                    <div class="col-md-4">
+                                            <label>From Date:</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @if (ViewBag.Fromdatetime != null)
+                                                {
+                                                    <input name="Fromdatetime" class="form-control pull-right" value="@ViewBag.Fromdatetime" id="datepicker" type="text">
+                                                }
+                                                else
+                                                {
+                                                    <input name="Fromdatetime" class="form-control pull-right" id="datepicker" type="text">
+                                                }
+
+
+                                                @Html.ValidationMessage("Fromdateeror")
+                                            </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>To Date:</label>
+                                            <div class="input-group date">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @if (ViewBag.ToDatetime != null)
+                                                {
+                                                    <input name="ToDatetime" class="form-control pull-right" value="@ViewBag.ToDatetime" id="datepicker1" type="text">
+                                                }
+                                                else
+                                                {
+                                                    <input name="ToDatetime" class="form-control pull-right" id="datepicker1" type="text">
+                                                }
+                                                @Html.ValidationMessage("Todateeror")
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="invisible">From Date:</label>
+                                        <div>
+                                            <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                                <div class="col-sm-12">
+                                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                                </div>
+                               
+                             <!-- /input-group -->
+
+                            <div class="col-sm-3 " style="float: right" ;>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-danger total-label">Total</button>
+                                    </div>
+                                    <!-- /btn-group -->
+                                    <input type="text" class="form-control total-amount" value="@ViewBag.totalSaleAmount" >
+                                </div>
+                                </div>
+                                <!-- /input-group -->
+                           
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+        text: "Sales Percentage Report Chart",
+		fontSize: 21
+	},
+	data: [{
+		type: "pie",
+		startAngle: 160,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		indexLabel: "{label} - {y}%",
+		dataPoints: @Html.Raw(ViewBag.DataPoints)
+	}]
+});
+chart.render();
+
+}
+</script>
+
+<script>
+
+    $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+
+    $('#datepicker1').datepicker({
+        autoclose: true,
+        format: 'dd-mm-yy'
+    })
+
+  
+</script>
+
+

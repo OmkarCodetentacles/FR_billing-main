@@ -360,6 +360,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
         border: 1px solid #ff0000 !important;
     }
 </style>
+<<<<<<< HEAD
 <script>
     $(document).ready(function () {
         $(function () {
@@ -421,6 +422,47 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
         });
     });
 </script>
+=======
+
+<script>
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+
+            url: '@Url.Action("CustomerIdAutocompleteForViewInvocie","invoice")',
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+$("#Customer_Id").autocomplete({
+    source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+        $('#Customer_Id').keyup();
+
+    }
+});
+
+
+});
+
+
+</script>
+
+>>>>>>> upstream/main
 <script>
     $(document).ready(function () {
 
@@ -1270,6 +1312,12 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
     });
     $('#Pincode').focusout(function () {
         var pincode = $('#Pincode').val();
+<<<<<<< HEAD
+=======
+
+        if (pincode === "") return;
+
+>>>>>>> upstream/main
         $.ajax({
             type: 'get',
             data: { Pincode: pincode },
@@ -1278,6 +1326,10 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                 if (Data === "NotValidPinCode")
                 {
                     alert("Please Choose Valid Pincode");
+<<<<<<< HEAD
+=======
+                    $('#Pincode').val('');
+>>>>>>> upstream/main
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

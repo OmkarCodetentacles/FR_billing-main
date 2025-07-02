@@ -30,5 +30,10 @@ namespace DtDc_Billing.CustomModel
 
         public Nullable<double> TdsAmount { get; set; }
         public Nullable<double> TotalAmount { get; set; }
+<<<<<<< HEAD
+=======
+
+        public string InvoiceType { get; set; }
+>>>>>>> upstream/main
     }
 }

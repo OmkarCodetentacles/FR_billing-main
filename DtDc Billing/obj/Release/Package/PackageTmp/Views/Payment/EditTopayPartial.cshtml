@@ -1,0 +1,168 @@
+﻿@{
+
+    Layout = null;
+}
+@model DtDc_Billing.Models.AddToPayAmount
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+@{
+    var sMessage = ViewBag.Message as string;
+}
+@if (!string.IsNullOrEmpty(sMessage))
+{
+    @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", sMessage));
+}
+
+
+@using (Ajax.BeginForm("EditTopay", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+{
+
+    <div class="row" style="margin-left:140px">
+        <div id="sg1">
+            <label>
+                Consignment no @Html.EditorFor(model => model.consinmentno, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+            <label style="width: 120px;">
+                Sap no @Html.EditorFor(model => model.sapno, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+            <label style="width: 150px;">
+                Bank name @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+            <label style="width: 150px;">
+                Invoice no @Html.EditorFor(model => model.Invoiceno, new { htmlAttributes = new { @class = "form-control" } })
+            </label>
+
+            <input type="submit" value="Submit" id="reloadpage" class="btn btn-success" />
+
+        </div>
+    </div>
+
+
+}
+
+
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+
+    label {
+        display: inline-block;
+        width: 6em;
+        margin-right: .5em;
+        padding-top: 1.5em;
+    }
+
+    .hori {
+        display: inline-block;
+        width: 6em;
+        position: relative;
+        top: -3em;
+    }
+
+    label {
+        display: inline-block;
+        width: 135px;
+        margin-right: .5em;
+        padding-top: 1.5em;
+    }
+
+    .radio-label {
+        width: 100px;
+        padding-top: 3em;
+    }
+
+    .form-horizontal .radio-inline {
+        padding-top: 1.5em;
+    }
+
+        .form-horizontal .radio-inline label {
+            width: 20px;
+        }
+
+    .form-horizontal .col-sm-9 label {
+        width: 120px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+@*@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+             alert("@ViewBag.Message");
+        </script>
+    }*@
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#consinment_no').keyup(function () {
+
+            var consno = $("#consinment_no").val();
+            if (consno.length >= 9) {
+                $('#consinment_no').val($(this).val().toUpperCase());
+                $('#consinment_no').focusout();
+
+
+                $.ajax({
+                    type: 'Get',
+                    dataType: 'json',
+                    url: '/Payment/Coddetails',
+                    data: { Cosignmentno: consno },
+                    success: function (Data) {
+
+                        $('#tempdelivereddate').val(Data.tempdelivereddate);
+                        $('#tempdeliveredtime').val(Data.tempdeliveredtime);
+
+
+                        $('#remarks').val(Data.remarks);
+                        $('#receivedby').val(Data.receivedby);
+
+                        // $('#consinmentno').val(Data.consinmentno);
+
+
+
+
+                    },
+                    error: function (textStatus, errorThrown) {
+
+                        $('#delivered_date').val(' ');
+                        $('#delivered_time').val(' ');
+
+
+                        $('#remarks').val(' ');
+                        $('#receivedby').val(' ');
+
+                    }
+                });
+            }
+
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $("#reloadpage").click(function (e) {
+
+        $('#form-Cons').load('/Payment/TopaySearch');
+    });
+</script>

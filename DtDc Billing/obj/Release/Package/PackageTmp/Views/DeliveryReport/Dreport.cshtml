@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Dreport";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Delivery Report</h4>
+                </div>
+                <div class="form-horizontal">
+                    <div class="box-body">
+
+                        <div id="form-Cons">
+                            @*@Html.Partial("EditConsignmentPartial", Model)*@
+                            @{ Html.RenderPartial("EditdeliveryPartial", (DtDc_Billing.Entity_FR.deliverydata)ViewBag.delivery);}
+                        </div>
+                       
+                        <hr>
+                        <div id="tr-table">
+                            @{ Html.RenderPartial("DeliverySearch", (IEnumerable<DtDc_Billing.Entity_FR.TransactionView>)ViewBag.talist);}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,559 @@
+﻿@model DtDc_Billing.Entity_FR.Invoice
+@{
+
+    Layout = null;
+}
+
+<link href="~/admin-lte/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/admin-lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+@using (Ajax.BeginForm("SaveInvoiceLastYear", new AjaxOptions() { HttpMethod = "Post", UpdateTargetId = "form-Cons", InsertionMode = InsertionMode.Replace }))
+{
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box box-info" style="padding: 16px 16px !important">
+                    <div class="box-header with-border">
+                        <h4>Generate Invoice</h4>
+                    </div>
+                    <!-- /.box-header -->
+
+                    @if (ViewBag.success != null)
+                    {
+                        var successMessage = "Invoice Added SuccessFully";
+                        @Html.Partial("~/Views/Shared/AlertPartial.cshtml", new Tuple<string, string>("success", successMessage))
+                    }
+                    <div class="form-horizontal">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-sm-2">
+                                        <div>
+                                            <label for="email">Customer Id:</label>
+
+                                            @Html.EditorFor(model => model.Customer_Id, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="pwd">Address:</label>
+                                            <br />
+                                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @rows = "3", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <label for="email">Invoice No:</label>
+
+                                            @if (Model != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = Model.invoiceno, @readonly = "readonly" } })
+                                            }
+                                            else if (ViewBag.nextinvoice != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.nextinvoice, @readonly = "readonly" } })
+                                            }
+                                            else if (ViewBag.lastInvoiceno != null)
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.lastInvoiceno, @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model.invoiceno, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            }
+
+
+
+
+                                            <label for="email">Period From:</label>
+                                            @Html.EditorFor(model => model.Tempdatefrom, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="email">Invoice Date:</label>
+                                            @Html.EditorFor(model => model.tempInvoicedate, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                                            <label for="email">Period To:</label>
+                                            @Html.EditorFor(model => model.TempdateTo, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="departmentsDropdown">Firm Name</label>
+                                            <select class="form-control" id="departmentsDropdown" name="departmentsDropdown" value="@ViewBag.firmname"></select>
+
+
+                                        </div>
+                                    </div>
+                                    @Html.HiddenFor(m => m.Firm_Id, new { @Value = ViewBag.firmid })
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- column -->
+                                <div class="col-sm-12">
+                                    <!-- Horizontal Form -->
+                                    <div class="">
+                                        <!-- form start -->
+                                        <form class="">
+                                            <div class="box-body">
+                                                <!-- select -->
+                                                <div class="">
+                                                    <div class="row">
+                                                        <div class="col-sm-4 col-xs-12 mb-15">
+                                                            <!-- radio -->
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                            <!-- radio -->
+                                                            <div class="form-group">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-8 col-xs-12 mb-15">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Total_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 1" } })
+                                                                    </div>
+
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.total, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Royalti_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 2" } })
+                                                                    </div>
+                                                                    <div class="col-sm-5">
+
+                                                                        @Html.EditorFor(model => model.Royalty_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Docket_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 3" } })
+                                                                    </div>
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.Docket_charges, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
+
+                                                                    </div>
+
+
+
+
+
+
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <div class="col-sm-7">
+                                                                        @Html.EditorFor(model => model.Amount4_Lable, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Heading 4" } })
+                                                                    </div>
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.Amount4, new { htmlAttributes = new { @type = "text", @class = "form-control", @placeholder = "Charges" } })
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="subtotal" class="col-sm-7 control-label">SubTotal</label>
+
+                                                                    <div class="col-sm-5">
+                                                                        <input type="text" class="form-control" id="subtotal" placeholder="0">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="gst-total" class="col-sm-5 col-xs-12 control-label">GST</label>
+                                                                    <div class="col-sm-2 col-xs-4">
+
+
+                                                                        @Html.EditorFor(model => model.servicetax, new { htmlAttributes = new { @type = "text", @class = "form-control", @Value = "18" } })
+
+                                                                    </div>
+                                                                    <div class="col-sm-5 col-xs-8">
+                                                                        @Html.EditorFor(model => model.servicetaxtotal, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            @*<div class="form-group">
+                                                                    <div class="col-sm-12">
+                                                                        <label for="other-charge" class="col-sm-4 control-label">Other Charge</label>
+
+                                                                        <div class="col-sm-8">
+                                                                            @Html.EditorFor(model => model.othercharge, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>*@
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12">
+                                                                    <label for="net-amount" class="col-sm-7 control-label">Net Amount</label>
+
+                                                                    <div class="col-sm-5">
+                                                                        @Html.EditorFor(model => model.netamount, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- /.box-body -->
+                                            <div class="box-footer">
+
+                                                @*<button type="submit" name="submit" value="Email" class="btn btn-primary">Send Invoice From Email</button>*@
+                                                <button type="submit" name="submit" value="Generate" id="Generate" class="btn btn-primary pull-right">Generate</button>
+
+                                            </div>
+                                            <!-- /.box-footer -->
+                                        </form>
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!--/.col (right) -->
+                            </div>
+                            <!-- /.row -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+<style>
+    #generate-invoice {
+        display: block;
+        height: 400px;
+    }
+
+    .radio {
+        display: inline-block;
+        padding-right: 20px;
+    }
+</style>
+
+
+<style>
+    .input-validation-error {
+        border: 1px solid #ff0000 !important;
+    }
+</style>
+
+
+@*@if (ViewBag.success != null)
+    {
+        <script>
+            alert("Invoice Added SuccessFully");
+            location.reload(true);
+        </script>
+    }*@
+
+
+
+
+<script>
+    var a =@Request.Params["Firm_Id"];
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Invoice/getFirm",
+            data: "{}",
+            success: function (data) {
+                // var s = '<option value="-1">Please Select a Department</option>';
+                var s;
+                for (var i = 0; i < data.length; i++) {
+                    s += '<option value="' + data[i].Firm_Id + '">' + data[i].Firm_Name + '</option>';
+                }
+                $("#departmentsDropdown").html(s);
+
+                $("#departmentsDropdown").val(a);
+
+
+            }
+
+
+
+        });
+    });
+
+
+</script>
+
+<script>
+    $("#departmentsDropdown").change(function () {
+        //var selectedStudentVal = $("#ddlStudent").val();
+        //window.location.replace("/Invoice/GenerateInvoice?Firm_Id=" + selectedStudentVal);
+
+        var departmentsDropdown = $("#departmentsDropdown").val();
+        // window.history.pushState("null", "null", "/Invoice/GenerateInvoice?Firm_Id=" + departmentsDropdown);
+        window.location.replace("/Invoice/GenerateInvoiceLastYear?Firm_Id=" + departmentsDropdown);
+
+        $("#departmentsDropdown").html(departmentsDropdown);
+    });
+
+</script>
+
+<script>
+
+    var total = 0;
+    var D_Docket = 0, P_Docket = 0, E_Docket = 0, V_Docket = 0, I_Docket = 0, N_Docket = 0, G_Docket = 0;
+    var Docket_Charge = 0;
+    var Royalty_Per = 0;
+
+
+
+
+
+    $(document).ready(function () {
+
+
+        set_subtotal();
+
+
+
+
+        $('#Customer_Id').keyup(function () {
+            // alert("Keyup");
+            var custid = $("#Customer_Id").val();
+
+
+
+            $.ajax({
+                type: 'Get',
+                dataType: 'json',
+                url: '/Invoice/Invoicedetails',
+                data: { CustomerId: custid },
+                success: function (Data) {
+
+                    $('#Address').val(Data.Company_Address);
+
+
+
+
+                }
+            });
+
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+        $('#total,#Royalty_charges,#Docket_charges,#servicetax,#Amount4').keyup(function () {
+            var total = $('#total').val();
+            set_subtotal();
+            Gst_Amount();
+            Net_Amount();
+        });
+
+
+
+
+
+
+        function set_subtotal() {
+
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Amount4').val();
+            var Amount4 = $('#Amount4').val();
+
+
+            $('#subtotal').val(parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4));
+        }
+
+
+
+
+        function Net_Amount() {
+
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Docket_charges').val();
+            var Amount4 = $('#Amount4').val();
+            var Gst = $('#servicetaxtotal').val();
+
+
+
+
+            var netamt = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4) + parseFloat("0" + Gst);
+
+            // alert(netamt);
+            $('#netamount').val(netamt.toFixed(2));
+        }
+
+
+        function Gst_Amount() {
+
+            var total = $('#total').val();
+            var Royalty_charges = $('#Royalty_charges').val();
+            var Docket_charges = $('#Docket_charges').val();
+            var Amount4 = $('#Amount4').val();
+
+            var gst = $('#servicetax').val();
+
+            var gst_total = parseFloat("0" + total) + parseFloat("0" + Royalty_charges) + parseFloat("0" + Docket_charges) + parseFloat("0" + Amount4);
+
+            var percamount = ((gst_total * parseFloat("0" + gst)) / 100);
+
+            $('#servicetaxtotal').val(percamount.toFixed(2));
+
+        }
+
+
+
+
+
+
+
+
+
+
+        $('#Tempdatefrom').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#tempInvoicedate').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#TempdateTo').datepicker({
+            autoclose: true,
+            format: 'dd-mm-yyyy'
+        });
+
+
+        /**/
+
+
+
+
+
+
+
+        $(function () {
+
+
+            $(".tag-check").keydown(function (event) {
+                var tb = $(this).get(0);
+                var start = tb.selectionStart;
+
+                var end = tb.selectionEnd;
+                var reg = new RegExp("(<.+?>)", "g");
+                var amatch = null;
+                while ((amatch = reg.exec(tb.value)) != null) {
+                    var thisMatchStart = amatch.index - 1;
+                    var thisMatchEnd = amatch.index + amatch[0].length + 1;
+                    if (start <= thisMatchStart && end > thisMatchStart) {
+                        event.preventDefault();
+                        return false;
+                    }
+                    else if (start > thisMatchStart && start < thisMatchEnd) {
+                        event.preventDefault();
+                        return false;
+                    }
+                }
+            });
+        });
+
+    });
+</script>
+
+
+
+
+
+
+<script>
+    $(function () {
+        var availableTutorials = [
+
+        ];
+        var company_idarr = [
+
+        ];
+
+        $.ajax({
+            type: 'GET',
+            /**/
+            /**/
+            /**/
+            /**/
+            url: '@Url.Action("CustomerIdAutocomplete", new { Firm_Id = ViewBag.firmid })',
+    /**/
+    /**/
+    /**/
+    /**/
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
+        });
+
+    }
+});
+
+$("#Customer_Id").autocomplete({
+    source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+        $('#Customer_Id').keyup();
+
+    }
+});
+
+
+});
+
+</script>
+
+
+
+<a id="saveinv" style="" href="" download>
+</a>

@@ -1,0 +1,53 @@
+﻿@using System;
+@model IEnumerable<DtDc_Billing.Entity_FR.ExpiredStationary>
+
+@{
+    ViewBag.Title = "ExpiredStationary";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>ExpiredStationary</h2>
+
+
+    
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Consignment_no)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Expiry_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Expiry_Exceded)
+        </th>
+        <th>
+            Days Remaining
+        </th>
+
+        
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Consignment_no)
+        </td>
+
+        <td>
+            @item.Expiry_Date.Value.ToString("dd-MM-yyyy")
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Expiry_Exceded)
+        </td>
+
+        <td>
+            @item.days
+        </td>
+       
+    </tr>
+}
+
+</table>

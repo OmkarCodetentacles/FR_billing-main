@@ -1,0 +1,88 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h4>Creditor's Report</h4>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("importFromExcel", "demo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="col-md-3">
+                                            <label for="file"><strong id="up-txt"> Upload Excel </strong></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="submit" value="Upload" class="btn btn-primary" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
+
+
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @using (Html.BeginForm("importFromExcelWhole", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="col-md-3">
+                                            <label for="file"><strong id="up-txt"> Upload Excel with Other PF Code </strong></label>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <input type="file" name="httpPostedFileBase" id="file" class="form-control" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="submit" value="Upload" class="btn btn-primary" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@if (ViewBag.Success != null)
+{
+    <script>
+    alert('@ViewBag.Success');
+    </script>
+}
+
+@if (TempData["Success"] != null)
+{
+    <script>
+        alert('@TempData["Success"]');
+    </script>
+}
+

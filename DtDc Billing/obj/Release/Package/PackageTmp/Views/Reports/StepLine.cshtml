@@ -1,0 +1,59 @@
+﻿@{
+
+    Layout = null;
+}
+@{
+    ViewBag.Title = "StepLine";
+    @*Layout = "~/Views/Shared/AdminLayout.cshtml";*@
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <title>Step Line Chart</title>
+</head>
+<body>
+    <div id="chartContainer"></div>
+
+    <script type="text/javascript">
+
+                var result = @Html.Raw(ViewBag.DataPoints);
+        var dps =[];
+        for(var i = 0; i < result.length; i++){
+            dps.push({ "lable": result[i].month, "y": result[i].netamount});
+        }
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+                zoomEnabled: true,
+                panEnabled: true,
+             //   animationEnabled: true,
+                title: {
+                    text: "Monthly Report"
+                },
+                animationEnabled: true,
+                //axisX: {
+                //    valueFormatString: "MMM YY"
+                //},
+                axisY: {
+                    includeZero: false,
+                  //  interval: .1,
+                    valueFormatString: "#.00'%'"
+                },
+
+                data: [
+                {
+                    type: "stepLine",
+
+                        dataPoints: dps,
+                }
+                ]
+            });
+
+            chart.render();
+        };
+    </script>
+</body>
+</html>
