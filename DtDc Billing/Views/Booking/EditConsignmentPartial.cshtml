@@ -1101,9 +1101,11 @@ $.ajax({
             //}
 
         });
-           $('#Pincode').change(function () {
+
+        $('#Pincode').change(function () {
             var pincode = $('#Pincode').val();
 
+            if (pincode === "") return;
     $.ajax({
         type: 'get',
         data: { Pincode: pincode },
@@ -1111,6 +1113,7 @@ $.ajax({
         success: function (Data) {
             if (Data ==="NotValidPinCode") {
                 alert("Please Choose Valid Pincode");
+                $('#Pincode').val('');
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -1270,6 +1270,9 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
     });
     $('#Pincode').focusout(function () {
         var pincode = $('#Pincode').val();
+
+        if (pincode === "") return;
+
         $.ajax({
             type: 'get',
             data: { Pincode: pincode },
@@ -1278,6 +1281,7 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
                 if (Data === "NotValidPinCode")
                 {
                     alert("Please Choose Valid Pincode");
+                    $('#Pincode').val('');
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
