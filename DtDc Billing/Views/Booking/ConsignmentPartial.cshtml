@@ -360,67 +360,45 @@ new SelectListItem() {Text = "N", Value="N"}}, new { @class = "form-select" })
         border: 1px solid #ff0000 !important;
     }
 </style>
+
 <script>
-    $(document).ready(function () {
-        $(function () {
-            var company_name = [];
-            var company_idarr = [];
+    $(function () {
+        var availableTutorials = [
 
-            // Fetch data using AJAX
-            $.ajax({
-                type: 'GET',
-                url: '/Booking/CustomerIdAutocomplete',
-                dataType: 'json',
-                success: function (data) {
+        ];
+        var company_idarr = [
 
-                    $.each(data, function (i, item) {
-                        company_name.push({
-                            label: item.Company_Name, // Display this in the autocomplete dropdown
-                            value: item.Company_Id   // Store this as the actual value
-                        });
-                        company_idarr.push(item.Company_Id); // Store company IDs in an array if needed
-                    });
-                    console.log(company_name)
+        ];
 
-                    var pfcode = '@ViewBag.PfCode';
+        $.ajax({
+            type: 'GET',
 
-                    if (pfcode == "CF2024") {
-                        // Initialize the autocomplete and customize how the items are rendered in the dropdown
-                        $("#Customer_Id").autocomplete({
-                            source: company_name, // Use company_name as the source for autocomplete
-                            select: function (event, ui) {
-                                // When an item is selected, update the input value with the selected item's value
-                                $("#Customer_Id").val(ui.item.value);
-                                $("#Customer_Id").trigger("focusout");
-                                return false; // Prevent the default behavior of updating the input with the label
-                            }
-                        }).autocomplete("instance")._renderItem = function (ul, item) {
-                            return $("<li>")
-                                .append("<div>" + item.value + " (" + item.label + ")</div>")
-                                .appendTo(ul);
-                        };
-                    } else {
-                        // Initialize the autocomplete with the default settings
-                        $("#Customer_Id").autocomplete({
-                            source: company_name, // Use company_idarr as the source for autocomplete
-                            select: function (event, ui) {
-                                // When an item is selected, update the input value with the selected item's value
-                                $("#Customer_Id").val(ui.item.value);
-                                $("#Customer_Id").trigger("focusout");
-                                return false; // Prevent the default behavior of updating the input with the label
-                            }
-                        }).autocomplete("instance")._renderItem = function (ul, item) {
-                            return $("<li>")
-                                .append("<div>" + item.value +"</div>")
-                                .appendTo(ul);
-                        };
-                    }
-                }
-            });
-
+            url: '@Url.Action("CustomerIdAutocompleteForViewInvocie","invoice")',
+    data: {},
+    dataType: 'json',
+    success: function (data) {
+        $.each(data, function (i, item) {
+            company_idarr.push(item.Company_Id);
         });
-    });
+
+    }
+});
+
+$("#Customer_Id").autocomplete({
+    source: company_idarr,
+    select: function (event, ui) {
+        $("#Customer_Id").val(ui.item.value);
+        $('#Customer_Id').keyup();
+
+    }
+});
+
+
+});
+
+
 </script>
+
 <script>
     $(document).ready(function () {
 

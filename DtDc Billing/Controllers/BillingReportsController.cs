@@ -558,7 +558,7 @@ namespace DtDc_Billing.Controllers
 
 
         [HttpPost]
-        public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status, string Submit)
+        public ActionResult CreditorsReport(string Fromdatetime, string ToDatetime, string Custid, string status,string invoicetype, string Submit)
         {
 
             string PfCode = Request.Cookies["Cookies"]["AdminValue"].ToString();
@@ -579,6 +579,7 @@ namespace DtDc_Billing.Controllers
                 }
             }
             ViewBag.select = status;
+            ViewBag.selectType = invoicetype;
 
             string[] formats = {"dd/MM/yyyy", "dd-MMM-yyyy", "yyyy-MM-dd",
                    "dd-MM-yyyy", "M/d/yyyy", "dd MMM yyyy"};
@@ -600,209 +601,77 @@ namespace DtDc_Billing.Controllers
             //List<Invoice> obj = new List<Invoice>();
 
             List<CreditorsInvoiceModel> newObj = new List<CreditorsInvoiceModel>();
+            List<CreditorsInvoiceModel> newObj1 = new List<CreditorsInvoiceModel>();
 
             // List<Invoice> collectionAmount = new List<Invoice>();
             string customerid = Custid != null ? Custid : null;
             string pfcode = PfCode;
-            if (status == "Paid")
+
+            if (invoicetype == "GST" || invoicetype == "Both")
             {
-
-                newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                if (status == "Paid")
                 {
-                    invoicedate = x.invoicedate,
-                    invoiceno = x.invoiceno,
-                    periodfrom = x.periodfrom,
-                    periodto = x.periodto,
-                    total = x.total,
-                    fullsurchargetax = x.fullsurchargetax,
-                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                    servicetax = x.servicetax,
-                    servicetaxtotal = x.servicetaxtotal,
-                    Customer_Id = x.Customer_Id,
-                    CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
 
-                    netamount = x.netamount,
-                    paid = x.paid ?? 0,
-                    discountper = x.discountper ?? 0,
-                    discountamount = x.discountamount ?? 0,
-                    balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
-                    TdsAmount = x.TdsAmount ?? 0,
-                    TotalAmount = x.TotalAmount ?? 0
+                    newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                    {
+                        invoicedate = x.invoicedate,
+                        invoiceno = x.invoiceno,
+                        periodfrom = x.periodfrom,
+                        periodto = x.periodto,
+                        total = x.total,
+                        fullsurchargetax = x.fullsurchargetax,
+                        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                        servicetax = x.servicetax,
+                        servicetaxtotal = x.servicetaxtotal,
+                        Customer_Id = x.Customer_Id,
+                        CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
 
-                }).OrderBy(x=>x.invoicedate).ToList().Where(x => x.balanceamount <= 0).ToList();
+                        netamount = x.netamount,
+                        paid = x.paid ?? 0,
+                        discountper = x.discountper ?? 0,
+                        discountamount = x.discountamount ?? 0,
+                        balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                        TdsAmount = x.TdsAmount ?? 0,
+                        TotalAmount = x.TotalAmount ?? 0,
+                        InvoiceType = "GST"
 
-
-                //if (Custid == "")
-                //{
-                //    obj = db.getCreditorsInvoiceWithoutCompany(fromdate, todate, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList().Where(x => x.discountamount <= 0).ToList();
+                    }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount <= 0).ToList();
 
 
+                }
 
-                //}
-                //else
-                //{
-                //    obj = db.getCreditorsInvoice(fromdate, todate, Custid, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList().Where(x => x.discountamount <= 0).ToList();
-
-                //}
-
-            }
-
-            else if (status == "Unpaid")
-            {
-                //if (Custid == "")
-                //{
-                //    obj = db.getCreditorsInvoiceWithoutCompany(fromdate, todate, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList().Where(x => x.discountamount > 0 || x.paid == null).ToList();
-
-                //}
-                //else
-                //{
-                //    obj = db.getCreditorsInvoice(fromdate, todate, Custid, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList().Where(x => x.discountamount > 0 || x.paid == null).ToList();
-                //}
-
-                newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                else if (status == "Unpaid")
                 {
-                    invoicedate = x.invoicedate,
-                    invoiceno = x.invoiceno,
-                    periodfrom = x.periodfrom,
-                    periodto = x.periodto,
-                    total = x.total,
-                    fullsurchargetax = x.fullsurchargetax,
-                    fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                    servicetax = x.servicetax,
-                    servicetaxtotal = x.servicetaxtotal,
-                    Customer_Id = x.Customer_Id,
-                    CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
-                    netamount = x.netamount,
-                    paid = x.paid ?? 0,
-                    discountper = x.discountper ?? 0,
-                    discountamount = x.discountamount ?? 0,
-                    balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
-                    TdsAmount = x.TdsAmount ?? 0,
-                    TotalAmount = x.TotalAmount ?? 0
+                    
+                    newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode).Select(x => new CreditorsInvoiceModel
+                    {
+                        invoicedate = x.invoicedate,
+                        invoiceno = x.invoiceno,
+                        periodfrom = x.periodfrom,
+                        periodto = x.periodto,
+                        total = x.total,
+                        fullsurchargetax = x.fullsurchargetax,
+                        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
+                        servicetax = x.servicetax,
+                        servicetaxtotal = x.servicetaxtotal,
+                        Customer_Id = x.Customer_Id,
+                        CustomerName = db.Companies.Where(m => m.Company_Id == x.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+                        netamount = x.netamount,
+                        paid = x.paid ?? 0,
+                        discountper = x.discountper ?? 0,
+                        discountamount = x.discountamount ?? 0,
+                        balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
+                        TdsAmount = x.TdsAmount ?? 0,
+                        TotalAmount = x.TotalAmount ?? 0,
+                        InvoiceType = "GST"
 
-                }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
-
-
-            }
-            else
-            {
-                //if (Custid == "")
-                //{
+                    }).OrderBy(x => x.invoicedate).ToList().Where(x => x.balanceamount > 0 || x.paid == null).ToList();
 
 
-
-                //    obj = db.getCreditorsInvoiceWithoutCompany(fromdate, todate, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList();
-                //}
-                //else
-                //{
-                //    obj = db.getCreditorsInvoice(fromdate, todate, Custid, PfCode).Select(x => new Invoice
-                //    {
-
-                //        invoicedate = x.invoicedate,
-                //        invoiceno = x.invoiceno,
-                //        periodfrom = x.periodfrom,
-                //        periodto = x.periodto,
-                //        total = x.total,
-                //        fullsurchargetax = x.fullsurchargetax,
-                //        fullsurchargetaxtotal = x.fullsurchargetaxtotal,
-                //        servicetax = x.servicetax,
-                //        servicetaxtotal = x.servicetaxtotal,
-                //        Customer_Id = x.Customer_Id,
-                //        netamount = x.netamount,
-                //        paid = x.paid ?? 0,
-                //        discountamount = x.netamount - (x.paid ?? 0)
-
-                //    }).ToList();
-
-                //}
-
-                using (var db = new db_a92afa_frbillingEntities())
+                }
+                else
                 {
+                    
                     newObj = db.getCreditorsInvoiceWithTDSAmount(fromdate, todate, customerid, pfcode)
                         .Select(x => new CreditorsInvoiceModel
                         {
@@ -823,18 +692,47 @@ namespace DtDc_Billing.Controllers
                             paid = x.paid ?? 0,
                             balanceamount = Math.Round((double)x.netamount - (x.paid ?? 0)),
                             TdsAmount = x.TdsAmount ?? 0,
-                            TotalAmount = x.TotalAmount ?? 0
-                        }).ToList();
+                            TotalAmount = x.TotalAmount ?? 0,
+                            InvoiceType = "GST"
+                        }).OrderBy(x => x.invoicedate).ToList();
                 }
 
             }
-
-
+            if(invoicetype == "NonGST" || invoicetype == "Both")
+            {
+                newObj1 = (from item in db.GSTInvoices
+                               where item.Pfcode == pfcode && (customerid == "" || item.Customer_Id.Contains(customerid)) &&
+                               (DbFunctions.TruncateTime(item.invoicedate) >= DbFunctions.TruncateTime(fromdate) && DbFunctions.TruncateTime(item.invoicedate) <= DbFunctions.TruncateTime(todate))
+                               select new CreditorsInvoiceModel
+                               {
+                                   invoicedate = item.invoicedate,
+                                   invoiceno = item.invoiceno,
+                                   periodfrom = item.periodfrom,
+                                   periodto = item.periodto,
+                                   total = item.total,
+                                   fullsurchargetax = item.fullsurchargetax,
+                                   fullsurchargetaxtotal = item.fullsurchargetaxtotal,
+                                   servicetax = item.servicetax,
+                                   servicetaxtotal = item.servicetaxtotal,
+                                   Customer_Id = item.Customer_Id,
+                                   CustomerName = db.Companies.Where(m => m.Company_Id == item.Customer_Id).Select(m => m.Company_Name).FirstOrDefault(),
+                                   discountper = item.discountper ?? 0,
+                                   discountamount = item.discountamount ?? 0,
+                                   netamount = item.netamount ?? 0,
+                                   paid = item.paid ?? 0,
+                                   balanceamount = Math.Round((double)item.netamount - (item.paid ?? 0)),
+                                   TdsAmount = 0,
+                                   TotalAmount = item.FinalNetAmount ?? 0,
+                                   InvoiceType = "Non-GST"
+                               }).ToList();
+            }
+            if (invoicetype == "Both")
+            {  
+                newObj.AddRange(newObj1);
+            }
             if (Submit == "Export to Excel")
             {
-                //ExportToExcelAll.ExportToExcelAdmin(obj);
-                //Apply as per TDS amount\
-
+               
                 var data = newObj.Select(x => new
                 {
                     InvoiceDate = x.invoicedate.Value.ToString("dd-MM-yyyy"),
@@ -856,7 +754,7 @@ namespace DtDc_Billing.Controllers
                     //   TDSAmount = x.TotalAmount ?? 0,
                     //  TotalAmount = x.TotalAmount ?? 0
 
-                }).ToList();
+                }).OrderBy(x=>x.InvoiceDate).ToList();
 
                 if (newObj.Count() <= 0 || newObj == null)
                 {
