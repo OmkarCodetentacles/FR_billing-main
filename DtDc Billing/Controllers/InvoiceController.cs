@@ -1201,7 +1201,7 @@ namespace DtDc_Billing.Controllers
                       if (franchisee.FirstOrDefault().Template==2)
                         {
                             
-                                  string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
 
                             if (System.IO.File.Exists(path))
                             {
@@ -1245,11 +1245,25 @@ namespace DtDc_Billing.Controllers
 
                     else if (discount == "yes")
                     {
-                        string path = Path.Combine(Server.MapPath("~/RdlcReport"), "DiscountPrint.rdlc");
 
-                        if (System.IO.File.Exists(path))
+                        if (franchisee.FirstOrDefault().Template == 2)
                         {
-                            lr.ReportPath = path;
+
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "NewPrintInoviceFormat.rdlc");
+
+                            if (System.IO.File.Exists(path))
+                            {
+                                lr.ReportPath = path;
+                            }
+                        }
+                        else
+                        {
+                            string path = Path.Combine(Server.MapPath("~/RdlcReport"), "DiscountPrint.rdlc");
+
+                            if (System.IO.File.Exists(path))
+                            {
+                                lr.ReportPath = path;
+                            }
                         }
                     }
                     //string path = Path.Combine(Server.MapPath("~/RdlcReport"), "InvoiceReportNew.rdlc");

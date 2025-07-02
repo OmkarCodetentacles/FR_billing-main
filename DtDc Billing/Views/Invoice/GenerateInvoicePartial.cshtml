@@ -262,43 +262,18 @@
                                     </tbody>
 
                                 </table>
-
                             </div>
-                            @*<div class="row">*@
-                            <!-- column -->
-                            @*<div class="col-sm-12">*@
-                            <!-- Horizontal Form -->
                             <div class="">
-                                <!-- form start -->
                                 <form class="">
-                                    @*<div class="box-body">*@
-                                    <!-- select -->
-                                    @*<div class="">*@
                                     <div class="row">
-                                        @*<div class="col-sm-12 col-xs-12 mb-15" style="padding-left:30px">*@
-                                        <!-- radio -->
+                                       
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <div class="" style="display:flex">
                                                     <label for="amount" class=" control-label">Invoice Discount : </label>
                                                     <div class="">
 
-                                                        @if (ViewBag.disc == "yes")
-                                                        {
-                                                            <div class="radio">
-                                                                <label>
-                                                                    @Html.RadioButtonFor(m => m.discount, "yes", new { @checked = true })
-                                                                    <span style=" margin: 21px;">Yes</span>
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio">
-                                                                <label>
-                                                                    @Html.RadioButtonFor(m => m.discount, "no")
-                                                                    <span style=" margin: 21px;">No</span>
-                                                                </label>
-                                                            </div>
-                                                        }
-                                                        else if (Model != null && Model.discount == "yes")
+                                                        @if (Model != null && Model.discount == "yes")
                                                         {
                                                             <div class="radio">
                                                                 <label>
@@ -334,9 +309,10 @@
                                                     </div>
                                                     <div id="discountdiv" style="display:none" class="col-sm-4">
                                                         <div class="col-sm-5 no-padding">
-                                                            @Html.EditorFor(model => model.discountper, new { htmlAttributes = new { @type = "text", @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.discountper, new { htmlAttributes = new { @type = "text", @class = "form-control" } }) 
 
                                                         </div>
+                                                        <span>%</span>
                                                         <div class="col-sm-5 col-sm-offset-1 no-padding">
                                                             @Html.EditorFor(model => model.discountamount, new { htmlAttributes = new { @type = "text", @class = "form-control", @readonly = "readonly", @style = "width: 100px" } })
 
@@ -506,7 +482,7 @@
                                         </div>
 
 
-
+                                    </div>
                                         <!-- /.box-body -->
                                         <div style="padding:25px">
                                             @*<button type="submit" name="submit" value="Sms" class="btn btn-primary" style="margin-top:10px" id="Generate">Send Invoice From SMS</button>*@
